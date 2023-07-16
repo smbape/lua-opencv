@@ -1,0 +1,7 @@
+.idea
+.venv
+/diff
+/node_modules
+/*.sublime-workspace
+generated
+*build_x64
