@@ -2,6 +2,10 @@
 .venv
 /diff
 /node_modules
+/opencv/build
 /*.sublime-workspace
 generated
 *build_x64
+*build_cygwin
+*build_linux
+/luajit/variables.cmake

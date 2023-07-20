@@ -55,7 +55,7 @@ set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib" CACHE PATH "Output directory f
 # TODO
 
 file(GLOB_RECURSE project_source_headers "src/*.h*")
-file(GLOB_RECURSE project_sources_files "src/*.c" "src/*.cpp")
+file(GLOB_RECURSE project_sources_files "src/*.cpp")
 
 file(GLOB_RECURSE project_generated_headers "generated/*.h*")
 file(GLOB_RECURSE project_generated_files "generated/*.cpp")
@@ -80,7 +80,7 @@ add_library(${PROJECT_NAME} SHARED ${SRC_FILES})
 target_compile_definitions(${PROJECT_NAME} PUBLIC LUA_MODULE_NAME=${PROJECT_NAME})
 target_compile_definitions(${PROJECT_NAME} PRIVATE LUAAPI_EXPORTS)
 target_precompile_headers(${PROJECT_NAME} PRIVATE
-  "$<$<COMPILE_LANGUAGE:CXX>:lua_bridge_generated_pch.hpp>"
+  "$<$<COMPILE_LANGUAGE:CXX>:lua_generated_pch.hpp>"
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE sol2::sol2 ${LUA_LIBRARIES} ${OpenCV_LIBS})
