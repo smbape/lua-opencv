@@ -5,6 +5,8 @@ cmake_minimum_required(VERSION 3.25)
 project(luajit)
 
 option(BUILD_SHARED_LIBS "Build SHARED library" ON)
+set(can_use_assembler TRUE)
+enable_language(ASM)
 
 include(cmake/initialize.cmake)
 include(cmake/options.cmake)
@@ -113,15 +115,28 @@ set(gen_lj_targets "")
 
 # gen_lj_vm
 file(MAKE_DIRECTORY "${luajit_BINARY_DIR}/objects")
-set(LJ_VM_OBJECT "${luajit_BINARY_DIR}/objects/lj_vm${CMAKE_C_OUTPUT_EXTENSION}")
-file(TO_NATIVE_PATH "${LJ_VM_OBJECT}" LJ_VM_OBJECT_NATIVE)
-add_custom_command(
-    OUTPUT "${LJ_VM_OBJECT}"
-    COMMAND "${BUILDVM_TARGET_FILE}" -m ${LJVM_MODE} -o "${LJ_VM_OBJECT_NATIVE}"
-    WORKING_DIRECTORY "${luajit_BINARY_DIR}"
-    DEPENDS buildvm
-    COMMENT "Generate lj_vm${CMAKE_C_OUTPUT_EXTENSION}"
-)
+
+if (WIN32 OR CYGWIN OR MINGW)
+  set(LJ_VM_OBJECT "${luajit_BINARY_DIR}/objects/lj_vm${CMAKE_C_OUTPUT_EXTENSION}")
+  file(TO_NATIVE_PATH "${LJ_VM_OBJECT}" LJ_VM_OBJECT_NATIVE)
+  add_custom_command(
+      OUTPUT "${LJ_VM_OBJECT}"
+      COMMAND "${BUILDVM_TARGET_FILE}" -m ${LJVM_MODE} -o "${LJ_VM_OBJECT_NATIVE}"
+      WORKING_DIRECTORY "${luajit_BINARY_DIR}"
+      DEPENDS buildvm
+      COMMENT "Generate lj_vm${CMAKE_C_OUTPUT_EXTENSION}"
+  )
+else()
+  set(LJ_VM_OBJECT "${luajit_BINARY_DIR}/objects/lj_vm.S")
+  add_custom_command(
+      OUTPUT "${LJ_VM_OBJECT}"
+      COMMAND "${BUILDVM_TARGET_FILE}" -m ${LJVM_MODE} -o "${LJ_VM_OBJECT}"
+      WORKING_DIRECTORY "${luajit_BINARY_DIR}"
+      DEPENDS buildvm
+      COMMENT "Generate lj_vm${CMAKE_C_OUTPUT_EXTENSION}"
+  )
+endif()
+
 add_custom_target(gen_lj_vm ALL DEPENDS buildvm "${LJ_VM_OBJECT}")
 list(APPEND gen_lj_targets gen_lj_vm)
 
@@ -195,6 +210,9 @@ target_sources(libluajit
     "${luajit_SRC}/luajit.h"
 )
 
+
+add_library(libluajit::libluajit ALIAS libluajit)
+
 target_link_libraries(libluajit PRIVATE "${LJ_VM_OBJECT}")
 target_include_directories(libluajit PRIVATE ${LUA_INCLUDE_DIRS})
 add_dependencies(libluajit ${gen_lj_targets})
@@ -219,7 +237,7 @@ if (WIN32 OR CYGWIN OR MINGW)
   )
 else()
   set_target_properties(libluajit PROPERTIES
-    OUTPUT_NAME libluajit-${ABIVER}
+    OUTPUT_NAME luajit-${ABIVER}
     VERSION "${VERSION}"
     SOVERSION "${MAJVER}"
   )
@@ -281,24 +299,31 @@ if (UNIX)
       -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/pkgconfig.cmake"
     WORKING_DIRECTORY "${LIBRARY_OUTPUT_PATH}"
     VERBATIM)
-  install(DIRECTORY "${LIBRARY_OUTPUT_PATH}/pkgconfig" DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+  install(DIRECTORY "${LIBRARY_OUTPUT_PATH}/pkgconfig" DESTINATION "${CMAKE_INSTALL_LIBDIR}" USE_SOURCE_PERMISSIONS)
 
   install(FILES "${luajit_SOURCE_DIR}/etc/luajit.1" DESTINATION "${CMAKE_INSTALL_MANDIR}/man1")
 endif()
 
 install(TARGETS libluajit
-  LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-  ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+  LIBRARY
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
+                    GROUP_EXECUTE GROUP_READ
+  ARCHIVE
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+
   FILE_SET HEADERS DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/luajit-${MAJVER}.${MINVER}"
 )
 
 install(DIRECTORY "${EXECUTABLE_OUTPUT_PATH}/"
   DESTINATION "${CMAKE_INSTALL_BINDIR}"
+  USE_SOURCE_PERMISSIONS
   PATTERN "minilua*" EXCLUDE
   PATTERN "buildvm*" EXCLUDE
 )
 
 install(DIRECTORY "${luajit_SRC}/jit"
   DESTINATION "${CMAKE_INSTALL_DATADIR}/luajit-${VERSION}"
+  USE_SOURCE_PERMISSIONS
   FILES_MATCHING PATTERN "*.lua"
 )

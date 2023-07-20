@@ -24,8 +24,18 @@ if(WIN32 AND MSVC)
   add_compile_options(/MP)
 endif()
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
-find_package(Lua REQUIRED)
+
+if ((NOT DEFINED LUA_DIR) AND (NOT DEFINED ENV{LUA_DIR}))
+  add_subdirectory(luajit)
+  set(LUA_LIBRARIES libluajit::libluajit)
+else()
+  if (DEFINED LUA_DIR)
+    set(ENV{LUA_DIR} "${LUA_DIR}")
+  endif()
+
+  list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
+  find_package(Lua REQUIRED)
+endif()
 
 # include(cmake/RequireOpenCV.cmake)
 set(OpenCV_LIBS "")
@@ -77,6 +87,16 @@ set(SRC_FILES
 # Build a shared library named as the project
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
 add_library(${PROJECT_NAME} SHARED ${SRC_FILES})
+
+install(TARGETS ${PROJECT_NAME}
+  LIBRARY
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/lua/${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}"
+    PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
+                    GROUP_EXECUTE GROUP_READ
+  ARCHIVE
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/lua/${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}"
+)
+
 target_compile_definitions(${PROJECT_NAME} PUBLIC LUA_MODULE_NAME=${PROJECT_NAME})
 target_compile_definitions(${PROJECT_NAME} PRIVATE LUAAPI_EXPORTS)
 target_precompile_headers(${PROJECT_NAME} PRIVATE
@@ -84,7 +104,9 @@ target_precompile_headers(${PROJECT_NAME} PRIVATE
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE sol2::sol2 ${LUA_LIBRARIES} ${OpenCV_LIBS})
-target_include_directories(${PROJECT_NAME} PRIVATE ${LUA_INCLUDE_DIR})
+if (DEFINED LUA_INCLUDE_DIR)
+  target_include_directories(${PROJECT_NAME} PRIVATE ${LUA_INCLUDE_DIR})
+endif()
 
 # set(PROJECT_VERSION "${SOL2_VERSION}-${OpenCV_DLLVERSION}")
 set(PROJECT_VERSION "0.0.0")
@@ -136,7 +158,7 @@ ENDIF()
 
 # add executable target that represents require_from_dll program
 add_executable(require_from_dll test/require_from_dll.cpp)
-target_link_libraries(require_from_dll
-  PRIVATE ${PROJECT_NAME} ${LUA_LIBRARIES} sol2::sol2)
-target_include_directories(require_from_dll
-  PRIVATE ${LUA_INCLUDE_DIR})
+target_link_libraries(require_from_dll PRIVATE ${PROJECT_NAME} ${LUA_LIBRARIES} sol2::sol2)
+if (DEFINED LUA_INCLUDE_DIR)
+  target_include_directories(require_from_dll PRIVATE ${LUA_INCLUDE_DIR})
+endif()
