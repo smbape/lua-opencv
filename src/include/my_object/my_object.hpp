@@ -4,6 +4,7 @@
 #include <sol/sol.hpp>
 
 #include <luadef.hpp>
+#include <opencv2/core/utility.hpp>
 
 namespace LUA_MODULE_NAME {
 
@@ -12,6 +13,10 @@ namespace LUA_MODULE_NAME {
 
         test() = default;
         test(int val) : value(val) {
+        }
+
+        static const cv::String& getBuildInformation() {
+            return cv::getBuildInformation();
         }
     };
 

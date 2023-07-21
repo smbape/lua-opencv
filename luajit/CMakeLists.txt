@@ -118,24 +118,18 @@ file(MAKE_DIRECTORY "${luajit_BINARY_DIR}/objects")
 
 if (WIN32 OR CYGWIN OR MINGW)
   set(LJ_VM_OBJECT "${luajit_BINARY_DIR}/objects/lj_vm${CMAKE_C_OUTPUT_EXTENSION}")
-  file(TO_NATIVE_PATH "${LJ_VM_OBJECT}" LJ_VM_OBJECT_NATIVE)
-  add_custom_command(
-      OUTPUT "${LJ_VM_OBJECT}"
-      COMMAND "${BUILDVM_TARGET_FILE}" -m ${LJVM_MODE} -o "${LJ_VM_OBJECT_NATIVE}"
-      WORKING_DIRECTORY "${luajit_BINARY_DIR}"
-      DEPENDS buildvm
-      COMMENT "Generate lj_vm${CMAKE_C_OUTPUT_EXTENSION}"
-  )
 else()
   set(LJ_VM_OBJECT "${luajit_BINARY_DIR}/objects/lj_vm.S")
-  add_custom_command(
-      OUTPUT "${LJ_VM_OBJECT}"
-      COMMAND "${BUILDVM_TARGET_FILE}" -m ${LJVM_MODE} -o "${LJ_VM_OBJECT}"
-      WORKING_DIRECTORY "${luajit_BINARY_DIR}"
-      DEPENDS buildvm
-      COMMENT "Generate lj_vm${CMAKE_C_OUTPUT_EXTENSION}"
-  )
 endif()
+
+file(TO_NATIVE_PATH "${LJ_VM_OBJECT}" LJ_VM_OBJECT_NATIVE)
+add_custom_command(
+  OUTPUT "${LJ_VM_OBJECT}"
+  COMMAND "${BUILDVM_TARGET_FILE}" -m ${LJVM_MODE} -o "${LJ_VM_OBJECT_NATIVE}"
+  WORKING_DIRECTORY "${luajit_BINARY_DIR}"
+  DEPENDS buildvm
+  COMMENT "Generate lj_vm${CMAKE_C_OUTPUT_EXTENSION}"
+)
 
 add_custom_target(gen_lj_vm ALL DEPENDS buildvm "${LJ_VM_OBJECT}")
 list(APPEND gen_lj_targets gen_lj_vm)

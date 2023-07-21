@@ -5,11 +5,9 @@ namespace LUA_MODULE_NAME {
     sol::table LUA_MODULE_OPEN(sol::this_state L) {
         sol::state_view lua(L);
         sol::table module = lua.create_table();
-        module.new_usertype<test>("test",
-             sol::constructors<test(), test(int)>(),
-             "value",
-             &test::value);
-
+        auto test_type = module.new_usertype<test>("test", sol::constructors<test(), test(int)>());
+        test_type["value"] = &test::value;
+        test_type["getBuildInformation"] = &test::getBuildInformation;
         return module;
     }
 

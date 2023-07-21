@@ -1,3 +1,16 @@
+diff --git a/cmake/templates/OpenCVConfig.cmake.in b/cmake/templates/OpenCVConfig.cmake.in
+index 2e9022a355..d4333754b4 100644
+--- a/cmake/templates/OpenCVConfig.cmake.in
++++ b/cmake/templates/OpenCVConfig.cmake.in
+@@ -122,7 +122,7 @@ endforeach()
+ unset(__d)
+ 
+ 
+-if(NOT TARGET opencv_core)
++if((NOT TARGET opencv_core) AND (NOT TARGET opencv_world))
+   include(${CMAKE_CURRENT_LIST_DIR}/OpenCVModules${OpenCV_MODULES_SUFFIX}.cmake)
+ endif()
+ 
 diff --git a/modules/python/src2/hdr_parser.py b/modules/python/src2/hdr_parser.py
 index ebe13f05c7..cc59e7b6ef 100755
 --- a/modules/python/src2/hdr_parser.py
