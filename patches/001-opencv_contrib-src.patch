@@ -1,0 +1,26 @@
+diff --git a/modules/datasets/src/tinyxml2/tinyxml2.h b/modules/datasets/src/tinyxml2/tinyxml2.h
+index 95ae3bcc..89a16c65 100644
+--- a/modules/datasets/src/tinyxml2/tinyxml2.h
++++ b/modules/datasets/src/tinyxml2/tinyxml2.h
+@@ -212,7 +212,7 @@ template <class T, int INIT>
+ class DynArray
+ {
+ public:
+-    DynArray< T, INIT >() {
++    DynArray() {
+         _mem = _pool;
+         _allocated = INIT;
+         _size = 0;
+diff --git a/modules/xphoto/src/oilpainting.cpp b/modules/xphoto/src/oilpainting.cpp
+index 21e62414..daeffd38 100644
+--- a/modules/xphoto/src/oilpainting.cpp
++++ b/modules/xphoto/src/oilpainting.cpp
+@@ -58,7 +58,7 @@ private:
+     int dynRatio;
+ 
+ public:
+-    ParallelOilPainting<Type>(Mat& img, Mat &d, Mat &iLuminance, int r,int k) :
++    ParallelOilPainting(Mat& img, Mat &d, Mat &iLuminance, int r,int k) :
+         imgSrc(img),
+         dst(d),
+         imgLuminance(iLuminance),

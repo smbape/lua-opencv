@@ -36,6 +36,7 @@ include(FetchContent)
 FetchContent_Populate(opencv
   GIT_REPOSITORY    https://github.com/opencv/opencv.git
   GIT_TAG           ${OpenCV_VERSION}
+  GIT_SHALLOW       TRUE
 
   # PATCH_COMMAND is run once for each BUILD_TYPE
   # however, source download is only done once when it is a git repository
@@ -47,6 +48,7 @@ FetchContent_Populate(opencv
                   -P "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/git_patch_once.cmake"
 )
 
+# https://github.com/opencv/opencv-python/tree/74
 set(OPENCV_CONTRIB_TAG_480 f10c84d48b0714f2b408c9e5cccfac1277c8e6cc)
 set(OPENCV_CONTRIB_TAG_470 e247b680a6bd396f110274b6c214406a93171350)
 set(OPENCV_CONTRIB_TAG_460 db16caf6ceee76b43b94c846be276e92a43e9700)
@@ -59,39 +61,60 @@ set(OPENCV_CONTRIB_TAG_451 b91a781cbc1285d441aa682926d93d8c23678b0b)
 # Tell cmake that we will need opencv_contrib.
 include(FetchContent)
 FetchContent_Populate(opencv_contrib
-  GIT_REPOSITORY https://github.com/opencv/opencv_contrib.git
-  GIT_TAG        ${OPENCV_CONTRIB_TAG_${OpenCV_DLLVERSION}} # https://github.com/opencv/opencv-python/tree/74
+  GIT_REPOSITORY  https://github.com/opencv/opencv_contrib.git
+  GIT_TAG         ${OPENCV_CONTRIB_TAG_${OpenCV_DLLVERSION}}
+  GIT_SHALLOW     TRUE
+
+  # PATCH_COMMAND is run once for each BUILD_TYPE
+  # however, source download is only done once when it is a git repository
+  # use a custom patch command to perform patch only once
+  PATCH_COMMAND "${CMAKE_COMMAND}"
+                  "-DSOURCE_DIR=<SOURCE_DIR>"
+                  "-DGIT_EXECUTABLE=${GIT_EXECUTABLE}"
+                  "-DPATCH_FILE=${CMAKE_CURRENT_SOURCE_DIR}/../patches/001-opencv_contrib-src.patch"
+                  -P "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/git_patch_once.cmake"
 )
+
+include("${opencv_SOURCE_DIR}/cmake/OpenCVUtils.cmake")
 
 set(opencv_BINARY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/build" CACHE STRING "Where to build opencv.")
 file(TO_NATIVE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/opencv" OPENCV_INSTALL_DATA_DIR_RELATIVE)
 
-set(OPENCV_EXTRA_MODULES_PATH "${opencv_contrib_SOURCE_DIR}/modules")
-# set(OPENCV_EXTRA_MODULES_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../modules")
 
-# set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/install")
-set(INSTALL_PDB ON)
-set(INSTALL_PDB_COMPONENT_EXCLUDE_FROM_ALL OFF)
-set(INSTALL_CREATE_DISTRIB ON)
-set(OPENCV_GENERATE_SETUPVARS ON)
+# OpenCV build components
+# ===================================================
+OCV_OPTION(BUILD_opencv_apps        "Build utility applications (used for example to train classifiers)" OFF )
+OCV_OPTION(BUILD_DOCS               "Create build rules for OpenCV Documentation" OFF )
+OCV_OPTION(BUILD_PERF_TESTS         "Build performance tests"                     OFF )
+OCV_OPTION(BUILD_TESTS              "Build accuracy & regression tests"           OFF )
 
-# set(VIDEOIO_PLUGIN_LIST all)
-set(BUILD_opencv_world ON)
-set(BUILD_opencv_python2 OFF)
-set(BUILD_opencv_python3 OFF)
-set(BUILD_opencv_java OFF)
-set(BUILD_opencv_apps OFF)
+# OpenCV installation options
+# ===================================================
+OCV_OPTION(INSTALL_CREATE_DISTRIB   "Change install rules to build the distribution package" ON )
+
+set(OPENCV_EXTRA_MODULES_PATH "${opencv_contrib_SOURCE_DIR}/modules" CACHE PATH "Where to look for additional OpenCV modules (can be ;-separated list of paths)")
+
+if (MSVC AND BUILD_SHARED_LIBS)
+  option(INSTALL_PDB_COMPONENT_EXCLUDE_FROM_ALL "Don't install PDB files by default" OFF)
+endif()
+
+# set(INSTALL_CREATE_DISTRIB ON)
+
+# set(VIDEOIO_PLUGIN_LIST "" CACHE STRING "List of videoio backends to be compiled as plugins (ffmpeg, gstreamer, mfx, msmf or special value 'all')")
+option(BUILD_opencv_world "All OpenCV modules" ON)
+option(BUILD_opencv_python2 "The python2 module" OFF)
+option(BUILD_opencv_python3 "The python3 module" OFF)
+option(BUILD_opencv_java "The java module" OFF)
+# option(BUILD_opencv_apps "Build utility applications (used for example to train classifiers)" OFF)
 # set(BUILD_opencv_freetype OFF)
-set(BUILD_SHARED_LIBS ON)
-set(BUILD_TESTS OFF)
-set(BUILD_PERF_TESTS OFF)
-set(BUILD_DOCS OFF)
-set(BUILD_EXAMPLES OFF)
+# set(BUILD_TESTS OFF)
+# set(BUILD_PERF_TESTS OFF)
+# set(BUILD_DOCS OFF)
 # set(WITH_EIGEN ON)
 # set(BUILD_OPENEXR ON)
-set(BUILD_opencv_java_bindings_generator OFF)
-set(BUILD_opencv_js_bindings_generator OFF)
-set(BUILD_opencv_objc_bindings_generator OFF)
-set(BUILD_opencv_python_bindings_generator ON)
+option(BUILD_opencv_java_bindings_generator "The java bindings" OFF)
+option(BUILD_opencv_js_bindings_generator "The JavaScript(JS) bindings" OFF)
+option(BUILD_opencv_objc_bindings_generator "The Objective-C bindings" OFF)
+option(BUILD_opencv_python_bindings_generator "The Python bindings" ON)
 
 add_subdirectory("${opencv_SOURCE_DIR}" "${opencv_BINARY_DIR}")

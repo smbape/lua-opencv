@@ -24,19 +24,7 @@ if(WIN32 AND MSVC)
   add_compile_options(/MP)
 endif()
 
-
-if ((NOT DEFINED LUA_DIR) AND (NOT DEFINED ENV{LUA_DIR}))
-  add_subdirectory(luajit)
-  set(LUA_LIBRARIES libluajit::libluajit)
-else()
-  if (DEFINED LUA_DIR)
-    set(ENV{LUA_DIR} "${LUA_DIR}")
-  endif()
-
-  list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
-  find_package(Lua REQUIRED)
-endif()
-
+# find OpenCV
 if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
   add_subdirectory(opencv)
 
@@ -47,12 +35,25 @@ if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
     if(TARGET ${m})
       list(APPEND OpenCV_LIBS ${m})
     endif()
-    if(NOT ("${m}" STREQUAL "opencv_world") AND EXISTS "${OPENCV_MODULE_${m}_LOCATION}/include")
+    if(EXISTS "${OPENCV_MODULE_${m}_LOCATION}/include")
       list(APPEND OpenCV_INCLUDE_DIRS "${OPENCV_MODULE_${m}_LOCATION}/include")
     endif()
   endforeach()
 else()
   find_package(OpenCV REQUIRED)
+endif()
+
+# find LuaJIT
+if ((NOT DEFINED LUA_DIR) AND (NOT DEFINED ENV{LUA_DIR}))
+  add_subdirectory(luajit)
+  set(LUA_LIBRARIES libluajit::libluajit)
+else()
+  if (DEFINED LUA_DIR)
+    set(ENV{LUA_DIR} "${LUA_DIR}")
+  endif()
+
+  list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
+  find_package(Lua REQUIRED)
 endif()
 
 # message(STATUS "OpenCV_LIBS = ${OpenCV_LIBS}")
@@ -118,8 +119,9 @@ install(TARGETS ${PROJECT_NAME}
     DESTINATION "${CMAKE_INSTALL_LIBDIR}/lua/${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}"
 )
 
-target_compile_definitions(${PROJECT_NAME} PUBLIC LUA_MODULE_NAME=${PROJECT_NAME})
-target_compile_definitions(${PROJECT_NAME} PRIVATE LUAAPI_EXPORTS)
+target_compile_definitions(${PROJECT_NAME}
+  PUBLIC LUA_MODULE_NAME=${PROJECT_NAME}
+  PRIVATE LUAAPI_EXPORTS)
 target_precompile_headers(${PROJECT_NAME} PRIVATE
   "$<$<COMPILE_LANGUAGE:CXX>:lua_generated_pch.hpp>"
 )
@@ -150,6 +152,11 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
   COMPILE_PDB_OUTPUT_DIRECTORY "${LIBRARY_OUTPUT_PATH}"
   LIBRARY_OUTPUT_DIRECTORY "${LIBRARY_OUTPUT_PATH}"
   RUNTIME_OUTPUT_DIRECTORY "${EXECUTABLE_OUTPUT_PATH}"
+
+  # library is in ${CMAKE_INSTALL_LIBDIR}/lua/
+  # however, opencv is in ${CMAKE_INSTALL_LIBDIR}/
+  # use rpath $ORIGIN/.. to allow finding opencv
+  INSTALL_RPATH "$ORIGIN/.."
 )
 
 # Always generate debug files

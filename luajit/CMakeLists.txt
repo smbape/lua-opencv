@@ -237,12 +237,6 @@ else()
   )
 endif()
 
-# set_target_properties(libluajit PROPERTIES
-#   OUTPUT_NAME libluajit-${ABIVER}
-#   VERSION "${VERSION}"
-#   SOVERSION "${MAJVER}"
-# )
-
 set_target_output_directories(libluajit)
 
 add_library(amalg STATIC
