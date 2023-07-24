@@ -3,6 +3,7 @@
 
 #include <my_object/my_object.hpp>
 
+#include <luadef.hpp>
 #include <iostream>
 
 int main(int, char*[]) {

@@ -109,7 +109,7 @@ GOTO END
 
 :TEST
 IF NOT [%has_test%] == [1] GOTO END
-"%PREFIX%\bin\luajit.exe" "%SCRIPTPATH%\test\test.lua"
+%TRY_RUN%"%PREFIX%\bin\luajit.exe" "%SCRIPTPATH%\test\test.lua"
 
 :END
 POPD
