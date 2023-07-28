@@ -21,7 +21,11 @@ namespace LUA_MODULE_NAME {
         sol::state_view lua(L);
         sol::table module = lua.create_table();
 
-        lua_module_register(regitster_my_object);
+        module.new_usertype<NamedParameters>("kwargs",
+            sol::constructors<NamedParameters(), NamedParameters(NamedParameters::Table)>()
+        );
+
+        regitster_my_object(module);
 
         lua_module_call_registered(module);
 
@@ -29,7 +33,7 @@ namespace LUA_MODULE_NAME {
         sol::table proxy = lua.create_table();
 
         // Properly self-index metatable to block things
-        module[sol::meta_function::new_index] = readonly;
+        module[sol::meta_function::new_index] = deny_new_index;
         module[sol::meta_function::index] = module;
 
         // Set it on the actual table
@@ -38,7 +42,7 @@ namespace LUA_MODULE_NAME {
         return proxy;
     }
 
-    int readonly(lua_State* L) {
+    int deny_new_index(lua_State* L) {
         return luaL_error(L, "Hacking is good. Rebuild it yourself without this protection!");
     }
 }

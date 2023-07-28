@@ -80,6 +80,8 @@ FetchContent_MakeAvailable(sol2)
 # update version in files
 # TODO
 
+include(cmake/version.cmake)
+
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin" CACHE PATH "Output directory for applications")
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib" CACHE PATH "Output directory for libraries")
 
@@ -120,7 +122,11 @@ install(TARGETS ${PROJECT_NAME}
 )
 
 target_compile_definitions(${PROJECT_NAME}
-  PUBLIC LUA_MODULE_NAME=${PROJECT_NAME}
+  PUBLIC
+    LUA_MODULE_NAME=${PROJECT_NAME}
+    LUA_MODULE_VERSION=${PROJECT_VERSION}
+    LUA_MODULE_LIB_NAME=OpenCV
+    LUA_MODULE_LIB_VERSION=${OpenCV_VERSION}
   PRIVATE LUAAPI_EXPORTS)
 target_precompile_headers(${PROJECT_NAME} PRIVATE
   "$<$<COMPILE_LANGUAGE:CXX>:lua_generated_pch.hpp>"
@@ -133,13 +139,6 @@ endif()
 if (DEFINED OpenCV_INCLUDE_DIRS)
   target_include_directories(${PROJECT_NAME} PRIVATE ${OpenCV_INCLUDE_DIRS})
 endif()
-
-# set(PROJECT_VERSION "${SOL2_VERSION}-${OpenCV_DLLVERSION}")
-set(PROJECT_VERSION "0.0.0")
-string(REPLACE "." ";" PROJECT_VERSION_LIST ${PROJECT_VERSION})
-list(GET PROJECT_VERSION_LIST 0 PROJECT_VERSION_MAJOR)
-list(GET PROJECT_VERSION_LIST 1 PROJECT_VERSION_MINOR)
-list(GET PROJECT_VERSION_LIST 2 PROJECT_VERSION_PATCH)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
   # OUTPUT_NAME "${PROJECT_NAME}-${PROJECT_VERSION}"
@@ -164,8 +163,7 @@ if(MSVC AND NOT "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
   set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/DEBUG")
 endif()
 
-target_include_directories(${PROJECT_NAME} PUBLIC "src/include")
-target_include_directories(${PROJECT_NAME} PUBLIC "generated")
+target_include_directories(${PROJECT_NAME} PUBLIC "src/include" "src" "generated")
 
 # /Zc:__cplusplus is required to make __cplusplus accurate
 # /Zc:__cplusplus is available starting with Visual Studio 2017 version 15.7

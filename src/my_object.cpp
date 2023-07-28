@@ -5,6 +5,8 @@
 #include <opencv2/highgui.hpp>
 
 namespace {
+    using namespace LUA_MODULE_NAME;
+
     // Uses some of the fancier bits of sol2, including the
     // "transparent argument", sol::this_state, which gets the
     // current state and does not increment function arguments
@@ -26,6 +28,116 @@ namespace {
         // Can also use make_object
         return sol::make_object(lua, sol::lua_nil);
     }
+
+    std::shared_ptr<cv::Mat> create(sol::this_state ts, sol::variadic_args args) {
+        using namespace cv;
+
+        const int argc = args.size() - 1;
+        const bool has_kwarg = vargs_is<NamedParameters>(args, argc);
+        int usedkw = 0;
+
+        NamedParameters kwargs;
+        if (has_kwarg) {
+            kwargs = vargs_get<NamedParameters>(args, argc);
+        }
+
+        {
+            int rows = 0;
+            int cols = 0;
+            int type = 0;
+            cv::Scalar s;
+
+            // get argument rows
+            if (!has_kwarg || argc > 0) {
+                // positional parameter
+                if (argc < 0 || !vargs_is<int>(args, 0) || has_kwarg && kwargs.count("rows")) {
+                    goto overload1;
+                }
+
+                rows = vargs_get<int>(args, 0);
+            } else if (kwargs.count("rows")) {
+                // named parameter
+                auto& kwarg = kwargs.at("rows");
+                if (!object_is<int>(kwarg)) {
+                    goto overload1;
+                }
+
+                rows = object_as<int>(kwarg);
+                usedkw++;
+            } else {
+                // mandatory parameter
+                goto overload1;
+            }
+
+            // get argument cols
+            if (!has_kwarg || argc > 1) {
+                // positional parameter
+                if (argc < 1 || !vargs_is<int>(args, 1) || has_kwarg && kwargs.count("cols")) {
+                    goto overload1;
+                }
+
+                cols = vargs_get<int>(args, 1);
+            } else if (kwargs.count("cols")) {
+                // named parameter
+                auto& kwarg = kwargs.at("cols");
+                if (!object_is<int>(kwarg)) {
+                    goto overload1;
+                }
+
+                cols = object_as<int>(kwarg);
+                usedkw++;
+            }
+
+            // get argument type
+            if (!has_kwarg || argc > 2) {
+                // positional parameter
+                if (argc < 2 || !vargs_is<int>(args, 2) || has_kwarg && kwargs.count("type")) {
+                    goto overload1;
+                }
+
+                type = vargs_get<int>(args, 2);
+            } else if (kwargs.count("type")) {
+                // named parameter
+                auto& kwarg = kwargs.at("type");
+                if (!object_is<int>(kwarg)) {
+                    goto overload1;
+                }
+
+                type = object_as<int>(kwarg);
+                usedkw++;
+            }
+
+            // get argument s
+            if (!has_kwarg || argc > 3) {
+                // positional parameter
+                if (argc < 3 || !vargs_is<cv::Scalar>(args, 3) || has_kwarg && kwargs.count("s")) {
+                    goto overload1;
+                }
+
+                s = vargs_get<cv::Scalar>(args, 3);
+            } else if (kwargs.count("s")) {
+                // named parameter
+                auto& kwarg = kwargs.at("s");
+                if (!object_is<cv::Scalar>(kwarg)) {
+                    goto overload1;
+                }
+
+                s = object_as<cv::Scalar>(kwarg);
+                usedkw++;
+            }
+
+            LUA_MODULE_ASSERT_THROW(argc < 5, "there are " << (argc - 5) << " too many parameters");
+            LUA_MODULE_ASSERT_THROW(usedkw == kwargs.size(), "there are " << (kwargs.size() - usedkw) << " unknown named parameters");
+            return std::make_shared<cv::Mat>(rows, cols, type, s);
+        }
+        overload1:
+
+        LUA_MODULE_THROW("Overload resolution failed");
+    }
+
+    // https://sol2.readthedocs.io/en/latest/tutorial/cxx-in-lua.html
+    // https://github.com/ThePhD/sol2/blob/develop/examples/source/index_and_newindex_usertype.cpp
+    // https://github.com/ThePhD/sol2/blob/develop/examples/source/overloading_with_fallback.cpp
 }
 
 namespace LUA_MODULE_NAME {
@@ -35,27 +147,42 @@ namespace LUA_MODULE_NAME {
             "value", &test::value
         );
 
-        module.new_usertype<cv::Mat>("Mat",
-            // Mat(...) syntax, only
+        module["CV_8UC1"] = CV_8UC1;
+        module["CV_8UC2"] = CV_8UC2;
+        module["CV_8UC3"] = CV_8UC3;
+        module["CV_8UC4"] = CV_8UC4;
+
+        module.new_usertype<NamedParameters>("kwargs",
             sol::call_constructor,
             sol::factories(
                 []() {
-                    return std::make_shared<cv::Mat>();
+                    return std::make_shared<NamedParameters>();
                 },
-                [](int rows, int cols, int type) {
-                    return std::make_shared<cv::Mat>(rows, cols, type);
-                },
-                fancy_func
+                [](NamedParameters::Table kwargs) {
+                    return std::make_shared<NamedParameters>(kwargs);
+                }
             )
         );
+
+        module.new_usertype<cv::Mat>("Mat",
+            // Mat(...) syntax, only
+            sol::call_constructor,
+            sol::factories(create),
+            // "rows", &cv::Mat::rows,
+            "cols", &cv::Mat::cols,
+            "dims", &cv::Mat::dims,
+            "channels", &cv::Mat::channels
+        );
+
+        sol::usertype<cv::Mat> mat_type = module["Mat"];
+        // mat_type.set("rows", sol::readonly(&cv::Mat::rows));
+        mat_type.set("rows", &cv::Mat::rows);
 
         module["IMREAD_COLOR"] = cv::IMREAD_COLOR;
 
         module.set_function("imread", sol::overload([] (const cv::String& filename) {
             return cv::imread(filename, cv::IMREAD_COLOR);
-        }, [] (const cv::String& filename, int flags) {
-            return cv::imread(filename, flags);
-        }));
+        }, cv::imread));
 
         module.set_function("imshow", [](const cv::String& winname, std::variant<cv::Mat, double> _mat) {
             cv::Ptr<cv::_InputArray> mat;
@@ -70,12 +197,16 @@ namespace LUA_MODULE_NAME {
 
         module.set_function("waitKey", sol::overload([] {
             return cv::waitKey();
-        }, [] (int delay) {
-            return cv::waitKey(delay);
-        }));
+        }, cv::waitKey));
 
         module["getBuildInformation"] = cv::getBuildInformation;
 
         module["fancy_func"] = fancy_func;
+
+        module.set_function("multi_tuple", [] { return std::make_tuple(10, "goodbye"); });
+
+        module.set_function("proxy", [](sol::function fn, const cv::Mat& mat) {
+            fn(mat);
+        });
     }
 }

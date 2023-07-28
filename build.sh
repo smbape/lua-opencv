@@ -142,7 +142,7 @@ ${try_run}mkdir -p "$BUILD_FOLDER" && ${try_run}cd "$BUILD_FOLDER" || die "Canno
 
 test ${#PLATFORM} -eq 0 || GENERATOR="$GENERATOR -A $PLATFORM"
 
-test $skip_config -eq 1 || ${try_run}cmake -G $GENERATOR "$SCRIPTPATH" || exit $?
+test $skip_config -eq 1 || ${try_run}cmake -G $GENERATOR -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Release} "$SCRIPTPATH" || exit $?
 test $skip_build -eq 1 || ${try_run}cmake --build . --target $TARGET || exit $?
 test $has_install -eq 0 || ${try_run}cmake --install . --prefix "$PREFIX" || exit $?
 
