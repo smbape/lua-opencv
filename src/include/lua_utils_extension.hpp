@@ -5,8 +5,8 @@
 
 namespace LUA_MODULE_NAME {
     // cv::Point_
-    template<typename _Tp>
-    bool object_is_impl(const sol::object& obj, cv::Point_<_Tp>*) {
+    template<typename _To, typename _Tp>
+    bool object_is_impl(const _To& obj, cv::Point_<_Tp>*) {
         if (obj.is<cv::Point_<_Tp>>() || obj.is<_Tp>()) {
             return true;
         }
@@ -19,8 +19,8 @@ namespace LUA_MODULE_NAME {
         return false;
     }
 
-    template<typename _Tp>
-    bool object_is_impl(sol::object& obj, cv::Point_<_Tp>*) {
+    template<typename _To, typename _Tp>
+    bool object_is_impl(_To& obj, cv::Point_<_Tp>*) {
         if (obj.is<cv::Point_<_Tp>>() || obj.is<_Tp>()) {
             return true;
         }
@@ -33,8 +33,8 @@ namespace LUA_MODULE_NAME {
         return false;
     }
 
-    template<typename _Tp>
-    auto object_as_impl(const sol::object& obj, cv::Point_<_Tp>*) {
+    template<typename _To, typename _Tp>
+    auto object_as_impl(const _To& obj, cv::Point_<_Tp>*) {
         if (obj.is<cv::Point_<_Tp>>()) {
             return obj.as<cv::Point_<_Tp>>();
         }
@@ -55,8 +55,8 @@ namespace LUA_MODULE_NAME {
         return res;
     }
 
-    template<typename _Tp>
-    auto object_as_impl(sol::object& obj, cv::Point_<_Tp>*) {
+    template<typename _To, typename _Tp>
+    auto object_as_impl(_To& obj, cv::Point_<_Tp>*) {
         if (obj.is<cv::Point_<_Tp>>()) {
             return obj.as<cv::Point_<_Tp>>();
         }
@@ -78,8 +78,8 @@ namespace LUA_MODULE_NAME {
     }
 
     // cv::Rect_
-    template<typename _Tp>
-    bool object_is_impl(const sol::object& obj, cv::Rect_<_Tp>*) {
+    template<typename _To, typename _Tp>
+    bool object_is_impl(const _To& obj, cv::Rect_<_Tp>*) {
         if (obj.is<cv::Rect_<_Tp>>() || obj.is<_Tp>()) {
             return true;
         }
@@ -92,8 +92,8 @@ namespace LUA_MODULE_NAME {
         return false;
     }
 
-    template<typename _Tp>
-    bool object_is_impl(sol::object& obj, cv::Rect_<_Tp>*) {
+    template<typename _To, typename _Tp>
+    bool object_is_impl(_To& obj, cv::Rect_<_Tp>*) {
         if (obj.is<cv::Rect_<_Tp>>() || obj.is<_Tp>()) {
             return true;
         }
@@ -106,8 +106,8 @@ namespace LUA_MODULE_NAME {
         return false;
     }
 
-    template<typename _Tp>
-    auto object_as_impl(const sol::object& obj, cv::Rect_<_Tp>*) {
+    template<typename _To, typename _Tp>
+    auto object_as_impl(const _To& obj, cv::Rect_<_Tp>*) {
         if (obj.is<cv::Rect_<_Tp>>()) {
             return obj.as<cv::Rect_<_Tp>>();
         }
@@ -128,8 +128,8 @@ namespace LUA_MODULE_NAME {
         return res;
     }
 
-    template<typename _Tp>
-    auto object_as_impl(sol::object& obj, cv::Rect_<_Tp>*) {
+    template<typename _To, typename _Tp>
+    auto object_as_impl(_To& obj, cv::Rect_<_Tp>*) {
         if (obj.is<cv::Rect_<_Tp>>()) {
             return obj.as<cv::Rect_<_Tp>>();
         }
@@ -151,8 +151,8 @@ namespace LUA_MODULE_NAME {
     }
 
     // cv::Scalar_
-    template<typename _Tp>
-    bool object_is_impl(const sol::object& obj, cv::Scalar_<_Tp>*) {
+    template<typename _To, typename _Tp>
+    bool object_is_impl(const _To& obj, cv::Scalar_<_Tp>*) {
         if (obj.is<cv::Scalar_<_Tp>>() || obj.is<_Tp>()) {
             return true;
         }
@@ -165,8 +165,8 @@ namespace LUA_MODULE_NAME {
         return false;
     }
 
-    template<typename _Tp>
-    bool object_is_impl(sol::object& obj, cv::Scalar_<_Tp>*) {
+    template<typename _To, typename _Tp>
+    bool object_is_impl(_To& obj, cv::Scalar_<_Tp>*) {
         if (obj.is<cv::Scalar_<_Tp>>() || obj.is<_Tp>()) {
             return true;
         }
@@ -179,8 +179,8 @@ namespace LUA_MODULE_NAME {
         return false;
     }
 
-    template<typename _Tp>
-    auto object_as_impl(const sol::object& obj, cv::Scalar_<_Tp>*) {
+    template<typename _To, typename _Tp>
+    auto object_as_impl(const _To& obj, cv::Scalar_<_Tp>*) {
         if (obj.is<cv::Scalar_<_Tp>>()) {
             return obj.as<cv::Scalar_<_Tp>>();
         }
@@ -201,8 +201,8 @@ namespace LUA_MODULE_NAME {
         return res;
     }
 
-    template<typename _Tp>
-    auto object_as_impl(sol::object& obj, cv::Scalar_<_Tp>*) {
+    template<typename _To, typename _Tp>
+    auto object_as_impl(_To& obj, cv::Scalar_<_Tp>*) {
         if (obj.is<cv::Scalar_<_Tp>>()) {
             return obj.as<cv::Scalar_<_Tp>>();
         }
@@ -224,8 +224,8 @@ namespace LUA_MODULE_NAME {
     }
 
     // cv::Size_
-    template<typename _Tp>
-    bool object_is_impl(const sol::object& obj, cv::Size_<_Tp>*) {
+    template<typename _To, typename _Tp>
+    bool object_is_impl(const _To& obj, cv::Size_<_Tp>*) {
         if (obj.is<cv::Size_<_Tp>>() || obj.is<_Tp>()) {
             return true;
         }
@@ -238,8 +238,8 @@ namespace LUA_MODULE_NAME {
         return false;
     }
 
-    template<typename _Tp>
-    bool object_is_impl(sol::object& obj, cv::Size_<_Tp>*) {
+    template<typename _To, typename _Tp>
+    bool object_is_impl(_To& obj, cv::Size_<_Tp>*) {
         if (obj.is<cv::Size_<_Tp>>() || obj.is<_Tp>()) {
             return true;
         }
@@ -252,8 +252,8 @@ namespace LUA_MODULE_NAME {
         return false;
     }
 
-    template<typename _Tp>
-    auto object_as_impl(const sol::object& obj, cv::Size_<_Tp>*) {
+    template<typename _To, typename _Tp>
+    auto object_as_impl(const _To& obj, cv::Size_<_Tp>*) {
         if (obj.is<cv::Size_<_Tp>>()) {
             return obj.as<cv::Size_<_Tp>>();
         }
@@ -274,8 +274,8 @@ namespace LUA_MODULE_NAME {
         return res;
     }
 
-    template<typename _Tp>
-    auto object_as_impl(sol::object& obj, cv::Size_<_Tp>*) {
+    template<typename _To, typename _Tp>
+    auto object_as_impl(_To& obj, cv::Size_<_Tp>*) {
         if (obj.is<cv::Size_<_Tp>>()) {
             return obj.as<cv::Size_<_Tp>>();
         }
@@ -297,8 +297,8 @@ namespace LUA_MODULE_NAME {
     }
 
     // cv::Vec
-    template<typename _Tp, int cn>
-    bool object_is_impl(const sol::object& obj, cv::Vec<_Tp, cn>*) {
+    template<typename _To, typename _Tp, int cn>
+    bool object_is_impl(const _To& obj, cv::Vec<_Tp, cn>*) {
         if (obj.is<cv::Vec<_Tp, cn>>() || obj.is<_Tp>()) {
             return true;
         }
@@ -311,8 +311,8 @@ namespace LUA_MODULE_NAME {
         return false;
     }
 
-    template<typename _Tp, int cn>
-    bool object_is_impl(sol::object& obj, cv::Vec<_Tp, cn>*) {
+    template<typename _To, typename _Tp, int cn>
+    bool object_is_impl(_To& obj, cv::Vec<_Tp, cn>*) {
         if (obj.is<cv::Vec<_Tp, cn>>() || obj.is<_Tp>()) {
             return true;
         }
@@ -325,8 +325,8 @@ namespace LUA_MODULE_NAME {
         return false;
     }
 
-    template<typename _Tp, int cn>
-    auto object_as_impl(const sol::object& obj, cv::Vec<_Tp, cn>*) {
+    template<typename _To, typename _Tp, int cn>
+    auto object_as_impl(const _To& obj, cv::Vec<_Tp, cn>*) {
         if (obj.is<cv::Vec<_Tp, cn>>()) {
             return obj.as<cv::Vec<_Tp, cn>>();
         }
@@ -347,8 +347,8 @@ namespace LUA_MODULE_NAME {
         return res;
     }
 
-    template<typename _Tp, int cn>
-    auto object_as_impl(sol::object& obj, cv::Vec<_Tp, cn>*) {
+    template<typename _To, typename _Tp, int cn>
+    auto object_as_impl(_To& obj, cv::Vec<_Tp, cn>*) {
         if (obj.is<cv::Vec<_Tp, cn>>()) {
             return obj.as<cv::Vec<_Tp, cn>>();
         }

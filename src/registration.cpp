@@ -1,19 +1,19 @@
 #include <my_object/my_object.hpp>
-#include <registration.hpp>
+#include <register_all.hpp>
 
 namespace {
 }
 
 namespace LUA_MODULE_NAME {
-    std::vector<std::function<void(sol::table&)>>& lua_module_get_functions() {
-        static std::vector<std::function<void(sol::table&)>> functions;
+    std::vector<std::function<void(sol::state_view&, sol::table&)>>& lua_module_get_functions() {
+        static std::vector<std::function<void(sol::state_view&, sol::table&)>> functions;
         return functions;
     }
 
-    void lua_module_call_registered(sol::table& module) {
+    void lua_module_call_registered(sol::state_view& lua, sol::table& module) {
         auto& functions = lua_module_get_functions();
         for(auto && fn : functions) {
-            fn(module);
+            fn(lua, module);
         }
     }
 
@@ -25,9 +25,10 @@ namespace LUA_MODULE_NAME {
             sol::constructors<NamedParameters(), NamedParameters(NamedParameters::Table)>()
         );
 
-        regitster_my_object(module);
+        regitster_my_object(lua, module);
+        register_all(lua, module);
 
-        lua_module_call_registered(module);
+        lua_module_call_registered(lua, module);
 
         // https://sol2.readthedocs.io/en/latest/api/readonly.html#id1
         sol::table proxy = lua.create_table();

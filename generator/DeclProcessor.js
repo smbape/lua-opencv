@@ -263,7 +263,9 @@ class DeclProcessor {
         }
 
         const enum_class = is_enum_class ? fqn : path.slice(0, -1).join("::");
-        this.getCoClass(enum_class, options).addEnum(fqn);
+        const enum_coclass = this.getCoClass(enum_class, options);
+        enum_coclass.addEnum(fqn);
+        enum_coclass.is_enum_class = is_enum_class;
 
         for (const edecl of enums) {
             const [ename] = edecl;

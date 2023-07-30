@@ -212,6 +212,7 @@ class CoClass {
             properties: Object.fromEntries(this.properties),
             methods: Object.fromEntries(this.methods),
             enums: this.enums,
+            is_enum_class: this.is_enum_class,
             is_ptr: this.is_ptr,
         };
     }
