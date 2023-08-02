@@ -10,9 +10,21 @@ const [VERSION_MAJOR, VERSION_MINOR] = version.split(".");
 const knwon_ids = require("./ids");
 const FileUtils = require("./FileUtils");
 const {makeExpansion, useNamespaces, removeNamespaces} = require("./alias");
+const {
+    PTR,
+    SIMPLE_ARGTYPE_DEFAULTS
+} = require("./constants");
 
 const proto = {
     // No extension
+};
+
+const getTernary = (test, left, right, is_optional) => {
+    if (!is_optional) {
+        return left;
+    }
+
+    return `${ test } ? ${ left } : ${ right }`;
 };
 
 class LuaGenerator {
@@ -20,6 +32,728 @@ class LuaGenerator {
 
     static getRegisterFn(coclass) {
         return `register_${ coclass.getClassName() }`;
+    }
+
+    static writeProperties(processor, coclass, contentRegisterPrivate, contentRegister, options) {
+        // TODO properties
+        // property/method, cast in/out arg as enum/int if cpptype is enum
+        // property modifiers:
+        //     = exported name
+        //     /idlname= exported name
+        //     /RW=property
+        //     /R= getter
+        //     /RExpr= return expr, $0 with the current return expr
+        //     /W= setter
+        //     /WExpr= set expression, $0 with the current fqn setter or set expr
+        //     /Cast= cast out val
+        //     if ::this return module/usertype
+        //     pointer to shared_ptr
+        //     /S class static property
+        //     /Enum is enum value
+        //     /ExternalNoDecl binding is external and do not declare it in header glue
+        //
+        //      binding is external
+
+        const { fqn } = coclass;
+        const dynamic_set = [];
+        const dynamic_get = [];
+
+        for (const [name, property] of coclass.properties.entries()) {
+            const {type, value, modifiers} = property;
+            const cpptype = processor.getCppType(type, coclass, options);
+            const is_static = modifiers.includes("/S") || coclass.isStatic();
+            const obj = `${ is_static ? `${ fqn }::` : "self->" }`;
+            const enum_fqn = processor.getEnumType(type, coclass, options);
+            const is_class = !enum_fqn || processor.classes.get(enum_fqn).is_enum_class;
+            const as_type = is_class ? enum_fqn || type : "int";
+
+            let propname = name;
+            let getter, setter;
+            let has_propget = is_static || modifiers.includes("/Enum") || modifiers.includes("/R") || modifiers.includes("/RW");
+            let has_propput = modifiers.includes("/W") || modifiers.includes("/RW");
+
+            for (const modifier of modifiers) {
+                if (modifier[0] === "=") {
+                    propname = modifier.slice(1);
+                } else if (modifier[0] === "/idlname=") {
+                    propname = modifier.slice("/idlname=".length);
+                } else if (modifier.startsWith("/R=")) {
+                    getter = modifier.slice("/R=".length);
+                    has_propget = true;
+                } else if (modifier.startsWith("/RExpr=")) {
+                    has_propget = true;
+                } else if (modifier.startsWith("/W=")) {
+                    setter = modifier.slice("/W=".length);
+                    has_propput = true;
+                } else if (modifier.startsWith("/WExpr=")) {
+                    has_propput = true;
+                }
+            }
+
+            if (!has_propput) {
+                has_propget = true;
+            }
+
+            let rexpr = null;
+            let wexpr = null;
+
+            if (has_propget) {
+                const shared_ptr = removeNamespaces(options.shared_ptr, options);
+                const is_ptr = type.endsWith("*");
+                const is_shared_ptr = cpptype.startsWith(`${ shared_ptr }<`);
+                const is_std = cpptype.startsWith("std::");
+                const is_by_ref = !is_ptr && !is_shared_ptr && (is_std || processor.classes.has(cpptype) && !processor.enums.has(cpptype));
+                let has_expr = false;
+
+                rexpr = `${ obj }${ getter ? `${ getter }()` : propname }`;
+
+                if (!getter && enum_fqn && !is_class) {
+                    rexpr = `static_cast<${ as_type }>(${ rexpr })`;
+                }
+
+                for (const modifier of modifiers) {
+                    if (modifier.startsWith("/RExpr=")) {
+                        rexpr = makeExpansion(modifier.slice("/RExpr=".length), rexpr);
+                        has_expr = true;
+                    }
+                }
+
+                if (rexpr.endsWith("::this")) {
+                    rexpr = `module[${ rexpr.split("::").map(part => JSON.stringify(part)).join("][") }]`;
+                } else {
+                    for (const modifier of modifiers) {
+                        if (modifier.startsWith("/Cast=")) {
+                            rexpr = `${ modifier.slice("/Cast=".length) }(${ rexpr })`;
+                        }
+                    }
+
+                    if (is_by_ref && !has_expr) {
+                        const is_const = modifiers.includes("/C");
+                        rexpr = `std::${ is_const ? "c" : "" }ref(${ rexpr })`;
+                    }
+                }
+            }
+
+            let in_val;
+
+            if (has_propput) {
+                if (setter) {
+                    setter = `${ obj }${ setter }`;
+                }
+
+                in_val = `object_as<${ as_type }>(value)`;
+
+                if (!is_class) {
+                    // input must be int and cast as enum
+                    in_val = `static_cast<${ enum_fqn }>(${ in_val })`;
+                }
+
+                let has_expr = false;
+                for (const modifier of modifiers) {
+                    if (modifier.startsWith("/WExpr=")) {
+                        in_val = makeExpansion(modifier.slice("/WExpr=".length), in_val);
+                        has_expr = true;
+                    }
+                }
+
+                if (!has_expr) {
+                    in_val = setter ? `${ setter }(${ in_val })` : `${ obj }${ propname } = ${ in_val }`;
+                }
+
+                wexpr = `
+                    if (object_is<${ as_type }>(value)) {
+                        ${ in_val.split("\n").join(`\n${ " ".repeat(24) }`) };
+                    } else {
+                        sol::state_view lua(ts);
+                        luaL_error(lua.lua_state(), "Unexpected value type");
+                    }
+                `.replace(/^ {20}/mg, "").trim();
+            }
+
+            if (coclass.isStatic()) {
+                dynamic_get.push(`
+                    { "${ propname }", [] (sol::this_state& ts) {
+                        return sol::object(ts, sol::in_place, ${ rexpr });
+                    }}
+                `.replace(/^ {20}/mg, "").trim());
+
+                if (wexpr) {
+                    dynamic_set.push(`
+                        { "${ propname }", [] (sol::stack_object& value, sol::this_state& ts) {
+                            ${ wexpr.split("\n").join(`\n${ " ".repeat(28) }`) }
+                        }}
+                    `.replace(/^ {24}/mg, "").trim());
+                }
+            } else if (rexpr === `self->${ propname }` && in_val === `self->${ propname } = object_as<${ type }>(value)`) {
+                contentRegister.push(`exports["${ propname }"] = &::${ fqn }::${ propname };`);
+            } else {
+                const getter_decl = !is_static ? `[] (::${ fqn }* self)` : "[]";
+                const getter_setter = [`
+                    ${ getter_decl } {
+                        return ${ rexpr };
+                    }
+                `.replace(/^ {20}/mg, "").trim()];
+
+                if (wexpr) {
+                    const setter_args = [];
+
+                    if (!is_static) {
+                        setter_args.push(`::${ fqn }* self`);
+                    }
+
+                    setter_args.push(...[
+                        "sol::stack_object value",
+                        "sol::this_state ts",
+                    ]);
+
+                    getter_setter.push(`
+                        [] (${ setter_args.join(", ") }) {
+                            ${ wexpr.split("\n").join(`\n${ " ".repeat(28) }`) }
+                        }
+                    `.replace(/^ {24}/mg, "").trim());
+                }
+
+                contentRegister.push(`
+                    exports["${ propname }"] = sol::property(${ getter_setter.join(", ").split("\n").join(`\n${ " ".repeat(20) }`) });
+                `.replace(/^ {20}/mg, "").trim());
+                contentRegister.push("");
+            }
+
+
+            // generate docs header
+            processor.docs.push(`### ${ coclass.name }.${ propname }\n`.replaceAll("_", "\\_"));
+
+            const cppsignature = [];
+            if (modifiers.includes("/S") && !coclass.isStatic()) {
+                cppsignature.push("static");
+            }
+            cppsignature.push(cpptype);
+
+            if (propname !== "this") {
+                cppsignature.push(`${ fqn }::${ name }`);
+            }
+
+            const attributes = [];
+
+            if (has_propget) {
+                attributes.push("propget");
+            }
+
+            if (has_propput) {
+                attributes.push("propput");
+            }
+
+            processor.docs.push([
+                "```cpp",
+                cppsignature.join(" "),
+                // "",
+                "lua:",
+                `${ " ".repeat(4) }[${ attributes.join(", ") }] o${ coclass.name }.${ propname }`,
+                "```",
+                ""
+            ].join("\n").replace(/\s*\( {2}\)/g, "()"));
+        }
+
+        if (coclass.isStatic()) {
+            // https://github.com/ThePhD/sol2/blob/develop/examples/source/usertype_dynamic_get_set.cpp
+            contentRegisterPrivate.push(`
+                std::map<std::string, std::function<sol::object(sol::this_state&)>> getters({
+                    ${ dynamic_get.join(",\n").split("\n").join(`\n${ " ".repeat(20) }`) }
+                });
+
+                sol::object dynamic_get(sol::stack_object ns, sol::stack_object key, sol::this_state ts) {
+                    // we use stack_object for the arguments because we
+                    // know the values from Lua will remain on Lua's stack,
+                    // so long we we don't mess with it
+                    auto maybe_string_key = key.as<sol::optional<std::string>>();
+                    if (maybe_string_key) {
+                        const std::string& k = *maybe_string_key;
+                        if (getters.count(k)) {
+                            return getters[k](ts);
+                        }
+                    }
+
+                    sol::state_view lua(ts);
+                    std::stringstream err;
+                    err << "AttributeError: module '${ fqn.replaceAll("::", ".") }' has no attribute '" << (maybe_string_key ? *maybe_string_key : "") << "'";
+                    luaL_error(lua.lua_state(), err.str().c_str());
+
+                    return sol::object(ts, sol::in_place, sol::lua_nil);
+                }
+
+                std::map<std::string, std::function<void(sol::stack_object&, sol::this_state&)>> setters({
+                    ${ dynamic_set.join(",\n").split("\n").join(`\n${ " ".repeat(20) }`) }
+                });
+
+                void dynamic_set(sol::stack_object ns, sol::stack_object key, sol::stack_object value, sol::this_state ts) {
+                    // we use stack_object for the arguments because we
+                    // know the values from Lua will remain on Lua's stack,
+                    // so long we we don't mess with it
+                    auto maybe_string_key = key.as<sol::optional<std::string>>();
+                    if (maybe_string_key) {
+                        const std::string& k = *maybe_string_key;
+                        if (setters.count(k)) {
+                            setters[k](value, ts);
+                            return;
+                        }
+                    }
+
+                    sol::state_view lua(ts);
+                    std::stringstream err;
+                    err << "AttributeError: module '${ fqn.replaceAll("::", ".") }' has no attribute '" << (maybe_string_key ? *maybe_string_key : "") << "'";
+                    luaL_error(lua.lua_state(), err.str().c_str());
+                }
+            `.replace(/^ {16}/mg, "").trim());
+        }
+    }
+
+    static writeMethods(processor, coclass, contentRegisterPrivate, contentRegister, options) {
+        const { fqn } = coclass;
+        const { shared_ptr } = options;
+        const indent = " ".repeat(4);
+
+        for (const fname of Array.from(coclass.methods.keys()).sort((a, b) => {
+            if (a === "create") {
+                return -1;
+            }
+
+            if (b === "create") {
+                return 1;
+            }
+
+            return a > b ? 1 : a < b ? -1 : 0;
+        })) {
+            const overloads = coclass.methods.get(fname);
+            const contentFunction = [];
+
+            processor.docs.push(`### ${ fqn }::${ fname }\n`.replaceAll("_", "\\_"));
+
+            let is_constructor = false;
+            let overload_id = 0;
+
+            for (const decl of overloads) {
+                overload_id++;
+
+                const [name, return_value_type, func_modifiers, list_of_arguments] = decl;
+                is_constructor = func_modifiers.includes("/CO");
+                const argc = list_of_arguments.length;
+
+                const in_args = new Array(argc).fill(false);
+                const out_args = new Array(argc).fill(false);
+                const out_array_args = new Array(argc).fill(false);
+
+                const outlist = [];
+
+                if (return_value_type !== "" && return_value_type !== "void") {
+                    outlist.push("retval");
+                } else if (is_constructor) {
+                    outlist.push("self");
+                }
+
+                for (let j = 0; j < argc; j++) {
+                    const [argtype, argname, defval, arg_modifiers] = list_of_arguments[j];
+                    const is_ptr = argtype.endsWith("*");
+                    const is_in_array = /^Input(?:Output)?Array(?:OfArrays)?$/.test(argtype);
+                    const is_out_array = /^(?:Input)?OutputArray(?:OfArrays)?$/.test(argtype);
+                    const is_in_out = arg_modifiers.includes("/IO");
+                    in_args[j] = is_in_array || is_in_out || arg_modifiers.includes("/I");
+                    out_args[j] = is_out_array || is_in_out || arg_modifiers.includes("/O") || is_ptr && defval === "" && SIMPLE_ARGTYPE_DEFAULTS.has(argtype.slice(0, -1));
+                    out_array_args[j] = is_out_array;
+
+                    if (out_args[j]) {
+                        outlist.push(argname);
+                    }
+                }
+
+                // the python api expects parameters in this order:
+                // mandatory, OutputArray or optional parameter, /O parameter
+                const getArgWeight = j => {
+                    if (!in_args[j]) {
+                        // is OutputArray
+                        if (out_array_args[j]) {
+                            return 2;
+                        }
+
+                        // out arg which is not an output array
+                        if (out_args[j]) {
+                            return 3;
+                        }
+                    }
+
+                    // has a default value
+                    if (list_of_arguments[j][2] !== "") {
+                        return 2;
+                    }
+
+                    // is non optional value
+                    return 1;
+                };
+
+                const indexes = Array.from(new Array(argc).keys()).sort((a, b) => {
+                    const diff = getArgWeight(a) - getArgWeight(b);
+                    return diff === 0 ? a - b : diff;
+                });
+
+                const callargs = [];
+                const retval = [];
+                const overload = ["int usedkw = 0;"];
+
+                for (let i = 0; i < argc; i++) {
+                    const j = indexes[i];
+                    const [, argname, , arg_modifiers] = list_of_arguments[j];
+                    let [argtype, , defval] = list_of_arguments[j];
+
+                    const is_ptr = argtype.endsWith("*");
+                    const is_out = out_args[j];
+                    const is_optional = defval !== "" || is_out && !in_args[j];
+
+                    if (is_out) {
+                        retval.push([j, argname, processor.getCppType(argtype, coclass, options)]);
+                    }
+
+                    let is_array = false;
+                    let arrtype = "";
+                    let arg_suffix = "";
+
+                    if (argtype === "InputArray") {
+                        is_array = true;
+                        arg_suffix = "_array";
+                        arrtype = "InputArray";
+                        argtype = "Mat";
+                    } else if (argtype === "InputOutputArray") {
+                        is_array = true;
+                        arg_suffix = "_array";
+                        arrtype = "InputOutputArray";
+                        argtype = "Mat";
+                    } else if (argtype === "OutputArray") {
+                        is_array = true;
+                        arg_suffix = "_array";
+                        arrtype = "OutputArray";
+                        argtype = "Mat";
+                    } else if (argtype === "InputArrayOfArrays") {
+                        is_array = true;
+                        arg_suffix = "_arrays";
+                        arrtype = "InputArray";
+                        argtype = "std::vector<cv::Mat>";
+                    } else if (argtype === "InputOutputArrayOfArrays") {
+                        is_array = true;
+                        arg_suffix = "_arrays";
+                        arrtype = "InputOutputArray";
+                        argtype = "std::vector<cv::Mat>";
+                    } else if (argtype === "OutputArrayOfArrays") {
+                        is_array = true;
+                        arg_suffix = "_arrays";
+                        arrtype = "OutputArray";
+                        argtype = "std::vector<cv::Mat>";
+                    }
+
+                    if (is_array) {
+                        defval = defval
+                            .replace("InputArrayOfArrays", "std::vector<cv::Mat>")
+                            .replace("InputOutputArrayOfArrays", "std::vector<cv::Mat>")
+                            .replace("OutputArrayOfArrays", "std::vector<cv::Mat>")
+                            .replace("InputArray", "Mat")
+                            .replace("InputOutputArray", "Mat")
+                            .replace("OutputArray", "Mat")
+                            .replace("noArray", argtype);
+                    }
+
+                    let callarg = argname;
+                    let cpptype = processor.getCppType(argtype, coclass, options);
+
+                    if (is_ptr && !PTR.has(argtype)) {
+                        callarg = `&${ callarg }`;
+                        argtype = argtype.slice(0, -1);
+                        defval = SIMPLE_ARGTYPE_DEFAULTS.has(argtype) ? SIMPLE_ARGTYPE_DEFAULTS.get(argtype) : "";
+                    } else if (is_out && cpptype.startsWith(`${ shared_ptr }<`)) {
+                        callarg = `reference_internal(${ callarg })`;
+                        argtype = cpptype.slice(`${ shared_ptr }<`.length, -">".length);
+                        defval = SIMPLE_ARGTYPE_DEFAULTS.has(argtype) ? SIMPLE_ARGTYPE_DEFAULTS.get(argtype) : "";
+                    } else if (defval === "" && SIMPLE_ARGTYPE_DEFAULTS.has(argtype)) {
+                        defval = SIMPLE_ARGTYPE_DEFAULTS.get(argtype);
+                    } else if (defval.endsWith("()") && processor.getCppType(defval.slice(0, -"()".length), coclass, options) === cpptype) {
+                        defval = "";
+                    }
+
+                    for (const modifier of arg_modifiers) {
+                        if (modifier.startsWith("/Cast=")) {
+                            callarg = `${ modifier.slice("/Cast=".length) }(${ callarg })`;
+                        } else if (modifier.startsWith("/Expr=")) {
+                            callarg = makeExpansion(modifier.slice("/Expr=".length), callarg);
+                        }
+                    }
+
+                    if (arg_modifiers.includes("/RRef")) {
+                        callarg = `std::move(${ callarg })`;
+                    }
+
+                    callargs[j] = callarg;
+                    cpptype = processor.getCppType(argtype, coclass, options);
+                    const arr_cpptype = processor.getCppType(arrtype, coclass, options);
+
+                    const object_is = `object_is${ arg_suffix }`;
+                    const object_as = `object_as${ arg_suffix }`;
+
+                    const is_shared_ptr = cpptype.startsWith(`${ shared_ptr }<`);
+                    const in_type = is_shared_ptr ? cpptype.slice(`${ shared_ptr }<`.length, -">".length) : cpptype;
+                    const var_type = `${ is_array ? `${ arr_cpptype }, ` : "" }${ in_type }`;
+
+                    overload.push("", `
+                        // =========================
+                        // get argument ${ argname }
+                        // =========================
+                        bool ${ argname }_positional = false;
+                        bool ${ argname }_kwarg = false;
+                        if (!has_kwarg || argc > ${ i }) {
+                            // positional parameter
+                            if (argc < ${ i } || !${ object_is }<${ var_type }>(args.get<sol::object>(${ i })) || has_kwarg && kwargs.count("${ argname }")) {
+                                goto overload${ overload_id };
+                            }
+
+                            ${ argname }_positional = true;
+                        }
+                        else if (kwargs.count("${ argname }")) {
+                            // named parameter
+                            if (!${ object_is }<${ var_type }>(kwargs.at("${ argname }"))) {
+                                goto overload${ overload_id };
+                            }
+
+                            ${ argname }_kwarg = true;
+                            usedkw++;
+                        }
+                    `.replace(/^ {24}/mg, "").trim());
+
+                    if (is_optional) {
+                        // goto instruction needs all variables to be declared first
+                        // put declaration of variable at top to be able to use goto
+                        overload.push(`${ cpptype } ${ argname }_default${ defval !== "" ? ` = ${ defval }` : "" };`);
+                    } else {
+                        overload.push(`
+                            else {
+                                // mandatory parameter
+                                goto overload${ overload_id };
+                            }
+                        `.replace(/^ {28}/mg, "").trim());
+                    }
+
+                    if (is_array) {
+                        overload.push(`
+                            auto ${ argname }_${ arrtype } = ${ argname }_positional ?
+                                ${ object_as }<${ var_type }>(args.get<sol::object>(${ i })) :
+                                ${ getTernary(
+                                    `${ argname }_kwarg`,
+                                    `${ object_as }<${ var_type }>(kwargs.at("${ argname }"))`,
+                                    `std::make_shared<${ arr_cpptype }>(${ argname }_default)`,
+                                    is_optional
+                                ) };
+                            auto& ${ argname } = *${ argname }_${ arrtype };
+                        `.replace(/^ {28}/mg, "").trim());
+                    } else if (is_shared_ptr) {
+                        overload.push(`
+                            auto& ${ argname }_ref = ${ argname }_positional ?
+                                ${ object_as }<${ in_type }>(args.get<sol::object>(${ i })) :
+                                ${ getTernary(
+                                    `${ argname }_kwarg`,
+                                    `${ object_as }<${ in_type }>(kwargs.at("${ argname }"))`,
+                                    `*${ argname }_default`,
+                                    is_optional
+                                ) };
+                            auto& ${ argname } = reference_internal(${ argname }_ref);
+                        `.replace(/^ {28}/mg, "").trim());
+                    } else {
+                        const is_by_ref = !is_ptr && !is_shared_ptr && processor.classes.has(cpptype) && !processor.enums.has(cpptype);
+
+                        overload.push(`
+                            auto${ is_by_ref ? "&" : "" } ${ argname } = ${ argname }_positional ?
+                                ${ object_as }<${ cpptype }>(args.get<sol::object>(${ i })) :
+                                ${ getTernary(
+                                    `${ argname }_kwarg`,
+                                    `${ object_as }<${ cpptype }>(kwargs.at("${ argname }"))`,
+                                    `${ argname }_default`,
+                                    is_optional
+                                ) };
+                        `.replace(/^ {28}/mg, "").trim());
+                    }
+                }
+
+                overload.push("", `
+                    // =========================
+                    // call ${ fname }
+                    // =========================
+
+                    // too many parameters
+                    // unknown named parameters
+                    if (argc > ${ argc } || usedkw != kwargs.size()) {
+                        goto overload${ overload_id };
+                    }
+                `.replace(/^ {20}/mg, "").trim());
+
+                let callee;
+                const path = name.split(is_constructor ? "::" : ".");
+                const is_static = func_modifiers.includes("/S") || coclass.isStatic();
+
+                if (is_static) {
+                    callee = `::${ path.join("::") }`;
+                } else {
+                    callee = "self";
+
+                    for (const modifier of func_modifiers) {
+                        if (modifier.startsWith("/Cast=")) {
+                            callee = `${ modifier.slice("/Cast=".length) }(${ callee })`;
+                        } else if (modifier.startsWith("/Prop=")) {
+                            callee = `${ callee }->${ modifier.slice("/Prop=".length) }`;
+                        }
+                    }
+
+                    // [+\-*/%\^&|!=<>]=?|[~,]|(?:<<|>>)=?|&&|\|\||\+\+|--|->\*?
+                    if (callargs.length === 1 && /^operator\s*(?:[/*+<>-]=?|\+\+|[!=]=)$/.test(path[path.length - 1])) {
+                        const operator = path[path.length - 1].slice("operator".length).trim();
+                        callee = `(*${ callee }) ${ operator } `;
+                    } else {
+                        callee = `${ callee }->${ path[path.length - 1] }`;
+                    }
+                }
+
+                let expr = callargs.join(", ");
+
+                for (const modifier of func_modifiers) {
+                    if (modifier.startsWith("/Expr=")) {
+                        expr = makeExpansion(modifier.slice("/Expr=".length), expr);
+                    } else if (modifier.startsWith("/Call=")) {
+                        callee = makeExpansion(modifier.slice("/Call=".length), callee);
+                    }
+                }
+
+                callee = `${ callee }(${ expr })`;
+
+                if (is_constructor) {
+                    callee = `std::shared_ptr<${ fqn }>(new ${ callee })`;
+                } else if (func_modifiers.includes("/Ref")) {
+                    callee = `reference_internal(${ callee })`;
+                }
+
+                for (const modifier of func_modifiers) {
+                    if (modifier.startsWith("/WrapAs=")) {
+                        callee = `${ modifier.slice("/WrapAs=".length) }(${ callee })`;
+                    }
+                }
+
+                for (const modifier of func_modifiers) {
+                    if (modifier.startsWith("/Output=")) {
+                        callee = makeExpansion(modifier.slice("/Output=".length), callee);
+                    }
+                }
+
+                let has_body = false;
+                for (const modifier of func_modifiers) {
+                    if (modifier.startsWith("/Body=")) {
+                        callee = makeExpansion(modifier.slice("/Body=".length), callee);
+                        has_body = true;
+                    }
+                }
+
+                if (!has_body && return_value_type !== "void") {
+                    retval.push([0, callee, processor.getCppType(return_value_type, coclass, options)]);
+                    retval.sort(([a], [b]) => a - b);
+
+                    overload.push("", `
+                        sol::variadic_results vres;
+                        ${ retval
+                            .map(([, argname, cpptype]) => {
+                                const is_shared_ptr = cpptype.startsWith(`${ shared_ptr }<`);
+
+                                // vector of cv::Mat is no yet supported
+                                const echo = cpptype !== "std::vector<cv::Mat>" ? "" : "// ";
+
+                                // shared_ptr other than std::shared_ptr is not yet supported
+                                if ("std::shared_ptr" !== shared_ptr && is_shared_ptr) {
+                                    cpptype = cpptype.slice(`${ shared_ptr }<`.length, -">".length);
+                                    const is_class = processor.classes.has(cpptype) && !processor.classes.get(cpptype).isStatic();
+                                    if (is_class) {
+                                        argname = `std::shared_ptr<${ cpptype }>(${ argname })`;
+                                    }
+                                }
+
+                                return `${ echo }vres.push_back({ ts, sol::in_place, ${ argname } });`
+                            })
+                            .join(`\n${ " ".repeat(24) }`) }
+                        return vres;
+                    `.replace(/^ {24}/mg, "").trim());
+                } else {
+                    overload.push("", `${ callee };`, "return sol::variadic_results();");
+                }
+
+                contentFunction.push("");
+
+                contentFunction.push("{");
+
+                contentFunction.push(indent + overload.join("\n").split("\n").join(`\n${ indent }`));
+
+                contentFunction.push("}");
+
+                contentFunction.push(`overload${ overload_id }:`);
+            }
+
+            const lua_args = ["sol::this_state& ts", "sol::variadic_args& args"];
+            const lambda_args = ["sol::this_state ts", "sol::variadic_args args"];
+            const call_lua_args = ["ts", "args"];
+            if (!coclass.isStatic()) {
+                lua_args.unshift(`::${ fqn }* self`);
+                lambda_args.unshift(`::${ fqn }* self`);
+                call_lua_args.unshift(`self`);
+            }
+
+            contentRegisterPrivate.push(`
+                auto Lua_${ fname }(${ (is_constructor ? lambda_args : lua_args).join(", ") }) {
+                    const int argc = args.size() - 1;
+                    const bool has_kwarg = object_is<NamedParameters>(args.get<sol::object>(argc));
+
+                    NamedParameters kwargs;
+                    if (has_kwarg) {
+                        kwargs = object_as<NamedParameters>(args.get<sol::object>(argc));
+                    }
+
+                    ${ contentFunction.join("\n").split("\n").join(`\n${ " ".repeat(20) }`) }
+
+                    sol::state_view lua(ts);
+                    luaL_error(lua.lua_state(), "Overload resolution failed");
+                    LUA_MODULE_THROW("Overload resolution failed");
+                }
+            `.replace(/^ {16}/mg, "").trim());
+
+            // new line
+            contentRegisterPrivate.push("");
+
+            if (is_constructor) {
+                contentRegister.push(`exports[sol::call_constructor] = sol::factories(::Lua_${ fname });`);
+            } else {
+                contentRegister.push(`exports.set_function("${ fname }", [] (${ lambda_args.join(", ") }) {
+                    return ::Lua_${ fname }(${ call_lua_args.join(", ") });
+                });`.replace(/^ {16}/mg, "").trim());
+            }
+        }
+
+        // TODO methods
+        // constructor :
+        //     /CO
+        // function modifiers:
+        //     = exported name
+        //     /idlname= exported name
+        //     /attr=propget
+        //     /attr=propput
+        //     instance call "/attr=propget", "/id=DISPID_VALUE"
+        //     /Expr=
+        //     /Cast= cast self before calling function on it
+        //     /Prop= use prop of self before calling function on it
+        //     /Call=
+        //     /WrapAs= callee = `${ modifier.slice("/WrapAs=".length) }(${ callee })`;
+        //     /Output= expression to return ; callee = makeExpansion(modifier.slice("/Output=".length), callee);
+        //     /Body= expression that has a return; callee = makeExpansion(modifier.slice("/Body=".length), callee);
+        // argument modifiers:
+        //     /IO, /I, /O in/out how?
+        //     /Cast= cast arg
+        //     /Expr= arg expr, replace
+        //     /RRef std::forward<${ type }>(${ callarg })
     }
 
     generate(processor, configuration, options, cb) {
@@ -39,6 +773,8 @@ class LuaGenerator {
             ].includes(fqn)) {
                 continue;
             }
+
+            // TODO https://github.com/ThePhD/sol2/issues/1405
 
             const docid = processor.docs.length;
 
@@ -103,9 +839,6 @@ class LuaGenerator {
             const namespaces = [];
             useNamespaces(namespaces, "push", processor, coclass);
 
-            const dynamic_set = [];
-            const dynamic_get = [];
-
             if (coclass.isStatic()) {
                 contentRegister.push(`
                     sol::table exports = lua.create_table();
@@ -129,212 +862,8 @@ class LuaGenerator {
             contentRegister.push(...namespaces);
             contentRegister.push("");
 
-            for (const [name, property] of coclass.properties.entries()) {
-                const {type, value, modifiers} = property;
-                const cpptype = processor.getCppType(type, coclass, options);
-                const is_static = modifiers.includes("/S") || coclass.isStatic();
-                const obj = `${ is_static ? `${ fqn }::` : "self." }`;
-                const enum_fqn = processor.getEnumType(type, coclass, options);
-                const is_class = !enum_fqn || processor.classes.get(enum_fqn).is_enum_class;
-                const as_type = is_class ? enum_fqn || type : "int";
-
-                let propname = name;
-                let getter, setter;
-                let has_propget = is_static || modifiers.includes("/Enum") || modifiers.includes("/R") || modifiers.includes("/RW");
-                let has_propput = modifiers.includes("/W") || modifiers.includes("/RW");
-
-                for (const modifier of modifiers) {
-                    if (modifier[0] === "=") {
-                        propname = modifier.slice(1);
-                    } else if (modifier.startsWith("/R=")) {
-                        getter = modifier.slice("/R=".length);
-                        has_propget = true;
-                    } else if (modifier.startsWith("/RExpr=")) {
-                        has_propget = true;
-                    } else if (modifier.startsWith("/W=")) {
-                        setter = modifier.slice("/W=".length);
-                        has_propput = true;
-                    } else if (modifier.startsWith("/WExpr=")) {
-                        has_propput = true;
-                    }
-                }
-
-                if (!has_propput) {
-                    has_propget = true;
-                }
-
-                let rexpr = null;
-                let wexpr = null;
-
-                if (has_propget) {
-                    const shared_ptr = removeNamespaces(options.shared_ptr, options);
-                    const is_ptr = type.endsWith("*");
-                    const is_shared_ptr = cpptype.startsWith(`${ shared_ptr }<`);
-                    const is_std = cpptype.startsWith("std::");
-                    const is_by_ref = !is_ptr && !is_shared_ptr && (is_std || processor.classes.has(cpptype));
-                    let has_expr = false;
-
-                    rexpr = `${ obj }${ getter ? `${ getter }()` : propname }`;
-
-                    if (!getter && enum_fqn && !is_class) {
-                        rexpr = `static_cast<${ as_type }>(${ rexpr })`;
-                    }
-
-                    for (const modifier of modifiers) {
-                        if (modifier.startsWith("/RExpr=")) {
-                            rexpr = makeExpansion(modifier.slice("/RExpr=".length), rexpr);
-                            has_expr = true;
-                        }
-                    }
-
-                    if (rexpr.endsWith("::this")) {
-                        rexpr = `module[${ rexpr.split("::").map(part => JSON.stringify(part)).join("][") }]`;
-                    } else {
-                        for (const modifier of modifiers) {
-                            if (modifier.startsWith("/Cast=")) {
-                                rexpr = `${ modifier.slice("/Cast=".length) }(${ rexpr })`;
-                            }
-                        }
-
-                        if (is_by_ref && !has_expr) {
-                            const is_const = modifiers.includes("/C");
-                            rexpr = `std::${ is_const ? "c" : "" }ref(${ rexpr })`;
-                        }
-                    }
-                }
-
-                let in_val;
-
-                if (has_propput) {
-                    if (setter) {
-                        setter = `${ obj }${ setter }`;
-                    }
-
-                    if (is_class) {
-                        // input must be enum_qn or type
-                        in_val = `object_as<${ as_type }>(value)`;
-                    } else {
-                        // input must be int and cast as enum
-                        in_val = `static_cast<${ enum_fqn }>(object_as<${ as_type }>(value))`;
-                    }
-
-                    in_val = setter ? `${ setter }(${ in_val })` : `${ obj }${ propname } = ${ in_val }`;
-
-                    wexpr = `
-                        if (object_is<${ as_type }>(value)) {
-                            ${ in_val };
-                        } else {
-                            sol::state_view lua(ts);
-                            luaL_error(lua.lua_state(), "Unexpected value type");
-                        }
-                    `.replace(/^ {24}/mg, "").trim();
-                }
-
-                if (coclass.isStatic()) {
-                    dynamic_get.push(`
-                        { "${ name }", [] (sol::this_state& ts) {
-                            return sol::object(ts, sol::in_place, ${ rexpr });
-                        }}
-                    `.replace(/^ {24}/mg, "").trim());
-
-                    if (wexpr) {
-                        dynamic_set.push(`
-                            { "${ name }", [] (sol::stack_object& value, sol::this_state& ts) {
-                                ${ wexpr.split("\n").join(`\n${ " ".repeat(32) }`) }
-                            }}
-                        `.replace(/^ {24}/mg, "").trim());
-                    }
-
-                    // dynamic set
-                    // dynamic get
-                    // module["CV_8UC1"] = CV_8UC1;
-                } else {
-                    if (rexpr === `self.${ propname }` && in_val === `self.${ propname } = object_as<${ type }>(value)`) {
-                        contentRegister.push(`exports["${ name }"] = &::${ fqn }::${ propname };`);
-                    } else {
-                        const getter_decl = !is_static ? `[] (::${ fqn }& self)` : "[]";
-                        const getter_setter = [`
-                            ${ getter_decl } {
-                                return ${ rexpr };
-                            }
-                        `.replace(/^ {28}/mg, "").trim()];
-
-                        if (wexpr) {
-                            const setter_args = [];
-
-                            if (!is_static) {
-                                setter_args.push(`::${ fqn }& self`);
-                            }
-
-                            setter_args.push(...[
-                                "sol::stack_object value",
-                                "sol::this_state ts",
-                            ]);
-
-                            getter_setter.push(`
-                                [] (${ setter_args.join(", ") }) {
-                                    ${ wexpr.split("\n").join(`\n${ " ".repeat(36) }`) }
-                                }
-                            `.replace(/^ {32}/mg, "").trim());
-                        }
-
-                        contentRegister.push(`
-                            exports["${ name }"] = sol::property(${ getter_setter.join(", ").split("\n").join(`\n${ " ".repeat(28) }`) });
-                        `.replace(/^ {28}/mg, "").trim());
-                        contentRegister.push("");
-                    }
-                }
-            }
-
-            if (coclass.isStatic()) {
-                // https://github.com/ThePhD/sol2/blob/develop/examples/source/usertype_dynamic_get_set.cpp
-                contentRegisterPrivate.push(`
-                    std::map<std::string, std::function<sol::object(sol::this_state&)>> getters({
-                        ${ dynamic_get.join(",\n").split("\n").join(`\n${ " ".repeat(24) }`) }
-                    });
-
-                    sol::object dynamic_get(sol::stack_object ns, sol::stack_object key, sol::this_state ts) {
-                        // we use stack_object for the arguments because we
-                        // know the values from Lua will remain on Lua's stack,
-                        // so long we we don't mess with it
-                        auto maybe_string_key = key.as<sol::optional<std::string>>();
-                        if (maybe_string_key) {
-                            const std::string& k = *maybe_string_key;
-                            if (getters.count(k)) {
-                                return getters[k](ts);
-                            }
-                        }
-
-                        sol::state_view lua(ts);
-                        std::stringstream err; err << "AttributeError: module '${ fqn.replaceAll("::", ".") }' has no attribute '" << (maybe_string_key ? *maybe_string_key : "") << "'";
-                        luaL_error(lua.lua_state(), err.str().c_str());
-
-                        return sol::object(ts, sol::in_place, sol::lua_nil);
-                    }
-
-                    std::map<std::string, std::function<void(sol::stack_object&, sol::this_state&)>> setters({
-                        ${ dynamic_set.join(",\n").split("\n").join(`\n${ " ".repeat(24) }`) }
-                    });
-
-                    void dynamic_set(sol::stack_object ns, sol::stack_object key, sol::stack_object value, sol::this_state ts) {
-                        // we use stack_object for the arguments because we
-                        // know the values from Lua will remain on Lua's stack,
-                        // so long we we don't mess with it
-                        auto maybe_string_key = key.as<sol::optional<std::string>>();
-                        if (maybe_string_key) {
-                            const std::string& k = *maybe_string_key;
-                            if (setters.count(k)) {
-                                setters[k](value, ts);
-                                return;
-                            }
-                        }
-
-                        sol::state_view lua(ts);
-                        std::stringstream err; err << "AttributeError: module '${ fqn.replaceAll("::", ".") }' has no attribute '" << (maybe_string_key ? *maybe_string_key : "") << "'";
-                        luaL_error(lua.lua_state(), err.str().c_str());
-                    }
-                `.replace(/^ {20}/mg, "").trim());
-            }
+            LuaGenerator.writeProperties(processor, coclass, contentRegisterPrivate, contentRegister, options);
+            LuaGenerator.writeMethods(processor, coclass, contentRegisterPrivate, contentRegister, options);
 
             if (contentRegisterPrivate.length !== 0) {
                 contentCpp.push(`
@@ -359,88 +888,6 @@ class LuaGenerator {
             files.set(sysPath.join(options.output, fileCpp), contentCpp.join("\n").replace(/^[^\S\r\n]+$/mg, ""));
 
             // TODO /^cv::(?:Point|Rect|Scalar|Size|Vec)(?:\d[bdfisw])?$/
-
-            // using namespace
-            // in shared_ptr => reference pointer
-            // multi return as std::make_tuple
-
-            // TODO properties
-            // property/method, cast in/out arg as enum/int if cpptype is enum
-            // property modifiers:
-            //     = exported name
-            //     /idlname= exported name
-            //     /RW=property
-            //     /R= getter
-            //     /RExpr= return expr, $0 with the current return expr
-            //     /W= setter
-            //     /WExpr= set expression, $0 with the current fqn setter or set expr
-            //     /Cast= cast out val
-            //     if ::this return module/usertype
-            //     pointer to shared_ptr
-            //     /S class static property
-            //     /Enum is enum value
-            //     /ExternalNoDecl binding is external and do not declare it in header glue
-            //
-            //      binding is external
-
-            // TODO methods
-            // constructor :
-            //     /CO
-            // function modifiers:
-            //     /idlname= exported name
-            //     /attr=propget
-            //     /attr=propput
-            //     instance call "/attr=propget", "/id=DISPID_VALUE"
-            //     /Expr=
-            //     /Cast= cast self before calling function on it
-            //     /Prop= use prop of self before calling function on it
-            //     /Call=
-            //     /WrapAs= callee = `${ modifier.slice("/WrapAs=".length) }(${ callee })`;
-            //     /Output= expression to return ; callee = makeExpansion(modifier.slice("/Output=".length), callee);
-            //     /Body= expression that has a return; callee = makeExpansion(modifier.slice("/Body=".length), callee);
-            // argument modifiers:
-            //     /IO, /I, /O in/out how?
-            //     /Cast= cast arg
-            //     /Expr= arg expr, replace
-            //     /RRef std::move(${ callarg })
-
-            // if (argtype === "InputArray") {
-            //     is_array = true;
-            //     arrtype = "InputArray";
-            //     argtype = "Mat";
-            // } else if (argtype === "InputOutputArray") {
-            //     is_array = true;
-            //     arrtype = "InputOutputArray";
-            //     argtype = "Mat";
-            // } else if (argtype === "OutputArray") {
-            //     is_array = true;
-            //     arrtype = "OutputArray";
-            //     argtype = "Mat";
-            // } else if (argtype === "InputArrayOfArrays") {
-            //     is_array = true;
-            //     arrtype = "InputArray";
-            //     argtype = "vector_Mat";
-            // } else if (argtype === "InputOutputArrayOfArrays") {
-            //     is_array = true;
-            //     arrtype = "InputOutputArray";
-            //     argtype = "vector_Mat";
-            // } else if (argtype === "OutputArrayOfArrays") {
-            //     is_array = true;
-            //     arrtype = "OutputArray";
-            //     argtype = "vector_Mat";
-            // }
-
-            // if (is_array) {
-            //     defval = defval
-            //         .replace("InputArrayOfArrays", "std::vector<cv::Mat>")
-            //         .replace("InputOutputArrayOfArrays", "std::vector<cv::Mat>")
-            //         .replace("OutputArrayOfArrays", "std::vector<cv::Mat>")
-            //         .replace("InputArray", "Mat")
-            //         .replace("InputOutputArray", "Mat")
-            //         .replace("OutputArray", "Mat")
-            //         .replace("noArray", argtype);
-            // }
-
             // TODO : add property signature
             // TODO : add method signature
 

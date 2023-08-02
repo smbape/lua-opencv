@@ -33,11 +33,11 @@ namespace {
 		using namespace cv;
 
 		const int argc = args.size() - 1;
-		const bool has_kwarg = vargs_is<NamedParameters>(args, argc);
+		const bool has_kwarg = object_is<NamedParameters>(args.get<sol::object>(argc));
 
 		NamedParameters kwargs;
 		if (has_kwarg) {
-			kwargs = vargs_get<NamedParameters>(args, argc);
+			kwargs = object_as<NamedParameters>(args.get<sol::object>(argc));
 		}
 
 		{
@@ -48,7 +48,7 @@ namespace {
 			bool m_kwarg = false;
 			if (!has_kwarg || argc > 0) {
 				// positional parameter
-				if (argc < 0 || !vargs_is<cv::Mat>(args, 0) || has_kwarg && kwargs.count("m")) {
+				if (argc < 0 || !object_is<cv::Mat>(args.get<sol::object>(0)) || has_kwarg && kwargs.count("m")) {
 					goto overload1;
 				}
 
@@ -71,12 +71,14 @@ namespace {
 
 			// too many parameters
 			// unknown named parameters
-			if (argc >= 5 || usedkw != kwargs.size()) {
+			if (argc > 0 || usedkw != kwargs.size()) {
 				goto overload1;
 			}
 
 			cv::Mat m_default;
-			auto& m = m_positional ? vargs_get<cv::Mat>(args, 0) : m_kwarg ? object_as<cv::Mat>(kwargs.at("m")) : m_default;
+			auto obj = args.get<sol::object>(0);
+			auto& val = obj.as<cv::FileNode>();
+			auto& m = m_positional ? object_as<cv::Mat>(args.get<sol::object>(0)) : m_kwarg ? object_as<cv::Mat>(kwargs.at("m")) : m_default;
 			return std::make_shared<cv::Mat>(m);
 		}
 	overload1:
@@ -92,11 +94,11 @@ namespace {
 			// get argument rows
 			if (!has_kwarg || argc > 0) {
 				// positional parameter
-				if (argc < 0 || !vargs_is<int>(args, 0) || has_kwarg && kwargs.count("rows")) {
+				if (argc < 0 || !object_is<int>(args.get<sol::object>(0)) || has_kwarg && kwargs.count("rows")) {
 					goto overload2;
 				}
 
-				rows = vargs_get<int>(args, 0);
+				rows = object_as<int>(args.get<sol::object>(0));
 			}
 			else if (kwargs.count("rows")) {
 				// named parameter
@@ -116,11 +118,11 @@ namespace {
 			// get argument cols
 			if (!has_kwarg || argc > 1) {
 				// positional parameter
-				if (argc < 1 || !vargs_is<int>(args, 1) || has_kwarg && kwargs.count("cols")) {
+				if (argc < 1 || !object_is<int>(args.get<sol::object>(1)) || has_kwarg && kwargs.count("cols")) {
 					goto overload2;
 				}
 
-				cols = vargs_get<int>(args, 1);
+				cols = object_as<int>(args.get<sol::object>(1));
 			}
 			else if (kwargs.count("cols")) {
 				// named parameter
@@ -136,11 +138,11 @@ namespace {
 			// get argument type
 			if (!has_kwarg || argc > 2) {
 				// positional parameter
-				if (argc < 2 || !vargs_is<int>(args, 2) || has_kwarg && kwargs.count("type")) {
+				if (argc < 2 || !object_is<int>(args.get<sol::object>(2)) || has_kwarg && kwargs.count("type")) {
 					goto overload2;
 				}
 
-				type = vargs_get<int>(args, 2);
+				type = object_as<int>(args.get<sol::object>(2));
 			}
 			else if (kwargs.count("type")) {
 				// named parameter
@@ -156,11 +158,11 @@ namespace {
 			// get argument s
 			if (!has_kwarg || argc > 3) {
 				// positional parameter
-				if (argc < 3 || !vargs_is<cv::Scalar>(args, 3) || has_kwarg && kwargs.count("s")) {
+				if (argc < 3 || !object_is<cv::Scalar>(args.get<sol::object>(3)) || has_kwarg && kwargs.count("s")) {
 					goto overload2;
 				}
 
-				s = vargs_get<cv::Scalar>(args, 3);
+				s = object_as<cv::Scalar>(args.get<sol::object>(3));
 			}
 			else if (kwargs.count("s")) {
 				// named parameter
@@ -175,7 +177,7 @@ namespace {
 
 			// too many parameters
 			// unknown named parameters
-			if (argc >= 5 || usedkw != kwargs.size()) {
+			if (argc > 3 || usedkw != kwargs.size()) {
 				goto overload2;
 			}
 

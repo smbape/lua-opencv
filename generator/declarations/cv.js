@@ -1,4 +1,8 @@
 module.exports = [
+    ["class cv._InputArray", "", [], [], "", ""],
+    ["class cv._OutputArray", "", [], [], "", ""],
+    ["class cv._InputOutputArray", "", [], [], "", ""],
+
     ["cv.read", "void", ["=readMat"], [
         ["FileNode", "node", "", []],
         ["Mat", "mat", "", ["/O"]],

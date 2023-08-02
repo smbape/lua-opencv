@@ -8,7 +8,7 @@ module.exports = ({ self, self_get, shared_ptr }) => {
             ["int", "dims", "", ["/RW"]],
             ["int", "flags", "", ["/RW"]],
             ["int", "rows", "", ["/RW"]],
-            ["size_t", "step", "", ["/RW"]],
+            ["size_t", "step", "", ["/RW", "/Cast=static_cast<size_t>"]],
 
             // Custom Attributes
 

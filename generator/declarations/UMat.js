@@ -6,7 +6,7 @@ module.exports = ({ self, self_get, shared_ptr }) => [
         ["int", "dims", "", ["/RW"]],
         ["int", "flags", "", ["/RW"]],
         ["int", "rows", "", ["/RW"]],
-        ["size_t", "step", "", ["/RW"]],
+        ["size_t", "step", "", ["/RW", "/Cast=static_cast<size_t>"]],
 
         // Custom Attributes
 
@@ -94,7 +94,7 @@ module.exports = ({ self, self_get, shared_ptr }) => [
 
     // ["cv.UMat.addref", "void", [], [], "", ""],
 
-    ["cv.UMat.adjustROI", "UMat", ["/Ref", "/WrapAs=::autoit::reference_internal"], [
+    ["cv.UMat.adjustROI", "UMat", ["/Ref"], [
         ["int", "dtop", "", []],
         ["int", "dbottom", "", []],
         ["int", "dleft", "", []],

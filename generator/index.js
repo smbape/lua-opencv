@@ -37,10 +37,10 @@ const getOptions = output => {
             "std",
         ]),
 
-        pself: "&self",
-        self: "self",
+        pself: "self",
+        self: "*self",
         self_get: name => {
-            return `self.${ name }`;
+            return `self->${ name }`;
         },
 
         build: new Set(),
