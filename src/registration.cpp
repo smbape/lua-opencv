@@ -25,7 +25,7 @@ namespace LUA_MODULE_NAME {
             sol::constructors<NamedParameters(), NamedParameters(NamedParameters::Table)>()
         );
 
-        regitster_my_object(lua, module);
+        // regitster_my_object(lua, module);
         register_all(lua, module);
 
         lua_module_call_registered(lua, module);

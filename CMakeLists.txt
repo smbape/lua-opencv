@@ -173,17 +173,23 @@ target_include_directories(${PROJECT_NAME} PUBLIC "src/include" "src" "generated
 # CMake's ${MSVC_VERSION} is equivalent to _MSC_VER
 # (according to https://cmake.org/cmake/help/latest/variable/MSVC_VERSION.html#variable:MSVC_VERSION)
 if ((MSVC) AND (MSVC_VERSION GREATER_EQUAL 1914))
-  target_compile_options(${PROJECT_NAME} PRIVATE "/Zc:__cplusplus")
-  target_compile_options(${PROJECT_NAME} PRIVATE "/bigobj")
+  target_compile_options(${PROJECT_NAME} PRIVATE "/Zc:__cplusplus" "/bigobj")
 endif()
 
 IF ((WIN32) AND CMAKE_GENERATOR STREQUAL Ninja)
-  target_compile_options(${PROJECT_NAME} PRIVATE "/Zc:__cplusplus")
-  target_compile_options(${PROJECT_NAME} PRIVATE "/bigobj")
-  target_compile_definitions(${PROJECT_NAME} PRIVATE WIN32)
-  target_compile_definitions(${PROJECT_NAME} PRIVATE _WINDOWS)
-  target_compile_definitions(${PROJECT_NAME} PRIVATE _WINDLL)
+  target_compile_options(${PROJECT_NAME} PRIVATE "/Zc:__cplusplus" "/bigobj")
+  target_compile_definitions(${PROJECT_NAME} PRIVATE WIN32 _WINDOWS _WINDLL)
 ENDIF()
+
+
+file(RELATIVE_PATH TEST_LUA_PATH "${CMAKE_CURRENT_BINARY_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/test/test.lua")
+file(TO_NATIVE_PATH "${TEST_LUA_PATH}" TEST_LUA_PATH)
+
+set_target_properties(${PROJECT_NAME} PROPERTIES
+  VS_DEBUGGER_COMMAND "$<TARGET_FILE:luajit>"
+  VS_DEBUGGER_COMMAND_ARGUMENTS "${TEST_LUA_PATH}"
+)
+set_property(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 
 # add executable target that represents require_from_dll program
 add_executable(require_from_dll test/require_from_dll.cpp)

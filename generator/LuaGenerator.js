@@ -35,31 +35,12 @@ class LuaGenerator {
     }
 
     static writeProperties(processor, coclass, contentRegisterPrivate, contentRegister, options) {
-        // TODO properties
-        // property/method, cast in/out arg as enum/int if cpptype is enum
-        // property modifiers:
-        //     = exported name
-        //     /idlname= exported name
-        //     /RW=property
-        //     /R= getter
-        //     /RExpr= return expr, $0 with the current return expr
-        //     /W= setter
-        //     /WExpr= set expression, $0 with the current fqn setter or set expr
-        //     /Cast= cast out val
-        //     if ::this return module/usertype
-        //     pointer to shared_ptr
-        //     /S class static property
-        //     /Enum is enum value
-        //     /ExternalNoDecl binding is external and do not declare it in header glue
-        //
-        //      binding is external
-
         const { fqn } = coclass;
         const dynamic_set = [];
         const dynamic_get = [];
 
         for (const [name, property] of coclass.properties.entries()) {
-            const {type, value, modifiers} = property;
+            const {type, modifiers} = property;
             const cpptype = processor.getCppType(type, coclass, options);
             const is_static = modifiers.includes("/S") || coclass.isStatic();
             const obj = `${ is_static ? `${ fqn }::` : "self->" }`;
@@ -261,7 +242,7 @@ class LuaGenerator {
                     ${ dynamic_get.join(",\n").split("\n").join(`\n${ " ".repeat(20) }`) }
                 });
 
-                sol::object dynamic_get(sol::stack_object ns, sol::stack_object key, sol::this_state ts) {
+                sol::object dynamic_get(sol::table ns, sol::stack_object key, sol::this_state ts) {
                     // we use stack_object for the arguments because we
                     // know the values from Lua will remain on Lua's stack,
                     // so long we we don't mess with it
@@ -273,19 +254,19 @@ class LuaGenerator {
                         }
                     }
 
-                    sol::state_view lua(ts);
-                    std::stringstream err;
-                    err << "AttributeError: module '${ fqn.replaceAll("::", ".") }' has no attribute '" << (maybe_string_key ? *maybe_string_key : "") << "'";
-                    luaL_error(lua.lua_state(), err.str().c_str());
+                    // sol::state_view lua(ts);
+                    // std::stringstream err;
+                    // err << "AttributeError: module '${ fqn.replaceAll("::", ".") }' has no attribute '" << (maybe_string_key ? *maybe_string_key : "") << "'";
+                    // luaL_error(lua.lua_state(), err.str().c_str());
 
-                    return sol::object(ts, sol::in_place, sol::lua_nil);
+                    return ns[sol::metatable_key][key];
                 }
 
                 std::map<std::string, std::function<void(sol::stack_object&, sol::this_state&)>> setters({
                     ${ dynamic_set.join(",\n").split("\n").join(`\n${ " ".repeat(20) }`) }
                 });
 
-                void dynamic_set(sol::stack_object ns, sol::stack_object key, sol::stack_object value, sol::this_state ts) {
+                void dynamic_set(sol::table ns, sol::stack_object key, sol::stack_object value, sol::this_state ts) {
                     // we use stack_object for the arguments because we
                     // know the values from Lua will remain on Lua's stack,
                     // so long we we don't mess with it
@@ -298,10 +279,12 @@ class LuaGenerator {
                         }
                     }
 
-                    sol::state_view lua(ts);
-                    std::stringstream err;
-                    err << "AttributeError: module '${ fqn.replaceAll("::", ".") }' has no attribute '" << (maybe_string_key ? *maybe_string_key : "") << "'";
-                    luaL_error(lua.lua_state(), err.str().c_str());
+                    // sol::state_view lua(ts);
+                    // std::stringstream err;
+                    // err << "AttributeError: module '${ fqn.replaceAll("::", ".") }' has no attribute '" << (maybe_string_key ? *maybe_string_key : "") << "'";
+                    // luaL_error(lua.lua_state(), err.str().c_str());
+
+                    ns[sol::metatable_key][key] = value;
                 }
             `.replace(/^ {16}/mg, "").trim());
         }
@@ -396,7 +379,17 @@ class LuaGenerator {
 
                 const callargs = [];
                 const retval = [];
-                const overload = ["int usedkw = 0;"];
+                const overload = [];
+
+                if (!coclass.isStatic() && !func_modifiers.includes("/S")) {
+                    overload.push(`
+                        if (!self) {
+                            goto overload${ overload_id };
+                        }
+                    `.replace(/^ {24}/mg, "").trim(), "");
+                }
+
+                overload.push("int usedkw = 0;");
 
                 for (let i = 0; i < argc; i++) {
                     const j = indexes[i];
@@ -466,7 +459,7 @@ class LuaGenerator {
                         argtype = argtype.slice(0, -1);
                         defval = SIMPLE_ARGTYPE_DEFAULTS.has(argtype) ? SIMPLE_ARGTYPE_DEFAULTS.get(argtype) : "";
                     } else if (is_out && cpptype.startsWith(`${ shared_ptr }<`)) {
-                        callarg = `reference_internal(${ callarg })`;
+                        callarg = `reference_internal(${ callarg }, static_cast<${ cpptype }*>(nullptr))`;
                         argtype = cpptype.slice(`${ shared_ptr }<`.length, -">".length);
                         defval = SIMPLE_ARGTYPE_DEFAULTS.has(argtype) ? SIMPLE_ARGTYPE_DEFAULTS.get(argtype) : "";
                     } else if (defval === "" && SIMPLE_ARGTYPE_DEFAULTS.has(argtype)) {
@@ -474,6 +467,8 @@ class LuaGenerator {
                     } else if (defval.endsWith("()") && processor.getCppType(defval.slice(0, -"()".length), coclass, options) === cpptype) {
                         defval = "";
                     }
+
+                    cpptype = processor.getCppType(argtype, coclass, options);
 
                     for (const modifier of arg_modifiers) {
                         if (modifier.startsWith("/Cast=")) {
@@ -488,15 +483,15 @@ class LuaGenerator {
                     }
 
                     callargs[j] = callarg;
-                    cpptype = processor.getCppType(argtype, coclass, options);
-                    const arr_cpptype = processor.getCppType(arrtype, coclass, options);
 
+                    const arr_cpptype = processor.getCppType(arrtype, coclass, options);
+                    const is_shared_ptr = cpptype.startsWith(`${ shared_ptr }<`);
+                    const is_by_ref = !is_ptr && !is_shared_ptr && processor.classes.has(cpptype) && !processor.enums.has(cpptype);
+                    const in_type = is_shared_ptr ? cpptype.slice(`${ shared_ptr }<`.length, -">".length) : cpptype;
+                    const in_type_is_byref = processor.classes.has(in_type) && !processor.enums.has(in_type);
+                    const var_type = `${ is_array ? `${ arr_cpptype }, ` : "" }${ in_type_is_byref ? `std::shared_ptr<${ in_type }>` : in_type }`;
                     const object_is = `object_is${ arg_suffix }`;
                     const object_as = `object_as${ arg_suffix }`;
-
-                    const is_shared_ptr = cpptype.startsWith(`${ shared_ptr }<`);
-                    const in_type = is_shared_ptr ? cpptype.slice(`${ shared_ptr }<`.length, -">".length) : cpptype;
-                    const var_type = `${ is_array ? `${ arr_cpptype }, ` : "" }${ in_type }`;
 
                     overload.push("", `
                         // =========================
@@ -505,12 +500,17 @@ class LuaGenerator {
                         bool ${ argname }_positional = false;
                         bool ${ argname }_kwarg = false;
                         if (!has_kwarg || argc > ${ i }) {
+                            ${ argname }_positional = argc >= ${ i };
+
                             // positional parameter
-                            if (argc < ${ i } || !${ object_is }<${ var_type }>(args.get<sol::object>(${ i })) || has_kwarg && kwargs.count("${ argname }")) {
+                            if (${ argname }_positional && !${ object_is }<${ var_type }>(args.get<sol::object>(${ i }))) {
                                 goto overload${ overload_id };
                             }
 
-                            ${ argname }_positional = true;
+                            // should not be a named parameter
+                            if (has_kwarg && kwargs.count("${ argname }")) {
+                                goto overload${ overload_id };
+                            }
                         }
                         else if (kwargs.count("${ argname }")) {
                             // named parameter
@@ -536,6 +536,8 @@ class LuaGenerator {
                         `.replace(/^ {28}/mg, "").trim());
                     }
 
+                    const deref = in_type_is_byref ? "*" : "";
+
                     if (is_array) {
                         overload.push(`
                             auto ${ argname }_${ arrtype } = ${ argname }_positional ?
@@ -551,24 +553,22 @@ class LuaGenerator {
                     } else if (is_shared_ptr) {
                         overload.push(`
                             auto& ${ argname }_ref = ${ argname }_positional ?
-                                ${ object_as }<${ in_type }>(args.get<sol::object>(${ i })) :
+                                ${ deref }${ object_as }<${ var_type }>(args.get<sol::object>(${ i })) :
                                 ${ getTernary(
                                     `${ argname }_kwarg`,
-                                    `${ object_as }<${ in_type }>(kwargs.at("${ argname }"))`,
+                                    `${ deref }${ object_as }<${ var_type }>(kwargs.at("${ argname }"))`,
                                     `*${ argname }_default`,
                                     is_optional
                                 ) };
-                            auto& ${ argname } = reference_internal(${ argname }_ref);
+                            auto ${ argname } = reference_internal(${ argname }_ref, static_cast<${ cpptype }*>(nullptr));
                         `.replace(/^ {28}/mg, "").trim());
                     } else {
-                        const is_by_ref = !is_ptr && !is_shared_ptr && processor.classes.has(cpptype) && !processor.enums.has(cpptype);
-
                         overload.push(`
                             auto${ is_by_ref ? "&" : "" } ${ argname } = ${ argname }_positional ?
-                                ${ object_as }<${ cpptype }>(args.get<sol::object>(${ i })) :
+                                ${ deref }${ object_as }<${ var_type }>(args.get<sol::object>(${ i })) :
                                 ${ getTernary(
                                     `${ argname }_kwarg`,
-                                    `${ object_as }<${ cpptype }>(kwargs.at("${ argname }"))`,
+                                    `${ deref }${ object_as }<${ var_type }>(kwargs.at("${ argname }"))`,
                                     `${ argname }_default`,
                                     is_optional
                                 ) };
@@ -662,8 +662,8 @@ class LuaGenerator {
                             .map(([, argname, cpptype]) => {
                                 const is_shared_ptr = cpptype.startsWith(`${ shared_ptr }<`);
 
-                                // vector of cv::Mat is no yet supported
-                                const echo = cpptype !== "std::vector<cv::Mat>" ? "" : "// ";
+                                // // vector of cv::Mat is no yet supported
+                                // const echo = cpptype !== "std::vector<cv::Mat>" ? "" : "// ";
 
                                 // shared_ptr other than std::shared_ptr is not yet supported
                                 if ("std::shared_ptr" !== shared_ptr && is_shared_ptr) {
@@ -674,7 +674,7 @@ class LuaGenerator {
                                     }
                                 }
 
-                                return `${ echo }vres.push_back({ ts, sol::in_place, ${ argname } });`
+                                return `vres.push_back({ ts, sol::in_place, ${ argname } });`;
                             })
                             .join(`\n${ " ".repeat(24) }`) }
                         return vres;
@@ -700,7 +700,7 @@ class LuaGenerator {
             if (!coclass.isStatic()) {
                 lua_args.unshift(`::${ fqn }* self`);
                 lambda_args.unshift(`::${ fqn }* self`);
-                call_lua_args.unshift(`self`);
+                call_lua_args.unshift("self");
             }
 
             contentRegisterPrivate.push(`
@@ -732,28 +732,6 @@ class LuaGenerator {
                 });`.replace(/^ {16}/mg, "").trim());
             }
         }
-
-        // TODO methods
-        // constructor :
-        //     /CO
-        // function modifiers:
-        //     = exported name
-        //     /idlname= exported name
-        //     /attr=propget
-        //     /attr=propput
-        //     instance call "/attr=propget", "/id=DISPID_VALUE"
-        //     /Expr=
-        //     /Cast= cast self before calling function on it
-        //     /Prop= use prop of self before calling function on it
-        //     /Call=
-        //     /WrapAs= callee = `${ modifier.slice("/WrapAs=".length) }(${ callee })`;
-        //     /Output= expression to return ; callee = makeExpansion(modifier.slice("/Output=".length), callee);
-        //     /Body= expression that has a return; callee = makeExpansion(modifier.slice("/Body=".length), callee);
-        // argument modifiers:
-        //     /IO, /I, /O in/out how?
-        //     /Cast= cast arg
-        //     /Expr= arg expr, replace
-        //     /RRef std::forward<${ type }>(${ callarg })
     }
 
     generate(processor, configuration, options, cb) {
@@ -775,6 +753,7 @@ class LuaGenerator {
             }
 
             // TODO https://github.com/ThePhD/sol2/issues/1405
+            // TODO add ArrayOfArrays types
 
             const docid = processor.docs.length;
 

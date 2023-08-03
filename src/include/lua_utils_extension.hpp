@@ -509,7 +509,20 @@ namespace LUA_MODULE_NAME {
 	}
 }
 
+#include <opencv2/gapi/gscalar.hpp>
+#include <opencv2/gapi/garray.hpp>
+#include <opencv2/gapi/gopaque.hpp>
+
 namespace sol {
 	template <>
 	struct is_container<cv::FileNode> : std::false_type { };
+
+    template <>
+    struct meta::supports_op_left_shift<std::ostream, cv::GScalarDesc> : std::false_type { };
+
+    template <>
+    struct meta::supports_op_left_shift<std::ostream, cv::GArrayDesc> : std::false_type { };
+
+    template <>
+    struct meta::supports_op_left_shift<std::ostream, cv::GOpaqueDesc> : std::false_type { };
 } // namespace sol

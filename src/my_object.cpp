@@ -191,6 +191,57 @@ namespace {
 		return std::shared_ptr<cv::Mat>();
 	}
 
+
+	using namespace cv;
+
+	std::map<std::string, std::function<sol::object(sol::this_state&)>> getters({
+	});
+
+	sol::object dynamic_get(sol::table ns, sol::stack_object key, sol::this_state ts) {
+		// we use stack_object for the arguments because we
+		// know the values from Lua will remain on Lua's stack,
+		// so long we we don't mess with it
+		auto maybe_string_key = key.as<sol::optional<std::string>>();
+		if (maybe_string_key) {
+			const std::string& k = *maybe_string_key;
+			if (getters.count(k)) {
+				return getters[k](ts);
+			}
+		}
+
+		// sol::state_view lua(ts);
+		// std::stringstream err;
+		// err << "AttributeError: module 'cv' has no attribute '" << (maybe_string_key ? *maybe_string_key : "") << "'";
+		// luaL_error(lua.lua_state(), err.str().c_str());
+
+		return ns[sol::metatable_key][key];
+	}
+
+	std::map<std::string, std::function<void(sol::stack_object&, sol::this_state&)>> setters({
+
+		});
+
+	void dynamic_set(sol::table ns, sol::stack_object key, sol::stack_object value, sol::this_state ts) {
+		// we use stack_object for the arguments because we
+		// know the values from Lua will remain on Lua's stack,
+		// so long we we don't mess with it
+		auto maybe_string_key = key.as<sol::optional<std::string>>();
+		if (maybe_string_key) {
+			const std::string& k = *maybe_string_key;
+			if (setters.count(k)) {
+				setters[k](value, ts);
+				return;
+			}
+		}
+
+		// sol::state_view lua(ts);
+		// std::stringstream err;
+		// err << "AttributeError: module 'cv' has no attribute '" << (maybe_string_key ? *maybe_string_key : "") << "'";
+		// luaL_error(lua.lua_state(), err.str().c_str());
+
+		ns[sol::metatable_key][key] = value;
+	}
+
 	// https://sol2.readthedocs.io/en/latest/tutorial/cxx-in-lua.html
 	// https://github.com/ThePhD/sol2/blob/develop/examples/source/index_and_newindex_usertype.cpp
 	// https://github.com/ThePhD/sol2/blob/develop/examples/source/overloading_with_fallback.cpp
@@ -198,17 +249,28 @@ namespace {
 
 namespace LUA_MODULE_NAME {
 	void regitster_my_object(sol::state_view& lua, sol::table& module) {
-		module.new_usertype<test>("test",
+        sol::table exports = lua.create_table();
+
+		exports[sol::meta_function::new_index] = dynamic_set;
+		exports[sol::meta_function::index] = dynamic_get;
+
+		sol::table proxy = lua.create_table();
+		proxy[sol::metatable_key] = exports;
+
+		module["cv2"] = proxy;
+		// module["cv2"] = exports;
+
+		exports.new_usertype<test>("test",
 			sol::constructors<test(), test(int)>(),
 			"value", &test::value
 		);
 
-		module["CV_8UC1"] = CV_8UC1;
-		module["CV_8UC2"] = CV_8UC2;
-		module["CV_8UC3"] = CV_8UC3;
-		module["CV_8UC4"] = CV_8UC4;
+		exports["CV_8UC1"] = CV_8UC1;
+		exports["CV_8UC2"] = CV_8UC2;
+		exports["CV_8UC3"] = CV_8UC3;
+		exports["CV_8UC4"] = CV_8UC4;
 
-		module.new_usertype<NamedParameters>("kwargs",
+		exports.new_usertype<NamedParameters>("kwargs",
 			sol::call_constructor,
 			sol::factories(
 				[]() {
@@ -220,7 +282,7 @@ namespace LUA_MODULE_NAME {
 			)
 		);
 
-		module.new_usertype<cv::Mat>("Mat",
+		exports.new_usertype<cv::Mat>("Mat",
 			// Mat(...) syntax, only
 			sol::call_constructor,
 			sol::factories(create),
@@ -230,18 +292,22 @@ namespace LUA_MODULE_NAME {
 			"channels", &cv::Mat::channels
 		);
 
-		sol::usertype<cv::Mat> mat_type = module["Mat"];
+		sol::usertype<cv::Mat> mat_type = exports["Mat"];
 		mat_type["rows"] = &cv::Mat::rows;
 		// mat_type.set("rows", sol::readonly(&cv::Mat::rows));
 		// mat_type.set("rows", &cv::Mat::rows);
 
-		module["IMREAD_COLOR"] = cv::IMREAD_COLOR;
+		exports["IMREAD_COLOR"] = cv::IMREAD_COLOR;
 
-		module.set_function("imread", sol::overload([](const cv::String& filename) {
+		exports.set_function("shared_ptr", [](std::shared_ptr<float> ptr) {
+			*ptr = 3.f;
+			});
+
+		exports.set_function("imread", sol::overload([](const cv::String& filename) {
 			return cv::imread(filename, cv::IMREAD_COLOR);
 			}, cv::imread));
 
-		module.set_function("imshow", [](const cv::String& winname, std::variant<cv::Mat, double> _mat) {
+		exports.set_function("imshow", [](const cv::String& winname, std::variant<cv::Mat, double> _mat) {
 			cv::Ptr<cv::_InputArray> mat;
 			if (std::holds_alternative<cv::Mat>(_mat)) {
 				mat.reset(new cv::_InputArray(std::get<cv::Mat>(_mat)));
@@ -253,17 +319,17 @@ namespace LUA_MODULE_NAME {
 			cv::imshow(winname, *mat.get());
 			});
 
-		module.set_function("waitKey", sol::overload([] {
+		exports.set_function("waitKey", sol::overload([] {
 			return cv::waitKey();
 			}, cv::waitKey));
 
-		module["getBuildInformation"] = cv::getBuildInformation;
+		exports["getBuildInformation"] = cv::getBuildInformation;
 
-		module["fancy_func"] = fancy_func;
+		exports["fancy_func"] = fancy_func;
 
-		module.set_function("multi_tuple", [] { return std::make_tuple(10, "goodbye"); });
+		exports.set_function("multi_tuple", [] { return std::make_tuple(10, "goodbye"); });
 
-		module.set_function("proxy", [](sol::function fn, const cv::Mat& mat) {
+		exports.set_function("proxy", [](sol::function fn, const cv::Mat& mat) {
 			fn(mat);
 			});
 	}

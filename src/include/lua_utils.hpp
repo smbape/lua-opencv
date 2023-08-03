@@ -5,24 +5,24 @@
 
 namespace LUA_MODULE_NAME {
 
-	template <typename _Tp>
-	const std::shared_ptr<_Tp> reference_internal(_Tp* element) {
-		return std::shared_ptr<_Tp>(std::shared_ptr<_Tp>{}, element);
+	template <typename _Tp, typename shared_ptr = std::shared_ptr<_Tp>>
+	decltype(auto) reference_internal(_Tp* element, shared_ptr* ptr = static_cast<shared_ptr*>(nullptr)) {
+		return shared_ptr(shared_ptr{}, element);
 	}
 
-	template <typename _Tp>
-	const std::shared_ptr<_Tp> reference_internal(const _Tp* element) {
-		return std::shared_ptr<_Tp>(std::shared_ptr<_Tp>{}, const_cast<_Tp*>(element));
+	template <typename _Tp, typename shared_ptr = std::shared_ptr<_Tp>>
+	decltype(auto) reference_internal(const _Tp* element, shared_ptr* ptr = static_cast<shared_ptr*>(nullptr)) {
+		return shared_ptr(shared_ptr{}, const_cast<_Tp*>(element));
 	}
 
-	template <typename _Tp>
-	const std::shared_ptr<_Tp> reference_internal(_Tp& element) {
-		return std::shared_ptr<_Tp>(std::shared_ptr<_Tp>{}, & element);
+	template <typename _Tp, typename shared_ptr = std::shared_ptr<_Tp>>
+	decltype(auto) reference_internal(_Tp& element, shared_ptr* ptr = static_cast<shared_ptr*>(nullptr)) {
+		return shared_ptr(shared_ptr{}, & element);
 	}
 
-	template <typename _Tp>
-	const std::shared_ptr<_Tp> reference_internal(const _Tp& element) {
-		return std::shared_ptr<_Tp>(std::shared_ptr<_Tp>{}, const_cast<_Tp*>(&element));
+	template <typename _Tp, typename shared_ptr = std::shared_ptr<_Tp>>
+	decltype(auto) reference_internal(const _Tp& element, shared_ptr* ptr = static_cast<shared_ptr*>(nullptr)) {
+		return shared_ptr(shared_ptr{}, const_cast<_Tp*>(&element));
 	}
 
 	template<typename _To, typename T>

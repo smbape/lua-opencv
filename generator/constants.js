@@ -1,3 +1,5 @@
+const semver = require("semver");
+
 exports.SIMPLE_ARGTYPE_DEFAULTS = new Map([
     ["bool", "0"],
     ["size_t", "0"],
@@ -85,9 +87,18 @@ exports.CUSTOM_CLASSES = [
     ["cv.GProtoOutputArgs", ["/Simple"]],
 ];
 
-exports.CUSTOM_CLASSES.push(...[
-    ["cv.detail.ExtractArgsCallback", ["/Simple"]],
-    ["cv.detail.ExtractMetaCallback", ["/Simple"]],
-]);
+if (semver.gt(global.OpenCV_VERSION.slice("opencv-".length), "4.5.0")) {
+    exports.CUSTOM_CLASSES.push(...[
+        ["cv.detail.ExtractArgsCallback", ["/Simple"]],
+        ["cv.detail.ExtractMetaCallback", ["/Simple"]],
+    ]);
+} else {
+    exports.CUSTOM_CLASSES.push(...[
+        ["cv.GMatDesc", ["/Simple"]],
+        ["cv.GScalarDesc", ["/Simple"]],
+        ["cv.GArrayDesc", ["/Simple"]],
+        ["cv.GOpaqueDesc", ["/Simple"]],
+    ]);
+}
 
 exports.IGNORED_CLASSES = new Set([]);
