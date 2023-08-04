@@ -31,7 +31,7 @@ else
 end
 
 img = cv.imread(filename)
-cv.imshow("Image", img)
+cv.imshow("Image 1", img)
 cv.waitKey()
 
 -- print('dims: ' .. img.dims .. ', rows: ' .. img.rows .. ', cols: ' .. img.cols)
@@ -39,18 +39,18 @@ display(img)
 -- cv2.proxy(display, img)
 
 img = cv.Mat(img)
-cv.imshow("Image", img)
+cv.imshow("Image 2", img)
 cv.waitKey()
 
 img = cv.Mat(300, 300, cv.CV_8UC3, {255.0, 0.0, 255.0})
-cv.imshow("Image", img)
+cv.imshow("Image 3", img)
 cv.waitKey()
 
-img = cv.Mat(500, 400, cv.kwargs({
+img = cv.Mat(500, 400, opencv_lua.kwargs({
     type=cv.CV_8UC3,
     s={127.0, 255.0, 255.0}
 }))
-cv.imshow("Image", img)
+cv.imshow("Image 4", img)
 cv.waitKey()
 
 print('IMREAD_COLOR = ' .. cv["IMREAD_COLOR"])

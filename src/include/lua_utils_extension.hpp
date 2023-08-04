@@ -344,8 +344,8 @@ namespace LUA_MODULE_NAME {
 		return res;
 	}
 
-	template<typename Array, typename T, typename _To = sol::object>
-	bool object_is_array(const _To& obj) {
+	template<typename Array, typename _To = sol::object>
+	bool object_is_array(const _To& obj, Array*) {
 		return object_is_impl(obj, static_cast<Array*>(nullptr))
 			|| object_is_impl(obj, static_cast<cv::cuda::GpuMat*>(nullptr))
 			|| object_is_impl(obj, static_cast<cv::Mat*>(nullptr))
@@ -355,8 +355,8 @@ namespace LUA_MODULE_NAME {
 			;
 	}
 
-	template<typename Array, typename T, typename _To = sol::object>
-	bool object_is_array(_To& obj) {
+	template<typename Array, typename _To = sol::object>
+	bool object_is_array(_To& obj, Array*) {
 		return object_is_impl(obj, static_cast<Array*>(nullptr))
 			|| object_is_impl(obj, static_cast<cv::cuda::GpuMat*>(nullptr))
 			|| object_is_impl(obj, static_cast<cv::Mat*>(nullptr))
@@ -366,8 +366,8 @@ namespace LUA_MODULE_NAME {
 			;
 	}
 
-	template<typename Array, typename T, typename _To = sol::object>
-	auto object_as_array(const _To& obj) {
+	template<typename Array, typename _To = sol::object>
+	auto object_as_array(const _To& obj, Array*) {
 		if (object_is_impl(obj, static_cast<Array*>(nullptr))) {
 			const Array& input = object_as_impl(obj, static_cast<Array*>(nullptr));
 			return reference_internal(input);
@@ -403,8 +403,8 @@ namespace LUA_MODULE_NAME {
 		return std::shared_ptr<Array>();
 	}
 
-	template<typename Array, typename T, typename _To = sol::object>
-	auto object_as_array(_To& obj) {
+	template<typename Array, typename _To = sol::object>
+	auto object_as_array(_To& obj, Array*) {
 		if (object_is_impl(obj, static_cast<Array*>(nullptr))) {
 			const Array& input = object_as_impl(obj, static_cast<Array*>(nullptr));
 			return reference_internal(input);
@@ -440,8 +440,8 @@ namespace LUA_MODULE_NAME {
 		return std::shared_ptr<Array>();
 	}
 
-	template<typename Array, typename T, typename _To = sol::object>
-	bool object_is_arrays(const _To& obj) {
+	template<typename Array, typename _To = sol::object>
+	bool object_is_arrays(const _To& obj, Array*) {
 		return object_is_impl(obj, static_cast<Array*>(nullptr))
 			|| object_is_impl(obj, static_cast<std::vector<cv::cuda::GpuMat>*>(nullptr))
 			|| object_is_impl(obj, static_cast<std::vector<cv::Mat>*>(nullptr))
@@ -449,8 +449,8 @@ namespace LUA_MODULE_NAME {
 			;
 	}
 
-	template<typename Array, typename T, typename _To = sol::object>
-	bool object_is_arrays(_To& obj) {
+	template<typename Array, typename _To = sol::object>
+	bool object_is_arrays(_To& obj, Array*) {
 		return object_is_impl(obj, static_cast<Array*>(nullptr))
 			|| object_is_impl(obj, static_cast<std::vector<cv::cuda::GpuMat>*>(nullptr))
 			|| object_is_impl(obj, static_cast<std::vector<cv::Mat>*>(nullptr))
@@ -458,8 +458,8 @@ namespace LUA_MODULE_NAME {
 			;
 	}
 
-	template<typename Array, typename T, typename _To = sol::object>
-	auto object_as_arrays(const _To& obj) {
+	template<typename Array, typename _To = sol::object>
+	auto object_as_arrays(const _To& obj, Array*) {
 		if (object_is_impl(obj, static_cast<Array*>(nullptr))) {
 			const Array& input = object_as_impl(obj, static_cast<Array*>(nullptr));
 			return reference_internal(input);
@@ -483,8 +483,8 @@ namespace LUA_MODULE_NAME {
 		return std::shared_ptr<Array>();
 	}
 
-	template<typename Array, typename T, typename _To = sol::object>
-	auto object_as_arrays(_To& obj) {
+	template<typename Array, typename _To = sol::object>
+	auto object_as_arrays(_To& obj, Array*) {
 		if (object_is_impl(obj, static_cast<Array*>(nullptr))) {
 			const Array& input = object_as_impl(obj, static_cast<Array*>(nullptr));
 			return reference_internal(input);

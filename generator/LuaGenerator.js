@@ -406,7 +406,7 @@ class LuaGenerator {
 
                     let is_array = false;
                     let arrtype = "";
-                    let arg_suffix = "";
+                    let arg_suffix = "_impl";
 
                     if (argtype === "InputArray") {
                         is_array = true;
@@ -489,7 +489,7 @@ class LuaGenerator {
                     const is_by_ref = !is_ptr && !is_shared_ptr && processor.classes.has(cpptype) && !processor.enums.has(cpptype);
                     const in_type = is_shared_ptr ? cpptype.slice(`${ shared_ptr }<`.length, -">".length) : cpptype;
                     const in_type_is_byref = processor.classes.has(in_type) && !processor.enums.has(in_type);
-                    const var_type = `${ is_array ? `${ arr_cpptype }, ` : "" }${ in_type_is_byref ? `std::shared_ptr<${ in_type }>` : in_type }`;
+                    const var_type = is_array ? arr_cpptype : in_type_is_byref ? `std::shared_ptr<${ in_type }>` : in_type;
                     const object_is = `object_is${ arg_suffix }`;
                     const object_as = `object_as${ arg_suffix }`;
 
@@ -503,7 +503,7 @@ class LuaGenerator {
                             ${ argname }_positional = argc >= ${ i };
 
                             // positional parameter
-                            if (${ argname }_positional && !${ object_is }<${ var_type }>(args.get<sol::object>(${ i }))) {
+                            if (${ argname }_positional && !${ object_is }(args.get<sol::object>(${ i }), static_cast<${ var_type }*>(nullptr))) {
                                 goto overload${ overload_id };
                             }
 
@@ -514,7 +514,7 @@ class LuaGenerator {
                         }
                         else if (kwargs.count("${ argname }")) {
                             // named parameter
-                            if (!${ object_is }<${ var_type }>(kwargs.at("${ argname }"))) {
+                            if (!${ object_is }(kwargs.at("${ argname }"), static_cast<${ var_type }*>(nullptr))) {
                                 goto overload${ overload_id };
                             }
 
@@ -541,10 +541,10 @@ class LuaGenerator {
                     if (is_array) {
                         overload.push(`
                             auto ${ argname }_${ arrtype } = ${ argname }_positional ?
-                                ${ object_as }<${ var_type }>(args.get<sol::object>(${ i })) :
+                                ${ object_as }(args.get<sol::object>(${ i }), static_cast<${ var_type }*>(nullptr)) :
                                 ${ getTernary(
                                     `${ argname }_kwarg`,
-                                    `${ object_as }<${ var_type }>(kwargs.at("${ argname }"))`,
+                                    `${ object_as }(kwargs.at("${ argname }"), static_cast<${ var_type }*>(nullptr))`,
                                     `std::make_shared<${ arr_cpptype }>(${ argname }_default)`,
                                     is_optional
                                 ) };
@@ -553,10 +553,10 @@ class LuaGenerator {
                     } else if (is_shared_ptr) {
                         overload.push(`
                             auto& ${ argname }_ref = ${ argname }_positional ?
-                                ${ deref }${ object_as }<${ var_type }>(args.get<sol::object>(${ i })) :
+                                ${ deref }${ object_as }(args.get<sol::object>(${ i }), static_cast<${ var_type }*>(nullptr)) :
                                 ${ getTernary(
                                     `${ argname }_kwarg`,
-                                    `${ deref }${ object_as }<${ var_type }>(kwargs.at("${ argname }"))`,
+                                    `${ deref }${ object_as }(kwargs.at("${ argname }"), static_cast<${ var_type }*>(nullptr))`,
                                     `*${ argname }_default`,
                                     is_optional
                                 ) };
@@ -565,10 +565,10 @@ class LuaGenerator {
                     } else {
                         overload.push(`
                             auto${ is_by_ref ? "&" : "" } ${ argname } = ${ argname }_positional ?
-                                ${ deref }${ object_as }<${ var_type }>(args.get<sol::object>(${ i })) :
+                                ${ deref }${ object_as }(args.get<sol::object>(${ i }), static_cast<${ var_type }*>(nullptr)) :
                                 ${ getTernary(
                                     `${ argname }_kwarg`,
-                                    `${ deref }${ object_as }<${ var_type }>(kwargs.at("${ argname }"))`,
+                                    `${ deref }${ object_as }(kwargs.at("${ argname }"), static_cast<${ var_type }*>(nullptr))`,
                                     `${ argname }_default`,
                                     is_optional
                                 ) };
@@ -583,7 +583,7 @@ class LuaGenerator {
 
                     // too many parameters
                     // unknown named parameters
-                    if (argc > ${ argc } || usedkw != kwargs.size()) {
+                    if (argc >= ${ argc } || usedkw != kwargs.size()) {
                         goto overload${ overload_id };
                     }
                 `.replace(/^ {20}/mg, "").trim());
@@ -665,12 +665,18 @@ class LuaGenerator {
                                 // // vector of cv::Mat is no yet supported
                                 // const echo = cpptype !== "std::vector<cv::Mat>" ? "" : "// ";
 
-                                // shared_ptr other than std::shared_ptr is not yet supported
-                                if ("std::shared_ptr" !== shared_ptr && is_shared_ptr) {
+                                if (is_shared_ptr) {
                                     cpptype = cpptype.slice(`${ shared_ptr }<`.length, -">".length);
-                                    const is_class = processor.classes.has(cpptype) && !processor.classes.get(cpptype).isStatic();
-                                    if (is_class) {
+                                }
+
+                                const is_class = processor.classes.has(cpptype) && !processor.enums.has(cpptype);
+
+                                if (is_class && !is_constructor && !argname.startsWith("reference_internal")) {
+                                    // shared_ptr other than std::shared_ptr is not yet supported
+                                    if (is_shared_ptr && !"std::shared_ptr" !== shared_ptr) {
                                         argname = `std::shared_ptr<${ cpptype }>(${ argname })`;
+                                    } else {
+                                        argname = `std::make_shared<${ cpptype }>(std::move(${ argname }))`;
                                     }
                                 }
 
@@ -697,7 +703,7 @@ class LuaGenerator {
             const lua_args = ["sol::this_state& ts", "sol::variadic_args& args"];
             const lambda_args = ["sol::this_state ts", "sol::variadic_args args"];
             const call_lua_args = ["ts", "args"];
-            if (!coclass.isStatic()) {
+            if (!is_constructor && !coclass.isStatic()) {
                 lua_args.unshift(`::${ fqn }* self`);
                 lambda_args.unshift(`::${ fqn }* self`);
                 call_lua_args.unshift("self");

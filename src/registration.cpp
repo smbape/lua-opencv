@@ -21,7 +21,7 @@ namespace LUA_MODULE_NAME {
         sol::state_view lua(L);
         sol::table module = lua.create_table();
 
-        module.new_usertype<NamedParameters>("kwargs",
+        module.new_usertype<NamedParameters>("kwargs", sol::call_constructor,
             sol::constructors<NamedParameters(), NamedParameters(NamedParameters::Table)>()
         );
 
