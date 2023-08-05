@@ -85,6 +85,8 @@ exports.CUSTOM_CLASSES = [
     ["cv.gapi.wip.IStreamSource", []],
     ["cv.GProtoInputArgs", ["/Simple"]],
     ["cv.GProtoOutputArgs", ["/Simple"]],
+    ["cv.flann.IndexParams", ["/Simple"]],
+    ["cv.flann.SearchParams", ["/Simple"]],
 ];
 
 if (semver.gt(global.OpenCV_VERSION.slice("opencv-".length), "4.5.0")) {

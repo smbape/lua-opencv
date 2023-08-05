@@ -2,17 +2,16 @@
 # https://askubuntu.com/a/865294
 cmake_minimum_required(VERSION 3.25)
 
-project(luajit)
+project(luajit LANGUAGES C CXX ASM)
 
 option(BUILD_SHARED_LIBS "Build SHARED library" ON)
-set(can_use_assembler TRUE)
-enable_language(ASM)
 
 include(cmake/initialize.cmake)
 include(cmake/options.cmake)
 
 include(FetchContent)
 FetchContent_Declare(luajit
+  # URL                 https://github.com/openresty/luajit2/archive/refs/tags/v2.1-20230410.tar.gz
   URL                 https://github.com/LuaJIT/LuaJIT/archive/refs/tags/v${VERSION}.tar.gz
   URL_HASH            SHA256=409f7fe570d3c16558e594421c47bdd130238323c9d6fd6c83dedd2aaeb082a8
 )

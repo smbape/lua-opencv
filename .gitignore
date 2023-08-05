@@ -1,11 +1,12 @@
 .idea
 .venv
-/diff
-/node_modules
-/opencv/build
-/*.sublime-workspace
+.vs
 generated
 *build_x64
 *build_cygwin
 *build_linux
+/*.sublime-workspace
 /luajit/variables.cmake
+/node_modules
+/opencv/build
+/out

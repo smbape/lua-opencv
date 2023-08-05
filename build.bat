@@ -5,11 +5,10 @@ SET WORKING_DIR=%CD%
 
 PUSHD "%~dp0"
 CD /D %CD%
-SET "PATH=%CD%;%PATH%"
+SET "PATH=%CD%\bin;%PATH%"
 SET "SCRIPTPATH=%CD%"
 
 CD /D "%WORKING_DIR%"
-SET BUILD_FOLDER=%CD%\build_x64
 
 SET skip_build=0
 SET skip_config=0
@@ -19,7 +18,6 @@ SET is_dry_run=0
 SET has_test=0
 SET TARGET=ALL_BUILD
 SET CMAKE_GENERATOR=
-SET PREFIX=%BUILD_FOLDER%\install
 
 SET nparms=20
 
@@ -40,7 +38,7 @@ IF [%1] == [--build] (
 IF [%1] == [--install] SET has_install=1
 IF [%1] == [--prefix] (
     SET has_prefix=1
-    SET PREFIX=%2
+    SET CMAKE_INSTALL_PREFIX=%2
     SET /a nparms -=1
     SHIFT
     IF %nparms% == 0 GOTO :MAIN
@@ -69,14 +67,40 @@ SHIFT
 GOTO GET_OPTS
 
 :MAIN
-IF NOT DEFINED CMAKE_BUILD_TYPE SET CMAKE_BUILD_TYPE=Release
-SET EXTRA_CMAKE_OPTIONS=%EXTRA_CMAKE_OPTIONS% "-DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE%"
+IF NOT DEFINED CMAKE_BUILD_TYPE SET CMAKE_BUILD_TYPE=Debug
+IF NOT DEFINED BUILD_FOLDER SET BUILD_FOLDER=%CD%\out\build\x64-%CMAKE_BUILD_TYPE%
+IF NOT DEFINED CMAKE_INSTALL_PREFIX SET CMAKE_INSTALL_PREFIX=%CD%\out\install\x64-%CMAKE_BUILD_TYPE%
+
+SET EXTRA_CMAKE_OPTIONS=%EXTRA_CMAKE_OPTIONS% "-DCMAKE_BUILD_TYPE:STRING=%CMAKE_BUILD_TYPE%" "-DCMAKE_INSTALL_PREFIX:PATH=%CMAKE_INSTALL_PREFIX%"
 
 ::Find CMake
-SET CMAKE="cmake.exe"
-IF EXIST "%PROGRAMFILES_DIR_X86%\CMake\bin\cmake.exe" SET CMAKE="%PROGRAMFILES_DIR_X86%\CMake\bin\cmake.exe"
-IF EXIST "%PROGRAMFILES_DIR%\CMake\bin\cmake.exe" SET CMAKE="%PROGRAMFILES_DIR%\CMake\bin\cmake.exe"
-IF EXIST "%PROGRAMW6432%\CMake\bin\cmake.exe" SET CMAKE="%PROGRAMW6432%\CMake\bin\cmake.exe"
+FOR %%X IN (cmake.exe) do (set CMAKE="%%~$PATH:X")
+IF NOT DEFINED CMAKE (
+    IF EXIST "%PROGRAMFILES_DIR_X86%\CMake\bin\cmake.exe" SET CMAKE="%PROGRAMFILES_DIR_X86%\CMake\bin\cmake.exe"
+    IF EXIST "%PROGRAMFILES_DIR%\CMake\bin\cmake.exe" SET CMAKE="%PROGRAMFILES_DIR%\CMake\bin\cmake.exe"
+    IF EXIST "%PROGRAMW6432%\CMake\bin\cmake.exe" SET CMAKE="%PROGRAMW6432%\CMake\bin\cmake.exe"
+)
+
+::Find Visual Studio
+IF NOT DEFINED VSCMD_VER (
+    FOR /F "usebackq tokens=* USEBACKQ" %%F IN (`vswhere.exe -version [16.0^,^) -property installationPath -latest`) DO (
+        CALL "%%F\VC\Auxiliary\Build\vcvars64.bat"
+        GOTO MAKE
+        EXIT /B %ERRORLEVEL%
+    )
+
+    FOR /F "usebackq tokens=* USEBACKQ" %%F IN (`vswhere.exe -version [15.0^,16.0^) -property installationPath -latest`) DO (
+        CALL "%%F\VC\Auxiliary\Build\vcvars64.bat"
+        GOTO MAKE
+        EXIT /B %ERRORLEVEL%
+    )
+
+    FOR /F "usebackq tokens=* USEBACKQ" %%F IN (`vswhere.exe -legacy -version [10.0^,15.0^) -property installationPath -latest`) DO (
+        CALL "%%F\VC\vcvarsall.bat" x64
+        GOTO MAKE
+        EXIT /B %ERRORLEVEL%
+    )
+)
 
 :MAKE
 SET ERROR=0
@@ -103,13 +127,14 @@ GOTO END
 
 :INSTALL
 IF NOT [%has_install%] == [1] GOTO TEST
-%CMAKE% --install . --prefix "%PREFIX%"
+%CMAKE% --install . --prefix "%CMAKE_INSTALL_PREFIX%"
 IF [%ERROR%] == [0] GOTO TEST
 GOTO END
 
 :TEST
 IF NOT [%has_test%] == [1] GOTO END
-%TRY_RUN%"%PREFIX%\bin\luajit.exe" "%SCRIPTPATH%\test\test.lua"
+%TRY_RUN%%CMAKE:cmake.exe=ctest.exe% -C %CMAKE_BUILD_TYPE%
+%TRY_RUN%"%CMAKE_INSTALL_PREFIX%\bin\luajit.exe" "%SCRIPTPATH%\test\test.lua"
 
 :END
 POPD

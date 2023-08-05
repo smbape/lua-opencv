@@ -18,8 +18,6 @@ has_test=0
 GENERATOR=Ninja
 PLATFORM=
 TARGET=all
-BUILD_FOLDER="$PWD/build_linux"
-PREFIX="$BUILD_FOLDER/install"
 
 print_help() {
     echo '
@@ -138,15 +136,20 @@ done
 try_run=
 test $is_dry_run -eq 0 || try_run="echo "
 
+CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE:-Release}"
+BUILD_FOLDER="${BUILD_FOLDER:-$PWD/out/build/Linux-GCC-$CMAKE_BUILD_TYPE}"
+PREFIX="${PREFIX:-$PWD/out/install/Linux-GCC-$CMAKE_BUILD_TYPE}"
+
 ${try_run}mkdir -p "$BUILD_FOLDER" && ${try_run}cd "$BUILD_FOLDER" || die "Cannot access build directory $BUILD_FOLDER" $?
 
 test ${#PLATFORM} -eq 0 || GENERATOR="$GENERATOR -A $PLATFORM"
 
-test $skip_config -eq 1 || ${try_run}cmake -G $GENERATOR -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Release} "$SCRIPTPATH" || exit $?
+test $skip_config -eq 1 || ${try_run}cmake -G $GENERATOR -DCMAKE_BUILD_TYPE:STRING=$CMAKE_BUILD_TYPE "-DCMAKE_INSTALL_PREFIX:PATH=${PREFIX}" "$SCRIPTPATH" || exit $?
 test $skip_build -eq 1 || ${try_run}cmake --build . --target $TARGET || exit $?
 test $has_install -eq 0 || ${try_run}cmake --install . --prefix "$PREFIX" || exit $?
 
 if test $has_test -eq 1; then
+    ctest -C $CMAKE_BUILD_TYPE
     LUA_CPATH="$("$PREFIX/bin/luajit" -e 'print(package.cpath)');$PREFIX/lib/lua/?.so"
     LUA_CPATH="$LUA_CPATH" "$PREFIX/bin/luajit" "$SCRIPTPATH/test/test.lua"
 fi

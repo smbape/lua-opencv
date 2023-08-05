@@ -45,6 +45,7 @@ endif()
 
 # find LuaJIT
 if ((NOT DEFINED LUA_DIR) AND (NOT DEFINED ENV{LUA_DIR}))
+  enable_language(ASM)
   add_subdirectory(luajit)
   set(LUA_LIBRARIES libluajit::libluajit)
 else()
@@ -200,3 +201,22 @@ endif()
 if (DEFINED OpenCV_INCLUDE_DIRS)
   target_include_directories(require_from_dll PRIVATE ${OpenCV_INCLUDE_DIRS})
 endif()
+
+# Test
+include(CTest)
+enable_testing()
+
+add_test(
+  NAME test
+  COMMAND "$<TARGET_FILE:luajit>" test.lua
+  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/test"
+)
+
+set_tests_properties(test PROPERTIES
+  DEPENDS ${PROJECT_NAME}
+)
+
+# Pack
+include(CPack)
+set(CPACK_PROJECT_NAME ${PROJECT_NAME})
+set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

@@ -218,7 +218,9 @@ class CoClass {
     }
 
     addParent(fqn) {
-        this.parents.add(fqn);
+        if (fqn !== this.fqn && !fqn.endsWith("::class")) {
+            this.parents.add(fqn);
+        }
     }
 
     addProperty([argtype, argname, defval /* or "" if none */, list_of_modifiers]) {

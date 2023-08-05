@@ -1,5 +1,7 @@
 opencv_lua = require("opencv_lua")
 cv = opencv_lua.cv
+kwargs = opencv_lua.kwargs
+
 -- cv2 = opencv_lua.cv2
 -- obj = cv.test.new(24)
 -- print(obj.value)
@@ -46,7 +48,7 @@ img = cv.Mat(300, 300, cv.CV_8UC3, {255.0, 0.0, 255.0})
 cv.imshow("Image 3", img)
 cv.waitKey()
 
-img = cv.Mat(500, 400, opencv_lua.kwargs({
+img = cv.Mat(500, 400, kwargs({
     type=cv.CV_8UC3,
     s={127.0, 255.0, 255.0}
 }))

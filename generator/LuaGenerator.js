@@ -45,8 +45,8 @@ class LuaGenerator {
             const is_static = modifiers.includes("/S") || coclass.isStatic();
             const obj = `${ is_static ? `${ fqn }::` : "self->" }`;
             const enum_fqn = processor.getEnumType(type, coclass, options);
-            const is_class = !enum_fqn || processor.classes.get(enum_fqn).is_enum_class;
-            const as_type = is_class ? enum_fqn || type : "int";
+            const is_class = !enum_fqn || processor.classes.has(enum_fqn) && processor.classes.get(enum_fqn).is_enum_class;
+            const as_type = is_class ? enum_fqn || cpptype : "int";
 
             let propname = name;
             let getter, setter;
@@ -454,7 +454,7 @@ class LuaGenerator {
                     let callarg = argname;
                     let cpptype = processor.getCppType(argtype, coclass, options);
 
-                    if (is_ptr && !PTR.has(argtype)) {
+                    if (is_out && is_ptr && !PTR.has(argtype)) {
                         callarg = `&${ callarg }`;
                         argtype = argtype.slice(0, -1);
                         defval = SIMPLE_ARGTYPE_DEFAULTS.has(argtype) ? SIMPLE_ARGTYPE_DEFAULTS.get(argtype) : "";
@@ -503,7 +503,7 @@ class LuaGenerator {
                             ${ argname }_positional = argc >= ${ i };
 
                             // positional parameter
-                            if (${ argname }_positional && !${ object_is }(args.get<sol::object>(${ i }), static_cast<${ var_type }*>(nullptr))) {
+                            if (${ argname }_positional && !${ object_is }(vargs.get<sol::object>(${ i }), static_cast<${ var_type }*>(nullptr))) {
                                 goto overload${ overload_id };
                             }
 
@@ -541,7 +541,7 @@ class LuaGenerator {
                     if (is_array) {
                         overload.push(`
                             auto ${ argname }_${ arrtype } = ${ argname }_positional ?
-                                ${ object_as }(args.get<sol::object>(${ i }), static_cast<${ var_type }*>(nullptr)) :
+                                ${ object_as }(vargs.get<sol::object>(${ i }), static_cast<${ var_type }*>(nullptr)) :
                                 ${ getTernary(
                                     `${ argname }_kwarg`,
                                     `${ object_as }(kwargs.at("${ argname }"), static_cast<${ var_type }*>(nullptr))`,
@@ -553,7 +553,7 @@ class LuaGenerator {
                     } else if (is_shared_ptr) {
                         overload.push(`
                             auto& ${ argname }_ref = ${ argname }_positional ?
-                                ${ deref }${ object_as }(args.get<sol::object>(${ i }), static_cast<${ var_type }*>(nullptr)) :
+                                ${ deref }${ object_as }(vargs.get<sol::object>(${ i }), static_cast<${ var_type }*>(nullptr)) :
                                 ${ getTernary(
                                     `${ argname }_kwarg`,
                                     `${ deref }${ object_as }(kwargs.at("${ argname }"), static_cast<${ var_type }*>(nullptr))`,
@@ -565,7 +565,7 @@ class LuaGenerator {
                     } else {
                         overload.push(`
                             auto${ is_by_ref ? "&" : "" } ${ argname } = ${ argname }_positional ?
-                                ${ deref }${ object_as }(args.get<sol::object>(${ i }), static_cast<${ var_type }*>(nullptr)) :
+                                ${ deref }${ object_as }(vargs.get<sol::object>(${ i }), static_cast<${ var_type }*>(nullptr)) :
                                 ${ getTernary(
                                     `${ argname }_kwarg`,
                                     `${ deref }${ object_as }(kwargs.at("${ argname }"), static_cast<${ var_type }*>(nullptr))`,
@@ -678,6 +678,8 @@ class LuaGenerator {
                                     } else {
                                         argname = `std::make_shared<${ cpptype }>(std::move(${ argname }))`;
                                     }
+                                } else if (cpptype.endsWith("*")) {
+                                    argname = `reference_internal(${ argname })`;
                                 }
 
                                 return `vres.push_back({ ts, sol::in_place, ${ argname } });`;
@@ -700,9 +702,9 @@ class LuaGenerator {
                 contentFunction.push(`overload${ overload_id }:`);
             }
 
-            const lua_args = ["sol::this_state& ts", "sol::variadic_args& args"];
-            const lambda_args = ["sol::this_state ts", "sol::variadic_args args"];
-            const call_lua_args = ["ts", "args"];
+            const lua_args = ["sol::this_state& ts", "sol::variadic_args& vargs"];
+            const lambda_args = ["sol::this_state ts", "sol::variadic_args vargs"];
+            const call_lua_args = ["ts", "vargs"];
             if (!is_constructor && !coclass.isStatic()) {
                 lua_args.unshift(`::${ fqn }* self`);
                 lambda_args.unshift(`::${ fqn }* self`);
@@ -711,12 +713,12 @@ class LuaGenerator {
 
             contentRegisterPrivate.push(`
                 auto Lua_${ fname }(${ (is_constructor ? lambda_args : lua_args).join(", ") }) {
-                    const int argc = args.size() - 1;
-                    const bool has_kwarg = object_is<NamedParameters>(args.get<sol::object>(argc));
+                    const int argc = vargs.size() - 1;
+                    const bool has_kwarg = object_is<NamedParameters>(vargs.get<sol::object>(argc));
 
                     NamedParameters kwargs;
                     if (has_kwarg) {
-                        kwargs = object_as<NamedParameters>(args.get<sol::object>(argc));
+                        kwargs = object_as<NamedParameters>(vargs.get<sol::object>(argc));
                     }
 
                     ${ contentFunction.join("\n").split("\n").join(`\n${ " ".repeat(20) }`) }
@@ -749,15 +751,6 @@ class LuaGenerator {
         const registrations = [];
 
         for (const fqn of Array.from(processor.classes.keys()).sort()) {
-            if (![
-                "cv",
-                "cv::Mat",
-                "cv::UMat",
-                "cv::MediaFormat",
-            ].includes(fqn)) {
-                continue;
-            }
-
             // TODO https://github.com/ThePhD/sol2/issues/1405
             // TODO add ArrayOfArrays types
 
@@ -786,14 +779,18 @@ class LuaGenerator {
 
             let ns = "module";
             for (let i = 0; i < coclass.path.length - 1; i++) {
-                const parent = processor.classes.get(coclass.path.slice(0, i + 1).join("::"));
-                ns = `${ ns }["${ parent.name }"]`;
+                if (i === 0) {
+                    ns = `${ ns }[sol::create_if_nil]`;
+                }
+                ns = `${ ns }["${ coclass.path[i] }"]`;
             }
 
             if (coclass.path.length > 1) {
                 const parent = processor.classes.get(coclass.path.slice(0, -1).join("::"));
 
-                if (parent.isStatic()) {
+                if (!parent || !parent.isStatic()) {
+                    contentRegister.push(`sol::table ns = ${ ns };`);
+                } else if (parent.isStatic()) {
                     contentRegister.push(`sol::table ns = ${ ns }[sol::metatable_key];`);
                 } else {
                     contentRegister.push(`sol::usertype<::${ parent.path.join("::") }> ns = ${ ns };`);

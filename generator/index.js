@@ -90,6 +90,9 @@ const getOptions = output => {
     return options;
 };
 
+const {
+    CUSTOM_CLASSES,
+} = require("./constants");
 const {findFile} = require("./FileUtils");
 const custom_declarations = require("./custom_declarations");
 const DeclProcessor = require("./DeclProcessor");
@@ -174,6 +177,7 @@ waterfall([
     },
 
     (srcfiles, generated_include, next) => {
+        // exported class that are not included by python generated include file
         srcfiles.push(sysPath.resolve(opencv_SOURCE_DIR, "modules/flann/include/opencv2/flann/defines.h"));
 
         const buffers = [];
@@ -196,9 +200,9 @@ waterfall([
             configuration.decls.push(...custom_declarations.load(options));
             configuration.generated_include = generated_include;
 
-            // for (const [name, modifiers] of CUSTOM_CLASSES) {
-            //     configuration.decls.push([`class ${ name }`, "", modifiers, [], "", ""]);
-            // }
+            for (const [name, modifiers] of CUSTOM_CLASSES) {
+                configuration.decls.push([`class ${ name }`, "", modifiers, [], "", ""]);
+            }
 
             configuration.namespaces.push(...options.namespaces);
             configuration.namespaces.push(...options.other_namespaces);
@@ -206,7 +210,6 @@ waterfall([
             const processor = new DeclProcessor();
             processor.process(configuration, options);
 
-            debugger;
             next(null, processor, configuration);
         });
 
