@@ -5,6 +5,8 @@ cmake_minimum_required(VERSION 3.19)
 # Name of the project (will be the name of the plugin)
 project(opencv)
 
+include(../cmake/FindPatch.cmake)
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)

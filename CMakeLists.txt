@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.19)
 
 # Name of the project (will be the name of the plugin)
 project(opencv_lua)
+enable_language(ASM)
 
 set(DEFAULT_BUILD_TYPE "Release")
 
@@ -20,7 +21,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-if(WIN32 AND MSVC)
+if(MSVC AND NOT (CMAKE_GENERATOR STREQUAL Ninja))
   add_compile_options(/MP)
 endif()
 
@@ -45,7 +46,6 @@ endif()
 
 # find LuaJIT
 if ((NOT DEFINED LUA_DIR) AND (NOT DEFINED ENV{LUA_DIR}))
-  enable_language(ASM)
   add_subdirectory(luajit)
   set(LUA_LIBRARIES libluajit::libluajit)
 else()
@@ -173,24 +173,22 @@ target_include_directories(${PROJECT_NAME} PUBLIC "src/include" "src" "generated
 # (according to https://docs.microsoft.com/en-us/cpp/preprocessor/predefined-macros?view=vs-2019)
 # CMake's ${MSVC_VERSION} is equivalent to _MSC_VER
 # (according to https://cmake.org/cmake/help/latest/variable/MSVC_VERSION.html#variable:MSVC_VERSION)
-if ((MSVC) AND (MSVC_VERSION GREATER_EQUAL 1914))
+if (MSVC AND (MSVC_VERSION GREATER_EQUAL 1914))
   target_compile_options(${PROJECT_NAME} PRIVATE "/Zc:__cplusplus" "/bigobj")
 endif()
 
-IF ((WIN32) AND CMAKE_GENERATOR STREQUAL Ninja)
+IF (WIN32 AND CMAKE_GENERATOR STREQUAL Ninja)
   target_compile_options(${PROJECT_NAME} PRIVATE "/Zc:__cplusplus" "/bigobj")
   target_compile_definitions(${PROJECT_NAME} PRIVATE WIN32 _WINDOWS _WINDLL)
 ENDIF()
 
-
-file(RELATIVE_PATH TEST_LUA_PATH "${CMAKE_CURRENT_BINARY_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/test/test.lua")
-file(TO_NATIVE_PATH "${TEST_LUA_PATH}" TEST_LUA_PATH)
-
-set_target_properties(${PROJECT_NAME} PROPERTIES
-  VS_DEBUGGER_COMMAND "$<TARGET_FILE:luajit>"
-  VS_DEBUGGER_COMMAND_ARGUMENTS "${TEST_LUA_PATH}"
+set_property(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" PROPERTY VS_STARTUP_PROJECT luajit)
+add_dependencies(luajit ${PROJECT_NAME})
+file(TO_NATIVE_PATH "${${CMAKE_CURRENT_SOURCE_DIR}/test}" VS_DEBUGGER_WORKING_DIRECTORY)
+set_target_properties(luajit PROPERTIES
+  VS_DEBUGGER_COMMAND_ARGUMENTS test.lua
+  VS_DEBUGGER_WORKING_DIRECTORY "${VS_DEBUGGER_WORKING_DIRECTORY}"
 )
-set_property(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 
 # add executable target that represents require_from_dll program
 add_executable(require_from_dll test/require_from_dll.cpp)
@@ -207,14 +205,22 @@ include(CTest)
 enable_testing()
 
 add_test(
-  NAME test
+  NAME test_build
   COMMAND "$<TARGET_FILE:luajit>" test.lua
   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/test"
 )
 
-set_tests_properties(test PROPERTIES
-  DEPENDS ${PROJECT_NAME}
-)
+set_tests_properties(test_build PROPERTIES DEPENDS ${PROJECT_NAME})
+
+if(EXISTS "${CMAKE_INSTALL_PREFIX}/bin/luajit${CMAKE_EXECUTABLE_SUFFIX}")
+  add_test(
+    NAME test_install
+    COMMAND "${CMAKE_INSTALL_PREFIX}/bin/luajit${CMAKE_EXECUTABLE_SUFFIX}" test.lua
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/test"
+  )
+
+  set_tests_properties(test_install PROPERTIES DEPENDS ${PROJECT_NAME})
+endif()
 
 # Pack
 include(CPack)

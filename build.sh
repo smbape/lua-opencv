@@ -27,6 +27,7 @@ Options:
     --help|h|help               Display the help message.
     --dry-run                   Display commands that will be executed without running them.
     --g                         Generate cmake config only.
+    --d                         Use Debug build type.
     --no-config                 Do not generate cmake config.
     --build                     Build only.
     --no-build                  Do not build.
@@ -52,6 +53,10 @@ for ac_option in "$@"; do
     case "$ac_option" in
         --dry-run)
             is_dry_run=1
+            continue
+            ;;
+        -d)
+            CMAKE_BUILD_TYPE=Debug
             continue
             ;;
         -g)
@@ -105,14 +110,17 @@ for ac_option in "$@"; do
         -A)
             key=--platform
             ;;
-        --binary-dir|--generator|--platform )
+        --config)
+            key=--config-name
+            ;;
+        --binary-dir|--generator|--platform|--config-name )
             echo "Unknown option $key" 1>&2
             exit 1
             ;;
     esac
 
     case "$key" in
-        --binary-dir|--generator|--platform|--prefix|--target )
+        --binary-dir|--generator|--platform|--prefix|--target|--config-name )
             key="${key:2}"
             key="${key//-/_}"
 
@@ -138,18 +146,18 @@ test $is_dry_run -eq 0 || try_run="echo "
 
 CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE:-Release}"
 BUILD_FOLDER="${BUILD_FOLDER:-$PWD/out/build/Linux-GCC-$CMAKE_BUILD_TYPE}"
-PREFIX="${PREFIX:-$PWD/out/install/Linux-GCC-$CMAKE_BUILD_TYPE}"
+CMAKE_INSTALL_PREFIX="${PREFIX:-$PWD/out/install/Linux-GCC-$CMAKE_BUILD_TYPE}"
 
 ${try_run}mkdir -p "$BUILD_FOLDER" && ${try_run}cd "$BUILD_FOLDER" || die "Cannot access build directory $BUILD_FOLDER" $?
 
 test ${#PLATFORM} -eq 0 || GENERATOR="$GENERATOR -A $PLATFORM"
 
-test $skip_config -eq 1 || ${try_run}cmake -G $GENERATOR -DCMAKE_BUILD_TYPE:STRING=$CMAKE_BUILD_TYPE "-DCMAKE_INSTALL_PREFIX:PATH=${PREFIX}" "$SCRIPTPATH" || exit $?
+test $skip_config -eq 1 || ${try_run}cmake -G $GENERATOR -DCMAKE_BUILD_TYPE:STRING=$CMAKE_BUILD_TYPE "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}" "$SCRIPTPATH" || exit $?
 test $skip_build -eq 1 || ${try_run}cmake --build . --target $TARGET || exit $?
-test $has_install -eq 0 || ${try_run}cmake --install . --prefix "$PREFIX" || exit $?
+test $has_install -eq 0 || ${try_run}cmake --install . --prefix "$CMAKE_INSTALL_PREFIX" || exit $?
 
 if test $has_test -eq 1; then
     ctest -C $CMAKE_BUILD_TYPE
-    LUA_CPATH="$("$PREFIX/bin/luajit" -e 'print(package.cpath)');$PREFIX/lib/lua/?.so"
-    LUA_CPATH="$LUA_CPATH" "$PREFIX/bin/luajit" "$SCRIPTPATH/test/test.lua"
+    LUA_CPATH="$("$CMAKE_INSTALL_PREFIX/bin/luajit" -e 'print(package.cpath)');$CMAKE_INSTALL_PREFIX/lib/lua/?.so"
+    LUA_CPATH="$LUA_CPATH" "$CMAKE_INSTALL_PREFIX/bin/luajit" "$SCRIPTPATH/test/test.lua"
 fi
