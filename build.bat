@@ -173,7 +173,8 @@ GOTO END
 
 :TEST
 IF NOT [%has_test%] == [1] GOTO END
-%TRY_RUN%%CMAKE:cmake.exe=ctest.exe% -C %CMAKE_BUILD_TYPE%
+%TRY_RUN%%CMAKE:cmake.exe=ctest.exe% -C %CMAKE_BUILD_TYPE% -R test_build
+IF EXIST "%PREFIX%\bin\luajit.exe" %TRY_RUN%%CMAKE:cmake.exe=ctest.exe% -C %CMAKE_BUILD_TYPE% -R test_install
 
 :END
 POPD

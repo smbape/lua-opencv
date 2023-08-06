@@ -447,20 +447,20 @@ namespace LUA_MODULE_NAME {
 			|| object_is_impl(obj, static_cast<std::vector<cv::Mat>*>(nullptr))
 			|| object_is_impl(obj, static_cast<std::vector<cv::UMat>*>(nullptr))
 			|| object_is_impl(obj, static_cast<std::vector<cv::RotatedRect>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<char>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<uchar>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<int>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<float>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<double>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<cv::Point>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<cv::Point2f>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<cv::Rect>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<cv::Size>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<cv::Vec6f>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<std::vector<char>>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<std::vector<int>>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<std::vector<cv::Point>>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<std::vector<cv::Point2f>>>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<char>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<uchar>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<int>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<float>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<double>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<cv::Point>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<cv::Point2f>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<cv::Rect>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<cv::Size>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<cv::Vec6f>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<std::vector<char>>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<std::vector<int>>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<std::vector<cv::Point>>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<std::vector<cv::Point2f>>*>(nullptr))
 			;
 	}
 
@@ -471,20 +471,20 @@ namespace LUA_MODULE_NAME {
 			|| object_is_impl(obj, static_cast<std::vector<cv::Mat>*>(nullptr))
 			|| object_is_impl(obj, static_cast<std::vector<cv::UMat>*>(nullptr))
 			|| object_is_impl(obj, static_cast<std::vector<cv::RotatedRect>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<char>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<uchar>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<int>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<float>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<double>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<cv::Point>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<cv::Point2f>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<cv::Rect>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<cv::Size>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<cv::Vec6f>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<std::vector<char>>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<std::vector<int>>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<std::vector<cv::Point>>>*>(nullptr))
-			// || object_is_impl(obj, static_cast<std::vector<std::vector<std::vector<cv::Point2f>>>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<char>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<uchar>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<int>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<float>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<double>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<cv::Point>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<cv::Point2f>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<cv::Rect>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<cv::Size>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<cv::Vec6f>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<std::vector<char>>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<std::vector<int>>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<std::vector<cv::Point>>*>(nullptr))
+			|| object_is_impl(obj, static_cast<std::vector<std::vector<cv::Point2f>>*>(nullptr))
 			;
 	}
 
@@ -515,75 +515,75 @@ namespace LUA_MODULE_NAME {
 			return std::make_shared<Array>(input);
 		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<char>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<char>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<char>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<char>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<uchar>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<uchar>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<uchar>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<uchar>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<int>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<int>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<int>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<int>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<float>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<float>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<float>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<float>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<double>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<double>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<double>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<double>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<cv::Point>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<cv::Point>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<cv::Point>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<cv::Point>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<cv::Point2f>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<cv::Point2f>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<cv::Point2f>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<cv::Point2f>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<cv::Rect>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<cv::Rect>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<cv::Rect>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<cv::Rect>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<cv::Size>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<cv::Size>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<cv::Size>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<cv::Size>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<cv::Vec6f>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<cv::Vec6f>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<cv::Vec6f>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<cv::Vec6f>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<std::vector<char>>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<std::vector<char>>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<std::vector<char>>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<std::vector<char>>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<std::vector<int>>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<std::vector<int>>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<std::vector<int>>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<std::vector<int>>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<std::vector<cv::Point>>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<std::vector<cv::Point>>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<std::vector<cv::Point>>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<std::vector<cv::Point>>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<std::vector<cv::Point2f>>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<std::vector<cv::Point2f>>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<std::vector<cv::Point2f>>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<std::vector<cv::Point2f>>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
 		return std::shared_ptr<Array>();
 	}
@@ -615,75 +615,75 @@ namespace LUA_MODULE_NAME {
 			return std::make_shared<Array>(input);
 		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<char>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<char>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<char>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<char>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<uchar>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<uchar>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<uchar>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<uchar>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<int>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<int>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<int>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<int>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<float>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<float>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<float>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<float>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<double>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<double>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<double>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<double>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<cv::Point>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<cv::Point>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<cv::Point>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<cv::Point>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<cv::Point2f>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<cv::Point2f>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<cv::Point2f>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<cv::Point2f>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<cv::Rect>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<cv::Rect>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<cv::Rect>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<cv::Rect>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<cv::Size>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<cv::Size>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<cv::Size>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<cv::Size>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<cv::Vec6f>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<cv::Vec6f>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<cv::Vec6f>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<cv::Vec6f>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<std::vector<char>>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<std::vector<char>>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<std::vector<char>>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<std::vector<char>>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<std::vector<int>>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<std::vector<int>>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<std::vector<int>>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<std::vector<int>>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<std::vector<cv::Point>>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<std::vector<cv::Point>>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<std::vector<cv::Point>>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<std::vector<cv::Point>>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
-		// if (object_is_impl(obj, static_cast<std::vector<std::vector<std::vector<cv::Point2f>>>*>(nullptr))) {
-		// 	auto input = object_as_impl(obj, static_cast<std::vector<std::vector<std::vector<cv::Point2f>>>*>(nullptr));
-		// 	return std::make_shared<Array>(input);
-		// }
+		if (object_is_impl(obj, static_cast<std::vector<std::vector<cv::Point2f>>*>(nullptr))) {
+			auto input = object_as_impl(obj, static_cast<std::vector<std::vector<cv::Point2f>>*>(nullptr));
+			return std::make_shared<Array>(input);
+		}
 
 		return std::shared_ptr<Array>();
 	}

@@ -157,7 +157,11 @@ test $skip_build -eq 1 || ${try_run}cmake --build . --target $TARGET || exit $?
 test $has_install -eq 0 || ${try_run}cmake --install . --prefix "$CMAKE_INSTALL_PREFIX" || exit $?
 
 if test $has_test -eq 1; then
-    ctest -C $CMAKE_BUILD_TYPE
-    LUA_CPATH="$("$CMAKE_INSTALL_PREFIX/bin/luajit" -e 'print(package.cpath)');$CMAKE_INSTALL_PREFIX/lib/lua/?.so"
-    LUA_CPATH="$LUA_CPATH" "$CMAKE_INSTALL_PREFIX/bin/luajit" "$SCRIPTPATH/test/test.lua"
+    LUA_CPATH="$("$BUILD_FOLDER/bin/luajit" -e 'print(package.cpath)');$BUILD_FOLDER/luajit/lib/?.so" \
+    ctest -C $CMAKE_BUILD_TYPE -R test_build
+
+    if test -x "$CMAKE_INSTALL_PREFIX/bin/luajit"; then
+        LUA_CPATH="$("$CMAKE_INSTALL_PREFIX/bin/luajit" -e 'print(package.cpath)');$CMAKE_INSTALL_PREFIX/lib/lua/?.so" \
+        ctest -C $CMAKE_BUILD_TYPE -R test_install
+    fi
 fi
