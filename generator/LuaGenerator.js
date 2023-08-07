@@ -680,6 +680,8 @@ class LuaGenerator {
                                     }
                                 } else if (cpptype.endsWith("*")) {
                                     argname = `reference_internal(${ argname })`;
+                                } else if (shared_ptr !== "std::shared_ptr" && cpptype.includes(shared_ptr)) {
+                                    argname = `return_cast_impl(${ argname })`;
                                 }
 
                                 return `vres.push_back({ ts, sol::in_place, ${ argname } });`;

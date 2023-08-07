@@ -100,8 +100,8 @@ const LuaGenerator = require("./LuaGenerator");
 
 const PROJECT_DIR = sysPath.dirname(__dirname);
 const SRC_DIR = sysPath.join(PROJECT_DIR, "src");
-const platform = os.platform() === "win32" ? (/cygwin/.test(process.env.HOME) ? "cygwin" : "x64") : os.platform();
-const opencv_SOURCE_DIR = findFile(`build_${ platform }/opencv/opencv-src`, PROJECT_DIR);
+const platform = os.platform() === "win32" ? (/cygwin/.test(process.env.HOME) ? "Cygwin" : "x64") : "*-GCC";
+const opencv_SOURCE_DIR = findFile(`out/build/${ platform }-*/opencv/opencv-src`, PROJECT_DIR);
 
 const python_bindings_generator = sysPath.join(sysPath.dirname(opencv_SOURCE_DIR), "opencv-build", "modules", "python_bindings_generator");
 const src2 = sysPath.resolve(opencv_SOURCE_DIR, "modules/python/src2");
@@ -250,7 +250,7 @@ waterfall([
             print(json.dumps({"decls": all_decls, "namespaces": sorted(parser.namespaces)}, indent=4))
         `.trim().replace(/^ {12}/mg, "");
 
-        fs.writeFileSync(sysPath.join(PROJECT_DIR, "gen.py"), code);
+        // fs.writeFileSync(sysPath.join(PROJECT_DIR, "gen.py"), code);
 
         child.stdin.write(code);
         child.stdin.end();

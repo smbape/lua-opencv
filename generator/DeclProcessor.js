@@ -206,7 +206,8 @@ class DeclProcessor {
 
         this.bases.set(fqn, new Set());
 
-        for (const parent of parents) {
+        for (let parent of parents) {
+            parent = getAlias(parent);
             if (parent === fqn || parent === "") {
                 continue;
             }

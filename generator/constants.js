@@ -68,6 +68,13 @@ exports.ALIASES = new Map([
     ["Prims", "vector_Prim"],
     ["Pose3DPtr", "Ptr_Pose3D"],
     ["PoseCluster3DPtr", "Ptr_PoseCluster3D"],
+
+    // contrib not speficiying namespace
+    ["cv::bgsegm::BackgroundSubtractor", "cv::BackgroundSubtractor"],
+    ["cv::xfeatures2d::Feature2D", "cv::Feature2D"],
+    ["cv::optflow::DenseOpticalFlow", "cv::DenseOpticalFlow"],
+    ["cv::optflow::SparseOpticalFlow", "cv::SparseOpticalFlow"],
+    ["cv::xphoto::Tonemap", "cv::Tonemap"],
 ]);
 
 exports.CLASS_PTR = new Set([

@@ -56,35 +56,42 @@ const isMatch = (str, pattern) => {
 
 const findFile = (path, rootPath = ".") => {
     path = path.split(/[\\/]/).join(sysPath.sep);
-
     const pos = path.indexOf("*");
+    let parent = sysPath.resolve(rootPath);
 
-    if (pos === -1) {
-        path = sysPath.resolve(rootPath, path);
-        try {
-            fs.accessSync(path, fs.constants.R_OK);
-            return path;
-        } catch (err) {
-            return null;
+    do {
+        rootPath = parent;
+        parent = sysPath.dirname(rootPath);
+
+        if (pos === -1) {
+            const rpath = sysPath.resolve(rootPath, path);
+            try {
+                fs.accessSync(rpath, fs.constants.R_OK);
+                return rpath;
+            } catch (err) {
+                continue;
+            }
         }
-    }
 
-    const start = path.lastIndexOf(sysPath.sep, pos - 1);
-    const end = path.indexOf(sysPath.sep, start + 1);
-    const prefix = start === -1 ? sysPath.resolve(rootPath) : sysPath.resolve(rootPath, path.slice(0, start));
-    const pattern = path.slice(start + 1, end === -1 ? path.length : end);
-    const suffix = path.slice(end + 1);
+        const start = path.lastIndexOf(sysPath.sep, pos - 1);
+        const end = path.indexOf(sysPath.sep, start + 1);
+        const prefix = start === -1 ? rootPath : sysPath.resolve(rootPath, path.slice(0, start));
+        const pattern = path.slice(start + 1, end === -1 ? path.length : end);
+        const suffix = path.slice(end + 1);
 
-    const candidates = fs.readdirSync(prefix).filter(item => {
-        return isMatch(item, pattern);
-    });
+        const candidates = !fs.existsSync(prefix) ? [] : fs.readdirSync(prefix).filter(item => {
+            return isMatch(item, pattern);
+        });
 
-    for (const candidate of candidates) {
-        const file = findFile(suffix, sysPath.join(prefix, candidate));
-        if (file !== null) {
-            return file;
+        for (const candidate of candidates) {
+            const file = findFile(suffix, sysPath.join(prefix, candidate));
+            if (file !== null) {
+                return file;
+            }
         }
-    }
+
+        continue
+    } while (parent !== rootPath);
 
     return null;
 };

@@ -145,8 +145,9 @@ try_run=
 test $is_dry_run -eq 0 || try_run="echo "
 
 CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE:-Release}"
-BUILD_FOLDER="${BUILD_FOLDER:-$PWD/out/build/Linux-GCC-$CMAKE_BUILD_TYPE}"
-CMAKE_INSTALL_PREFIX="${PREFIX:-$PWD/out/install/Linux-GCC-$CMAKE_BUILD_TYPE}"
+CONFIG_NAME=${CONFIG_NAME:-Linux-GCC-$CMAKE_BUILD_TYPE}
+BUILD_FOLDER="${BUILD_FOLDER:-$PWD/out/build/$CONFIG_NAME}"
+CMAKE_INSTALL_PREFIX="${PREFIX:-$PWD/out/install/$CONFIG_NAME}"
 
 ${try_run}mkdir -p "$BUILD_FOLDER" && ${try_run}cd "$BUILD_FOLDER" || die "Cannot access build directory $BUILD_FOLDER" $?
 

@@ -5,6 +5,80 @@
 #include <opencv2/core/types.hpp>
 
 namespace LUA_MODULE_NAME {
+	// cv::Ptr
+	template<typename _To, typename _Tp>
+	bool object_is_impl(const _To& obj, cv::Ptr<_Tp>*) {
+		return obj.template is<std::shared_ptr<_Tp>>();
+	}
+
+	template<typename _To, typename _Tp>
+	bool object_is_impl(_To& obj, cv::Ptr<_Tp>*) {
+		return obj.template is<std::shared_ptr<_Tp>>();
+	}
+
+	template<typename _To, typename _Tp>
+	auto object_as_impl(const _To& obj, cv::Ptr<_Tp>*) {
+		cv::Ptr<_Tp> res = obj.template as<std::shared_ptr<_Tp>>();
+		return res;
+	}
+
+	template<typename _To, typename _Tp>
+	auto object_as_impl(_To& obj, cv::Ptr<_Tp>*) {
+		cv::Ptr<_Tp> res = obj.template as<std::shared_ptr<_Tp>>();
+		return res;
+	}
+
+	template<typename _Tp>
+	auto return_cast_impl(const cv::Ptr<_Tp>& ptr) {
+		return std::shared_ptr<_Tp>(ptr);
+	}
+
+	template<typename _Tp>
+	auto return_cast_impl(cv::Ptr<_Tp>& ptr) {
+		return std::shared_ptr<_Tp>(ptr);
+	}
+
+	// std::vector<cv::Ptr>
+	template<typename _To, typename _Tp>
+	bool object_is_impl(const _To& obj, std::vector<cv::Ptr<_Tp>>*) {
+		return obj.template is<std::vector<std::shared_ptr<_Tp>>>();
+	}
+
+	template<typename _To, typename _Tp>
+	bool object_is_impl(_To& obj, std::vector<cv::Ptr<_Tp>>*) {
+		return obj.template is<std::vector<std::shared_ptr<_Tp>>>();
+	}
+
+	template<typename _To, typename _Tp>
+	auto object_as_impl(const _To& obj, std::vector<cv::Ptr<_Tp>>*) {
+		std::vector<cv::Ptr<_Tp>> res;
+		const auto& vec = obj.template as<std::vector<std::shared_ptr<_Tp>>>();
+		res.insert(std::end(res), std::begin(vec), std::end(vec));
+		return res;
+	}
+
+	template<typename _To, typename _Tp>
+	auto object_as_impl(_To& obj, std::vector<cv::Ptr<_Tp>>*) {
+		std::vector<cv::Ptr<_Tp>> res;
+		const auto& vec = obj.template as<std::vector<std::shared_ptr<_Tp>>>();
+		res.insert(std::end(res), std::begin(vec), std::end(vec));
+		return res;
+	}
+
+	template<typename _Tp>
+	auto return_cast_impl(const std::vector<cv::Ptr<_Tp>>& vec) {
+		std::vector<std::shared_ptr<_Tp>> res;
+		res.insert(std::end(res), std::begin(vec), std::end(vec));
+		return res;
+	}
+
+	template<typename _Tp>
+	auto return_cast_impl(std::vector<cv::Ptr<_Tp>>& vec) {
+		std::vector<std::shared_ptr<_Tp>> res;
+		res.insert(std::end(res), std::begin(vec), std::end(vec));
+		return res;
+	}
+
 	// cv::Point_
 	template<typename _To, typename _Tp>
 	bool object_is_impl(const _To& obj, cv::Point_<_Tp>*) {

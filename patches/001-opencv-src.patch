@@ -1,5 +1,5 @@
 diff --git a/cmake/templates/OpenCVConfig.cmake.in b/cmake/templates/OpenCVConfig.cmake.in
-index 2e9022a355..d4333754b4 100644
+index 2e9022a35..d4333754b 100644
 --- a/cmake/templates/OpenCVConfig.cmake.in
 +++ b/cmake/templates/OpenCVConfig.cmake.in
 @@ -122,7 +122,7 @@ endforeach()
@@ -12,7 +12,7 @@ index 2e9022a355..d4333754b4 100644
  endif()
  
 diff --git a/modules/core/include/opencv2/core/mat.hpp b/modules/core/include/opencv2/core/mat.hpp
-index c4c6ff6d78..c6970bc63a 100644
+index c4c6ff6d7..c6970bc63 100644
 --- a/modules/core/include/opencv2/core/mat.hpp
 +++ b/modules/core/include/opencv2/core/mat.hpp
 @@ -2648,6 +2648,10 @@ public:
@@ -35,7 +35,7 @@ index c4c6ff6d78..c6970bc63a 100644
      MatExpr t() const;
      MatExpr inv(int method = DECOMP_LU) const;
 diff --git a/modules/core/src/matrix_expressions.cpp b/modules/core/src/matrix_expressions.cpp
-index 44ac8f1713..33a40fbd3b 100644
+index 44ac8f171..33a40fbd3 100644
 --- a/modules/core/src/matrix_expressions.cpp
 +++ b/modules/core/src/matrix_expressions.cpp
 @@ -648,6 +648,11 @@ MatExpr MatExpr::operator()( const Rect& roi ) const
@@ -51,7 +51,7 @@ index 44ac8f1713..33a40fbd3b 100644
  {
      return ((Mat)*this).cross(m);
 diff --git a/modules/gapi/include/opencv2/gapi/garray.hpp b/modules/gapi/include/opencv2/gapi/garray.hpp
-index b6aa715518..b5e4958217 100644
+index b6aa71551..b5e495821 100644
 --- a/modules/gapi/include/opencv2/gapi/garray.hpp
 +++ b/modules/gapi/include/opencv2/gapi/garray.hpp
 @@ -317,6 +317,10 @@ namespace detail
@@ -66,7 +66,7 @@ index b6aa715518..b5e4958217 100644
      // stripping G types to their host types
      // like cv::GArray<GMat> would still map to std::vector<cv::Mat>
 diff --git a/modules/gapi/include/opencv2/gapi/gopaque.hpp b/modules/gapi/include/opencv2/gapi/gopaque.hpp
-index 1d12f127da..e1228bd2a9 100644
+index 1d12f127d..e1228bd2a 100644
 --- a/modules/gapi/include/opencv2/gapi/gopaque.hpp
 +++ b/modules/gapi/include/opencv2/gapi/gopaque.hpp
 @@ -302,6 +302,10 @@ namespace detail
@@ -81,7 +81,7 @@ index 1d12f127da..e1228bd2a9 100644
  
  /** \addtogroup gapi_data_objects
 diff --git a/modules/gapi/include/opencv2/gapi/media.hpp b/modules/gapi/include/opencv2/gapi/media.hpp
-index 5da8eeab48..a8e3e7d781 100644
+index 5da8eeab4..a8e3e7d78 100644
 --- a/modules/gapi/include/opencv2/gapi/media.hpp
 +++ b/modules/gapi/include/opencv2/gapi/media.hpp
 @@ -157,6 +157,10 @@ inline cv::MediaFrame cv::MediaFrame::Create(Args&&... args) {
@@ -96,7 +96,7 @@ index 5da8eeab48..a8e3e7d781 100644
   * @brief Provides access to the MediaFrame's underlying data.
   *
 diff --git a/modules/gapi/include/opencv2/gapi/render/render_types.hpp b/modules/gapi/include/opencv2/gapi/render/render_types.hpp
-index 6d70e3a877..5ab54b9e7a 100644
+index 6d70e3a87..5ab54b9e7 100644
 --- a/modules/gapi/include/opencv2/gapi/render/render_types.hpp
 +++ b/modules/gapi/include/opencv2/gapi/render/render_types.hpp
 @@ -84,6 +84,10 @@ struct GAPI_EXPORTS_W_SIMPLE Text
@@ -188,7 +188,7 @@ index 6d70e3a877..5ab54b9e7a 100644
      < Text
      , FText
 diff --git a/modules/gapi/include/opencv2/gapi/rmat.hpp b/modules/gapi/include/opencv2/gapi/rmat.hpp
-index 46989191b3..3c0b3bbfde 100644
+index 46989191b..3c0b3bbfd 100644
 --- a/modules/gapi/include/opencv2/gapi/rmat.hpp
 +++ b/modules/gapi/include/opencv2/gapi/rmat.hpp
 @@ -151,6 +151,10 @@ private:
@@ -203,7 +203,7 @@ index 46989191b3..3c0b3bbfde 100644
  RMat make_rmat(Ts&&... args) { return { std::make_shared<T>(std::forward<Ts>(args)...) }; }
  /** @} */
 diff --git a/modules/gapi/include/opencv2/gapi/util/variant.hpp b/modules/gapi/include/opencv2/gapi/util/variant.hpp
-index f412110deb..1fea1b83e0 100644
+index f412110de..1fea1b83e 100644
 --- a/modules/gapi/include/opencv2/gapi/util/variant.hpp
 +++ b/modules/gapi/include/opencv2/gapi/util/variant.hpp
 @@ -132,7 +132,7 @@ namespace util
@@ -216,7 +216,7 @@ index f412110deb..1fea1b83e0 100644
          };
  
 diff --git a/modules/python/src2/hdr_parser.py b/modules/python/src2/hdr_parser.py
-index 710c792179..5a721693bc 100755
+index 710c79217..6e0062ece 100755
 --- a/modules/python/src2/hdr_parser.py
 +++ b/modules/python/src2/hdr_parser.py
 @@ -70,6 +70,29 @@ class CppHeaderParser(object):
@@ -307,7 +307,7 @@ index 710c792179..5a721693bc 100755
                  # NB: Drop inheritance syntax for enum
 -                stmt = stmt.split(':')[0]
 +                if stmt.startswith("enum"):
-+                    stmt = stmt.split(':')[0]
++                    stmt = stmt.split(':')[0].rstrip()
 +                else:
 +                    stmt = stmt.replace("::", ".")
                  stmt_list = stmt.rsplit(" ", 1)

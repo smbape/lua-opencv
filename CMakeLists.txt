@@ -87,7 +87,21 @@ set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin" CACHE PATH "Output director
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib" CACHE PATH "Output directory for libraries")
 
 # generate source files
-# TODO
+if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/node_modules")
+execute_process(
+  COMMAND npm ci
+  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+  COMMAND_ECHO STDERR
+  COMMAND_ERROR_IS_FATAL ANY
+)
+endif()
+
+execute_process(
+  COMMAND node --unhandled-rejections=strict --trace-uncaught --trace-warnings generator/index.js
+  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+  COMMAND_ECHO STDERR
+  COMMAND_ERROR_IS_FATAL ANY
+)
 
 file(GLOB_RECURSE project_source_headers "src/*.h*")
 file(GLOB_RECURSE project_sources_files "src/*.cpp")
