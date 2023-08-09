@@ -191,7 +191,10 @@ class DeclProcessor {
         coclass.noidl = list_of_modifiers.includes("/noidl");
 
         for (const modifier of list_of_modifiers) {
-            if (modifier.startsWith("/idl=")) {
+            if (modifier.startsWith("=")) {
+                coclass.name = modifier.slice("=".length);
+                coclass.progid = path.map((id, i) => CoClass.getObjectName(i === path.length - 1 ? coclass.name : id)).join(".");
+            } else if (modifier.startsWith("/idl=")) {
                 coclass.idl = modifier.slice("/idl=".length);
             } else if (modifier.startsWith("/cpp_quote=")) {
                 coclass.cpp_quotes.push(modifier.slice("/cpp_quote=".length));

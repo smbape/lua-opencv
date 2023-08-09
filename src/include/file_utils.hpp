@@ -22,7 +22,7 @@ namespace fs_utils {
 
 	CV_EXPORTS_W std::string findFile(
 		const std::string& path,
-		const std::string& directory,
+		const std::string& directory = std::filesystem::current_path().string(),
 		const std::string& filter = "",
 		const std::vector<std::string>& hints = std::vector<std::string>(1, ".")
 	);

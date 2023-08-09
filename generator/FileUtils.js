@@ -90,7 +90,7 @@ const findFile = (path, rootPath = ".") => {
             }
         }
 
-        continue
+        continue;
     } while (parent !== rootPath);
 
     return null;

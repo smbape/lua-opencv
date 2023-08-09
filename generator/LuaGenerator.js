@@ -19,12 +19,29 @@ const proto = {
     // No extension
 };
 
-const getTernary = (test, left, right, is_optional) => {
+const getTernary = (...args) => {
+    const [is_optional] = args.slice(-2);
     if (!is_optional) {
-        return left;
+        args = args.slice(0, -2);
     }
 
-    return `${ test } ? ${ left } : ${ right }`;
+    const text = [];
+
+    for (let i = 0; i < args.length; i += 2) {
+        const has_more = i + 2 < args.length;
+
+        if (has_more) {
+            text.push(args[i], "?");
+        }
+
+        text.push(args[i + 1]);
+
+        if (has_more) {
+            text.push(":");
+        }
+    }
+
+    return text.join(" ");
 };
 
 class LuaGenerator {
@@ -312,6 +329,8 @@ class LuaGenerator {
             processor.docs.push(`### ${ fqn }::${ fname }\n`.replaceAll("_", "\\_"));
 
             let is_constructor = false;
+            let has_static = false;
+            let has_instance = false;
             let overload_id = 0;
 
             for (const decl of overloads) {
@@ -382,11 +401,14 @@ class LuaGenerator {
                 const overload = [];
 
                 if (!coclass.isStatic() && !func_modifiers.includes("/S")) {
+                    has_instance = true;
                     overload.push(`
                         if (!self) {
                             goto overload${ overload_id };
                         }
                     `.replace(/^ {24}/mg, "").trim(), "");
+                } else {
+                    has_static = true;
                 }
 
                 overload.push("int usedkw = 0;");
@@ -399,10 +421,6 @@ class LuaGenerator {
                     const is_ptr = argtype.endsWith("*");
                     const is_out = out_args[j];
                     const is_optional = defval !== "" || is_out && !in_args[j];
-
-                    if (is_out) {
-                        retval.push([j, argname, processor.getCppType(argtype, coclass, options)]);
-                    }
 
                     let is_array = false;
                     let arrtype = "";
@@ -493,6 +511,21 @@ class LuaGenerator {
                     const object_is = `object_is${ arg_suffix }`;
                     const object_as = `object_as${ arg_suffix }`;
 
+                    if (is_out) {
+                        if (is_by_ref) {
+                            retval.push([j, getTernary(
+                                `${ argname }_positional`,
+                                `vargs.get<sol::object>(${ i })`,
+                                `${ argname }_kwarg`,
+                                `kwargs.at("${ argname }")`,
+                                is_optional,
+                                `sol::object(ts, sol::in_place, ${ argname }_default)`
+                            ), "sol::object"]);
+                        } else {
+                            retval.push([j, argname, processor.getCppType(argtype, coclass, options)]);
+                        }
+                    }
+
                     overload.push("", `
                         // =========================
                         // get argument ${ argname }
@@ -526,7 +559,14 @@ class LuaGenerator {
                     if (is_optional) {
                         // goto instruction needs all variables to be declared first
                         // put declaration of variable at top to be able to use goto
-                        overload.push(`${ cpptype } ${ argname }_default${ defval !== "" ? ` = ${ defval }` : "" };`);
+                        if (is_by_ref) {
+                            overload.push(`auto ${ argname }_default = std::make_shared<${ cpptype }>();`);
+                            if (defval !== "") {
+                                overload.push(`*${ argname }_default = ${ defval };`);
+                            }
+                        } else {
+                            overload.push(`${ cpptype } ${ argname }_default${ defval !== "" ? ` = ${ defval }` : "" };`);
+                        }
                     } else {
                         overload.push(`
                             else {
@@ -540,37 +580,37 @@ class LuaGenerator {
 
                     if (is_array) {
                         overload.push(`
-                            auto ${ argname }_${ arrtype } = ${ argname }_positional ?
-                                ${ object_as }(vargs.get<sol::object>(${ i }), static_cast<${ var_type }*>(nullptr)) :
-                                ${ getTernary(
+                            auto ${ argname }_${ arrtype } = ${ getTernary(
+                                    `${ argname }_positional`,
+                                    `${ object_as }(vargs.get<sol::object>(${ i }), static_cast<${ var_type }*>(nullptr))`,
                                     `${ argname }_kwarg`,
                                     `${ object_as }(kwargs.at("${ argname }"), static_cast<${ var_type }*>(nullptr))`,
-                                    `std::make_shared<${ arr_cpptype }>(${ argname }_default)`,
-                                    is_optional
+                                    is_optional,
+                                    `${ object_as }(std::make_shared<${ arr_cpptype }>(${ is_by_ref ? "*" : "" }${ argname }_default))`
                                 ) };
                             auto& ${ argname } = *${ argname }_${ arrtype };
                         `.replace(/^ {28}/mg, "").trim());
                     } else if (is_shared_ptr) {
                         overload.push(`
-                            auto& ${ argname }_ref = ${ argname }_positional ?
-                                ${ deref }${ object_as }(vargs.get<sol::object>(${ i }), static_cast<${ var_type }*>(nullptr)) :
-                                ${ getTernary(
+                            auto& ${ argname }_ref = ${ getTernary(
+                                    `${ argname }_positional`,
+                                    `${ deref }${ object_as }(vargs.get<sol::object>(${ i }), static_cast<${ var_type }*>(nullptr))`,
                                     `${ argname }_kwarg`,
                                     `${ deref }${ object_as }(kwargs.at("${ argname }"), static_cast<${ var_type }*>(nullptr))`,
-                                    `*${ argname }_default`,
-                                    is_optional
+                                    is_optional,
+                                    `*${ argname }_default`
                                 ) };
                             auto ${ argname } = reference_internal(${ argname }_ref, static_cast<${ cpptype }*>(nullptr));
                         `.replace(/^ {28}/mg, "").trim());
                     } else {
                         overload.push(`
-                            auto${ is_by_ref ? "&" : "" } ${ argname } = ${ argname }_positional ?
-                                ${ deref }${ object_as }(vargs.get<sol::object>(${ i }), static_cast<${ var_type }*>(nullptr)) :
-                                ${ getTernary(
+                            auto${ is_by_ref ? "&" : "" } ${ argname } = ${ getTernary(
+                                    `${ argname }_positional`,
+                                    `${ deref }${ object_as }(vargs.get<sol::object>(${ i }), static_cast<${ var_type }*>(nullptr))`,
                                     `${ argname }_kwarg`,
                                     `${ deref }${ object_as }(kwargs.at("${ argname }"), static_cast<${ var_type }*>(nullptr))`,
-                                    `${ argname }_default`,
-                                    is_optional
+                                    is_optional,
+                                    `${ is_by_ref ? "*" : "" }${ argname }_default`
                                 ) };
                         `.replace(/^ {28}/mg, "").trim());
                     }
@@ -652,14 +692,28 @@ class LuaGenerator {
                     }
                 }
 
-                if (!has_body && return_value_type !== "void") {
+                if (has_body) {
+                    overload.push("", `${ callee };`);
+
+                    // body is responsible of return
+                    retval.length = 0;
+                } else if (return_value_type !== "void") {
                     retval.push([0, callee, processor.getCppType(return_value_type, coclass, options)]);
+                } else if (retval.length !== 0) {
+                    overload.push("", `${ callee };`);
+                }
+
+                if (retval.length !== 0) {
                     retval.sort(([a], [b]) => a - b);
 
                     overload.push("", `
                         sol::variadic_results vres;
                         ${ retval
                             .map(([, argname, cpptype]) => {
+                                if (cpptype === "sol::object") {
+                                    return `vres.push_back(${ argname });`;
+                                }
+
                                 const is_shared_ptr = cpptype.startsWith(`${ shared_ptr }<`);
 
                                 // // vector of cv::Mat is no yet supported
@@ -689,8 +743,9 @@ class LuaGenerator {
                             .join(`\n${ " ".repeat(24) }`) }
                         return vres;
                     `.replace(/^ {24}/mg, "").trim());
-                } else {
-                    overload.push("", `${ callee };`, "return sol::variadic_results();");
+                } else if (!has_body) {
+                    // body is responsible of the return
+                    overload.push("", "return sol::variadic_results();");
                 }
 
                 contentFunction.push("");
@@ -704,17 +759,14 @@ class LuaGenerator {
                 contentFunction.push(`overload${ overload_id }:`);
             }
 
-            const lua_args = ["sol::this_state& ts", "sol::variadic_args& vargs"];
-            const lambda_args = ["sol::this_state ts", "sol::variadic_args vargs"];
-            const call_lua_args = ["ts", "vargs"];
-            if (!is_constructor && !coclass.isStatic()) {
+            const is_by_ref = is_constructor ? "" : "&";
+            const lua_args = [`sol::this_state${ is_by_ref } ts`, `sol::variadic_args${ is_by_ref } vargs`];
+            if (!is_constructor && has_instance) {
                 lua_args.unshift(`::${ fqn }* self`);
-                lambda_args.unshift(`::${ fqn }* self`);
-                call_lua_args.unshift("self");
             }
 
             contentRegisterPrivate.push(`
-                auto Lua_${ fname }(${ (is_constructor ? lambda_args : lua_args).join(", ") }) {
+                auto Lua_${ fname }(${ lua_args.join(", ") }) {
                     const int argc = vargs.size() - 1;
                     const bool has_kwarg = object_is<NamedParameters>(vargs.get<sol::object>(argc));
 
@@ -737,9 +789,28 @@ class LuaGenerator {
             if (is_constructor) {
                 contentRegister.push(`exports[sol::call_constructor] = sol::factories(::Lua_${ fname });`);
             } else {
-                contentRegister.push(`exports.set_function("${ fname }", [] (${ lambda_args.join(", ") }) {
-                    return ::Lua_${ fname }(${ call_lua_args.join(", ") });
-                });`.replace(/^ {16}/mg, "").trim());
+                const definitions = [];
+
+                if (has_instance) {
+                    definitions.push(`[] (::${ fqn }* self, sol::this_state ts, sol::variadic_args vargs) {
+                        return ::Lua_${ fname }(self, ts, vargs);
+                    }`.replace(/^ {20}/mg, "").trim());
+                }
+
+                if (has_static) {
+                    const call_lua_args = ["ts", "vargs"];
+                    if (has_instance) {
+                        call_lua_args.unshift(`static_cast<::${ fqn }*>(nullptr)`);
+                    }
+
+                    definitions.push(`[] (sol::this_state ts, sol::variadic_args vargs) {
+                        return ::Lua_${ fname }(${ call_lua_args.join(", ") });
+                    }`.replace(/^ {20}/mg, "").trim());
+                }
+
+                const overload = definitions.length === 1 ? definitions[0] : `sol::overload(${ definitions.join(", ") })`;
+
+                contentRegister.push(`exports.set_function("${ fname }", ${ overload });`);
             }
         }
     }
@@ -766,12 +837,21 @@ class LuaGenerator {
             registrationsHdr.push(`#include <${ fileHdr }>`);
             registrations.push(`${ registerFn }(lua, module);`);
 
+            const registers = [`void ${ registerFn }(sol::state_view& lua, sol::table& module);`];
+
+            if (!coclass.isStatic()) {
+                registers.push("", `
+                    template <>
+                    struct is_usertype<::${ fqn }> : std::true_type { };
+                `.replace(/^ {20}/mg, "").trim());
+            }
+
             files.set(sysPath.join(options.output, fileHdr), `
                 #pragma once
                 #include <lua_generated_pch.hpp>
 
                 namespace LUA_MODULE_NAME {
-                    void ${ registerFn }(sol::state_view& lua, sol::table& module);
+                    ${ registers.join("\n").split("\n").join(`\n${ " ".repeat(20) }`) }
                 }
             `.replace(/^ {16}/mg, "").trim());
 
@@ -902,9 +982,10 @@ class LuaGenerator {
                 sysPath.join(options.output, "lua_generated_pch.hpp"),
                 [
                     "#pragma once\n",
-                    "#include <registration.hpp>\n",
-                    "#include <register_all.hpp>\n",
-                    ...generated_include
+                    "#include <string>",
+                    ...generated_include,
+                    "#include <registration.hpp>",
+                    "#include <register_all.hpp>",
                 ].join("\n").trim().replace(/[^\S\n]+$/mg, "")
             );
         }
@@ -956,38 +1037,6 @@ class LuaGenerator {
                 FileUtils.deleteFiles(options.output, files, options, next);
             },
         ], cb);
-    }
-
-    genManifest(comClasses, comInterfaceExternalProxyStubs, debugPostFix, options) {
-        const { LIB_UID, OUTPUT_NAME, updateAssembly } = options;
-
-        const assemblies = [`
-            <assemblyIdentity
-                type="win32"
-                name="${ OUTPUT_NAME }${ debugPostFix }.sxs"
-                version="${ version }.0" />
-        `.replace(/^ {12}/mg, "").trim()];
-
-        if (typeof updateAssembly === "function") {
-            updateAssembly(assemblies, debugPostFix, options);
-        }
-
-        return `
-            <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-            <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
-                ${ assemblies.join("\n").split("\n").join(`\n${ " ".repeat(16) }`) }
-
-                <file xmlns="urn:schemas-microsoft-com:asm.v1" name="${ OUTPUT_NAME }${ debugPostFix }.dll">
-                    ${ comClasses.map(comClass => comClass.split("\n").join(`\n${ " ".repeat(20) }`)).join(`\n\n${ " ".repeat(20) }`) }
-
-                    <typelib tlbid="{${ LIB_UID }}"
-                        version="${ VERSION_MAJOR }.${ VERSION_MINOR }"
-                        helpdir="." />
-                </file>
-
-                ${ comInterfaceExternalProxyStubs.map(comClass => comClass.split("\n").join(`\n${ " ".repeat(16) }`)).join(`\n\n${ " ".repeat(16) }`) }
-            </assembly>
-        `.replace(/^ {12}/mg, "").trim();
     }
 }
 
