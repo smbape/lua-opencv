@@ -699,7 +699,7 @@ class LuaGenerator {
                     retval.length = 0;
                 } else if (return_value_type !== "void") {
                     retval.push([0, callee, processor.getCppType(return_value_type, coclass, options)]);
-                } else if (retval.length !== 0) {
+                } else {
                     overload.push("", `${ callee };`);
                 }
 

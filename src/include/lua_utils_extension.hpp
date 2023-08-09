@@ -1,8 +1,14 @@
 #pragma once
 
 #include <lua_utils.hpp>
+
 #include <opencv2/core/mat.hpp>
 #include <opencv2/core/types.hpp>
+#include <opencv2/gapi/garray.hpp>
+#include <opencv2/gapi/gopaque.hpp>
+#include <opencv2/gapi/gscalar.hpp>
+#include <opencv2/gapi/media.hpp>
+#include <opencv2/gapi/rmat.hpp>
 
 namespace LUA_MODULE_NAME {
 	// cv::Ptr
@@ -594,9 +600,71 @@ namespace LUA_MODULE_NAME {
 	}
 }
 
-#include <opencv2/gapi/gscalar.hpp>
-#include <opencv2/gapi/garray.hpp>
-#include <opencv2/gapi/gopaque.hpp>
+namespace cv {
+	inline bool operator== (const UMat& a, const UMat& b) {
+		return &a == &b;
+	}
+
+	inline bool operator== (const MediaFrame& a, const MediaFrame& b) {
+		return &a == &b;
+	}
+
+	inline bool operator== (const RMat& a, const RMat& b) {
+		return &a == &b;
+	}
+
+	inline bool operator== (const DMatch& a, const DMatch& b) {
+		return &a == &b;
+	}
+
+	inline bool operator== (const KeyPoint& a, const KeyPoint& b) {
+		return &a == &b;
+	}
+
+	namespace detail {
+		inline bool operator== (const VectorRef& a, const VectorRef& b) {
+			return &a == &b;
+		}
+
+		inline bool operator== (const OpaqueRef& a, const OpaqueRef& b) {
+			return &a == &b;
+		}
+	}
+
+	namespace gapi::wip::draw {
+		inline bool operator== (const Text& a, const Text& b) {
+			return &a == &b;
+		}
+
+		inline bool operator== (const FText& a, const FText& b) {
+			return &a == &b;
+		}
+
+		inline bool operator== (const Rect& a, const Rect& b) {
+			return &a == &b;
+		}
+
+		inline bool operator== (const Circle& a, const Circle& b) {
+			return &a == &b;
+		}
+
+		inline bool operator== (const Line& a, const Line& b) {
+			return &a == &b;
+		}
+
+		inline bool operator== (const Mosaic& a, const Mosaic& b) {
+			return &a == &b;
+		}
+
+		inline bool operator== (const Image& a, const Image& b) {
+			return &a == &b;
+		}
+
+		inline bool operator== (const Poly& a, const Poly& b) {
+			return &a == &b;
+		}
+	}
+}
 
 namespace sol {
 	template <>
