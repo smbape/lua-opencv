@@ -367,32 +367,32 @@ namespace LUA_MODULE_NAME {
 
 			if (object_is_impl(obj, static_cast<cv::cuda::GpuMat*>(nullptr))) {
 				auto& input = object_as_impl(obj, static_cast<cv::cuda::GpuMat*>(nullptr));
-				ptr = std::make_shared<Array>(input);
+				reset(input);
 				return;
 			}
 
 			if (object_is_impl(obj, static_cast<cv::Mat*>(nullptr))) {
 				auto& input = object_as_impl(obj, static_cast<cv::Mat*>(nullptr));
-				ptr = std::make_shared<Array>(input);
+				reset(input);
 				return;
 			}
 
 			if (object_is_impl(obj, static_cast<cv::UMat*>(nullptr))) {
 				auto& input = object_as_impl(obj, static_cast<cv::UMat*>(nullptr));
-				ptr = std::make_shared<Array>(input);
+				reset(input);
 				return;
 			}
 
 			if (object_is_impl(obj, static_cast<cv::Scalar*>(nullptr))) {
 				sval = object_as_impl(obj, static_cast<cv::Scalar*>(nullptr));
-				ptr = std::make_shared<Array>(sval);
+				setField(*this, *this, 1);
 				return;
 			}
 
 			if constexpr (std::is_same_v<Array, cv::_InputArray>) {
 				if (object_is_impl(obj, static_cast<double*>(nullptr))) {
 					dval = object_as_impl(obj, static_cast<double*>(nullptr));
-					ptr = std::make_shared<Array>(dval);
+					setField(*this, *this, 2);
 					return;
 				}
 			}
@@ -400,11 +400,47 @@ namespace LUA_MODULE_NAME {
 
 		ArraySharedPtr(const std::shared_ptr<Array>& ptr) : ptr(ptr) {}
 
+		ArraySharedPtr(const ArraySharedPtr& src) {
+			setField(src, *this, src.field);
+		}
+
+		template<typename T>
+		void reset(const T& obj) {
+			ptr = std::make_shared<Array>(obj);
+		}
+
+		static void setField(const ArraySharedPtr& src, ArraySharedPtr& dst, std::uint8_t _field) {
+			dst.field = _field;
+
+			switch (_field) {
+			case 1:
+				if (&src != &dst) {
+					dst.sval = src.sval;
+				}
+				dst.reset(dst.sval);
+				break;
+			case 2:
+				if constexpr (std::is_same_v<Array, cv::_InputArray>) {
+					if (&src != &dst) {
+						dst.dval = src.dval;
+					}
+					dst.reset(dst.dval);
+				}
+				break;
+			default:
+				if (&src != &dst) {
+					dst.ptr = src.ptr;
+				}
+			}
+		}
+
 		auto& operator*() {
 			return *ptr;
 		}
 
+		std::uint8_t field = 0;
 		std::shared_ptr<Array> ptr;
+
 		cv::Scalar sval;
 		double dval;
 	};
@@ -422,7 +458,6 @@ namespace LUA_MODULE_NAME {
 	template<typename Array, typename _To = sol::object>
 	bool object_is_arrays(const _To& obj, Array*) {
 		return object_is_impl(obj, static_cast<Array*>(nullptr))
-			|| object_is_impl(obj, static_cast<std::vector<cv::cuda::GpuMat>*>(nullptr))
 			|| object_is_impl(obj, static_cast<std::vector<cv::Mat>*>(nullptr))
 			|| object_is_impl(obj, static_cast<std::vector<cv::UMat>*>(nullptr))
 			|| object_is_impl(obj, static_cast<std::vector<cv::RotatedRect>*>(nullptr))
@@ -453,123 +488,240 @@ namespace LUA_MODULE_NAME {
 				return;
 			}
 
-			if (object_is_impl(obj, static_cast<std::vector<cv::cuda::GpuMat>*>(nullptr))) {
-				val0 = object_as_impl(obj, static_cast<std::vector<cv::cuda::GpuMat>*>(nullptr));
-				ptr = std::make_shared<Array>(val0);
-				return;
-			}
-
 			if (object_is_impl(obj, static_cast<std::vector<cv::Mat>*>(nullptr))) {
 				val1 = object_as_impl(obj, static_cast<std::vector<cv::Mat>*>(nullptr));
-				ptr = std::make_shared<Array>(val1);
+				setField(*this, *this, 1);
 				return;
 			}
 
 			if (object_is_impl(obj, static_cast<std::vector<cv::UMat>*>(nullptr))) {
 				val2 = object_as_impl(obj, static_cast<std::vector<cv::UMat>*>(nullptr));
-				ptr = std::make_shared<Array>(val2);
+				setField(*this, *this, 2);
 				return;
 			}
 
 			if (object_is_impl(obj, static_cast<std::vector<cv::RotatedRect>*>(nullptr))) {
 				val3 = object_as_impl(obj, static_cast<std::vector<cv::RotatedRect>*>(nullptr));
-				ptr = std::make_shared<Array>(val3);
+				setField(*this, *this, 3);
 				return;
 			}
 
 			if (object_is_impl(obj, static_cast<std::vector<char>*>(nullptr))) {
 				val4 = object_as_impl(obj, static_cast<std::vector<char>*>(nullptr));
-				ptr = std::make_shared<Array>(val4);
+				setField(*this, *this, 4);
 				return;
 			}
 
 			if (object_is_impl(obj, static_cast<std::vector<uchar>*>(nullptr))) {
 				val5 = object_as_impl(obj, static_cast<std::vector<uchar>*>(nullptr));
-				ptr = std::make_shared<Array>(val5);
+				setField(*this, *this, 5);
 				return;
 			}
 
 			if (object_is_impl(obj, static_cast<std::vector<int>*>(nullptr))) {
 				val6 = object_as_impl(obj, static_cast<std::vector<int>*>(nullptr));
-				ptr = std::make_shared<Array>(val6);
+				setField(*this, *this, 6);
 				return;
 			}
 
 			if (object_is_impl(obj, static_cast<std::vector<float>*>(nullptr))) {
 				val7 = object_as_impl(obj, static_cast<std::vector<float>*>(nullptr));
-				ptr = std::make_shared<Array>(val7);
+				setField(*this, *this, 7);
 				return;
 			}
 
 			if (object_is_impl(obj, static_cast<std::vector<double>*>(nullptr))) {
 				val8 = object_as_impl(obj, static_cast<std::vector<double>*>(nullptr));
-				ptr = std::make_shared<Array>(val8);
+				setField(*this, *this, 8);
 				return;
 			}
 
 			if (object_is_impl(obj, static_cast<std::vector<cv::Point>*>(nullptr))) {
 				val9 = object_as_impl(obj, static_cast<std::vector<cv::Point>*>(nullptr));
-				ptr = std::make_shared<Array>(val9);
+				setField(*this, *this, 9);
 				return;
 			}
 
 			if (object_is_impl(obj, static_cast<std::vector<cv::Point2f>*>(nullptr))) {
 				val10 = object_as_impl(obj, static_cast<std::vector<cv::Point2f>*>(nullptr));
-				ptr = std::make_shared<Array>(val10);
+				setField(*this, *this, 10);
 				return;
 			}
 
 			if (object_is_impl(obj, static_cast<std::vector<cv::Rect>*>(nullptr))) {
 				val11 = object_as_impl(obj, static_cast<std::vector<cv::Rect>*>(nullptr));
-				ptr = std::make_shared<Array>(val11);
+				setField(*this, *this, 11);
 				return;
 			}
 
 			if (object_is_impl(obj, static_cast<std::vector<cv::Size>*>(nullptr))) {
 				val12 = object_as_impl(obj, static_cast<std::vector<cv::Size>*>(nullptr));
-				ptr = std::make_shared<Array>(val12);
+				setField(*this, *this, 12);
 				return;
 			}
 
 			if (object_is_impl(obj, static_cast<std::vector<cv::Vec6f>*>(nullptr))) {
 				val13 = object_as_impl(obj, static_cast<std::vector<cv::Vec6f>*>(nullptr));
-				ptr = std::make_shared<Array>(val13);
+				setField(*this, *this, 13);
 				return;
 			}
 
 			if (object_is_impl(obj, static_cast<std::vector<std::vector<char>>*>(nullptr))) {
 				val14 = object_as_impl(obj, static_cast<std::vector<std::vector<char>>*>(nullptr));
-				ptr = std::make_shared<Array>(val14);
+				setField(*this, *this, 14);
 				return;
 			}
 
 			if (object_is_impl(obj, static_cast<std::vector<std::vector<int>>*>(nullptr))) {
 				val15 = object_as_impl(obj, static_cast<std::vector<std::vector<int>>*>(nullptr));
-				ptr = std::make_shared<Array>(val15);
+				setField(*this, *this, 15);
 				return;
 			}
 
 			if (object_is_impl(obj, static_cast<std::vector<std::vector<cv::Point>>*>(nullptr))) {
 				val16 = object_as_impl(obj, static_cast<std::vector<std::vector<cv::Point>>*>(nullptr));
-				ptr = std::make_shared<Array>(val16);
+				setField(*this, *this, 16);
 				return;
 			}
 
 			if (object_is_impl(obj, static_cast<std::vector<std::vector<cv::Point2f>>*>(nullptr))) {
 				val17 = object_as_impl(obj, static_cast<std::vector<std::vector<cv::Point2f>>*>(nullptr));
-				ptr = std::make_shared<Array>(val17);
+				setField(*this, *this, 17);
 				return;
 			}
 		}
 
 		ArraysSharedPtr(const std::shared_ptr<Array>& ptr) : ptr(ptr) {}
 
+		ArraysSharedPtr(const ArraysSharedPtr& src) {
+			src.setField(src, *this, src.field);
+		}
+
+		template<typename T>
+		void reset(const T& obj) {
+			ptr = std::make_shared<Array>(obj);
+		}
+
+		static void setField(const ArraysSharedPtr& src, ArraysSharedPtr& dst, std::uint8_t _field) {
+			dst.field = _field;
+
+			switch (_field) {
+			case 1:
+				if (&src != &dst) {
+					dst.val1 = src.val1;
+				}
+				dst.reset(dst.val1);
+				break;
+			case 2:
+				if (&src != &dst) {
+					dst.val2 = src.val2;
+				}
+				dst.reset(dst.val2);
+				break;
+			case 3:
+				if (&src != &dst) {
+					dst.val3 = src.val3;
+				}
+				dst.reset(dst.val3);
+				break;
+			case 4:
+				if (&src != &dst) {
+					dst.val4 = src.val4;
+				}
+				dst.reset(dst.val4);
+				break;
+			case 5:
+				if (&src != &dst) {
+					dst.val5 = src.val5;
+				}
+				dst.reset(dst.val5);
+				break;
+			case 6:
+				if (&src != &dst) {
+					dst.val6 = src.val6;
+				}
+				dst.reset(dst.val6);
+				break;
+			case 7:
+				if (&src != &dst) {
+					dst.val7 = src.val7;
+				}
+				dst.reset(dst.val7);
+				break;
+			case 8:
+				if (&src != &dst) {
+					dst.val8 = src.val8;
+				}
+				dst.reset(dst.val8);
+				break;
+			case 9:
+				if (&src != &dst) {
+					dst.val9 = src.val9;
+				}
+				dst.reset(dst.val9);
+				break;
+			case 10:
+				if (&src != &dst) {
+					dst.val10 = src.val10;
+				}
+				dst.reset(dst.val10);
+				break;
+			case 11:
+				if (&src != &dst) {
+					dst.val11 = src.val11;
+				}
+				dst.reset(dst.val11);
+				break;
+			case 12:
+				if (&src != &dst) {
+					dst.val12 = src.val12;
+				}
+				dst.reset(dst.val12);
+				break;
+			case 13:
+				if (&src != &dst) {
+					dst.val13 = src.val13;
+				}
+				dst.reset(dst.val13);
+				break;
+			case 14:
+				if (&src != &dst) {
+					dst.val14 = src.val14;
+				}
+				dst.reset(dst.val14);
+				break;
+			case 15:
+				if (&src != &dst) {
+					dst.val15 = src.val15;
+				}
+				dst.reset(dst.val15);
+				break;
+			case 16:
+				if (&src != &dst) {
+					dst.val16 = src.val16;
+				}
+				dst.reset(dst.val16);
+				break;
+			case 17:
+				if (&src != &dst) {
+					dst.val17 = src.val17;
+				}
+				dst.reset(dst.val17);
+				break;
+			default:
+				if (&src != &dst) {
+					dst.ptr = src.ptr;
+				}
+			}
+		}
+
 		auto& operator*() {
 			return *ptr;
 		}
 
+		std::uint8_t field = 0;
 		std::shared_ptr<Array> ptr;
-		std::vector<cv::cuda::GpuMat> val0;
+
 		std::vector<cv::Mat> val1;
 		std::vector<cv::UMat> val2;
 		std::vector<cv::RotatedRect> val3;

@@ -170,20 +170,20 @@ class LuaGenerator {
 
             if (coclass.isStatic()) {
                 dynamic_get.push(`
-                    { "${ propname }", [] (sol::this_state& ts) {
+                    { "${ name }", [] (sol::this_state& ts) {
                         return sol::object(ts, sol::in_place, ${ rexpr });
                     }}
                 `.replace(/^ {20}/mg, "").trim());
 
                 if (wexpr) {
                     dynamic_set.push(`
-                        { "${ propname }", [] (sol::stack_object& value, sol::this_state& ts) {
+                        { "${ name }", [] (sol::stack_object& value, sol::this_state& ts) {
                             ${ wexpr.split("\n").join(`\n${ " ".repeat(28) }`) }
                         }}
                     `.replace(/^ {24}/mg, "").trim());
                 }
             } else if (rexpr === `self->${ propname }` && in_val === `self->${ propname } = object_as<${ type }>(value)`) {
-                contentRegister.push(`exports["${ propname }"] = &::${ fqn }::${ propname };`);
+                contentRegister.push(`exports["${ name }"] = &::${ fqn }::${ propname };`);
             } else {
                 const getter_decl = !is_static ? `[] (::${ fqn }* self)` : "[]";
                 const getter_setter = [`
@@ -212,14 +212,14 @@ class LuaGenerator {
                 }
 
                 contentRegister.push(`
-                    exports["${ propname }"] = sol::property(${ getter_setter.join(", ").split("\n").join(`\n${ " ".repeat(20) }`) });
+                    exports["${ name }"] = sol::property(${ getter_setter.join(", ").split("\n").join(`\n${ " ".repeat(20) }`) });
                 `.replace(/^ {20}/mg, "").trim());
                 contentRegister.push("");
             }
 
 
             // generate docs header
-            processor.docs.push(`### ${ coclass.name }.${ propname }\n`.replaceAll("_", "\\_"));
+            processor.docs.push(`### ${ coclass.name }.${ name }\n`.replaceAll("_", "\\_"));
 
             const cppsignature = [];
             if (modifiers.includes("/S") && !coclass.isStatic()) {
@@ -228,7 +228,7 @@ class LuaGenerator {
             cppsignature.push(cpptype);
 
             if (propname !== "this") {
-                cppsignature.push(`${ fqn }::${ name }`);
+                cppsignature.push(`${ fqn }::${ propname }`);
             }
 
             const attributes = [];
@@ -246,7 +246,7 @@ class LuaGenerator {
                 cppsignature.join(" "),
                 // "",
                 "lua:",
-                `${ " ".repeat(4) }[${ attributes.join(", ") }] o${ coclass.name }.${ propname }`,
+                `${ " ".repeat(4) }[${ attributes.join(", ") }] o${ coclass.name }.${ name }`,
                 "```",
                 ""
             ].join("\n").replace(/\s*\( {2}\)/g, "()"));
@@ -512,7 +512,7 @@ class LuaGenerator {
                     const object_as = `object_as${ arg_suffix }`;
 
                     if (is_out) {
-                        if (is_by_ref) {
+                        if (is_by_ref || is_array) {
                             retval.push([j, getTernary(
                                 `${ argname }_positional`,
                                 `vargs.get<sol::object>(${ i })`,
@@ -698,7 +698,7 @@ class LuaGenerator {
                     // body is responsible of return
                     retval.length = 0;
                 } else if (return_value_type !== "void") {
-                    retval.push([0, callee, processor.getCppType(return_value_type, coclass, options)]);
+                    retval.push([-1, callee, processor.getCppType(return_value_type, coclass, options)]);
                 } else {
                     overload.push("", `${ callee };`);
                 }
