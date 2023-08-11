@@ -1,9 +1,10 @@
-opencv_lua = require("opencv_lua")
-cv = opencv_lua.cv
+local opencv_lua = require("opencv_lua")
+local cv = opencv_lua.cv
+local exports = opencv_lua
 
 cv.TM_EXACT = -1
 
-opencv_lua.findTemplate = function ( ... )
+function exports.findTemplate ( ... )
     local args={...}
     local has_kwarg = opencv_lua.kwargs.is_instance(args[#args])
     local kwargs = has_kwarg and args[#args] or opencv_lua.kwargs()
@@ -329,8 +330,10 @@ opencv_lua.findTemplate = function ( ... )
         end
     end
 
+    local tresult = {}
+
     if limit < 0 then limit = 0 end
-    if limit == 0 then return end
+    if limit == 0 then return tresult end
 
     local width = image.width
     local height = image.height
@@ -343,7 +346,7 @@ opencv_lua.findTemplate = function ( ... )
     local rw = width - w + 1
     local rh = height - h + 1
 
-    if rw <= 0 or rh <= 0 then return end
+    if rw <= 0 or rh <= 0 then return tresult end
 
     local methodAcceptsMask = methodMatch == cv.TM_EXACT or cv.TM_SQDIFF == methodMatch or methodMatch == cv.TM_CCORR_NORMED
     local isNormed = methodMatch == cv.TM_EXACT or methodMatch == cv.TM_SQDIFF_NORMED or methodMatch == cv.TM_CCORR_NORMED or methodMatch == cv.TM_CCOEFF_NORMED
@@ -370,8 +373,6 @@ opencv_lua.findTemplate = function ( ... )
     -- create a mask with the same number of rows and cols
     local resultMask = image.ones(rh, rw, cv.CV_8UC1)
     local minVal, maxVal, minLoc, maxLoc
-
-    local tresult = {}
 
     while limit > 0 do
         limit = limit - 1
@@ -422,7 +423,7 @@ opencv_lua.findTemplate = function ( ... )
     return tresult
 end
 
-sysPath = {
+local sysPath = {
     dirname = function (file)
         local index;
 
@@ -442,7 +443,9 @@ sysPath = {
     end
 }
 
-OPENCV_SAMPLES_DATA_PATH = sysPath.dirname(opencv_lua.fs_utils.findFile("samples/data/lena.jpg", opencv_lua.kwargs({
+exports.path = sysPath
+
+local OPENCV_SAMPLES_DATA_PATH = sysPath.dirname(opencv_lua.fs_utils.findFile("samples/data/lena.jpg", opencv_lua.kwargs({
     hints={
         ".",
         "out/build/x64-Debug/opencv/opencv-src",
@@ -453,5 +456,7 @@ OPENCV_SAMPLES_DATA_PATH = sysPath.dirname(opencv_lua.fs_utils.findFile("samples
 })))
 cv.samples.addSamplesDataSearchPath(OPENCV_SAMPLES_DATA_PATH)
 
-LOCAL_SAMPLES_DATA_PATH = opencv_lua.fs_utils.findFile("samples/data")
+local LOCAL_SAMPLES_DATA_PATH = opencv_lua.fs_utils.findFile("samples/data")
 cv.samples.addSamplesDataSearchPath(LOCAL_SAMPLES_DATA_PATH)
+
+return exports

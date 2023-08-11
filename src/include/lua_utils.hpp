@@ -99,6 +99,10 @@ namespace LUA_MODULE_NAME {
 		// 	return obj.template as<std::vector<T>>();
 		// }
 
+		if (obj.get_type() == sol::type::userdata) {
+			return obj.template as<std::vector<T>>();
+		}
+
 		std::vector<T> res;
 		auto obj_table = obj.template as<sol::table>();
 

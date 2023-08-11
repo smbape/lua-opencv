@@ -1,10 +1,7 @@
-require(string.gsub(arg[0], "[^/\\]+%.lua", "init"))
+local opencv_lua = require(string.gsub(arg[0], "[^/\\]+%.lua", "init"))
+local cv = opencv_lua.cv
 
-function example()
-    local img = cv.imread(cv.samples.findFile("lena.jpg"))
-    cv.imshow("Image", img)
-    cv.waitKey()
-    cv.destroyAllWindows()
-end
-
-example()
+local img = cv.imread(cv.samples.findFile("lena.jpg"))
+cv.imshow("Image", img)
+cv.waitKey()
+cv.destroyAllWindows()
