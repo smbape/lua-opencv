@@ -1,6 +1,6 @@
-opencv_lua = require("opencv_lua")
-cv = opencv_lua.cv
-kwargs = opencv_lua.kwargs
+local opencv_lua = require("opencv_lua")
+local cv = opencv_lua.cv
+local kwargs = opencv_lua.kwargs
 
 -- cv2 = opencv_lua.cv2
 -- obj = cv.test.new(24)
@@ -14,7 +14,7 @@ function CreatePet(options)
   print('Created a '..breed..' '..species..' named '..name)
 end
 
-function display(mat)
+function Display(mat)
     print('dims: ' .. mat.dims .. ', rows: ' .. mat.rows .. ', cols: ' .. mat.cols)
 end
 
@@ -26,18 +26,44 @@ CreatePet({name='Rex',species='Dog',breed='Irish Setter'})
 -- x, y = cv2.multi_tuple()
 -- assert(x == 10 and y == 'goodbye')
 
-if package.config:sub(1,1) == '\\' then
-    filename = 'E:\\development\\git\\node-autoit-opencv-com\\opencv-4.8.0-windows\\opencv\\sources\\samples\\data\\lena.jpg'
-else
-    filename = '/mnt/e/development/git/node-autoit-opencv-com/opencv-4.8.0-windows/opencv/sources/samples/data/lena.jpg'
-end
+local sysPath = {
+    dirname = function (file)
+        local index;
 
-img = cv.imread(filename)
+        for i=#file,1,-1 do
+            local c = file:sub(i,i)
+            if c == "/" or c == "\\" then
+                if i == 1 then return c end
+                return file:sub(1, i - 1)
+            end
+        end
+
+        if #file == 0 or (file:find(":") == nil and not (file:sub(1,1) == "/")) then
+            return "."
+        end
+
+        return file
+    end
+}
+
+local OPENCV_SAMPLES_DATA_PATH = sysPath.dirname(opencv_lua.fs_utils.findFile("samples/data/lena.jpg", opencv_lua.kwargs({
+    hints={
+        ".",
+        "out/build/x64-Debug/opencv/opencv-src",
+        "out/build/x64-Release/opencv/opencv-src",
+        "out/build/Linux-GCC-Debug/opencv/opencv-src",
+        "out/build/Linux-GCC-Release/opencv/opencv-src",
+    }
+})))
+cv.samples.addSamplesDataSearchPath(OPENCV_SAMPLES_DATA_PATH)
+
+local filename = cv.samples.findFile("lena.jpg")
+local img = cv.imread(filename)
 cv.imshow("Image 1", img)
 cv.waitKey()
 
 -- print('dims: ' .. img.dims .. ', rows: ' .. img.rows .. ', cols: ' .. img.cols)
-display(img)
+Display(img)
 -- cv2.proxy(display, img)
 
 img = cv.Mat(img)

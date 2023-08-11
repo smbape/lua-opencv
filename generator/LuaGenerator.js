@@ -871,7 +871,6 @@ class LuaGenerator {
 
         for (const fqn of Array.from(processor.classes.keys()).sort()) {
             // TODO https://github.com/ThePhD/sol2/issues/1405
-            // TODO add ArrayOfArrays types
 
             const docid = processor.docs.length;
 
@@ -997,7 +996,6 @@ class LuaGenerator {
 
             files.set(sysPath.join(options.output, fileCpp), contentCpp.join("\n").replace(/^[^\S\r\n]+$/mg, ""));
 
-            // TODO /^cv::(?:Point|Rect|Scalar|Size|Vec)(?:\d[bdfisw])?$/
             // TODO : add property signature
             // TODO : add method signature
 

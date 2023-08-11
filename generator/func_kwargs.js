@@ -2,10 +2,10 @@ const genFunc = (libname, fname, args) => {
     let mandatory = true;
 
     return `
-${libname}.${ fname } = function ( ... )
+function ${libname}.${ fname } ( ... )
     local args={...}
-    local has_kwarg = ${libname}.kwarg.is_instance(args[#args])
-    local kwargs = has_kwarg and args[#args] or ${libname}.kwarg()
+    local has_kwarg = ${libname}.kwargs.is_instance(args[#args])
+    local kwargs = has_kwarg and args[#args] or ${libname}.kwargs()
     local usedkw = 0
 
     ${ args.map((decl, i) => {

@@ -1,10 +1,24 @@
 local opencv_lua = require("opencv_lua")
 local cv = opencv_lua.cv
-local exports = opencv_lua
 
 cv.TM_EXACT = -1
 
-function exports.findTemplate ( ... )
+-- node generator/func_kwargs.js opencv_lua findTemplate \
+--   image \
+--   templ \
+--   "['threshold', null, 0.95]" \
+--   "['methodMatch', null, 'cv.TM_CCOEFF_NORMED']" \
+--   mask \
+--   "['limit', null, '20']" \
+--   "['code', null, '-1']" \
+--   "['overlapping', null, '2']" \
+--   channels \
+--   histSize \
+--   ranges \
+--  "['methodCompareHist', null, 'cv.HISTCMP_CORREL']" \
+--  dstCn \
+--  accumulate
+function opencv_lua.findTemplate ( ... )
     local args={...}
     local has_kwarg = opencv_lua.kwargs.is_instance(args[#args])
     local kwargs = has_kwarg and args[#args] or opencv_lua.kwargs()
@@ -12,19 +26,19 @@ function exports.findTemplate ( ... )
 
     -- get argument image
     local image
-    local has_img = false
+    local has_image = false
     if (not has_kwarg) or #args > 1 then
         -- positional parameter should not be a named parameter
         if has_kwarg and kwargs:has("image") then
             error('image was both specified as a Positional and NamedParameter')
         end
-        has_img = #args >= 1
-        if has_img then
+        has_image = #args >= 1
+        if has_image then
             image = args[1]
         end
     elseif kwargs:has("image") then
         -- named parameter
-        has_img = true
+        has_image = true
         image = kwargs:get("image")
         usedkw = usedkw + 1
     elseif true then
@@ -33,19 +47,19 @@ function exports.findTemplate ( ... )
 
     -- get argument templ
     local templ
-    local has_tmpl = false
+    local has_templ = false
     if (not has_kwarg) or #args > 2 then
         -- positional parameter should not be a named parameter
         if has_kwarg and kwargs:has("templ") then
             error('templ was both specified as a Positional and NamedParameter')
         end
-        has_tmpl = #args >= 2
-        if has_tmpl then
+        has_templ = #args >= 2
+        if has_templ then
             templ = args[2]
         end
     elseif kwargs:has("templ") then
         -- named parameter
-        has_tmpl = true
+        has_templ = true
         templ = kwargs:get("templ")
         usedkw = usedkw + 1
     elseif true then
@@ -443,7 +457,7 @@ local sysPath = {
     end
 }
 
-exports.path = sysPath
+opencv_lua.path = sysPath
 
 local OPENCV_SAMPLES_DATA_PATH = sysPath.dirname(opencv_lua.fs_utils.findFile("samples/data/lena.jpg", opencv_lua.kwargs({
     hints={
@@ -459,4 +473,4 @@ cv.samples.addSamplesDataSearchPath(OPENCV_SAMPLES_DATA_PATH)
 local LOCAL_SAMPLES_DATA_PATH = opencv_lua.fs_utils.findFile("samples/data")
 cv.samples.addSamplesDataSearchPath(LOCAL_SAMPLES_DATA_PATH)
 
-return exports
+return opencv_lua

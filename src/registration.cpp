@@ -21,11 +21,15 @@ namespace LUA_MODULE_NAME {
 		sol::state_view lua(L);
 		sol::table module = lua.create_table();
 
-		auto kwargs = module.new_usertype<NamedParameters>("kwargs", sol::call_constructor,
-			sol::constructors<NamedParameters(), NamedParameters(NamedParameters::Table)>()
+		auto kwargs = module.new_usertype<NamedParameters>("kwargs",
+			// kwargs.new(...) -- dot syntax, no "self" value
+			sol::meta_function::construct, sol::constructors<NamedParameters(), NamedParameters(NamedParameters::Table)>(),
+
+			// kwargs(...) syntax, only
+			sol::call_constructor, sol::constructors<NamedParameters(), NamedParameters(NamedParameters::Table)>()
 		);
 
-		kwargs.set_function("kwargs", [] (NamedParameters* self, const std::string& key) {
+		kwargs.set_function("has", [] (NamedParameters* self, const std::string& key) {
 			return self->count(key) != 0;
 		});
 
