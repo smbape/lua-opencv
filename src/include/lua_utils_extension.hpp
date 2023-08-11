@@ -18,24 +18,24 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _To, typename _Tp>
-	auto object_as_impl(const _To& obj, cv::Ptr<_Tp>*) {
-		cv::Ptr<_Tp> res = obj.template as<std::shared_ptr<_Tp>>();
-		return res;
-	}
-
-	template<typename _To, typename _Tp>
 	auto object_as_impl(_To& obj, cv::Ptr<_Tp>*) {
 		cv::Ptr<_Tp> res = obj.template as<std::shared_ptr<_Tp>>();
 		return res;
 	}
 
+	template<typename _To, typename _Tp>
+	auto object_as_impl(const _To& obj, cv::Ptr<_Tp>*) {
+		cv::Ptr<_Tp> res = obj.template as<std::shared_ptr<_Tp>>();
+		return res;
+	}
+
 	template<typename _Tp>
-	auto return_cast_impl(const cv::Ptr<_Tp>& ptr) {
+	auto as_return_impl(cv::Ptr<_Tp>& ptr, sol::state_view& lua) {
 		return std::shared_ptr<_Tp>(ptr);
 	}
 
 	template<typename _Tp>
-	auto return_cast_impl(cv::Ptr<_Tp>& ptr) {
+	auto as_return_impl(const cv::Ptr<_Tp>& ptr, sol::state_view& lua) {
 		return std::shared_ptr<_Tp>(ptr);
 	}
 
@@ -46,14 +46,6 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _To, typename _Tp>
-	auto object_as_impl(const _To& obj, std::vector<cv::Ptr<_Tp>>*) {
-		std::vector<cv::Ptr<_Tp>> res;
-		const auto& vec = obj.template as<std::vector<std::shared_ptr<_Tp>>>();
-		res.insert(std::end(res), std::begin(vec), std::end(vec));
-		return res;
-	}
-
-	template<typename _To, typename _Tp>
 	auto object_as_impl(_To& obj, std::vector<cv::Ptr<_Tp>>*) {
 		std::vector<cv::Ptr<_Tp>> res;
 		const auto& vec = obj.template as<std::vector<std::shared_ptr<_Tp>>>();
@@ -61,15 +53,23 @@ namespace LUA_MODULE_NAME {
 		return res;
 	}
 
+	template<typename _To, typename _Tp>
+	auto object_as_impl(const _To& obj, std::vector<cv::Ptr<_Tp>>*) {
+		std::vector<cv::Ptr<_Tp>> res;
+		const auto& vec = obj.template as<std::vector<std::shared_ptr<_Tp>>>();
+		res.insert(std::end(res), std::begin(vec), std::end(vec));
+		return res;
+	}
+
 	template<typename _Tp>
-	auto return_cast_impl(const std::vector<cv::Ptr<_Tp>>& vec) {
+	auto as_return_impl(std::vector<cv::Ptr<_Tp>>& vec, sol::state_view& lua) {
 		std::vector<std::shared_ptr<_Tp>> res;
 		res.insert(std::end(res), std::begin(vec), std::end(vec));
 		return res;
 	}
 
 	template<typename _Tp>
-	auto return_cast_impl(std::vector<cv::Ptr<_Tp>>& vec) {
+	auto as_return_impl(const std::vector<cv::Ptr<_Tp>>& vec, sol::state_view& lua) {
 		std::vector<std::shared_ptr<_Tp>> res;
 		res.insert(std::end(res), std::begin(vec), std::end(vec));
 		return res;
@@ -91,23 +91,6 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _To, typename _Tp>
-	auto object_as_impl(const _To& obj, cv::Point_<_Tp>*) {
-		if (obj.template is<cv::Point_<_Tp>>()) {
-			return obj.template as<cv::Point_<_Tp>>();
-		}
-
-		cv::Point_<_Tp> res;
-
-		if (obj.template is<std::vector<_Tp>>()) {
-			const auto& vec = obj.template as<std::vector<_Tp>>();
-			res.x = vec[0];
-			res.y = vec[1];
-		}
-
-		return res;
-	}
-
-	template<typename _To, typename _Tp>
 	auto object_as_impl(_To& obj, cv::Point_<_Tp>*) {
 		if (obj.template is<cv::Point_<_Tp>>()) {
 			return obj.template as<cv::Point_<_Tp>>();
@@ -124,6 +107,50 @@ namespace LUA_MODULE_NAME {
 		return res;
 	}
 
+	template<typename _To, typename _Tp>
+	auto object_as_impl(const _To& obj, cv::Point_<_Tp>*) {
+		if (obj.template is<cv::Point_<_Tp>>()) {
+			return obj.template as<cv::Point_<_Tp>>();
+		}
+
+		cv::Point_<_Tp> res;
+
+		if (obj.template is<std::vector<_Tp>>()) {
+			const auto& vec = obj.template as<std::vector<_Tp>>();
+			res.x = vec[0];
+			res.y = vec[1];
+		}
+
+		return res;
+	}
+
+	template<typename _Tp>
+	auto as_return_impl(cv::Point_<_Tp>& obj, sol::state_view& lua) {
+		sol::table res = lua.create_table();
+		res[1] = obj.x;
+		res[2] = obj.y;
+		return res;
+	}
+
+	template<typename _Tp>
+	auto as_return_impl(const cv::Point_<_Tp>& obj, sol::state_view& lua) {
+		return as_return_impl(const_cast<cv::Point_<_Tp>&>(obj), lua);
+	}
+
+	template<typename _Tp>
+	auto as_return_impl(cv::Point3_<_Tp>& obj, sol::state_view& lua) {
+		sol::table res = lua.create_table();
+		res[1] = obj.x;
+		res[2] = obj.y;
+		res[3] = obj.z;
+		return res;
+	}
+
+	template<typename _Tp>
+	auto as_return_impl(const cv::Point3_<_Tp>& obj, sol::state_view& lua) {
+		return as_return_impl(const_cast<cv::Point3_<_Tp>&>(obj), lua);
+	}
+
 	// cv::Rect_
 	template<typename _To, typename _Tp>
 	bool object_is_impl(const _To& obj, cv::Rect_<_Tp>*) {
@@ -137,25 +164,6 @@ namespace LUA_MODULE_NAME {
 		}
 
 		return false;
-	}
-
-	template<typename _To, typename _Tp>
-	auto object_as_impl(const _To& obj, cv::Rect_<_Tp>*) {
-		if (obj.template is<cv::Rect_<_Tp>>()) {
-			return obj.template as<cv::Rect_<_Tp>>();
-		}
-
-		cv::Rect_<_Tp> res;
-
-		if (obj.template is<std::vector<_Tp>>()) {
-			const auto& vec = obj.template as<std::vector<_Tp>>();
-			res.x = vec[0];
-			res.y = vec[1];
-			res.width = vec[2];
-			res.height = vec[3];
-		}
-
-		return res;
 	}
 
 	template<typename _To, typename _Tp>
@@ -177,6 +185,40 @@ namespace LUA_MODULE_NAME {
 		return res;
 	}
 
+	template<typename _To, typename _Tp>
+	auto object_as_impl(const _To& obj, cv::Rect_<_Tp>*) {
+		if (obj.template is<cv::Rect_<_Tp>>()) {
+			return obj.template as<cv::Rect_<_Tp>>();
+		}
+
+		cv::Rect_<_Tp> res;
+
+		if (obj.template is<std::vector<_Tp>>()) {
+			const auto& vec = obj.template as<std::vector<_Tp>>();
+			res.x = vec[0];
+			res.y = vec[1];
+			res.width = vec[2];
+			res.height = vec[3];
+		}
+
+		return res;
+	}
+
+	template<typename _Tp>
+	auto as_return_impl(cv::Rect_<_Tp>& obj, sol::state_view& lua) {
+		sol::table res = lua.create_table();
+		res[1] = obj.x;
+		res[2] = obj.y;
+		res[3] = obj.width;
+		res[4] = obj.height;
+		return res;
+	}
+
+	template<typename _Tp>
+	auto as_return_impl(const cv::Rect_<_Tp>& obj, sol::state_view& lua) {
+		return as_return_impl(const_cast<cv::Rect_<_Tp>&>(obj), lua);
+	}
+
 	// cv::Scalar_
 	template<typename _To, typename _Tp>
 	bool object_is_impl(const _To& obj, cv::Scalar_<_Tp>*) {
@@ -190,28 +232,6 @@ namespace LUA_MODULE_NAME {
 		}
 
 		return false;
-	}
-
-	template<typename _To, typename _Tp>
-	auto object_as_impl(const _To& obj, cv::Scalar_<_Tp>*) {
-		if (obj.template is<cv::Scalar_<_Tp>>()) {
-			return obj.template as<cv::Scalar_<_Tp>>();
-		}
-
-		if (obj.template is<_Tp>()) {
-			return cv::Scalar_<_Tp>(obj.template as<_Tp>());
-		}
-
-		cv::Scalar_<_Tp> res;
-
-		if (obj.template is<std::vector<_Tp>>()) {
-			const auto& vec = obj.template as<std::vector<_Tp>>();
-			for (int i = 0; i < 4 && i < vec.size(); i++) {
-				res[i] = vec[i];
-			}
-		}
-
-		return res;
 	}
 
 	template<typename _To, typename _Tp>
@@ -236,6 +256,42 @@ namespace LUA_MODULE_NAME {
 		return res;
 	}
 
+	template<typename _To, typename _Tp>
+	auto object_as_impl(const _To& obj, cv::Scalar_<_Tp>*) {
+		if (obj.template is<cv::Scalar_<_Tp>>()) {
+			return obj.template as<cv::Scalar_<_Tp>>();
+		}
+
+		if (obj.template is<_Tp>()) {
+			return cv::Scalar_<_Tp>(obj.template as<_Tp>());
+		}
+
+		cv::Scalar_<_Tp> res;
+
+		if (obj.template is<std::vector<_Tp>>()) {
+			const auto& vec = obj.template as<std::vector<_Tp>>();
+			for (int i = 0; i < 4 && i < vec.size(); i++) {
+				res[i] = vec[i];
+			}
+		}
+
+		return res;
+	}
+
+	template<typename _Tp>
+	auto as_return_impl(cv::Scalar_<_Tp>& obj, sol::state_view& lua) {
+		sol::table res = lua.create_table();
+		for (int i = 0; i < 4; i++) {
+			res[i + 1] = obj[i];
+		}
+		return res;
+	}
+
+	template<typename _Tp>
+	auto as_return_impl(const cv::Scalar_<_Tp>& obj, sol::state_view& lua) {
+		return as_return_impl(const_cast<cv::Scalar_<_Tp>&>(obj), lua);
+	}
+
 	// cv::Size_
 	template<typename _To, typename _Tp>
 	bool object_is_impl(const _To& obj, cv::Size_<_Tp>*) {
@@ -249,23 +305,6 @@ namespace LUA_MODULE_NAME {
 		}
 
 		return false;
-	}
-
-	template<typename _To, typename _Tp>
-	auto object_as_impl(const _To& obj, cv::Size_<_Tp>*) {
-		if (obj.template is<cv::Size_<_Tp>>()) {
-			return obj.template as<cv::Size_<_Tp>>();
-		}
-
-		cv::Size_<_Tp> res;
-
-		if (obj.template is<std::vector<_Tp>>()) {
-			const auto& vec = obj.template as<std::vector<_Tp>>();
-			res.width = vec[0];
-			res.height = vec[1];
-		}
-
-		return res;
 	}
 
 	template<typename _To, typename _Tp>
@@ -285,6 +324,36 @@ namespace LUA_MODULE_NAME {
 		return res;
 	}
 
+	template<typename _To, typename _Tp>
+	auto object_as_impl(const _To& obj, cv::Size_<_Tp>*) {
+		if (obj.template is<cv::Size_<_Tp>>()) {
+			return obj.template as<cv::Size_<_Tp>>();
+		}
+
+		cv::Size_<_Tp> res;
+
+		if (obj.template is<std::vector<_Tp>>()) {
+			const auto& vec = obj.template as<std::vector<_Tp>>();
+			res.width = vec[0];
+			res.height = vec[1];
+		}
+
+		return res;
+	}
+
+	template<typename _Tp>
+	auto as_return_impl(cv::Size_<_Tp>& obj, sol::state_view& lua) {
+		sol::table res = lua.create_table();
+		res[1] = obj.width;
+		res[2] = obj.height;
+		return res;
+	}
+
+	template<typename _Tp>
+	auto as_return_impl(const cv::Size_<_Tp>& obj, sol::state_view& lua) {
+		return as_return_impl(const_cast<cv::Size_<_Tp>&>(obj), lua);
+	}
+
 	// cv::Vec
 	template<typename _To, typename _Tp, int cn>
 	bool object_is_impl(const _To& obj, cv::Vec<_Tp, cn>*) {
@@ -298,28 +367,6 @@ namespace LUA_MODULE_NAME {
 		}
 
 		return false;
-	}
-
-	template<typename _To, typename _Tp, int cn>
-	auto object_as_impl(const _To& obj, cv::Vec<_Tp, cn>*) {
-		if (obj.template is<cv::Vec<_Tp, cn>>()) {
-			return obj.template as<cv::Vec<_Tp, cn>>();
-		}
-
-		if (obj.template is<_Tp>()) {
-			return cv::Vec<_Tp, cn>(obj.template as<_Tp>());
-		}
-
-		cv::Vec<_Tp, cn> res;
-
-		if (obj.template is<std::vector<_Tp>>()) {
-			const auto& vec = obj.template as<std::vector<_Tp>>();
-			for (int i = 0; i < cn && i < vec.size(); i++) {
-				res[i] = vec[i];
-			}
-		}
-
-		return res;
 	}
 
 	template<typename _To, typename _Tp, int cn>
@@ -344,6 +391,43 @@ namespace LUA_MODULE_NAME {
 		return res;
 	}
 
+	template<typename _To, typename _Tp, int cn>
+	auto object_as_impl(const _To& obj, cv::Vec<_Tp, cn>*) {
+		if (obj.template is<cv::Vec<_Tp, cn>>()) {
+			return obj.template as<cv::Vec<_Tp, cn>>();
+		}
+
+		if (obj.template is<_Tp>()) {
+			return cv::Vec<_Tp, cn>(obj.template as<_Tp>());
+		}
+
+		cv::Vec<_Tp, cn> res;
+
+		if (obj.template is<std::vector<_Tp>>()) {
+			const auto& vec = obj.template as<std::vector<_Tp>>();
+			for (int i = 0; i < cn && i < vec.size(); i++) {
+				res[i] = vec[i];
+			}
+		}
+
+		return res;
+	}
+
+	template<typename _Tp, int cn>
+	auto as_return_impl(cv::Vec<_Tp, cn>& obj, sol::state_view& lua) {
+		sol::table res = lua.create_table();
+		for (int i = 0; i < cn; i++) {
+			res[i + 1] = obj[i];
+		}
+		return res;
+	}
+
+	template<typename _Tp, int cn>
+	auto as_return_impl(const cv::Vec<_Tp, cn>& obj, sol::state_view& lua) {
+		return as_return_impl(const_cast<cv::Vec<_Tp, cn>&>(obj), lua);
+	}
+
+	// InputArray, outputArray, InputOutputArray
 	template<typename Array, typename _To = sol::object>
 	bool object_is_array(const _To& obj, Array*) {
 		return object_is_impl(obj, static_cast<Array*>(nullptr))
@@ -358,7 +442,7 @@ namespace LUA_MODULE_NAME {
 	template<typename Array, typename _To = sol::object>
 	struct ArraySharedPtr
 	{
-		ArraySharedPtr(const _To& obj) {
+		ArraySharedPtr(_To& obj) {
 			if (object_is_impl(obj, static_cast<Array*>(nullptr))) {
 				const Array& input = object_as_impl(obj, static_cast<Array*>(nullptr));
 				ptr = reference_internal(input);
@@ -398,10 +482,17 @@ namespace LUA_MODULE_NAME {
 			}
 		}
 
+		ArraySharedPtr(const _To& obj) : ArraySharedPtr(const_cast<_To&>(obj)) {}
+
 		ArraySharedPtr(const std::shared_ptr<Array>& ptr) : ptr(ptr) {}
 
 		ArraySharedPtr(const ArraySharedPtr& src) {
 			setField(src, *this, src.field);
+		}
+
+		template<typename T>
+		void reset(T& obj) {
+			ptr = std::make_shared<Array>(obj);
 		}
 
 		template<typename T>
@@ -445,6 +536,7 @@ namespace LUA_MODULE_NAME {
 		double dval;
 	};
 
+	// InputArrayOfArrays, outputArrayOfArrays, InputOutputArrayOfArrays
 	template<typename Array, typename _To = sol::object>
 	decltype(auto) object_as_array(const _To& obj, Array*) {
 		return ArraySharedPtr<Array>(obj);
@@ -481,7 +573,7 @@ namespace LUA_MODULE_NAME {
 	template<typename Array, typename _To = sol::object>
 	struct ArraysSharedPtr
 	{
-		ArraysSharedPtr(const _To& obj) {
+		ArraysSharedPtr(_To& obj) {
 			if (object_is_impl(obj, static_cast<Array*>(nullptr))) {
 				const Array& input = object_as_impl(obj, static_cast<Array*>(nullptr));
 				ptr = reference_internal(input);
@@ -591,10 +683,17 @@ namespace LUA_MODULE_NAME {
 			}
 		}
 
+		ArraysSharedPtr(const _To& obj) : ArraysSharedPtr(const_cast<_To&>(obj)) {}
+
 		ArraysSharedPtr(const std::shared_ptr<Array>& ptr) : ptr(ptr) {}
 
 		ArraysSharedPtr(const ArraysSharedPtr& src) {
 			src.setField(src, *this, src.field);
+		}
+
+		template<typename T>
+		void reset(T& obj) {
+			ptr = std::make_shared<Array>(obj);
 		}
 
 		template<typename T>

@@ -37,7 +37,7 @@
         template<typename Array, typename _To = sol::object>
         struct ArraysSharedPtr
         {
-            ArraysSharedPtr(const _To& obj) {
+            ArraysSharedPtr(_To& obj) {
                 if (object_is_impl(obj, static_cast<Array*>(nullptr))) {
                     const Array& input = object_as_impl(obj, static_cast<Array*>(nullptr));
                     ptr = reference_internal(input);
@@ -52,10 +52,17 @@
                 }`.trim()).join(`\n\n${ " ".repeat(16) }`) }
             }
 
+            ArraysSharedPtr(const _To& obj) : ArraysSharedPtr(const_cast<_To&>(obj)) {}
+
             ArraysSharedPtr(const std::shared_ptr<Array>& ptr) : ptr(ptr) {}
 
             ArraysSharedPtr(const ArraysSharedPtr& src) {
                 src.setField(src, *this, src.field);
+            }
+
+            template<typename T>
+            void reset(T& obj) {
+                ptr = std::make_shared<Array>(obj);
             }
 
             template<typename T>

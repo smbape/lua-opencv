@@ -410,7 +410,7 @@ class DeclProcessor {
         const {shared_ptr} = options;
         const shared_ptr_ = removeNamespaces(shared_ptr, options);
 
-        const type_ = type;
+        let type_ = type;
         type = CoClass.restoreOriginalType(type, options);
 
         if (
@@ -465,6 +465,10 @@ class DeclProcessor {
             include = include.include;
         }
 
+        if (options.implicitNamespaceType && options.implicitNamespaceType.test(type_)) {
+            type_ = `${ this.namespace }::${ type }`;
+        }
+
         for (const fqn of this.getMaybeTypes(type_, include)) {
             if (this.enums.has(fqn)) {
                 return fqn;
@@ -483,7 +487,7 @@ class DeclProcessor {
             }
         }
 
-        return options.implicitNamespaceType && options.implicitNamespaceType.test(type) ? `${ this.namespace }::${ type }` : type_;
+        return type_;
     }
 
     setAssignOperator(type, coclass, options) {

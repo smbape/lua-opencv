@@ -14,7 +14,7 @@ module.exports = ({ self, self_get, shared_ptr }) => {
 
             ["int", "width", "", ["/RW", "=cols"]],
             ["int", "height", "", ["/RW", "=rows"]],
-            ["std::tuple<int, int, int>", "shape", "", ["/R", `/RExpr=std::tuple<int, int, int>(${ self_get("rows") }, ${ self_get("cols") }, ${ self_get("channels") }())`]],
+            ["std::tuple<int, int, int>", "shape", "", ["/R", `/RExpr=std::make_tuple(${ self_get("rows") }, ${ self_get("cols") }, ${ self_get("channels") }())`]],
             ["std::vector<int>", "sizes", "", ["/R", `/RExpr=std::vector<int>(${ self_get("size") }.p, ${ self_get("size") }.p + ${ self_get("dims") })`]],
             ["std::vector<size_t>", "steps", "", ["/R", `/RExpr=std::vector<size_t>(${ self_get("step") }.p, ${ self_get("step") }.p + ${ self_get("dims") })`]],
         ], "", ""],
@@ -278,7 +278,7 @@ module.exports = ({ self, self_get, shared_ptr }) => {
             ["InputArray", "mask", "noArray()", []],
         ], "", ""],
 
-        ["cv.Mat.size", "Size", [], [], "", ""],
+        ["cv.Mat.size", "Size", ["/WrapAs=static_cast<Size>"], [], "", ""],
 
         ["cv.Mat.step1", "size_t", [], [
             ["int", "i", "0", []]

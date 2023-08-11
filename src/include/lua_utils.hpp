@@ -73,9 +73,14 @@ namespace LUA_MODULE_NAME {
 		return object_is_impl(obj, static_cast<T*>(nullptr));
 	}
 
-	template<typename T, typename _To = sol::object>
-	bool object_is(_To& obj) {
-		return object_is_impl(obj, static_cast<T*>(nullptr));
+	template<typename _To, typename T>
+	decltype(auto) object_as_impl(_To& obj, T*) {
+		if constexpr (is_usertype_v<T>) {
+			if (obj.template is<std::shared_ptr<T>>()) {
+				return *obj.template as<std::shared_ptr<T>>();
+			}
+		}
+		return obj.template as<T>();
 	}
 
 	template<typename _To, typename T>
@@ -89,13 +94,21 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _To, typename T>
-	decltype(auto) object_as_impl(_To& obj, T*) {
-		if constexpr (is_usertype_v<T>) {
-			if (obj.template is<std::shared_ptr<T>>()) {
-				return *obj.template as<std::shared_ptr<T>>();
-			}
+	decltype(auto) object_as_impl(_To& obj, std::vector<T>*) {
+		// if (obj.template is<std::vector<T>>()) {
+		// 	return obj.template as<std::vector<T>>();
+		// }
+
+		std::vector<T> res;
+		auto obj_table = obj.template as<sol::table>();
+
+		auto i = 1;
+		for (const auto& key_value_pair : obj_table) {
+			sol::object value = key_value_pair.second;
+			res.push_back(object_as_impl(value, static_cast<T*>(nullptr)));
 		}
-		return obj.template as<T>();
+
+		return res;
 	}
 
 	template<typename _To, typename T>
@@ -120,31 +133,13 @@ namespace LUA_MODULE_NAME {
 		return res;
 	}
 
-	template<typename _To, typename T>
-	decltype(auto) object_as_impl(_To& obj, std::vector<T>*) {
-		// if (obj.template is<std::vector<T>>()) {
-		// 	return obj.template as<std::vector<T>>();
-		// }
-
-		std::vector<T> res;
-		auto obj_table = obj.template as<sol::table>();
-
-		auto i = 1;
-		for (const auto& key_value_pair : obj_table) {
-			sol::object value = key_value_pair.second;
-			res.push_back(object_as_impl(value, static_cast<T*>(nullptr)));
-		}
-
-		return res;
-	}
-
 	template<typename T, typename _To = sol::object>
-	decltype(auto) object_as(const _To& obj) {
+	decltype(auto) object_as(_To& obj) {
 		return object_as_impl(obj, static_cast<T*>(nullptr));
 	}
 
 	template<typename T, typename _To = sol::object>
-	decltype(auto) object_as(_To& obj) {
+	decltype(auto) object_as(const _To& obj) {
 		return object_as_impl(obj, static_cast<T*>(nullptr));
 	}
 }

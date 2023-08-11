@@ -19,6 +19,7 @@ const getOptions = output => {
         APP_NAME: "cv",
         namespace: "cv",
         implicitNamespaceType: /^(?:Point|Rect|Scalar|Size|Vec)(?:\d[bdfisw])?$/,
+        variantTypeReg: /(?:^cv::(?:Point|Rect|Scalar|Size|Vec)(?:\d[bdfisw])?$|<cv::Ptr)/,
         shared_ptr: "cv::Ptr",
 
         isCaseSensitive: true,

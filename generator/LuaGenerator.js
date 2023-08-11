@@ -9,6 +9,7 @@ const [VERSION_MAJOR, VERSION_MINOR] = version.split(".");
 
 const knwon_ids = require("./ids");
 const FileUtils = require("./FileUtils");
+const CoClass = require("./CoClass");
 const {makeExpansion, useNamespaces, removeNamespaces} = require("./alias");
 const {
     PTR,
@@ -94,6 +95,7 @@ class LuaGenerator {
 
             let rexpr = null;
             let wexpr = null;
+            let r_tuple_types = false;
 
             if (has_propget) {
                 const shared_ptr = removeNamespaces(options.shared_ptr, options);
@@ -102,6 +104,10 @@ class LuaGenerator {
                 const is_std = cpptype.startsWith("std::");
                 const is_by_ref = !is_ptr && !is_shared_ptr && (is_std || processor.classes.has(cpptype) && !processor.enums.has(cpptype));
                 let has_expr = false;
+
+                if (cpptype.startsWith("std::tuple<")) {
+                    r_tuple_types = CoClass.getTupleTypes(cpptype.slice("std::tuple<".length, -">".length));
+                }
 
                 rexpr = `${ obj }${ getter ? `${ getter }()` : propname }`;
 
@@ -169,11 +175,23 @@ class LuaGenerator {
             }
 
             if (coclass.isStatic()) {
-                dynamic_get.push(`
-                    { "${ name }", [] (sol::this_state& ts) {
-                        return sol::object(ts, sol::in_place, ${ rexpr });
-                    }}
-                `.replace(/^ {20}/mg, "").trim());
+                if (r_tuple_types) {
+                    dynamic_get.push(`
+                        { "${ name }", [] (sol::this_state& ts) {
+                            sol::state_view lua(ts);
+                            sol::table res = lua.create_table();
+                            auto t = ${ rexpr };
+                            ${ r_tuple_types.map((_, i) => `res[${ i + 1 }] = std::get<${ i }>(t);`).join(`\n${ " ".repeat(28) }`) }
+                            return res;
+                        }}
+                    `.replace(/^ {24}/mg, "").trim());
+                } else {
+                    dynamic_get.push(`
+                        { "${ name }", [] (sol::this_state& ts) {
+                            return sol::object(ts, sol::in_place, ${ rexpr });
+                        }}
+                    `.replace(/^ {24}/mg, "").trim());
+                }
 
                 if (wexpr) {
                     dynamic_set.push(`
@@ -182,15 +200,39 @@ class LuaGenerator {
                         }}
                     `.replace(/^ {24}/mg, "").trim());
                 }
-            } else if (rexpr === `self->${ propname }` && in_val === `self->${ propname } = object_as<${ type }>(value)`) {
+            } else if (!r_tuple_types && rexpr === `self->${ propname }` && in_val === `self->${ propname } = object_as<${ type }>(value)`) {
                 contentRegister.push(`exports["${ name }"] = &::${ fqn }::${ propname };`);
             } else {
-                const getter_decl = !is_static ? `[] (::${ fqn }* self)` : "[]";
-                const getter_setter = [`
-                    ${ getter_decl } {
-                        return ${ rexpr };
-                    }
-                `.replace(/^ {20}/mg, "").trim()];
+                const args = [];
+
+                if (!is_static) {
+                    args.push(`::${ fqn }* self`);
+                }
+
+                if (r_tuple_types) {
+                    args.push("sol::this_state ts");
+                }
+
+                const getter_decl = args.length !== 0 ? `[] (${ args.join(", ") })` : "[]";
+                const getter_setter = [];
+
+                if (r_tuple_types) {
+                    getter_setter.push(`
+                        ${ getter_decl } {
+                            sol::state_view lua(ts);
+                            sol::table res = lua.create_table();
+                            auto t = ${ rexpr };
+                            ${ r_tuple_types.map((_, i) => `res[${ i + 1 }] = std::get<${ i }>(t);`).join(`\n${ " ".repeat(28) }`) }
+                            return res;
+                        }
+                    `.replace(/^ {24}/mg, "").trim());
+                } else {
+                    getter_setter.push(`
+                        ${ getter_decl } {
+                            return ${ rexpr };
+                        }
+                    `.replace(/^ {24}/mg, "").trim());
+                }
 
                 if (wexpr) {
                     const setter_args = [];
@@ -522,7 +564,7 @@ class LuaGenerator {
                                 `sol::object(ts, sol::in_place, ${ argname }_default)`
                             ), "sol::object"]);
                         } else {
-                            retval.push([j, argname, processor.getCppType(argtype, coclass, options)]);
+                            retval.push([j, argname, cpptype]);
                         }
                     }
 
@@ -698,7 +740,8 @@ class LuaGenerator {
                     // body is responsible of return
                     retval.length = 0;
                 } else if (return_value_type !== "void") {
-                    retval.push([-1, callee, processor.getCppType(return_value_type, coclass, options)]);
+                    const return_type = processor.getCppType(return_value_type, coclass, options);
+                    retval.push([-1, callee, return_type]);
                 } else {
                     overload.push("", `${ callee };`);
                 }
@@ -734,8 +777,8 @@ class LuaGenerator {
                                     }
                                 } else if (cpptype.endsWith("*")) {
                                     argname = `reference_internal(${ argname })`;
-                                } else if (shared_ptr !== "std::shared_ptr" && cpptype.includes(shared_ptr)) {
-                                    argname = `return_cast_impl(${ argname })`;
+                                } else if (options.variantTypeReg && options.variantTypeReg.test(cpptype)) {
+                                    argname = `as_return_impl(${ argname }, lua)`;
                                 }
 
                                 return `vres.push_back({ ts, sol::in_place, ${ argname } });`;
@@ -767,6 +810,7 @@ class LuaGenerator {
 
             contentRegisterPrivate.push(`
                 auto Lua_${ fname }(${ lua_args.join(", ") }) {
+                    sol::state_view lua(ts);
                     const int argc = vargs.size() - 1;
                     const bool has_kwarg = object_is<NamedParameters>(vargs.get<sol::object>(argc));
 
@@ -777,7 +821,6 @@ class LuaGenerator {
 
                     ${ contentFunction.join("\n").split("\n").join(`\n${ " ".repeat(20) }`) }
 
-                    sol::state_view lua(ts);
                     luaL_error(lua.lua_state(), "Overload resolution failed");
                     LUA_MODULE_THROW("Overload resolution failed");
                 }
@@ -787,6 +830,9 @@ class LuaGenerator {
             contentRegisterPrivate.push("");
 
             if (is_constructor) {
+                contentRegister.push(`// ${ fqn }.new(...) -- dot syntax, no "self" value`);
+                contentRegister.push(`exports[sol::meta_function::construct] = sol::factories(::Lua_${ fname });`, "");
+                contentRegister.push(`// ${ fqn }(...) syntax, only`);
                 contentRegister.push(`exports[sol::call_constructor] = sol::factories(::Lua_${ fname });`);
             } else {
                 const definitions = [];
