@@ -3,18 +3,6 @@
 #include <lua_utils.hpp>
 
 namespace LUA_MODULE_NAME {
-    // https://stackoverflow.com/a/15128524
-    // https://stackoverflow.com/questions/15128444/c-calling-a-function-from-a-vector-of-function-pointers-inside-a-class-where-t/15128524#15128524
-
-    std::vector<std::function<void(sol::state_view&, sol::table&)>>& lua_module_get_functions();
-
-    void lua_module_call_registered(sol::state_view& lua, sol::table& module);
-
-    template<typename Function>
-    void lua_module_register(Function && fn) {
-        lua_module_get_functions().push_back(std::forward<Function>(fn));
-    }
-
     int deny_new_index(lua_State* L);
 }
 

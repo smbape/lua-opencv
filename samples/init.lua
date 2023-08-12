@@ -369,10 +369,10 @@ function opencv_lua.findTemplate ( ... )
 
     local result = image.new()
 
-    kwargs = {}
+    kwargs = opencv_lua.kwargs()
     if has_mask then kwargs["mask"] = mask end
 
-    cv.matchTemplate(image, templ, methodMatch, result, opencv_lua.kwargs(kwargs))
+    cv.matchTemplate(image, templ, methodMatch, result, kwargs)
 
     local matchLoc
     local histScore = 1

@@ -660,7 +660,7 @@ class LuaGenerator {
 
                 overload.push("", `
                     // =========================
-                    // call ${ fname }
+                    // call ${ name.replaceAll(".", "::") }
                     // =========================
 
                     // too many parameters
@@ -752,15 +752,12 @@ class LuaGenerator {
                     overload.push("", `
                         sol::variadic_results vres;
                         ${ retval
-                            .map(([, argname, cpptype]) => {
+                            .map(([, result, cpptype]) => {
                                 if (cpptype === "sol::object") {
-                                    return `vres.push_back(${ argname });`;
+                                    return `vres.push_back(${ result });`;
                                 }
 
                                 const is_shared_ptr = cpptype.startsWith(`${ shared_ptr }<`);
-
-                                // // vector of cv::Mat is no yet supported
-                                // const echo = cpptype !== "std::vector<cv::Mat>" ? "" : "// ";
 
                                 if (is_shared_ptr) {
                                     cpptype = cpptype.slice(`${ shared_ptr }<`.length, -">".length);
@@ -768,20 +765,20 @@ class LuaGenerator {
 
                                 const is_class = processor.classes.has(cpptype) && !processor.enums.has(cpptype);
 
-                                if (is_class && !is_constructor && !argname.startsWith("reference_internal")) {
+                                if (is_class && !is_constructor && !result.startsWith("reference_internal")) {
                                     // shared_ptr other than std::shared_ptr is not yet supported
                                     if (is_shared_ptr && !"std::shared_ptr" !== shared_ptr) {
-                                        argname = `std::shared_ptr<${ cpptype }>(${ argname })`;
+                                        result = `std::shared_ptr<${ cpptype }>(${ result })`;
                                     } else {
-                                        argname = `std::make_shared<${ cpptype }>(std::move(${ argname }))`;
+                                        result = `std::make_shared<${ cpptype }>(std::move(${ result }))`;
                                     }
                                 } else if (cpptype.endsWith("*")) {
-                                    argname = `reference_internal(${ argname })`;
+                                    result = `reference_internal(${ result })`;
                                 } else if (options.variantTypeReg && options.variantTypeReg.test(cpptype)) {
-                                    argname = `as_return_impl(${ argname }, lua)`;
+                                    result = `as_return_impl(${ result }, lua)`;
                                 }
 
-                                return `vres.push_back({ ts, sol::in_place, ${ argname } });`;
+                                return `vres.push_back({ ts, sol::in_place, ${ result } });`;
                             })
                             .join(`\n${ " ".repeat(24) }`) }
                         return vres;
@@ -808,8 +805,10 @@ class LuaGenerator {
                 lua_args.unshift(`::${ fqn }* self`);
             }
 
+            const lua_fname = `Lua_${ fname.replaceAll("::", "_") }`;
+
             contentRegisterPrivate.push(`
-                auto Lua_${ fname }(${ lua_args.join(", ") }) {
+                auto ${ lua_fname }(${ lua_args.join(", ") }) {
                     sol::state_view lua(ts);
                     const int argc = vargs.size() - 1;
                     const bool has_kwarg = object_is<NamedParameters>(vargs.get<sol::object>(argc));
@@ -822,7 +821,8 @@ class LuaGenerator {
                     ${ contentFunction.join("\n").split("\n").join(`\n${ " ".repeat(20) }`) }
 
                     luaL_error(lua.lua_state(), "Overload resolution failed");
-                    LUA_MODULE_THROW("Overload resolution failed");
+                    // LUA_MODULE_THROW("Overload resolution failed");
+                    return sol::variadic_results();
                 }
             `.replace(/^ {16}/mg, "").trim());
 
@@ -831,15 +831,15 @@ class LuaGenerator {
 
             if (is_constructor) {
                 contentRegister.push(`// ${ fqn }.new(...) -- dot syntax, no "self" value`);
-                contentRegister.push(`exports[sol::meta_function::construct] = sol::factories(::Lua_${ fname });`, "");
+                contentRegister.push(`exports[sol::meta_function::construct] = sol::factories(::${ lua_fname });`, "");
                 contentRegister.push(`// ${ fqn }(...) syntax, only`);
-                contentRegister.push(`exports[sol::call_constructor] = sol::factories(::Lua_${ fname });`);
+                contentRegister.push(`exports[sol::call_constructor] = sol::factories(::${ lua_fname });`);
             } else {
                 const definitions = [];
 
                 if (has_instance) {
                     definitions.push(`[] (::${ fqn }* self, sol::this_state ts, sol::variadic_args vargs) {
-                        return ::Lua_${ fname }(self, ts, vargs);
+                        return ::${ lua_fname }(self, ts, vargs);
                     }`.replace(/^ {20}/mg, "").trim());
                 }
 
@@ -850,13 +850,17 @@ class LuaGenerator {
                     }
 
                     definitions.push(`[] (sol::this_state ts, sol::variadic_args vargs) {
-                        return ::Lua_${ fname }(${ call_lua_args.join(", ") });
+                        return ::${ lua_fname }(${ call_lua_args.join(", ") });
                     }`.replace(/^ {20}/mg, "").trim());
                 }
 
                 const overload = definitions.length === 1 ? definitions[0] : `sol::overload(${ definitions.join(", ") })`;
 
-                contentRegister.push(`exports.set_function("${ fname }", ${ overload });`);
+                if (fname.startsWith("sol::")) {
+                    contentRegister.push(`exports[${ fname }] = ${ overload };`);
+                } else {
+                    contentRegister.push(`exports.set_function("${ fname }", ${ overload });`);
+                }
             }
         }
     }

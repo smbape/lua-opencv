@@ -1,24 +1,34 @@
+-- https://docs.opencv.org/4.x/d4/dc6/tutorial_py_template_matching.html
+
 local opencv_lua = require(string.gsub(arg[0], "[^/\\]+%.lua", "init"))
 local cv = opencv_lua.cv
 
-local image = cv.imread(cv.samples.findFile("mario.png"))
-local templ = cv.imread(cv.samples.findFile("mario_coin.png"))
+local img_rgb = cv.imread(cv.samples.findFile("mario.png"))
+assert(img_rgb, "file could not be read, check with os.path.exists()")
+local img_gray = cv.cvtColor(img_rgb, cv.COLOR_BGR2GRAY)
+local template = cv.imread(cv.samples.findFile("mario_coin.png"), cv.IMREAD_GRAYSCALE)
+assert(template, "file could not be read, check with os.path.exists()")
 
--- The higher the value, the higher the match is exact
+local h, w = unpack(template.shape)
+
+local res = cv.matchTemplate(img_gray,template,cv.TM_CCOEFF_NORMED)
 local threshold = 0.8
 
-local matches = opencv_lua.findTemplate(image, templ, threshold)
-local matchRect = { 0, 0, templ.width, templ.height }
+for j=1,res.rows do
+    local y = j - 1
 
-for i=1,#matches do
-    matchRect[1] = matches[i][1]
-    matchRect[2] = matches[i][2]
+    -- it is faster to make a temp variable than doing res[y][x]
+    local row = res[y]
 
-    -- Draw a red rectangle around the matched position
-    cv.rectangle(image, matchRect, { 0, 0, 255 })
+    for i=1,res.cols do
+        local x = i - 1
+        if row[x] >= threshold then
+            cv.rectangle(img_rgb, { x, y }, { x + w, y + h }, { 0, 0, 255 }, 2)
+        end
+    end
 end
 
-cv.imshow("Find template example", image)
+cv.imshow("res.png", img_rgb)
 cv.waitKey()
 
 cv.destroyAllWindows()

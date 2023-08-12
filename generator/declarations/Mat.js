@@ -15,7 +15,7 @@ module.exports = ({ self, self_get, shared_ptr }) => {
             ["int", "width", "", ["/RW", "=cols"]],
             ["int", "height", "", ["/RW", "=rows"]],
             ["std::tuple<int, int, int>", "shape", "", ["/R", `/RExpr=std::make_tuple(${ self_get("rows") }, ${ self_get("cols") }, ${ self_get("channels") }())`]],
-            ["std::vector<int>", "sizes", "", ["/R", `/RExpr=std::vector<int>(${ self_get("size") }.p, ${ self_get("size") }.p + ${ self_get("dims") })`]],
+            ["std::vector<int>", "sizes", "", ["/R", `/RExpr=std::vector<int>(${ self_get("size") }.p, ${ self_get("size") }.p + ${ self_get("size") }.dims())`]],
             ["std::vector<size_t>", "steps", "", ["/R", `/RExpr=std::vector<size_t>(${ self_get("step") }.p, ${ self_get("step") }.p + ${ self_get("dims") })`]],
         ], "", ""],
 
@@ -376,6 +376,48 @@ module.exports = ({ self, self_get, shared_ptr }) => {
         ], "", ""],
 
         // Extended Functions
+
+        ["cv.Mat.operator+", "void", ["/S", "=sol::meta_function::addition", "/Call=cv::add"], [
+            ["cv::Mat", "src1", "", ["/C", "/Ref"]],
+            ["InputArray", "src2", "", []],
+            ["OutputArray", "dst", "", []],
+        ], "", ""],
+
+        ["cv.Mat.operator-", "void", ["/S", "=sol::meta_function::subtraction", "/Call=cv::subtract"], [
+            ["cv::Mat", "src1", "", ["/C", "/Ref"]],
+            ["InputArray", "src2", "", []],
+            ["OutputArray", "dst", "", []],
+        ], "", ""],
+
+        ["cv.Mat.operator*", "void", ["/S", "=sol::meta_function::multiplication", "/Call=cv::multiply"], [
+            ["cv::Mat", "src1", "", ["/C", "/Ref"]],
+            ["InputArray", "src2", "", []],
+            ["OutputArray", "dst", "", []],
+        ], "", ""],
+
+        ["cv.Mat.operator/", "void", ["/S", "=sol::meta_function::division", "/Call=cv::divide"], [
+            ["cv::Mat", "src1", "", ["/C", "/Ref"]],
+            ["InputArray", "src2", "", []],
+            ["OutputArray", "dst", "", []],
+        ], "", ""],
+
+        ["cv.Mat.operator==", "void", ["/S", "=sol::meta_function::equal_to", "/Call=cv::compare", "/Expr=$0, cv::CMP_EQ"], [
+            ["cv::Mat", "src1", "", ["/C", "/Ref"]],
+            ["InputArray", "src2", "", []],
+            ["OutputArray", "dst", "", []],
+        ], "", ""],
+
+        ["cv.Mat.operator<", "void", ["/S", "=sol::meta_function::less_than", "/Call=cv::compare", "/Expr=$0, cv::CMP_LT"], [
+            ["cv::Mat", "src1", "", ["/C", "/Ref"]],
+            ["InputArray", "src2", "", []],
+            ["OutputArray", "dst", "", []],
+        ], "", ""],
+
+        ["cv.Mat.operator<=", "void", ["/S", "=sol::meta_function::less_than_or_equal_to", "/Call=cv::compare", "/Expr=$0, cv::CMP_LE"], [
+            ["cv::Mat", "src1", "", ["/C", "/Ref"]],
+            ["InputArray", "src2", "", []],
+            ["OutputArray", "dst", "", []],
+        ], "", ""],
 
         // ["cv.Mat.createFromArray", "Mat", ["/External", "/S"], [
         //     ["_variant_t", "array", "", []],
