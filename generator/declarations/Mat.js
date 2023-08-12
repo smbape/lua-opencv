@@ -423,10 +423,10 @@ module.exports = ({ self, self_get, shared_ptr }) => {
             ["std::vector<cv::Mat>", "vec", "", []],
         ], "", ""],
 
-        // ["cv.Mat.createFromArray", "Mat", ["/External", "/S"], [
-        //     ["_variant_t", "array", "", []],
-        //     ["int", "depth", "-1", []],
-        // ], "", ""],
+        ["cv.Mat.createFromArray", "Mat", ["/S", "/Call=::cvextra::createFromArray"], [
+            ["sol::table", "array", "", []],
+            ["int", "depth", "-1", []],
+        ], "", ""],
 
         // ["cv.Mat.asArray", "_variant_t", ["/External"], [], "", ""],
     ];

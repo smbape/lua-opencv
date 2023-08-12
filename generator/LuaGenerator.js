@@ -380,7 +380,7 @@ class LuaGenerator {
                 overload_id++;
 
                 const [name, return_value_type, func_modifiers, list_of_arguments] = decl;
-                is_constructor = func_modifiers.includes("/CO");
+                is_constructor = func_modifiers.includes("/CO") && !func_modifiers.some(modifier => modifier[0] === "=");
                 const argc = list_of_arguments.length;
 
                 const in_args = new Array(argc).fill(false);
@@ -844,7 +844,7 @@ class LuaGenerator {
                 contentRegister.push(`// ${ fqn }.new(...) -- dot syntax, no "self" value`);
                 contentRegister.push(`exports[sol::meta_function::construct] = sol::factories(::${ lua_fname });`, "");
                 contentRegister.push(`// ${ fqn }(...) syntax, only`);
-                contentRegister.push(`exports[sol::call_constructor] = sol::factories(::${ lua_fname });`);
+                contentRegister.push(`exports[sol::call_constructor] = sol::factories(::${ lua_fname });`, "");
             } else {
                 const definitions = [];
 

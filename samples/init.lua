@@ -21,7 +21,7 @@ local sysPath = {
     end
 }
 
-opencv_lua.path = sysPath
+-- opencv_lua.path = sysPath
 
 local OPENCV_SAMPLES_DATA_PATH = sysPath.dirname(opencv_lua.fs_utils.findFile("samples/data/lena.jpg", opencv_lua.kwargs({
     hints={

@@ -6,6 +6,7 @@
 
 namespace cvextra {
 	cv::Mat createFromVectorOfMat(const std::vector<cv::Mat>& vec);
+    cv::Mat createFromArray(sol::table array, int depth);
 
 	template <typename... Args>
 	double mat_at(const cv::Mat& m, Args&&... args) {
@@ -32,6 +33,7 @@ namespace cvextra {
 	template <typename... Args>
 	void mat_set_at(cv::Mat& m, double value, Args&&... args) {
 		switch (m.depth()) {
+		case CV_8U:
 			m.at<uchar>(std::forward<Args>(args)...) = static_cast<uchar>(value);
 			break;
 		case CV_8S:

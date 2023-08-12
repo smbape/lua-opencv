@@ -1,7 +1,12 @@
--- https://docs.opencv.org/4.x/d4/dc6/tutorial_py_template_matching.html
+package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:sub(1,1)) .. package.path
 
-local opencv_lua = require(string.gsub(arg[0], "[^/\\]+%.lua", "init"))
+local opencv_lua = require("init")
 local cv = opencv_lua.cv
+
+--[[
+Sources:
+    https://docs.opencv.org/4.x/d4/dc6/tutorial_py_template_matching.html
+--]]
 
 local img_rgb = cv.imread(cv.samples.findFile("mario.png"))
 assert(img_rgb, "file could not be read, check with os.path.exists()")
