@@ -17,7 +17,8 @@ local threshold = 0.8
 for j=1,res.rows do
     local y = j - 1
 
-    -- it is faster to make a temp variable than doing res[y][x]
+    -- it is faster to make a temp variable
+    -- than doing res[y][x] or res:at(y, x)
     local row = res[y]
 
     for i=1,res.cols do

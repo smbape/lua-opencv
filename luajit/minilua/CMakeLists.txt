@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.25)
 project(minilua)
 
 include(../cmake/initialize.cmake)
-include(../variables.cmake)
+include("${luajit_BINARY_DIR}/LuaJITConfig.cmake")
 include(../cmake/common.cmake)
 
 add_executable(minilua "${luajit_SRC}/host/minilua.c")

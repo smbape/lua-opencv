@@ -140,6 +140,54 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp>
+	auto as_return_impl(std::vector<cv::Point_<_Tp>>& vec, sol::state_view& lua) {
+		sol::table res = lua.create_table();
+		int i = 0;
+		for (const auto& obj : vec) {
+			res[++i] = as_return_impl(obj, lua);
+		}
+		return res;
+	}
+
+	template<typename _Tp>
+	auto as_return_impl(const std::vector<cv::Point_<_Tp>>& vec, sol::state_view& lua) {
+		return as_return_impl(const_cast<std::vector<cv::Point_<_Tp>>&>(vec), lua);
+	}
+
+	template<typename _Tp>
+	auto as_return_impl(std::vector<std::vector<cv::Point_<_Tp>>>& vec, sol::state_view& lua) {
+		sol::table res = lua.create_table();
+		int i = 0;
+		for (const auto& obj : vec) {
+			res[++i] = as_return_impl(obj, lua);
+		}
+		return res;
+	}
+
+	template<typename _Tp>
+	auto as_return_impl(const std::vector<std::vector<cv::Point_<_Tp>>>& vec, sol::state_view& lua) {
+		return as_return_impl(const_cast<std::vector<std::vector<cv::Point_<_Tp>>>&>(vec), lua);
+	}
+
+	template<typename _Tp>
+	auto as_return_impl(std::vector<std::tuple<cv::Point_<_Tp>, double>>& vec, sol::state_view& lua) {
+		sol::table res = lua.create_table();
+		int i = 0;
+		for (const auto& obj : vec) {
+			sol::table elem = lua.create_table();
+			elem[1] = as_return_impl(std::get<0>(obj), lua);
+			elem[2] = std::get<1>(obj);
+			res[++i] = elem;
+		}
+		return res;
+	}
+
+	template<typename _Tp>
+	auto as_return_impl(const std::vector<std::tuple<cv::Point_<_Tp>, double>>& vec, sol::state_view& lua) {
+		return as_return_impl(const_cast<std::vector<std::tuple<cv::Point_<_Tp>, double>>&>(vec), lua);
+	}
+
+	template<typename _Tp>
 	auto as_return_impl(cv::Point3_<_Tp>& obj, sol::state_view& lua) {
 		sol::table res = lua.create_table();
 		res[1] = obj.x;
@@ -151,6 +199,36 @@ namespace LUA_MODULE_NAME {
 	template<typename _Tp>
 	auto as_return_impl(const cv::Point3_<_Tp>& obj, sol::state_view& lua) {
 		return as_return_impl(const_cast<cv::Point3_<_Tp>&>(obj), lua);
+	}
+
+	template<typename _Tp>
+	auto as_return_impl(std::vector<cv::Point3_<_Tp>>& vec, sol::state_view& lua) {
+		sol::table res = lua.create_table();
+		int i = 0;
+		for (const auto& obj : vec) {
+			res[++i] = as_return_impl(obj, lua);
+		}
+		return res;
+	}
+
+	template<typename _Tp>
+	auto as_return_impl(const std::vector<cv::Point3_<_Tp>>& vec, sol::state_view& lua) {
+		return as_return_impl(const_cast<std::vector<cv::Point3_<_Tp>>&>(vec), lua);
+	}
+
+	template<typename _Tp>
+	auto as_return_impl(std::vector<std::vector<cv::Point3_<_Tp>>>& vec, sol::state_view& lua) {
+		sol::table res = lua.create_table();
+		int i = 0;
+		for (const auto& obj : vec) {
+			res[++i] = as_return_impl(obj, lua);
+		}
+		return res;
+	}
+
+	template<typename _Tp>
+	auto as_return_impl(const std::vector<std::vector<cv::Point3_<_Tp>>>& vec, sol::state_view& lua) {
+		return as_return_impl(const_cast<std::vector<std::vector<cv::Point3_<_Tp>>>&>(vec), lua);
 	}
 
 	// cv::Rect_
@@ -219,6 +297,21 @@ namespace LUA_MODULE_NAME {
 	template<typename _Tp>
 	auto as_return_impl(const cv::Rect_<_Tp>& obj, sol::state_view& lua) {
 		return as_return_impl(const_cast<cv::Rect_<_Tp>&>(obj), lua);
+	}
+
+	template<typename _Tp>
+	auto as_return_impl(std::vector<cv::Rect_<_Tp>>& vec, sol::state_view& lua) {
+		sol::table res = lua.create_table();
+		int i = 0;
+		for (const auto& obj : vec) {
+			res[++i] = as_return_impl(obj, lua);
+		}
+		return res;
+	}
+
+	template<typename _Tp>
+	auto as_return_impl(const std::vector<cv::Rect_<_Tp>>& vec, sol::state_view& lua) {
+		return as_return_impl(const_cast<std::vector<cv::Rect_<_Tp>>&>(vec), lua);
 	}
 
 	// cv::Scalar_
@@ -427,6 +520,21 @@ namespace LUA_MODULE_NAME {
 	template<typename _Tp, int cn>
 	auto as_return_impl(const cv::Vec<_Tp, cn>& obj, sol::state_view& lua) {
 		return as_return_impl(const_cast<cv::Vec<_Tp, cn>&>(obj), lua);
+	}
+
+	template<typename _Tp, int cn>
+	auto as_return_impl(std::vector<cv::Vec<_Tp, cn>>& vec, sol::state_view& lua) {
+		sol::table res = lua.create_table();
+		int i = 0;
+		for (const auto& obj : vec) {
+			res[++i] = as_return_impl(obj, lua);
+		}
+		return res;
+	}
+
+	template<typename _Tp, int cn>
+	auto as_return_impl(const std::vector<cv::Vec<_Tp, cn>>& vec, sol::state_view& lua) {
+		return as_return_impl(const_cast<std::vector<cv::Vec<_Tp, cn>>&>(vec), lua);
 	}
 
 	// InputArray, outputArray, InputOutputArray

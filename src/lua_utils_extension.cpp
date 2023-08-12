@@ -4,28 +4,28 @@ namespace {
 	using namespace LUA_MODULE_NAME;
 
 	auto mat_at(cv::Mat& self, int i, sol::this_state& ts) {
-        sol::state_view lua(ts);
+		sol::state_view lua(ts);
 
-        switch (self.depth()) {
-        case CV_8U:
-            return sol::object(ts, sol::in_place, self.at<uchar>(i));
-        case CV_8S:
-            return sol::object(ts, sol::in_place, self.at<char>(i));
-        case CV_16U:
-            return sol::object(ts, sol::in_place, self.at<ushort>(i));
-        case CV_16S:
-            return sol::object(ts, sol::in_place, self.at<short>(i));
-        case CV_32S:
-            return sol::object(ts, sol::in_place, self.at<int>(i));
-        case CV_32F:
-            return sol::object(ts, sol::in_place, self.at<float>(i));
-        case CV_64F:
-            return sol::object(ts, sol::in_place, self.at<double>(i));
-        default:
-	        luaL_error(lua.lua_state(), "Overload resolution failed");
-	        // LUA_MODULE_THROW("Overload resolution failed");
-	        return sol::object(sol::lua_nil);
-        }
+		switch (self.depth()) {
+		case CV_8U:
+			return sol::object(ts, sol::in_place, self.at<uchar>(i));
+		case CV_8S:
+			return sol::object(ts, sol::in_place, self.at<char>(i));
+		case CV_16U:
+			return sol::object(ts, sol::in_place, self.at<ushort>(i));
+		case CV_16S:
+			return sol::object(ts, sol::in_place, self.at<short>(i));
+		case CV_32S:
+			return sol::object(ts, sol::in_place, self.at<int>(i));
+		case CV_32F:
+			return sol::object(ts, sol::in_place, self.at<float>(i));
+		case CV_64F:
+			return sol::object(ts, sol::in_place, self.at<double>(i));
+		default:
+			luaL_error(lua.lua_state(), "Overload resolution failed");
+			// LUA_MODULE_THROW("Overload resolution failed");
+			return sol::object(sol::lua_nil);
+		}
 	}
 
 	sol::object mat_index(cv::Mat& self, int i, sol::this_state ts) {

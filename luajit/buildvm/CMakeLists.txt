@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.25)
 project(buildvm)
 
 include(../cmake/initialize.cmake)
-include(../variables.cmake)
+include("${luajit_BINARY_DIR}/LuaJITConfig.cmake")
 include(../cmake/common.cmake)
 
 file(GLOB_RECURSE buildvm_source_files "${luajit_SRC}/host/buildvm*.c")

@@ -353,6 +353,7 @@ class LuaGenerator {
         const { fqn } = coclass;
         const { shared_ptr } = options;
         const indent = " ".repeat(4);
+        const variant_types = new Set();
 
         for (const fname of Array.from(coclass.methods.keys()).sort((a, b) => {
             if (a === "create") {
@@ -697,18 +698,20 @@ class LuaGenerator {
                 }
 
                 let expr = callargs.join(", ");
+                let has_call = false;
 
                 for (const modifier of func_modifiers) {
                     if (modifier.startsWith("/Expr=")) {
                         expr = makeExpansion(modifier.slice("/Expr=".length), expr);
                     } else if (modifier.startsWith("/Call=")) {
                         callee = makeExpansion(modifier.slice("/Call=".length), callee);
+                        has_call = true;
                     }
                 }
 
                 callee = `${ callee }(${ expr })`;
 
-                if (is_constructor) {
+                if (is_constructor && !has_call) {
                     callee = `std::shared_ptr<${ fqn }>(new ${ callee })`;
                 } else if (func_modifiers.includes("/Ref")) {
                     callee = `reference_internal(${ callee })`;
@@ -740,7 +743,7 @@ class LuaGenerator {
                     // body is responsible of return
                     retval.length = 0;
                 } else if (return_value_type !== "void") {
-                    const return_type = processor.getCppType(return_value_type, coclass, options);
+                    const return_type = processor.getCppType(return_value_type ? return_value_type : fqn, coclass, options);
                     retval.push([-1, callee, return_type]);
                 } else {
                     overload.push("", `${ callee };`);
@@ -775,7 +778,15 @@ class LuaGenerator {
                                 } else if (cpptype.endsWith("*")) {
                                     result = `reference_internal(${ result })`;
                                 } else if (options.variantTypeReg && options.variantTypeReg.test(cpptype)) {
-                                    result = `as_return_impl(${ result }, lua)`;
+                                    const signature = `auto as_return_impl(${ cpptype }& obj, sol::state_view& lua)`;
+                                    if (!options.implemented || !options.implemented.test(signature, options)) {
+                                        if (!variant_types.has(cpptype)) {
+                                            variant_types.add(cpptype);
+                                            console.log(`variant type not implemented : "${ signature }"`);
+                                        }
+                                    } else {
+                                        result = `as_return_impl(${ result }, lua)`;
+                                    }
                                 }
 
                                 return `vres.push_back({ ts, sol::in_place, ${ result } });`;
@@ -1027,11 +1038,19 @@ class LuaGenerator {
 
         if (options.hdr !== false) {
             files.set(
-                sysPath.join(options.output, "lua_generated_pch.hpp"),
+                sysPath.join(options.output, "lua_generated_include.hpp"),
                 [
                     "#pragma once\n",
                     "#include <string>",
                     ...generated_include,
+                ].join("\n").trim().replace(/[^\S\n]+$/mg, "")
+            );
+
+            files.set(
+                sysPath.join(options.output, "lua_generated_pch.hpp"),
+                [
+                    "#pragma once\n",
+                    "#include <lua_generated_include.hpp>",
                     "#include <registration.hpp>",
                     "#include <register_all.hpp>",
                 ].join("\n").trim().replace(/[^\S\n]+$/mg, "")

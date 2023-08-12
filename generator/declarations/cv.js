@@ -98,6 +98,8 @@ module.exports = [
         ["int", "CV_16FC2", "", ["/RExpr=CV_16FC2"]],
         ["int", "CV_16FC3", "", ["/RExpr=CV_16FC3"]],
         ["int", "CV_16FC4", "", ["/RExpr=CV_16FC4"]],
+
+        ["int", "TM_EXACT", "", ["/RExpr=-1"]],
     ], "", ""],
 
     ["cv.CV_MAT_DEPTH", "int", ["/Call=CV_MAT_DEPTH"], [

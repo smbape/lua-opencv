@@ -419,6 +419,10 @@ module.exports = ({ self, self_get, shared_ptr }) => {
             ["OutputArray", "dst", "", []],
         ], "", ""],
 
+        ["cv.Mat.Mat", "", ["/Call=::cvextra::createFromVectorOfMat", "/WrapAs=std::make_shared<cv::Mat>"], [
+            ["std::vector<cv::Mat>", "vec", "", []],
+        ], "", ""],
+
         // ["cv.Mat.createFromArray", "Mat", ["/External", "/S"], [
         //     ["_variant_t", "array", "", []],
         //     ["int", "depth", "-1", []],
@@ -427,84 +431,78 @@ module.exports = ({ self, self_get, shared_ptr }) => {
         // ["cv.Mat.asArray", "_variant_t", ["/External"], [], "", ""],
     ];
 
-    // const types = new Set(["int", "float", "double"]);
+    const types = new Set(["int", "float", "double"]);
 
-    // for (const _Tp of ["b", "s", "w"]) {
-    //     for (const cn of [2, 3, 4]) { // eslint-disable-line no-magic-numbers
-    //         types.add(`Vec${ cn }${ _Tp }`);
-    //     }
-    // }
+    for (const _Tp of ["b", "s", "w"]) {
+        for (const cn of [2, 3, 4]) { // eslint-disable-line no-magic-numbers
+            types.add(`Vec${ cn }${ _Tp }`);
+        }
+    }
 
-    // for (const cn of [2, 3, 4, 6, 8]) { // eslint-disable-line no-magic-numbers
-    //     types.add(`Vec${ cn }i`);
-    // }
+    for (const cn of [2, 3, 4, 6, 8]) { // eslint-disable-line no-magic-numbers
+        types.add(`Vec${ cn }i`);
+    }
 
-    // for (const _Tp of ["f", "d"]) {
-    //     for (const cn of [2, 3, 4, 6]) { // eslint-disable-line no-magic-numbers
-    //         types.add(`Vec${ cn }${ _Tp }`);
-    //     }
-    // }
+    for (const _Tp of ["f", "d"]) {
+        for (const cn of [2, 3, 4, 6]) { // eslint-disable-line no-magic-numbers
+            types.add(`Vec${ cn }${ _Tp }`);
+        }
+    }
 
-    // for (const type of types) {
-    //     if (type.startsWith("Vec")) {
-    //         declarations.push(["cv.Mat.Mat", "", [`=createFrom${ type }`, "/Expr=$0, true"], [
-    //             [type, "vec", "", []],
-    //         ], "", ""]);
-    //     }
+    for (const type of types) {
+        if (type.startsWith("Vec")) {
+            declarations.push(["cv.Mat.Mat", "", [`=createFrom${ type }`, "/Expr=$0, true"], [
+                [type, "vec", "", []],
+            ], "", ""]);
+        }
 
-    //     declarations.push(["cv.Mat.Mat", "", [`=createFromVectorOf${ type[0].toUpperCase() }${ type.slice(1) }`, "/Expr=$0, true"], [
-    //         [`vector_${ type }`, "vec", "", []],
-    //     ], "", ""]);
-    // }
+        declarations.push(["cv.Mat.Mat", "", [`=createFromVectorOf${ type[0].toUpperCase() }${ type.slice(1) }`, "/Expr=$0, true"], [
+            [`vector_${ type }`, "vec", "", []],
+        ], "", ""]);
+    }
 
-    // declarations.push(["cv.Mat.createFromVectorOfMat", `${ shared_ptr }<Mat>`, ["/Call=::autoit::cvextra::createFromVectorOfMat", "/S"], [
-    //     ["vector_Mat", "vec", "", []],
-    // ], "", ""]);
+    for (const args of [
+        [
+            ["int", "i0", "", []],
+        ],
+        [
+            ["int", "row", "", []],
+            ["int", "col", "", []],
+        ],
+        [
+            ["int", "i0", "", []],
+            ["int", "i1", "", []],
+            ["int", "i2", "", []],
+        ],
+        [
+            ["Point", "pt", "", []],
+        ],
+        [
+            ["std::vector<int>", "idx", "", ["/Ref", "/C", "/Expr=idx.data()"]]
+        ],
+    ]) {
+        declarations.push(...[
+            ["cv.Mat.Point_at", "Point2d", ["/Call=::cvextra::mat_Point_at", `/Expr=${ self }, $0`], args, "", ""],
+            ["cv.Mat.at", "double", ["/Call=::cvextra::mat_at", `/Expr=${ self }, $0`], args, "", ""],
+            ["cv.Mat.set_at", "void", ["/Call=::cvextra::mat_set_at", `/Expr=${ self }, $0`], [["double", "value", "", []]].concat(args), "", ""],
+        ]);
 
-    // for (const args of [
-    //     [
-    //         ["int", "i0", "", []],
-    //     ],
-    //     [
-    //         ["int", "row", "", []],
-    //         ["int", "col", "", []],
-    //     ],
-    //     [
-    //         ["int", "i0", "", []],
-    //         ["int", "i1", "", []],
-    //         ["int", "i2", "", []],
-    //     ],
-    //     [
-    //         ["Point", "pt", "", []],
-    //     ],
-    //     [
-    //         ["std::vector<int>", "idx", "", ["/Ref", "/C", "/Expr=idx.data()"]]
-    //     ],
-    // ]) {
-    //     declarations.push(...[
-    //         ["cv.Mat.Point_at", "Point2d", ["/External"], args, "", ""],
-    //         ["cv.Mat.at", "double", ["/External"], args, "", ""],
-    //         ["cv.Mat.set_at", "void", ["/External"], args.concat([["double", "value", "", []]]), "", ""],
-    //         ["cv.Mat.at", "double", ["/ExternalNoDecl", "/attr=propget", "=get_Item", "/idlname=Item", "/id=DISPID_VALUE"], args, "", ""],
-    //         ["cv.Mat.set_at", "void", ["/ExternalNoDecl", "/attr=propput", "=put_Item", "/idlname=Item", "/id=DISPID_VALUE"], args.concat([["double", "value", "", []]]), "", ""],
-    //     ]);
+        const argexpr = args.map(([, callarg, , arg_modifiers]) => {
+            for (const modifier of arg_modifiers) {
+                if (modifier.startsWith("/Expr=")) {
+                    callarg = modifier.slice("/Expr=".length);
+                }
+            }
+            return callarg;
+        }).join(", ");
 
-    //     const argexpr = args.map(([, callarg, , arg_modifiers]) => {
-    //         for (const modifier of arg_modifiers) {
-    //             if (modifier.startsWith("/Expr=")) {
-    //                 callarg = modifier.slice("/Expr=".length);
-    //             }
-    //         }
-    //         return callarg;
-    //     }).join(", ");
-
-    //     for (const type of types) {
-    //         declarations.push(...[
-    //             [`cv.Mat.at<${ type }>`, type, [`=${ type }_at`], args, "", ""],
-    //             [`cv.Mat.at<${ type }>`, "void", [`=${ type }_set_at`, `/Expr=${ argexpr }) = (value`], args.concat([[type, "value", "", []]]), "", ""],
-    //         ]);
-    //     }
-    // }
+        for (const type of types) {
+            declarations.push(...[
+                [`cv.Mat.at<${ type }>`, type, [`=${ type }_at`], args, "", ""],
+                [`cv.Mat.at<${ type }>`, "void", [`=${ type }_set_at`, `/Expr=${ argexpr }) = (value`], args.concat([[type, "value", "", []]]), "", ""],
+            ]);
+        }
+    }
 
     return declarations;
 };

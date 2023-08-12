@@ -22,5 +22,5 @@ cmake_script_append_var(LUAJIT_CONFIG_SCRIPT
 
   TARGET_ARCH
 )
-set(CMAKE_HELPER_SCRIPT "${CMAKE_CURRENT_SOURCE_DIR}/variables.cmake")
+set(CMAKE_HELPER_SCRIPT "${luajit_BINARY_DIR}/LuaJITConfig.cmake")
 file(WRITE "${CMAKE_HELPER_SCRIPT}" "${LUAJIT_CONFIG_SCRIPT}")
