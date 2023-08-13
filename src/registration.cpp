@@ -2,6 +2,8 @@
 #include <register_all.hpp>
 
 namespace {
+	using namespace LUA_MODULE_NAME;
+
 	struct kwargs_iterator_state {
 		using it_t = NamedParameters::Base::iterator;
 		it_t it;
@@ -98,14 +100,16 @@ namespace {
 			return obj.is<NamedParameters>();
 			});
 	}
+
+	void register_garbage_collect(sol::state_view& lua, sol::table& module) {
+		module.set_function("is_call_garbage_collect", is_call_garbage_collect);
+		module.set_function("call_garbage_collect", call_garbage_collect);
+	}
+
+	bool garbage_collecte_active = false;
 }
 
 namespace LUA_MODULE_NAME {
-	std::vector<std::function<void(sol::state_view&, sol::table&)>>& lua_module_get_functions() {
-		static std::vector<std::function<void(sol::state_view&, sol::table&)>> functions;
-		return functions;
-	}
-
 	sol::table LUA_MODULE_OPEN(sol::this_state L) {
 		sol::state_view lua(L);
 		sol::table module = lua.create_table();
@@ -113,10 +117,19 @@ namespace LUA_MODULE_NAME {
 		// regitster_my_object(lua, module);
 
 		register_kwargs(lua, module);
+		register_garbage_collect(lua, module);
 		register_all(lua, module);
 		register_extension(lua, module);
 
 		return module;
+	}
+
+	bool is_call_garbage_collect() {
+		return garbage_collecte_active;
+	}
+
+	void call_garbage_collect(bool value) {
+		garbage_collecte_active = value;
 	}
 
 	int deny_new_index(lua_State* L) {

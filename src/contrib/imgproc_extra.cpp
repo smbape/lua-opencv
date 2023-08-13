@@ -425,34 +425,34 @@ namespace {
 		cv::normalize(imageHist, imageHist, 0, 1, cv::NORM_MINMAX);
 
 		// templ images, hist
-        _InputArray templs;
-        _InputOutputArray templHist;
+		_InputArray templs;
+		_InputOutputArray templHist;
 
-        std::vector<UMat> templs_UMat;
-        std::vector<cuda::GpuMat> templs_GpuMat;
-        std::vector<Mat> templs_Mat;
+		std::vector<UMat> templs_UMat;
+		std::vector<cuda::GpuMat> templs_GpuMat;
+		std::vector<Mat> templs_Mat;
 
-        UMat templHist_UMat;
-        cuda::GpuMat templHist_GpuMat;
-        Mat templHist_Mat;
+		UMat templHist_UMat;
+		cuda::GpuMat templHist_GpuMat;
+		Mat templHist_Mat;
 
-        if (templ.isUMat()) {
-            templHist = templHist_UMat;
-            templs_UMat.push_back(templ.getUMat());
-            templs = templs_UMat;
-        }
-        else if (templ.isGpuMat()) {
-            templHist = templHist_GpuMat;
-            templs_GpuMat.push_back(templ.getGpuMat());
-            templs = templs_GpuMat;
-        }
-        else {
-            templHist = templHist_Mat;
-            templs_Mat.push_back(templ.getMat());
-            templs = templs_Mat;
-        }
-        cv::calcHist(templs, channels, mask.empty() ? emptyMask : mask, templHist, histSize, ranges, accumulate);
-        cv::normalize(templHist, templHist, 0, 1, cv::NORM_MINMAX);
+		if (templ.isUMat()) {
+			templHist = templHist_UMat;
+			templs_UMat.push_back(templ.getUMat());
+			templs = templs_UMat;
+		}
+		else if (templ.isGpuMat()) {
+			templHist = templHist_GpuMat;
+			templs_GpuMat.push_back(templ.getGpuMat());
+			templs = templs_GpuMat;
+		}
+		else {
+			templHist = templHist_Mat;
+			templs_Mat.push_back(templ.getMat());
+			templs = templs_Mat;
+		}
+		cv::calcHist(templs, channels, mask.empty() ? emptyMask : mask, templHist, histSize, ranges, accumulate);
+		cv::normalize(templHist, templHist, 0, 1, cv::NORM_MINMAX);
 
 		return cv::compareHist(imageHist, templHist, method);
 	}
@@ -632,7 +632,7 @@ void cv::findTemplate(
 		results.push_back({ matchLoc, score });
 		found++;
 
-		auto tw = std::max(1, (int) std::ceil(overlapping * w));
+		auto tw = std::max(1, (int)std::ceil(overlapping * w));
 		auto th = std::max(1, (int)std::ceil(overlapping * h));
 		auto x = std::max(0, matchLoc.x - tw / 2);
 		auto y = std::max(0, matchLoc.y - th / 2);

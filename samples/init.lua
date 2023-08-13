@@ -1,6 +1,13 @@
 local opencv_lua = require("opencv_lua")
 local cv = opencv_lua.cv
 
+-- lua garbage collector system can keep data for a long time
+-- for exemple, displaying camera images increases the memory usage
+-- for around 100MB every 10s. This is huge
+-- to not put the burden of frequent garbage collection call
+-- on the developper, call collectgarbage before calling any opencv_lua function
+opencv_lua.call_garbage_collect(true)
+
 local sysPath = {
     dirname = function (file)
         local index;

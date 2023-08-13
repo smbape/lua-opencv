@@ -821,6 +821,11 @@ class LuaGenerator {
             contentRegisterPrivate.push(`
                 auto ${ lua_fname }(${ lua_args.join(", ") }) {
                     sol::state_view lua(ts);
+
+                    if (is_call_garbage_collect()) {
+                        lua.collect_garbage();
+                    }
+
                     const int argc = vargs.size() - 1;
                     const bool has_kwargs = object_is<NamedParameters>(vargs.get<sol::object>(argc));
                     auto& kwargs = has_kwargs ? object_as<NamedParameters>(vargs.get<sol::object>(argc)) : empty_kwargs;

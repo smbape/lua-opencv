@@ -13,7 +13,7 @@ public:
 	NamedParameters() = default;
 
 	NamedParameters(Table kwargs) : Base() {
-        auto& data = *this;
+		auto& data = *this;
 		const auto& listmap = kwargs.value();
 		for (const auto& kvp : listmap) {
 			data[kvp.first] = kvp.second;

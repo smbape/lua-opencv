@@ -50,7 +50,7 @@ namespace LUA_MODULE_NAME {
 
 		mat_type.set_function(sol::meta_function::index, sol::overload(
 			&mat_index,
-			[] (cv::Mat& self, sol::as_table_t<std::vector<int>> idx, sol::this_state ts) {
+			[](cv::Mat& self, sol::as_table_t<std::vector<int>> idx, sol::this_state ts) {
 				if (idx.value().size() == self.dims) {
 					return cvextra::mat_at(self, idx.value().data());
 				}
@@ -59,11 +59,12 @@ namespace LUA_MODULE_NAME {
 				return 0.;
 			}
 		));
+
 		mat_type.set_function(sol::meta_function::new_index, sol::overload(
-			[] (cv::Mat& self, int idx, double value) {
+			[](cv::Mat& self, int idx, double value) {
 				cvextra::mat_set_at(self, value, idx);
 			},
-			[] (cv::Mat& self, sol::as_table_t<std::vector<int>> idx, double value, sol::this_state ts) {
+			[](cv::Mat& self, sol::as_table_t<std::vector<int>> idx, double value, sol::this_state ts) {
 				if (idx.value().size() == self.dims) {
 					cvextra::mat_set_at(self, value, idx.value().data());
 					return;

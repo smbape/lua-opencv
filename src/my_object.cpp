@@ -195,7 +195,7 @@ namespace {
 	using namespace cv;
 
 	std::map<std::string, std::function<sol::object(sol::this_state&)>> getters({
-	});
+		});
 
 	sol::object dynamic_get(sol::table ns, sol::stack_object key, sol::this_state ts) {
 		// we use stack_object for the arguments because we
@@ -249,7 +249,7 @@ namespace {
 
 namespace LUA_MODULE_NAME {
 	void regitster_my_object(sol::state_view& lua, sol::table& module) {
-        sol::table exports = lua.create_table();
+		sol::table exports = lua.create_table();
 
 		exports[sol::meta_function::new_index] = dynamic_set;
 		exports[sol::meta_function::index] = dynamic_get;
