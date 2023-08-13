@@ -59,7 +59,7 @@ local function sharpen(my_image)
 end
 -- [basic_method]
 
-function main(argv)
+local function main(argv)
     local filename = 'lena.jpg'
 
     local img_codec = cv.IMREAD_COLOR

@@ -13,7 +13,7 @@ local matches = cv.findTemplate(image, templ, threshold)
 local matchRect = { 0, 0, templ.width, templ.height }
 
 for i=1,#matches do
-    local pt, score = unpack(matches[i])
+    local pt, score = matches[i][1], matches[i][2]
     matchRect[1] = pt[1]
     matchRect[2] = pt[2]
 

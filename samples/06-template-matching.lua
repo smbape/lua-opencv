@@ -14,7 +14,7 @@ local img_gray = cv.cvtColor(img_rgb, cv.COLOR_BGR2GRAY)
 local template = cv.imread(cv.samples.findFile("mario_coin.png"), cv.IMREAD_GRAYSCALE)
 assert(template, "file could not be read, check with os.path.exists()")
 
-local h, w = unpack(template.shape)
+local h, w = template.height, template.width
 
 local res = cv.matchTemplate(img_gray,template,cv.TM_CCOEFF_NORMED)
 local threshold = 0.8
