@@ -191,6 +191,11 @@ file(GLOB_RECURSE libluajit_source_files "${luajit_SRC}/lj_*.c" "${luajit_SRC}/l
 
 add_library(libluajit SHARED ${libluajit_source_files})
 
+# Always generate debug files
+if(MSVC AND NOT "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+  set_target_properties(libluajit PROPERTIES LINK_FLAGS "/DEBUG")
+endif()
+
 target_sources(libluajit
   PUBLIC FILE_SET HEADERS TYPE HEADERS
   BASE_DIRS "${luajit_SRC}"
@@ -242,6 +247,11 @@ add_library(amalg STATIC
   "${luajit_SRC}/ljamalg.c"
 )
 
+# Always generate debug files
+if(MSVC AND NOT "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+  set_target_properties(amalg PROPERTIES LINK_FLAGS "/DEBUG")
+endif()
+
 target_link_libraries(amalg PRIVATE "${LJ_VM_OBJECT}")
 target_include_directories(amalg PRIVATE ${LUA_INCLUDE_DIRS})
 add_dependencies(amalg ${gen_lj_targets})
@@ -249,6 +259,11 @@ add_dependencies(amalg ${gen_lj_targets})
 add_executable(luajit
   "${luajit_SRC}/luajit.c"
 )
+
+# Always generate debug files
+if(MSVC AND NOT "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+  set_target_properties(luajit PROPERTIES LINK_FLAGS "/DEBUG")
+endif()
 
 target_link_libraries(luajit libluajit)
 target_include_directories(luajit PRIVATE ${LUA_INCLUDE_DIRS})
