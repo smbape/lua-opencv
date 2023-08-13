@@ -19,7 +19,7 @@ local function sharpen(my_image)
     local is_grayscale = my_image:channels() == 1
 
     if not is_grayscale then
-        my_image = cv.cvtColor(my_image, cv.CV_8U)
+        my_image = cv.cvtColor(my_image, cv.COLOR_BGR2BGRA)
     end
 
     local height, width, n_channels = my_image.height, my_image.width, my_image:channels()

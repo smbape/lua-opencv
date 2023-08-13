@@ -19,13 +19,13 @@ local function sharpen(my_image)
     local is_grayscale = my_image:channels() == 1
 
     if not is_grayscale then
-        my_image = cv.cvtColor(my_image, cv.CV_8U)
+        my_image = cv.cvtColor(my_image, cv.COLOR_BGR2BGRA)
     end
 
     local height, width, n_channels = my_image.height, my_image.width, my_image:channels()
     local result = cv.Mat.zeros(my_image.rows, my_image.cols, cv.CV_MAKETYPE(my_image:depth(), my_image:channels()))
 
-    -- make channels a new dimension to be able to do :at(j, i, k)
+    -- make channels a new dimension to be able to do mat[{j, i, k}]
     if not is_grayscale then
         my_image = my_image:reshape(1, { height, width, n_channels })
         result = result:reshape(1, { height, width, n_channels })
@@ -35,15 +35,15 @@ local function sharpen(my_image)
     for j = 1, height - 2 do
         for i = 1, width - 2 do
             if is_grayscale then
-                local sum_value = 5 * my_image:at(j, i) - my_image:at(j + 1, i) - my_image:at(j - 1, i)
-                            - my_image:at(j, i + 1) - my_image:at(j, i - 1)
-                result:set_at(saturated(sum_value), j, i)
+                local sum_value = 5 * my_image[{j, i}] - my_image[{j + 1, i}] - my_image[{j - 1, i}]
+                            - my_image[{j, i + 1}] - my_image[{j, i - 1}]
+                result[{j, i}] = saturated(sum_value)
             else
                 for k = 0, n_channels - 1 do
-                    local sum_value = 5 * my_image:at(j, i, k) - my_image:at(j + 1, i, k)
-                                - my_image:at(j - 1, i, k) - my_image:at(j, i + 1, k)
-                                - my_image:at(j, i - 1, k)
-                    result:set_at(saturated(sum_value), j, i, k)
+                    local sum_value = 5 * my_image[{j, i, k}] - my_image[{j + 1, i, k}]
+                                - my_image[{j - 1, i, k}] - my_image[{j, i + 1, k}]
+                                - my_image[{j, i - 1, k}]
+                    result[{j, i, k}] = saturated(sum_value)
                 end
             end
         end

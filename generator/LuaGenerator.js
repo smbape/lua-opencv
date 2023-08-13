@@ -575,7 +575,7 @@ class LuaGenerator {
                         // =========================
                         bool ${ argname }_positional = false;
                         bool ${ argname }_kwarg = false;
-                        if (!has_kwarg || argc > ${ i }) {
+                        if (!has_kwargs || argc > ${ i }) {
                             ${ argname }_positional = argc >= ${ i };
 
                             // positional parameter
@@ -584,7 +584,7 @@ class LuaGenerator {
                             }
 
                             // should not be a named parameter
-                            if (has_kwarg && kwargs.count("${ argname }")) {
+                            if (has_kwargs && kwargs.count("${ argname }")) {
                                 goto overload${ overload_id };
                             }
                         }
@@ -822,13 +822,8 @@ class LuaGenerator {
                 auto ${ lua_fname }(${ lua_args.join(", ") }) {
                     sol::state_view lua(ts);
                     const int argc = vargs.size() - 1;
-                    const bool has_kwarg = object_is<NamedParameters>(vargs.get<sol::object>(argc));
-
-                    NamedParameters kwargs;
-                    if (has_kwarg) {
-                        kwargs = object_as<NamedParameters>(vargs.get<sol::object>(argc));
-                    }
-
+                    const bool has_kwargs = object_is<NamedParameters>(vargs.get<sol::object>(argc));
+                    auto& kwargs = has_kwargs ? object_as<NamedParameters>(vargs.get<sol::object>(argc)) : empty_kwargs;
                     ${ contentFunction.join("\n").split("\n").join(`\n${ " ".repeat(20) }`) }
 
                     luaL_error(lua.lua_state(), "Overload resolution failed");
@@ -994,6 +989,7 @@ class LuaGenerator {
                     namespace {
                         using namespace LUA_MODULE_NAME;
                         ${ namespaces.join("\n").split("\n").join(`\n${ " ".repeat(24) }`) }
+                        const NamedParameters empty_kwargs;
 
                         ${ contentRegisterPrivate.join("\n").split("\n").join(`\n${ " ".repeat(24) }`) }
                     }

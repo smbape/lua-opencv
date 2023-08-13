@@ -3,31 +3,6 @@
 namespace {
 	using namespace LUA_MODULE_NAME;
 
-	auto mat_at(cv::Mat& self, int idx, sol::this_state& ts) {
-		sol::state_view lua(ts);
-
-		switch (self.depth()) {
-		case CV_8U:
-			return sol::object(ts, sol::in_place, self.at<uchar>(idx));
-		case CV_8S:
-			return sol::object(ts, sol::in_place, self.at<char>(idx));
-		case CV_16U:
-			return sol::object(ts, sol::in_place, self.at<ushort>(idx));
-		case CV_16S:
-			return sol::object(ts, sol::in_place, self.at<short>(idx));
-		case CV_32S:
-			return sol::object(ts, sol::in_place, self.at<int>(idx));
-		case CV_32F:
-			return sol::object(ts, sol::in_place, self.at<float>(idx));
-		case CV_64F:
-			return sol::object(ts, sol::in_place, self.at<double>(idx));
-		default:
-			luaL_error(lua.lua_state(), "Overload resolution failed");
-			// LUA_MODULE_THROW("Overload resolution failed");
-			return sol::object(sol::lua_nil);
-		}
-	}
-
 	sol::object mat_index(cv::Mat& self, int idx, sol::this_state ts) {
 		const auto& size = self.size;
 		const auto dims = size.dims();
@@ -41,7 +16,7 @@ namespace {
 				return mat_index(row, idx, ts);
 			}
 
-			return mat_at(self, idx, ts);
+			return sol::object(ts, sol::in_place, cvextra::mat_at(self, idx));
 		}
 
 		if (dims > 2) {
@@ -60,52 +35,11 @@ namespace {
 		// dims == 2, channels == 1
 
 		if (size[0] == 1 || size[1] == 1) {
-			return mat_at(self, idx, ts);
+			return sol::object(ts, sol::in_place, cvextra::mat_at(self, idx));
 		}
 
 		auto row = self.row(idx);
 		return sol::object(ts, sol::in_place, std::make_shared<cv::Mat>(row));
-	}
-
-	void mat_set_at(cv::Mat& self, int idx, double value, sol::this_state ts) {
-		sol::state_view lua(ts);
-
-		const auto& size = self.size;
-		const auto dims = size.dims();
-		const auto channels = self.channels();
-
-		const bool can_set = dims == 1 && channels == 1 || dims == 2 && (channels == 1 || size[0] == 1 || size[1] == 1);
-		if (!can_set) {
-			luaL_error(lua.lua_state(), "matrix must have dims == 1 && channels == 1 || dims == 2 && (channels == 1 || rows == 1 || cols == 1)");
-			return;
-		}
-
-		switch (self.depth()) {
-		case CV_8U:
-			self.at<uchar>(idx) = static_cast<uchar>(value);
-			break;
-		case CV_8S:
-			self.at<char>(idx) = static_cast<char>(value);
-			break;
-		case CV_16U:
-			self.at<ushort>(idx) = static_cast<ushort>(value);
-			break;
-		case CV_16S:
-			self.at<short>(idx) = static_cast<short>(value);
-			break;
-		case CV_32S:
-			self.at<int>(idx) = static_cast<int>(value);
-			break;
-		case CV_32F:
-			self.at<float>(idx) = static_cast<float>(value);
-			break;
-		case CV_64F:
-			self.at<double>(idx) = static_cast<double>(value);
-			break;
-		default:
-			luaL_error(lua.lua_state(), "Unsupported mat type %d", self.depth());
-			// LUA_MODULE_THROW("Unsupported mat type " << self.depth());
-		}
 	}
 }
 
@@ -114,7 +48,29 @@ namespace LUA_MODULE_NAME {
 		// https://github.com/ThePhD/sol2/issues/1405
 		sol::usertype<cv::Mat> mat_type = module["cv"]["Mat"];
 
-		mat_type.set_function(sol::meta_function::index, &mat_index);
-		mat_type.set_function(sol::meta_function::new_index, &mat_set_at);
+		mat_type.set_function(sol::meta_function::index, sol::overload(
+			&mat_index,
+			[] (cv::Mat& self, sol::as_table_t<std::vector<int>> idx, sol::this_state ts) {
+				if (idx.value().size() == self.dims) {
+					return cvextra::mat_at(self, idx.value().data());
+				}
+				sol::state_view lua(ts);
+				luaL_error(lua.lua_state(), "matrix has %d dimensions, but given index has %d dimensions", self.dims, idx.value().size());
+				return 0.;
+			}
+		));
+		mat_type.set_function(sol::meta_function::new_index, sol::overload(
+			[] (cv::Mat& self, int idx, double value) {
+				cvextra::mat_set_at(self, value, idx);
+			},
+			[] (cv::Mat& self, sol::as_table_t<std::vector<int>> idx, double value, sol::this_state ts) {
+				if (idx.value().size() == self.dims) {
+					cvextra::mat_set_at(self, value, idx.value().data());
+					return;
+				}
+				sol::state_view lua(ts);
+				luaL_error(lua.lua_state(), "matrix has %d dimensions, but given index has %d dimensions", self.dims, idx.value().size());
+			}
+		));
 	}
 }
