@@ -19,59 +19,59 @@ namespace {
 	}
 
 	void setMinMax(const sol::object& value, std::vector<int>& index, double& minVal, double& maxVal, bool& has_float, bool& has_double) {
-		if (object_is_impl(value, static_cast<int8_t*>(nullptr))) {
-			auto value_t = (double)object_as_impl(value, static_cast<int8_t*>(nullptr));
+		if (value.is<int8_t>()) {
+			auto value_t = (double)value.as<int8_t>();
 			minVal = std::min(minVal, value_t);
 			maxVal = std::max(maxVal, value_t);
 			return;
 		}
 
-		if (object_is_impl(value, static_cast<uint8_t*>(nullptr))) {
-			auto value_t = (double)object_as_impl(value, static_cast<uint8_t*>(nullptr));
+		if (value.is<uint8_t>()) {
+			auto value_t = (double)value.as<uint8_t>();
 			minVal = std::min(minVal, value_t);
 			maxVal = std::max(maxVal, value_t);
 			return;
 		}
 
-		if (object_is_impl(value, static_cast<int16_t*>(nullptr))) {
-			auto value_t = (double)object_as_impl(value, static_cast<int16_t*>(nullptr));
+		if (value.is<int16_t>()) {
+			auto value_t = (double)value.as<int16_t>();
 			minVal = std::min(minVal, value_t);
 			maxVal = std::max(maxVal, value_t);
 			return;
 		}
 
-		if (object_is_impl(value, static_cast<uint16_t*>(nullptr))) {
-			auto value_t = (double)object_as_impl(value, static_cast<uint16_t*>(nullptr));
+		if (value.is<uint16_t>()) {
+			auto value_t = (double)value.as<uint16_t>();
 			minVal = std::min(minVal, value_t);
 			maxVal = std::max(maxVal, value_t);
 			return;
 		}
 
-		if (object_is_impl(value, static_cast<int32_t*>(nullptr))) {
-			auto value_t = (double)object_as_impl(value, static_cast<int32_t*>(nullptr));
+		if (value.is<int32_t>()) {
+			auto value_t = (double)value.as<int32_t>();
 			minVal = std::min(minVal, value_t);
 			maxVal = std::max(maxVal, value_t);
 			return;
 		}
 
-		if (object_is_impl(value, static_cast<uint32_t*>(nullptr))) {
-			auto value_t = (double)object_as_impl(value, static_cast<uint32_t*>(nullptr));
+		if (value.is<uint32_t>()) {
+			auto value_t = (double)value.as<uint32_t>();
 			minVal = std::min(minVal, value_t);
 			maxVal = std::max(maxVal, value_t);
 			return;
 		}
 
-		if (object_is_impl(value, static_cast<float*>(nullptr))) {
+		if (value.is<float>()) {
 			has_float = true;
-			auto value_t = (double)object_as_impl(value, static_cast<float*>(nullptr));
+			auto value_t = (double)value.as<float>();
 			minVal = std::min(minVal, value_t);
 			maxVal = std::max(maxVal, value_t);
 			return;
 		}
 
-		if (object_is_impl(value, static_cast<double*>(nullptr))) {
+		if (value.is<double>()) {
 			has_double = true;
-			auto value_t = (double)object_as_impl(value, static_cast<double*>(nullptr));
+			auto value_t = value.as<double>();
 			minVal = std::min(minVal, value_t);
 			maxVal = std::max(maxVal, value_t);
 			return;
@@ -219,36 +219,36 @@ namespace cvextra {
 		for (uint64_t i = 0, j = 0; i < total; i++) {
 			sol::object value = current[j + 1];
 
-			if (object_is_impl(value, static_cast<int8_t*>(nullptr))) {
-				auto value_t = object_as_impl(value, static_cast<int8_t*>(nullptr));
+			if (value.is<int8_t>()) {
+				auto value_t = value.as<int8_t>();
 				data[i] = static_cast<_Tp>(value_t);
 			}
-			else if (object_is_impl(value, static_cast<uint8_t*>(nullptr))) {
-				auto value_t = object_as_impl(value, static_cast<uint8_t*>(nullptr));
+			else if (value.is<uint8_t>()) {
+				auto value_t = value.as<uint8_t>();
 				data[i] = static_cast<_Tp>(value_t);
 			}
-			else if (object_is_impl(value, static_cast<int16_t*>(nullptr))) {
-				auto value_t = object_as_impl(value, static_cast<int16_t*>(nullptr));
+			else if (value.is<int16_t>()) {
+				auto value_t = value.as<int16_t>();
 				data[i] = static_cast<_Tp>(value_t);
 			}
-			else if (object_is_impl(value, static_cast<uint16_t*>(nullptr))) {
-				auto value_t = object_as_impl(value, static_cast<uint16_t*>(nullptr));
+			else if (value.is<uint16_t>()) {
+				auto value_t = value.as<uint16_t>();
 				data[i] = static_cast<_Tp>(value_t);
 			}
-			else if (object_is_impl(value, static_cast<int32_t*>(nullptr))) {
-				auto value_t = object_as_impl(value, static_cast<int32_t*>(nullptr));
+			else if (value.is<int32_t>()) {
+				auto value_t = value.as<int32_t>();
 				data[i] = static_cast<_Tp>(value_t);
 			}
-			else if (object_is_impl(value, static_cast<uint32_t*>(nullptr))) {
-				auto value_t = object_as_impl(value, static_cast<uint32_t*>(nullptr));
+			else if (value.is<uint32_t>()) {
+				auto value_t = value.as<uint32_t>();
 				data[i] = static_cast<_Tp>(value_t);
 			}
-			else if (object_is_impl(value, static_cast<float*>(nullptr))) {
-				auto value_t = object_as_impl(value, static_cast<float*>(nullptr));
+			else if (value.is<float>()) {
+				auto value_t = value.as<float>();
 				data[i] = static_cast<_Tp>(value_t);
 			}
-			else if (object_is_impl(value, static_cast<double*>(nullptr))) {
-				auto value_t = object_as_impl(value, static_cast<double*>(nullptr));
+			else if (value.is<double>()) {
+				auto value_t = value.as<double>();
 				data[i] = static_cast<_Tp>(value_t);
 			}
 

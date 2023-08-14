@@ -204,16 +204,6 @@ set_target_properties(luajit PROPERTIES
   VS_DEBUGGER_WORKING_DIRECTORY "${VS_DEBUGGER_WORKING_DIRECTORY}"
 )
 
-# add executable target that represents require_from_dll program
-add_executable(require_from_dll test/require_from_dll.cpp)
-target_link_libraries(require_from_dll PRIVATE ${PROJECT_NAME} ${LUA_LIBRARIES} sol2::sol2)
-if (DEFINED LUA_INCLUDE_DIR)
-  target_include_directories(require_from_dll PRIVATE ${LUA_INCLUDE_DIR})
-endif()
-if (DEFINED OpenCV_INCLUDE_DIRS)
-  target_include_directories(require_from_dll PRIVATE ${OpenCV_INCLUDE_DIRS})
-endif()
-
 # Test
 include(CTest)
 enable_testing()

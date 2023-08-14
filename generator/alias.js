@@ -47,9 +47,11 @@ exports.useNamespaces = (body, method, coclass, processor) => {
 exports.getTypeDef = (type, options) => {
     let type_def = type
         .replace(/\b(u?int(?:8|16|32|64))_t\b/g, "$1")
-        .replace(/std::map/g, "MapOf")
-        .replace(/std::pair/g, "PairOf")
-        .replace(/std::vector/g, "VectorOf");
+        .replaceAll("std::map", "MapOf")
+        .replaceAll("std::pair", "PairOf")
+        .replaceAll("std::vector", "VectorOf")
+        .replaceAll("std::shared_ptr", "SharedPtrOf")
+        .replaceAll(options.shared_ptr, "SharedPtrOf");
 
     type_def = exports.removeNamespaces(type_def, options)
         .replace(/\b_variant_t\b/g, "Variant")

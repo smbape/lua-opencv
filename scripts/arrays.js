@@ -1,4 +1,12 @@
 (() => {
+    const getTypename = type => {
+        return type
+            .replace("cv::", "")
+            .replace(/std::vector<(\w+)>/, (match, value_type) => {
+                return `VectorOf${ value_type[0].toUpperCase() + value_type.slice() }`;
+            });
+    };
+
     const types = [
         // Unique types
         "cv::Mat",
@@ -28,37 +36,33 @@
 
     console.log(`
         template<typename Array, typename _To = sol::object>
-        bool object_is_arrays(const _To& obj, Array*) {
-            return object_is_impl(obj, static_cast<Array*>(nullptr))
-                || ${ types.map(type => `object_is_impl(obj, static_cast<std::vector<${ type }>*>(nullptr))`).join(`\n${ " ".repeat(16) }|| `) }
-                ;
-        }
-
-        template<typename Array, typename _To = sol::object>
-        struct ArraysSharedPtr
+        struct OptionalArrays
         {
-            ArraysSharedPtr(_To& obj) {
-                if (object_is_impl(obj, static_cast<Array*>(nullptr))) {
-                    const Array& input = object_as_impl(obj, static_cast<Array*>(nullptr));
-                    ptr = reference_internal(input);
+            OptionalArrays(_To& obj) {
+                auto maybe_Array = maybe_impl(obj, static_cast<Array*>(nullptr));
+                if (maybe_Array) {
+                    ptr = reference_internal(*maybe_Array);
                     return;
                 }
 
                 ${ types.map((type, i) => `
-                if (object_is_impl(obj, static_cast<std::vector<${ type }>*>(nullptr))) {
-                    val${ i + 1 } = object_as_impl(obj, static_cast<std::vector<${ type }>*>(nullptr));
+                auto maybe_${ getTypename(type) } = maybe_impl(obj, static_cast<std::vector<${ type }>*>(nullptr));
+                if (maybe_${ getTypename(type) }) {
+                    val${ i + 1 } = *maybe_${ getTypename(type) };
                     setField(*this, *this, ${ i + 1 });
                     return;
                 }`.trim()).join(`\n\n${ " ".repeat(16) }`) }
             }
 
-            ArraysSharedPtr(const _To& obj) : ArraysSharedPtr(const_cast<_To&>(obj)) {}
+            OptionalArrays(const _To& obj) : OptionalArrays(const_cast<_To&>(obj)) {}
 
-            ArraysSharedPtr(const std::shared_ptr<Array>& ptr) : ptr(ptr) {}
+            OptionalArrays(const std::shared_ptr<Array>& ptr) : ptr(ptr) {}
 
-            ArraysSharedPtr(const ArraysSharedPtr& src) {
-                src.setField(src, *this, src.field);
+            OptionalArrays(const OptionalArrays& other) {
+                other.setField(other, *this, other.field);
             }
+
+            OptionalArrays() = default;
 
             template<typename T>
             void reset(T& obj) {
@@ -70,7 +74,7 @@
                 ptr = std::make_shared<Array>(obj);
             }
 
-            static void setField(const ArraysSharedPtr& src, ArraysSharedPtr& dst, std::uint8_t _field) {
+            static void setField(const OptionalArrays& src, OptionalArrays& dst, std::uint8_t _field) {
                 dst.field = _field;
 
                 switch (_field) {
@@ -89,6 +93,10 @@
                 }
             }
 
+            operator bool() const {
+                return static_cast<bool>(ptr);
+            }
+
             auto& operator*() {
                 return *ptr;
             }
@@ -100,13 +108,13 @@
         };
 
         template<typename Array, typename _To = sol::object>
-        decltype(auto) object_as_arrays(const _To& obj, Array*) {
-            return ArraysSharedPtr<Array>(obj);
+        decltype(auto) maybe_arrays(const _To& obj, Array*) {
+            return OptionalArrays<Array>(obj);
         }
 
         template<typename Array>
-        decltype(auto) object_as_arrays(const std::shared_ptr<Array>& ptr) {
-            return ArraysSharedPtr<Array>(ptr);
+        decltype(auto) maybe_arrays(const std::shared_ptr<Array>& ptr) {
+            return OptionalArrays<Array>(ptr);
         }
     `.replace(/^ {4}/mg, "").trim());
 })();

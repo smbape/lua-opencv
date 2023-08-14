@@ -10,7 +10,11 @@ const [VERSION_MAJOR, VERSION_MINOR] = version.split(".");
 const knwon_ids = require("./ids");
 const FileUtils = require("./FileUtils");
 const CoClass = require("./CoClass");
-const {makeExpansion, useNamespaces, removeNamespaces} = require("./alias");
+const {
+    makeExpansion,
+    useNamespaces,
+    removeNamespaces,
+} = require("./alias");
 const {
     PTR,
     SIMPLE_ARGTYPE_DEFAULTS
@@ -59,14 +63,14 @@ class LuaGenerator {
             return expr;
         }
 
-        const signature = `auto as_return_impl(${ cpptype }& obj, sol::state_view& lua)`;
+        const signature = `auto return_as_impl(${ cpptype }& obj, sol::state_view& lua)`;
         if (!options.implemented || !options.implemented.test(signature, options)) {
             if (!variant_types.has(cpptype)) {
                 variant_types.add(cpptype);
                 console.log(`variant type not implemented : "${ signature }"`);
             }
         } else {
-            expr = `as_return_impl(${ expr }, lua)`;
+            expr = `return_as_impl(${ expr }, lua)`;
         }
 
         return expr;
@@ -83,8 +87,9 @@ class LuaGenerator {
             const is_static = modifiers.includes("/S") || coclass.isStatic();
             const obj = `${ is_static ? `${ fqn }::` : "self->" }`;
             const enum_fqn = processor.getEnumType(type, coclass, options);
-            const is_class = !enum_fqn || processor.classes.has(enum_fqn) && processor.classes.get(enum_fqn).is_enum_class;
-            const as_type = is_class ? enum_fqn || cpptype : "int";
+            const is_enum_class = enum_fqn && processor.classes.has(enum_fqn) && processor.classes.get(enum_fqn).is_enum_class;
+            const as_type = !enum_fqn ? cpptype : is_enum_class ? enum_fqn : "int";
+            const is_class = processor.classes.has(cpptype) && !processor.enums.has(cpptype);
 
             let propname = name;
             let getter, setter;
@@ -131,7 +136,7 @@ class LuaGenerator {
 
                 rexpr = `${ obj }${ getter ? `${ getter }()` : propname }`;
 
-                if (!getter && enum_fqn && !is_class) {
+                if (!getter && enum_fqn && !is_enum_class) {
                     rexpr = `static_cast<${ as_type }>(${ rexpr })`;
                 }
 
@@ -157,7 +162,7 @@ class LuaGenerator {
                             const is_const = modifiers.includes("/C");
                             rexpr = `std::${ is_const ? "c" : "" }ref(${ rexpr })`;
                         } else {
-                            rexpr = LuaGenerator.returnVariant(rexpr, cpptype, options)
+                            rexpr = LuaGenerator.returnVariant(rexpr, cpptype, options);
                         }
                     }
                 }
@@ -170,9 +175,9 @@ class LuaGenerator {
                     setter = `${ obj }${ setter }`;
                 }
 
-                in_val = `object_as<${ as_type }>(value)`;
+                in_val = "*maybe_value";
 
-                if (!is_class) {
+                if (enum_fqn && !is_enum_class) {
                     // input must be int and cast as enum
                     in_val = `static_cast<${ enum_fqn }>(${ in_val })`;
                 }
@@ -190,7 +195,8 @@ class LuaGenerator {
                 }
 
                 wexpr = `
-                    if (object_is<${ as_type }>(value)) {
+                    auto maybe_value = maybe<${ as_type }>(value);
+                    if (maybe_value) {
                         ${ in_val.split("\n").join(`\n${ " ".repeat(24) }`) };
                     } else {
                         luaL_error(lua.lua_state(), "Unexpected value type");
@@ -225,7 +231,7 @@ class LuaGenerator {
                         }}
                     `.replace(/^ {24}/mg, "").trim());
                 }
-            } else if (!r_tuple_types && rexpr === `self->${ propname }` && in_val === `self->${ propname } = object_as<${ cpptype }>(value)`) {
+            } else if (!r_tuple_types && !is_class && rexpr === `self->${ propname }` && in_val === `self->${ propname } = *maybe_value`) {
                 contentRegister.push(`exports["${ name }"] = &::${ fqn }::${ propname };`);
             } else {
                 const args = [];
@@ -426,7 +432,8 @@ class LuaGenerator {
                     const is_out_array = /^(?:Input)?OutputArray(?:OfArrays)?$/.test(argtype);
                     const is_in_out = arg_modifiers.includes("/IO");
                     in_args[j] = is_in_array || is_in_out || arg_modifiers.includes("/I");
-                    out_args[j] = is_out_array || is_in_out || arg_modifiers.includes("/O") || is_ptr && defval === "" && SIMPLE_ARGTYPE_DEFAULTS.has(argtype.slice(0, -1));
+                    out_args[j] = is_out_array || is_in_out || arg_modifiers.includes("/O") ||
+                        is_ptr && defval === "" && SIMPLE_ARGTYPE_DEFAULTS.has(argtype.slice(0, -1));
                     out_array_args[j] = is_out_array;
 
                     if (out_args[j]) {
@@ -573,10 +580,11 @@ class LuaGenerator {
                     const is_shared_ptr = cpptype.startsWith(`${ shared_ptr }<`);
                     const is_by_ref = !is_ptr && !is_shared_ptr && processor.classes.has(cpptype) && !processor.enums.has(cpptype);
                     const in_type = is_shared_ptr ? cpptype.slice(`${ shared_ptr }<`.length, -">".length) : cpptype;
-                    const in_type_is_byref = processor.classes.has(in_type) && !processor.enums.has(in_type);
-                    const var_type = is_array ? arr_cpptype : in_type_is_byref ? `std::shared_ptr<${ in_type }>` : in_type;
-                    const object_is = `object_is${ arg_suffix }`;
-                    const object_as = `object_as${ arg_suffix }`;
+                    const var_type = is_array ? arr_cpptype : in_type;
+                    const maybe = `maybe${ arg_suffix }`;
+                    const optional_t = is_array ?
+                        argtype.startsWith("std::vector") ? "OptionalArrays" : "OptionalArray" :
+                        is_shared_ptr || is_by_ref ? "std::shared_ptr" : "sol::optional";
 
                     if (is_out) {
                         if (is_by_ref || is_array) {
@@ -593,47 +601,43 @@ class LuaGenerator {
                         }
                     }
 
+                    const optional_name = `maybe_${ argname }_opt`;
+
                     overload.push("", `
                         // =========================
                         // get argument ${ argname }
                         // =========================
+                        ${ optional_t }<${ var_type }> ${ optional_name };
                         bool ${ argname }_positional = false;
                         bool ${ argname }_kwarg = false;
-                        if (!has_kwargs || argc > ${ i }) {
-                            ${ argname }_positional = argc >= ${ i };
-
+                        if (argc > ${ i }) {
                             // positional parameter
-                            if (${ argname }_positional && !${ object_is }(vargs.get<sol::object>(${ i }), static_cast<${ var_type }*>(nullptr))) {
+                            ${ optional_name } = ${ maybe }(vargs.get<sol::object>(${ i }), static_cast<${ var_type }*>(nullptr));
+                            if (!${ optional_name }) {
                                 goto overload${ overload_id };
                             }
 
                             // should not be a named parameter
-                            if (has_kwargs && kwargs.count("${ argname }")) {
-                                goto overload${ overload_id };
-                            }
-                        }
-                        else if (kwargs.count("${ argname }")) {
-                            // named parameter
-                            if (!${ object_is }(kwargs.at("${ argname }"), static_cast<${ var_type }*>(nullptr))) {
+                            if (maybe_kwargs && kwargs.count("${ argname }")) {
                                 goto overload${ overload_id };
                             }
 
-                            ${ argname }_kwarg = true;
+                            ${ argname }_positional = true;
+                        }
+                        else if (kwargs.count("${ argname }")) {
+                            // named parameter
+                            ${ optional_name } = ${ maybe }(kwargs.at("${ argname }"), static_cast<${ var_type }*>(nullptr));
+                            if (!${ optional_name }) {
+                                goto overload${ overload_id };
+                            }
                             usedkw++;
+                            ${ argname }_kwarg = true;
                         }
                     `.replace(/^ {24}/mg, "").trim());
 
                     if (is_optional) {
-                        // goto instruction needs all variables to be declared first
-                        // put declaration of variable at top to be able to use goto
-                        if (is_by_ref) {
-                            overload.push(`auto ${ argname }_default = std::make_shared<${ cpptype }>();`);
-                            if (defval !== "") {
-                                overload.push(`*${ argname }_default = ${ defval };`);
-                            }
-                        } else {
-                            overload.push(`${ cpptype } ${ argname }_default${ defval !== "" ? ` = ${ defval }` : "" };`);
-                        }
+                        const ref = defval !== "" && is_by_ref && !defval.includes("(") ? "&" : "";
+                        overload.push(`${ ref ? "" : "static " }${ cpptype }${ ref } ${ argname }_default${ defval !== "" ? ` = ${ defval }` : "" };`);
                     } else {
                         overload.push(`
                             else {
@@ -643,41 +647,32 @@ class LuaGenerator {
                         `.replace(/^ {28}/mg, "").trim());
                     }
 
-                    const deref = in_type_is_byref ? "*" : "";
-
                     if (is_array) {
                         overload.push(`
                             auto ${ argname }_${ arrtype } = ${ getTernary(
-                                    `${ argname }_positional`,
-                                    `${ object_as }(vargs.get<sol::object>(${ i }), static_cast<${ var_type }*>(nullptr))`,
-                                    `${ argname }_kwarg`,
-                                    `${ object_as }(kwargs.at("${ argname }"), static_cast<${ var_type }*>(nullptr))`,
+                                    optional_name,
+                                    optional_name,
                                     is_optional,
-                                    `${ object_as }(std::make_shared<${ arr_cpptype }>(${ is_by_ref ? "*" : "" }${ argname }_default))`
+                                    `${ maybe }(std::make_shared<${ arr_cpptype }>(${ argname }_default))`
                                 ) };
                             auto& ${ argname } = *${ argname }_${ arrtype };
                         `.replace(/^ {28}/mg, "").trim());
                     } else if (is_shared_ptr) {
                         overload.push(`
-                            auto& ${ argname }_ref = ${ getTernary(
-                                    `${ argname }_positional`,
-                                    `${ deref }${ object_as }(vargs.get<sol::object>(${ i }), static_cast<${ var_type }*>(nullptr))`,
-                                    `${ argname }_kwarg`,
-                                    `${ deref }${ object_as }(kwargs.at("${ argname }"), static_cast<${ var_type }*>(nullptr))`,
+                            auto ${ argname } = ${ getTernary(
+                                    optional_name,
+                                    `reference_internal(*${ optional_name }, static_cast<${ cpptype }*>(nullptr))`,
                                     is_optional,
-                                    `*${ argname }_default`
+                                    `${ argname }_default`
                                 ) };
-                            auto ${ argname } = reference_internal(${ argname }_ref, static_cast<${ cpptype }*>(nullptr));
                         `.replace(/^ {28}/mg, "").trim());
                     } else {
                         overload.push(`
-                            auto${ is_by_ref ? "&" : "" } ${ argname } = ${ getTernary(
-                                    `${ argname }_positional`,
-                                    `${ deref }${ object_as }(vargs.get<sol::object>(${ i }), static_cast<${ var_type }*>(nullptr))`,
-                                    `${ argname }_kwarg`,
-                                    `${ deref }${ object_as }(kwargs.at("${ argname }"), static_cast<${ var_type }*>(nullptr))`,
+                            auto& ${ argname } = ${ getTernary(
+                                    optional_name,
+                                    `*${ optional_name }`,
                                     is_optional,
-                                    `${ is_by_ref ? "*" : "" }${ argname }_default`
+                                    `${ argname }_default`
                                 ) };
                         `.replace(/^ {28}/mg, "").trim());
                     }
@@ -690,7 +685,7 @@ class LuaGenerator {
 
                     // too many parameters
                     // unknown named parameters
-                    if (argc >= ${ argc } || usedkw != kwargs.size()) {
+                    if (argc > ${ argc } || usedkw != kwargs.size()) {
                         goto overload${ overload_id };
                     }
                 `.replace(/^ {20}/mg, "").trim());
@@ -842,9 +837,9 @@ class LuaGenerator {
                         lua.collect_garbage();
                     }
 
-                    const int argc = vargs.size() - 1;
-                    const bool has_kwargs = object_is<NamedParameters>(vargs.get<sol::object>(argc));
-                    auto& kwargs = has_kwargs ? object_as<NamedParameters>(vargs.get<sol::object>(argc)) : empty_kwargs;
+                    auto maybe_kwargs = maybe<NamedParameters>(vargs.get<sol::object>(vargs.size() - 1));
+                    auto& kwargs = maybe_kwargs ? *maybe_kwargs : empty_kwargs;
+                    const int argc = maybe_kwargs ? vargs.size() - 1 : vargs.size();
                     ${ contentFunction.join("\n").split("\n").join(`\n${ " ".repeat(20) }`) }
 
                     luaL_error(lua.lua_state(), "Overload resolution failed");

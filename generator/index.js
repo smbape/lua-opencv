@@ -23,27 +23,27 @@ const getOptions = output => {
         shared_ptr: "cv::Ptr",
         implemented: {
             test: (signature, opts) => {
-                if (/auto as_return_impl\(cv::Ptr<[^&]+>& obj, sol::state_view& lua\)/.test(signature)) {
+                if (/auto return_as_impl\(cv::Ptr<[^&]+>& obj, sol::state_view& lua\)/.test(signature)) {
                     return true;
                 }
 
-                if (/auto as_return_impl\(std::vector<cv::Ptr<[^&]+>>& obj, sol::state_view& lua\)/.test(signature)) {
+                if (/auto return_as_impl\(std::vector<cv::Ptr<[^&]+>>& obj, sol::state_view& lua\)/.test(signature)) {
                     return true;
                 }
 
-                if (/auto as_return_impl\(cv::(?:Point3?|Rect|Scalar|Size|Vec)(?:\d[bdfisw])?& obj, sol::state_view& lua\)/.test(signature)) {
+                if (/auto return_as_impl\(cv::(?:Point3?|Rect|Scalar|Size|Vec)(?:\d[bdfisw])?& obj, sol::state_view& lua\)/.test(signature)) {
                     return true;
                 }
 
-                if (/auto as_return_impl\(std::vector<cv::(?:Point3?|Rect|Vec)(?:\d[bdfisw])?>& obj, sol::state_view& lua\)/.test(signature)) {
+                if (/auto return_as_impl\(std::vector<cv::(?:Point3?|Rect|Vec)(?:\d[bdfisw])?>& obj, sol::state_view& lua\)/.test(signature)) {
                     return true;
                 }
 
-                if (/auto as_return_impl\(std::vector<std::vector<cv::(?:Point3?)(?:\d[bdfisw])?>>& obj, sol::state_view& lua\)/.test(signature)) {
+                if (/auto return_as_impl\(std::vector<std::vector<cv::(?:Point3?)(?:\d[bdfisw])?>>& obj, sol::state_view& lua\)/.test(signature)) {
                     return true;
                 }
 
-                if (/auto as_return_impl\(std::vector<std::tuple<cv::(?:Point)(?:\d[bdfisw])?, double>>& obj, sol::state_view& lua\)/.test(signature)) {
+                if (/auto return_as_impl\(std::vector<std::tuple<cv::(?:Point)(?:\d[bdfisw])?, double>>& obj, sol::state_view& lua\)/.test(signature)) {
                     return true;
                 }
 

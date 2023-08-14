@@ -1,4 +1,3 @@
-// #include <my_object/my_object.hpp>
 #include <register_all.hpp>
 
 namespace {
@@ -113,8 +112,6 @@ namespace LUA_MODULE_NAME {
 	sol::table LUA_MODULE_OPEN(sol::this_state L) {
 		sol::state_view lua(L);
 		sol::table module = lua.create_table();
-
-		// regitster_my_object(lua, module);
 
 		register_kwargs(lua, module);
 		register_garbage_collect(lua, module);
