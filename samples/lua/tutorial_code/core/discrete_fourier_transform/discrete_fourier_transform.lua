@@ -6,7 +6,7 @@ local kwargs = opencv_lua.kwargs
 
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.8.0/samples/samples/python/tutorial_code/core/discrete_fourier_transform/discrete_fourier_transform.py
+    https://github.com/opencv/opencv/blob/4.8.0/samples/python/tutorial_code/core/discrete_fourier_transform/discrete_fourier_transform.py
 --]]
 
 local function print_help()

@@ -2,10 +2,10 @@ const genFunc = (libname, fname, args) => {
     let mandatory = true;
 
     return `
-function ${libname}.${ fname } ( ... )
+function ${ libname }.${ fname } ( ... )
     local args={...}
-    local has_kwarg = ${libname}.kwargs.is_instance(args[#args])
-    local kwargs = has_kwarg and args[#args] or ${libname}.kwargs()
+    local has_kwarg = ${ libname }.kwargs.is_instance(args[#args])
+    local kwargs = has_kwarg and args[#args] or ${ libname }.kwargs()
     local usedkw = 0
 
     ${ args.map((decl, i) => {
@@ -59,4 +59,4 @@ end
 };
 
 const [,, libname, fname, ...args] = process.argv;
-console.log(genFunc(libname, fname, args.map(arg => /^[\['"]/.test(arg) ? eval(arg) : arg)));
+console.log(genFunc(libname, fname, args.map(arg => (/^[\['"]/.test(arg) ? eval(arg) : arg))));

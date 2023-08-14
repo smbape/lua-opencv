@@ -20,7 +20,7 @@ local sysPath = {
             end
         end
 
-        if #file == 0 or (file:find(":") == nil and not (file:sub(1,1) == "/")) then
+        if #file == 0 or (file:find(":") == nil and file:sub(1,1) ~= "/") then
             return "."
         end
 

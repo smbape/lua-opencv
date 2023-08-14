@@ -5,7 +5,7 @@ local cv = opencv_lua.cv
 
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.8.0/samples/samples/python/tutorial_code/core/AddingImages/adding_images.py
+    https://github.com/opencv/opencv/blob/4.8.0/samples/python/tutorial_code/core/AddingImages/adding_images.py
 --]]
 
 local alpha = 0.5

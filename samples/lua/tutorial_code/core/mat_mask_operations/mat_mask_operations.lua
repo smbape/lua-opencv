@@ -6,7 +6,7 @@ local kwargs = opencv_lua.kwargs
 
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.8.0/samples/samples/python/tutorial_code/core/mat_mask_operations/mat_mask_operations.py
+    https://github.com/opencv/opencv/blob/4.8.0/samples/python/tutorial_code/core/mat_mask_operations/mat_mask_operations.py
 --]]
 
 -- [basic_method]
@@ -26,7 +26,7 @@ local function sharpen(my_image)
     local height, width, n_channels = my_image.height, my_image.width, my_image:channels()
     local result = cv.Mat.zeros(my_image.rows, my_image.cols, cv.CV_MAKETYPE(my_image:depth(), my_image:channels()))
 
-    -- make channels a new dimension to be able to do :at(j, i, k)
+    -- make channels a new dimension to be able to do mat[{j, i, k}]
     if not is_grayscale then
         my_image = my_image:reshape(1, { height, width, n_channels })
         result = result:reshape(1, { height, width, n_channels })
@@ -99,8 +99,7 @@ local function main(argv)
 
     local dst0 = sharpen(src)
 
-    t = (os.clock() - t)
-    print(string.format("Hand written function time passed in seconds: %.3f", t))
+    print(string.format("Hand written function time passed in seconds: %.3f", os.clock() - t))
 
     cv.imshow("Output", dst0)
     cv.waitKey()
@@ -116,8 +115,7 @@ local function main(argv)
     -- ddepth = -1, means destination image has depth same as input image
     -- [filter2D]
 
-    t = (os.clock() - t)
-    print(string.format("Built-in filter2D time passed in seconds:     %.3f", t))
+    print(string.format("Hand written function time passed in seconds: %.3f", os.clock() - t))
 
     cv.imshow("Output", dst1)
 

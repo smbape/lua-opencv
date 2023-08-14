@@ -73,5 +73,77 @@ namespace LUA_MODULE_NAME {
 				luaL_error(lua.lua_state(), "matrix has %d dimensions, but given index has %d dimensions", self.dims, idx.value().size());
 			}
 		));
+
+		// mat_type.set_function("multiply", sol::overload([] (cv::Mat& src1, cv::Mat& src2) {
+		// 	double alpha = 1.0;
+		// 	cv::Mat src3;
+		// 	double beta = 0.0;
+		// 	cv::Mat dst;
+		// 	cv::gemm(src1, src2, alpha, src3, beta, dst);
+		// 	return dst;
+		// }, [] (cv::Mat& self, double alpha) {
+		// 	cv::Mat dst = self * alpha;
+		// 	return dst;
+		// }));
+
+		mat_type.set_function("multiply", [] (cv::Mat& self, sol::this_state ts, sol::variadic_args vargs) {
+			sol::state_view lua(ts);
+            sol::variadic_results vres;
+
+			bool has_arg0;
+			auto arg0_mat = vargs.get<sol::optional<cv::Mat>>(0); has_arg0 = static_cast<bool>(arg0_mat);
+			auto arg0_ptr_mat = has_arg0 ? sol::optional<std::shared_ptr<cv::Mat>>() : vargs.get<sol::optional<std::shared_ptr<cv::Mat>>>(0); has_arg0 = static_cast<bool>(arg0_ptr_mat);
+			auto arg0_double = has_arg0 ? sol::optional<double>() : vargs.get<sol::optional<double>>(0); has_arg0 = static_cast<bool>(arg0_ptr_mat);
+
+			if (arg0_mat) {
+				auto& src2 = *arg0_mat;
+				double alpha = 1.0;
+				cv::Mat src3;
+				double beta = 0.0;
+				cv::Mat dst;
+				cv::gemm(self, src2, alpha, src3, beta, dst);
+				vres.push_back(sol::object(ts, sol::in_place, dst));
+			} else if (arg0_ptr_mat) {
+				auto& src2 = *(*arg0_ptr_mat);
+				double alpha = 1.0;
+				cv::Mat src3;
+				double beta = 0.0;
+				cv::Mat dst;
+				cv::gemm(self, src2, alpha, src3, beta, dst);
+				vres.push_back(sol::object(ts, sol::in_place, dst));
+			} else if (arg0_double) {
+				cv::Mat dst = self * (*arg0_double);
+				vres.push_back(sol::object(ts, sol::in_place, dst));
+			} else {
+				luaL_error(lua.lua_state(), "Overload resolution failed");
+			}
+
+            return vres;
+        });
+
+		// module.set_function("ones", [] (int rows, int cols, int type) {
+		// 	// return cv::Mat::ones(rows, cols, type);
+		// 	return std::make_shared<cv::Mat>(std::move(cv::Mat::ones(rows, cols, type)));
+		// });
+
+		module.set_function("ones", [] (sol::this_state ts, sol::variadic_args vargs) {
+			sol::state_view lua(ts);
+            sol::variadic_results vres;
+
+			auto arg0_int = vargs.get<sol::optional<int>>(0);
+			auto arg1_int = vargs.get<sol::optional<int>>(1);
+			auto arg2_int = vargs.get<sol::optional<int>>(2);
+
+			if (arg0_int && arg1_int && arg2_int) {
+				auto& rows = *arg0_int;
+				auto& cols = *arg1_int;
+				auto& type = *arg2_int;
+				vres.push_back(sol::object(ts, sol::in_place, std::make_shared<cv::Mat>(std::move(cv::Mat::ones(rows, cols, type)))));
+			} else {
+				luaL_error(lua.lua_state(), "Overload resolution failed");
+			}
+
+            return vres;
+		});
 	}
 }

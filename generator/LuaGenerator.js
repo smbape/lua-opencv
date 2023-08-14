@@ -45,11 +45,31 @@ const getTernary = (...args) => {
     return text.join(" ");
 };
 
+const variant_types = new Set();
+
 class LuaGenerator {
     static proto = proto;
 
     static getRegisterFn(coclass) {
         return `register_${ coclass.getClassName() }`;
+    }
+
+    static returnVariant(expr, cpptype, options) {
+        if (!options.variantTypeReg || !options.variantTypeReg.test(cpptype)) {
+            return expr;
+        }
+
+        const signature = `auto as_return_impl(${ cpptype }& obj, sol::state_view& lua)`;
+        if (!options.implemented || !options.implemented.test(signature, options)) {
+            if (!variant_types.has(cpptype)) {
+                variant_types.add(cpptype);
+                console.log(`variant type not implemented : "${ signature }"`);
+            }
+        } else {
+            expr = `as_return_impl(${ expr }, lua)`;
+        }
+
+        return expr;
     }
 
     static writeProperties(processor, coclass, contentRegisterPrivate, contentRegister, options) {
@@ -128,12 +148,17 @@ class LuaGenerator {
                     for (const modifier of modifiers) {
                         if (modifier.startsWith("/Cast=")) {
                             rexpr = `${ modifier.slice("/Cast=".length) }(${ rexpr })`;
+                            has_expr = true;
                         }
                     }
 
-                    if (is_by_ref && !has_expr) {
-                        const is_const = modifiers.includes("/C");
-                        rexpr = `std::${ is_const ? "c" : "" }ref(${ rexpr })`;
+                    if (!has_expr) {
+                        if (is_by_ref) {
+                            const is_const = modifiers.includes("/C");
+                            rexpr = `std::${ is_const ? "c" : "" }ref(${ rexpr })`;
+                        } else {
+                            rexpr = LuaGenerator.returnVariant(rexpr, cpptype, options)
+                        }
                     }
                 }
             }
@@ -168,7 +193,6 @@ class LuaGenerator {
                     if (object_is<${ as_type }>(value)) {
                         ${ in_val.split("\n").join(`\n${ " ".repeat(24) }`) };
                     } else {
-                        sol::state_view lua(ts);
                         luaL_error(lua.lua_state(), "Unexpected value type");
                     }
                 `.replace(/^ {20}/mg, "").trim();
@@ -196,11 +220,12 @@ class LuaGenerator {
                 if (wexpr) {
                     dynamic_set.push(`
                         { "${ name }", [] (sol::stack_object& value, sol::this_state& ts) {
+                            sol::state_view lua(ts);
                             ${ wexpr.split("\n").join(`\n${ " ".repeat(28) }`) }
                         }}
                     `.replace(/^ {24}/mg, "").trim());
                 }
-            } else if (!r_tuple_types && rexpr === `self->${ propname }` && in_val === `self->${ propname } = object_as<${ type }>(value)`) {
+            } else if (!r_tuple_types && rexpr === `self->${ propname }` && in_val === `self->${ propname } = object_as<${ cpptype }>(value)`) {
                 contentRegister.push(`exports["${ name }"] = &::${ fqn }::${ propname };`);
             } else {
                 const args = [];
@@ -209,11 +234,9 @@ class LuaGenerator {
                     args.push(`::${ fqn }* self`);
                 }
 
-                if (r_tuple_types) {
-                    args.push("sol::this_state ts");
-                }
+                args.push("sol::this_state ts");
 
-                const getter_decl = args.length !== 0 ? `[] (${ args.join(", ") })` : "[]";
+                const getter_decl = `[] (${ args.join(", ") })`;
                 const getter_setter = [];
 
                 if (r_tuple_types) {
@@ -229,6 +252,7 @@ class LuaGenerator {
                 } else {
                     getter_setter.push(`
                         ${ getter_decl } {
+                            sol::state_view lua(ts);
                             return ${ rexpr };
                         }
                     `.replace(/^ {24}/mg, "").trim());
@@ -248,6 +272,7 @@ class LuaGenerator {
 
                     getter_setter.push(`
                         [] (${ setter_args.join(", ") }) {
+                            sol::state_view lua(ts);
                             ${ wexpr.split("\n").join(`\n${ " ".repeat(28) }`) }
                         }
                     `.replace(/^ {24}/mg, "").trim());
@@ -353,7 +378,6 @@ class LuaGenerator {
         const { fqn } = coclass;
         const { shared_ptr } = options;
         const indent = " ".repeat(4);
-        const variant_types = new Set();
 
         for (const fname of Array.from(coclass.methods.keys()).sort((a, b) => {
             if (a === "create") {
@@ -777,16 +801,8 @@ class LuaGenerator {
                                     }
                                 } else if (cpptype.endsWith("*")) {
                                     result = `reference_internal(${ result })`;
-                                } else if (options.variantTypeReg && options.variantTypeReg.test(cpptype)) {
-                                    const signature = `auto as_return_impl(${ cpptype }& obj, sol::state_view& lua)`;
-                                    if (!options.implemented || !options.implemented.test(signature, options)) {
-                                        if (!variant_types.has(cpptype)) {
-                                            variant_types.add(cpptype);
-                                            console.log(`variant type not implemented : "${ signature }"`);
-                                        }
-                                    } else {
-                                        result = `as_return_impl(${ result }, lua)`;
-                                    }
+                                } else {
+                                    result = LuaGenerator.returnVariant(result, cpptype, options);
                                 }
 
                                 return `vres.push_back({ ts, sol::in_place, ${ result } });`;
@@ -987,6 +1003,12 @@ class LuaGenerator {
             contentRegister.push("");
 
             LuaGenerator.writeProperties(processor, coclass, contentRegisterPrivate, contentRegister, options);
+
+            if (coclass.properties.size !== 0 && coclass.methods.size !== 0) {
+                // new line
+                contentRegister.push("");
+            }
+
             LuaGenerator.writeMethods(processor, coclass, contentRegisterPrivate, contentRegister, options);
 
             if (contentRegisterPrivate.length !== 0) {

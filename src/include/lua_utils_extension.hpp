@@ -540,12 +540,16 @@ namespace LUA_MODULE_NAME {
 	// InputArray, outputArray, InputOutputArray
 	template<typename Array, typename _To = sol::object>
 	bool object_is_array(const _To& obj, Array*) {
+		if constexpr (std::is_same<Array, cv::_InputArray>::value) {
+			if (obj == sol::lua_nil || object_is_impl(obj, static_cast<double*>(nullptr))) {
+				return true;
+			}
+		}
 		return object_is_impl(obj, static_cast<Array*>(nullptr))
 			|| object_is_impl(obj, static_cast<cv::cuda::GpuMat*>(nullptr))
 			|| object_is_impl(obj, static_cast<cv::Mat*>(nullptr))
 			|| object_is_impl(obj, static_cast<cv::UMat*>(nullptr))
 			|| object_is_impl(obj, static_cast<cv::Scalar*>(nullptr))
-			|| std::is_same<Array, cv::_InputArray>::value&& object_is_impl(obj, static_cast<double*>(nullptr))
 			;
 	}
 
@@ -589,6 +593,11 @@ namespace LUA_MODULE_NAME {
 					setField(*this, *this, 2);
 					return;
 				}
+
+				if (obj == sol::lua_nil) {
+					setField(*this, *this, 3);
+					return;
+				}
 			}
 		}
 
@@ -628,6 +637,11 @@ namespace LUA_MODULE_NAME {
 					dst.reset(dst.dval);
 				}
 				break;
+			case 3:
+				if constexpr (std::is_same_v<Array, cv::_InputArray>) {
+					dst.reset(dst.mval);
+				}
+				break;
 			default:
 				if (&src != &dst) {
 					dst.ptr = src.ptr;
@@ -644,6 +658,7 @@ namespace LUA_MODULE_NAME {
 
 		cv::Scalar sval;
 		double dval;
+		cv::Mat mval;
 	};
 
 	// InputArrayOfArrays, outputArrayOfArrays, InputOutputArrayOfArrays
