@@ -258,10 +258,10 @@ class LuaGenerator {
                 } else {
                     getter_setter.push(`
                         ${ getter_decl } {
-                            sol::state_view lua(ts);
+                            ${ /\blua\b/.test(rexpr) ? "sol::state_view lua(ts);" : "" }
                             return ${ rexpr };
                         }
-                    `.replace(/^ {24}/mg, "").trim());
+                    `.replace(/^ {24}/mg, "").trim().replace(/^[^\S\n]*\n/mg, ""));
                 }
 
                 if (wexpr) {
@@ -821,7 +821,7 @@ class LuaGenerator {
                 contentFunction.push(`overload${ overload_id }:`);
             }
 
-            const is_by_ref = is_constructor ? "" : "&";
+            const is_by_ref = is_constructor || !has_static || !has_instance ? "" : "&";
             const lua_args = [`sol::this_state${ is_by_ref } ts`, `sol::variadic_args${ is_by_ref } vargs`];
             if (!is_constructor && has_instance) {
                 lua_args.unshift(`::${ fqn }* self`);
@@ -837,9 +837,10 @@ class LuaGenerator {
                         lua.collect_garbage();
                     }
 
-                    auto maybe_kwargs = maybe<NamedParameters>(vargs.get<sol::object>(vargs.size() - 1));
+                    auto vargc = vargs.size();
+                    auto maybe_kwargs = maybe<NamedParameters>(vargs.get<sol::object>(vargc - 1));
                     auto& kwargs = maybe_kwargs ? *maybe_kwargs : empty_kwargs;
-                    const int argc = maybe_kwargs ? vargs.size() - 1 : vargs.size();
+                    const int argc = maybe_kwargs ? vargc - 1 : vargc;
                     ${ contentFunction.join("\n").split("\n").join(`\n${ " ".repeat(20) }`) }
 
                     luaL_error(lua.lua_state(), "Overload resolution failed");
@@ -860,20 +861,23 @@ class LuaGenerator {
                 const definitions = [];
 
                 if (has_instance) {
-                    definitions.push(`[] (::${ fqn }* self, sol::this_state ts, sol::variadic_args vargs) {
-                        return ::${ lua_fname }(self, ts, vargs);
-                    }`.replace(/^ {20}/mg, "").trim());
+                    if (has_static) {
+                        definitions.push(`[] (::${ fqn }* self, sol::this_state ts, sol::variadic_args vargs) {
+                            return ::${ lua_fname }(self, ts, vargs);
+                        }`.replace(/^ {20}/mg, "").trim());
+                    } else {
+                        definitions.push(`&::${ lua_fname }`);
+                    }
                 }
 
                 if (has_static) {
-                    const call_lua_args = ["ts", "vargs"];
                     if (has_instance) {
-                        call_lua_args.unshift(`static_cast<::${ fqn }*>(nullptr)`);
+                        definitions.push(`[] (sol::this_state ts, sol::variadic_args vargs) {
+                            return ::${ lua_fname }(static_cast<::${ fqn }*>(nullptr), ts, vargs);
+                        }`.replace(/^ {20}/mg, "").trim());
+                    } else {
+                        definitions.push(`::${ lua_fname }`);
                     }
-
-                    definitions.push(`[] (sol::this_state ts, sol::variadic_args vargs) {
-                        return ::${ lua_fname }(${ call_lua_args.join(", ") });
-                    }`.replace(/^ {20}/mg, "").trim());
                 }
 
                 const overload = definitions.length === 1 ? definitions[0] : `sol::overload(${ definitions.join(", ") })`;

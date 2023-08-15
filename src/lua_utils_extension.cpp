@@ -137,71 +137,8 @@ namespace LUA_MODULE_NAME {
 			}
 		));
 
-		mat_type.set_function(sol::meta_function::call, mat_get);
-		mat_type.set_function("get", mat_get);
-		mat_type.set_function("set", mat_set);
-
-		mat_type.set_function("multiply", [](cv::Mat& self, sol::this_state ts, sol::variadic_args vargs) {
-			sol::state_view lua(ts);
-			sol::variadic_results vres;
-
-			if (is_call_garbage_collect()) {
-				lua.collect_garbage();
-			}
-
-			bool has_arg0;
-			auto arg0_mat = vargs.get<sol::optional<cv::Mat>>(0); has_arg0 = static_cast<bool>(arg0_mat);
-			auto arg0_ptr_mat = has_arg0 ? sol::optional<std::shared_ptr<cv::Mat>>() : vargs.get<sol::optional<std::shared_ptr<cv::Mat>>>(0); has_arg0 = static_cast<bool>(arg0_ptr_mat);
-			auto arg0_double = has_arg0 ? sol::optional<double>() : vargs.get<sol::optional<double>>(0); has_arg0 = static_cast<bool>(arg0_ptr_mat);
-
-			if (arg0_mat) {
-				auto& src2 = *arg0_mat;
-				double alpha = 1.0;
-				cv::Mat src3;
-				double beta = 0.0;
-				cv::Mat dst;
-				cv::gemm(self, src2, alpha, src3, beta, dst);
-				vres.push_back(sol::object(ts, sol::in_place, dst));
-			}
-			else if (arg0_ptr_mat) {
-				auto& src2 = *(*arg0_ptr_mat);
-				double alpha = 1.0;
-				cv::Mat src3;
-				double beta = 0.0;
-				cv::Mat dst;
-				cv::gemm(self, src2, alpha, src3, beta, dst);
-				vres.push_back(sol::object(ts, sol::in_place, dst));
-			}
-			else if (arg0_double) {
-				cv::Mat dst = self * (*arg0_double);
-				vres.push_back(sol::object(ts, sol::in_place, dst));
-			}
-			else {
-				luaL_error(lua.lua_state(), "Overload resolution failed");
-			}
-
-			return vres;
-			});
-
-		module.set_function("ones", [](sol::this_state ts, sol::variadic_args vargs) {
-			sol::state_view lua(ts);
-			sol::variadic_results vres;
-
-			auto arg0_int = vargs.get<sol::object>(0).as<sol::optional<int>>();
-			auto arg1_int = vargs.get<sol::object>(1).as<sol::optional<int>>();
-			auto arg2_int = vargs.get<sol::object>(2).as<sol::optional<int>>();
-
-			if (arg0_int && arg1_int && arg2_int) {
-				auto& rows = *arg0_int;
-				auto& cols = *arg1_int;
-				auto& type = *arg2_int;
-				vres.push_back(sol::object(ts, sol::in_place, std::make_shared<cv::Mat>(std::move(cv::Mat::ones(rows, cols, type)))));
-			}
-			else {
-				luaL_error(lua.lua_state(), "Overload resolution failed");
-			}
-
-			return vres;
-			});
+		mat_type.set_function(sol::meta_function::call, &mat_get);
+		mat_type.set_function("get", &mat_get);
+		mat_type.set_function("set", &mat_set);
 	}
 }

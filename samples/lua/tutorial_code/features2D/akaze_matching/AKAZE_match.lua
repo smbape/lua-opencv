@@ -70,15 +70,12 @@ local inliers2 = {}
 local good_matches = {}
 local inlier_threshold = 2.5 -- Distance threshold to identify inliers with homography check
 for i, m in ipairs(matched1) do
-    local col = cv.Mat.ones(3, 1, cv.CV_64F) -- slow operation, a better impletation on the c++ side can fix this. I am looking for a better implementation
-    -- local col = opencv_lua.ones(3, 1, cv.CV_64F) -- fast operation with no keywords support
+    local col = cv.Mat.ones(3, 1, cv.CV_64F)
     col[0] = m.pt[1]
     col[1] = m.pt[2]
 
-    col = cv.gemm(homography, col, 1.0, nil, 0.0) -- slow operation, a better impletation on the c++ side can fix this. I am looking for a better implementation
-    -- col = homography:multiply(col) -- fast operation with no keywords support
-    col = col:convertTo(-1, kwargs({alpha = 1 / col[2]})) -- slow operation, a better impletation on the c++ side can fix this. I am looking for a better implementation
-    -- col = col:multiply(1 / col[2]) -- fast operation with no keywords support
+    col = cv.gemm(homography, col, 1.0, nil, 0.0)
+    col = col:convertTo(-1, kwargs({alpha = 1 / col[2]}))
     local dist = math.sqrt(((col[0] - matched2[i].pt[1]) ^ 2) +
                 ((col[1] - matched2[i].pt[2]) ^ 2))
 

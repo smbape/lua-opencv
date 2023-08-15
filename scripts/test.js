@@ -22,11 +22,11 @@ const config = {
 
 if (os.platform() !== "win32") {
     config.Debug.env = {
-        LUA_CPATH: sysPath.resolve(config.Debug.exe, "../../lib/lua/?.so") + ";" + spawnSync(config.Debug.exe, ["-e", "print(package.cpath)"]).stdout.trim()
+        LUA_CPATH: `${ sysPath.resolve(config.Debug.exe, "../../lib/lua/?.so") };${ spawnSync(config.Debug.exe, ["-e", "print(package.cpath)"]).stdout.trim() }`
     };
 
     config.Release.env = {
-        LUA_CPATH: sysPath.resolve(config.Release.exe, "../../lib/lua/?.so") + ";" + spawnSync(config.Release.exe, ["-e", "print(package.cpath)"]).stdout.trim()
+        LUA_CPATH: `${ sysPath.resolve(config.Release.exe, "../../lib/lua/?.so") };${ spawnSync(config.Release.exe, ["-e", "print(package.cpath)"]).stdout.trim() }`
     };
 }
 
