@@ -21,14 +21,9 @@ local threshold = 0.8
 
 for j=1,res.rows do
     local y = j - 1
-
-    -- it is faster to make a temp variable
-    -- than doing res[y][x] or res:at(y, x)
-    local row = res[y]
-
     for i=1,res.cols do
         local x = i - 1
-        if row[x] >= threshold then
+        if res(y, x) >= threshold then
             cv.rectangle(img_rgb, { x, y }, { x + w, y + h }, { 0, 0, 255 }, 2)
         end
     end

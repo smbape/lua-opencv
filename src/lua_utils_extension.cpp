@@ -41,6 +41,68 @@ namespace {
 		auto row = self.row(idx);
 		return sol::object(ts, sol::in_place, std::make_shared<cv::Mat>(row));
 	}
+
+	double mat_get(cv::Mat& self, sol::this_state ts, sol::variadic_args vargs) {
+		sol::state_view lua(ts);
+
+		auto size = vargs.size();
+		if (size != self.dims) {
+			luaL_error(lua.lua_state(), "matrix has %d dimensions, but given index has %d dimensions", self.dims, size);
+			return 0.;
+		}
+
+		std::vector<int> idx(size);
+		int i = 0;
+		for (const auto& v : vargs) {
+			auto maybe_int = v.as<std::optional<int>>();
+			if (!maybe_int) {
+				luaL_error(lua.lua_state(), "value at index %d is not an integer", i + 1);
+				return 0.;
+			}
+			idx[i++] = *maybe_int;
+		}
+
+		return cvextra::mat_at(self, idx.data());
+	}
+
+	void mat_set(cv::Mat& self, sol::this_state ts, sol::variadic_args vargs) {
+		sol::state_view lua(ts);
+
+		{
+			auto maybe_value = vargs.get<sol::optional<double>>(0);
+			if (!maybe_value) {
+				goto overload1;
+			}
+			auto value = *maybe_value;
+
+			auto size = vargs.size() - 1;
+			if (size != self.dims) {
+				luaL_error(lua.lua_state(), "matrix has %d dimensions, but given index has %d dimensions", self.dims, size);
+				return;
+			}
+
+			std::vector<int> idx(size);
+			int i = -1;
+			for (const auto& v : vargs) {
+				if (i == -1) {
+					i++;
+					continue;
+				}
+
+				auto maybe_int = v.as<std::optional<int>>();
+				if (!maybe_int) {
+					luaL_error(lua.lua_state(), "value at index %d is not an integer", i + 1);
+					return;
+				}
+				idx[i++] = *maybe_int;
+			}
+
+			cvextra::mat_set_at(self, value, idx.data());
+			return;
+		}
+	overload1:
+		luaL_error(lua.lua_state(), "Overload resolution failed");
+	}
 }
 
 namespace LUA_MODULE_NAME {
@@ -54,6 +116,7 @@ namespace LUA_MODULE_NAME {
 				if (idx.value().size() == self.dims) {
 					return cvextra::mat_at(self, idx.value().data());
 				}
+
 				sol::state_view lua(ts);
 				luaL_error(lua.lua_state(), "matrix has %d dimensions, but given index has %d dimensions", self.dims, idx.value().size());
 				return 0.;
@@ -74,19 +137,11 @@ namespace LUA_MODULE_NAME {
 			}
 		));
 
-		// mat_type.set_function("multiply", sol::overload([] (cv::Mat& src1, cv::Mat& src2) {
-		// 	double alpha = 1.0;
-		// 	cv::Mat src3;
-		// 	double beta = 0.0;
-		// 	cv::Mat dst;
-		// 	cv::gemm(src1, src2, alpha, src3, beta, dst);
-		// 	return dst;
-		// }, [] (cv::Mat& self, double alpha) {
-		// 	cv::Mat dst = self * alpha;
-		// 	return dst;
-		// }));
+		mat_type.set_function(sol::meta_function::call, mat_get);
+		mat_type.set_function("get", mat_get);
+		mat_type.set_function("set", mat_set);
 
-		mat_type.set_function("multiply", [] (cv::Mat& self, sol::this_state ts, sol::variadic_args vargs) {
+		mat_type.set_function("multiply", [](cv::Mat& self, sol::this_state ts, sol::variadic_args vargs) {
 			sol::state_view lua(ts);
 			sol::variadic_results vres;
 
@@ -107,7 +162,8 @@ namespace LUA_MODULE_NAME {
 				cv::Mat dst;
 				cv::gemm(self, src2, alpha, src3, beta, dst);
 				vres.push_back(sol::object(ts, sol::in_place, dst));
-			} else if (arg0_ptr_mat) {
+			}
+			else if (arg0_ptr_mat) {
 				auto& src2 = *(*arg0_ptr_mat);
 				double alpha = 1.0;
 				cv::Mat src3;
@@ -115,22 +171,19 @@ namespace LUA_MODULE_NAME {
 				cv::Mat dst;
 				cv::gemm(self, src2, alpha, src3, beta, dst);
 				vres.push_back(sol::object(ts, sol::in_place, dst));
-			} else if (arg0_double) {
+			}
+			else if (arg0_double) {
 				cv::Mat dst = self * (*arg0_double);
 				vres.push_back(sol::object(ts, sol::in_place, dst));
-			} else {
+			}
+			else {
 				luaL_error(lua.lua_state(), "Overload resolution failed");
 			}
 
 			return vres;
-		});
+			});
 
-		// module.set_function("ones", [] (int rows, int cols, int type) {
-		// 	// return cv::Mat::ones(rows, cols, type);
-		// 	return std::make_shared<cv::Mat>(std::move(cv::Mat::ones(rows, cols, type)));
-		// });
-
-		module.set_function("ones", [] (sol::this_state ts, sol::variadic_args vargs) {
+		module.set_function("ones", [](sol::this_state ts, sol::variadic_args vargs) {
 			sol::state_view lua(ts);
 			sol::variadic_results vres;
 
@@ -143,11 +196,12 @@ namespace LUA_MODULE_NAME {
 				auto& cols = *arg1_int;
 				auto& type = *arg2_int;
 				vres.push_back(sol::object(ts, sol::in_place, std::make_shared<cv::Mat>(std::move(cv::Mat::ones(rows, cols, type)))));
-			} else {
+			}
+			else {
 				luaL_error(lua.lua_state(), "Overload resolution failed");
 			}
 
 			return vres;
-		});
+			});
 	}
 }

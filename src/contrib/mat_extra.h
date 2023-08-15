@@ -8,8 +8,8 @@ namespace cvextra {
 	cv::Mat createFromVectorOfMat(const std::vector<cv::Mat>& vec);
 	cv::Mat createFromArray(sol::table array, int depth);
 
-	template <typename... Args>
-	double mat_at(const cv::Mat& m, Args&&... args) {
+	template<typename... Args>
+	inline double mat_at(const cv::Mat& m, Args&&... args) {
 		switch (m.depth()) {
 		case CV_8U:
 			return m.at<uchar>(std::forward<Args>(args)...);
@@ -30,8 +30,8 @@ namespace cvextra {
 		}
 	}
 
-	template <typename... Args>
-	void mat_set_at(cv::Mat& m, double value, Args&&... args) {
+	template<typename... Args>
+	inline void mat_set_at(cv::Mat& m, double value, Args&&... args) {
 		switch (m.depth()) {
 		case CV_8U:
 			m.at<uchar>(std::forward<Args>(args)...) = static_cast<uchar>(value);
@@ -59,8 +59,8 @@ namespace cvextra {
 		}
 	}
 
-	template <typename... Args>
-	cv::Point2d mat_Point_at(const cv::Mat& m, Args&&... args) {
+	template<typename... Args>
+	inline cv::Point2d mat_Point_at(const cv::Mat& m, Args&&... args) {
 		using namespace cv;
 
 		switch (m.depth()) {

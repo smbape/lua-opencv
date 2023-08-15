@@ -7,7 +7,7 @@ namespace {
 	using byte = unsigned char;
 
 	template<typename _Tp>
-	const std::string join(_Tp* elements, size_t size, const std::string& separator = ",") {
+	inline const std::string join(_Tp* elements, size_t size, const std::string& separator = ",") {
 		std::ostringstream o;
 		for (size_t i = 0; i < size; i++) {
 			if (i != 0) {
@@ -193,7 +193,7 @@ namespace cvextra {
 	}
 
 	template<typename _Tp>
-	const void _createFromArray(sol::table& array, int depth, std::vector<int>& sizes, cv::Mat& result) {
+	inline const void _createFromArray(sol::table& array, int depth, std::vector<int>& sizes, cv::Mat& result) {
 		uint64_t total = 1;
 		auto dims = sizes.size();
 		std::vector<int> steps(dims);

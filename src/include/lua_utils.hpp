@@ -31,6 +31,9 @@ namespace LUA_MODULE_NAME {
 	template<typename T>
 	constexpr inline bool is_usertype_v = is_usertype<T>::value;
 
+    template <>
+    struct is_usertype<NamedParameters> : std::true_type { };
+
 	template<typename _To, typename T>
 	inline auto maybe_impl(_To& obj, T*) {
 		if constexpr (is_usertype_v<T>) {

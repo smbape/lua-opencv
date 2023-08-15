@@ -34,28 +34,17 @@ local function sharpen(my_image)
 
     -- [basic_method_loop]
     for j = 1, height - 2 do
-        local image_row_before = my_image[j - 1]
-        local image_row = my_image[j]
-        local image_row_after = my_image[j + 1]
-        local result_row = result[j]
-
         for i = 1, width - 2 do
-            local image_center = image_row[i]
-            local image_bottom = image_row_after[i]
-            local image_top = image_row_before[i]
-            local image_right = image_row[i + 1]
-            local image_left = image_row[i - 1]
-
             if is_grayscale then
-                local sum_value = 5 * image_center - image_bottom - image_top
-                            - image_right - image_left
-                result_row[i] = saturated(sum_value)
+                local sum_value = 5 * my_image(j, i) - my_image(j + 1, i) - my_image(j - 1, i)
+                            - my_image(j, i + 1) - my_image(j, i - 1)
+                result:set(saturated(sum_value), j, i)
             else
-                local result_col = result_row[i]
                 for k = 0, n_channels - 1 do
-                    local sum_value = 5 * image_center[k] - image_bottom[k] - image_top[k]
-                            - image_right[k] - image_left[k]
-                    result_col[k] = saturated(sum_value)
+                    local sum_value = 5 * my_image(j, i, k) - my_image(j + 1, i, k)
+                                - my_image(j - 1, i, k) - my_image(j, i + 1, k)
+                                - my_image(j, i - 1, k)
+                    result:set(saturated(sum_value), j, i, k)
                 end
             end
         end

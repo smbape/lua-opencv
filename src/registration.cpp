@@ -66,8 +66,8 @@ namespace {
 		return self.at(key);
 	}
 
-	void kwargs_new_index(NamedParameters& self, const std::string& key, sol::object val) {
-		self.insert_or_assign(key, val);
+	void kwargs_new_index(NamedParameters& self, const std::string& key, sol::stack_object value) {
+		self.insert_or_assign(key, sol::object(std::move(value)));
 	}
 
 	void register_kwargs(sol::state_view& lua, sol::table& module) {
@@ -91,9 +91,8 @@ namespace {
 			return self.count(key) != 0;
 			});
 
-		kwargs.set_function("size", [](NamedParameters& self) {
-			return self.size();
-			});
+		kwargs.set_function(sol::meta_function::length, &NamedParameters::size);
+		kwargs.set_function("size", &NamedParameters::size);
 
 		kwargs.set_function("is_instance", [](sol::object obj) {
 			return obj.is<NamedParameters>();
