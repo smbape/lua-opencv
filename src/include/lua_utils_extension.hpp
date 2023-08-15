@@ -15,7 +15,7 @@ namespace LUA_MODULE_NAME {
 
 	// cv::Ptr
 	template<typename _To, typename _Tp>
-	auto maybe_impl(_To& obj, cv::Ptr<_Tp>*) {
+	inline auto maybe_impl(_To& obj, cv::Ptr<_Tp>*) {
 		auto wrapper = obj.template as<sol::optional<std::shared_ptr<_Tp>>>();
 		if (!wrapper) {
 			return sol::optional<cv::Ptr<_Tp>>();
@@ -25,23 +25,23 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _To, typename _Tp>
-	auto maybe_impl(const _To& obj, cv::Ptr<_Tp>* ptr) {
+	inline auto maybe_impl(const _To& obj, cv::Ptr<_Tp>* ptr) {
 		return maybe_impl(const_cast<_To&>(obj), ptr);
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(cv::Ptr<_Tp>& ptr, sol::state_view& lua) {
+	inline auto return_as_impl(cv::Ptr<_Tp>& ptr, sol::state_view& lua) {
 		return std::shared_ptr<_Tp>(ptr);
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(const cv::Ptr<_Tp>& ptr, sol::state_view& lua) {
+	inline auto return_as_impl(const cv::Ptr<_Tp>& ptr, sol::state_view& lua) {
 		return std::shared_ptr<_Tp>(ptr);
 	}
 
 	// std::vector<cv::Ptr>
 	template<typename _To, typename _Tp>
-	auto maybe_impl(_To& obj, std::vector<cv::Ptr<_Tp>>*) {
+	inline auto maybe_impl(_To& obj, std::vector<cv::Ptr<_Tp>>*) {
 		auto vec = obj.template as<sol::optional<std::vector<std::shared_ptr<_Tp>>>>();
 		if (!vec) {
 			return sol::optional<std::vector<cv::Ptr<_Tp>>>();
@@ -53,19 +53,19 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _To, typename _Tp>
-	auto maybe_impl(const _To& obj, std::vector<cv::Ptr<_Tp>>* ptr) {
+	inline auto maybe_impl(const _To& obj, std::vector<cv::Ptr<_Tp>>* ptr) {
 		return maybe_impl(const_cast<_To&>(obj), ptr);
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(std::vector<cv::Ptr<_Tp>>& vec, sol::state_view& lua) {
+	inline auto return_as_impl(std::vector<cv::Ptr<_Tp>>& vec, sol::state_view& lua) {
 		std::vector<std::shared_ptr<_Tp>> res;
 		res.insert(std::end(res), std::begin(vec), std::end(vec));
 		return res;
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(const std::vector<cv::Ptr<_Tp>>& vec, sol::state_view& lua) {
+	inline auto return_as_impl(const std::vector<cv::Ptr<_Tp>>& vec, sol::state_view& lua) {
 		std::vector<std::shared_ptr<_Tp>> res;
 		res.insert(std::end(res), std::begin(vec), std::end(vec));
 		return res;
@@ -73,7 +73,7 @@ namespace LUA_MODULE_NAME {
 
 	// cv::Point_
 	template<typename _To, typename _Tp>
-	auto maybe_impl(_To& obj, cv::Point_<_Tp>*) {
+	inline auto maybe_impl(_To& obj, cv::Point_<_Tp>*) {
 		auto maybe = obj.template as<sol::optional<cv::Point_<_Tp>>>();
 		if (maybe) {
 			return maybe;
@@ -95,12 +95,12 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _To, typename _Tp>
-	auto maybe_impl(const _To& obj, cv::Point_<_Tp>* ptr) {
+	inline auto maybe_impl(const _To& obj, cv::Point_<_Tp>* ptr) {
 		return maybe_impl(const_cast<_To&>(obj), ptr);
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(cv::Point_<_Tp>& obj, sol::state_view& lua) {
+	inline auto return_as_impl(cv::Point_<_Tp>& obj, sol::state_view& lua) {
 		sol::table res = lua.create_table();
 		res[1] = obj.x;
 		res[2] = obj.y;
@@ -108,12 +108,12 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(const cv::Point_<_Tp>& obj, sol::state_view& lua) {
+	inline auto return_as_impl(const cv::Point_<_Tp>& obj, sol::state_view& lua) {
 		return return_as_impl(const_cast<cv::Point_<_Tp>&>(obj), lua);
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(std::vector<cv::Point_<_Tp>>& vec, sol::state_view& lua) {
+	inline auto return_as_impl(std::vector<cv::Point_<_Tp>>& vec, sol::state_view& lua) {
 		sol::table res = lua.create_table();
 		int i = 0;
 		for (const auto& obj : vec) {
@@ -123,12 +123,12 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(const std::vector<cv::Point_<_Tp>>& vec, sol::state_view& lua) {
+	inline auto return_as_impl(const std::vector<cv::Point_<_Tp>>& vec, sol::state_view& lua) {
 		return return_as_impl(const_cast<std::vector<cv::Point_<_Tp>>&>(vec), lua);
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(std::vector<std::vector<cv::Point_<_Tp>>>& vec, sol::state_view& lua) {
+	inline auto return_as_impl(std::vector<std::vector<cv::Point_<_Tp>>>& vec, sol::state_view& lua) {
 		sol::table res = lua.create_table();
 		int i = 0;
 		for (const auto& obj : vec) {
@@ -138,12 +138,12 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(const std::vector<std::vector<cv::Point_<_Tp>>>& vec, sol::state_view& lua) {
+	inline auto return_as_impl(const std::vector<std::vector<cv::Point_<_Tp>>>& vec, sol::state_view& lua) {
 		return return_as_impl(const_cast<std::vector<std::vector<cv::Point_<_Tp>>>&>(vec), lua);
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(std::vector<std::tuple<cv::Point_<_Tp>, double>>& vec, sol::state_view& lua) {
+	inline auto return_as_impl(std::vector<std::tuple<cv::Point_<_Tp>, double>>& vec, sol::state_view& lua) {
 		sol::table res = lua.create_table();
 		int i = 0;
 		for (const auto& obj : vec) {
@@ -156,12 +156,12 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(const std::vector<std::tuple<cv::Point_<_Tp>, double>>& vec, sol::state_view& lua) {
+	inline auto return_as_impl(const std::vector<std::tuple<cv::Point_<_Tp>, double>>& vec, sol::state_view& lua) {
 		return return_as_impl(const_cast<std::vector<std::tuple<cv::Point_<_Tp>, double>>&>(vec), lua);
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(cv::Point3_<_Tp>& obj, sol::state_view& lua) {
+	inline auto return_as_impl(cv::Point3_<_Tp>& obj, sol::state_view& lua) {
 		sol::table res = lua.create_table();
 		res[1] = obj.x;
 		res[2] = obj.y;
@@ -170,12 +170,12 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(const cv::Point3_<_Tp>& obj, sol::state_view& lua) {
+	inline auto return_as_impl(const cv::Point3_<_Tp>& obj, sol::state_view& lua) {
 		return return_as_impl(const_cast<cv::Point3_<_Tp>&>(obj), lua);
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(std::vector<cv::Point3_<_Tp>>& vec, sol::state_view& lua) {
+	inline auto return_as_impl(std::vector<cv::Point3_<_Tp>>& vec, sol::state_view& lua) {
 		sol::table res = lua.create_table();
 		int i = 0;
 		for (const auto& obj : vec) {
@@ -185,12 +185,12 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(const std::vector<cv::Point3_<_Tp>>& vec, sol::state_view& lua) {
+	inline auto return_as_impl(const std::vector<cv::Point3_<_Tp>>& vec, sol::state_view& lua) {
 		return return_as_impl(const_cast<std::vector<cv::Point3_<_Tp>>&>(vec), lua);
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(std::vector<std::vector<cv::Point3_<_Tp>>>& vec, sol::state_view& lua) {
+	inline auto return_as_impl(std::vector<std::vector<cv::Point3_<_Tp>>>& vec, sol::state_view& lua) {
 		sol::table res = lua.create_table();
 		int i = 0;
 		for (const auto& obj : vec) {
@@ -200,13 +200,13 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(const std::vector<std::vector<cv::Point3_<_Tp>>>& vec, sol::state_view& lua) {
+	inline auto return_as_impl(const std::vector<std::vector<cv::Point3_<_Tp>>>& vec, sol::state_view& lua) {
 		return return_as_impl(const_cast<std::vector<std::vector<cv::Point3_<_Tp>>>&>(vec), lua);
 	}
 
 	// cv::Rect_
 	template<typename _To, typename _Tp>
-	auto maybe_impl(_To& obj, cv::Rect_<_Tp>*) {
+	inline auto maybe_impl(_To& obj, cv::Rect_<_Tp>*) {
 		auto maybe = obj.template as<sol::optional<cv::Rect_<_Tp>>>();
 		if (maybe) {
 			return maybe;
@@ -228,12 +228,12 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _To, typename _Tp>
-	auto maybe_impl(const _To& obj, cv::Rect_<_Tp>* ptr) {
+	inline auto maybe_impl(const _To& obj, cv::Rect_<_Tp>* ptr) {
 		return maybe_impl(const_cast<_To&>(obj), ptr);
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(cv::Rect_<_Tp>& obj, sol::state_view& lua) {
+	inline auto return_as_impl(cv::Rect_<_Tp>& obj, sol::state_view& lua) {
 		sol::table res = lua.create_table();
 		res[1] = obj.x;
 		res[2] = obj.y;
@@ -243,12 +243,12 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(const cv::Rect_<_Tp>& obj, sol::state_view& lua) {
+	inline auto return_as_impl(const cv::Rect_<_Tp>& obj, sol::state_view& lua) {
 		return return_as_impl(const_cast<cv::Rect_<_Tp>&>(obj), lua);
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(std::vector<cv::Rect_<_Tp>>& vec, sol::state_view& lua) {
+	inline auto return_as_impl(std::vector<cv::Rect_<_Tp>>& vec, sol::state_view& lua) {
 		sol::table res = lua.create_table();
 		int i = 0;
 		for (const auto& obj : vec) {
@@ -258,13 +258,13 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(const std::vector<cv::Rect_<_Tp>>& vec, sol::state_view& lua) {
+	inline auto return_as_impl(const std::vector<cv::Rect_<_Tp>>& vec, sol::state_view& lua) {
 		return return_as_impl(const_cast<std::vector<cv::Rect_<_Tp>>&>(vec), lua);
 	}
 
 	// cv::Scalar_
 	template<typename _To, typename _Tp>
-	auto maybe_impl(_To& obj, cv::Scalar_<_Tp>*) {
+	inline auto maybe_impl(_To& obj, cv::Scalar_<_Tp>*) {
 		auto maybe = obj.template as<sol::optional<cv::Scalar_<_Tp>>>();;
 		if (maybe) {
 			return maybe;
@@ -292,12 +292,12 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _To, typename _Tp>
-	auto maybe_impl(const _To& obj, cv::Scalar_<_Tp>* ptr) {
+	inline auto maybe_impl(const _To& obj, cv::Scalar_<_Tp>* ptr) {
 		return maybe_impl(const_cast<_To&>(obj), ptr);
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(cv::Scalar_<_Tp>& obj, sol::state_view& lua) {
+	inline auto return_as_impl(cv::Scalar_<_Tp>& obj, sol::state_view& lua) {
 		sol::table res = lua.create_table();
 		for (int i = 0; i < 4; i++) {
 			res[i + 1] = obj[i];
@@ -306,13 +306,13 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(const cv::Scalar_<_Tp>& obj, sol::state_view& lua) {
+	inline auto return_as_impl(const cv::Scalar_<_Tp>& obj, sol::state_view& lua) {
 		return return_as_impl(const_cast<cv::Scalar_<_Tp>&>(obj), lua);
 	}
 
 	// cv::Size_
 	template<typename _To, typename _Tp>
-	auto maybe_impl(_To& obj, cv::Size_<_Tp>*) {
+	inline auto maybe_impl(_To& obj, cv::Size_<_Tp>*) {
 		auto maybe = obj.template as<sol::optional<cv::Size_<_Tp>>>();
 		if (maybe) {
 			return maybe;
@@ -332,12 +332,12 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _To, typename _Tp>
-	auto maybe_impl(const _To& obj, cv::Size_<_Tp>* ptr) {
+	inline auto maybe_impl(const _To& obj, cv::Size_<_Tp>* ptr) {
 		return maybe_impl(const_cast<_To&>(obj), ptr);
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(cv::Size_<_Tp>& obj, sol::state_view& lua) {
+	inline auto return_as_impl(cv::Size_<_Tp>& obj, sol::state_view& lua) {
 		sol::table res = lua.create_table();
 		res[1] = obj.width;
 		res[2] = obj.height;
@@ -345,13 +345,13 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp>
-	auto return_as_impl(const cv::Size_<_Tp>& obj, sol::state_view& lua) {
+	inline auto return_as_impl(const cv::Size_<_Tp>& obj, sol::state_view& lua) {
 		return return_as_impl(const_cast<cv::Size_<_Tp>&>(obj), lua);
 	}
 
 	// cv::Vec
 	template<typename _To, typename _Tp, int cn>
-	auto maybe_impl(_To& obj, cv::Vec<_Tp, cn>*) {
+	inline auto maybe_impl(_To& obj, cv::Vec<_Tp, cn>*) {
 		auto maybe = obj.template as<sol::optional<cv::Vec<_Tp, cn>>>();;
 		if (maybe) {
 			return maybe;
@@ -374,12 +374,12 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _To, typename _Tp, int cn>
-	auto maybe_impl(const _To& obj, cv::Vec<_Tp, cn>* ptr) {
+	inline auto maybe_impl(const _To& obj, cv::Vec<_Tp, cn>* ptr) {
 		return maybe_impl(const_cast<_To&>(obj), ptr);
 	}
 
 	template<typename _Tp, int cn>
-	auto return_as_impl(cv::Vec<_Tp, cn>& obj, sol::state_view& lua) {
+	inline auto return_as_impl(cv::Vec<_Tp, cn>& obj, sol::state_view& lua) {
 		sol::table res = lua.create_table();
 		for (int i = 0; i < cn; i++) {
 			res[i + 1] = obj[i];
@@ -388,12 +388,12 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp, int cn>
-	auto return_as_impl(const cv::Vec<_Tp, cn>& obj, sol::state_view& lua) {
+	inline auto return_as_impl(const cv::Vec<_Tp, cn>& obj, sol::state_view& lua) {
 		return return_as_impl(const_cast<cv::Vec<_Tp, cn>&>(obj), lua);
 	}
 
 	template<typename _Tp, int cn>
-	auto return_as_impl(std::vector<cv::Vec<_Tp, cn>>& vec, sol::state_view& lua) {
+	inline auto return_as_impl(std::vector<cv::Vec<_Tp, cn>>& vec, sol::state_view& lua) {
 		sol::table res = lua.create_table();
 		int i = 0;
 		for (const auto& obj : vec) {
@@ -403,7 +403,7 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp, int cn>
-	auto return_as_impl(const std::vector<cv::Vec<_Tp, cn>>& vec, sol::state_view& lua) {
+	inline auto return_as_impl(const std::vector<cv::Vec<_Tp, cn>>& vec, sol::state_view& lua) {
 		return return_as_impl(const_cast<std::vector<cv::Vec<_Tp, cn>>&>(vec), lua);
 	}
 
@@ -469,12 +469,12 @@ namespace LUA_MODULE_NAME {
 		OptionalArray() = default;
 
 		template<typename T>
-		void reset(T& obj) {
+		inline void reset(T& obj) {
 			ptr = std::make_shared<Array>(obj);
 		}
 
 		template<typename T>
-		void reset(const T& obj) {
+		inline void reset(const T& obj) {
 			ptr = std::make_shared<Array>(obj);
 		}
 
@@ -525,12 +525,12 @@ namespace LUA_MODULE_NAME {
 	};
 
 	template<typename Array, typename _To = sol::object>
-	decltype(auto) maybe_array(const _To& obj, Array*) {
+	inline decltype(auto) maybe_array(const _To& obj, Array*) {
 		return OptionalArray<Array>(obj);
 	}
 
 	template<typename Array>
-	decltype(auto) maybe_array(const std::shared_ptr<Array>& ptr) {
+	inline decltype(auto) maybe_array(const std::shared_ptr<Array>& ptr) {
 		return OptionalArray<Array>(ptr);
 	}
 
@@ -676,12 +676,12 @@ namespace LUA_MODULE_NAME {
 		OptionalArrays() = default;
 
 		template<typename T>
-		void reset(T& obj) {
+		inline void reset(T& obj) {
 			ptr = std::make_shared<Array>(obj);
 		}
 
 		template<typename T>
-		void reset(const T& obj) {
+		inline void reset(const T& obj) {
 			ptr = std::make_shared<Array>(obj);
 		}
 
@@ -829,12 +829,12 @@ namespace LUA_MODULE_NAME {
 	};
 
 	template<typename Array, typename _To = sol::object>
-	decltype(auto) maybe_arrays(const _To& obj, Array*) {
+	inline decltype(auto) maybe_arrays(const _To& obj, Array*) {
 		return OptionalArrays<Array>(obj);
 	}
 
 	template<typename Array>
-	decltype(auto) maybe_arrays(const std::shared_ptr<Array>& ptr) {
+	inline decltype(auto) maybe_arrays(const std::shared_ptr<Array>& ptr) {
 		return OptionalArrays<Array>(ptr);
 	}
 }

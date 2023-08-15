@@ -88,7 +88,11 @@ namespace LUA_MODULE_NAME {
 
 		mat_type.set_function("multiply", [] (cv::Mat& self, sol::this_state ts, sol::variadic_args vargs) {
 			sol::state_view lua(ts);
-            sol::variadic_results vres;
+			sol::variadic_results vres;
+
+			if (is_call_garbage_collect()) {
+				lua.collect_garbage();
+			}
 
 			bool has_arg0;
 			auto arg0_mat = vargs.get<sol::optional<cv::Mat>>(0); has_arg0 = static_cast<bool>(arg0_mat);
@@ -118,8 +122,8 @@ namespace LUA_MODULE_NAME {
 				luaL_error(lua.lua_state(), "Overload resolution failed");
 			}
 
-            return vres;
-        });
+			return vres;
+		});
 
 		// module.set_function("ones", [] (int rows, int cols, int type) {
 		// 	// return cv::Mat::ones(rows, cols, type);
@@ -128,11 +132,11 @@ namespace LUA_MODULE_NAME {
 
 		module.set_function("ones", [] (sol::this_state ts, sol::variadic_args vargs) {
 			sol::state_view lua(ts);
-            sol::variadic_results vres;
+			sol::variadic_results vres;
 
-			auto arg0_int = vargs.get<sol::optional<int>>(0);
-			auto arg1_int = vargs.get<sol::optional<int>>(1);
-			auto arg2_int = vargs.get<sol::optional<int>>(2);
+			auto arg0_int = vargs.get<sol::object>(0).as<sol::optional<int>>();
+			auto arg1_int = vargs.get<sol::object>(1).as<sol::optional<int>>();
+			auto arg2_int = vargs.get<sol::object>(2).as<sol::optional<int>>();
 
 			if (arg0_int && arg1_int && arg2_int) {
 				auto& rows = *arg0_int;
@@ -143,7 +147,7 @@ namespace LUA_MODULE_NAME {
 				luaL_error(lua.lua_state(), "Overload resolution failed");
 			}
 
-            return vres;
+			return vres;
 		});
 	}
 }

@@ -65,12 +65,12 @@
             OptionalArrays() = default;
 
             template<typename T>
-            void reset(T& obj) {
+            inline void reset(T& obj) {
                 ptr = std::make_shared<Array>(obj);
             }
 
             template<typename T>
-            void reset(const T& obj) {
+            inline void reset(const T& obj) {
                 ptr = std::make_shared<Array>(obj);
             }
 
@@ -108,12 +108,12 @@
         };
 
         template<typename Array, typename _To = sol::object>
-        decltype(auto) maybe_arrays(const _To& obj, Array*) {
+        inline decltype(auto) maybe_arrays(const _To& obj, Array*) {
             return OptionalArrays<Array>(obj);
         }
 
         template<typename Array>
-        decltype(auto) maybe_arrays(const std::shared_ptr<Array>& ptr) {
+        inline decltype(auto) maybe_arrays(const std::shared_ptr<Array>& ptr) {
             return OptionalArrays<Array>(ptr);
         }
     `.replace(/^ {4}/mg, "").trim());

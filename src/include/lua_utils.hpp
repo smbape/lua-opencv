@@ -5,34 +5,34 @@
 
 namespace LUA_MODULE_NAME {
 
-	template <typename _Tp, typename shared_ptr = std::shared_ptr<_Tp>>
-	decltype(auto) reference_internal(_Tp* element, shared_ptr* ptr = static_cast<shared_ptr*>(nullptr)) {
+	template<typename _Tp, typename shared_ptr = std::shared_ptr<_Tp>>
+	inline decltype(auto) reference_internal(_Tp* element, shared_ptr* ptr = static_cast<shared_ptr*>(nullptr)) {
 		return shared_ptr(shared_ptr{}, element);
 	}
 
-	template <typename _Tp, typename shared_ptr = std::shared_ptr<_Tp>>
-	decltype(auto) reference_internal(const _Tp* element, shared_ptr* ptr = static_cast<shared_ptr*>(nullptr)) {
+	template<typename _Tp, typename shared_ptr = std::shared_ptr<_Tp>>
+	inline decltype(auto) reference_internal(const _Tp* element, shared_ptr* ptr = static_cast<shared_ptr*>(nullptr)) {
 		return shared_ptr(shared_ptr{}, const_cast<_Tp*>(element));
 	}
 
-	template <typename _Tp, typename shared_ptr = std::shared_ptr<_Tp>>
-	decltype(auto) reference_internal(_Tp& element, shared_ptr* ptr = static_cast<shared_ptr*>(nullptr)) {
+	template<typename _Tp, typename shared_ptr = std::shared_ptr<_Tp>>
+	inline decltype(auto) reference_internal(_Tp& element, shared_ptr* ptr = static_cast<shared_ptr*>(nullptr)) {
 		return shared_ptr(shared_ptr{}, &element);
 	}
 
-	template <typename _Tp, typename shared_ptr = std::shared_ptr<_Tp>>
-	decltype(auto) reference_internal(const _Tp& element, shared_ptr* ptr = static_cast<shared_ptr*>(nullptr)) {
+	template<typename _Tp, typename shared_ptr = std::shared_ptr<_Tp>>
+	inline decltype(auto) reference_internal(const _Tp& element, shared_ptr* ptr = static_cast<shared_ptr*>(nullptr)) {
 		return shared_ptr(shared_ptr{}, const_cast<_Tp*>(&element));
 	}
 
-	template <typename T>
+	template<typename T>
 	struct is_usertype : std::integral_constant<bool, false> {};
 
-	template <typename T>
+	template<typename T>
 	constexpr inline bool is_usertype_v = is_usertype<T>::value;
 
 	template<typename _To, typename T>
-	auto maybe_impl(_To& obj, T*) {
+	inline auto maybe_impl(_To& obj, T*) {
 		if constexpr (is_usertype_v<T>) {
 			if (obj.template is<std::shared_ptr<T>>()) {
 				return obj.template as<std::shared_ptr<T>>();
@@ -49,12 +49,12 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _To, typename T>
-	auto maybe_impl(const _To& obj, T* ptr) {
+	inline auto maybe_impl(const _To& obj, T* ptr) {
 		return maybe_impl(const_cast<_To&>(obj), ptr);
 	}
 
 	template<typename _To, typename T>
-	decltype(auto) maybe_impl(_To& obj, std::vector<T>*) {
+	inline decltype(auto) maybe_impl(_To& obj, std::vector<T>*) {
 		if (obj.get_type() == sol::type::userdata) {
 			return obj.template as<sol::optional<std::vector<T>>>();
 		}
@@ -82,17 +82,17 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _To, typename T>
-	decltype(auto) maybe_impl(const _To& obj, std::vector<T>* ptr) {
+	inline decltype(auto) maybe_impl(const _To& obj, std::vector<T>* ptr) {
 		return maybe_impl(const_cast<_To&>(obj), ptr);
 	}
 
 	template<typename T, typename _To = sol::object>
-	decltype(auto) maybe(_To& obj) {
+	inline decltype(auto) maybe(_To& obj) {
 		return maybe_impl(obj, static_cast<T*>(nullptr));
 	}
 
 	template<typename T, typename _To = sol::object>
-	decltype(auto) maybe(const _To& obj) {
+	inline decltype(auto) maybe(const _To& obj) {
 		return maybe_impl(obj, static_cast<T*>(nullptr));
 	}
 }
