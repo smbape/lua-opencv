@@ -377,28 +377,36 @@ module.exports = ({ self, self_get, shared_ptr }) => {
 
         // Extended Functions
 
-        ["cv.Mat.operator+", "void", ["/S", "=sol::meta_function::addition", "/Call=cv::add"], [
-            ["cv::Mat", "src1", "", ["/C", "/Ref"]],
-            ["InputArray", "src2", "", []],
-            ["OutputArray", "dst", "", []],
+        ["cv.Mat.operator+", "cv::Mat", ["=sol::meta_function::addition"], [
+            ["cv::Mat", "m", "", []],
         ], "", ""],
 
-        ["cv.Mat.operator-", "void", ["/S", "=sol::meta_function::subtraction", "/Call=cv::subtract"], [
-            ["cv::Mat", "src1", "", ["/C", "/Ref"]],
-            ["InputArray", "src2", "", []],
-            ["OutputArray", "dst", "", []],
+        ["cv.Mat.operator+", "cv::Mat", ["=sol::meta_function::addition"], [
+            ["cv::Scalar", "s", "", []],
         ], "", ""],
 
-        ["cv.Mat.operator*", "void", ["/S", "=sol::meta_function::multiplication", "/Call=cv::multiply"], [
-            ["cv::Mat", "src1", "", ["/C", "/Ref"]],
-            ["InputArray", "src2", "", []],
-            ["OutputArray", "dst", "", []],
+        ["cv.Mat.operator-", "cv::Mat", ["=sol::meta_function::subtraction"], [
+            ["cv::Mat", "m", "", []],
         ], "", ""],
 
-        ["cv.Mat.operator/", "void", ["/S", "=sol::meta_function::division", "/Call=cv::divide"], [
-            ["cv::Mat", "src1", "", ["/C", "/Ref"]],
-            ["InputArray", "src2", "", []],
-            ["OutputArray", "dst", "", []],
+        ["cv.Mat.operator-", "cv::Mat", ["=sol::meta_function::subtraction"], [
+            ["cv::Scalar", "s", "", []],
+        ], "", ""],
+
+        ["cv.Mat.operator*", "cv::Mat", ["=sol::meta_function::multiplication"], [
+            ["cv::Mat", "m", "", []],
+        ], "", ""],
+
+        ["cv.Mat.operator*", "cv::Mat", ["=sol::meta_function::multiplication"], [
+            ["double", "s", "", []],
+        ], "", ""],
+
+        ["cv.Mat.operator/", "cv::Mat", ["=sol::meta_function::division"], [
+            ["cv::Mat", "m", "", []],
+        ], "", ""],
+
+        ["cv.Mat.operator/", "cv::Mat", ["=sol::meta_function::division"], [
+            ["double", "s", "", []],
         ], "", ""],
 
         ["cv.Mat.operator==", "void", ["/S", "=sol::meta_function::equal_to", "/Call=cv::compare", "/Expr=$0, cv::CMP_EQ"], [

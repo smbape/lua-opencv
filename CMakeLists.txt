@@ -204,6 +204,8 @@ set_target_properties(luajit PROPERTIES
   VS_DEBUGGER_WORKING_DIRECTORY "${VS_DEBUGGER_WORKING_DIRECTORY}"
 )
 
+add_subdirectory(test)
+
 # Test
 include(CTest)
 enable_testing()

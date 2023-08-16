@@ -143,6 +143,7 @@ const hdr_parser_start = hdr_parser.indexOf("class CppHeaderParser");
 const hdr_parser_end = hdr_parser.indexOf("if __name__ == '__main__':");
 
 const options = getOptions(PROJECT_DIR);
+options.proto = LuaGenerator.proto;
 
 waterfall([
     next => {
@@ -237,7 +238,7 @@ waterfall([
             configuration.namespaces.push(...options.namespaces);
             configuration.namespaces.push(...options.other_namespaces);
 
-            const processor = new DeclProcessor();
+            const processor = new DeclProcessor(options);
             processor.process(configuration, options);
 
             next(null, processor, configuration);

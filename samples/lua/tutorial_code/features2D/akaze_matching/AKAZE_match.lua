@@ -11,17 +11,25 @@ Sources:
 --]]
 
 -- [load]
+-- parser = argparse.ArgumentParser(description='Code for AKAZE local features matching tutorial.')
+-- parser.add_argument('--input1', help='Path to input image 1.', default='graf1.png')
+-- parser.add_argument('--input2', help='Path to input image 2.', default='graf3.png')
+-- parser.add_argument('--homography', help='Path to the homography matrix.', default='H1to3p.xml')
+-- args = parser.parse_args()
+
 local args = {
     input1 = "graf1.png",
     input2 = "graf3.png",
     homography = "H1to3p.xml",
 }
 
-for i=2, #arg, 2 do
-    if args[arg[i]] == nil or i == #arg then
-        error('unexpected argument ' .. arg[i])
+for i=1, #arg, 2 do
+    local name = arg[i]
+    if name:sub(1,2) == "--" then name = name:sub(3) end
+    if args[name] == nil or i == #arg then
+        error('unexpected argument ' .. name)
     end
-    args[arg[i]] = arg[i + 1]
+    args[name] = arg[i + 1]
 end
 
 local img1 = cv.imread(cv.samples.findFile(args.input1), cv.IMREAD_GRAYSCALE)
@@ -46,7 +54,7 @@ local nn_matches = matcher:knnMatch(desc1, desc2, 2)
 -- [2-nn matching]
 
 -- [ratio test filtering]
-t = os.clock()
+local t = os.clock()
 local matched1 = {}
 local matched2 = {}
 local nn_match_ratio = 0.8 -- Nearest neighbor matching ratio
@@ -64,7 +72,7 @@ print(string.format("ratio test filtering: %.3f s", os.clock() - t))
 -- [ratio test filtering]
 
 -- [homography check]
-t = os.clock()
+local t = os.clock()
 local inliers1 = {}
 local inliers2 = {}
 local good_matches = {}

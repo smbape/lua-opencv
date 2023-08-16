@@ -19,56 +19,6 @@ namespace {
 	}
 
 	void setMinMax(const sol::object& value, std::vector<int>& index, double& minVal, double& maxVal, bool& has_float, bool& has_double) {
-		if (value.is<int8_t>()) {
-			auto value_t = (double)value.as<int8_t>();
-			minVal = std::min(minVal, value_t);
-			maxVal = std::max(maxVal, value_t);
-			return;
-		}
-
-		if (value.is<uint8_t>()) {
-			auto value_t = (double)value.as<uint8_t>();
-			minVal = std::min(minVal, value_t);
-			maxVal = std::max(maxVal, value_t);
-			return;
-		}
-
-		if (value.is<int16_t>()) {
-			auto value_t = (double)value.as<int16_t>();
-			minVal = std::min(minVal, value_t);
-			maxVal = std::max(maxVal, value_t);
-			return;
-		}
-
-		if (value.is<uint16_t>()) {
-			auto value_t = (double)value.as<uint16_t>();
-			minVal = std::min(minVal, value_t);
-			maxVal = std::max(maxVal, value_t);
-			return;
-		}
-
-		if (value.is<int32_t>()) {
-			auto value_t = (double)value.as<int32_t>();
-			minVal = std::min(minVal, value_t);
-			maxVal = std::max(maxVal, value_t);
-			return;
-		}
-
-		if (value.is<uint32_t>()) {
-			auto value_t = (double)value.as<uint32_t>();
-			minVal = std::min(minVal, value_t);
-			maxVal = std::max(maxVal, value_t);
-			return;
-		}
-
-		if (value.is<float>()) {
-			has_float = true;
-			auto value_t = (double)value.as<float>();
-			minVal = std::min(minVal, value_t);
-			maxVal = std::max(maxVal, value_t);
-			return;
-		}
-
 		if (value.is<double>()) {
 			has_double = true;
 			auto value_t = value.as<double>();
@@ -218,39 +168,8 @@ namespace cvextra {
 
 		for (uint64_t i = 0, j = 0; i < total; i++) {
 			sol::object value = current[j + 1];
-
-			if (value.is<int8_t>()) {
-				auto value_t = value.as<int8_t>();
-				data[i] = static_cast<_Tp>(value_t);
-			}
-			else if (value.is<uint8_t>()) {
-				auto value_t = value.as<uint8_t>();
-				data[i] = static_cast<_Tp>(value_t);
-			}
-			else if (value.is<int16_t>()) {
-				auto value_t = value.as<int16_t>();
-				data[i] = static_cast<_Tp>(value_t);
-			}
-			else if (value.is<uint16_t>()) {
-				auto value_t = value.as<uint16_t>();
-				data[i] = static_cast<_Tp>(value_t);
-			}
-			else if (value.is<int32_t>()) {
-				auto value_t = value.as<int32_t>();
-				data[i] = static_cast<_Tp>(value_t);
-			}
-			else if (value.is<uint32_t>()) {
-				auto value_t = value.as<uint32_t>();
-				data[i] = static_cast<_Tp>(value_t);
-			}
-			else if (value.is<float>()) {
-				auto value_t = value.as<float>();
-				data[i] = static_cast<_Tp>(value_t);
-			}
-			else if (value.is<double>()) {
-				auto value_t = value.as<double>();
-				data[i] = static_cast<_Tp>(value_t);
-			}
+			auto value_t = value.as<double>();
+			data[i] = static_cast<_Tp>(value_t);
 
 			if (i + 1 < total) {
 				j = dims - 1;

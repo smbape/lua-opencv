@@ -103,6 +103,82 @@ namespace {
 	overload1:
 		luaL_error(lua.lua_state(), "Overload resolution failed");
 	}
+
+	double mat_index_as_table(cv::Mat& self, sol::as_table_t<std::vector<int>> idx, sol::this_state ts) {
+		if (idx.value().size() == self.dims) {
+			return cvextra::mat_at(self, idx.value().data());
+		}
+
+		sol::state_view lua(ts);
+		luaL_error(lua.lua_state(), "matrix has %d dimensions, but given index has %d dimensions", self.dims, idx.value().size());
+		return 0.;
+	}
+
+	void mat_new_index_as_table(cv::Mat& self, sol::as_table_t<std::vector<int>> idx, double value, sol::this_state ts) {
+		if (idx.value().size() == self.dims) {
+			cvextra::mat_set_at(self, value, idx.value().data());
+			return;
+		}
+		sol::state_view lua(ts);
+		luaL_error(lua.lua_state(), "matrix has %d dimensions, but given index has %d dimensions", self.dims, idx.value().size());
+	}
+
+	double mat_index_as_vector(cv::Mat& self, std::vector<int> idx, sol::this_state ts) {
+		if (idx.size() == self.dims) {
+			return cvextra::mat_at(self, idx.data());
+		}
+
+		sol::state_view lua(ts);
+		luaL_error(lua.lua_state(), "matrix has %d dimensions, but given index has %d dimensions", self.dims, idx.size());
+		return 0.;
+	}
+
+	void mat_new_index_as_vector(cv::Mat& self, std::vector<int> idx, double value, sol::this_state ts) {
+		if (idx.size() == self.dims) {
+			cvextra::mat_set_at(self, value, idx.data());
+			return;
+		}
+		sol::state_view lua(ts);
+		luaL_error(lua.lua_state(), "matrix has %d dimensions, but given index has %d dimensions", self.dims, idx.size());
+	}
+
+	double mat_index_maybe(cv::Mat& self, sol::stack_object obj, sol::this_state ts) {
+		sol::state_view lua(ts);
+
+		auto maybe_idx = maybe<std::vector<int>>(obj);
+		if (!maybe_idx) {
+			luaL_error(lua.lua_state(), "Overload resolution failed");
+			return 0.;
+		}
+
+		auto& idx = *maybe_idx;
+
+		if (idx.size() == self.dims) {
+			return cvextra::mat_at(self, idx.data());
+		}
+
+		luaL_error(lua.lua_state(), "matrix has %d dimensions, but given index has %d dimensions", self.dims, idx.size());
+		return 0.;
+	}
+
+	void mat_new_index_maybe(cv::Mat& self, sol::stack_object obj, double value, sol::this_state ts) {
+		sol::state_view lua(ts);
+
+		auto maybe_idx = maybe<std::vector<int>>(obj);
+		if (!maybe_idx) {
+			luaL_error(lua.lua_state(), "Overload resolution failed");
+			return;
+		}
+
+		auto& idx = *maybe_idx;
+
+		if (idx.size() == self.dims) {
+			cvextra::mat_set_at(self, value, idx.data());
+			return;
+		}
+
+		luaL_error(lua.lua_state(), "matrix has %d dimensions, but given index has %d dimensions", self.dims, idx.size());
+	}
 }
 
 namespace LUA_MODULE_NAME {
@@ -112,30 +188,24 @@ namespace LUA_MODULE_NAME {
 
 		mat_type.set_function(sol::meta_function::index, sol::overload(
 			&mat_index,
-			[](cv::Mat& self, sol::as_table_t<std::vector<int>> idx, sol::this_state ts) {
-				if (idx.value().size() == self.dims) {
-					return cvextra::mat_at(self, idx.value().data());
-				}
-
-				sol::state_view lua(ts);
-				luaL_error(lua.lua_state(), "matrix has %d dimensions, but given index has %d dimensions", self.dims, idx.value().size());
-				return 0.;
-			}
+			&mat_index_as_table
 		));
 
 		mat_type.set_function(sol::meta_function::new_index, sol::overload(
 			[](cv::Mat& self, int idx, double value) {
 				cvextra::mat_set_at(self, value, idx);
 			},
-			[](cv::Mat& self, sol::as_table_t<std::vector<int>> idx, double value, sol::this_state ts) {
-				if (idx.value().size() == self.dims) {
-					cvextra::mat_set_at(self, value, idx.value().data());
-					return;
-				}
-				sol::state_view lua(ts);
-				luaL_error(lua.lua_state(), "matrix has %d dimensions, but given index has %d dimensions", self.dims, idx.value().size());
-			}
+			&mat_new_index_as_table
 		));
+
+		mat_type.set_function("index_table", &mat_index_as_table);
+		mat_type.set_function("new_index_table", &mat_new_index_as_table);
+
+		mat_type.set_function("index_vector", &mat_index_as_vector);
+		mat_type.set_function("new_index_vector", &mat_new_index_as_vector);
+
+		mat_type.set_function("index_maybe", &mat_index_maybe);
+		mat_type.set_function("new_index_maybe", &mat_new_index_maybe);
 
 		mat_type.set_function(sol::meta_function::call, &mat_get);
 		mat_type.set_function("get", &mat_get);

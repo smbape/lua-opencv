@@ -14,6 +14,7 @@ const {
     makeExpansion,
     useNamespaces,
     removeNamespaces,
+    getTypeDef
 } = require("./alias");
 const {
     PTR,
@@ -21,7 +22,47 @@ const {
 } = require("./constants");
 
 const proto = {
-    // No extension
+    makeDependent(type, coclass, options) {
+        const cpptype = this.getCppType(type, coclass, options);
+        this.processType(cpptype, coclass, options);
+    },
+
+    processType(cpptype, coclass, options) {
+        if (cpptype.startsWith("std::vector<")) {
+            this.processType(cpptype.slice("vector<".length, -">".length), coclass, options);
+            this.add_vector(cpptype, coclass, options);
+        }
+    },
+
+    add_vector(cpptype, parent, options) {
+        const fqn = getTypeDef(cpptype, options);
+        if (this.classes.has(fqn)) {
+            return;
+        }
+
+        const coclass = this.getCoClass(fqn, options);
+        coclass.include = parent;
+
+        coclass.addMethod([`${ fqn }.new`, cpptype, [`/Call=${ cpptype }`], [], "", ""]);
+
+        coclass.addMethod([`${ fqn }.new`, cpptype, [`/Call=${ cpptype }`], [
+            ["size_t", "size", "", []],
+        ], "", ""]);
+
+        coclass.addMethod([`${ fqn }.new`, cpptype, [`/Call=${ cpptype }`], [
+            [cpptype, "other", "", []],
+        ], "", ""]);
+
+        coclass.addMethod([`${ fqn }.sol::meta_function::call`, cpptype, [`/Call=${ cpptype }`], [], "", ""]);
+
+        coclass.addMethod([`${ fqn }.sol::meta_function::call`, cpptype, [`/Call=${ cpptype }`], [
+            ["size_t", "size", "", []],
+        ], "", ""]);
+
+        coclass.addMethod([`${ fqn }.sol::meta_function::call`, cpptype, [`/Call=${ cpptype }`], [
+            [cpptype, "other", "", []],
+        ], "", ""]);
+    },
 };
 
 const getTernary = (...args) => {
@@ -637,7 +678,7 @@ class LuaGenerator {
 
                     if (is_optional) {
                         const ref = defval !== "" && is_by_ref && !defval.includes("(") ? "&" : "";
-                        overload.push(`${ ref ? "" : "static " }${ cpptype }${ ref } ${ argname }_default${ defval !== "" ? ` = ${ defval }` : "" };`);
+                        overload.push(`${ ref || is_out ? "" : "static " }${ cpptype }${ ref } ${ argname }_default${ defval !== "" ? ` = ${ defval }` : "" };`);
                     } else {
                         overload.push(`
                             else {
@@ -860,24 +901,21 @@ class LuaGenerator {
             } else {
                 const definitions = [];
 
-                if (has_instance) {
-                    if (has_static) {
-                        definitions.push(`[] (::${ fqn }* self, sol::this_state ts, sol::variadic_args vargs) {
-                            return ::${ lua_fname }(self, ts, vargs);
-                        }`.replace(/^ {20}/mg, "").trim());
-                    } else {
-                        definitions.push(`&::${ lua_fname }`);
-                    }
-                }
+                if (has_instance && has_static) {
+                    definitions.push(`[] (::${ fqn }* self, sol::this_state ts, sol::variadic_args vargs) {
+                        return ::${ lua_fname }(self, ts, vargs);
+                    }`.replace(/^ {20}/mg, "").trim());
 
-                if (has_static) {
-                    if (has_instance) {
-                        definitions.push(`[] (sol::this_state ts, sol::variadic_args vargs) {
-                            return ::${ lua_fname }(static_cast<::${ fqn }*>(nullptr), ts, vargs);
-                        }`.replace(/^ {20}/mg, "").trim());
-                    } else {
-                        definitions.push(`::${ lua_fname }`);
-                    }
+                    definitions.push(`[] (sol::this_state ts, sol::variadic_args vargs) {
+                        return ::${ lua_fname }(static_cast<::${ fqn }*>(nullptr), ts, vargs);
+                    }`.replace(/^ {20}/mg, "").trim());
+                } else if (coclass.isStatic() && (fname === "sol::meta_function::call" || fname === "sol::meta_function::call_function")) {
+                    definitions.push(`[] (sol::stack_object exports, sol::this_state ts, sol::variadic_args vargs) {
+                        return ::${ lua_fname }(ts, vargs);
+                    }`.replace(/^ {20}/mg, "").trim());
+                } else {
+                    const by_ref = coclass.isStatic() ? "" : "&";
+                    definitions.push(`${ by_ref }::${ lua_fname }`);
                 }
 
                 const overload = definitions.length === 1 ? definitions[0] : `sol::overload(${ definitions.join(", ") })`;

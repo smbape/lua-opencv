@@ -62,14 +62,6 @@ namespace {
 			sol::lua_nil);
 	}
 
-	auto kwargs_index(NamedParameters& self, const std::string& key) {
-		return self.at(key);
-	}
-
-	void kwargs_new_index(NamedParameters& self, const std::string& key, sol::stack_object value) {
-		self.insert_or_assign(key, sol::object(std::move(value)));
-	}
-
 	void register_kwargs(sol::state_view& lua, sol::table& module) {
 		auto kwargs = module.new_usertype<NamedParameters>("kwargs",
 			// kwargs.new(...) -- dot syntax, no "self" value
@@ -81,11 +73,15 @@ namespace {
 
 		kwargs[sol::meta_function::pairs] = &kwargs_pairs;
 
-		kwargs[sol::meta_function::index] = &kwargs_index;
-		kwargs.set_function("get", &kwargs_index);
+		using mapped_type = NamedParameters::Base::mapped_type;
+		using key_type = NamedParameters::Base::key_type;
+		using iterator = NamedParameters::Base::iterator;
 
-		kwargs[sol::meta_function::new_index] = &kwargs_new_index;
-		kwargs.set_function("set", &kwargs_new_index);
+		kwargs[sol::meta_function::index] = sol::resolve<mapped_type & (const key_type&)>(&NamedParameters::at);
+		kwargs.set_function("get", sol::resolve<mapped_type & (const key_type&)>(&NamedParameters::at));
+
+		kwargs[sol::meta_function::new_index] = sol::resolve<std::pair<iterator, bool>(const key_type&, mapped_type&&)>(&NamedParameters::insert_or_assign<mapped_type>);
+		kwargs.set_function("set", sol::resolve<std::pair<iterator, bool>(const key_type&, mapped_type&&)>(&NamedParameters::insert_or_assign<mapped_type>));
 
 		kwargs.set_function("has", [](NamedParameters& self, const std::string& key) {
 			return self.count(key) != 0;

@@ -55,14 +55,14 @@ local function main(argv)
     -- [crop_rearrange]
     local magI_rows, magI_cols = magI.rows, magI.cols
     -- crop the spectrum, if it has an odd number of rows or columns
-    magI = cv.Mat(magI, {0, 0, bit.band(magI_cols, -2), bit.band(magI_rows, -2)})
+    magI = magI:new({0, 0, bit.band(magI_cols, -2), bit.band(magI_rows, -2)})
     local cx = math.floor(magI_rows/2)
     local cy = math.floor(magI_cols/2)
 
-    local q0 = cv.Mat(magI, {0, 0, cx, cy})   -- Top-Left - Create a ROI per quadrant
-    local q1 = cv.Mat(magI, {cx, 0, cx, cy})  -- Top-Right
-    local q2 = cv.Mat(magI, {0, cy, cx, cy})  -- Bottom-Left
-    local q3 = cv.Mat(magI, {cx, cy, cx, cy}) -- Bottom-Right
+    local q0 = magI:new({0, 0, cx, cy})   -- Top-Left - Create a ROI per quadrant
+    local q1 = magI:new({cx, 0, cx, cy})  -- Top-Right
+    local q2 = magI:new({0, cy, cx, cy})  -- Bottom-Left
+    local q3 = magI:new({cx, cy, cx, cy}) -- Bottom-Right
 
     local tmp = q0:copy()               -- swap quadrants (Top-Left with Bottom-Right)
     q3:copyTo(q0)

@@ -79,7 +79,7 @@ namespace LUA_MODULE_NAME {
 			return maybe;
 		}
 
-		auto vec = obj.template as<sol::optional<std::vector<_Tp>>>();
+		auto vec = maybe_impl(obj, static_cast<std::vector<_Tp>*>(nullptr));
 		if (!vec || (*vec).size() != 2) {
 			return maybe;
 		}
@@ -212,7 +212,7 @@ namespace LUA_MODULE_NAME {
 			return maybe;
 		}
 
-		auto vec = obj.template as<sol::optional<std::vector<_Tp>>>();
+		auto vec = maybe_impl(obj, static_cast<std::vector<_Tp>*>(nullptr));
 		if (!vec || (*vec).size() != 4) {
 			return maybe;
 		}
@@ -275,7 +275,7 @@ namespace LUA_MODULE_NAME {
 			return sol::optional<cv::Scalar_<_Tp>>(sol::in_place, std::move(cv::Scalar_<_Tp>(*maybe_type)));
 		}
 
-		auto vec = obj.template as<sol::optional<std::vector<_Tp>>>();
+		auto vec = maybe_impl(obj, static_cast<std::vector<_Tp>*>(nullptr));
 		if (!vec || (*vec).size() > 4) {
 			return maybe;
 		}
@@ -318,7 +318,7 @@ namespace LUA_MODULE_NAME {
 			return maybe;
 		}
 
-		auto vec = obj.template as<sol::optional<std::vector<_Tp>>>();
+		auto vec = maybe_impl(obj, static_cast<std::vector<_Tp>*>(nullptr));
 		if (!vec || (*vec).size() != 2) {
 			return maybe;
 		}
@@ -357,7 +357,7 @@ namespace LUA_MODULE_NAME {
 			return maybe;
 		}
 
-		auto vec = obj.template as<sol::optional<std::vector<_Tp>>>();
+		auto vec = maybe_impl(obj, static_cast<std::vector<_Tp>*>(nullptr));
 		if (!vec || (*vec).size() != cn) {
 			return maybe;
 		}
@@ -900,6 +900,12 @@ namespace cv {
 		}
 
 		inline bool operator== (const Poly& a, const Poly& b) {
+			return &a == &b;
+		}
+	}
+
+	namespace line_descriptor {
+		inline bool operator== (const KeyLine& a, const KeyLine& b) {
 			return &a == &b;
 		}
 	}
