@@ -349,6 +349,21 @@ namespace LUA_MODULE_NAME {
 		return return_as_impl(const_cast<cv::Size_<_Tp>&>(obj), lua);
 	}
 
+	template<typename _Tp>
+	inline auto return_as_impl(std::vector<cv::Size_<_Tp>>& vec, sol::state_view& lua) {
+		sol::table res = lua.create_table();
+		int i = 0;
+		for (const auto& obj : vec) {
+			res[++i] = return_as_impl(obj, lua);
+		}
+		return res;
+	}
+
+	template<typename _Tp>
+	inline auto return_as_impl(const std::vector<cv::Size_<_Tp>>& vec, sol::state_view& lua) {
+		return return_as_impl(const_cast<std::vector<cv::Size_<_Tp>>&>(vec), lua);
+	}
+
 	// cv::Vec
 	template<typename _To, typename _Tp, int cn>
 	inline auto maybe_impl(_To& obj, cv::Vec<_Tp, cn>*) {

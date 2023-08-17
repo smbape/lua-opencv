@@ -18,7 +18,7 @@ namespace {
 		return o.str();
 	}
 
-	void setMinMax(const sol::object& value, std::vector<int>& index, double& minVal, double& maxVal, bool& has_float, bool& has_double) {
+	void setMinMax(const sol::object& value, std::vector<int>& indexes, double& minVal, double& maxVal, bool& has_float, bool& has_double) {
 		if (value.is<double>()) {
 			has_double = true;
 			auto value_t = value.as<double>();
@@ -27,13 +27,13 @@ namespace {
 			return;
 		}
 
-		LUA_MODULE_THROW("Unsupported value at index [" << join(index.data(), index.size(), "][") << "]");
+		LUA_MODULE_THROW("Unsupported value at index [" << join(indexes.data(), indexes.size(), "][") << "]");
 	}
 
 	int getDepth(
 		const sol::table& array,
 		std::vector<int>& sizes,
-		std::vector<int>& index,
+		std::vector<int>& indexes,
 		double& minVal,
 		double& maxVal,
 		bool& has_float,
@@ -42,7 +42,7 @@ namespace {
 	) {
 		if (sizes.size() <= dim) {
 			sizes.push_back(array.size());
-			index.push_back(0);
+			indexes.push_back(0);
 		}
 		else if (sizes[dim] != array.size()) {
 			LUA_MODULE_THROW("all arrays must have the same size");
@@ -57,19 +57,19 @@ namespace {
 				LUA_MODULE_THROW("argument is not a table with only int keys");
 			}
 
-			index[dim] = i;
+			indexes[dim] = i;
 
 			sol::object value = key_value_pair.second;
 			if (value.is<sol::table>()) {
-				getDepth(value.as<sol::table>(), sizes, index, minVal, maxVal, has_float, has_double, dim + 1);
+				getDepth(value.as<sol::table>(), sizes, indexes, minVal, maxVal, has_float, has_double, dim + 1);
 			}
 			else {
-				setMinMax(value, index, minVal, maxVal, has_float, has_double);
+				setMinMax(value, indexes, minVal, maxVal, has_float, has_double);
 			}
 		}
 
 		// reset index before processing another dimension
-		index[dim] = 1;
+		indexes[dim] = 1;
 
 		if (has_double) {
 			return CV_64F;
@@ -97,10 +97,139 @@ namespace {
 
 		return CV_32F;
 	}
+
+	template<typename _Tp>
+	inline const void _createMatFromArray(sol::table& array, int depth, std::vector<int>& sizes, cv::Mat& result) {
+		uint64_t total = 1;
+		auto dims = sizes.size();
+		std::vector<size_t> steps(dims);
+		std::vector<sol::table> tables(dims);
+		std::vector<int> indexes(dims, 0);
+
+		sol::table current = array;
+
+		for (int i = 0; i < dims; i++) {
+			auto count = sizes[i];
+			steps[i] = total;
+			total *= count;
+
+			tables[i] = current;
+			if (i + 1 < dims) {
+				current = current[1];
+			}
+		}
+
+		result = cv::Mat::zeros(sizes.size(), sizes.data(), depth);
+		_Tp* data = result.ptr<_Tp>();
+
+		for (uint64_t i = 0, j = 0; i < total; i++) {
+			sol::object value = current[j + 1];
+			data[i] = static_cast<_Tp>(value.as<double>());
+
+			if (i + 1 == total) {
+				continue;
+			}
+
+			j = dims - 1;
+			indexes[j]++;
+
+			for (; j > 0 && indexes[j] == sizes[j]; j--) {
+				indexes[j] = 0;
+				indexes[j - 1]++;
+			}
+
+			current = tables[j++];
+			for (; j < dims; j++) {
+				current = current[indexes[j - 1] + 1];
+				tables[j] = current;
+			}
+
+			j = indexes[dims - 1];
+		}
+	}
+
+	template<typename _Tp>
+	inline void _tolistMat(const cv::Mat& self, sol::table& res, sol::state_view& lua) {
+		auto channels = self.channels();
+		auto total = self.total() * channels;
+		auto dims = self.dims;
+
+		if (self.cols == 1) {
+			dims--;
+		}
+
+		if (channels != 1) {
+			dims++;
+		}
+
+		std::vector<sol::table> tables(dims);
+		std::vector<int> sizes(dims);
+		std::vector<size_t> steps(dims);
+		std::vector<int> indexes(dims, 0);
+
+		const uchar* data = self.ptr();
+
+		auto current = res;
+		for (int i = 0; i < dims; i++) {
+			auto j = i == 0 || self.cols != 1 ? i : i + 1;
+
+			tables[i] = current;
+			sizes[i] = j < self.dims ? self.size[j] : channels;
+			steps[i] = j < self.dims ? self.step[j] : sizeof(_Tp);
+
+			if (i + 1 < dims) {
+				current[1] = lua.create_table();
+				current = current[1];
+			}
+		}
+
+		std::vector<int> ssizes(dims, 1);
+		for (int i = dims - 2; i >= 0; i--) {
+			ssizes[i] = ssizes[i + 1] * sizes[i + 1];
+		}
+
+		for (uint64_t i = 0, j = 0; i < total; i++) {
+			size_t offset = 0;
+			size_t index = i;
+			size_t nexti = i;
+
+			for (int k = 0; k < dims; k++) {
+				index = nexti / ssizes[k];
+				offset += index * steps[k];
+				nexti %= ssizes[k];
+			}
+
+			current[index + 1] = *reinterpret_cast<const _Tp*>(data + offset);
+
+			if (i + 1 == total) {
+				continue;
+			}
+
+			j = dims - 1;
+			indexes[j]++;
+
+			for (; j > 0 && indexes[j] == sizes[j]; j--) {
+				indexes[j] = 0;
+				indexes[j - 1]++;
+			}
+
+			current = tables[j++];
+			for (; j < dims; j++) {
+				auto k = indexes[j - 1] + 1;
+				if (current[k] == sol::lua_nil) {
+					current[k] = lua.create_table();
+				}
+				current = current[k];
+				tables[j] = current;
+			}
+
+			j = indexes[dims - 1];
+		}
+	}
 }
 
 namespace cvextra {
-	cv::Mat createFromVectorOfMat(const std::vector<cv::Mat>& vec) {
+	cv::Mat createMatFromVectorOfMat(const std::vector<cv::Mat>& vec, sol::state_view& lua) {
 		using namespace cv;
 
 		Mat result;
@@ -142,63 +271,14 @@ namespace cvextra {
 		return result;
 	}
 
-	template<typename _Tp>
-	inline const void _createFromArray(sol::table& array, int depth, std::vector<int>& sizes, cv::Mat& result) {
-		uint64_t total = 1;
-		auto dims = sizes.size();
-		std::vector<int> steps(dims);
-		std::vector<sol::table> tables(dims);
-		std::vector<int> index(dims, 0);
-
-		sol::table current = array;
-
-		for (int i = 0; i < dims; i++) {
-			auto count = sizes[i];
-			steps[i] = total;
-			total *= count;
-
-			tables[i] = current;
-			if (i + 1 < dims) {
-				current = current[1];
-			}
-		}
-
-		result = cv::Mat::zeros(sizes.size(), sizes.data(), depth);
-		_Tp* data = result.ptr<_Tp>();
-
-		for (uint64_t i = 0, j = 0; i < total; i++) {
-			sol::object value = current[j + 1];
-			auto value_t = value.as<double>();
-			data[i] = static_cast<_Tp>(value_t);
-
-			if (i + 1 < total) {
-				j = dims - 1;
-
-				index[j]++;
-				for (; j > 0 && index[j] == sizes[j]; j--) {
-					index[j] = 0;
-					index[j - 1]++;
-				}
-
-				current = tables[j++];
-				for (; j < dims; j++) {
-					current = current[index[j - 1] + 1];
-					tables[j] = current;
-				}
-
-				j = index[dims - 1];
-			}
-		}
-	}
-
-	cv::Mat createFromArray(sol::table array, int depth) {
+	cv::Mat createMatFromArray(sol::table array, int depth, sol::state_view& lua) {
 		std::vector<int> sizes;
-		std::vector<int> index;
+		std::vector<int> indexes;
 		double minVal = 0;
 		double maxVal = 0;
 		bool has_float = false;
 		bool has_double = false;
-		auto idepth = getDepth(array, sizes, index, minVal, maxVal, has_float, has_double);
+		auto idepth = getDepth(array, sizes, indexes, minVal, maxVal, has_float, has_double);
 
 		if (depth == -1) {
 			depth = idepth;
@@ -208,30 +288,62 @@ namespace cvextra {
 
 		switch (depth) {
 		case CV_8U:
-			_createFromArray<byte>(array, depth, sizes, result);
+			_createMatFromArray<byte>(array, depth, sizes, result);
 			break;
 		case CV_8S:
-			_createFromArray<char>(array, depth, sizes, result);
+			_createMatFromArray<char>(array, depth, sizes, result);
 			break;
 		case CV_16U:
-			_createFromArray<ushort>(array, depth, sizes, result);
+			_createMatFromArray<ushort>(array, depth, sizes, result);
 			break;
 		case CV_16S:
-			_createFromArray<short>(array, depth, sizes, result);
+			_createMatFromArray<short>(array, depth, sizes, result);
 			break;
 		case CV_32S:
-			_createFromArray<int>(array, depth, sizes, result);
+			_createMatFromArray<int>(array, depth, sizes, result);
 			break;
 		case CV_32F:
-			_createFromArray<float>(array, depth, sizes, result);
+			_createMatFromArray<float>(array, depth, sizes, result);
 			break;
 		case CV_64F:
-			_createFromArray<double>(array, depth, sizes, result);
+			_createMatFromArray<double>(array, depth, sizes, result);
 			break;
 		default:
-			LUA_MODULE_THROW("depth must be one of CV_8U CV_8S CV_16U CV_16S CV_32S CV_32F CV_64F");
+			luaL_error(lua.lua_state(), "depth must be one of CV_8U CV_8S CV_16U CV_16S CV_32S CV_32F CV_64F");
 		}
 
 		return result;
+	}
+
+	sol::table tolistMat(const cv::Mat& self, sol::state_view& lua) {
+		sol::table res = lua.create_table();
+
+		switch (self.depth()) {
+		case CV_8U:
+			_tolistMat<byte>(self, res, lua);
+			break;
+		case CV_8S:
+			_tolistMat<char>(self, res, lua);
+			break;
+		case CV_16U:
+			_tolistMat<ushort>(self, res, lua);
+			break;
+		case CV_16S:
+			_tolistMat<short>(self, res, lua);
+			break;
+		case CV_32S:
+			_tolistMat<int>(self, res, lua);
+			break;
+		case CV_32F:
+			_tolistMat<float>(self, res, lua);
+			break;
+		case CV_64F:
+			_tolistMat<double>(self, res, lua);
+			break;
+		default:
+			luaL_error(lua.lua_state(), "depth must be one of CV_8U CV_8S CV_16U CV_16S CV_32S CV_32F CV_64F");
+		}
+
+		return res;
 	}
 }

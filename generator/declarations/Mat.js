@@ -427,16 +427,16 @@ module.exports = ({ self, self_get, shared_ptr }) => {
             ["OutputArray", "dst", "", []],
         ], "", ""],
 
-        ["cv.Mat.Mat", "", ["/Call=::cvextra::createFromVectorOfMat", "/WrapAs=std::make_shared<cv::Mat>"], [
+        ["cv.Mat.Mat", "", ["/Call=::cvextra::createMatFromVectorOfMat", "/Expr=$0, lua", "/WrapAs=std::make_shared<cv::Mat>"], [
             ["std::vector<cv::Mat>", "vec", "", []],
         ], "", ""],
 
-        ["cv.Mat.createFromArray", "Mat", ["/S", "/Call=::cvextra::createFromArray"], [
+        ["cv.Mat.createFromArray", "Mat", ["/S", "/Call=::cvextra::createMatFromArray", "/Expr=$0, lua"], [
             ["sol::table", "array", "", []],
             ["int", "depth", "-1", []],
         ], "", ""],
 
-        // ["cv.Mat.asArray", "_variant_t", ["/External"], [], "", ""],
+        ["cv.Mat.tolist", "sol::table", ["/Call=::cvextra::tolistMat", `/Expr=${ self }, lua`], [], "", ""],
     ];
 
     const types = new Set(["int", "float", "double"]);

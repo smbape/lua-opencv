@@ -198,6 +198,10 @@ namespace LUA_MODULE_NAME {
 			&mat_new_index_as_table
 		));
 
+		mat_type.set_function(sol::meta_function::length, [](cv::Mat& self) {
+			return self.size[0];
+			});
+
 		mat_type.set_function("index_table", &mat_index_as_table);
 		mat_type.set_function("new_index_table", &mat_new_index_as_table);
 

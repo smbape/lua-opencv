@@ -35,7 +35,7 @@ const getOptions = output => {
                     return true;
                 }
 
-                if (/auto return_as_impl\(std::vector<cv::(?:Point3?|Rect|Vec)(?:\d[bdfisw])?>& obj, sol::state_view& lua\)/.test(signature)) {
+                if (/auto return_as_impl\(std::vector<cv::(?:Point3?|Rect|Size|Vec)(?:\d[bdfisw])?>& obj, sol::state_view& lua\)/.test(signature)) {
                     return true;
                 }
 
