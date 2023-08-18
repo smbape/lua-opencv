@@ -100,6 +100,10 @@ namespace {
 		module.set_function("call_garbage_collect", call_garbage_collect);
 	}
 
+	void regiter_callbacks(sol::state_view& lua, sol::table& module) {
+		module.set_function("notifyCallbacks", &notifyCallbacks);
+	}
+
 	bool garbage_collecte_active = false;
 }
 
@@ -110,6 +114,7 @@ namespace LUA_MODULE_NAME {
 
 		register_kwargs(lua, module);
 		register_garbage_collect(lua, module);
+		regiter_callbacks(lua, module);
 		register_all(lua, module);
 		register_extension(lua, module);
 
@@ -126,6 +131,21 @@ namespace LUA_MODULE_NAME {
 
 	int deny_new_index(lua_State* L) {
 		return luaL_error(L, "Hacking is good. Rebuild it yourself without this protection!");
+	}
+
+	std::mutex callback_mutex;
+	std::vector<std::tuple<Callback, void*>> registered_callbacks;
+
+	void registerCallback(Callback callback, void* userdata) {
+		std::lock_guard<std::mutex> lock(callback_mutex);
+		registered_callbacks.push_back(std::make_tuple(callback, userdata));
+	}
+
+	void notifyCallbacks() {
+		std::lock_guard<std::mutex> lock(callback_mutex);
+		for (const auto& [callback, userdata] : registered_callbacks) {
+			callback(userdata);
+		}
 	}
 }
 

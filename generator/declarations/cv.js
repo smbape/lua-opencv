@@ -45,6 +45,41 @@ module.exports = [
         ["DMatch", "default_value", "", []],
     ], "", ""],
 
+    ["cv.redirectError", "void", ["/Call=::cvextra::redirectError"], [
+        ["sol::function", "errCallback", "", []],
+        ["sol::object", "userdata", "sol::lua_nil", []],
+    ], "", ""],
+
+    ["cv.setMouseCallback", "void", ["/Call=::cvextra::setMouseCallback"], [
+        ["std::string", "winname", "", ["/Ref", "/C"]],
+        ["sol::function", "onMouse", "", []],
+        ["sol::object", "userdata", "sol::lua_nil", []],
+    ], "", ""],
+
+    ["cv.createButton", "int", ["/Call=::cvextra::createButton"], [
+        ["std::string", "bar_name", "", ["/Ref", "/C"]],
+        ["sol::function", "onChange", "", []],
+        ["sol::object", "userdata", "sol::lua_nil", []],
+        ["int", "type", "QT_PUSH_BUTTON", []],
+        ["bool", "initial_button_state", "false", []],
+    ], "", ""],
+
+    ["cv.createTrackbar", "int", ["/Call=::cvextra::createTrackbar"], [
+        ["std::string", "trackbarname", "", ["/Ref", "/C"]],
+        ["std::string", "winname", "", ["/Ref", "/C"]],
+        ["int", "value", "", []],
+        ["int", "count", "", []],
+        ["sol::function", "onChange", "", []],
+        ["sol::object", "userdata", "sol::lua_nil", []],
+    ], "", ""],
+
+    ["cv.createTrackbar", "int", ["/Call=::cvextra::createTrackbar"], [
+        ["std::string", "trackbarname", "", ["/Ref", "/C"]],
+        ["std::string", "winname", "", ["/Ref", "/C"]],
+        ["int", "value", "", []],
+        ["int", "count", "", []],
+    ], "", ""],
+
     // ["cv.FileNode.asVariant", "_variant_t", ["/Call=::autoit::fileNodeAsVariant", "/Expr=*__self->get()"], [], "", ""],
 
     ["cv.", "", ["/Properties"], [
