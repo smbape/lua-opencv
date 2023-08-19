@@ -8,6 +8,7 @@ Sources:
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local kwargs = opencv_lua.kwargs
+local round = opencv_lua.math.round
 
 local hue
 
@@ -34,11 +35,11 @@ local function Hist_and_Backproj(val)
     -- [Draw the histogram]
     local w = 400
     local h = 400
-    local bin_w = math.floor(w / histSize)
+    local bin_w = round(w / histSize)
     local histImg = cv.Mat.zeros(h, w, cv.CV_8UC3)
 
     for i = 0, bins - 1 do
-        cv.rectangle(histImg, { i*bin_w, h }, { (i+1)*bin_w, h - math.floor(hist[i]*h/255.0) }, { 0, 0, 255 }, cv.FILLED)
+        cv.rectangle(histImg, { i*bin_w, h }, { (i+1)*bin_w, h - round(hist[i]*h/255.0) }, { 0, 0, 255 }, cv.FILLED)
     end
 
     cv.imshow('Histogram', histImg)

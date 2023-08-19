@@ -8,10 +8,7 @@ Sources:
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local kwargs = opencv_lua.kwargs
-
-if bit == nil then
-    bit = opencv_lua.bit
-end
+local bit = bit or opencv_lua.bit
 
 local low = 20
 local up = 20

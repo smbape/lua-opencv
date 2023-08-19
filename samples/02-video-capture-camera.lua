@@ -2,13 +2,14 @@ package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:su
 
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
+local round = opencv_lua.math.round
 
 local camId = 0
 local cap = cv.VideoCapture(camId)
 if not cap:isOpened() then error("!>Error: cannot open the camera " .. camId) end
 
 local CAP_FPS = 60
-local CAP_SPF = math.floor(1000 / CAP_FPS)
+local CAP_SPF = round(1000 / CAP_FPS)
 
 cap:set(cv.CAP_PROP_FRAME_WIDTH, 1280)
 cap:set(cv.CAP_PROP_FRAME_HEIGHT, 720)

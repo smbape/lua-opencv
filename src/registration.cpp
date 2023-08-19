@@ -1,4 +1,5 @@
 #include <register_all.hpp>
+#include <cmath>
 
 #define BRET(b) return (int32_t) (b)
 
@@ -127,6 +128,27 @@ namespace {
 			}, tohex));
 	}
 
+	double round(double num, int32_t n) {
+		if (n == 0) {
+			return std::round(num);
+		}
+
+		double mult = std::pow((double)10, (double)n);
+		return std::round(num * mult) / mult;
+	}
+
+	void register_math(sol::state_view& lua, sol::table& module) {
+		sol::table math = lua.create_table();
+		module["math"] = math;
+		math.set_function("round", sol::overload([](double num) {
+			return round(num, 0);
+			}, round));
+
+		math.set_function("int", [](double num) {
+			return (int) num;
+			});
+	}
+
 	struct kwargs_iterator_state {
 		using it_t = NamedParameters::Base::iterator;
 		it_t it;
@@ -239,6 +261,7 @@ namespace LUA_MODULE_NAME {
 		sol::table module = lua.create_table();
 
 		register_bit(lua, module);
+		register_math(lua, module);
 		register_kwargs(lua, module);
 		register_garbage_collect(lua, module);
 		regiter_callbacks(lua, module);
