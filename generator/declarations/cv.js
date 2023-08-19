@@ -46,19 +46,19 @@ module.exports = [
     ], "", ""],
 
     ["cv.redirectError", "void", ["/Call=::cvextra::redirectError"], [
-        ["sol::function", "errCallback", "", []],
+        ["sol::safe_function", "errCallback", "", []],
         ["sol::object", "userdata", "sol::lua_nil", []],
     ], "", ""],
 
     ["cv.setMouseCallback", "void", ["/Call=::cvextra::setMouseCallback"], [
         ["std::string", "winname", "", ["/Ref", "/C"]],
-        ["sol::function", "onMouse", "", []],
+        ["sol::safe_function", "onMouse", "", []],
         ["sol::object", "userdata", "sol::lua_nil", []],
     ], "", ""],
 
     ["cv.createButton", "int", ["/Call=::cvextra::createButton"], [
         ["std::string", "bar_name", "", ["/Ref", "/C"]],
-        ["sol::function", "onChange", "", []],
+        ["sol::safe_function", "onChange", "", []],
         ["sol::object", "userdata", "sol::lua_nil", []],
         ["int", "type", "QT_PUSH_BUTTON", []],
         ["bool", "initial_button_state", "false", []],
@@ -69,7 +69,7 @@ module.exports = [
         ["std::string", "winname", "", ["/Ref", "/C"]],
         ["int", "value", "", []],
         ["int", "count", "", []],
-        ["sol::function", "onChange", "", []],
+        ["sol::safe_function", "onChange", "", []],
         ["sol::object", "userdata", "sol::lua_nil", []],
     ], "", ""],
 

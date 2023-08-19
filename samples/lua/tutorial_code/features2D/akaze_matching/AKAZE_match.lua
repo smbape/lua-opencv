@@ -1,14 +1,14 @@
 package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', package.config:sub(1,1)) .. package.path
 
-local opencv_lua = require("init")
-local cv = opencv_lua.cv
-local kwargs = opencv_lua.kwargs
-local time
-
 --[[
 Sources:
     https://github.com/opencv/opencv/blob/4.8.0/samples/python/tutorial_code/features2D/akaze_matching/AKAZE_match.py
 --]]
+
+local opencv_lua = require("init")
+local cv = opencv_lua.cv
+local kwargs = opencv_lua.kwargs
+local time
 
 -- [load]
 -- parser = argparse.ArgumentParser(description='Code for AKAZE local features matching tutorial.')

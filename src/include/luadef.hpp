@@ -1,5 +1,7 @@
 #pragma once
 
+// CV_EXPORTS_W : include this file in lua_generated_include
+
 #define SOL_ALL_SAFETIES_ON 1
 #include <sol/sol.hpp>
 

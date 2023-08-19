@@ -13,7 +13,7 @@ local title_window = 'Linear Blend'
 local src1, src2
 
 -- [on_trackbar]
-function on_trackbar(val)
+local function on_trackbar(val)
     local alpha = val / alpha_slider_max
     local beta = ( 1.0 - alpha )
     local dst = cv.addWeighted(src1, alpha, src2, beta, 0.0)

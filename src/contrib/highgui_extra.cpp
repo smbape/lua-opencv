@@ -4,23 +4,41 @@
 namespace {
 	using namespace LUA_MODULE_NAME;
 
+	inline void check_error(sol::protected_function_result result, sol::this_state& ts) {
+		if (!result.valid()) {
+			sol::error err = result;
+
+			sol::call_status status = result.status();
+			LUA_MODULE_ERROR("Something went horribly wrong "
+				"running the code: "
+				<< sol::to_string(status) << " error"
+				<< "\n\t" << err.what());
+
+			sol::state_view lua(ts);
+			luaL_error(lua.lua_state(), "callback");
+		}
+	}
+
 	struct HighGui {
 		HighGui(
-			sol::function callback,
+			sol::safe_function callback,
 			sol::object userdata
 		) :
 			callback(callback),
 			userdata(userdata),
 			has_data(false) {}
 
-		static std::vector<HighGui> registered_workers;
+		static std::map<size_t, HighGui> registered_workers;
 
-		static HighGui& add_worker(sol::function callback, sol::object userdata) {
+		static HighGui& add_worker(sol::safe_function callback, sol::object userdata) {
+			auto key = registered_workers.size();
 			{
 				std::lock_guard<std::mutex> lock(callback_mutex);
-				registered_workers.emplace_back(callback, userdata);
+				registered_workers.emplace(std::piecewise_construct,
+					std::forward_as_tuple(key),
+					std::forward_as_tuple(callback, userdata));
 			}
-			return registered_workers.back();
+			return registered_workers.at(key);
 		}
 
 		static void registerTrackbarCallback(int pos, void* userdata) {
@@ -30,11 +48,11 @@ namespace {
 			worker->pos = pos;
 		}
 
-		static void onTrackbarNotify(void* userdata) {
+		static void onTrackbarNotify(void* userdata, sol::this_state& ts) {
 			auto worker = reinterpret_cast<HighGui*>(userdata);
 			if (worker->has_data) {
 				worker->has_data = false;
-				worker->callback(worker->pos, worker->userdata);
+				check_error(worker->callback(worker->pos, worker->userdata), ts);
 			}
 		}
 
@@ -45,11 +63,11 @@ namespace {
 			worker->state = state;
 		}
 
-		static void onButtonNotify(void* userdata) {
+		static void onButtonNotify(void* userdata, sol::this_state& ts) {
 			auto worker = reinterpret_cast<HighGui*>(userdata);
 			if (worker->has_data) {
 				worker->has_data = false;
-				worker->callback(worker->state, worker->userdata);
+				check_error(worker->callback(worker->state, worker->userdata), ts);
 			}
 		}
 
@@ -63,21 +81,15 @@ namespace {
 			worker->flags = flags;
 		}
 
-		static void onMouseNotify(void* userdata) {
+		static void onMouseNotify(void* userdata, sol::this_state& ts) {
 			auto worker = reinterpret_cast<HighGui*>(userdata);
 			if (worker->has_data) {
 				worker->has_data = false;
-				worker->callback(
-					worker->event,
-					worker->x,
-					worker->y,
-					worker->flags,
-					worker->userdata
-				);
+				check_error(worker->callback(worker->event, worker->x, worker->y, worker->flags, worker->userdata), ts);
 			}
 		}
 
-		sol::function callback;
+		sol::safe_function callback;
 		sol::object userdata;
 		bool has_data;
 		int pos;
@@ -88,13 +100,13 @@ namespace {
 		int flags;
 	};
 
-	std::vector<HighGui> HighGui::registered_workers;
+	std::map<size_t, HighGui> HighGui::registered_workers;
 }
 
 namespace cvextra {
 	void setMouseCallback(
 		const std::string& winname,
-		sol::function onMouse,
+		sol::safe_function onMouse,
 		sol::object userdata
 	) {
 		auto& worker = HighGui::add_worker(onMouse, userdata);
@@ -104,7 +116,7 @@ namespace cvextra {
 
 	int createButton(
 		const std::string& bar_name,
-		sol::function on_change,
+		sol::safe_function on_change,
 		sol::object userdata,
 		int type,
 		bool initial_button_state
@@ -130,7 +142,7 @@ namespace cvextra {
 		const std::string& winname,
 		int value,
 		int count,
-		sol::function onChange,
+		sol::safe_function onChange,
 		sol::object userdata
 	) {
 		auto& worker = HighGui::add_worker(onChange, userdata);

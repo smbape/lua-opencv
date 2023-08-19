@@ -1,4 +1,7 @@
 #include <lua_generated_pch.hpp>
+#include <mutex>
+
+#define BRET(b) return (int32_t) (b)
 
 namespace {
 	using namespace LUA_MODULE_NAME;
@@ -179,10 +182,127 @@ namespace {
 
 		luaL_error(lua.lua_state(), "matrix has %d dimensions, but given index has %d dimensions", self.dims, idx.size());
 	}
+
+	auto tobit(int b) {
+		BRET(b);
+	}
+
+	auto bnot(int b) {
+		BRET(~b);
+	}
+
+	auto band(int b, sol::this_state ts, sol::variadic_args vargs) {
+		sol::state_view lua(ts);
+
+		int i = 1;
+		for (const auto& v : vargs) {
+			auto maybe_int = v.as<std::optional<int>>();
+			if (!maybe_int) {
+				luaL_error(lua.lua_state(), "value at index %d is not an integer", i + 1);
+				return 0;
+			}
+			b &= *maybe_int;
+		}
+
+		BRET(b);
+	}
+
+	auto bor(int b, sol::this_state ts, sol::variadic_args vargs) {
+		sol::state_view lua(ts);
+
+		int i = 1;
+		for (const auto& v : vargs) {
+			auto maybe_int = v.as<std::optional<int>>();
+			if (!maybe_int) {
+				luaL_error(lua.lua_state(), "value at index %d is not an integer", i + 1);
+				return 0;
+			}
+			b |= *maybe_int;
+		}
+
+		BRET(b);
+	}
+
+	auto bxor(int b, sol::this_state ts, sol::variadic_args vargs) {
+		sol::state_view lua(ts);
+
+		int i = 1;
+		for (const auto& v : vargs) {
+			auto maybe_int = v.as<std::optional<int>>();
+			if (!maybe_int) {
+				luaL_error(lua.lua_state(), "value at index %d is not an integer", i + 1);
+				return 0;
+			}
+			b ^= *maybe_int;
+		}
+
+		BRET(b);
+	}
+
+	auto lshift(int b, int n) {
+		return b << n;
+	}
+
+	auto rshift(int b, int n) {
+		BRET(b >> n);
+	}
+
+	auto arshift(int b, int n) {
+		BRET((int32_t)b >> n);
+	}
+
+	auto rol(int b, int n) {
+		BRET((b << n) | (b >> (32 - n)));
+	}
+
+	auto ror(int b, int n) {
+		BRET((b << (32 - n)) | (b >> n));
+	}
+
+	auto bwsap(int32_t b) {
+		b = (b >> 24) | ((b >> 8) & 0xff00) | ((b & 0xff00) << 8) | (b << 24);
+		BRET(b);
+	}
+
+	auto tohex(int32_t b, int32_t n) {
+		const char* hexdigits = "0123456789abcdef";
+		char buf[8];
+		if (n < 0) {
+			n = -n;
+			hexdigits = "0123456789ABCDEF";
+		}
+		if (n > 8) {
+			n = 8;
+		}
+		for (int i = (int)n; --i >= 0; ) {
+			buf[i] = hexdigits[b & 15];
+			b >>= 4;
+		}
+		return std::string(buf, n);
+	}
 }
 
 namespace LUA_MODULE_NAME {
 	void register_extension(sol::state_view& lua, sol::table& module) {
+		sol::table bit = lua.create_table();
+		module["bit"] = bit;
+
+		bit.set_function("tobit", tobit);
+		bit.set_function("bnot", bnot);
+		bit.set_function("band", band);
+		bit.set_function("bor", bor);
+		bit.set_function("bxor", bxor);
+		bit.set_function("lshift", lshift);
+		bit.set_function("rshift", rshift);
+		bit.set_function("arshift", arshift);
+		bit.set_function("rol", rol);
+		bit.set_function("ror", ror);
+		bit.set_function("tohex", sol::overload([](int32_t b) {
+			return tohex(b, 8);
+			}, tohex));
+
+		sol::table ns = module["cv"][sol::metatable_key];
+
 		// https://github.com/ThePhD/sol2/issues/1405
 		sol::usertype<cv::Mat> mat_type = module["cv"]["Mat"];
 

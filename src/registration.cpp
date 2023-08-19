@@ -100,11 +100,13 @@ namespace {
 		module.set_function("call_garbage_collect", call_garbage_collect);
 	}
 
+	bool garbage_collecte_active = false;
+
 	void regiter_callbacks(sol::state_view& lua, sol::table& module) {
 		module.set_function("notifyCallbacks", &notifyCallbacks);
 	}
 
-	bool garbage_collecte_active = false;
+	std::vector<std::tuple<Callback, void*>> registered_callbacks;
 }
 
 namespace LUA_MODULE_NAME {
@@ -134,17 +136,16 @@ namespace LUA_MODULE_NAME {
 	}
 
 	std::mutex callback_mutex;
-	std::vector<std::tuple<Callback, void*>> registered_callbacks;
 
 	void registerCallback(Callback callback, void* userdata) {
 		std::lock_guard<std::mutex> lock(callback_mutex);
 		registered_callbacks.push_back(std::make_tuple(callback, userdata));
 	}
 
-	void notifyCallbacks() {
+	void notifyCallbacks(sol::this_state ts) {
 		std::lock_guard<std::mutex> lock(callback_mutex);
 		for (const auto& [callback, userdata] : registered_callbacks) {
-			callback(userdata);
+			callback(userdata, ts);
 		}
 	}
 }

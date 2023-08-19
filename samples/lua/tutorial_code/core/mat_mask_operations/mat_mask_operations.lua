@@ -1,13 +1,13 @@
 package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', package.config:sub(1,1)) .. package.path
 
-local opencv_lua = require("init")
-local cv = opencv_lua.cv
-local kwargs = opencv_lua.kwargs
-
 --[[
 Sources:
     https://github.com/opencv/opencv/blob/4.8.0/samples/python/tutorial_code/core/mat_mask_operations/mat_mask_operations.py
 --]]
+
+local opencv_lua = require("init")
+local cv = opencv_lua.cv
+local kwargs = opencv_lua.kwargs
 
 -- [basic_method]
 local function saturated(sum_value)
