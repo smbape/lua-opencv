@@ -4,7 +4,12 @@
 namespace {
 	using namespace LUA_MODULE_NAME;
 
-	inline void check_error(sol::protected_function_result result, sol::this_state& ts) {
+	template<typename... Args>
+	inline void check_error(sol::this_state& ts, sol::safe_function& fn, Args&&... args) {
+		sol::state_view lua(ts);
+
+		sol::protected_function_result result = fn(std::forward<Args>(args)...);
+
 		if (!result.valid()) {
 			sol::error err = result;
 
@@ -14,7 +19,6 @@ namespace {
 				<< sol::to_string(status) << " error"
 				<< "\n\t" << err.what());
 
-			sol::state_view lua(ts);
 			luaL_error(lua.lua_state(), "callback");
 		}
 	}
@@ -52,7 +56,7 @@ namespace {
 			auto worker = reinterpret_cast<HighGui*>(userdata);
 			if (worker->has_data) {
 				worker->has_data = false;
-				check_error(worker->callback(worker->pos, worker->userdata), ts);
+				check_error(ts, worker->callback, worker->pos, worker->userdata);
 			}
 		}
 
@@ -67,7 +71,7 @@ namespace {
 			auto worker = reinterpret_cast<HighGui*>(userdata);
 			if (worker->has_data) {
 				worker->has_data = false;
-				check_error(worker->callback(worker->state, worker->userdata), ts);
+				check_error(ts, worker->callback, worker->state, worker->userdata);
 			}
 		}
 
@@ -85,7 +89,7 @@ namespace {
 			auto worker = reinterpret_cast<HighGui*>(userdata);
 			if (worker->has_data) {
 				worker->has_data = false;
-				check_error(worker->callback(worker->event, worker->x, worker->y, worker->flags, worker->userdata), ts);
+				check_error(ts, worker->callback, worker->event, worker->x, worker->y, worker->flags, worker->userdata);
 			}
 		}
 

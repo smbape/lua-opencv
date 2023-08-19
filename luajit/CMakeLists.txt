@@ -260,6 +260,10 @@ add_executable(luajit
   "${luajit_SRC}/luajit.c"
 )
 
+if (MSVC)
+  target_sources(luajit PRIVATE luajit.manifest)
+endif()
+
 # Always generate debug files
 if(MSVC AND NOT "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
   set_target_properties(luajit PROPERTIES LINK_FLAGS "/DEBUG")

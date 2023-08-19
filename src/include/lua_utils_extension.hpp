@@ -1,14 +1,7 @@
 #pragma once
 
 #include <lua_utils.hpp>
-
-#include <opencv2/core/mat.hpp>
-#include <opencv2/core/types.hpp>
-#include <opencv2/gapi/garray.hpp>
-#include <opencv2/gapi/gopaque.hpp>
-#include <opencv2/gapi/gscalar.hpp>
-#include <opencv2/gapi/media.hpp>
-#include <opencv2/gapi/rmat.hpp>
+#include <lua_generated_include.hpp>
 
 namespace LUA_MODULE_NAME {
 	void register_extension(sol::state_view& lua, sol::table& module);
@@ -919,11 +912,13 @@ namespace cv {
 		}
 	}
 
+#ifdef __OPENCV_DESCRIPTOR_HPP__
 	namespace line_descriptor {
 		inline bool operator== (const KeyLine& a, const KeyLine& b) {
 			return &a == &b;
 		}
 	}
+#endif
 }
 
 namespace sol {

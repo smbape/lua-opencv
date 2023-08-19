@@ -28,6 +28,8 @@ endif()
 # find OpenCV
 if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
   add_subdirectory(opencv)
+  # message(STATUS "opencv_SOURCE_DIR = ${opencv_SOURCE_DIR}")
+  # message(STATUS "OPENCV_CONFIG_FILE_INCLUDE_DIR = ${OPENCV_CONFIG_FILE_INCLUDE_DIR}")
 
   set(OpenCV_LIBS "")
   set(OpenCV_INCLUDE_DIRS "${OPENCV_CONFIG_FILE_INCLUDE_DIR}" "${opencv_SOURCE_DIR}/include")
@@ -44,6 +46,14 @@ else()
   find_package(OpenCV REQUIRED)
 endif()
 
+# message(STATUS "OpenCV_LIBS = ${OpenCV_LIBS}")
+# message(STATUS "OpenCV_INCLUDE_DIRS = ${OpenCV_INCLUDE_DIRS}")
+
+# include(cmake/RequireOpenCV.cmake)
+# set(OpenCV_LIBS "")
+# set(OpenCV_DLLVERSION 480)
+# set(OpenCV_DEBUG_POSTFIX d)
+
 # find LuaJIT
 if ((NOT DEFINED LUA_DIR) AND (NOT DEFINED ENV{LUA_DIR}))
   add_subdirectory(luajit)
@@ -56,14 +66,6 @@ else()
   list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
   find_package(Lua REQUIRED)
 endif()
-
-# message(STATUS "OpenCV_LIBS = ${OpenCV_LIBS}")
-# message(STATUS "OpenCV_INCLUDE_DIRS = ${OpenCV_INCLUDE_DIRS}")
-
-# include(cmake/RequireOpenCV.cmake)
-# set(OpenCV_LIBS "")
-# set(OpenCV_DLLVERSION 480)
-# set(OpenCV_DEBUG_POSTFIX d)
 
 # include(cmake/vcpkg_regex_replace_string.cmake)
 
@@ -126,6 +128,11 @@ set(SRC_FILES
 # Build a shared library named as the project
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
 add_library(${PROJECT_NAME} SHARED ${SRC_FILES})
+
+# if (MSVC)
+#   file(GLOB PROJECT_MANIFEST "src/*.manifest")
+#   target_sources(${PROJECT_NAME} PRIVATE "${PROJECT_MANIFEST}")
+# endif()
 
 install(TARGETS ${PROJECT_NAME}
   LIBRARY

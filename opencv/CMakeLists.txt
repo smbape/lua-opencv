@@ -94,10 +94,14 @@ OCV_OPTION(BUILD_TESTS              "Build accuracy & regression tests"         
 # ===================================================
 OCV_OPTION(INSTALL_CREATE_DISTRIB   "Change install rules to build the distribution package" ON )
 
-set(OPENCV_EXTRA_MODULES_PATH "${opencv_contrib_SOURCE_DIR}/modules" CACHE PATH "Where to look for additional OpenCV modules (can be ;-separated list of paths)")
+option(BUILD_contrib "Build with opencv contrib" OFF)
 
 if (MSVC AND BUILD_SHARED_LIBS)
   option(INSTALL_PDB_COMPONENT_EXCLUDE_FROM_ALL "Don't install PDB files by default" OFF)
+endif()
+
+if (BUILD_contrib)
+  set(OPENCV_EXTRA_MODULES_PATH "${opencv_contrib_SOURCE_DIR}/modules" CACHE PATH "Where to look for additional OpenCV modules (can be ;-separated list of paths)")
 endif()
 
 # set(INSTALL_CREATE_DISTRIB ON)
@@ -120,3 +124,5 @@ option(BUILD_opencv_objc_bindings_generator "The Objective-C bindings" OFF)
 option(BUILD_opencv_python_bindings_generator "The Python bindings" ON)
 
 add_subdirectory("${opencv_SOURCE_DIR}" "${opencv_BINARY_DIR}")
+
+set(opencv_SOURCE_DIR "${opencv_SOURCE_DIR}" CACHE PATH "Where are the opencv sources" FORCE)
