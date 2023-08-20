@@ -1,4 +1,4 @@
-package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', package.config:sub(1,1)) .. package.path
+package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', package.config:sub(1, 1)) .. package.path
 
 --[[
 Sources:
@@ -19,14 +19,14 @@ local function my_ellipse(img, angle)
     local line_type = 8
 
     cv.ellipse(img,
-                {__idiv(W, 2), __idiv(W, 2)},
-                {__idiv(W, 4), __idiv(W, 16)},
-                angle,
-                0,
-                360,
-                {255, 0, 0},
-                thickness,
-                line_type)
+        { __idiv(W, 2), __idiv(W, 2) },
+        { __idiv(W, 4), __idiv(W, 16) },
+        angle,
+        0,
+        360,
+        { 255, 0, 0 },
+        thickness,
+        line_type)
 end
 -- [my_ellipse]
 -- [my_filled_circle]
@@ -35,11 +35,11 @@ local function my_filled_circle(img, center)
     local line_type = 8
 
     cv.circle(img,
-               center,
-               __idiv(W, 32),
-               {0, 0, 255},
-               thickness,
-               line_type)
+        center,
+        __idiv(W, 32),
+        { 0, 0, 255 },
+        thickness,
+        line_type)
 end
 -- [my_filled_circle]
 -- [my_polygon]
@@ -47,18 +47,18 @@ local function my_polygon(img)
     local line_type = 8
 
     -- Create some points
-    local ppt = cv.Mat.createFromArray({{W / 4, 7 * W / 8}, {3 * W / 4, 7 * W / 8},
-                    {3 * W / 4, 13 * W / 16}, {11 * W / 16, 13 * W / 16},
-                    {19 * W / 32, 3 * W / 8}, {3 * W / 4, 3 * W / 8},
-                    {3 * W / 4, W / 8}, {26 * W / 40, W / 8},
-                    {26 * W / 40, W / 4}, {22 * W / 40, W / 4},
-                    {22 * W / 40, W / 8}, {18 * W / 40, W / 8},
-                    {18 * W / 40, W / 4}, {14 * W / 40, W / 4},
-                    {14 * W / 40, W / 8}, {W / 4, W / 8},
-                    {W / 4, 3 * W / 8}, {13 * W / 32, 3 * W / 8},
-                    {5 * W / 16, 13 * W / 16}, {W / 4, 13 * W / 16}}, cv.CV_32S)
+    local ppt = cv.Mat.createFromArray({ { W / 4, 7 * W / 8 }, { 3 * W / 4, 7 * W / 8 },
+        { 3 * W / 4, 13 * W / 16 }, { 11 * W / 16, 13 * W / 16 },
+        { 19 * W / 32, 3 * W / 8 }, { 3 * W / 4, 3 * W / 8 },
+        { 3 * W / 4,   W / 8 }, { 26 * W / 40, W / 8 },
+        { 26 * W / 40, W / 4 }, { 22 * W / 40, W / 4 },
+        { 22 * W / 40, W / 8 }, { 18 * W / 40, W / 8 },
+        { 18 * W / 40, W / 4 }, { 14 * W / 40, W / 4 },
+        { 14 * W / 40, W / 8 }, { W / 4, W / 8 },
+        { W / 4,      3 * W / 8 }, { 13 * W / 32, 3 * W / 8 },
+        { 5 * W / 16, 13 * W / 16 }, { W / 4, 13 * W / 16 } }, cv.CV_32S)
     ppt = ppt:reshape(1, { ppt:total() / 2, 2 })
-    cv.fillPoly(img, {ppt}, {255, 255, 255}, line_type)
+    cv.fillPoly(img, { ppt }, { 255, 255, 255 }, line_type)
     -- Only drawing the lines would be:
     -- cv.polylines(img, {ppt}, true, {255, 0, 255}, line_type)
 end
@@ -69,11 +69,11 @@ local function my_line(img, pt1, pt2)
     local line_type = 8
 
     cv.line(img,
-             pt1,
-             pt2,
-             {0, 0, 0},
-             thickness,
-             line_type)
+        pt1,
+        pt2,
+        { 0, 0, 0 },
+        thickness,
+        line_type)
 end
 -- [my_line]
 -- [create_images]
@@ -96,7 +96,7 @@ my_ellipse(atom_image, 45)
 my_ellipse(atom_image, -45)
 
 -- 1.b. Creating circles
-my_filled_circle(atom_image, {__idiv(W, 2), __idiv(W, 2)})
+my_filled_circle(atom_image, { __idiv(W, 2), __idiv(W, 2) })
 -- [draw_atom]
 -- [draw_rook]
 
@@ -107,18 +107,18 @@ my_polygon(rook_image)
 -- [rectangle]
 -- 2.b. Creating rectangles
 cv.rectangle(rook_image,
-              {0, __idiv(7 * W, 8)},
-              {W, W},
-              {0, 255, 255},
-              -1,
-              8)
+    { 0, __idiv(7 * W, 8) },
+    { W, W },
+    { 0, 255, 255 },
+    -1,
+    8)
 -- [rectangle]
 
 --  2.c. Create a few lines
-my_line(rook_image, {0, __idiv(15 * W, 16)}, {W, __idiv(15 * W, 16)})
-my_line(rook_image, {__idiv(W, 4), __idiv(7 * W, 8)}, {__idiv(W, 4), W})
-my_line(rook_image, {__idiv(W, 2), __idiv(7 * W, 8)}, {__idiv(W, 2), W})
-my_line(rook_image, {__idiv(3 * W, 4), __idiv(7 * W, 8)}, {__idiv(3 * W, 4), W})
+my_line(rook_image, { 0, __idiv(15 * W, 16) }, { W, __idiv(15 * W, 16) })
+my_line(rook_image, { __idiv(W, 4), __idiv(7 * W, 8) }, { __idiv(W, 4), W })
+my_line(rook_image, { __idiv(W, 2), __idiv(7 * W, 8) }, { __idiv(W, 2), W })
+my_line(rook_image, { __idiv(3 * W, 4), __idiv(7 * W, 8) }, { __idiv(3 * W, 4), W })
 -- [draw_rook]
 cv.imshow(atom_window, atom_image)
 cv.moveWindow(atom_window, 0, 200)

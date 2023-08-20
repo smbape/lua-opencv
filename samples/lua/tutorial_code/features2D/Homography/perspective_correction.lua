@@ -1,4 +1,4 @@
-package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', package.config:sub(1,1)) .. package.path
+package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', package.config:sub(1, 1)) .. package.path
 
 --[[
 Sources:
@@ -82,9 +82,9 @@ local function main()
     aliases["-H"] = "height"
     aliases["-W"] = "width"
 
-    for i=1, #arg, 2 do
+    for i = 1, #arg, 2 do
         local name = arg[i]
-        if name:sub(1,2) == "--" then name = name:sub(3) end
+        if name:sub(1, 2) == "--" then name = name:sub(3) end
         if aliases[name] ~= nil then name = aliases[name] end
         if args[name] == nil or i == #arg then
             error('unexpected argument ' .. name)

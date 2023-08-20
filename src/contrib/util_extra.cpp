@@ -1,4 +1,3 @@
-#pragma once
 #include "util_extra.h"
 #include <registration.hpp>
 

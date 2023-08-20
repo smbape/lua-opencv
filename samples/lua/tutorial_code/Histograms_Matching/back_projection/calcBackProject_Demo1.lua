@@ -1,4 +1,4 @@
-package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', package.config:sub(1,1)) .. package.path
+package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', package.config:sub(1, 1)) .. package.path
 
 --[[
 Sources:
@@ -16,16 +16,16 @@ local function Hist_and_Backproj(val)
     -- [initialize]
     local bins = val
     local histSize = math.max(bins, 2)
-    local ranges = {0, 180} -- hue_range
+    local ranges = { 0, 180 } -- hue_range
     -- [initialize]
 
     -- [Get the Histogram and normalize it]
-    local hist = cv.calcHist({hue}, {0}, nil, {histSize}, ranges, kwargs({accumulate=false}))
-    cv.normalize(hist, hist, kwargs({alpha=0, beta=255, norm_type=cv.NORM_MINMAX}))
+    local hist = cv.calcHist({ hue }, { 0 }, nil, { histSize }, ranges, kwargs({ accumulate = false }))
+    cv.normalize(hist, hist, kwargs({ alpha = 0, beta = 255, norm_type = cv.NORM_MINMAX }))
     -- [Get the Histogram and normalize it]
 
     -- [Get Backprojection]
-    local backproj = cv.calcBackProject({hue}, {0}, hist, ranges, kwargs({scale=1}))
+    local backproj = cv.calcBackProject({ hue }, { 0 }, hist, ranges, kwargs({ scale = 1 }))
     -- [Get Backprojection]
 
     -- [Draw the backproj]
@@ -39,7 +39,8 @@ local function Hist_and_Backproj(val)
     local histImg = cv.Mat.zeros(h, w, cv.CV_8UC3)
 
     for i = 0, bins - 1 do
-        cv.rectangle(histImg, { i*bin_w, h }, { (i+1)*bin_w, h - round(hist[i]*h/255.0) }, { 0, 0, 255 }, cv.FILLED)
+        cv.rectangle(histImg, { i * bin_w, h }, { (i + 1) * bin_w, h - round(hist[i] * h / 255.0) }, { 0, 0, 255 },
+            cv.FILLED)
     end
 
     cv.imshow('Histogram', histImg)
@@ -55,9 +56,9 @@ local args = {
     input = "home.jpg",
 }
 
-for i=1, #arg, 2 do
+for i = 1, #arg, 2 do
     local name = arg[i]
-    if name:sub(1,2) == "--" then name = name:sub(3) end
+    if name:sub(1, 2) == "--" then name = name:sub(3) end
     if args[name] == nil or i == #arg then
         error('unexpected argument ' .. name)
     end
@@ -75,16 +76,16 @@ local hsv = cv.cvtColor(src, cv.COLOR_BGR2HSV)
 -- [Transform it to HSV]
 
 -- [Use only the Hue value]
-local ch = {0, 0}
+local ch = { 0, 0 }
 hue = cv.Mat.zeros(hsv.rows, hsv.cols, hsv:type())
-cv.mixChannels({hsv}, {hue}, ch)
+cv.mixChannels({ hsv }, { hue }, ch)
 -- [Use only the Hue value]
 
 -- [Create Trackbar to enter the number of bins]
 local window_image = 'Source image'
 cv.namedWindow(window_image)
 local bins = 25
-cv.createTrackbar('* Hue  bins: ', window_image, bins, 180, Hist_and_Backproj )
+cv.createTrackbar('* Hue  bins: ', window_image, bins, 180, Hist_and_Backproj)
 Hist_and_Backproj(bins)
 -- [Create Trackbar to enter the number of bins]
 

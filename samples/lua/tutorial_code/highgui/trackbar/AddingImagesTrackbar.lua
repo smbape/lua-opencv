@@ -1,4 +1,4 @@
-package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', package.config:sub(1,1)) .. package.path
+package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', package.config:sub(1, 1)) .. package.path
 
 --[[
 Sources:
@@ -15,7 +15,7 @@ local src1, src2
 -- [on_trackbar]
 local function on_trackbar(val)
     local alpha = val / alpha_slider_max
-    local beta = ( 1.0 - alpha )
+    local beta = (1.0 - alpha)
     local dst = cv.addWeighted(src1, alpha, src2, beta, 0.0)
     cv.imshow(title_window, dst)
 end
@@ -31,9 +31,9 @@ local args = {
     input2 = "WindowsLogo.jpg",
 }
 
-for i=1, #arg, 2 do
+for i = 1, #arg, 2 do
     local name = arg[i]
-    if name:sub(1,2) == "--" then name = name:sub(3) end
+    if name:sub(1, 2) == "--" then name = name:sub(3) end
     if args[name] == nil or i == #arg then
         error('unexpected argument ' .. name)
     end
@@ -59,7 +59,7 @@ cv.namedWindow(title_window)
 
 -- [create_trackbar]
 local trackbar_name = string.format('Alpha x %d', alpha_slider_max)
-cv.createTrackbar(trackbar_name, title_window , 0, alpha_slider_max, on_trackbar, 0)
+cv.createTrackbar(trackbar_name, title_window, 0, alpha_slider_max, on_trackbar, 0)
 -- [create_trackbar]
 
 -- Show some stuff

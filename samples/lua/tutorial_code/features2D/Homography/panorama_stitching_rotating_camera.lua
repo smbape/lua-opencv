@@ -1,4 +1,4 @@
-package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', package.config:sub(1,1)) .. package.path
+package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', package.config:sub(1, 1)) .. package.path
 
 --[[
 Sources:
@@ -13,21 +13,21 @@ local function basicPanoramaStitching(img1Path, img2Path)
     local img2 = cv.imread(cv.samples.findFile(img2Path))
 
     -- [camera-pose-from-Blender-at-location-1]
-    local c1Mo = cv.Mat.createFromArray({{0.9659258723258972, 0.2588190734386444, 0.0, 1.5529145002365112},
-                     { 0.08852133899927139, -0.3303661346435547, -0.9396926164627075, -0.10281121730804443},
-                     {-0.24321036040782928, 0.9076734185218811, -0.342020183801651, 6.130080699920654},
-                     {0, 0, 0, 1}}, cv.CV_64F)
+    local c1Mo = cv.Mat.createFromArray({ { 0.9659258723258972, 0.2588190734386444, 0.0, 1.5529145002365112 },
+        { 0.08852133899927139,  -0.3303661346435547, -0.9396926164627075, -0.10281121730804443 },
+        { -0.24321036040782928, 0.9076734185218811,  -0.342020183801651,  6.130080699920654 },
+        { 0,                    0,                   0,                   1 } }, cv.CV_64F)
     -- [camera-pose-from-Blender-at-location-1]
 
     -- [camera-pose-from-Blender-at-location-2]
-    local c2Mo = cv.Mat.createFromArray({{0.9659258723258972, -0.2588190734386444, 0.0, -1.5529145002365112},
-                     {-0.08852133899927139, -0.3303661346435547, -0.9396926164627075, -0.10281121730804443},
-                     {0.24321036040782928, 0.9076734185218811, -0.342020183801651, 6.130080699920654},
-                     {0, 0, 0, 1}}, cv.CV_64F)
+    local c2Mo = cv.Mat.createFromArray({ { 0.9659258723258972, -0.2588190734386444, 0.0, -1.5529145002365112 },
+        { -0.08852133899927139, -0.3303661346435547, -0.9396926164627075, -0.10281121730804443 },
+        { 0.24321036040782928,  0.9076734185218811,  -0.342020183801651,  6.130080699920654 },
+        { 0,                    0,                   0,                   1 } }, cv.CV_64F)
     -- [camera-pose-from-Blender-at-location-2]
 
     -- [camera-intrinsics-from-Blender]
-    local cameraMatrix = cv.Mat.createFromArray({{700.0, 0.0, 320.0}, {0.0, 700.0, 240.0}, {0, 0, 1}}, cv.CV_64F)
+    local cameraMatrix = cv.Mat.createFromArray({ { 700.0, 0.0, 320.0 }, { 0.0, 700.0, 240.0 }, { 0, 0, 1 } }, cv.CV_64F)
     -- [camera-intrinsics-from-Blender]
 
     -- [extract-rotation]
@@ -72,9 +72,9 @@ local function main()
     aliases["-I1"] = "image1"
     aliases["-I2"] = "image2"
 
-    for i=1, #arg, 2 do
+    for i = 1, #arg, 2 do
         local name = arg[i]
-        if name:sub(1,2) == "--" then name = name:sub(3) end
+        if name:sub(1, 2) == "--" then name = name:sub(3) end
         if aliases[name] ~= nil then name = aliases[name] end
         if args[name] == nil or i == #arg then
             error('unexpected argument ' .. name)

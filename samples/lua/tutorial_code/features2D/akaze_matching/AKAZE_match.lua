@@ -1,4 +1,4 @@
-package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', package.config:sub(1,1)) .. package.path
+package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', package.config:sub(1, 1)) .. package.path
 
 --[[
 Sources:
@@ -23,9 +23,9 @@ local args = {
     homography = "H1to3p.xml",
 }
 
-for i=1, #arg, 2 do
+for i = 1, #arg, 2 do
     local name = arg[i]
-    if name:sub(1,2) == "--" then name = name:sub(3) end
+    if name:sub(1, 2) == "--" then name = name:sub(3) end
     if args[name] == nil or i == #arg then
         error('unexpected argument ' .. name)
     end
@@ -83,9 +83,9 @@ for i, m in ipairs(matched1) do
     col[1] = m.pt[2]
 
     col = cv.gemm(homography, col, 1.0, nil, 0.0)
-    col = col:convertTo(-1, kwargs({alpha = 1 / col[2]}))
+    col = col:convertTo(-1, kwargs({ alpha = 1 / col[2] }))
     local dist = math.sqrt(((col[0] - matched2[i].pt[1]) ^ 2) +
-                ((col[1] - matched2[i].pt[2]) ^ 2))
+        ((col[1] - matched2[i].pt[2]) ^ 2))
 
     if dist < inlier_threshold then
         good_matches[#good_matches + 1] = cv.DMatch(#inliers1, #inliers2, 0)

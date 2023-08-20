@@ -39,6 +39,11 @@
         struct OptionalArrays
         {
             OptionalArrays(_To& obj) {
+                if (obj == sol::lua_nil) {
+                    setField(*this, *this, ${ types.indexOf("cv::Mat") + 1 });
+                    return;
+                }
+
                 auto maybe_Array = maybe_impl(obj, static_cast<Array*>(nullptr));
                 if (maybe_Array) {
                     ptr = reference_internal(*maybe_Array);

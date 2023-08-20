@@ -1,4 +1,4 @@
-package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', package.config:sub(1,1)) .. package.path
+package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', package.config:sub(1, 1)) .. package.path
 
 --[[
 Sources:
@@ -20,9 +20,9 @@ local args = {
     input = "lena.jpg",
 }
 
-for i=1, #arg, 2 do
+for i = 1, #arg, 2 do
     local name = arg[i]
-    if name:sub(1,2) == "--" then name = name:sub(3) end
+    if name:sub(1, 2) == "--" then name = name:sub(3) end
     if args[name] == nil or i == #arg then
         error('unexpected argument ' .. name)
     end
@@ -44,7 +44,7 @@ local histSize = 256
 -- [Establish the number of bins]
 
 -- [Set the ranges ( for B,G,R) )]
-local histRange = {0, 256} -- the upper boundary is exclusive
+local histRange = { 0, 256 } -- the upper boundary is exclusive
 -- [Set the ranges ( for B,G,R) )]
 
 -- [Set histogram param]
@@ -52,9 +52,9 @@ local accumulate = false
 -- [Set histogram param]
 
 -- [Compute the histograms]
-local b_hist = cv.calcHist(bgr_planes, {0}, nil, {histSize}, histRange, kwargs({accumulate=accumulate}))
-local g_hist = cv.calcHist(bgr_planes, {1}, nil, {histSize}, histRange, kwargs({accumulate=accumulate}))
-local r_hist = cv.calcHist(bgr_planes, {2}, nil, {histSize}, histRange, kwargs({accumulate=accumulate}))
+local b_hist = cv.calcHist(bgr_planes, { 0 }, nil, { histSize }, histRange, kwargs({ accumulate = accumulate }))
+local g_hist = cv.calcHist(bgr_planes, { 1 }, nil, { histSize }, histRange, kwargs({ accumulate = accumulate }))
+local r_hist = cv.calcHist(bgr_planes, { 2 }, nil, { histSize }, histRange, kwargs({ accumulate = accumulate }))
 -- [Compute the histograms]
 
 -- [Draw the histograms for B, G and R]
@@ -66,22 +66,22 @@ local histImage = cv.Mat.zeros(hist_h, hist_w, cv.CV_8UC3)
 -- [Draw the histograms for B, G and R]
 
 -- [Normalize the result to ( 0, histImage.rows )]
-cv.normalize(b_hist, b_hist, kwargs({alpha=0, beta=hist_h, norm_type=cv.NORM_MINMAX}))
-cv.normalize(g_hist, g_hist, kwargs({alpha=0, beta=hist_h, norm_type=cv.NORM_MINMAX}))
-cv.normalize(r_hist, r_hist, kwargs({alpha=0, beta=hist_h, norm_type=cv.NORM_MINMAX}))
+cv.normalize(b_hist, b_hist, kwargs({ alpha = 0, beta = hist_h, norm_type = cv.NORM_MINMAX }))
+cv.normalize(g_hist, g_hist, kwargs({ alpha = 0, beta = hist_h, norm_type = cv.NORM_MINMAX }))
+cv.normalize(r_hist, r_hist, kwargs({ alpha = 0, beta = hist_h, norm_type = cv.NORM_MINMAX }))
 -- [Normalize the result to ( 0, histImage.rows )]
 
 -- [Draw for each channel]
 for i = 1, histSize - 1 do
-    cv.line(histImage, { bin_w*(i-1), hist_h - int(b_hist[i-1]) },
-            { bin_w*(i), hist_h - int(b_hist[i]) },
-            { 255, 0, 0 }, kwargs({thickness=2}))
-    cv.line(histImage, { bin_w*(i-1), hist_h - int(g_hist[i-1]) },
-            { bin_w*(i), hist_h - int(g_hist[i]) },
-            { 0, 255, 0 }, kwargs({thickness=2}))
-    cv.line(histImage, { bin_w*(i-1), hist_h - int(r_hist[i-1]) },
-            { bin_w*(i), hist_h - int(r_hist[i]) },
-            { 0, 0, 255 }, kwargs({thickness=2}))
+    cv.line(histImage, { bin_w * (i - 1), hist_h - int(b_hist[i - 1]) },
+        { bin_w * (i), hist_h - int(b_hist[i]) },
+        { 255, 0, 0 }, kwargs({ thickness = 2 }))
+    cv.line(histImage, { bin_w * (i - 1), hist_h - int(g_hist[i - 1]) },
+        { bin_w * (i), hist_h - int(g_hist[i]) },
+        { 0, 255, 0 }, kwargs({ thickness = 2 }))
+    cv.line(histImage, { bin_w * (i - 1), hist_h - int(r_hist[i - 1]) },
+        { bin_w * (i), hist_h - int(r_hist[i]) },
+        { 0, 0, 255 }, kwargs({ thickness = 2 }))
 end
 -- [Draw for each channel]
 

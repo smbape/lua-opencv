@@ -1,4 +1,4 @@
-package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', package.config:sub(1,1)) .. package.path
+package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', package.config:sub(1, 1)) .. package.path
 
 --[[
 Sources:
@@ -37,13 +37,13 @@ local function sharpen(my_image)
         for i = 1, width - 2 do
             if is_grayscale then
                 local sum_value = 5 * my_image(j, i) - my_image(j + 1, i) - my_image(j - 1, i)
-                            - my_image(j, i + 1) - my_image(j, i - 1)
+                    - my_image(j, i + 1) - my_image(j, i - 1)
                 result:set(saturated(sum_value), j, i)
             else
                 for k = 0, n_channels - 1 do
                     local sum_value = 5 * my_image(j, i, k) - my_image(j + 1, i, k)
-                                - my_image(j - 1, i, k) - my_image(j, i + 1, k)
-                                - my_image(j, i - 1, k)
+                        - my_image(j - 1, i, k) - my_image(j, i + 1, k)
+                        - my_image(j, i - 1, k)
                     result:set(saturated(sum_value), j, i, k)
                 end
             end
@@ -95,9 +95,9 @@ local function main(argv)
 
     t = os.clock()
     -- [kern]
-    local kernel = cv.Mat.createFromArray({{0, -1, 0},
-                       {-1, 5, -1},
-                       {0, -1, 0}}, cv.CV_32F)  -- kernel should be floating point type
+    local kernel = cv.Mat.createFromArray({ { 0, -1, 0 },
+        { -1, 5,  -1 },
+        { 0,  -1, 0 } }, cv.CV_32F)            -- kernel should be floating point type
     -- [kern]
     -- [filter2D]
     local dst1 = cv.filter2D(src, -1, kernel)

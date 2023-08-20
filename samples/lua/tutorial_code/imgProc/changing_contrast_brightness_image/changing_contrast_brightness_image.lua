@@ -1,4 +1,4 @@
-package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', package.config:sub(1,1)) .. package.path
+package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', package.config:sub(1, 1)) .. package.path
 
 --[[
 Sources:
@@ -25,8 +25,8 @@ local gamma_max = 200
 local img_original
 
 local function basicLinearTransform()
-    local res = cv.convertScaleAbs(img_original, kwargs({alpha=alpha, beta=beta}))
-    local img_corrected = cv.hconcat({img_original, res})
+    local res = cv.convertScaleAbs(img_original, kwargs({ alpha = alpha, beta = beta }))
+    local img_corrected = cv.hconcat({ img_original, res })
     cv.imshow("Brightness and contrast adjustments", img_corrected)
 end
 
@@ -40,7 +40,7 @@ local function gammaCorrection()
     local res = cv.LUT(img_original, lookUpTable)
     -- [changing-contrast-brightness-gamma-correction]
 
-    local img_gamma_corrected = cv.hconcat({img_original, res})
+    local img_gamma_corrected = cv.hconcat({ img_original, res })
     cv.imshow("Gamma correction", img_gamma_corrected)
 end
 
@@ -67,9 +67,9 @@ local args = {
     input = "lena.jpg",
 }
 
-for i=1, #arg, 2 do
+for i = 1, #arg, 2 do
     local name = arg[i]
-    if name:sub(1,2) == "--" then name = name:sub(3) end
+    if name:sub(1, 2) == "--" then name = name:sub(3) end
     if args[name] == nil or i == #arg then
         error('unexpected argument ' .. name)
     end
@@ -84,10 +84,12 @@ end
 cv.namedWindow('Brightness and contrast adjustments')
 cv.namedWindow('Gamma correction')
 
-local alpha_init = int(alpha *100)
-cv.createTrackbar('Alpha gain (contrast)', 'Brightness and contrast adjustments', alpha_init, alpha_max, on_linear_transform_alpha_trackbar)
+local alpha_init = int(alpha * 100)
+cv.createTrackbar('Alpha gain (contrast)', 'Brightness and contrast adjustments', alpha_init, alpha_max,
+    on_linear_transform_alpha_trackbar)
 local beta_init = beta + 100
-cv.createTrackbar('Beta bias (brightness)', 'Brightness and contrast adjustments', beta_init, beta_max, on_linear_transform_beta_trackbar)
+cv.createTrackbar('Beta bias (brightness)', 'Brightness and contrast adjustments', beta_init, beta_max,
+    on_linear_transform_beta_trackbar)
 local gamma_init = int(gamma * 100)
 cv.createTrackbar('Gamma correction', 'Gamma correction', gamma_init, gamma_max, on_gamma_correction_trackbar)
 

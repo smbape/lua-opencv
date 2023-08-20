@@ -35,6 +35,8 @@ namespace {
 
 		// dims == 2, channels == 1
 
+		// opencv Mat does not support 1D matrix
+		// treat a matrix with 1 channel and (1 row or 1 column) as a 1D matrix
 		if (size[0] == 1 || size[1] == 1) {
 			return sol::object(ts, sol::in_place, cvextra::mat_at(self, idx));
 		}
@@ -103,6 +105,79 @@ namespace {
 		}
 	overload1:
 		luaL_error(lua.lua_state(), "Overload resolution failed");
+	}
+
+	struct Mat_iterator_state {
+		int it;
+		int last;
+		cv::Mat& self;
+
+		Mat_iterator_state(cv::Mat& self)
+			: self(self), it(0), last(self.size[0]) {
+		}
+	};
+
+	// this gets called
+	// to start the first iteration, and every
+	// iteration there after
+	auto Mat_next(sol::user<Mat_iterator_state&> user_it_state, sol::this_state ts) {
+		// the state you passed in my_pairs is argument 1
+		// the key value is argument 2, but we do not
+		// care about the key value here
+		Mat_iterator_state& it_state = user_it_state;
+		if (it_state.it == it_state.last) {
+			// return nil to signify that
+			// there's nothing more to work with.
+			return std::make_tuple(sol::object(sol::lua_nil),
+				sol::object(sol::lua_nil));
+		}
+
+		// 2 values are returned (pushed onto the stack):
+		// the key and the value
+		// the state is left alone
+		auto r = std::make_tuple(
+			sol::object(ts, sol::in_place, it_state.it),
+			mat_index(it_state.self, it_state.it, ts));
+
+		// the iterator must be moved forward one before we return
+		it_state.it++;
+
+		return r;
+	}
+
+	// pairs expects 3 returns:
+	// the "next" function on how to advance,
+	// the "table" itself or some state,
+	// and an initial key value (can be nil)
+	auto Mat_pairs(cv::Mat& self) {
+		// prepare our state
+		Mat_iterator_state it_state(self);
+
+		// sol::user is a space/time optimization over regular
+		// usertypes, it's incompatible with regular usertypes and
+		// stores the type T directly in lua without any pretty
+		// setup saves space allocation and a single dereference
+		return std::make_tuple(&Mat_next,
+			sol::user<Mat_iterator_state>(std::move(it_state)),
+			sol::lua_nil);
+	}
+
+	auto mat_unpack(cv::Mat& self, sol::this_state ts) {
+		sol::variadic_results vres;
+
+		auto size = self.size;
+
+		// opencv Mat does not support 1D matrix
+		// treat a matrix with 1 channel and (1 row or 1 column) as a 1D matrix
+		int total = size[0];
+		if (self.dims == 2 && self.channels() == 1 && (size[0] == 1 || size[1] == 1)) {
+			total = self.total();
+		}
+
+		for (int idx = 0; idx < total; idx++) {
+			vres.push_back(mat_index(self, idx, ts));
+		}
+		return vres;
 	}
 
 	double mat_index_as_table(cv::Mat& self, sol::as_table_t<std::vector<int>> idx, sol::this_state ts) {
@@ -189,21 +264,24 @@ namespace LUA_MODULE_NAME {
 		// https://github.com/ThePhD/sol2/issues/1405
 		sol::usertype<cv::Mat> mat_type = module["cv"]["Mat"];
 
-		mat_type.set_function(sol::meta_function::index, sol::overload(
+		mat_type[sol::meta_function::index] = sol::overload(
 			&mat_index,
 			&mat_index_as_table
-		));
+		);
 
-		mat_type.set_function(sol::meta_function::new_index, sol::overload(
+		mat_type[sol::meta_function::new_index] = sol::overload(
 			[](cv::Mat& self, int idx, double value) {
 				cvextra::mat_set_at(self, value, idx);
 			},
 			&mat_new_index_as_table
-		));
+		);
 
-		mat_type.set_function(sol::meta_function::length, [](cv::Mat& self) {
+		mat_type[sol::meta_function::length] = [](cv::Mat& self) {
 			return self.size[0];
-			});
+			};
+
+		mat_type[sol::meta_function::pairs] = &Mat_pairs;
+		mat_type.set_function("__unpack", &mat_unpack);
 
 		mat_type.set_function("index_table", &mat_index_as_table);
 		mat_type.set_function("new_index_table", &mat_new_index_as_table);
@@ -214,7 +292,7 @@ namespace LUA_MODULE_NAME {
 		mat_type.set_function("index_maybe", &mat_index_maybe);
 		mat_type.set_function("new_index_maybe", &mat_new_index_maybe);
 
-		mat_type.set_function(sol::meta_function::call, &mat_get);
+		mat_type[sol::meta_function::call] = &mat_get;
 		mat_type.set_function("get", &mat_get);
 		mat_type.set_function("set", &mat_set);
 	}

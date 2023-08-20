@@ -1,4 +1,4 @@
-package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', package.config:sub(1,1)) .. package.path
+package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', package.config:sub(1, 1)) .. package.path
 
 --[[
 Sources:
@@ -25,27 +25,27 @@ end
 
 local function concat(a, b)
     local c = {}
-    for k,v in pairs(a) do c[k] = v end
-    for k,v in pairs(b) do c[k + #a] = v end
+    for k, v in pairs(a) do c[k] = v end
+    for k, v in pairs(b) do c[k + #a] = v end
     return c
 end
 
 local function Hist_and_Backproj(mask)
     local h_bins = 30
     local s_bins = 32
-    local histSize = {h_bins, s_bins}
-    local h_range = {0, 180}
-    local s_range = {0, 256}
+    local histSize = { h_bins, s_bins }
+    local h_range = { 0, 180 }
+    local s_range = { 0, 256 }
     local ranges = concat(h_range, s_range) -- Concat list
-    local channels = {0, 1}
+    local channels = { 0, 1 }
 
     -- Get the Histogram and normalize it
-    local hist = cv.calcHist({hsv}, channels, mask, histSize, ranges, kwargs({accumulate=false}))
+    local hist = cv.calcHist({ hsv }, channels, mask, histSize, ranges, kwargs({ accumulate = false }))
 
-    cv.normalize(hist, hist, kwargs({alpha=0, beta=255, norm_type=cv.NORM_MINMAX}))
+    cv.normalize(hist, hist, kwargs({ alpha = 0, beta = 255, norm_type = cv.NORM_MINMAX }))
 
     -- Get Backprojection
-    local backproj = cv.calcBackProject({hsv}, channels, hist, ranges, kwargs({scale=1}))
+    local backproj = cv.calcBackProject({ hsv }, channels, hist, ranges, kwargs({ scale = 1 }))
 
     -- Draw the backproj
     cv.imshow('BackProj', backproj)
@@ -57,16 +57,16 @@ local function pickPoint(event, x, y, flags, param)
     end
 
     -- Fill and get the mask
-    local seed = {x, y}
+    local seed = { x, y }
     local newMaskVal = 255
-    local newVal = {120, 120, 120}
+    local newVal = { 120, 120, 120 }
     local connectivity = 8
     local flags = connectivity + bit.lshift(newMaskVal, 8) + cv.FLOODFILL_FIXED_RANGE + cv.FLOODFILL_MASK_ONLY
 
     local mask2 = cv.Mat.zeros(src.rows + 2, src.cols + 2, cv.CV_8U)
     print('low:', low, 'up:', up)
-    cv.floodFill(src, mask2, seed, newVal, {low, low, low}, {up, up, up}, flags)
-    local mask = mask2:new(cv.Range( 1, mask2.rows - 1 ), cv.Range( 1, mask2.cols - 1 ))
+    cv.floodFill(src, mask2, seed, newVal, { low, low, low }, { up, up, up }, flags)
+    local mask = mask2:new(cv.Range(1, mask2.rows - 1), cv.Range(1, mask2.cols - 1))
 
     cv.imshow('Mask', mask)
     Hist_and_Backproj(mask)
@@ -81,9 +81,9 @@ local args = {
     input = "home.jpg",
 }
 
-for i=1, #arg, 2 do
+for i = 1, #arg, 2 do
     local name = arg[i]
-    if name:sub(1,2) == "--" then name = name:sub(3) end
+    if name:sub(1, 2) == "--" then name = name:sub(3) end
     if args[name] == nil or i == #arg then
         error('unexpected argument ' .. name)
     end

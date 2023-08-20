@@ -445,6 +445,11 @@ namespace LUA_MODULE_NAME {
 	struct OptionalArray
 	{
 		OptionalArray(_To& obj) {
+			if (obj == sol::lua_nil) {
+				setField(*this, *this, 3);
+				return;
+			}
+
 			auto maybe_Array = maybe_impl(obj, static_cast<Array*>(nullptr));
 			if (maybe_Array) {
 				ptr = reference_internal(*maybe_Array);
@@ -483,11 +488,6 @@ namespace LUA_MODULE_NAME {
 					setField(*this, *this, 2);
 					return;
 				}
-			}
-
-			if (obj == sol::lua_nil) {
-				setField(*this, *this, 3);
-				return;
 			}
 		}
 
@@ -570,6 +570,11 @@ namespace LUA_MODULE_NAME {
 	struct OptionalArrays
 	{
 		OptionalArrays(_To& obj) {
+			if (obj == sol::lua_nil) {
+				setField(*this, *this, 1);
+				return;
+			}
+
 			auto maybe_Array = maybe_impl(obj, static_cast<Array*>(nullptr));
 			if (maybe_Array) {
 				ptr = reference_internal(*maybe_Array);

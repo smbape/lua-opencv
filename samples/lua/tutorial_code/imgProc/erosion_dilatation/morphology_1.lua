@@ -1,4 +1,4 @@
-package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', package.config:sub(1,1)) .. package.path
+package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', package.config:sub(1, 1)) .. package.path
 
 --[[
 Sources:
@@ -34,8 +34,8 @@ local function erosion(val)
     local erosion_shape = morph_shape(cv.getTrackbarPos(title_trackbar_element_shape, title_erosion_window))
 
     -- [kernel]
-    local element = cv.getStructuringElement(erosion_shape, {2 * erosion_size + 1, 2 * erosion_size + 1},
-                                       {erosion_size, erosion_size})
+    local element = cv.getStructuringElement(erosion_shape, { 2 * erosion_size + 1, 2 * erosion_size + 1 },
+        { erosion_size, erosion_size })
     -- [kernel]
     local erosion_dst = cv.erode(src, element)
     cv.imshow(title_erosion_window, erosion_dst)
@@ -48,8 +48,8 @@ local function dilatation(val)
     local dilatation_size = cv.getTrackbarPos(title_trackbar_kernel_size, title_dilation_window)
     local dilation_shape = morph_shape(cv.getTrackbarPos(title_trackbar_element_shape, title_dilation_window))
 
-    local element = cv.getStructuringElement(dilation_shape, {2 * dilatation_size + 1, 2 * dilatation_size + 1},
-                                       {dilatation_size, dilatation_size})
+    local element = cv.getStructuringElement(dilation_shape, { 2 * dilatation_size + 1, 2 * dilatation_size + 1 },
+        { dilatation_size, dilatation_size })
     local dilatation_dst = cv.dilate(src, element)
     cv.imshow(title_dilation_window, dilatation_dst)
 end
@@ -84,7 +84,6 @@ local function main(image)
         local key = cv.waitKey(1)
         if key ~= -1 then break end
     end
-
 end
 -- [main]
 
@@ -97,9 +96,9 @@ local args = {
     input = "LinuxLogo.jpg",
 }
 
-for i=1, #arg, 2 do
+for i = 1, #arg, 2 do
     local name = arg[i]
-    if name:sub(1,2) == "--" then name = name:sub(3) end
+    if name:sub(1, 2) == "--" then name = name:sub(3) end
     if args[name] == nil or i == #arg then
         error('unexpected argument ' .. name)
     end
