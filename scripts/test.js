@@ -9,25 +9,20 @@ const { findFile } = require("../generator/FileUtils");
 const platform = os.platform() === "win32" ? (/cygwin/.test(process.env.HOME) ? "Cygwin" : "x64") : "*-GCC";
 const exeSuffix = os.platform() === "win32" ? ".exe" : "";
 
-const config = {
-    Debug: {
-        exe: findFile(`out/install/${ platform }-Debug/bin/luajit${ exeSuffix }`, __dirname),
-        env: {},
-    },
-    Release: {
-        exe: findFile(`out/install/${ platform }-Release/bin/luajit${ exeSuffix }`, __dirname),
-        env: {},
-    },
-};
+const config = {};
 
-if (os.platform() !== "win32") {
-    config.Debug.env = {
-        LUA_CPATH: `${ sysPath.resolve(config.Debug.exe, "../../lib/lua/?.so") };${ spawnSync(config.Debug.exe, ["-e", "print(package.cpath)"]).stdout.trim() }`
+for (const buildType of ["Debug", "Release"]) {
+    const exe = findFile(`out/install/${ platform }-${ buildType }/bin/luajit${ exeSuffix }`, __dirname);
+    config[buildType] = {
+        exe,
+        env: {},
     };
 
-    config.Release.env = {
-        LUA_CPATH: `${ sysPath.resolve(config.Release.exe, "../../lib/lua/?.so") };${ spawnSync(config.Release.exe, ["-e", "print(package.cpath)"]).stdout.trim() }`
-    };
+    if (os.platform() !== "win32") {
+        config[buildType].env = {
+            LUA_CPATH: `${ sysPath.resolve(exe, "../../lib/lua/?.so") };${ spawnSync(exe, ["-e", "print(package.cpath)"]).stdout.toString().trim() }`
+        };
+    }
 }
 
 const run = (file, cwd, env, next) => {
@@ -122,8 +117,11 @@ explore(sysPath.join(cwd, "samples"), (path, stats, next) => {
     next(null, skip);
 }, err => {
     if (err) {
-        console.log(err);
-        // const code = err.flat(Infinity)[0];
-        // process.exitCode = code;
+        if (!Array.isArray(err)) {
+            throw err;
+        }
+
+        const code = err.flat(Infinity)[0];
+        process.exitCode = code;
     }
 });
