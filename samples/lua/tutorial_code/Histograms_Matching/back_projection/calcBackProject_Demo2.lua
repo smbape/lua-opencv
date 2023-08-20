@@ -2,7 +2,7 @@ package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', packa
 
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.8.0/samples/lua/tutorial_code/Histograms_Matching/back_projection/calcBackProject_Demo2.py
+    https://github.com/opencv/opencv/blob/4.8.0/samples/python/tutorial_code/Histograms_Matching/back_projection/calcBackProject_Demo2.py
 --]]
 
 local opencv_lua = require("init")

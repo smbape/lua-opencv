@@ -534,8 +534,9 @@ class LuaGenerator {
                     let [argtype, , defval] = list_of_arguments[j];
 
                     const is_ptr = argtype.endsWith("*");
-                    const is_out = out_args[j];
-                    const is_optional = defval !== "" || is_out && !in_args[j];
+                    const is_in_arg = in_args[j];
+                    const is_out_arg = out_args[j];
+                    const is_optional = defval !== "" || is_out_arg && !is_in_arg;
 
                     let is_array = false;
                     let arrtype = "";
@@ -587,11 +588,11 @@ class LuaGenerator {
                     let callarg = argname;
                     let cpptype = processor.getCppType(argtype, coclass, options);
 
-                    if (is_out && is_ptr && !PTR.has(argtype)) {
+                    if (is_out_arg && is_ptr && !PTR.has(argtype)) {
                         callarg = `&${ callarg }`;
                         argtype = argtype.slice(0, -1);
                         defval = SIMPLE_ARGTYPE_DEFAULTS.has(argtype) ? SIMPLE_ARGTYPE_DEFAULTS.get(argtype) : "";
-                    } else if (is_out && cpptype.startsWith(`${ shared_ptr }<`)) {
+                    } else if (is_out_arg && cpptype.startsWith(`${ shared_ptr }<`)) {
                         callarg = `reference_internal(${ callarg }, static_cast<${ cpptype }*>(nullptr))`;
                         argtype = cpptype.slice(`${ shared_ptr }<`.length, -">".length);
                         defval = SIMPLE_ARGTYPE_DEFAULTS.has(argtype) ? SIMPLE_ARGTYPE_DEFAULTS.get(argtype) : "";
@@ -627,16 +628,27 @@ class LuaGenerator {
                         argtype.startsWith("std::vector") ? "OptionalArrays" : "OptionalArray" :
                         is_shared_ptr || is_by_ref ? "std::shared_ptr" : "sol::optional";
 
-                    if (is_out) {
+                    if (is_out_arg) {
                         if (is_by_ref || is_array) {
-                            retval.push([j, getTernary(
+                            const ternary = [];
+
+                            if (is_array) {
+                                ternary.push(...[
+                                    `${ argname }_is_nil`,
+                                    `sol::object(ts, sol::in_place, std::make_shared<cv::Mat>(${ argname }.getMat()))`,
+                                ]);
+                            }
+
+                            ternary.push(...[
                                 `${ argname }_positional`,
                                 `vargs.get<sol::object>(${ i })`,
                                 `${ argname }_kwarg`,
                                 `kwargs.at("${ argname }")`,
                                 is_optional,
-                                `sol::object(ts, sol::in_place, ${ argname }_default)`
-                            ), "sol::object"]);
+                                `sol::object(ts, sol::in_place, ${ argname }_default)`,
+                            ]);
+
+                            retval.push([j, getTernary(...ternary), "sol::object"]);
                         } else {
                             retval.push([j, argname, cpptype]);
                         }
@@ -678,7 +690,7 @@ class LuaGenerator {
 
                     if (is_optional) {
                         const ref = defval !== "" && is_by_ref && !defval.includes("(") ? "&" : "";
-                        overload.push(`${ ref || is_out ? "" : "static " }${ cpptype }${ ref } ${ argname }_default${ defval !== "" ? ` = ${ defval }` : "" };`);
+                        overload.push(`${ ref || is_out_arg ? "" : "static " }${ cpptype }${ ref } ${ argname }_default${ defval !== "" ? ` = ${ defval }` : "" };`);
                     } else {
                         overload.push(`
                             else {
@@ -689,6 +701,13 @@ class LuaGenerator {
                     }
 
                     if (is_array) {
+                        if (is_out_arg) {
+                            overload.push(`
+                                bool ${ argname }_is_nil = ${ argname }_positional && vargs.get<sol::object>(${ i }) == sol::lua_nil ||
+                                    ${ argname }_kwarg && kwargs.at("${ argname }") == sol::lua_nil;
+                            `.replace(/^ {32}/mg, "").trim());
+                        }
+
                         overload.push(`
                             auto ${ argname }_${ arrtype } = ${ getTernary(
                                     optional_name,
@@ -734,6 +753,7 @@ class LuaGenerator {
                 let callee;
                 const path = name.split(is_constructor ? "::" : ".");
                 const is_static = func_modifiers.includes("/S") || coclass.isStatic();
+                let is_operator = false;
 
                 if (is_static) {
                     callee = `::${ path.join("::") }`;
@@ -749,9 +769,14 @@ class LuaGenerator {
                     }
 
                     // [+\-*/%\^&|!=<>]=?|[~,]|(?:<<|>>)=?|&&|\|\||\+\+|--|->\*?
-                    if (callargs.length === 1 && /^operator\s*(?:[/*+<>-]=?|\+\+|[!=]=)$/.test(path[path.length - 1])) {
+                    if (callargs.length === 0 && /^operator\s*(?:[+\-*/%\^&|!=<>]=?|[~,]|(?:<<|>>)=?|&&|\|\||\+\+|--|->\*?)$/.test(path[path.length - 1])) {
+                        const operator = path[path.length - 1].slice("operator".length).trim();
+                        callee = `${ operator }(*${ callee })`;
+                        is_operator = true;
+                    } else if (callargs.length === 1 && /^operator\s*(?:[+\-*/%\^&|!=<>]=?|[~,]|(?:<<|>>)=?|&&|\|\||\+\+|--|->\*?)$/.test(path[path.length - 1])) {
                         const operator = path[path.length - 1].slice("operator".length).trim();
                         callee = `(*${ callee }) ${ operator } `;
+                        is_operator = true;
                     } else {
                         callee = `${ callee }->${ path[path.length - 1] }`;
                     }
@@ -769,7 +794,9 @@ class LuaGenerator {
                     }
                 }
 
-                callee = `${ callee }(${ expr })`;
+                if (!is_operator || expr) {
+                    callee = `${ callee }(${ expr })`;
+                }
 
                 if (is_constructor && !has_call) {
                     callee = `std::shared_ptr<${ fqn }>(new ${ callee })`;

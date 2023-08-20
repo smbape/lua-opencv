@@ -385,6 +385,11 @@ module.exports = ({ self, self_get, shared_ptr }) => {
             ["cv::Scalar", "s", "", []],
         ], "", ""],
 
+        ["cv.Mat.operator+", "cv::Mat", ["=sol::meta_function::addition", "/S", "/Output=s + m"], [
+            ["cv::Scalar", "s", "", []],
+            ["cv::Mat", "m", "", []],
+        ], "", ""],
+
         ["cv.Mat.operator-", "cv::Mat", ["=sol::meta_function::subtraction"], [
             ["cv::Mat", "m", "", []],
         ], "", ""],
@@ -393,6 +398,11 @@ module.exports = ({ self, self_get, shared_ptr }) => {
             ["cv::Scalar", "s", "", []],
         ], "", ""],
 
+        ["cv.Mat.operator-", "cv::Mat", ["=sol::meta_function::subtraction", "/S", "/Output=s - m"], [
+            ["cv::Scalar", "s", "", []],
+            ["cv::Mat", "m", "", []],
+        ], "", ""],
+
         ["cv.Mat.operator*", "cv::Mat", ["=sol::meta_function::multiplication"], [
             ["cv::Mat", "m", "", []],
         ], "", ""],
@@ -401,12 +411,22 @@ module.exports = ({ self, self_get, shared_ptr }) => {
             ["double", "s", "", []],
         ], "", ""],
 
+        ["cv.Mat.operator*", "cv::Mat", ["=sol::meta_function::multiplication", "/S", "/Output=s * m"], [
+            ["double", "s", "", []],
+            ["cv::Mat", "m", "", []],
+        ], "", ""],
+
         ["cv.Mat.operator/", "cv::Mat", ["=sol::meta_function::division"], [
             ["cv::Mat", "m", "", []],
         ], "", ""],
 
         ["cv.Mat.operator/", "cv::Mat", ["=sol::meta_function::division"], [
             ["double", "s", "", []],
+        ], "", ""],
+
+        ["cv.Mat.operator/", "cv::Mat", ["=sol::meta_function::division", "/S", "/Output=s / m"], [
+            ["double", "s", "", []],
+            ["cv::Mat", "m", "", []],
         ], "", ""],
 
         ["cv.Mat.operator==", "void", ["/S", "=sol::meta_function::equal_to", "/Call=cv::compare", "/Expr=$0, cv::CMP_EQ"], [
@@ -425,6 +445,47 @@ module.exports = ({ self, self_get, shared_ptr }) => {
             ["cv::Mat", "src1", "", ["/C", "/Ref"]],
             ["InputArray", "src2", "", []],
             ["OutputArray", "dst", "", []],
+        ], "", ""],
+
+        ["cv.Mat.operator~", "cv::Mat", ["=sol::meta_function::bitwise_not"], [], "", ""],
+
+        ["cv.Mat.operator&", "cv::Mat", ["=sol::meta_function::bitwise_and"], [
+            ["cv::Mat", "m", "", []],
+        ], "", ""],
+
+        ["cv.Mat.operator&", "cv::Mat", ["=sol::meta_function::bitwise_and"], [
+            ["cv::Scalar", "s", "", []],
+        ], "", ""],
+
+        ["cv.Mat.operator&", "cv::Mat", ["=sol::meta_function::bitwise_and", "/S", "/Output=s & m"], [
+            ["cv::Scalar", "s", "", []],
+            ["cv::Mat", "m", "", []],
+        ], "", ""],
+
+        ["cv.Mat.operator|", "cv::Mat", ["=sol::meta_function::bitwise_or"], [
+            ["cv::Mat", "m", "", []],
+        ], "", ""],
+
+        ["cv.Mat.operator|", "cv::Mat", ["=sol::meta_function::bitwise_or"], [
+            ["cv::Scalar", "s", "", []],
+        ], "", ""],
+
+        ["cv.Mat.operator|", "cv::Mat", ["=sol::meta_function::bitwise_or", "/S", "/Output=s | m"], [
+            ["cv::Scalar", "s", "", []],
+            ["cv::Mat", "m", "", []],
+        ], "", ""],
+
+        ["cv.Mat.operator^", "cv::Mat", ["=sol::meta_function::bitwise_xor"], [
+            ["cv::Mat", "m", "", []],
+        ], "", ""],
+
+        ["cv.Mat.operator^", "cv::Mat", ["=sol::meta_function::bitwise_xor"], [
+            ["cv::Scalar", "s", "", []],
+        ], "", ""],
+
+        ["cv.Mat.operator^", "cv::Mat", ["=sol::meta_function::bitwise_xor", "/S", "/Output=s ^ m"], [
+            ["cv::Scalar", "s", "", []],
+            ["cv::Mat", "m", "", []],
         ], "", ""],
 
         ["cv.Mat.Mat", "", ["/Call=::cvextra::createMatFromVectorOfMat", "/Expr=$0, lua", "/WrapAs=std::make_shared<cv::Mat>"], [

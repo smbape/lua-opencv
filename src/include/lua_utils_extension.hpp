@@ -458,11 +458,11 @@ namespace LUA_MODULE_NAME {
 					setField(*this, *this, 2);
 					return;
 				}
+			}
 
-				if (obj == sol::lua_nil) {
-					setField(*this, *this, 3);
-					return;
-				}
+			if (obj == sol::lua_nil) {
+				setField(*this, *this, 3);
+				return;
 			}
 		}
 
@@ -505,9 +505,7 @@ namespace LUA_MODULE_NAME {
 				}
 				break;
 			case 3:
-				if constexpr (std::is_same_v<Array, cv::_InputArray>) {
-					dst.reset(dst.mval);
-				}
+				dst.reset(dst.mval);
 				break;
 			default:
 				if (&src != &dst) {
