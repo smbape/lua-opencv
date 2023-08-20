@@ -67,6 +67,11 @@ namespace LUA_MODULE_NAME {
 	// cv::Point_
 	template<typename _To, typename _Tp>
 	inline auto maybe_impl(_To& obj, cv::Point_<_Tp>*) {
+		if (obj == sol::lua_nil) {
+			sol::optional<cv::Point_<_Tp>> res(sol::in_place, std::move(cv::Point_<_Tp>()));
+			return res;
+		}
+
 		auto maybe = obj.template as<sol::optional<cv::Point_<_Tp>>>();
 		if (maybe) {
 			return maybe;
@@ -200,6 +205,11 @@ namespace LUA_MODULE_NAME {
 	// cv::Rect_
 	template<typename _To, typename _Tp>
 	inline auto maybe_impl(_To& obj, cv::Rect_<_Tp>*) {
+		if (obj == sol::lua_nil) {
+			sol::optional<cv::Rect_<_Tp>> res(sol::in_place, std::move(cv::Rect_<_Tp>()));
+			return res;
+		}
+
 		auto maybe = obj.template as<sol::optional<cv::Rect_<_Tp>>>();
 		if (maybe) {
 			return maybe;
@@ -258,6 +268,11 @@ namespace LUA_MODULE_NAME {
 	// cv::Scalar_
 	template<typename _To, typename _Tp>
 	inline auto maybe_impl(_To& obj, cv::Scalar_<_Tp>*) {
+		if (obj == sol::lua_nil) {
+			sol::optional<cv::Scalar_<_Tp>> res(sol::in_place, std::move(cv::Scalar_<_Tp>()));
+			return res;
+		}
+
 		auto maybe = obj.template as<sol::optional<cv::Scalar_<_Tp>>>();;
 		if (maybe) {
 			return maybe;
@@ -306,6 +321,11 @@ namespace LUA_MODULE_NAME {
 	// cv::Size_
 	template<typename _To, typename _Tp>
 	inline auto maybe_impl(_To& obj, cv::Size_<_Tp>*) {
+		if (obj == sol::lua_nil) {
+			sol::optional<cv::Size_<_Tp>> res(sol::in_place, std::move(cv::Size_<_Tp>()));
+			return res;
+		}
+
 		auto maybe = obj.template as<sol::optional<cv::Size_<_Tp>>>();
 		if (maybe) {
 			return maybe;
@@ -360,6 +380,11 @@ namespace LUA_MODULE_NAME {
 	// cv::Vec
 	template<typename _To, typename _Tp, int cn>
 	inline auto maybe_impl(_To& obj, cv::Vec<_Tp, cn>*) {
+		if (obj == sol::lua_nil) {
+			sol::optional<cv::Vec<_Tp, cn>> res(sol::in_place, std::move(cv::Vec<_Tp, cn>()));
+			return res;
+		}
+
 		auto maybe = obj.template as<sol::optional<cv::Vec<_Tp, cn>>>();;
 		if (maybe) {
 			return maybe;
