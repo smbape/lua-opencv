@@ -474,14 +474,14 @@ namespace LUA_MODULE_NAME {
 				return;
 			}
 
-			auto maybe_Scalar = maybe_impl(obj, static_cast<cv::Scalar*>(nullptr));
-			if (maybe_Scalar) {
-				sval = *maybe_Scalar;
-				setField(*this, *this, 1);
-				return;
-			}
-
 			if constexpr (std::is_same_v<Array, cv::_InputArray>) {
+				auto maybe_Scalar = maybe_impl(obj, static_cast<cv::Scalar*>(nullptr));
+				if (maybe_Scalar) {
+					sval = *maybe_Scalar;
+					setField(*this, *this, 1);
+					return;
+				}
+
 				auto maybe_double = maybe_impl(obj, static_cast<double*>(nullptr));
 				if (maybe_double) {
 					dval = *maybe_double;
@@ -516,10 +516,12 @@ namespace LUA_MODULE_NAME {
 
 			switch (_field) {
 			case 1:
-				if (&src != &dst) {
-					dst.sval = src.sval;
+				if constexpr (std::is_same_v<Array, cv::_InputArray>) {
+					if (&src != &dst) {
+						dst.sval = src.sval;
+					}
+					dst.reset(dst.sval);
 				}
-				dst.reset(dst.sval);
 				break;
 			case 2:
 				if constexpr (std::is_same_v<Array, cv::_InputArray>) {
