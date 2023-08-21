@@ -6,6 +6,16 @@ module.exports = [
     ["cv.RNG.RNG", "", [], [
         ["uint64", "state", "", []]
     ], "", ""],
+    ["cv.RNG.fill", "void", [], [
+        ["InputOutputArray", "mat", "", []],
+        ["int", "distType", "", []],
+        ["InputArray", "a", "", []],
+        ["InputArray", "b", "", []],
+        ["bool", "saturateRange", "false", []],
+    ], "", ""],
+    ["cv.RNG.gaussian", "double", [], [
+        ["double", "sigma", "", []],
+    ], "", ""],
     ["cv.RNG.next", "uint", [], [], "", ""],
     ["cv.RNG.uniform", "int", ["=uniform_int"], [
         ["int", "a", "", []],

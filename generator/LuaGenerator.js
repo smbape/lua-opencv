@@ -83,7 +83,7 @@ const getTernary = (...args) => {
         text.push(args[i + 1]);
 
         if (has_more) {
-            text.push(":");
+            text.push(`:\n${ " ".repeat(3) }`);
         }
     }
 
@@ -633,9 +633,10 @@ class LuaGenerator {
                             const ternary = [];
 
                             if (is_array) {
+                                // argtype.startsWith("std::vector") => getMatVector(std::vector< Mat > &mv)
                                 ternary.push(...[
                                     `${ argname }_is_nil`,
-                                    `sol::object(ts, sol::in_place, std::make_shared<cv::Mat>(${ argname }.getMat()))`,
+                                    `sol::object(ts, sol::in_place, ${ argname }_default)`,
                                 ]);
                             }
 
@@ -688,10 +689,7 @@ class LuaGenerator {
                         }
                     `.replace(/^ {24}/mg, "").trim());
 
-                    if (is_optional) {
-                        const ref = defval !== "" && is_by_ref && !defval.includes("(") ? "&" : "";
-                        overload.push(`${ ref || is_out_arg ? "" : "static " }${ cpptype }${ ref } ${ argname }_default${ defval !== "" ? ` = ${ defval }` : "" };`);
-                    } else {
+                    if (!is_optional) {
                         overload.push(`
                             else {
                                 // mandatory parameter
@@ -700,21 +698,35 @@ class LuaGenerator {
                         `.replace(/^ {28}/mg, "").trim());
                     }
 
+                    if (is_optional || is_array && is_out_arg) {
+                        const ref = defval !== "" && is_by_ref && !defval.includes("(") ? "&" : "";
+                        overload.push(`${ ref || is_out_arg ? "" : "static " }${ cpptype }${ ref } ${ argname }_default${ defval !== "" ? ` = ${ defval }` : "" };`);
+                    }
+
                     if (is_array) {
+                        const ternary = [];
+
                         if (is_out_arg) {
                             overload.push(`
                                 bool ${ argname }_is_nil = ${ argname }_positional && vargs.get<sol::object>(${ i }) == sol::lua_nil ||
                                     ${ argname }_kwarg && kwargs.at("${ argname }") == sol::lua_nil;
                             `.replace(/^ {32}/mg, "").trim());
+
+                            ternary.push(...[
+                                `${ argname }_is_nil`,
+                                `${ maybe }(std::make_shared<${ arr_cpptype }>(${ argname }_default))`,
+                            ]);
                         }
 
+                        ternary.push(...[
+                            optional_name,
+                            optional_name,
+                            is_optional,
+                            `${ maybe }(std::make_shared<${ arr_cpptype }>(${ argname }_default))`,
+                        ]);
+
                         overload.push(`
-                            auto ${ argname }_${ arrtype } = ${ getTernary(
-                                    optional_name,
-                                    optional_name,
-                                    is_optional,
-                                    `${ maybe }(std::make_shared<${ arr_cpptype }>(${ argname }_default))`
-                                ) };
+                            auto ${ argname }_${ arrtype } = ${ getTernary(...ternary) };
                             auto& ${ argname } = *${ argname }_${ arrtype };
                         `.replace(/^ {28}/mg, "").trim());
                     } else if (is_shared_ptr) {
