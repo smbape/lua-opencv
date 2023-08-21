@@ -11,7 +11,7 @@ local bit = bit or opencv_lua.bit
 local _
 
 -- Make the starting point predictable
-cv.theRNG().state = 12345
+local rng = cv.RNG(12345)
 
 -- [load_image]
 -- Load the image
@@ -141,7 +141,7 @@ mark = cv.bitwise_not(mark)
 -- Generate random colors
 local colors = {}
 for i = 1, n_contours do
-    colors[i] = { cv.theRNG():uniform(0, 256), cv.theRNG():uniform(0, 256), cv.theRNG():uniform(0, 256) }
+    colors[i] = { rng:uniform(0, 256), rng:uniform(0, 256), rng:uniform(0, 256) }
 end
 
 -- Create the result image

@@ -111,9 +111,7 @@ local _, bw = cv.threshold(gray, 50, 255, bit.bor(cv.THRESH_BINARY, cv.THRESH_OT
 -- Find all the contours in the thresholded image
 local contours, _ = cv.findContours(bw, cv.RETR_LIST, cv.CHAIN_APPROX_NONE)
 
-for i = 1, #contours do
-    local c = contours[i]
-
+for i, c in contours:pairs() do
     -- Calculate the area of each contour
     local area = cv.contourArea(c)
     -- Ignore contours that are too small or too large

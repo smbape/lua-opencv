@@ -16,6 +16,9 @@ cap:set(cv.CAP_PROP_FRAME_HEIGHT, 720)
 cap:set(cv.CAP_PROP_FPS, CAP_FPS)
 
 while true do
+    -- Without this, memory grows indefenitely
+    collectgarbage()
+
     local start = cv.getTickCount()
     local read, frame = cap:read()
     if not read then
