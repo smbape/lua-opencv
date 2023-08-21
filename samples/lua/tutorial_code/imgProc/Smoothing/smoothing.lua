@@ -29,7 +29,7 @@ end
 
 
 local function display_caption(caption)
-    dst = cv.Mat.zeros(src.rows, src.cols, src:type())
+    dst = cv.Mat.zeros(src:size(), src:type())
     local rows, cols = src.rows, src.cols
     cv.putText(dst, caption,
         { int(cols / 4), int(rows / 2) },

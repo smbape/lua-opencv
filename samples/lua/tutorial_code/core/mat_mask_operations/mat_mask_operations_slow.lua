@@ -24,7 +24,7 @@ local function sharpen(my_image)
     end
 
     local height, width, n_channels = my_image.height, my_image.width, my_image:channels()
-    local result = cv.Mat.zeros(my_image.rows, my_image.cols, my_image:type())
+    local result = cv.Mat.zeros(my_image:size(), my_image:type())
 
     -- make channels a new dimension to be able to do mat[{j, i, k}]
     if not is_grayscale then

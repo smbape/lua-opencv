@@ -40,7 +40,7 @@ end
 -- [basic-linear-transform-load]
 
 -- [basic-linear-transform-output]
-local new_image = cv.Mat.zeros(image.rows, image.cols, image:type())
+local new_image = cv.Mat.zeros(image:size(), image:type())
 -- [basic-linear-transform-output]
 
 -- [basic-linear-transform-parameters]

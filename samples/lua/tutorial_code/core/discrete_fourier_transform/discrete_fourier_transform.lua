@@ -50,7 +50,7 @@ local function main(argv)
     local magI = planes[1]
     -- [magnitude]
     -- [log]
-    local matOfOnes = cv.Mat.ones(magI.rows, magI.cols, magI:type())
+    local matOfOnes = cv.Mat.ones(magI:size(), magI:type())
     cv.add(matOfOnes, magI, magI) --  switch to logarithmic scale
     cv.log(magI, magI)
     -- [log]

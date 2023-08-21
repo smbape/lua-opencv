@@ -77,7 +77,7 @@ local hsv = cv.cvtColor(src, cv.COLOR_BGR2HSV)
 
 -- [Use only the Hue value]
 local ch = { 0, 0 }
-hue = cv.Mat.zeros(hsv.rows, hsv.cols, hsv:type())
+hue = cv.Mat.zeros(hsv:size(), hsv:type())
 cv.mixChannels({ hsv }, { hue }, ch)
 -- [Use only the Hue value]
 
