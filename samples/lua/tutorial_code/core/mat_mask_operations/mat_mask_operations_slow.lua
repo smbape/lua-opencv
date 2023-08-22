@@ -26,7 +26,7 @@ local function sharpen(my_image)
     local height, width, n_channels = my_image.height, my_image.width, my_image:channels()
     local result = cv.Mat.zeros(my_image:size(), my_image:type())
 
-    -- make channels a new dimension to be able to do mat[{j, i, k}], which is a speed sweet spot
+    -- give channels a new dimension to be able to do mat[{j, i, k}], which is a speed sweet spot
     if not is_grayscale then
         my_image = my_image:reshape(1, { height, width, n_channels })
         result = result:reshape(1, { height, width, n_channels })

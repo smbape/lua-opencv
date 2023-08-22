@@ -99,8 +99,6 @@ cv.createTrackbar('Canny Thresh:', source_window, thresh, max_thresh, thresh_cal
 thresh_callback(thresh)
 
 while true do
-    collectgarbage()
-
     -- lua is not thread safe
     -- therefore, calling callbacks from another thread
     -- will certainly causes unwanted behaviour

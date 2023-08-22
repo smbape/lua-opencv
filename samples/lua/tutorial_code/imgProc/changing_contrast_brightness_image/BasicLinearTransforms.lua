@@ -60,7 +60,7 @@ local beta = io.read("*n") -- read a number
 
 local rows, cols, channels = image.rows, image.cols, image:channels()
 
--- make channels a new dimension to be able to do image(y, x, c), which is a speed sweet spot
+-- give channels a new dimension to be able to do image(y, x, c), which is a speed sweet spot
 image = image:reshape(1, { rows, cols, channels })
 new_image = new_image:reshape(1, { rows, cols, channels })
 

@@ -89,7 +89,7 @@ local use_sweet_spots = true
 local t = os.clock()
 
 if use_sweet_spots then
-    -- make channels a new dimension to be able to do I(y, x, c), which is a speed sweet spot
+    -- give channels a new dimension to be able to do I(y, x, c), which is a speed sweet spot
     I = I:reshape(1, { rows, cols, 3 })
 end
 

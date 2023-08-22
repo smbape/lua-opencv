@@ -147,7 +147,7 @@ end
 -- Create the result image
 local dst = cv.Mat.zeros(markers:size(), cv.CV_8UC3)
 
--- make channels a new dimension to be able to do image(y, x, c), which is a speed sweet spot
+-- give channels a new dimension to be able to do image(y, x, c), which is a speed sweet spot
 local channels = dst:channels()
 dst = dst:reshape(1, { dst.rows, dst.cols, channels })
 

@@ -41,13 +41,11 @@ local function getOrientation(pts, img)
     local cols = pts.cols
     local channels = pts:channels()
 
-    -- make channels a new dimension to be able to do pts(y, x, c), which is a speed sweet spot
-    pts = pts:reshape(1, { sz, cols, channels })
-
     local data_pts = cv.Mat(sz, 2, cv.CV_64F)
     for i = 0, sz - 1 do
-        data_pts:set(pts(i, 0, 0), i, 0)
-        data_pts:set(pts(i, 0, 1), i, 1)
+        local pt = pts:Point_at(i)
+        data_pts:set(pt[1], i, 0)
+        data_pts:set(pt[2], i, 1)
     end
 
     -- Perform PCA analysis
