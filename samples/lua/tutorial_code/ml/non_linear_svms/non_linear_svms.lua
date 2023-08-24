@@ -31,19 +31,19 @@ local nLinearSamples = int(FRAC_LINEAR_SEP * NTRAINING_SAMPLES)
 local trainClass = trainData:rowRange(0, nLinearSamples)
 -- The x coordinate of the points is in [0, 0.4)
 local c = trainClass:colRange(0, 1)
-rng:fill(c, cv.RNG.UNIFORM, {0, 0, 0, 0}, {0.4 * WIDTH, 0, 0, 0})
+rng:fill(c, cv.RNG.UNIFORM, 0, 0.4 * WIDTH)
 -- The y coordinate of the points is in [0, 1)
 c = trainClass:colRange(1, 2)
-rng:fill(c, cv.RNG.UNIFORM, {0, 0, 0, 0}, {HEIGHT, 0, 0, 0})
+rng:fill(c, cv.RNG.UNIFORM, 0, HEIGHT)
 
 -- Generate random points for the class 2
 trainClass = trainData:rowRange(2 * NTRAINING_SAMPLES - nLinearSamples, 2 * NTRAINING_SAMPLES)
 -- The x coordinate of the points is in [0.6, 1]
 c = trainClass:colRange(0, 1)
-rng:fill(c, cv.RNG.UNIFORM, {0.6 * WIDTH, 0, 0, 0}, {WIDTH, 0, 0, 0})
+rng:fill(c, cv.RNG.UNIFORM, 0.6 * WIDTH, WIDTH)
 -- The y coordinate of the points is in [0, 1)
 c = trainClass:colRange(1, 2)
-rng:fill(c, cv.RNG.UNIFORM, {0, 0, 0, 0}, {HEIGHT, 0, 0, 0})
+rng:fill(c, cv.RNG.UNIFORM, 0, HEIGHT)
 -- [setup1]
 
 -------------------- Set up the non-linearly separable part of the training data ---------------
@@ -52,10 +52,10 @@ rng:fill(c, cv.RNG.UNIFORM, {0, 0, 0, 0}, {HEIGHT, 0, 0, 0})
 trainClass = trainData:rowRange(nLinearSamples, 2 * NTRAINING_SAMPLES - nLinearSamples)
 -- The x coordinate of the points is in [0.4, 0.6)
 c = trainClass:colRange(0, 1)
-rng:fill(c, cv.RNG.UNIFORM, {0.4 * WIDTH, 0, 0, 0}, {0.6 * WIDTH, 0, 0, 0})
+rng:fill(c, cv.RNG.UNIFORM, 0.4 * WIDTH, 0.6 * WIDTH)
 -- The y coordinate of the points is in [0, 1)
 c = trainClass:colRange(1, 2)
-rng:fill(c, cv.RNG.UNIFORM, {0, 0, 0, 0}, {HEIGHT, 0, 0, 0})
+rng:fill(c, cv.RNG.UNIFORM, 0, HEIGHT)
 -- [setup2]
 
 --------------------------- Set up the labels for the classes ---------------------------------

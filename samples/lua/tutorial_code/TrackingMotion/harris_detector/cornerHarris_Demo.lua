@@ -51,7 +51,6 @@ end
 -- parser.add_argument('--input', help='Path to input image.', default='building.jpg')
 -- args = parser.parse_args()
 
-
 local args = {
     input = 'building.jpg',
 }

@@ -31,8 +31,8 @@ namespace LUA_MODULE_NAME {
 	template<typename T>
 	constexpr inline bool is_usertype_v = is_usertype<T>::value;
 
-    template <>
-    struct is_usertype<NamedParameters> : std::true_type { };
+	template <>
+	struct is_usertype<NamedParameters> : std::true_type { };
 
 	template<typename _To, typename T>
 	inline auto maybe_impl(_To& obj, T*) {
@@ -41,13 +41,17 @@ namespace LUA_MODULE_NAME {
 				return obj.template as<std::shared_ptr<T>>();
 			}
 
-			if (obj.template is<T>()) {
-				return reference_internal(obj.template as<T>());
+			if (obj.template is<T&>()) {
+				return reference_internal(obj.template as<T&>());
 			}
 
 			return std::shared_ptr<T>();
 		} else {
-			return obj.template as<sol::optional<T>>();
+			auto maybe_t = obj.template as<sol::optional<T>>();
+			if (maybe_t) {
+				return std::make_shared<T>(*maybe_t);
+			}
+			return std::shared_ptr<T>();
 		}
 	}
 
@@ -57,19 +61,23 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _To, typename T>
-	inline decltype(auto) maybe_impl(_To& obj, std::vector<T>*) {
+	inline auto maybe_impl(_To& obj, std::vector<T>*) {
 		if (obj.get_type() == sol::type::userdata) {
-			return obj.template as<sol::optional<std::vector<T>>>();
+			auto maybe_t = obj.template as<sol::optional<std::vector<T>&>>();
+			if (maybe_t) {
+				return reference_internal(*maybe_t);
+			}
+			return std::shared_ptr<std::vector<T>>();
 		}
 
-		static auto empty = sol::optional<std::vector<T>>();
+		static std::shared_ptr<std::vector<T>> empty;
 
 		auto maybe_table = obj.template as<sol::optional<sol::table>>();
 		if (!maybe_table) {
 			return empty;
 		}
 
-		sol::optional<std::vector<T>> res(sol::in_place, std::move(std::vector<T>()));
+		std::shared_ptr<std::vector<T>> res(new std::vector<T>());
 
 		auto i = 1;
 		for (const auto& key_value_pair : *maybe_table) {
@@ -85,7 +93,7 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _To, typename T>
-	inline decltype(auto) maybe_impl(const _To& obj, std::vector<T>* ptr) {
+	inline auto maybe_impl(const _To& obj, std::vector<T>* ptr) {
 		return maybe_impl(const_cast<_To&>(obj), ptr);
 	}
 
