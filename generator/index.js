@@ -19,7 +19,7 @@ const getOptions = output => {
         APP_NAME: "cv",
         namespace: "cv",
         implicitNamespaceType: /^(?:Point|Rect|Scalar|Size|Vec)(?:\d[bdfisw])?$/,
-        variantTypeReg: /(?:cv::(?:Point|Rect|Scalar|Size|Vec)(?:\d[bdfisw])?|<cv::Ptr)/,
+        variantTypeReg: /(?:<cv::Ptr)/,
         shared_ptr: "cv::Ptr",
         implemented: {
             test: (signature, opts) => {
@@ -27,21 +27,21 @@ const getOptions = output => {
                     return true;
                 }
 
-                if (/auto return_as_impl\(std::vector<cv::Ptr<[^&]+>>& obj, sol::state_view& lua\)/.test(signature)) {
-                    return true;
-                }
+                // if (/auto return_as_impl\(std::vector<cv::Ptr<[^&]+>>& obj, sol::state_view& lua\)/.test(signature)) {
+                //     return true;
+                // }
 
-                if (/auto return_as_impl\(cv::(?:Point3?|Rect|Scalar|Size|Vec)(?:\d[bdfisw])?& obj, sol::state_view& lua\)/.test(signature)) {
-                    return true;
-                }
+                // if (/auto return_as_impl\(cv::(?:Point3?|Rect|Scalar|Size|Vec)(?:\d[bdfisw])?& obj, sol::state_view& lua\)/.test(signature)) {
+                //     return true;
+                // }
 
-                if (/auto return_as_impl\(std::vector<cv::(?:Point3?|Rect|Size|Vec)(?:\d[bdfisw])?>& obj, sol::state_view& lua\)/.test(signature)) {
-                    return true;
-                }
+                // if (/auto return_as_impl\(std::vector<cv::(?:Point3?|Rect|Size|Vec)(?:\d[bdfisw])?>& obj, sol::state_view& lua\)/.test(signature)) {
+                //     return true;
+                // }
 
-                if (/auto return_as_impl\(std::vector<std::vector<cv::(?:Point3?)(?:\d[bdfisw])?>>& obj, sol::state_view& lua\)/.test(signature)) {
-                    return true;
-                }
+                // if (/auto return_as_impl\(std::vector<std::vector<cv::(?:Point3?)(?:\d[bdfisw])?>>& obj, sol::state_view& lua\)/.test(signature)) {
+                //     return true;
+                // }
 
                 if (/auto return_as_impl\(std::vector<std::tuple<cv::(?:Point)(?:\d[bdfisw])?, double>>& obj, sol::state_view& lua\)/.test(signature)) {
                     return true;

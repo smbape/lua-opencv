@@ -7,7 +7,6 @@ Sources:
 
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
-local kwargs = opencv_lua.kwargs
 
 -- [basic_method]
 local function saturated(sum_value)

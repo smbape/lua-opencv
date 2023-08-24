@@ -407,43 +407,43 @@ module.exports = ({ self, self_get, shared_ptr }) => [
     // Extended Functions
 
     ["cv.UMat.operator+", "void", ["/S", "=sol::meta_function::addition", "/Call=cv::add"], [
-        ["cv::UMat", "src1", "", ["/C", "/Ref"]],
+        ["cv::UMat", "src1", "", ["/Ref", "/C"]],
         ["InputArray", "src2", "", []],
         ["OutputArray", "dst", "", []],
     ], "", ""],
 
     ["cv.UMat.operator-", "void", ["/S", "=sol::meta_function::subtraction", "/Call=cv::subtract"], [
-        ["cv::UMat", "src1", "", ["/C", "/Ref"]],
+        ["cv::UMat", "src1", "", ["/Ref", "/C"]],
         ["InputArray", "src2", "", []],
         ["OutputArray", "dst", "", []],
     ], "", ""],
 
     ["cv.UMat.operator*", "void", ["/S", "=sol::meta_function::multiplication", "/Call=cv::multiply"], [
-        ["cv::UMat", "src1", "", ["/C", "/Ref"]],
+        ["cv::UMat", "src1", "", ["/Ref", "/C"]],
         ["InputArray", "src2", "", []],
         ["OutputArray", "dst", "", []],
     ], "", ""],
 
     ["cv.UMat.operator/", "void", ["/S", "=sol::meta_function::division", "/Call=cv::divide"], [
-        ["cv::UMat", "src1", "", ["/C", "/Ref"]],
+        ["cv::UMat", "src1", "", ["/Ref", "/C"]],
         ["InputArray", "src2", "", []],
         ["OutputArray", "dst", "", []],
     ], "", ""],
 
     ["cv.UMat.operator==", "void", ["/S", "=sol::meta_function::equal_to", "/Call=cv::compare", "/Expr=$0, cv::CMP_EQ"], [
-        ["cv::UMat", "src1", "", ["/C", "/Ref"]],
+        ["cv::UMat", "src1", "", ["/Ref", "/C"]],
         ["InputArray", "src2", "", []],
         ["OutputArray", "dst", "", []],
     ], "", ""],
 
     ["cv.UMat.operator<", "void", ["/S", "=sol::meta_function::less_than", "/Call=cv::compare", "/Expr=$0, cv::CMP_LT"], [
-        ["cv::UMat", "src1", "", ["/C", "/Ref"]],
+        ["cv::UMat", "src1", "", ["/Ref", "/C"]],
         ["InputArray", "src2", "", []],
         ["OutputArray", "dst", "", []],
     ], "", ""],
 
     ["cv.UMat.operator<=", "void", ["/S", "=sol::meta_function::less_than_or_equal_to", "/Call=cv::compare", "/Expr=$0, cv::CMP_LE"], [
-        ["cv::UMat", "src1", "", ["/C", "/Ref"]],
+        ["cv::UMat", "src1", "", ["/Ref", "/C"]],
         ["InputArray", "src2", "", []],
         ["OutputArray", "dst", "", []],
     ], "", ""],

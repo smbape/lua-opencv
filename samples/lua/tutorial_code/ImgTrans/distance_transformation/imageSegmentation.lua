@@ -8,7 +8,6 @@ Sources:
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local bit = bit or opencv_lua.bit
-local _
 
 -- Make the starting point predictable
 local rng = cv.RNG(12345)

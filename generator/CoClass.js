@@ -93,6 +93,7 @@ class CoClass {
             "optional",
             "pair",
             "tuple",
+            "variant",
             "vector",
             "GArray",
             "GOpaque",
@@ -104,9 +105,12 @@ class CoClass {
             "std::optional",
             "std::pair",
             "std::tuple",
+            "std::variant",
             "std::vector",
             "cv::GArray",
             "cv::GOpaque",
+            "cv::util::variant",
+            "util::variant",
             options.shared_ptr
         ].join("|") })<`, "g");
 
@@ -134,7 +138,7 @@ class CoClass {
             str += type.slice(lastIndex, match.index);
 
             if (match[0] === ",") {
-                while (path.length !== 0 && !["map", "pair", "tuple"].some(tmpl => path[path.length - 1] === tmpl)) {
+                while (path.length !== 0 && !["map", "pair", "tuple", "variant"].some(tmpl => path[path.length - 1] === tmpl)) {
                     str += ">";
                     path.pop();
                 }

@@ -4,7 +4,7 @@ module.exports = ({ self, self_get, shared_ptr }) => {
             // Public Attributes
 
             ["int", "cols", "", ["/RW"]],
-            ["uchar*", "data", "", ["/RW"]],
+            ["uchar*", "data", "", ["/RW", "/Cast=static_cast<void*>"]],
             ["int", "dims", "", ["/RW"]],
             ["int", "flags", "", ["/RW"]],
             ["int", "rows", "", ["/RW"]],
@@ -430,19 +430,19 @@ module.exports = ({ self, self_get, shared_ptr }) => {
         ], "", ""],
 
         ["cv.Mat.operator==", "void", ["/S", "=sol::meta_function::equal_to", "/Call=cv::compare", "/Expr=$0, cv::CMP_EQ"], [
-            ["cv::Mat", "src1", "", ["/C", "/Ref"]],
+            ["cv::Mat", "src1", "", ["/Ref", "/C"]],
             ["InputArray", "src2", "", []],
             ["OutputArray", "dst", "", []],
         ], "", ""],
 
         ["cv.Mat.operator<", "void", ["/S", "=sol::meta_function::less_than", "/Call=cv::compare", "/Expr=$0, cv::CMP_LT"], [
-            ["cv::Mat", "src1", "", ["/C", "/Ref"]],
+            ["cv::Mat", "src1", "", ["/Ref", "/C"]],
             ["InputArray", "src2", "", []],
             ["OutputArray", "dst", "", []],
         ], "", ""],
 
         ["cv.Mat.operator<=", "void", ["/S", "=sol::meta_function::less_than_or_equal_to", "/Call=cv::compare", "/Expr=$0, cv::CMP_LE"], [
-            ["cv::Mat", "src1", "", ["/C", "/Ref"]],
+            ["cv::Mat", "src1", "", ["/Ref", "/C"]],
             ["InputArray", "src2", "", []],
             ["OutputArray", "dst", "", []],
         ], "", ""],

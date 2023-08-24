@@ -8,7 +8,6 @@ Sources:
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local kwargs = opencv_lua.kwargs
-local time
 
 -- [load]
 -- parser = argparse.ArgumentParser(description='Code for AKAZE local features matching tutorial.')

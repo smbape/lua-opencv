@@ -32,7 +32,7 @@ local function detectAndDisplay(frame)
 
     ---- Detect faces
     local faces = face_cascade:detectMultiScale(frame_gray)
-    for i, face in ipairs(faces) do
+    for i, face in faces:pairs() do
         local x, y, w, h = face[1], face[2], face[3], face[4]
         local center = { x + int(w / 2), y + int(h / 2) }
         frame = cv.ellipse(frame, center, { int(w / 2), int(h / 2) }, 0, 0, 360, { 255, 0, 255 }, 4)
@@ -40,7 +40,7 @@ local function detectAndDisplay(frame)
         local faceROI = frame_gray:new(face)
         ---- In each face, detect eyes
         local eyes = eyes_cascade:detectMultiScale(faceROI)
-        for i, eye in ipairs(eyes) do
+        for i, eye in eyes:pairs() do
             local x2, y2, w2, h2 = eye[1], eye[2], eye[3], eye[4]
             local eye_center = { x + x2 + int(w2 / 2), y + y2 + int(h2 / 2) }
             local radius = int(round((w2 + h2) * 0.25))

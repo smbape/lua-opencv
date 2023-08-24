@@ -74,9 +74,12 @@ namespace LUA_MODULE_NAME {
 		}
 
 		if (obj.get_type() == sol::type::userdata) {
-			auto maybe_t = obj.template as<sol::optional<cv::Point_<_Tp>&>>();
-			if (maybe_t) {
-				return reference_internal(*maybe_t);
+			if (obj.template is<std::shared_ptr<cv::Point_<_Tp>>>()) {
+				return obj.template as<std::shared_ptr<cv::Point_<_Tp>>>();
+			}
+
+			if (obj.template is<cv::Point_<_Tp>&>()) {
+				return reference_internal(obj.template as<cv::Point_<_Tp>&>());
 			}
 
 			if constexpr (!std::is_same_v<_Tp, float>) {
@@ -127,67 +130,6 @@ namespace LUA_MODULE_NAME {
 		return maybe_impl(const_cast<_To&>(obj), ptr);
 	}
 
-	template<typename _Tp>
-	inline auto return_as_impl(cv::Point_<_Tp>& obj, sol::state_view& lua) {
-		sol::table res = lua.create_table();
-		res[1] = obj.x;
-		res[2] = obj.y;
-		return res;
-	}
-
-	template<typename _Tp>
-	inline auto return_as_impl(const cv::Point_<_Tp>& obj, sol::state_view& lua) {
-		return return_as_impl(const_cast<cv::Point_<_Tp>&>(obj), lua);
-	}
-
-	template<typename _Tp>
-	inline auto return_as_impl(std::vector<cv::Point_<_Tp>>& vec, sol::state_view& lua) {
-		sol::table res = lua.create_table();
-		int i = 0;
-		for (const auto& obj : vec) {
-			res[++i] = return_as_impl(obj, lua);
-		}
-		return res;
-	}
-
-	template<typename _Tp>
-	inline auto return_as_impl(const std::vector<cv::Point_<_Tp>>& vec, sol::state_view& lua) {
-		return return_as_impl(const_cast<std::vector<cv::Point_<_Tp>>&>(vec), lua);
-	}
-
-	template<typename _Tp>
-	inline auto return_as_impl(std::vector<std::vector<cv::Point_<_Tp>>>& vec, sol::state_view& lua) {
-		sol::table res = lua.create_table();
-		int i = 0;
-		for (const auto& obj : vec) {
-			res[++i] = return_as_impl(obj, lua);
-		}
-		return res;
-	}
-
-	template<typename _Tp>
-	inline auto return_as_impl(const std::vector<std::vector<cv::Point_<_Tp>>>& vec, sol::state_view& lua) {
-		return return_as_impl(const_cast<std::vector<std::vector<cv::Point_<_Tp>>>&>(vec), lua);
-	}
-
-	template<typename _Tp>
-	inline auto return_as_impl(std::vector<std::tuple<cv::Point_<_Tp>, double>>& vec, sol::state_view& lua) {
-		sol::table res = lua.create_table();
-		int i = 0;
-		for (const auto& obj : vec) {
-			sol::table elem = lua.create_table();
-			elem[1] = return_as_impl(std::get<0>(obj), lua);
-			elem[2] = std::get<1>(obj);
-			res[++i] = elem;
-		}
-		return res;
-	}
-
-	template<typename _Tp>
-	inline auto return_as_impl(const std::vector<std::tuple<cv::Point_<_Tp>, double>>& vec, sol::state_view& lua) {
-		return return_as_impl(const_cast<std::vector<std::tuple<cv::Point_<_Tp>, double>>&>(vec), lua);
-	}
-
 	// cv::Point3_
 	template<typename _To, typename _Tp>
 	inline auto maybe_impl(_To& obj, cv::Point3_<_Tp>*, bool nested = false) {
@@ -197,9 +139,12 @@ namespace LUA_MODULE_NAME {
 		}
 
 		if (obj.get_type() == sol::type::userdata) {
-			auto maybe_t = obj.template as<sol::optional<cv::Point3_<_Tp>&>>();
-			if (maybe_t) {
-				return reference_internal(*maybe_t);
+			if (obj.template is<std::shared_ptr<cv::Point3_<_Tp>>>()) {
+				return obj.template as<std::shared_ptr<cv::Point3_<_Tp>>>();
+			}
+
+			if (obj.template is<cv::Point3_<_Tp>&>()) {
+				return reference_internal(obj.template as<cv::Point3_<_Tp>&>());
 			}
 
 			if constexpr (!std::is_same_v<_Tp, float>) {
@@ -251,50 +196,6 @@ namespace LUA_MODULE_NAME {
 		return maybe_impl(const_cast<_To&>(obj), ptr);
 	}
 
-	template<typename _Tp>
-	inline auto return_as_impl(cv::Point3_<_Tp>& obj, sol::state_view& lua) {
-		sol::table res = lua.create_table();
-		res[1] = obj.x;
-		res[2] = obj.y;
-		res[3] = obj.z;
-		return res;
-	}
-
-	template<typename _Tp>
-	inline auto return_as_impl(const cv::Point3_<_Tp>& obj, sol::state_view& lua) {
-		return return_as_impl(const_cast<cv::Point3_<_Tp>&>(obj), lua);
-	}
-
-	template<typename _Tp>
-	inline auto return_as_impl(std::vector<cv::Point3_<_Tp>>& vec, sol::state_view& lua) {
-		sol::table res = lua.create_table();
-		int i = 0;
-		for (const auto& obj : vec) {
-			res[++i] = return_as_impl(obj, lua);
-		}
-		return res;
-	}
-
-	template<typename _Tp>
-	inline auto return_as_impl(const std::vector<cv::Point3_<_Tp>>& vec, sol::state_view& lua) {
-		return return_as_impl(const_cast<std::vector<cv::Point3_<_Tp>>&>(vec), lua);
-	}
-
-	template<typename _Tp>
-	inline auto return_as_impl(std::vector<std::vector<cv::Point3_<_Tp>>>& vec, sol::state_view& lua) {
-		sol::table res = lua.create_table();
-		int i = 0;
-		for (const auto& obj : vec) {
-			res[++i] = return_as_impl(obj, lua);
-		}
-		return res;
-	}
-
-	template<typename _Tp>
-	inline auto return_as_impl(const std::vector<std::vector<cv::Point3_<_Tp>>>& vec, sol::state_view& lua) {
-		return return_as_impl(const_cast<std::vector<std::vector<cv::Point3_<_Tp>>>&>(vec), lua);
-	}
-
 	// cv::Rect_
 	template<typename _To, typename _Tp>
 	inline auto maybe_impl(_To& obj, cv::Rect_<_Tp>*, bool nested = false) {
@@ -304,9 +205,12 @@ namespace LUA_MODULE_NAME {
 		}
 
 		if (obj.get_type() == sol::type::userdata) {
-			auto maybe_t = obj.template as<sol::optional<cv::Rect_<_Tp>&>>();
-			if (maybe_t) {
-				return reference_internal(*maybe_t);
+			if (obj.template is<std::shared_ptr<cv::Rect_<_Tp>>>()) {
+				return obj.template as<std::shared_ptr<cv::Rect_<_Tp>>>();
+			}
+
+			if (obj.template is<cv::Rect_<_Tp>&>()) {
+				return reference_internal(obj.template as<cv::Rect_<_Tp>&>());
 			}
 
 			if constexpr (!std::is_same_v<_Tp, float>) {
@@ -359,36 +263,6 @@ namespace LUA_MODULE_NAME {
 		return maybe_impl(const_cast<_To&>(obj), ptr);
 	}
 
-	template<typename _Tp>
-	inline auto return_as_impl(cv::Rect_<_Tp>& obj, sol::state_view& lua) {
-		sol::table res = lua.create_table();
-		res[1] = obj.x;
-		res[2] = obj.y;
-		res[3] = obj.width;
-		res[4] = obj.height;
-		return res;
-	}
-
-	template<typename _Tp>
-	inline auto return_as_impl(const cv::Rect_<_Tp>& obj, sol::state_view& lua) {
-		return return_as_impl(const_cast<cv::Rect_<_Tp>&>(obj), lua);
-	}
-
-	template<typename _Tp>
-	inline auto return_as_impl(std::vector<cv::Rect_<_Tp>>& vec, sol::state_view& lua) {
-		sol::table res = lua.create_table();
-		int i = 0;
-		for (const auto& obj : vec) {
-			res[++i] = return_as_impl(obj, lua);
-		}
-		return res;
-	}
-
-	template<typename _Tp>
-	inline auto return_as_impl(const std::vector<cv::Rect_<_Tp>>& vec, sol::state_view& lua) {
-		return return_as_impl(const_cast<std::vector<cv::Rect_<_Tp>>&>(vec), lua);
-	}
-
 	// cv::Scalar_
 	template<typename _To, typename _Tp>
 	inline auto maybe_impl(_To& obj, cv::Scalar_<_Tp>*) {
@@ -398,10 +272,14 @@ namespace LUA_MODULE_NAME {
 		}
 
 		if (obj.get_type() == sol::type::userdata) {
-			auto maybe_t = obj.template as<sol::optional<cv::Scalar_<_Tp>&>>();
-			if (maybe_t) {
-				return reference_internal(*maybe_t);
+			if (obj.template is<std::shared_ptr<cv::Scalar_<_Tp>>>()) {
+				return obj.template as<std::shared_ptr<cv::Scalar_<_Tp>>>();
 			}
+
+			if (obj.template is<cv::Scalar_<_Tp>&>()) {
+				return reference_internal(obj.template as<cv::Scalar_<_Tp>&>());
+			}
+
 			return std::shared_ptr<cv::Scalar_<_Tp>>();
 		}
 
@@ -429,20 +307,6 @@ namespace LUA_MODULE_NAME {
 		return maybe_impl(const_cast<_To&>(obj), ptr);
 	}
 
-	template<typename _Tp>
-	inline auto return_as_impl(cv::Scalar_<_Tp>& obj, sol::state_view& lua) {
-		sol::table res = lua.create_table();
-		for (int i = 0; i < 4; i++) {
-			res[i + 1] = obj[i];
-		}
-		return res;
-	}
-
-	template<typename _Tp>
-	inline auto return_as_impl(const cv::Scalar_<_Tp>& obj, sol::state_view& lua) {
-		return return_as_impl(const_cast<cv::Scalar_<_Tp>&>(obj), lua);
-	}
-
 	// cv::Size_
 	template<typename _To, typename _Tp>
 	inline auto maybe_impl(_To& obj, cv::Size_<_Tp>*, bool nested = false) {
@@ -452,9 +316,12 @@ namespace LUA_MODULE_NAME {
 		}
 
 		if (obj.get_type() == sol::type::userdata) {
-			auto maybe_t = obj.template as<sol::optional<cv::Size_<_Tp>&>>();
-			if (maybe_t) {
-				return reference_internal(*maybe_t);
+			if (obj.template is<std::shared_ptr<cv::Size_<_Tp>>>()) {
+				return obj.template as<std::shared_ptr<cv::Size_<_Tp>>>();
+			}
+
+			if (obj.template is<cv::Size_<_Tp>&>()) {
+				return reference_internal(obj.template as<cv::Size_<_Tp>&>());
 			}
 
 			if constexpr (!std::is_same_v<_Tp, float>) {
@@ -505,34 +372,6 @@ namespace LUA_MODULE_NAME {
 		return maybe_impl(const_cast<_To&>(obj), ptr);
 	}
 
-	template<typename _Tp>
-	inline auto return_as_impl(cv::Size_<_Tp>& obj, sol::state_view& lua) {
-		sol::table res = lua.create_table();
-		res[1] = obj.width;
-		res[2] = obj.height;
-		return res;
-	}
-
-	template<typename _Tp>
-	inline auto return_as_impl(const cv::Size_<_Tp>& obj, sol::state_view& lua) {
-		return return_as_impl(const_cast<cv::Size_<_Tp>&>(obj), lua);
-	}
-
-	template<typename _Tp>
-	inline auto return_as_impl(std::vector<cv::Size_<_Tp>>& vec, sol::state_view& lua) {
-		sol::table res = lua.create_table();
-		int i = 0;
-		for (const auto& obj : vec) {
-			res[++i] = return_as_impl(obj, lua);
-		}
-		return res;
-	}
-
-	template<typename _Tp>
-	inline auto return_as_impl(const std::vector<cv::Size_<_Tp>>& vec, sol::state_view& lua) {
-		return return_as_impl(const_cast<std::vector<cv::Size_<_Tp>>&>(vec), lua);
-	}
-
 	// cv::Vec
 	template<typename _To, typename _Tp, int cn>
 	inline auto maybe_impl(_To& obj, cv::Vec<_Tp, cn>*) {
@@ -542,9 +381,12 @@ namespace LUA_MODULE_NAME {
 		}
 
 		if (obj.get_type() == sol::type::userdata) {
-			auto maybe_t = obj.template as<sol::optional<cv::Vec<_Tp, cn>&>>();
-			if (maybe_t) {
-				return reference_internal(*maybe_t);
+			if (obj.template is<std::shared_ptr<cv::Vec<_Tp, cn>>>()) {
+				return obj.template as<std::shared_ptr<cv::Vec<_Tp, cn>>>();
+			}
+
+			if (obj.template is<cv::Vec<_Tp, cn>&>()) {
+				return reference_internal(obj.template as<cv::Vec<_Tp, cn>&>());
 			}
 
 			if constexpr (cn == 2) {
@@ -581,35 +423,6 @@ namespace LUA_MODULE_NAME {
 	template<typename _To, typename _Tp, int cn>
 	inline auto maybe_impl(const _To& obj, cv::Vec<_Tp, cn>* ptr) {
 		return maybe_impl(const_cast<_To&>(obj), ptr);
-	}
-
-	template<typename _Tp, int cn>
-	inline auto return_as_impl(cv::Vec<_Tp, cn>& obj, sol::state_view& lua) {
-		sol::table res = lua.create_table();
-		for (int i = 0; i < cn; i++) {
-			res[i + 1] = obj[i];
-		}
-		return res;
-	}
-
-	template<typename _Tp, int cn>
-	inline auto return_as_impl(const cv::Vec<_Tp, cn>& obj, sol::state_view& lua) {
-		return return_as_impl(const_cast<cv::Vec<_Tp, cn>&>(obj), lua);
-	}
-
-	template<typename _Tp, int cn>
-	inline auto return_as_impl(std::vector<cv::Vec<_Tp, cn>>& vec, sol::state_view& lua) {
-		sol::table res = lua.create_table();
-		int i = 0;
-		for (const auto& obj : vec) {
-			res[++i] = return_as_impl(obj, lua);
-		}
-		return res;
-	}
-
-	template<typename _Tp, int cn>
-	inline auto return_as_impl(const std::vector<cv::Vec<_Tp, cn>>& vec, sol::state_view& lua) {
-		return return_as_impl(const_cast<std::vector<cv::Vec<_Tp, cn>>&>(vec), lua);
 	}
 }
 

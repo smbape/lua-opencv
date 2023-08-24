@@ -42,6 +42,7 @@ const proto = {
 
         const coclass = this.getCoClass(fqn, options);
         coclass.include = parent;
+        coclass.is_vector = true;
 
         coclass.addMethod([`${ fqn }.new`, cpptype, [`/Call=${ cpptype }`], [], "", ""]);
 
@@ -50,16 +51,6 @@ const proto = {
         ], "", ""]);
 
         coclass.addMethod([`${ fqn }.new`, cpptype, [`/Call=${ cpptype }`], [
-            [cpptype, "other", "", []],
-        ], "", ""]);
-
-        coclass.addMethod([`${ fqn }.sol::meta_function::call`, cpptype, [`/Call=${ cpptype }`], [], "", ""]);
-
-        coclass.addMethod([`${ fqn }.sol::meta_function::call`, cpptype, [`/Call=${ cpptype }`], [
-            ["size_t", "size", "", []],
-        ], "", ""]);
-
-        coclass.addMethod([`${ fqn }.sol::meta_function::call`, cpptype, [`/Call=${ cpptype }`], [
             [cpptype, "other", "", []],
         ], "", ""]);
     },
@@ -90,6 +81,28 @@ const getTernary = (...args) => {
     return text.join(" ");
 };
 
+const returnTuple_ = (expr, cpptype) => {
+    if (!cpptype.startsWith("std::tuple<")) {
+        return expr;
+    }
+
+    const types = CoClass.getTupleTypes(cpptype.slice("std::tuple<".length, -">".length));
+    return `[&]{
+        ${ returnTuple(expr, types).split("\n").join(`\n${ " ".repeat(8) }`) }
+    }()`.replace(/^ {4}/mg, "").trim();
+}
+
+const returnTuple = (expr, types) => {
+    return `
+        sol::table res = sol::state_view(ts).create_table();
+        auto t = ${ expr };
+        ${ types.map((cpptype, i) => `res[${ i + 1 }] = ${
+            returnTuple_(`std::get<${ i }>(t)`, cpptype).split("\n").join(`\n${ " ".repeat(8) }`)
+        };`).join(`\n${ " ".repeat(8) }`) }
+        return res;
+    `.replace(/^ {8}/mg, "").trim();
+};
+
 const variant_types = new Set();
 
 class LuaGenerator {
@@ -101,7 +114,13 @@ class LuaGenerator {
 
     static returnVariant(expr, cpptype, options) {
         if (!options.variantTypeReg || !options.variantTypeReg.test(cpptype)) {
-            return expr;
+            if (cpptype.startsWith("std::tuple<")) {
+                return returnTuple_(expr, cpptype);
+            }
+
+            if (!cpptype.includes("std::tuple<")) {
+                return expr;
+            }
         }
 
         const signature = `auto return_as_impl(${ cpptype }& obj, sol::state_view& lua)`;
@@ -119,8 +138,12 @@ class LuaGenerator {
 
     static writeProperties(processor, coclass, contentRegisterPrivate, contentRegister, options) {
         const { fqn } = coclass;
-        const dynamic_set = [];
         const dynamic_get = [];
+        const dynamic_set = [];
+
+        const dyn_type_t = coclass.isStatic() ? "sol::table&" : `${ fqn }*`;
+        const dyn_type = coclass.isStatic() ? "sol::table" : `${ fqn }*`;
+        const dyn_ns = coclass.isStatic() ? "ns" : "self";
 
         for (const [name, property] of coclass.properties.entries()) {
             const {type, modifiers} = property;
@@ -136,6 +159,7 @@ class LuaGenerator {
             let getter, setter;
             let has_propget = is_static || modifiers.includes("/Enum") || modifiers.includes("/R") || modifiers.includes("/RW");
             let has_propput = modifiers.includes("/W") || modifiers.includes("/RW");
+            let is_key = false;
 
             for (const modifier of modifiers) {
                 if (modifier[0] === "=") {
@@ -152,6 +176,8 @@ class LuaGenerator {
                     has_propput = true;
                 } else if (modifier.startsWith("/WExpr=")) {
                     has_propput = true;
+                } else if (modifier === "/Key") {
+                    is_key = true;
                 }
             }
 
@@ -245,35 +271,34 @@ class LuaGenerator {
                 `.replace(/^ {20}/mg, "").trim();
             }
 
-            if (coclass.isStatic()) {
+            const key_name = is_key ? name : `"${ name }"`;
+
+            if (is_key || coclass.isStatic()) {
                 if (r_tuple_types) {
                     dynamic_get.push(`
-                        { "${ name }", [] (sol::this_state& ts) {
-                            sol::state_view lua(ts);
-                            sol::table res = lua.create_table();
-                            auto t = ${ rexpr };
-                            ${ r_tuple_types.map((_, i) => `res[${ i + 1 }] = std::get<${ i }>(t);`).join(`\n${ " ".repeat(28) }`) }
-                            return res;
+                        { ${ key_name }, [] (${ dyn_type_t } ${ dyn_ns }, sol::this_state& ts) {
+                            ${ returnTuple(rexpr, r_tuple_types).split("\n").join(`\n${ " ".repeat(28) }`) }
                         }}
                     `.replace(/^ {24}/mg, "").trim());
                 } else {
                     dynamic_get.push(`
-                        { "${ name }", [] (sol::this_state& ts) {
+                        { ${ key_name }, [] (${ dyn_type_t } ${ dyn_ns }, sol::this_state& ts) {
+                            ${ /\blua\b/.test(rexpr) ? "sol::state_view lua(ts);" : "" }
                             return sol::object(ts, sol::in_place, ${ rexpr });
                         }}
-                    `.replace(/^ {24}/mg, "").trim());
+                    `.replace(/^ {24}/mg, "").trim().replace(/^[^\S\n]*\n/mg, ""));
                 }
 
                 if (wexpr) {
                     dynamic_set.push(`
-                        { "${ name }", [] (sol::stack_object& value, sol::this_state& ts) {
+                        { ${ key_name }, [] (${ dyn_type_t } ${ dyn_ns }, sol::stack_object& value, sol::this_state& ts) {
                             sol::state_view lua(ts);
                             ${ wexpr.split("\n").join(`\n${ " ".repeat(28) }`) }
                         }}
                     `.replace(/^ {24}/mg, "").trim());
                 }
-            } else if (!r_tuple_types && !is_class && rexpr === `self->${ propname }` && in_val === `self->${ propname } = *maybe_value`) {
-                contentRegister.push(`exports["${ name }"] = &::${ fqn }::${ propname };`);
+            } else if (!r_tuple_types && !is_class && rexpr === `self->${ propname }` && in_val === `self->${ propname } = *maybe_value` && /^[.\w]+$/.test(propname)) {
+                contentRegister.push(`exports[${ key_name }] = &::${ fqn }::${ propname };`);
             } else {
                 const args = [];
 
@@ -289,11 +314,7 @@ class LuaGenerator {
                 if (r_tuple_types) {
                     getter_setter.push(`
                         ${ getter_decl } {
-                            sol::state_view lua(ts);
-                            sol::table res = lua.create_table();
-                            auto t = ${ rexpr };
-                            ${ r_tuple_types.map((_, i) => `res[${ i + 1 }] = std::get<${ i }>(t);`).join(`\n${ " ".repeat(28) }`) }
-                            return res;
+                            ${ returnTuple(rexpr, r_tuple_types).split("\n").join(`\n${ " ".repeat(28) }`) }
                         }
                     `.replace(/^ {24}/mg, "").trim());
                 } else {
@@ -326,7 +347,7 @@ class LuaGenerator {
                 }
 
                 contentRegister.push(`
-                    exports["${ name }"] = sol::property(${ getter_setter.join(", ").split("\n").join(`\n${ " ".repeat(20) }`) });
+                    exports[${ key_name }] = sol::property(${ getter_setter.join(", ").split("\n").join(`\n${ " ".repeat(20) }`) });
                 `.replace(/^ {20}/mg, "").trim());
                 contentRegister.push("");
             }
@@ -366,59 +387,103 @@ class LuaGenerator {
             ].join("\n").replace(/\s*\( {2}\)/g, "()"));
         }
 
-        if (coclass.isStatic()) {
+        if (dynamic_get.length !== 0 || coclass.isStatic()) {
+            const not_found = coclass.isStatic() ? "return ns[sol::metatable_key][key];" : `
+                sol::state_view lua(ts);
+
+                if (maybe_string_key) {
+                    const std::string& k = *maybe_string_key;
+                    luaL_error(lua.lua_state(), "attribute %s is not defined", k);
+                } else if (maybe_int_key) {
+                    const int& k = *maybe_int_key;
+                    luaL_error(lua.lua_state(), "attribute %i is not defined", k);
+                } else {
+                    luaL_error(lua.lua_state(), "attribute is not defined");
+                }
+
+                return sol::lua_nil;
+            `.replace(/^ {16}/mg, "").trim();
+
             // https://github.com/ThePhD/sol2/blob/develop/examples/source/usertype_dynamic_get_set.cpp
-            contentRegisterPrivate.push(`
-                std::map<std::string, std::function<sol::object(sol::this_state&)>> getters({
+            contentRegisterPrivate.push("", `
+                std::map<std::variant<std::string, int>, std::function<sol::object(${ dyn_type_t }, sol::this_state&)>> getters({
                     ${ dynamic_get.join(",\n").split("\n").join(`\n${ " ".repeat(20) }`) }
                 });
 
-                sol::object dynamic_get(sol::table ns, sol::stack_object key, sol::this_state ts) {
-                    // we use stack_object for the arguments because we
-                    // know the values from Lua will remain on Lua's stack,
-                    // so long we we don't mess with it
+                // we use stack_object for the arguments because we
+                // know the values from Lua will remain on Lua's stack,
+                // so long we we don't mess with it
+                sol::object dynamic_get(${ dyn_type } ns, sol::stack_object key, sol::this_state ts) {
                     auto maybe_string_key = key.as<sol::optional<std::string>>();
                     if (maybe_string_key) {
                         const std::string& k = *maybe_string_key;
                         if (getters.count(k)) {
-                            return getters[k](ts);
+                            return getters[k](ns, ts);
                         }
                     }
 
-                    // sol::state_view lua(ts);
-                    // std::stringstream err;
-                    // err << "AttributeError: module '${ fqn.replaceAll("::", ".") }' has no attribute '" << (maybe_string_key ? *maybe_string_key : "") << "'";
-                    // luaL_error(lua.lua_state(), err.str().c_str());
+                    auto maybe_int_key = key.as<sol::optional<int>>();
+                    if (maybe_int_key) {
+                        const int& k = *maybe_int_key;
+                        if (getters.count(k)) {
+                            return getters[k](ns, ts);
+                        }
+                    }
 
-                    return ns[sol::metatable_key][key];
+                    ${ not_found.split("\n").join(`\n${ " ".repeat(20) }`) }
                 }
+            `.replace(/^ {16}/mg, "").trim());
+        }
 
-                std::map<std::string, std::function<void(sol::stack_object&, sol::this_state&)>> setters({
+        if (dynamic_set.length !== 0 || coclass.isStatic()) {
+            const not_found = coclass.isStatic() ? "ns[sol::metatable_key][key] = value;" : `
+                sol::state_view lua(ts);
+
+                if (maybe_string_key) {
+                    const std::string& k = *maybe_string_key;
+                    luaL_error(lua.lua_state(), "attribute %s is not defined", k);
+                } else if (maybe_int_key) {
+                    const int& k = *maybe_int_key;
+                    luaL_error(lua.lua_state(), "attribute %i is not defined", k);
+                } else {
+                    luaL_error(lua.lua_state(), "attribute is not defined");
+                }
+            `.replace(/^ {16}/mg, "").trim();
+
+            // https://github.com/ThePhD/sol2/blob/develop/examples/source/usertype_dynamic_get_set.cpp
+            contentRegisterPrivate.push("", `
+                std::map<std::variant<std::string, int>, std::function<void(${ dyn_type_t }, sol::stack_object&, sol::this_state&)>> setters({
                     ${ dynamic_set.join(",\n").split("\n").join(`\n${ " ".repeat(20) }`) }
                 });
 
-                void dynamic_set(sol::table ns, sol::stack_object key, sol::stack_object value, sol::this_state ts) {
-                    // we use stack_object for the arguments because we
-                    // know the values from Lua will remain on Lua's stack,
-                    // so long we we don't mess with it
+                // we use stack_object for the arguments because we
+                // know the values from Lua will remain on Lua's stack,
+                // so long we we don't mess with it
+                void dynamic_set(${ dyn_type } ns, sol::stack_object key, sol::stack_object value, sol::this_state ts) {
                     auto maybe_string_key = key.as<sol::optional<std::string>>();
                     if (maybe_string_key) {
                         const std::string& k = *maybe_string_key;
                         if (setters.count(k)) {
-                            setters[k](value, ts);
+                            setters[k](ns, value, ts);
                             return;
                         }
                     }
 
-                    // sol::state_view lua(ts);
-                    // std::stringstream err;
-                    // err << "AttributeError: module '${ fqn.replaceAll("::", ".") }' has no attribute '" << (maybe_string_key ? *maybe_string_key : "") << "'";
-                    // luaL_error(lua.lua_state(), err.str().c_str());
+                    auto maybe_int_key = key.as<sol::optional<int>>();
+                    if (maybe_int_key) {
+                        const int& k = *maybe_int_key;
+                        if (setters.count(k)) {
+                            setters[k](ns, value, ts);
+                            return;
+                        }
+                    }
 
-                    ns[sol::metatable_key][key] = value;
+                    ${ not_found.split("\n").join(`\n${ " ".repeat(20) }`) }
                 }
             `.replace(/^ {16}/mg, "").trim());
         }
+
+        return [dynamic_get, dynamic_set];
     }
 
     static writeMethods(processor, coclass, contentRegisterPrivate, contentRegister, options) {
@@ -624,38 +689,32 @@ class LuaGenerator {
                     const in_type = is_shared_ptr ? cpptype.slice(`${ shared_ptr }<`.length, -">".length) : cpptype;
                     const var_type = is_array ? arr_cpptype : in_type;
                     const maybe = `maybe${ arg_suffix }`;
-                    const optional_t = is_array ?
-                        argtype.startsWith("std::vector") ? "OptionalArrays" : "OptionalArray" :
-                        is_shared_ptr || is_by_ref ? "std::shared_ptr" : "sol::optional";
+                    const optional_t = is_array ? argtype.startsWith("std::vector") ? "OptionalArrays" : "OptionalArray" : "std::shared_ptr";
+                    const optional_name = `maybe_${ argname }_opt`;
 
                     if (is_out_arg) {
-                        if (is_by_ref || is_array) {
-                            const ternary = [];
-
-                            if (is_array) {
-                                // argtype.startsWith("std::vector") => getMatVector(std::vector< Mat > &mv)
-                                ternary.push(...[
-                                    `${ argname }_is_nil`,
-                                    `sol::object(ts, sol::in_place, ${ argname }_default)`,
-                                ]);
-                            }
-
-                            ternary.push(...[
+                        if (is_array) {
+                            retval.push([j, getTernary(...[
+                                `${ argname }_is_nil`,
+                                `sol::object(ts, sol::in_place, ${ argname }_default)`,
                                 `${ argname }_positional`,
                                 `vargs.get<sol::object>(${ i })`,
                                 `${ argname }_kwarg`,
                                 `kwargs.at("${ argname }")`,
                                 is_optional,
                                 `sol::object(ts, sol::in_place, ${ argname }_default)`,
-                            ]);
-
-                            retval.push([j, getTernary(...ternary), "sol::object"]);
+                            ]), "sol::object"]);
+                        } else if (is_by_ref) {
+                            retval.push([j, getTernary(...[
+                                `${ argname }_positional || ${ argname }_kwarg`,
+                                is_optional ? `sol::object(ts, sol::in_place, ${ optional_name })` : `{ ts, sol::in_place, ${ optional_name } }`,
+                                is_optional,
+                                `sol::object(ts, sol::in_place, ${ argname }_default)`,
+                            ]), "sol::object"]);
                         } else {
                             retval.push([j, argname, cpptype]);
                         }
                     }
-
-                    const optional_name = `maybe_${ argname }_opt`;
 
                     overload.push("", `
                         // =========================
@@ -666,7 +725,7 @@ class LuaGenerator {
                         bool ${ argname }_kwarg = false;
                         if (argc > ${ i }) {
                             // positional parameter
-                            ${ optional_name } = ${ maybe }(vargs.get<sol::object>(${ i }), static_cast<${ var_type }*>(nullptr));
+                            ${ optional_name } = std::move(${ maybe }(vargs.get<sol::object>(${ i }), static_cast<${ var_type }*>(nullptr)));
                             if (!${ optional_name }) {
                                 goto overload${ overload_id };
                             }
@@ -680,7 +739,7 @@ class LuaGenerator {
                         }
                         else if (kwargs.count("${ argname }")) {
                             // named parameter
-                            ${ optional_name } = ${ maybe }(kwargs.at("${ argname }"), static_cast<${ var_type }*>(nullptr));
+                            ${ optional_name } = std::move(${ maybe }(kwargs.at("${ argname }"), static_cast<${ var_type }*>(nullptr)));
                             if (!${ optional_name }) {
                                 goto overload${ overload_id };
                             }
@@ -714,7 +773,7 @@ class LuaGenerator {
 
                             ternary.push(...[
                                 `${ argname }_is_nil`,
-                                `${ maybe }(std::make_shared<${ arr_cpptype }>(${ argname }_default))`,
+                                `std::move(${ maybe }(std::make_shared<${ arr_cpptype }>(${ argname }_default)))`,
                             ]);
                         }
 
@@ -722,11 +781,11 @@ class LuaGenerator {
                             optional_name,
                             optional_name,
                             is_optional,
-                            `${ maybe }(std::make_shared<${ arr_cpptype }>(${ argname }_default))`,
+                            `std::move(${ maybe }(std::make_shared<${ arr_cpptype }>(${ argname }_default)))`,
                         ]);
 
                         overload.push(`
-                            auto ${ argname }_${ arrtype } = ${ getTernary(...ternary) };
+                            auto ${ argname }_${ arrtype } = std::move(${ getTernary(...ternary) });
                             auto& ${ argname } = *${ argname }_${ arrtype };
                         `.replace(/^ {28}/mg, "").trim());
                     } else if (is_shared_ptr) {
@@ -876,7 +935,7 @@ class LuaGenerator {
                                     }
                                 } else if (cpptype.endsWith("*")) {
                                     result = `reference_internal(${ result })`;
-                                } else {
+                                } else if (fname !== "new" && fname !== "create") {
                                     result = LuaGenerator.returnVariant(result, cpptype, options);
                                 }
 
@@ -959,10 +1018,15 @@ class LuaGenerator {
 
                 const overload = definitions.length === 1 ? definitions[0] : `sol::overload(${ definitions.join(", ") })`;
 
-                if (fname.startsWith("sol::")) {
+                if (fname.startsWith("sol::meta_function::")) {
                     contentRegister.push(`exports[${ fname }] = ${ overload };`);
                 } else {
                     contentRegister.push(`exports.set_function("${ fname }", ${ overload });`);
+                    if (coclass.is_vector && fname === "new") {
+                        contentRegister.push(`exports[sol::meta_function::call] = [] (sol::stack_object exports, sol::this_state ts, sol::variadic_args vargs) {
+                            return ::${ lua_fname }(ts, vargs);
+                        };`.replace(/^ {24}/mg, "").trim());
+                    }
                 }
             }
         }
@@ -1024,10 +1088,8 @@ class LuaGenerator {
 
                 if (!parent || !parent.isStatic()) {
                     contentRegister.push(`sol::table ns = ${ ns };`);
-                } else if (parent.isStatic()) {
-                    contentRegister.push(`sol::table ns = ${ ns }[sol::metatable_key];`);
                 } else {
-                    contentRegister.push(`sol::usertype<::${ parent.path.join("::") }> ns = ${ ns };`);
+                    contentRegister.push(`sol::table ns = ${ ns }[sol::metatable_key];`);
                 }
 
                 ns = "ns";
@@ -1058,12 +1120,8 @@ class LuaGenerator {
             if (coclass.isStatic()) {
                 contentRegister.push(`
                     sol::table exports = lua.create_table();
-                    exports[sol::meta_function::new_index] = dynamic_set;
-                    exports[sol::meta_function::index] = dynamic_get;
-
                     sol::table proxy = lua.create_table();
                     proxy[sol::metatable_key] = exports;
-
                     ${ ns }["${ coclass.name }"] = proxy;
                 `.replace(/^ {20}/mg, "").trim());
             } else {
@@ -1078,7 +1136,15 @@ class LuaGenerator {
             contentRegister.push(...namespaces);
             contentRegister.push("");
 
-            LuaGenerator.writeProperties(processor, coclass, contentRegisterPrivate, contentRegister, options);
+            const [dynamic_get, dynamic_set] = LuaGenerator.writeProperties(processor, coclass, contentRegisterPrivate, contentRegister, options);
+
+            if (dynamic_get.length !== 0 || coclass.isStatic()) {
+                contentRegister.push("exports[sol::meta_function::index] = &dynamic_get;");
+            }
+
+            if (dynamic_set.length !== 0 || coclass.isStatic()) {
+                contentRegister.push("exports[sol::meta_function::new_index] = &dynamic_set;");
+            }
 
             if (coclass.properties.size !== 0 && coclass.methods.size !== 0) {
                 // new line
@@ -1088,13 +1154,15 @@ class LuaGenerator {
             LuaGenerator.writeMethods(processor, coclass, contentRegisterPrivate, contentRegister, options);
 
             if (contentRegisterPrivate.length !== 0) {
+                const start = contentRegisterPrivate[0] === "" ? 1 : 0;
+
                 contentCpp.push(`
                     namespace {
                         using namespace LUA_MODULE_NAME;
                         ${ namespaces.join("\n").split("\n").join(`\n${ " ".repeat(24) }`) }
                         const NamedParameters empty_kwargs;
 
-                        ${ contentRegisterPrivate.join("\n").split("\n").join(`\n${ " ".repeat(24) }`) }
+                        ${ contentRegisterPrivate.slice(start).join("\n").split("\n").join(`\n${ " ".repeat(24) }`) }
                     }
                 `.replace(/^ {20}/mg, "").trim());
                 contentCpp.push("");
@@ -1112,6 +1180,7 @@ class LuaGenerator {
 
             // TODO : add property signature
             // TODO : add method signature
+            //        variantTypeReg => table
 
             processor.docs.splice(docid, 0, `## ${ fqn.replaceAll("_", "\\_") }\n`);
         }
