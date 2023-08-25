@@ -406,6 +406,8 @@ module.exports = ({ self, self_get, shared_ptr }) => [
 
     // Extended Functions
 
+    ["cv.UMat.sum", "cv::Scalar", ["/Call=cv::sum", `/Expr=${ self }`], [], "", ""],
+
     ["cv.UMat.operator+", "void", ["/S", "=sol::meta_function::addition", "/Call=cv::add"], [
         ["cv::UMat", "src1", "", ["/Ref", "/C"]],
         ["InputArray", "src2", "", []],

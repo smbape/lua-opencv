@@ -377,6 +377,8 @@ module.exports = ({ self, self_get, shared_ptr }) => {
 
         // Extended Functions
 
+        ["cv.Mat.sum", "cv::Scalar", ["/Call=cv::sum", `/Expr=${ self }`], [], "", ""],
+
         ["cv.Mat.operator+", "cv::Mat", ["=sol::meta_function::addition"], [
             ["cv::Mat", "m", "", []],
         ], "", ""],
