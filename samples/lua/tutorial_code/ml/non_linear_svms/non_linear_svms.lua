@@ -8,6 +8,7 @@ Sources:
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local int = opencv_lua.math.int
+local INDEX_BASE = 1 -- lua is 1-based indexed
 
 local NTRAINING_SAMPLES = 100 -- Number of training samples per class
 local FRAC_LINEAR_SEP = 0.9   -- Fraction of samples which compose the linear separable part
@@ -102,13 +103,13 @@ for i = 0, rows - 1 do
 
         if use_sweet_spots then
             if response == 1 then
-                I:set(green[1], i, j, 0)
-                I:set(green[2], i, j, 1)
-                I:set(green[3], i, j, 2)
+                I:set(green[0 + INDEX_BASE], i, j, 0)
+                I:set(green[1 + INDEX_BASE], i, j, 1)
+                I:set(green[2 + INDEX_BASE], i, j, 2)
             elseif response == 2 then
-                I:set(blue[1], i, j, 0)
-                I:set(blue[2], i, j, 1)
-                I:set(blue[3], i, j, 2)
+                I:set(blue[0 + INDEX_BASE], i, j, 0)
+                I:set(blue[1 + INDEX_BASE], i, j, 1)
+                I:set(blue[2 + INDEX_BASE], i, j, 2)
             end
         else
             if response == 1 then

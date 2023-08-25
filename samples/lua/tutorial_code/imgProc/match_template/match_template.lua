@@ -7,6 +7,7 @@ Sources:
 
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
+local INDEX_BASE = 1 -- lua is 1-based indexed
 
 -- [global_variables]
 local use_mask = false
@@ -52,8 +53,8 @@ local function MatchingMethod(param)
     -- [match_loc]
 
     -- [imshow]
-    cv.rectangle(img_display, matchLoc, { matchLoc[1] + templ.width, matchLoc[2] + templ.height }, { 0, 255, 0 }, 2, 8, 0)
-    cv.rectangle(result, matchLoc, { matchLoc[1] + templ.width, matchLoc[2] + templ.height }, { 0, 0, 0 }, 2, 8, 0)
+    cv.rectangle(img_display, matchLoc, { matchLoc[0 + INDEX_BASE] + templ.width, matchLoc[1 + INDEX_BASE] + templ.height }, { 0, 255, 0 }, 2, 8, 0)
+    cv.rectangle(result, matchLoc, { matchLoc[0 + INDEX_BASE] + templ.width, matchLoc[1 + INDEX_BASE] + templ.height }, { 0, 0, 0 }, 2, 8, 0)
     cv.imshow(image_window, img_display)
     cv.imshow(result_window, result)
     -- [imshow]

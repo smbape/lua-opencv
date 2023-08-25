@@ -17,6 +17,7 @@ local title_trackbar_element_type = 'Element:\n 0: Rect - 1: Cross - 2: Ellipse'
 local title_trackbar_kernel_size = 'Kernel size:\n 2n + 1'
 local title_window = 'Morphology Transformations Demo'
 local morph_op_dic = { cv.MORPH_OPEN, cv.MORPH_CLOSE, cv.MORPH_GRADIENT, cv.MORPH_TOPHAT, cv.MORPH_BLACKHAT }
+local INDEX_BASE = 1 -- lua is 1-based indexed
 
 local src
 
@@ -35,7 +36,7 @@ local function morphology_operations(val)
 
     local element = cv.getStructuringElement(morph_elem, { 2 * morph_size + 1, 2 * morph_size + 1 },
         { morph_size, morph_size })
-    local operation = morph_op_dic[morph_operator + 1]
+    local operation = morph_op_dic[morph_operator + INDEX_BASE]
     local dst = cv.morphologyEx(src, operation, element)
     cv.imshow(title_window, dst)
 end

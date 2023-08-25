@@ -8,6 +8,7 @@ Sources:
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local int = opencv_lua.math.int
+local INDEX_BASE = 1 -- lua is 1-based indexed
 
 -- Create an image
 local r = 100
@@ -35,7 +36,7 @@ local contours, _ = cv.findContours(src, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
 local raw_dist = cv.Mat(src:size(), cv.CV_32F)
 for i = 0, src.rows - 1 do
     for j = 0, src.cols - 1 do
-        raw_dist:set(cv.pointPolygonTest(contours[1], { j, i }, true), i, j)
+        raw_dist:set(cv.pointPolygonTest(contours[0 + INDEX_BASE], { j, i }, true), i, j)
     end
 end
 

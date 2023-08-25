@@ -9,6 +9,7 @@ local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local kwargs = opencv_lua.kwargs
 local bit = bit or opencv_lua.bit
+local INDEX_BASE = 1 -- lua is 1-based indexed
 
 -- parser = argparse.ArgumentParser(description='This sample demonstrates Lucas-Kanade Optical Flow calculation. \
 --                                               The example file can be downloaded from: \
@@ -90,7 +91,7 @@ while true do
 
     for i = 1, #p0 do
         -- Select good points
-        if st[i - 1] == 1 then
+        if st[i - INDEX_BASE] == 1 then
             good_new[#good_new + 1] = p1[i]
             -- draw the tracks
             cv.line(mask, p1[i], p0[i], colors[i], 2)

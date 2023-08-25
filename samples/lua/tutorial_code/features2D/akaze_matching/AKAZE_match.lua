@@ -8,6 +8,7 @@ Sources:
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local kwargs = opencv_lua.kwargs
+local INDEX_BASE = 1 -- lua is 1-based indexed
 
 -- [load]
 -- parser = argparse.ArgumentParser(description='Code for AKAZE local features matching tutorial.')
@@ -58,7 +59,7 @@ local matched1 = {}
 local matched2 = {}
 local nn_match_ratio = 0.8 -- Nearest neighbor matching ratio
 for i, v in nn_matches:pairs() do
-    local m, n = v[1], v[2]
+    local m, n = v[0 + INDEX_BASE], v[1 + INDEX_BASE]
     if m.distance < nn_match_ratio * n.distance then
         -- lua use 1-based index array
         -- and since kpts1 and kpts2 are arrays
@@ -78,13 +79,13 @@ local good_matches = {}
 local inlier_threshold = 2.5 -- Distance threshold to identify inliers with homography check
 for i, m in ipairs(matched1) do
     local col = cv.Mat.ones(3, 1, cv.CV_64F)
-    col[0] = m.pt[1]
-    col[1] = m.pt[2]
+    col[0] = m.pt[0 + INDEX_BASE]
+    col[1] = m.pt[1 + INDEX_BASE]
 
     col = cv.gemm(homography, col, 1.0, nil, 0.0)
     col = col:convertTo(-1, kwargs({ alpha = 1 / col[2] }))
-    local dist = math.sqrt(((col[0] - matched2[i].pt[1]) ^ 2) +
-        ((col[1] - matched2[i].pt[2]) ^ 2))
+    local dist = math.sqrt(((col[0] - matched2[i].pt[0 + INDEX_BASE]) ^ 2) +
+        ((col[1] - matched2[i].pt[1 + INDEX_BASE]) ^ 2))
 
     if dist < inlier_threshold then
         good_matches[#good_matches + 1] = cv.DMatch(#inliers1, #inliers2, 0)

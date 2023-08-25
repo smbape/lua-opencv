@@ -8,6 +8,7 @@ Sources:
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local bit = bit or opencv_lua.bit
+local INDEX_BASE = 1 -- lua is 1-based indexed
 
 -- Make the starting point predictable
 local rng = cv.RNG(12345)
@@ -155,9 +156,9 @@ for i = 0, markers.rows - 1 do
     for j = 0, markers.cols - 1 do
         local index = markers(i, j)
         if index > 0 and index <= n_contours then
-            dst:set(colors[index][1], i, j, 0)
-            dst:set(colors[index][2], i, j, 1)
-            dst:set(colors[index][3], i, j, 2)
+            dst:set(colors[index][0 + INDEX_BASE], i, j, 0)
+            dst:set(colors[index][1 + INDEX_BASE], i, j, 1)
+            dst:set(colors[index][2 + INDEX_BASE], i, j, 2)
         end
     end
 end

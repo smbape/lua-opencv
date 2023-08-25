@@ -9,28 +9,32 @@ local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local bit = bit or opencv_lua.bit
 local int = opencv_lua.math.int
+local INDEX_BASE = 1 -- lua is 1-based indexed
 
 local function drawAxis(img, p_, q_, colour, scale)
-    local p = {p_[1], p_[2]}
-    local q = {q_[1], q_[2]}
+    local i0 = 0 + INDEX_BASE
+    local i1 = 1 + INDEX_BASE
+
+    local p = {p_[i0], p_[i1]}
+    local q = {q_[i0], q_[i1]}
 
     -- [visualization1]
-    local angle = math.atan2(p[2] - q[2], p[1] - q[1]) -- angle in radians
-    local hypotenuse = math.sqrt((p[2] - q[2]) * (p[2] - q[2]) + (p[1] - q[1]) * (p[1] - q[1]))
+    local angle = math.atan2(p[i1] - q[i1], p[i0] - q[i0]) -- angle in radians
+    local hypotenuse = math.sqrt((p[i1] - q[i1]) * (p[i1] - q[i1]) + (p[i0] - q[i0]) * (p[i0] - q[i0]))
 
     -- Here we lengthen the arrow by a factor of scale
-    q[1] = p[1] - scale * hypotenuse * math.cos(angle)
-    q[2] = p[2] - scale * hypotenuse * math.sin(angle)
-    cv.line(img, {int(p[1]), int(p[2])}, {int(q[1]), int(q[2])}, colour, 1, cv.LINE_AA)
+    q[i0] = p[i0] - scale * hypotenuse * math.cos(angle)
+    q[i1] = p[i1] - scale * hypotenuse * math.sin(angle)
+    cv.line(img, {int(p[i0]), int(p[i1])}, {int(q[i0]), int(q[i1])}, colour, 1, cv.LINE_AA)
 
     -- create the arrow hooks
-    p[1] = q[1] + 9 * math.cos(angle + math.pi / 4)
-    p[2] = q[2] + 9 * math.sin(angle + math.pi / 4)
-    cv.line(img, {int(p[1]), int(p[2])}, {int(q[1]), int(q[2])}, colour, 1, cv.LINE_AA)
+    p[i0] = q[i0] + 9 * math.cos(angle + math.pi / 4)
+    p[i1] = q[i1] + 9 * math.sin(angle + math.pi / 4)
+    cv.line(img, {int(p[i0]), int(p[i1])}, {int(q[i0]), int(q[i1])}, colour, 1, cv.LINE_AA)
 
-    p[1] = q[1] + 9 * math.cos(angle - math.pi / 4)
-    p[2] = q[2] + 9 * math.sin(angle - math.pi / 4)
-    cv.line(img, {int(p[1]), int(p[2])}, {int(q[1]), int(q[2])}, colour, 1, cv.LINE_AA)
+    p[i0] = q[i0] + 9 * math.cos(angle - math.pi / 4)
+    p[i1] = q[i1] + 9 * math.sin(angle - math.pi / 4)
+    cv.line(img, {int(p[i0]), int(p[i1])}, {int(q[i0]), int(q[i1])}, colour, 1, cv.LINE_AA)
     -- [visualization1]
 end
 

@@ -38,7 +38,7 @@ local function goodFeaturesToTrack_Demo(val)
     local radius = 4
     for i = 0, #corners - 1 do
         local pt = corners:Point_at(i, 0)
-        cv.circle(copy, { int(pt[1]), int(pt[2]) }, radius, { rng:uniform(0, 256), rng:uniform(0, 256),
+        cv.circle(copy, { int(pt.x), int(pt.y) }, radius, { rng:uniform(0, 256), rng:uniform(0, 256),
             rng:uniform(0, 256) }, cv.FILLED)
     end
 

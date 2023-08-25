@@ -10,6 +10,7 @@ local cv = opencv_lua.cv
 local kwargs = opencv_lua.kwargs
 local bit = bit or opencv_lua.bit
 local round = opencv_lua.math.round
+local INDEX_BASE = 1 -- lua is 1-based indexed
 
 local function print_help()
     print([[
@@ -45,9 +46,9 @@ local function main(argv)
     -- compute the magnitude and switch to logarithmic scale
     -- = > log(1 + sqrt(Re(DFT(I)) ^ 2 + Im(DFT(I)) ^ 2))
     -- [magnitude]
-    cv.split(complexI, planes)                    -- planes[1] = Re(DFT(I), planes[2] = Im(DFT(I))
-    cv.magnitude(planes[1], planes[2], planes[1]) -- planes[1] = magnitude
-    local magI = planes[1]
+    cv.split(complexI, planes)                    -- planes[0] = Re(DFT(I), planes[1] = Im(DFT(I))
+    cv.magnitude(planes[0 + INDEX_BASE], planes[1 + INDEX_BASE], planes[0 + INDEX_BASE]) -- planes[0 + INDEX_BASE] = magnitude
+    local magI = planes[0 + INDEX_BASE]
     -- [magnitude]
     -- [log]
     local matOfOnes = cv.Mat.ones(magI:size(), magI:type())

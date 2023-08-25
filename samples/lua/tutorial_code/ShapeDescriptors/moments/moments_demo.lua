@@ -8,6 +8,7 @@ Sources:
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local int = opencv_lua.math.int
+local INDEX_BASE = 1 -- lua is 1-based indexed
 
 -- Make the starting point predictable
 local rng = cv.RNG(12345)
@@ -44,7 +45,7 @@ local function thresh_callback(val)
     -- [forContour]
     for i = 1, #contours do
         local color = { rng:uniform(0, 256), rng:uniform(0, 256), rng:uniform(0, 256) }
-        cv.drawContours(drawing, contours, i - 1, color, 2)
+        cv.drawContours(drawing, contours, i - INDEX_BASE, color, 2)
         cv.circle(drawing, { int(mc[i][1]), int(mc[i][2]) }, 4, color, -1)
     end
     -- [forContour]

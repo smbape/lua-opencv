@@ -7,6 +7,7 @@ Sources:
 
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
+local INDEX_BASE = 1 -- lua is 1-based indexed
 
 -- Make the starting point predictable
 local rng = cv.RNG(12345)
@@ -46,7 +47,7 @@ local function thresh_callback(val)
     for i, c in contours:pairs() do
         local color = { rng:uniform(0, 256), rng:uniform(0, 256), rng:uniform(0, 256) }
         -- contour
-        cv.drawContours(drawing, contours, i - 1, color)
+        cv.drawContours(drawing, contours, i - INDEX_BASE, color)
         -- ellipse
         if #c > 5 then
             cv.ellipse(drawing, minEllipse[i], color, 2)

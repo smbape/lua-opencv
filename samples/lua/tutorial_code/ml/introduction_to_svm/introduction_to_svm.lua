@@ -8,6 +8,7 @@ Sources:
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local int = opencv_lua.math.int
+local INDEX_BASE = 1 -- lua is 1-based indexed
 
 -- Set up training data
 -- [setup1]
@@ -54,13 +55,13 @@ for i = 0, height - 1 do
 
         if use_sweet_spots then
             if response == 1 then
-                image:set(green[1], i, j, 0)
-                image:set(green[2], i, j, 1)
-                image:set(green[3], i, j, 2)
+                image:set(green[0 + INDEX_BASE], i, j, 0)
+                image:set(green[1 + INDEX_BASE], i, j, 1)
+                image:set(green[2 + INDEX_BASE], i, j, 2)
             elseif response == -1 then
-                image:set(blue[1], i, j, 0)
-                image:set(blue[2], i, j, 1)
-                image:set(blue[3], i, j, 2)
+                image:set(blue[0 + INDEX_BASE], i, j, 0)
+                image:set(blue[1 + INDEX_BASE], i, j, 1)
+                image:set(blue[2 + INDEX_BASE], i, j, 2)
             end
         else
             if response == 1 then

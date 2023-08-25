@@ -58,7 +58,7 @@ local function goodFeaturesToTrack_Demo(val)
     -- Write them down
     for i = 0, #corners - 1 do
         local pt = corners:Point_at(i, 0)
-        print(" -- Refined Corner [", i, "]  (", pt[1], ",", pt[2], ")")
+        print(" -- Refined Corner [", i, "]  (", pt.x, ",", pt.y, ")")
     end
 end
 

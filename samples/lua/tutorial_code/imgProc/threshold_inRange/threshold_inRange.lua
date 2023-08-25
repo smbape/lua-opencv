@@ -28,7 +28,7 @@ local high_V_name = 'High V'
 -- [low]
 local function on_low_H_thresh_trackbar(val)
     low_H = val
-    low_H = math.min(high_H-1, low_H)
+    low_H = math.min(high_H - 1, low_H)
     cv.setTrackbarPos(low_H_name, window_detection_name, low_H)
 end
 -- [low]
@@ -36,32 +36,32 @@ end
 -- [high]
 local function on_high_H_thresh_trackbar(val)
     high_H = val
-    high_H = math.max(high_H, low_H+1)
+    high_H = math.max(high_H, low_H + 1)
     cv.setTrackbarPos(high_H_name, window_detection_name, high_H)
 end
 -- [high]
 
 local function on_low_S_thresh_trackbar(val)
     low_S = val
-    low_S = math.min(high_S-1, low_S)
+    low_S = math.min(high_S - 1, low_S)
     cv.setTrackbarPos(low_S_name, window_detection_name, low_S)
 end
 
 local function on_high_S_thresh_trackbar(val)
     high_S = val
-    high_S = math.max(high_S, low_S+1)
+    high_S = math.max(high_S, low_S + 1)
     cv.setTrackbarPos(high_S_name, window_detection_name, high_S)
 end
 
 local function on_low_V_thresh_trackbar(val)
     low_V = val
-    low_V = math.min(high_V-1, low_V)
+    low_V = math.min(high_V - 1, low_V)
     cv.setTrackbarPos(low_V_name, window_detection_name, low_V)
 end
 
 local function on_high_V_thresh_trackbar(val)
     high_V = val
-    high_V = math.max(high_V, low_V+1)
+    high_V = math.max(high_V, low_V + 1)
     cv.setTrackbarPos(high_V_name, window_detection_name, high_V)
 end
 
@@ -96,12 +96,12 @@ cv.namedWindow(window_detection_name)
 -- [window]
 
 -- [trackbar]
-cv.createTrackbar(low_H_name, window_detection_name , low_H, max_value_H, on_low_H_thresh_trackbar)
-cv.createTrackbar(high_H_name, window_detection_name , high_H, max_value_H, on_high_H_thresh_trackbar)
-cv.createTrackbar(low_S_name, window_detection_name , low_S, max_value, on_low_S_thresh_trackbar)
-cv.createTrackbar(high_S_name, window_detection_name , high_S, max_value, on_high_S_thresh_trackbar)
-cv.createTrackbar(low_V_name, window_detection_name , low_V, max_value, on_low_V_thresh_trackbar)
-cv.createTrackbar(high_V_name, window_detection_name , high_V, max_value, on_high_V_thresh_trackbar)
+cv.createTrackbar(low_H_name, window_detection_name, low_H, max_value_H, on_low_H_thresh_trackbar)
+cv.createTrackbar(high_H_name, window_detection_name, high_H, max_value_H, on_high_H_thresh_trackbar)
+cv.createTrackbar(low_S_name, window_detection_name, low_S, max_value, on_low_S_thresh_trackbar)
+cv.createTrackbar(high_S_name, window_detection_name, high_S, max_value, on_high_S_thresh_trackbar)
+cv.createTrackbar(low_V_name, window_detection_name, low_V, max_value, on_low_V_thresh_trackbar)
+cv.createTrackbar(high_V_name, window_detection_name, high_V, max_value, on_high_V_thresh_trackbar)
 -- [trackbar]
 
 while true do
@@ -118,7 +118,7 @@ while true do
     end
 
     local frame_HSV = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
-    local frame_threshold = cv.inRange(frame_HSV, {low_H, low_S, low_V}, {high_H, high_S, high_V})
+    local frame_threshold = cv.inRange(frame_HSV, { low_H, low_S, low_V }, { high_H, high_S, high_V })
     -- [while]
 
     -- [show]

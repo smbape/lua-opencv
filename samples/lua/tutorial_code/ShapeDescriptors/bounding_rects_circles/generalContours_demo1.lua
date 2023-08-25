@@ -50,9 +50,9 @@ local function thresh_callback(val)
     for i = 1, #contours do
         local color = { rng:uniform(0, 256), rng:uniform(0, 256), rng:uniform(0, 256) }
         cv.drawContours(drawing, contours_poly, i - 1, color)
-        cv.rectangle(drawing, { int(boundRect[i][1]), int(boundRect[i][2]) },
-            { int(boundRect[i][1] + boundRect[i][3]), int(boundRect[i][2] + boundRect[i][4]) }, color, 2)
-        cv.circle(drawing, { int(centers[i][1]), int(centers[i][2]) }, int(radius[i]), color, 2)
+        cv.rectangle(drawing, { int(boundRect[i].x), int(boundRect[i].y) },
+            { int(boundRect[i].x + boundRect[i].width), int(boundRect[i].y + boundRect[i].height) }, color, 2)
+        cv.circle(drawing, { int(centers[i].x), int(centers[i].y) }, int(radius[i]), color, 2)
     end
     -- [forContour]
 
