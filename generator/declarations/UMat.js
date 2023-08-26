@@ -408,46 +408,46 @@ module.exports = ({ self, self_get, shared_ptr }) => [
 
     ["cv.UMat.sum", "cv::Scalar", ["/Call=cv::sum", `/Expr=${ self }`], [], "", ""],
 
-    ["cv.UMat.operator+", "void", ["/S", "=sol::meta_function::addition", "/Call=cv::add"], [
+    ["cv.UMat.operator+", "void", ["/S", "/Call=cv::add"], [
         ["cv::UMat", "src1", "", ["/Ref", "/C"]],
         ["InputArray", "src2", "", []],
-        ["OutputArray", "dst", "", []],
+        ["cv::UMat", "dst", "cv::UMat()", ["/O"]],
     ], "", ""],
 
-    ["cv.UMat.operator-", "void", ["/S", "=sol::meta_function::subtraction", "/Call=cv::subtract"], [
+    ["cv.UMat.operator-", "void", ["/S", "/Call=cv::subtract"], [
         ["cv::UMat", "src1", "", ["/Ref", "/C"]],
         ["InputArray", "src2", "", []],
-        ["OutputArray", "dst", "", []],
+        ["cv::UMat", "dst", "cv::UMat()", ["/O"]],
     ], "", ""],
 
-    ["cv.UMat.operator*", "void", ["/S", "=sol::meta_function::multiplication", "/Call=cv::multiply"], [
+    ["cv.UMat.operator*", "void", ["/S", "/Call=cv::multiply"], [
         ["cv::UMat", "src1", "", ["/Ref", "/C"]],
         ["InputArray", "src2", "", []],
-        ["OutputArray", "dst", "", []],
+        ["cv::UMat", "dst", "cv::UMat()", ["/O"]],
     ], "", ""],
 
-    ["cv.UMat.operator/", "void", ["/S", "=sol::meta_function::division", "/Call=cv::divide"], [
+    ["cv.UMat.operator/", "void", ["/S", "/Call=cv::divide"], [
         ["cv::UMat", "src1", "", ["/Ref", "/C"]],
         ["InputArray", "src2", "", []],
-        ["OutputArray", "dst", "", []],
+        ["cv::UMat", "dst", "cv::UMat()", ["/O"]],
     ], "", ""],
 
-    ["cv.UMat.operator==", "void", ["/S", "=sol::meta_function::equal_to", "/Call=cv::compare", "/Expr=$0, cv::CMP_EQ"], [
+    ["cv.UMat.operator==", "void", ["/S", "/Call=cv::compare", "/Expr=$0, cv::CMP_EQ"], [
         ["cv::UMat", "src1", "", ["/Ref", "/C"]],
         ["InputArray", "src2", "", []],
-        ["OutputArray", "dst", "", []],
+        ["cv::UMat", "dst", "cv::UMat()", ["/O"]],
     ], "", ""],
 
-    ["cv.UMat.operator<", "void", ["/S", "=sol::meta_function::less_than", "/Call=cv::compare", "/Expr=$0, cv::CMP_LT"], [
+    ["cv.UMat.operator<", "void", ["/S", "/Call=cv::compare", "/Expr=$0, cv::CMP_LT"], [
         ["cv::UMat", "src1", "", ["/Ref", "/C"]],
         ["InputArray", "src2", "", []],
-        ["OutputArray", "dst", "", []],
+        ["cv::UMat", "dst", "cv::UMat()", ["/O"]],
     ], "", ""],
 
-    ["cv.UMat.operator<=", "void", ["/S", "=sol::meta_function::less_than_or_equal_to", "/Call=cv::compare", "/Expr=$0, cv::CMP_LE"], [
+    ["cv.UMat.operator<=", "void", ["/S", "/Call=cv::compare", "/Expr=$0, cv::CMP_LE"], [
         ["cv::UMat", "src1", "", ["/Ref", "/C"]],
         ["InputArray", "src2", "", []],
-        ["OutputArray", "dst", "", []],
+        ["cv::UMat", "dst", "cv::UMat()", ["/O"]],
     ], "", ""],
 
     // ["cv.UMat.convertToShow", "void", ["/Call=::autoit::cvextra::convertToShow", "/Expr=*__self->get(), $0"], [

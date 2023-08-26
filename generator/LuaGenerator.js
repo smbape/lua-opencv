@@ -112,6 +112,56 @@ class LuaGenerator {
         return `register_${ coclass.getClassName() }`;
     }
 
+    static getMetaFunctionName(fname) {
+        const meta_functions = new Map([
+            ["sol::meta_function::call", "__call"],
+            ["sol::meta_function::call_function", "__call"],
+            ["sol::meta_function::addition", "__add"],
+            ["sol::meta_function::subtraction", "__sub"],
+            ["sol::meta_function::multiplication", "__mul"],
+            ["sol::meta_function::division", "__div"],
+            ["sol::meta_function::bitwise_not", "__bnot"],
+            ["sol::meta_function::bitwise_and", "__band"],
+            ["sol::meta_function::bitwise_or", "__bor"],
+            ["sol::meta_function::bitwise_xor", "__bxor"],
+            ["sol::meta_function::equal_to", "__eq"],
+            ["sol::meta_function::less_than", "__lt"],
+            ["sol::meta_function::less_than_or_equal_to", "__le"],
+        ]);
+        return meta_functions.has(fname) ? meta_functions.get(fname) : fname;
+    }
+
+    static getLuaFn(fname) {
+        const meta_functions = new Map([
+            ["operator()", "sol::meta_function::call"],
+            ["operator+", "sol::meta_function::addition"],
+            ["operator-", "sol::meta_function::subtraction"],
+            ["operator*", "sol::meta_function::multiplication"],
+            ["operator/", "sol::meta_function::division"],
+            ["operator~", "sol::meta_function::bitwise_not"],
+            ["operator&", "sol::meta_function::bitwise_and"],
+            ["operator|", "sol::meta_function::bitwise_or"],
+            ["operator^", "sol::meta_function::bitwise_xor"],
+            ["operator==", "sol::meta_function::equal_to"],
+            ["operator<", "sol::meta_function::less_than"],
+            ["operator<=", "sol::meta_function::less_than_or_equal_to"],
+        ]);
+        return meta_functions.has(fname) ? meta_functions.get(fname) : fname;
+    }
+
+    static getBinaryOperator(fname) {
+        const meta_functions = new Map([
+            ["sol::meta_function::addition", "+"],
+            ["sol::meta_function::subtraction", "-"],
+            ["sol::meta_function::multiplication", "*"],
+            ["sol::meta_function::division", "/"],
+            ["sol::meta_function::bitwise_and", "&"],
+            ["sol::meta_function::bitwise_or", "|"],
+            ["sol::meta_function::bitwise_xor", "^"],
+        ]);
+        return meta_functions.get(fname);
+    }
+
     static returnVariant(expr, cpptype, options) {
         if (!options.variantTypeReg || !options.variantTypeReg.test(cpptype)) {
             if (cpptype.startsWith("std::tuple<")) {
@@ -502,6 +552,7 @@ class LuaGenerator {
 
             return a > b ? 1 : a < b ? -1 : 0;
         })) {
+            const ename = LuaGenerator.getLuaFn(fname);
             const overloads = coclass.methods.get(fname);
             const contentFunction = [];
 
@@ -954,7 +1005,7 @@ class LuaGenerator {
                                     }
                                 } else if (cpptype.endsWith("*")) {
                                     result = `reference_internal(${ result })`;
-                                } else if (fname !== "new" && fname !== "create") {
+                                } else if (fname !== "new") {
                                     result = LuaGenerator.returnVariant(result, cpptype, options);
                                 }
 
@@ -997,7 +1048,7 @@ class LuaGenerator {
                 lua_args.unshift(`::${ fqn }* self`);
             }
 
-            const lua_fname = `Lua_${ fname.replaceAll("::", "_") }`;
+            const lua_fname = `Lua_${ ename.replaceAll("::", "_") }`;
 
             let start = 0;
             while (contentFunction[start] === "" && start + 1 < contentFunction.length) {
@@ -1044,7 +1095,7 @@ class LuaGenerator {
                     definitions.push(`[] (sol::this_state ts, sol::variadic_args vargs) {
                         return ::${ lua_fname }(static_cast<::${ fqn }*>(nullptr), ts, vargs);
                     }`.replace(/^ {20}/mg, "").trim());
-                } else if (coclass.isStatic() && (fname === "sol::meta_function::call" || fname === "sol::meta_function::call_function")) {
+                } else if (coclass.isStatic() && (ename === "sol::meta_function::call" || ename === "sol::meta_function::call_function")) {
                     definitions.push(`[] (sol::stack_object exports, sol::this_state ts, sol::variadic_args vargs) {
                         return ::${ lua_fname }(ts, vargs);
                     }`.replace(/^ {20}/mg, "").trim());
@@ -1055,10 +1106,10 @@ class LuaGenerator {
 
                 const overload = definitions.length === 1 ? definitions[0] : `sol::overload(${ definitions.join(", ") })`;
 
-                if (fname.startsWith("sol::meta_function::")) {
-                    contentRegister.push(`exports[${ fname }] = ${ overload };`);
+                if (ename.startsWith("sol::meta_function::")) {
+                    contentRegister.push(`exports[${ ename }] = ${ overload };`);
                 } else {
-                    contentRegister.push(`exports.set_function("${ fname }", ${ overload });`);
+                    contentRegister.push(`exports.set_function("${ ename }", ${ overload });`);
                     if (coclass.is_vector && fname === "new") {
                         contentRegister.push(`exports[sol::meta_function::call] = [] (sol::stack_object exports, sol::this_state ts, sol::variadic_args vargs) {
                             return ::${ lua_fname }(ts, vargs);
@@ -1080,6 +1131,8 @@ class LuaGenerator {
         is_constructor,
         options
     ) {
+        const ename = LuaGenerator.getLuaFn(fname);
+        const mname = LuaGenerator.getMetaFunctionName(ename);
         const {fqn} = coclass;
         const [name, return_value_type, func_modifiers, list_of_arguments] = decl;
         const argc = list_of_arguments.length;
@@ -1106,15 +1159,25 @@ class LuaGenerator {
         }
 
         const caller = is_static ? fqn.replaceAll("::", ".") : `o${ coclass.name }`;
+        const is_call_fn = fname === "sol::meta_function::call" || fname === "sol::meta_function::call_function" || fname === "operator()";
 
-        let description = `${ caller }${ is_static ? "." : ":" }${ is_constructor ? "new" : fname }( ${ argstr } ) -> ${ outstr }`;
+        let description = is_call_fn ?
+            `${ caller }( ${ argstr } ) -> ${ outstr }` :
+            `${ caller }${ is_static ? "." : ":" }${ is_constructor ? "new" : mname }( ${ argstr } ) -> ${ outstr }`;
 
         if (is_constructor || coclass.is_vector && fname === "new") {
             description += `\n    ${ caller }( ${ argstr } ) -> ${ outstr }`;
         }
 
-        if (fname === "sol::meta_function::call" || fname === "sol::meta_function::call_function") {
-            description += `\n    o${ coclass.name }( ${ argstr } ) -> ${ outstr }`;
+        const op = LuaGenerator.getBinaryOperator(ename);
+        if (op) {
+            const args = argnamelist.slice(0, firstoptarg);
+            if (!is_static) {
+                args.unshift("self");
+            }
+
+            const argstr = args.join(` ${ op } `);
+            description += `\n    ${ argstr } -> ${ outstr }`;
         }
 
         let cppsignature = `${ processor.getCppType(return_value_type, coclass, options) } ${ name.replaceAll(".", "::") }`;
