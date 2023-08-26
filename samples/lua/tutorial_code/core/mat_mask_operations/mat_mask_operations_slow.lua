@@ -35,16 +35,16 @@ local function sharpen(my_image)
     for j = 1, height - 2 do
         for i = 1, width - 2 do
             if is_grayscale then
-                local sum_value = 5 * my_image:index_maybe({ j, i }) - my_image:index_maybe({ j + 1, i }) -
-                    my_image:index_maybe({ j - 1, i })
-                    - my_image:index_maybe({ j, i + 1 }) - my_image:index_maybe({ j, i - 1 })
-                result:new_index_maybe({ j, i }, saturated(sum_value))
+                local sum_value = 5 * my_image[{ j, i }] - my_image[{ j + 1, i }] -
+                    my_image[{ j - 1, i }]
+                    - my_image[{ j, i + 1 }] - my_image[{ j, i - 1 }]
+                result[{ j, i }] = saturated(sum_value)
             else
                 for k = 0, n_channels - 1 do
-                    local sum_value = 5 * my_image:index_maybe({ j, i, k }) - my_image:index_maybe({ j + 1, i, k })
-                        - my_image:index_maybe({ j - 1, i, k }) - my_image:index_maybe({ j, i + 1, k })
-                        - my_image:index_maybe({ j, i - 1, k })
-                    result:new_index_maybe({ j, i, k }, saturated(sum_value))
+                    local sum_value = 5 * my_image[{ j, i, k }] - my_image[{ j + 1, i, k }]
+                        - my_image[{ j - 1, i, k }] - my_image[{ j, i + 1, k }]
+                        - my_image[{ j, i - 1, k }]
+                    result[{ j, i, k }] = saturated(sum_value)
                 end
             end
         end
