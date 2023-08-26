@@ -511,6 +511,8 @@ class LuaGenerator {
             let has_static = false;
             let has_instance = false;
             let overload_id = 0;
+            let argc_max = 0;
+            const argnames = new Set();
 
             for (const decl of overloads) {
                 overload_id++;
@@ -518,6 +520,7 @@ class LuaGenerator {
                 const [name, return_value_type, func_modifiers, list_of_arguments] = decl;
                 is_constructor = func_modifiers.includes("/CO") && !func_modifiers.some(modifier => modifier[0] === "=");
                 const argc = list_of_arguments.length;
+                argc_max = Math.max(argc_max, argc);
 
                 const in_args = new Array(argc).fill(false);
                 const out_args = new Array(argc).fill(false);
@@ -537,6 +540,9 @@ class LuaGenerator {
                     const is_in_array = /^Input(?:Output)?Array(?:OfArrays)?$/.test(argtype);
                     const is_out_array = /^(?:Input)?OutputArray(?:OfArrays)?$/.test(argtype);
                     const is_in_out = arg_modifiers.includes("/IO");
+
+                    argnames.add(argname);
+
                     in_args[j] = is_in_array || is_in_out || arg_modifiers.includes("/I");
                     out_args[j] = is_out_array || is_in_out || arg_modifiers.includes("/O") ||
                         is_ptr && defval === "" && SIMPLE_ARGTYPE_DEFAULTS.has(argtype.slice(0, -1));
@@ -579,19 +585,23 @@ class LuaGenerator {
                 const callargs = [];
                 const retval = [];
                 const overload = [];
+                const precondition = [`argc + kwargs.size() > ${ argc }`];
 
                 if (!coclass.isStatic() && !func_modifiers.includes("/S")) {
                     has_instance = true;
-                    overload.push(`
-                        if (!self) {
-                            goto overload${ overload_id };
-                        }
-                    `.replace(/^ {24}/mg, "").trim(), "");
+                    precondition.push("!self");
                 } else {
                     has_static = true;
                 }
 
-                overload.push("int usedkw = 0;");
+                overload.push(`
+                    if (${ precondition.join(" || ") }) {
+                        // too many parameters
+                        goto overload${ overload_id };
+                    }
+
+                    int usedkw = 0;
+                `.replace(/^ {20}/mg, "").trim());
 
                 for (let i = 0; i < argc; i++) {
                     const j = indexes[i];
@@ -814,9 +824,8 @@ class LuaGenerator {
                     // call ${ name.replaceAll(".", "::") }
                     // =========================
 
-                    // too many parameters
                     // unknown named parameters
-                    if (argc > ${ argc } || usedkw != kwargs.size()) {
+                    if (usedkw != kwargs.size()) {
                         goto overload${ overload_id };
                     }
                 `.replace(/^ {20}/mg, "").trim());
@@ -968,6 +977,11 @@ class LuaGenerator {
 
             const lua_fname = `Lua_${ fname.replaceAll("::", "_") }`;
 
+            let start = 0;
+            while (contentFunction[start] === "" && start + 1 < contentFunction.length) {
+                start++;
+            }
+
             contentRegisterPrivate.push(`
                 auto ${ lua_fname }(${ lua_args.join(", ") }) {
                     sol::state_view lua(ts);
@@ -977,10 +991,11 @@ class LuaGenerator {
                     }
 
                     auto vargc = vargs.size();
-                    auto maybe_kwargs = maybe<NamedParameters>(vargs.get<sol::object>(vargc - 1));
+                    auto maybe_kwargs = vargc == 0 ? empty_kwargs_ptr : maybe<NamedParameters>(vargs.get<sol::object>(vargc - 1));
                     auto& kwargs = maybe_kwargs ? *maybe_kwargs : empty_kwargs;
                     const int argc = maybe_kwargs ? vargc - 1 : vargc;
-                    ${ contentFunction.join("\n").split("\n").join(`\n${ " ".repeat(20) }`) }
+
+                    ${ contentFunction.slice(start).join("\n").split("\n").join(`\n${ " ".repeat(20) }`) }
 
                     luaL_error(lua.lua_state(), "Overload resolution failed");
                     // LUA_MODULE_THROW("Overload resolution failed");
@@ -1154,13 +1169,15 @@ class LuaGenerator {
             LuaGenerator.writeMethods(processor, coclass, contentRegisterPrivate, contentRegister, options);
 
             if (contentRegisterPrivate.length !== 0) {
-                const start = contentRegisterPrivate[0] === "" ? 1 : 0;
+                let start = 0;
+                while (contentRegisterPrivate[start] === "" && start + 1 < contentRegisterPrivate.length) {
+                    start++;
+                }
 
                 contentCpp.push(`
                     namespace {
                         using namespace LUA_MODULE_NAME;
                         ${ namespaces.join("\n").split("\n").join(`\n${ " ".repeat(24) }`) }
-                        const NamedParameters empty_kwargs;
 
                         ${ contentRegisterPrivate.slice(start).join("\n").split("\n").join(`\n${ " ".repeat(24) }`) }
                     }

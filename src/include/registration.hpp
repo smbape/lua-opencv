@@ -11,6 +11,9 @@ namespace LUA_MODULE_NAME {
 	extern std::mutex callback_mutex;
 	void registerCallback(Callback callback, void* userdata);
 	void notifyCallbacks(sol::this_state ts);
+
+	extern const NamedParameters empty_kwargs;
+	extern const std::shared_ptr<NamedParameters> empty_kwargs_ptr;
 }
 
 // This function needs to be exported.

@@ -72,21 +72,27 @@ namespace LUA_MODULE_NAME {
 
 		static std::shared_ptr<std::vector<T>> empty;
 
-		auto maybe_table = obj.template as<sol::optional<sol::table>>();
+		auto maybe_table = obj.template as<sol::optional<sol::table>&>();
 		if (!maybe_table) {
 			return empty;
 		}
 
-		std::shared_ptr<std::vector<T>> res(new std::vector<T>());
+		auto& obj_table = *maybe_table;
 
-		auto i = 1;
-		for (const auto& key_value_pair : *maybe_table) {
-			sol::object value = key_value_pair.second;
+		// https://github.com/ThePhD/sol2/issues/1048
+		// .size() is a O(logn) operation: lua does not store the size of a table in any property, and it's basically
+		// doing fancy counting of nodes. That's why it must be hoisted out of the loop.
+		auto size = obj_table.size();
+
+		std::shared_ptr<std::vector<T>> res(new std::vector<T>(size));
+
+		for (auto i = 0; i < size; ++i) {
+			auto value = obj_table.template get<sol::object>(i + 1);
 			auto elem = maybe_impl(value, static_cast<T*>(nullptr));
 			if (!elem) {
 				return empty; 
 			}
-			(*res).push_back(*elem);
+			(*res)[i] = *elem;
 		}
 
 		return res;

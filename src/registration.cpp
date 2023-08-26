@@ -296,6 +296,9 @@ namespace LUA_MODULE_NAME {
 			callback(userdata, ts);
 		}
 	}
+
+	const NamedParameters empty_kwargs;
+	const std::shared_ptr<NamedParameters> empty_kwargs_ptr;
 }
 
 int LUA_MODULE_LUAOPEN(lua_State* L) {
