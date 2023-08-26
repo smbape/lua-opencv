@@ -21,6 +21,7 @@ const getOptions = output => {
         implicitNamespaceType: /^(?:Point|Rect|Scalar|Size|Vec)(?:\d[bdfisw])?$/,
         variantTypeReg: /(?:<cv::Ptr)/,
         shared_ptr: "cv::Ptr",
+        cname: "new",
         implemented: {
             test: (signature, opts) => {
                 if (/auto return_as_impl\(cv::Ptr<[^&]+>& obj, sol::state_view& lua\)/.test(signature)) {

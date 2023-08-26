@@ -255,7 +255,7 @@ class CoClass {
         this.enums.add(fqn);
     }
 
-    addMethod(decl) {
+    addMethod(decl, options) {
         decl[1] = getAlias(decl[1]); // return_type
 
         const [name, , list_of_modifiers, list_of_arguments] = decl;
@@ -267,8 +267,8 @@ class CoClass {
             arg_decl[0] = getAlias(argtype);
         }
 
-        if (fname === this.name && (this.is_class || this.is_struct)) {
-            fname = "create";
+        if (fname === this.name && !this.isStatic()) {
+            fname = options.cname ? options.cname : "create";
             list_of_modifiers.push("/CO", "/S");
             decl[0] = path.slice(0, -1).join("::");
             decl[1] = this.fqn;

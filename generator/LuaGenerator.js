@@ -44,15 +44,15 @@ const proto = {
         coclass.include = parent;
         coclass.is_vector = true;
 
-        coclass.addMethod([`${ fqn }.new`, cpptype, [`/Call=${ cpptype }`], [], "", ""]);
+        coclass.addMethod([`${ fqn }.new`, cpptype, [`/Call=${ cpptype }`], [], "", ""], options);
 
         coclass.addMethod([`${ fqn }.new`, cpptype, [`/Call=${ cpptype }`], [
             ["size_t", "size", "", []],
-        ], "", ""]);
+        ], "", ""], options);
 
         coclass.addMethod([`${ fqn }.new`, cpptype, [`/Call=${ cpptype }`], [
             [cpptype, "other", "", []],
-        ], "", ""]);
+        ], "", ""], options);
     },
 };
 
@@ -90,7 +90,7 @@ const returnTuple_ = (expr, cpptype) => {
     return `[&]{
         ${ returnTuple(expr, types).split("\n").join(`\n${ " ".repeat(8) }`) }
     }()`.replace(/^ {4}/mg, "").trim();
-}
+};
 
 const returnTuple = (expr, types) => {
     return `
@@ -492,11 +492,11 @@ class LuaGenerator {
         const indent = " ".repeat(4);
 
         for (const fname of Array.from(coclass.methods.keys()).sort((a, b) => {
-            if (a === "create") {
+            if (a === "new") {
                 return -1;
             }
 
-            if (b === "create") {
+            if (b === "new") {
                 return 1;
             }
 
@@ -505,7 +505,10 @@ class LuaGenerator {
             const overloads = coclass.methods.get(fname);
             const contentFunction = [];
 
-            processor.docs.push(`### ${ fqn }::${ fname }\n`.replaceAll("_", "\\_"));
+            const has_constructor = overloads.some(([, , func_modifiers]) => func_modifiers.includes("/CO") && !func_modifiers.some(modifier => modifier[0] === "="));
+
+            // generate docs header
+            processor.docs.push(`### ${ fqn.replaceAll("::", ".") }.${ has_constructor ? "new" : fname }\n`.replaceAll("_", "\\_"));
 
             let is_constructor = false;
             let has_static = false;
@@ -603,7 +606,9 @@ class LuaGenerator {
                     int usedkw = 0;
                 `.replace(/^ {20}/mg, "").trim());
 
-                for (let i = 0; i < argc; i++) {
+                let firstoptarg = argc;
+
+                for (let i = 0, is_first_optional = true; i < argc; i++) {
                     const j = indexes[i];
                     const [, argname, , arg_modifiers] = list_of_arguments[j];
                     let [argtype, , defval] = list_of_arguments[j];
@@ -817,6 +822,11 @@ class LuaGenerator {
                                 ) };
                         `.replace(/^ {28}/mg, "").trim());
                     }
+
+                    if (is_optional && is_first_optional) {
+                        firstoptarg = Math.min(firstoptarg, i);
+                        is_first_optional = false;
+                    }
                 }
 
                 overload.push("", `
@@ -967,6 +977,18 @@ class LuaGenerator {
                 contentFunction.push("}");
 
                 contentFunction.push(`overload${ overload_id }:`);
+
+                LuaGenerator.writeMethodDocs(
+                    processor,
+                    coclass,
+                    fname,
+                    decl,
+                    outlist,
+                    indexes,
+                    firstoptarg,
+                    is_constructor,
+                    options
+                );
             }
 
             const is_by_ref = is_constructor || !has_static || !has_instance ? "" : "&";
@@ -1047,6 +1069,107 @@ class LuaGenerator {
         }
     }
 
+    static writeMethodDocs(
+        processor,
+        coclass,
+        fname,
+        decl,
+        outlist,
+        indexes,
+        firstoptarg,
+        is_constructor,
+        options
+    ) {
+        const {fqn} = coclass;
+        const [name, return_value_type, func_modifiers, list_of_arguments] = decl;
+        const argc = list_of_arguments.length;
+        const is_static = func_modifiers.includes("/S") || coclass.isStatic();
+
+        // generate docs body
+        const argnamelist = indexes.map(j => list_of_arguments[j][1]);
+
+        let argstr = argnamelist.slice(0, firstoptarg).join(", ");
+        argstr = [argstr].concat(argnamelist.slice(firstoptarg)).join("[, ");
+        argstr += "]".repeat(argc - firstoptarg);
+        if (argstr.startsWith("[, ")) {
+            argstr = `[${ argstr.slice("[, ".length) }`;
+        }
+
+        let outstr;
+
+        if (is_constructor) {
+            outstr = `<${ fqn.replaceAll("::", ".") } object>`;
+        } else if (outlist.length !== 0) {
+            outstr = outlist.join(", ");
+        } else {
+            outstr = "None";
+        }
+
+        const caller = is_static ? fqn.replaceAll("::", ".") : `o${ coclass.name }`;
+
+        let description = `${ caller }${ is_static ? "." : ":" }${ is_constructor ? "new" : fname }( ${ argstr } ) -> ${ outstr }`;
+
+        if (is_constructor || coclass.is_vector && fname === "new") {
+            description += `\n    ${ caller }( ${ argstr } ) -> ${ outstr }`;
+        }
+
+        if (fname === "sol::meta_function::call" || fname === "sol::meta_function::call_function") {
+            description += `\n    o${ coclass.name }( ${ argstr } ) -> ${ outstr }`;
+        }
+
+        let cppsignature = `${ processor.getCppType(return_value_type, coclass, options) } ${ name.replaceAll(".", "::") }`;
+
+        if (is_static && !coclass.isStatic()) {
+            cppsignature = `static ${ cppsignature }`;
+        }
+
+        let maxlength = 0;
+
+        const typelist = list_of_arguments.map(([argtype, , , arg_modifiers]) => {
+            let str = "";
+
+            if (arg_modifiers.includes("/C")) {
+                str += "const ";
+            }
+
+            const is_in_array = /^Input(?:Output)?Array(?:OfArrays)?$/.test(argtype);
+            const is_out_array = /^(?:Input)?OutputArray(?:OfArrays)?$/.test(argtype);
+            str += is_in_array || is_out_array ? argtype : processor.getCppType(argtype, coclass, options);
+
+            if (arg_modifiers.includes("/Ref")) {
+                str += "&";
+            } else if (arg_modifiers.includes("/RRef")) {
+                str += "&&";
+            }
+            maxlength = Math.max(maxlength, str.length);
+            return str;
+        });
+
+        cppsignature = `${ cppsignature }( ${ list_of_arguments.map(([, argname, defval], i) => {
+            let str = typelist[i] + " ".repeat(maxlength + 1 - typelist[i].length) + argname;
+            if (defval !== "") {
+                str += ` = ${ defval }`;
+            }
+            return str;
+        }).join(`,\n${ " ".repeat(cppsignature.length + "( ".length) }`) } )`;
+
+        if (func_modifiers.includes("/C")) {
+            cppsignature = `${ cppsignature } const`;
+        }
+
+        cppsignature += ";";
+
+        processor.docs.push([
+            "```cpp",
+            cppsignature,
+            // "",
+            "lua:",
+            " ".repeat(4) + description,
+            "```",
+            ""
+        ].join("\n").replace(/\s*\( {2}\)/g, "()").replace(/\s*\[ +\]/g, "[]"));
+    }
+
     generate(processor, configuration, options, cb) {
         const { generated_include } = configuration;
         const { APP_NAME } = options;
@@ -1056,8 +1179,6 @@ class LuaGenerator {
         const registrations = [];
 
         for (const fqn of Array.from(processor.classes.keys()).sort()) {
-            // TODO https://github.com/ThePhD/sol2/issues/1405
-
             const docid = processor.docs.length;
 
             const coclass = processor.classes.get(fqn);
@@ -1195,7 +1316,6 @@ class LuaGenerator {
 
             files.set(sysPath.join(options.output, fileCpp), contentCpp.join("\n").replace(/^[^\S\r\n]+$/mg, ""));
 
-            // TODO : add property signature
             // TODO : add method signature
             //        variantTypeReg => table
 

@@ -141,7 +141,7 @@ mark = cv.bitwise_not(mark)
 -- Generate random colors
 local colors = {}
 for i = 1, n_contours do
-    colors[i] = { rng:uniform(0, 256), rng:uniform(0, 256), rng:uniform(0, 256) }
+    colors[i] = { rng:uniform_int(0, 256), rng:uniform_int(0, 256), rng:uniform_int(0, 256) }
 end
 
 -- Create the result image
@@ -150,15 +150,25 @@ local dst = cv.Mat.zeros(markers:size(), cv.CV_8UC3)
 -- give channels a new dimension to be able to do image(y, x, c), which is a speed sweet spot
 local channels = dst:channels()
 dst = dst:reshape(1, { dst.rows, dst.cols, channels })
+local use_sweet_spots = true
 
 -- Fill labeled objects with random colors
 for i = 0, markers.rows - 1 do
     for j = 0, markers.cols - 1 do
-        local index = markers(i, j)
+        local index
+        if use_sweet_spots then
+            index = markers(i, j)
+        else
+            index = markers[{i, j}]
+        end
         if index > 0 and index <= n_contours then
-            dst:set(colors[index][0 + INDEX_BASE], i, j, 0)
-            dst:set(colors[index][1 + INDEX_BASE], i, j, 1)
-            dst:set(colors[index][2 + INDEX_BASE], i, j, 2)
+            if use_sweet_spots then
+                dst:set(colors[index][0 + INDEX_BASE], i, j, 0)
+                dst:set(colors[index][1 + INDEX_BASE], i, j, 1)
+                dst:set(colors[index][2 + INDEX_BASE], i, j, 2)
+            else
+                dst:Vec3b_set_at(i, j, colors[index])
+            end
         end
     end
 end

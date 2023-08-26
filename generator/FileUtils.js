@@ -1,6 +1,7 @@
 const fs = require("node:fs");
 const sysPath = require("node:path");
 const cpus = require("node:os").cpus().length;
+const eol = require("eol");
 const eachOfLimit = require("async/eachOfLimit");
 const waterfall = require("async/waterfall");
 const series = require("async/series");
@@ -128,7 +129,7 @@ const writeFiles = (files, options, cb) => {
                     },
 
                     (buffer, next) => {
-                        const content = files.get(filename);
+                        const content = eol.lf(files.get(filename));
                         const str = buffer.toString();
 
                         if (content === str) {
@@ -143,6 +144,9 @@ const writeFiles = (files, options, cb) => {
                         }
 
                         fs.writeFile(filename, content, err => {
+                            if (options.toc !== false && filename.endsWith(".md")) {
+                                doctoc_to_generate.add(filename);
+                            }
                             next(err, true);
                         });
                     },

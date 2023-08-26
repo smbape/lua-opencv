@@ -346,7 +346,7 @@ class DeclProcessor {
                 coclass.addProperty(property);
             }
         } else {
-            coclass.addMethod(decl);
+            coclass.addMethod(decl, options);
         }
     }
 
@@ -578,7 +578,7 @@ class DeclProcessor {
             "/idlname=_NewEnum",
             "=get__NewEnum",
             "/IDL"
-        ], [], "", ""]);
+        ], [], "", ""], options);
     }
 
     setReturn(returns, idltype, argname) {
@@ -621,12 +621,7 @@ class DeclProcessor {
 
         // Add a default constructor
         if (coclass.has_default_constructor === 0) {
-            coclass.addMethod([
-                `${ fqn }.${ coclass.name }`,
-                "",
-                [],
-                []
-            ]);
+            coclass.addMethod([`${ fqn }.${ coclass.name }`, "", [], []], options);
         }
 
         if (options.hasInheritanceSupport) {
@@ -684,7 +679,7 @@ class DeclProcessor {
                         modifiers.push(`/Cast=static_cast<${ parent.fqn }*>`);
                     }
 
-                    coclass.addMethod([`${ fqn }.${ name.split(".").pop() }`, return_value_type, modifiers, list_of_arguments]);
+                    coclass.addMethod([`${ fqn }.${ name.split(".").pop() }`, return_value_type, modifiers, list_of_arguments], options);
 
                     signatures.add(signature);
                 }

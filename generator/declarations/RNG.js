@@ -25,10 +25,6 @@ module.exports = [
         ["float", "a", "", []],
         ["float", "b", "", []],
     ], "", ""],
-    ["cv.RNG.uniform", "double", ["=uniform_double"], [
-        ["double", "a", "", []],
-        ["double", "b", "", []],
-    ], "", ""],
     ["cv.RNG.uniform", "double", [], [
         ["double", "a", "", []],
         ["double", "b", "", []],
