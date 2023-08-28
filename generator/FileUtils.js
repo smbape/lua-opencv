@@ -78,14 +78,20 @@ const findFile = (path, rootPath = ".") => {
         const end = path.indexOf(sysPath.sep, start + 1);
         const prefix = start === -1 ? rootPath : sysPath.resolve(rootPath, path.slice(0, start));
         const pattern = path.slice(start + 1, end === -1 ? path.length : end);
-        const suffix = path.slice(end + 1);
+        const suffix = end === -1 ? "" : path.slice(end + 1);
 
         const candidates = !fs.existsSync(prefix) ? [] : fs.readdirSync(prefix).filter(item => {
             return isMatch(item, pattern);
         });
 
         for (const candidate of candidates) {
-            const file = findFile(suffix, sysPath.join(prefix, candidate));
+            const next = sysPath.join(prefix, candidate);
+
+            if (end === -1) {
+                return next;
+            }
+
+            const file = findFile(suffix, next);
             if (file !== null) {
                 return file;
             }

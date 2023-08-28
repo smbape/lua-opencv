@@ -168,13 +168,18 @@ GOTO END
 :INSTALL
 IF NOT [%has_install%] == [1] GOTO TEST
 %CMAKE% --install . --prefix "%PREFIX%"
+SET ERROR=%ERRORLEVEL%
 IF [%ERROR%] == [0] GOTO TEST
 GOTO END
 
 :TEST
 IF NOT [%has_test%] == [1] GOTO END
 %TRY_RUN%%CMAKE:cmake.exe=ctest.exe% -C %CMAKE_BUILD_TYPE% -R test_build
+SET ERROR=%ERRORLEVEL%
+IF NOT [%ERROR%] == [0] GOTO END
 IF EXIST "%PREFIX%\bin\luajit.exe" %TRY_RUN%%CMAKE:cmake.exe=ctest.exe% -C %CMAKE_BUILD_TYPE% -R test_install
+SET ERROR=%ERRORLEVEL%
+IF NOT [%ERROR%] == [0] GOTO END
 
 :END
 POPD

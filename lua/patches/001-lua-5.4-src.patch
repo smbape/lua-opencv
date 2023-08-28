@@ -1,0 +1,57 @@
+diff -rupN a/etc/lua.pc b/etc/lua.pc
+--- a/etc/lua.pc
++++ /dev/null
+@@ -0,0 +1,31 @@
++# lua.pc -- pkg-config data for Lua
++
++# vars from install Makefile
++
++# grep '^V=' ../Makefile
++V= 5.1
++# grep '^R=' ../Makefile
++R= 5.1.5
++
++# grep '^INSTALL_.*=' ../Makefile | sed 's/INSTALL_TOP/prefix/'
++prefix= /usr/local
++INSTALL_BIN= ${prefix}/bin
++INSTALL_INC= ${prefix}/include
++INSTALL_LIB= ${prefix}/lib
++INSTALL_MAN= ${prefix}/man/man1
++INSTALL_LMOD= ${prefix}/share/lua/${V}
++INSTALL_CMOD= ${prefix}/lib/lua/${V}
++
++# canonical vars
++exec_prefix=${prefix}
++libdir=${exec_prefix}/lib
++includedir=${prefix}/include
++
++Name: Lua
++Description: An Extensible Extension Language
++Version: ${R}
++Requires: 
++Libs: -L${libdir} -llua -lm
++Cflags: -I${includedir}
++
++# (end of lua.pc)
+diff -rupN a/src/luaconf.h b/src/luaconf.h
+--- a/src/luaconf.h
++++ b/src/luaconf.h
+@@ -222,10 +222,14 @@
+ #endif
+ 
+ #else			/* }{ */
+-
+-#define LUA_ROOT	"/usr/local/"
+-#define LUA_LDIR	LUA_ROOT "share/lua/" LUA_VDIR "/"
+-#define LUA_CDIR	LUA_ROOT "lib/lua/" LUA_VDIR "/"
++#ifndef LUA_MULTILIB
++#define LUA_MULTILIB	"lib"
++#endif
++#ifndef LUA_ROOT
++#define LUA_ROOT	"/usr/local"
++#endif
++#define LUA_LDIR	LUA_ROOT "/share/lua/" LUA_VDIR "/"
++#define LUA_CDIR	LUA_ROOT "/" LUA_MULTILIB "/lua/" LUA_VDIR "/"
+ 
+ #if !defined(LUA_PATH_DEFAULT)
+ #define LUA_PATH_DEFAULT  \

@@ -54,10 +54,9 @@ local function calcGST(inputIMG, w)
     -- lambda2 = 0.5*(J11 + J22 - sqrt((J11-J22)^2 + 4*J12^2))
     local tmp1 = J11 + J22
     local tmp2 = J11 - J22
-    local tmp2 = cv.multiply(tmp2, tmp2)
+    tmp2 = cv.multiply(tmp2, tmp2)
     local tmp3 = cv.multiply(J12, J12)
     local tmp4 = cv.sqrt(tmp2 + 4.0 * tmp3)
-    print("tmp4 : " .. type(tmp4))
 
     local lambda1 = 0.5 * (tmp1 + tmp4) -- biggest eigenvalue
     local lambda2 = 0.5 * (tmp1 - tmp4) -- smallest eigenvalue

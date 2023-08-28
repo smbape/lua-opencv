@@ -12,7 +12,7 @@ const exeSuffix = os.platform() === "win32" ? ".exe" : "";
 const config = {};
 
 for (const buildType of ["Debug", "Release"]) {
-    const exe = findFile(`out/install/${ platform }-${ buildType }/bin/luajit${ exeSuffix }`, __dirname);
+    const exe = findFile(`out/install/${ platform }-${ buildType }/bin/lua*${ exeSuffix }`, __dirname);
     config[buildType] = {
         exe,
         env: {},

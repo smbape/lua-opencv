@@ -1,0 +1,55 @@
+diff -rupN a/etc/lua.pc b/etc/lua.pc
+--- a/etc/lua.pc
++++ b/etc/lua.pc
+@@ -9,23 +9,25 @@ R= 5.1.5
+ 
+ # grep '^INSTALL_.*=' ../Makefile | sed 's/INSTALL_TOP/prefix/'
+ prefix= /usr/local
++multilib= lib
++libname= lua
+ INSTALL_BIN= ${prefix}/bin
+ INSTALL_INC= ${prefix}/include
+-INSTALL_LIB= ${prefix}/lib
++INSTALL_LIB= ${prefix}/${multilib}
+ INSTALL_MAN= ${prefix}/man/man1
+ INSTALL_LMOD= ${prefix}/share/lua/${V}
+-INSTALL_CMOD= ${prefix}/lib/lua/${V}
++INSTALL_CMOD= ${prefix}/${multilib}/lua/${V}
+ 
+ # canonical vars
+ exec_prefix=${prefix}
+-libdir=${exec_prefix}/lib
++libdir=${exec_prefix}/${multilib}
+ includedir=${prefix}/include
+ 
+ Name: Lua
+ Description: An Extensible Extension Language
+ Version: ${R}
+ Requires: 
+-Libs: -L${libdir} -llua -lm
++Libs: -L${libdir} -l${libname} -lm
+ Cflags: -I${includedir}
+ 
+ # (end of lua.pc)
+diff -rupN a/src/luaconf.h b/src/luaconf.h
+--- a/src/luaconf.h
++++ b/src/luaconf.h
+@@ -94,9 +94,15 @@
+ 	".\\?.dll;"  LUA_CDIR"?.dll;" LUA_CDIR"loadall.dll"
+ 
+ #else
+-#define LUA_ROOT	"/usr/local/"
+-#define LUA_LDIR	LUA_ROOT "share/lua/5.1/"
+-#define LUA_CDIR	LUA_ROOT "lib/lua/5.1/"
++#ifndef LUA_MULTILIB
++#define LUA_MULTILIB	"lib"
++#endif
++#ifndef LUA_ROOT
++#define LUA_ROOT	"/usr/local"
++#endif
++#define LUA_LUADIR	"/lua/5.1/"
++#define LUA_LDIR	LUA_ROOT "/share" LUA_LUADIR
++#define LUA_CDIR	LUA_ROOT "/" LUA_MULTILIB LUA_LUADIR
+ #define LUA_PATH_DEFAULT  \
+ 		"./?.lua;"  LUA_LDIR"?.lua;"  LUA_LDIR"?/init.lua;" \
+ 		            LUA_CDIR"?.lua;"  LUA_CDIR"?/init.lua"

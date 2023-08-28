@@ -25,23 +25,76 @@ if(MSVC AND NOT (CMAKE_GENERATOR STREQUAL Ninja))
   add_compile_options(/MP)
 endif()
 
+# find LuaJIT
+if ((NOT DEFINED LUA_DIR) AND (NOT DEFINED ENV{LUA_DIR}))
+  option(USE_JIT "Use luajit" ON)
+  if (USE_JIT)
+    set(LUA_SUFFIX "jit")
+  else()
+    set(LUA_SUFFIX "")
+  endif()
+  set(LUA_SUFFIX "")
+
+  add_subdirectory(lua${LUA_SUFFIX})
+
+  set_property(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" PROPERTY VS_STARTUP_PROJECT lua${LUA_SUFFIX})
+  file(TO_NATIVE_PATH "${${CMAKE_CURRENT_SOURCE_DIR}/test}" VS_DEBUGGER_WORKING_DIRECTORY)
+  set_target_properties(lua${LUA_SUFFIX} PROPERTIES
+    VS_DEBUGGER_COMMAND_ARGUMENTS test.lua
+    VS_DEBUGGER_WORKING_DIRECTORY "${VS_DEBUGGER_WORKING_DIRECTORY}"
+  )
+else()
+  if (DEFINED LUA_DIR)
+    set(ENV{LUA_DIR} "${LUA_DIR}")
+  endif()
+
+  list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
+  find_package(Lua REQUIRED)
+
+  unset(_lua_interpreter_names)
+
+  if (LUA_VERSION_STRING)
+    set(_lua_interpreter_names
+      luajit-${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}
+      lua${LUA_VERSION_MAJOR}${LUA_VERSION_MINOR}
+      lua${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}
+      lua-${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}
+      lua.${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}
+      )
+  endif()
+
+  find_program(LUA_INTERPRETER
+    NAMES ${_lua_interpreter_names} luajit lua
+    NAMES_PER_DIR
+    HINTS
+      ENV LUA_DIR
+    PATH_SUFFIXES bin
+    REQUIRED
+  )
+
+  unset(_lua_interpreter_names)
+endif()
+
+# message(STATUS "LUA_VERSION_STRING = ${LUA_VERSION_STRING}")
+# message(STATUS "LUA_VERSION_MAJOR = ${LUA_VERSION_MAJOR}")
+# message(STATUS "LUA_VERSION_MINOR = ${LUA_VERSION_MINOR}")
+# message(STATUS "LUA_VERSION_PATCH = ${LUA_VERSION_PATCH}")
+# message(STATUS "LUA_LIBRARIES = ${LUA_LIBRARIES}")
+# message(STATUS "LUA_INCLUDE_DIR = ${LUA_INCLUDE_DIR}")
+# message(STATUS "LUA_INTERPRETER = ${LUA_INTERPRETER}")
+
+add_subdirectory(luarocks)
+
 # find OpenCV
 if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
   add_subdirectory(opencv)
   # message(STATUS "opencv_SOURCE_DIR = ${opencv_SOURCE_DIR}")
   # message(STATUS "OPENCV_CONFIG_FILE_INCLUDE_DIR = ${OPENCV_CONFIG_FILE_INCLUDE_DIR}")
 
-  set(OpenCV_LIBS "")
-  set(OpenCV_INCLUDE_DIRS "${OPENCV_CONFIG_FILE_INCLUDE_DIR}" "${opencv_SOURCE_DIR}/include")
-
-  foreach(m opencv_core ${OPENCV_MODULES_PUBLIC})
-    if(TARGET ${m})
-      list(APPEND OpenCV_LIBS ${m})
-    endif()
-    if(EXISTS "${OPENCV_MODULE_${m}_LOCATION}/include")
-      list(APPEND OpenCV_INCLUDE_DIRS "${OPENCV_MODULE_${m}_LOCATION}/include")
-    endif()
-  endforeach()
+  # Opencv examples
+  add_executable(introduction_to_pca "${opencv_SOURCE_DIR}/samples/cpp/tutorial_code/ml/introduction_to_pca/introduction_to_pca.cpp")
+  target_link_libraries(introduction_to_pca PRIVATE ${OpenCV_LIBS})
+  target_include_directories(introduction_to_pca PRIVATE "${OpenCV_INCLUDE_DIRS}")
 else()
   find_package(OpenCV REQUIRED)
 endif()
@@ -53,19 +106,6 @@ endif()
 # set(OpenCV_LIBS "")
 # set(OpenCV_DLLVERSION 480)
 # set(OpenCV_DEBUG_POSTFIX d)
-
-# find LuaJIT
-if ((NOT DEFINED LUA_DIR) AND (NOT DEFINED ENV{LUA_DIR}))
-  add_subdirectory(luajit)
-  set(LUA_LIBRARIES libluajit::libluajit)
-else()
-  if (DEFINED LUA_DIR)
-    set(ENV{LUA_DIR} "${LUA_DIR}")
-  endif()
-
-  list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
-  find_package(Lua REQUIRED)
-endif()
 
 # include(cmake/vcpkg_regex_replace_string.cmake)
 
@@ -131,11 +171,13 @@ add_library(${PROJECT_NAME} SHARED ${SRC_FILES})
 
 install(TARGETS ${PROJECT_NAME}
   LIBRARY
-    DESTINATION "${CMAKE_INSTALL_LIBDIR}/lua/${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}"
     PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
                     GROUP_EXECUTE GROUP_READ
   ARCHIVE
-    DESTINATION "${CMAKE_INSTALL_LIBDIR}/lua/${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+  RUNTIME
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}"
 )
 
 target_compile_definitions(${PROJECT_NAME}
@@ -150,9 +192,7 @@ target_precompile_headers(${PROJECT_NAME} PRIVATE
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE sol2::sol2 ${LUA_LIBRARIES} ${OpenCV_LIBS})
-if (DEFINED LUA_INCLUDE_DIR)
-  target_include_directories(${PROJECT_NAME} PRIVATE ${LUA_INCLUDE_DIR})
-endif()
+target_include_directories(${PROJECT_NAME} PRIVATE ${LUA_INCLUDE_DIR})
 if (DEFINED OpenCV_INCLUDE_DIRS)
   target_include_directories(${PROJECT_NAME} PRIVATE ${OpenCV_INCLUDE_DIRS})
 endif()
@@ -198,14 +238,6 @@ IF (WIN32 AND CMAKE_GENERATOR STREQUAL Ninja)
   target_compile_definitions(${PROJECT_NAME} PRIVATE WIN32 _WINDOWS _WINDLL)
 ENDIF()
 
-set_property(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" PROPERTY VS_STARTUP_PROJECT luajit)
-add_dependencies(luajit ${PROJECT_NAME})
-file(TO_NATIVE_PATH "${${CMAKE_CURRENT_SOURCE_DIR}/test}" VS_DEBUGGER_WORKING_DIRECTORY)
-set_target_properties(luajit PROPERTIES
-  VS_DEBUGGER_COMMAND_ARGUMENTS test.lua
-  VS_DEBUGGER_WORKING_DIRECTORY "${VS_DEBUGGER_WORKING_DIRECTORY}"
-)
-
 add_subdirectory(test)
 
 # Test
@@ -214,16 +246,16 @@ enable_testing()
 
 add_test(
   NAME test_build
-  COMMAND "$<TARGET_FILE:luajit>" test.lua
+  COMMAND "${LUA_INTERPRETER}" test.lua
   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/test"
 )
 
 set_tests_properties(test_build PROPERTIES DEPENDS ${PROJECT_NAME})
 
-if(EXISTS "${CMAKE_INSTALL_PREFIX}/bin/luajit${CMAKE_EXECUTABLE_SUFFIX}")
+if(EXISTS "${CMAKE_INSTALL_PREFIX}/bin/lua${LUA_SUFFIX}${CMAKE_EXECUTABLE_SUFFIX}")
   add_test(
     NAME test_install
-    COMMAND "${CMAKE_INSTALL_PREFIX}/bin/luajit${CMAKE_EXECUTABLE_SUFFIX}" test.lua
+    COMMAND "${CMAKE_INSTALL_PREFIX}/bin/lua${LUA_SUFFIX}${CMAKE_EXECUTABLE_SUFFIX}" test.lua
     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/test"
   )
 

@@ -431,7 +431,7 @@ class LuaGenerator {
                 cppsignature.join(" "),
                 // "",
                 "lua:",
-                `${ " ".repeat(4) }[${ attributes.join(", ") }] o${ coclass.name }.${ name }`,
+                `${ " ".repeat(4) }[${ attributes.join(", ") }] ${ is_static ? "" : "o" }${ coclass.name }.${ name }`,
                 "```",
                 ""
             ].join("\n").replace(/\s*\( {2}\)/g, "()"));

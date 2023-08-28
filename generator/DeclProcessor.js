@@ -550,7 +550,7 @@ class DeclProcessor {
         return value;
     }
 
-    as_stl_enum(coclass, iterator) {
+    as_stl_enum(coclass, iterator, options) {
         const {fqn} = coclass;
         const cotype = coclass.getClassName();
 

@@ -26,6 +26,8 @@ This module defines:
   the minor version of Lua
 ``LUA_VERSION_PATCH``
   the patch version of Lua
+``LUA_INTERPRETER``
+  the path to the lua executable
 
 Note that the expected include convention is
 

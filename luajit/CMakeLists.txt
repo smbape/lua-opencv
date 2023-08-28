@@ -243,6 +243,22 @@ endif()
 
 set_target_output_directories(libluajit)
 
+if (UNIX)
+  get_target_property(libluajit_OUTPUT_NAME libluajit OUTPUT_NAME)
+  add_custom_command(
+    TARGET libluajit POST_BUILD
+    COMMAND "${CMAKE_COMMAND}" -E make_directory pkgconfig
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${luajit_SOURCE_DIR}/etc/luajit.pc" pkgconfig/luajit.pc
+    COMMAND "${CMAKE_COMMAND}"
+      "-DPREFIX=${CMAKE_INSTALL_PREFIX}"
+      "-DMULTILIB=${CMAKE_INSTALL_LIBDIR}"
+      "-DLIBNAME=${libluajit_OUTPUT_NAME}"
+      -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/pkgconfig.cmake"
+    WORKING_DIRECTORY "${LIBRARY_OUTPUT_PATH}"
+    VERBATIM)
+  install(DIRECTORY "${LIBRARY_OUTPUT_PATH}/pkgconfig" DESTINATION "${CMAKE_INSTALL_LIBDIR}" USE_SOURCE_PERMISSIONS)
+endif()
+
 add_library(amalg STATIC
   "${luajit_SRC}/ljamalg.c"
 )
@@ -256,10 +272,7 @@ target_link_libraries(amalg PRIVATE "${LJ_VM_OBJECT}")
 target_include_directories(amalg PRIVATE ${LUA_INCLUDE_DIRS})
 add_dependencies(amalg ${gen_lj_targets})
 
-add_executable(luajit
-  "${luajit_SRC}/luajit.c"
-)
-
+add_executable(luajit "${luajit_SRC}/luajit.c")
 if (MSVC)
   target_sources(luajit PRIVATE luajit.manifest)
 endif()
@@ -293,20 +306,6 @@ add_custom_command(
   VERBATIM)
 
 if (UNIX)
-  get_target_property(libluajit_OUTPUT_NAME libluajit OUTPUT_NAME)
-  add_custom_command(
-    TARGET luajit POST_BUILD
-    COMMAND "${CMAKE_COMMAND}" -E make_directory pkgconfig
-    COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${luajit_SOURCE_DIR}/etc/luajit.pc" pkgconfig/luajit.pc
-    COMMAND "${CMAKE_COMMAND}"
-      "-DPREFIX=${CMAKE_INSTALL_PREFIX}"
-      "-DMULTILIB=${CMAKE_INSTALL_LIBDIR}"
-      "-DLIBNAME=${libluajit_OUTPUT_NAME}"
-      -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/pkgconfig.cmake"
-    WORKING_DIRECTORY "${LIBRARY_OUTPUT_PATH}"
-    VERBATIM)
-  install(DIRECTORY "${LIBRARY_OUTPUT_PATH}/pkgconfig" DESTINATION "${CMAKE_INSTALL_LIBDIR}" USE_SOURCE_PERMISSIONS)
-
   install(FILES "${luajit_SOURCE_DIR}/etc/luajit.1" DESTINATION "${CMAKE_INSTALL_MANDIR}/man1")
 endif()
 
@@ -353,3 +352,16 @@ install(DIRECTORY "${LUA_SHARE_DIR}"
   FILES_MATCHING PATTERN "*.lua"
 )
 endif()
+
+set(Luajit_VERSION ${VERSION})
+set(LUA_SUFFIX jit PARENT_SCOPE)
+
+set(LUA_LIBRARIES liblua${LUA_SUFFIX}::liblua${LUA_SUFFIX} PARENT_SCOPE)
+set(LUA_INTERPRETER $<TARGET_FILE:lua${LUA_SUFFIX}> PARENT_SCOPE)
+set(LUA_INCDIR "${lua${LUA_SUFFIX}_SRC}" PARENT_SCOPE)
+set(LUA_VERSION_STRING ${Lua${LUA_SUFFIX}_VERSION} PARENT_SCOPE)
+set(LUA_VERSION_MAJOR ${MAJVER} PARENT_SCOPE)
+set(LUA_VERSION_MINOR ${MINVER} PARENT_SCOPE)
+set(LUA_VERSION_PATCH ${RELVER} PARENT_SCOPE)
+set(LUA_INCLUDE_DIR "${LUA_INCLUDE_DIRS}" PARENT_SCOPE)
+set(LUA_DIR "${CMAKE_INSTALL_PREFIX}" PARENT_SCOPE)

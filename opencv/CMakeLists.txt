@@ -125,4 +125,28 @@ option(BUILD_opencv_python_bindings_generator "The Python bindings" ON)
 
 add_subdirectory("${opencv_SOURCE_DIR}" "${opencv_BINARY_DIR}")
 
-set(opencv_SOURCE_DIR "${opencv_SOURCE_DIR}" CACHE PATH "Where are the opencv sources" FORCE)
+set(opencv_SOURCE_DIR "${opencv_SOURCE_DIR}" PARENT_SCOPE)
+set(OpenCV_LIBS "")
+set(OpenCV_INCLUDE_DIRS "${OPENCV_CONFIG_FILE_INCLUDE_DIR}" "${opencv_SOURCE_DIR}/include")
+
+foreach(m opencv_core ${OPENCV_MODULES_PUBLIC})
+  if(TARGET ${m})
+    list(APPEND OpenCV_LIBS ${m})
+    install(TARGETS ${m}
+      LIBRARY
+        DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+        PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
+                        GROUP_EXECUTE GROUP_READ
+      ARCHIVE
+        DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+      RUNTIME
+        DESTINATION "${CMAKE_INSTALL_BINDIR}"
+    )
+  endif()
+  if(EXISTS "${OPENCV_MODULE_${m}_LOCATION}/include")
+    list(APPEND OpenCV_INCLUDE_DIRS "${OPENCV_MODULE_${m}_LOCATION}/include")
+  endif()
+endforeach()
+
+set(OpenCV_LIBS "${OpenCV_LIBS}" PARENT_SCOPE)
+set(OpenCV_INCLUDE_DIRS "${OpenCV_INCLUDE_DIRS}" PARENT_SCOPE)
