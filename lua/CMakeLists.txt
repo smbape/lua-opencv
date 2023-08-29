@@ -6,15 +6,17 @@ project(lua)
 include(../cmake/FindPatch.cmake)
 include(cmake/initialize.cmake)
 
-option(BUILD_SHARED_LIBS "Build SHARED library" ON)
+option(BUILD_SHARED_LIBS "Build shared libraries (.dll/.so) instead of static ones (.lib/.a)" ON)
 
 set(Lua_URL_HASH_515 2640fc56a795f29d28ef15e13c34a47e223960b0240e8cb0a82d9b0738695333)
 set(Lua_URL_HASH_524 b9e2e4aad6789b3b63a056d442f7b39f0ecfca3ae0f1fc0ae4e9614401b69f4b)
 set(Lua_URL_HASH_536 fc5fd69bb8736323f026672b1b7235da613d7177e72558893a0bdcd320466d60)
 set(Lua_URL_HASH_546 7d5ea1b9cb6aa0b59ca3dde1c6adcb57ef83a1ba8e5432c0ecd06bf439b3ad88)
 
-set(Lua_VERSION 5.4.6 CACHE STRING "Choose the Lua version.")
-set_property(CACHE Lua_VERSION PROPERTY STRINGS "5.4.6" "5.3.6" "5.2.4" "5.1.5")
+if ((NOT DEFINED Lua_VERSION) OR ("${Lua_VERSION} " STREQUAL " "))
+  set(Lua_VERSION 5.4.6 CACHE STRING "Choose the Lua version." FORCE)
+  set_property(CACHE Lua_VERSION PROPERTY STRINGS "5.4.6" "5.3.6" "5.2.4" "5.1.5")
+endif()
 string(REPLACE "." "" Lua_DLLVERSION ${Lua_VERSION})
 
 string(REPLACE "." ";" Lua_VERSION_LIST ${Lua_VERSION})

@@ -13,9 +13,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(DEFAULT_BUILD_TYPE "Release")
 
-if(NOT DEFINED CMAKE_BUILD_TYPE)
+if((NOT DEFINED CMAKE_BUILD_TYPE) OR ("${CMAKE_BUILD_TYPE} " STREQUAL " "))
   message(STATUS "Setting build type to '${DEFAULT_BUILD_TYPE}' as none was specified.")
-  set(CMAKE_BUILD_TYPE "${DEFAULT_BUILD_TYPE}" CACHE STRING "Choose the type of build.")
+  set(CMAKE_BUILD_TYPE "${DEFAULT_BUILD_TYPE}" CACHE STRING "Choose the type of build." FORCE)
 endif()
 
 # Set the possible values of build type for cmake-gui
@@ -132,6 +132,14 @@ set(OpenCV_INCLUDE_DIRS "${OPENCV_CONFIG_FILE_INCLUDE_DIR}" "${opencv_SOURCE_DIR
 foreach(m opencv_core ${OPENCV_MODULES_PUBLIC})
   if(TARGET ${m})
     list(APPEND OpenCV_LIBS ${m})
+
+    if (WITH_LUA_ROCKS)
+      # luarocks does not support VERSION and SOVERSION
+      # https://github.com/luarocks/luarocks/issues/1532
+      set_property(TARGET ${m} PROPERTY VERSION)
+      set_property(TARGET ${m} PROPERTY SOVERSION)
+    endif()
+
     install(TARGETS ${m}
       LIBRARY
         DESTINATION "${CMAKE_INSTALL_LIBDIR}"
@@ -143,6 +151,7 @@ foreach(m opencv_core ${OPENCV_MODULES_PUBLIC})
         DESTINATION "${CMAKE_INSTALL_BINDIR}"
     )
   endif()
+
   if(EXISTS "${OPENCV_MODULE_${m}_LOCATION}/include")
     list(APPEND OpenCV_INCLUDE_DIRS "${OPENCV_MODULE_${m}_LOCATION}/include")
   endif()

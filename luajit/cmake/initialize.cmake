@@ -1,18 +1,10 @@
 cmake_minimum_required(VERSION 3.25)
 
-set(MAJVER  2)
-set(MINVER  1)
-set(RELVER  0)
-set(PREREL  -beta3)
-set(VERSION ${MAJVER}.${MINVER}.${RELVER}${PREREL})
-set(ABIVER  5.1)
-string(REPLACE "." "" NODOTABIVER ${ABIVER})
-
 set(DEFAULT_BUILD_TYPE "Release")
 
-if(NOT DEFINED CMAKE_BUILD_TYPE)
+if((NOT DEFINED CMAKE_BUILD_TYPE) OR ("${CMAKE_BUILD_TYPE} " STREQUAL " "))
   message(STATUS "Setting build type to '${DEFAULT_BUILD_TYPE}' as none was specified.")
-  set(CMAKE_BUILD_TYPE "${DEFAULT_BUILD_TYPE}" CACHE STRING "Choose the type of build.")
+  set(CMAKE_BUILD_TYPE "${DEFAULT_BUILD_TYPE}" CACHE STRING "Choose the type of build." FORCE)
 endif()
 
 # Set the possible values of build type for cmake-gui
@@ -48,3 +40,18 @@ function(vcpkg_regex_replace_string filename match replace)
 endfunction()
 
 include (GNUInstallDirs)
+
+if ((NOT DEFINED Luajit_VERSION) OR ("${Luajit_VERSION} " STREQUAL " "))
+  set(Luajit_VERSION 2.1.0-beta3 CACHE STRING "Choose the LuaJIT version." FORCE)
+  set_property(CACHE Luajit_VERSION PROPERTY STRINGS "2.1.0-beta3")
+endif()
+string(REGEX REPLACE "[.-]" "" Luajit_DLLVERSION ${Luajit_VERSION})
+
+string(REPLACE "." ";" Luajit_VERSION_LIST ${Luajit_VERSION})
+list(GET Luajit_VERSION_LIST 0 MAJVER)
+list(GET Luajit_VERSION_LIST 1 MINVER)
+list(GET Luajit_VERSION_LIST 2 RELVER)
+
+set(VERSION ${Luajit_VERSION})
+set(ABIVER  5.1)
+string(REPLACE "." "" NODOTABIVER ${ABIVER})

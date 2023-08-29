@@ -4,18 +4,19 @@ cmake_minimum_required(VERSION 3.25)
 
 project(luajit LANGUAGES C CXX ASM)
 
-option(BUILD_SHARED_LIBS "Build SHARED library" ON)
+option(BUILD_SHARED_LIBS "Build shared libraries (.dll/.so) instead of static ones (.lib/.a)" ON)
 
 include(cmake/initialize.cmake)
 include(cmake/options.cmake)
+
+set(Luajit_URL_HASH_210beta3 409f7fe570d3c16558e594421c47bdd130238323c9d6fd6c83dedd2aaeb082a8)
 
 include(FetchContent)
 FetchContent_Declare(luajit
   # URL                 https://github.com/openresty/luajit2/archive/refs/tags/v2.1-20230410.tar.gz
   URL                 https://github.com/LuaJIT/LuaJIT/archive/refs/tags/v${VERSION}.tar.gz
-  URL_HASH            SHA256=409f7fe570d3c16558e594421c47bdd130238323c9d6fd6c83dedd2aaeb082a8
+  URL_HASH            SHA256=${Luajit_URL_HASH_${Luajit_DLLVERSION}}
 )
-
 Fetchcontent_Populate(luajit)
 
 set(luajit_SRC "${luajit_SOURCE_DIR}/src")
@@ -353,7 +354,6 @@ install(DIRECTORY "${LUA_SHARE_DIR}"
 )
 endif()
 
-set(Luajit_VERSION ${VERSION})
 set(LUA_SUFFIX jit PARENT_SCOPE)
 
 set(LUA_LIBRARIES liblua${LUA_SUFFIX}::liblua${LUA_SUFFIX} PARENT_SCOPE)

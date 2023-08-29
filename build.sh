@@ -148,6 +148,9 @@ CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE:-Release}"
 CONFIG_NAME=${CONFIG_NAME:-Linux-GCC-$CMAKE_BUILD_TYPE}
 BUILD_FOLDER="${BUILD_FOLDER:-$PWD/out/build/$CONFIG_NAME}"
 CMAKE_INSTALL_PREFIX="${PREFIX:-$PWD/out/install/$CONFIG_NAME}"
+if [[ "$TARGET" == 'lua' || "$TARGET" == 'luarocks' ]]; then
+    export LUA_ONLY=ON
+fi
 
 ${try_run}mkdir -p "$BUILD_FOLDER" && ${try_run}cd "$BUILD_FOLDER" || die "Cannot access build directory $BUILD_FOLDER" $?
 

@@ -13,13 +13,13 @@ description = {
    license = "MIT"
 }
 dependencies = {
-   "lua >= 5.1"
+   "lua >= 5.1, < 5.5"
 }
 build = {
    type = "cmake",
    variables = {
+      WITH_LUA_ROCKS = "ON",
       CMAKE_INSTALL_PREFIX = "$(PREFIX)",
-      BUILD_SHARED_LIBS = "ON",
       LUA_BINDIR = "$(LUA_BINDIR)",
       LUA_DIR = "$(LUA_DIR)",
       LUA_INCDIR = "$(LUA_INCDIR)",

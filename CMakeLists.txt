@@ -8,14 +8,16 @@ enable_language(ASM)
 
 set(DEFAULT_BUILD_TYPE "Release")
 
-if(NOT DEFINED CMAKE_BUILD_TYPE)
+if((NOT DEFINED CMAKE_BUILD_TYPE) OR ("${CMAKE_BUILD_TYPE} " STREQUAL " "))
   message(STATUS "Setting build type to '${DEFAULT_BUILD_TYPE}' as none was specified.")
-  set(CMAKE_BUILD_TYPE "${DEFAULT_BUILD_TYPE}" CACHE STRING "Choose the type of build.")
+  set(CMAKE_BUILD_TYPE "${DEFAULT_BUILD_TYPE}" CACHE STRING "Choose the type of build." FORCE)
 endif()
 
 # Set the possible values of build type for cmake-gui
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release;MinSizeRel;RelWithDebInfo" CACHE STRING "Configs" FORCE)
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "${CMAKE_CONFIGURATION_TYPES}")
+
+option(BUILD_SHARED_LIBS "Build shared libraries (.dll/.so) instead of static ones (.lib/.a)" ON)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -27,13 +29,16 @@ endif()
 
 # find LuaJIT
 if ((NOT DEFINED LUA_DIR) AND (NOT DEFINED ENV{LUA_DIR}))
-  option(USE_JIT "Use luajit" ON)
-  if (USE_JIT)
+  set(Lua_VERSION 5.4.6 CACHE STRING "Choose the Lua version.")
+  set_property(CACHE Lua_VERSION PROPERTY STRINGS "luajit-2.1.0-beta3" "5.4.6" "5.3.6" "5.2.4" "5.1.5")
+
+  if (Lua_VERSION MATCHES "^luajit-")
+    string(SUBSTRING "${Lua_VERSION}" 7 -1 Luajit_VERSION)
+    message(STATUS "Luajit_VERSION = ${Luajit_VERSION}")
     set(LUA_SUFFIX "jit")
   else()
     set(LUA_SUFFIX "")
   endif()
-  set(LUA_SUFFIX "")
 
   add_subdirectory(lua${LUA_SUFFIX})
 
@@ -84,6 +89,12 @@ endif()
 # message(STATUS "LUA_INTERPRETER = ${LUA_INTERPRETER}")
 
 add_subdirectory(luarocks)
+
+set(LUA_ONLY "$ENV{LUA_ONLY}")
+if (LUA_ONLY)
+  message(STATUS "Processing Lua related targets only")
+  return()
+endif()
 
 # find OpenCV
 if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
@@ -198,21 +209,15 @@ if (DEFINED OpenCV_INCLUDE_DIRS)
 endif()
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
-  # OUTPUT_NAME "${PROJECT_NAME}-${PROJECT_VERSION}"
-  # VERSION "${PROJECT_VERSION}"
-  # SOVERSION "${PROJECT_VERSION_MAJOR}"
-  # DEBUG_POSTFIX "${OpenCV_DEBUG_POSTFIX}"
-  COMPILE_PDB_NAME "${PROJECT_NAME}${OpenCV_DLLVERSION}"
-  COMPILE_PDB_NAME_DEBUG "${PROJECT_NAME}${OpenCV_DLLVERSION}${OpenCV_DEBUG_POSTFIX}"
   ARCHIVE_OUTPUT_DIRECTORY "${LIBRARY_OUTPUT_PATH}"
   COMPILE_PDB_OUTPUT_DIRECTORY "${LIBRARY_OUTPUT_PATH}"
   LIBRARY_OUTPUT_DIRECTORY "${LIBRARY_OUTPUT_PATH}"
   RUNTIME_OUTPUT_DIRECTORY "${EXECUTABLE_OUTPUT_PATH}"
 
-  # library is in ${CMAKE_INSTALL_LIBDIR}/lua/
-  # however, opencv is in ${CMAKE_INSTALL_LIBDIR}/
-  # use rpath $ORIGIN/.. to allow finding opencv
-  INSTALL_RPATH "$ORIGIN/.."
+  # opencv is in ${CMAKE_INSTALL_LIBDIR}/
+  # opencv is in ${CMAKE_INSTALL_LIBDIR}/
+  # use rpath $ORIGIN to allow finding opencv
+  INSTALL_RPATH "$ORIGIN"
 )
 
 # Always generate debug files
