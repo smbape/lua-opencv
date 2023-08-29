@@ -8,21 +8,27 @@ const { findFile } = require("../generator/FileUtils");
 
 const platform = os.platform() === "win32" ? (/cygwin/.test(process.env.HOME) ? "Cygwin" : "x64") : "*-GCC";
 const exeSuffix = os.platform() === "win32" ? ".exe" : "";
+const batchSuffix = os.platform() === "win32" ? ".bat" : "";
 
-const config = {};
+const luarocks = sysPath.resolve(__dirname, "..", "luarocks");
 
-for (const buildType of ["Debug", "Release"]) {
-    const exe = findFile(`out/install/${ platform }-${ buildType }/bin/lua*${ exeSuffix }`, __dirname);
-    config[buildType] = {
-        exe,
+const lua_interpreter = spawnSync(sysPath.join(luarocks, `luarocks${ batchSuffix }`), ["config", "lua_interpreter"]).stdout.toString().trim()
+const LUA_BINDIR = spawnSync(sysPath.join(luarocks, `luarocks${ batchSuffix }`), ["config", "variables.LUA_BINDIR"]).stdout.toString().trim()
+
+const config = {
+    Debug: {
+        exe: sysPath.join(LUA_BINDIR.replace("Release", "Debug"), lua_interpreter),
         env: {},
-    };
+    },
+    Release: {
+        exe: sysPath.join(luarocks, `lua${ batchSuffix }`),
+        env: {},
+    },
+};
 
-    if (os.platform() !== "win32") {
-        config[buildType].env = {
-            LUA_CPATH: `${ sysPath.resolve(exe, "../../lib/lua/?.so") };${ spawnSync(exe, ["-e", "print(package.cpath)"]).stdout.toString().trim() }`
-        };
-    }
+if (os.platform() !== "win32") {
+    const {env, exe} = config.Debug;
+    // env.LUA_CPATH = `${ sysPath.resolve(exe, "../../lib/lua/?.so") };${ spawnSync(exe, ["-e", "print(package.cpath)"]).stdout.toString().trim() }`;
 }
 
 const run = (file, cwd, env, next) => {
