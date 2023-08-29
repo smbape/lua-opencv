@@ -24,6 +24,18 @@ SET nparms=20
 
 :GET_OPTS
 IF %nparms% == 0 GOTO :MAIN
+
+SET "_param=%~1"
+IF ["%_param%"] == [""] GOTO :NEXT_OPT
+IF ["%_param:~0,2%"] == ["-D"] (
+    echo %_param% | find "=" 1>NUL 2>NUL
+    if errorlevel 1 SET _param=%_param%=%~2
+    if errorlevel 1 SET /a nparms -=1
+    if errorlevel 1 SHIFT
+    SET EXTRA_CMAKE_OPTIONS=%EXTRA_CMAKE_OPTIONS% "!_param!"
+    IF %nparms% == 0 GOTO :MAIN
+)
+
 IF [%1] == [-d] SET CMAKE_BUILD_TYPE=Debug
 IF [%1] == [--dry-run] SET is_dry_run=1
 IF [%1] == [--no-build] SET skip_build=1
@@ -41,36 +53,27 @@ IF [%1] == [--install] SET has_install=1
 IF [%1] == [--prefix] (
     SET has_prefix=1
     SET PREFIX=%2
-    SET /a nparms -=1
-    SHIFT
-    IF %nparms% == 0 GOTO :MAIN
+    GOTO :NEXT_OPT
 )
 IF [%1] == [--target] (
     SET TARGET=%2
-    SET /a nparms -=1
-    SHIFT
-    IF %nparms% == 0 GOTO :MAIN
+    GOTO :NEXT_OPT
 )
 IF [%1] == [-G] (
     IF [%2-%TARGET%] == [Ninja-ALL_BUILD] SET TARGET=all
     SET CMAKE_GENERATOR=-G %2
     SET has_generator=1
-    SET /a nparms -=1
-    SHIFT
-    IF %nparms% == 0 GOTO :MAIN
+    GOTO :NEXT_OPT
 )
 IF [%1] == [-A] (
     SET CMAKE_GENERATOR_PLATFORM=-A %2
-    SET /a nparms -=1
-    SHIFT
-    IF %nparms% == 0 GOTO :MAIN
+    GOTO :NEXT_OPT
 )
 IF [%1] == [--config] (
     SET CONFIG_NAME=%2
-    SET /a nparms -=1
-    SHIFT
-    IF %nparms% == 0 GOTO :MAIN
+    GOTO :NEXT_OPT
 )
+:NEXT_OPT
 SET /a nparms -=1
 SHIFT
 GOTO GET_OPTS
@@ -81,8 +84,10 @@ IF NOT DEFINED CMAKE_BUILD_TYPE SET CMAKE_BUILD_TYPE=Release
 IF NOT DEFINED CONFIG_NAME SET CONFIG_NAME=x64-%CMAKE_BUILD_TYPE%
 IF NOT DEFINED BUILD_FOLDER SET BUILD_FOLDER=%CD%\out\build\%CONFIG_NAME%
 IF NOT DEFINED PREFIX SET PREFIX=%CD%\out\install\%CONFIG_NAME%
-IF [%TARGET%] == lua SET LUA_ONLY=ON
-IF [%TARGET%] == luarocks SET LUA_ONLY=ON
+IF [%TARGET%] == [lua] SET LUA_ONLY=ON
+IF [%TARGET%] == [luajit] SET LUA_ONLY=ON
+IF [%TARGET%] == [luarocks] SET LUA_ONLY=ON
+IF [%TARGET%] == [luarocks] SET LUA_DIR=%PREFIX%
 
 SET EXTRA_CMAKE_OPTIONS=%EXTRA_CMAKE_OPTIONS% "-DCMAKE_BUILD_TYPE:STRING=%CMAKE_BUILD_TYPE%" "-DCMAKE_INSTALL_PREFIX:PATH=%PREFIX%"
 

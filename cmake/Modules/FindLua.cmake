@@ -26,8 +26,6 @@ This module defines:
   the minor version of Lua
 ``LUA_VERSION_PATCH``
   the patch version of Lua
-``LUA_INTERPRETER``
-  the path to the lua executable
 
 Note that the expected include convention is
 
@@ -91,19 +89,29 @@ endfunction()
 
 function(_lua_set_version_vars)
   set(_lua_include_subdirs_raw "lua")
-
-  list(APPEND _lua_include_subdirs_raw
-      luajit-2.1
-      luajit-2.0
-      )
-
   foreach (ver IN LISTS _lua_append_versions)
     string(REGEX MATCH "^([0-9]+)\\.([0-9]+)$" _ver "${ver}")
+
     list(APPEND _lua_include_subdirs_raw
         lua${CMAKE_MATCH_1}${CMAKE_MATCH_2}
         lua${CMAKE_MATCH_1}.${CMAKE_MATCH_2}
         lua-${CMAKE_MATCH_1}.${CMAKE_MATCH_2}
         )
+
+    if ("${CMAKE_MATCH_1}.${CMAKE_MATCH_2}" STREQUAL "5.1")
+      if (NOT (Lua_FIND_VERSION_EXACT OR Lua_FIND_VERSION) OR "${LUA_SUFFIX}" STREQUAL "jit")
+        if (Luajit_VERSION)
+          string(REGEX MATCH "^([0-9]+)\\.([0-9]+)" _ver "${Luajit_VERSION}")
+          list(PREPEND _lua_include_subdirs_raw luajit-${CMAKE_MATCH_1}.${CMAKE_MATCH_2})
+        else()
+          list(PREPEND _lua_include_subdirs_raw
+              luajit-2.1
+              luajit-2.0
+              )
+        endif()
+      endif()
+    endif()
+
   endforeach ()
 
   # Prepend "include/" to each path directly after the path
@@ -160,18 +168,22 @@ function(_lua_find_header)
   # Initialize as local variable
   set(CMAKE_IGNORE_PATH ${CMAKE_IGNORE_PATH})
   while (TRUE)
-    # Find the next header to test. Check each possible subdir in order
-    # This prefers e.g. higher versions as they are earlier in the list
-    # It is also consistent with previous versions of FindLua
-    foreach (subdir IN LISTS _lua_include_subdirs)
-      find_path(LUA_INCLUDE_DIR lua.h
-        HINTS ENV LUA_DIR
-        PATH_SUFFIXES ${subdir}
-        )
-      if (LUA_INCLUDE_DIR)
-        break()
-      endif()
-    endforeach()
+    if (DEFINED ENV{LUA_INCDIR})
+      set(LUA_INCLUDE_DIR "$ENV{LUA_INCDIR}" PARENT_SCOPE)
+    else()
+      # Find the next header to test. Check each possible subdir in order
+      # This prefers e.g. higher versions as they are earlier in the list
+      # It is also consistent with previous versions of FindLua
+      foreach (subdir IN LISTS _lua_include_subdirs)
+        find_path(LUA_INCLUDE_DIR lua.h
+          HINTS ENV LUA_DIR
+          PATH_SUFFIXES ${subdir}
+          )
+        if (LUA_INCLUDE_DIR)
+          break()
+        endif()
+      endforeach()
+    endif()
     # Did not found header -> Fail
     if (NOT LUA_INCLUDE_DIR)
       return()
@@ -202,12 +214,16 @@ unset(_lua_append_versions)
 
 if (LUA_VERSION_STRING)
   set(_lua_library_names
-    luajit-${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}
     lua${LUA_VERSION_MAJOR}${LUA_VERSION_MINOR}
     lua${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}
     lua-${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}
     lua.${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}
     )
+  if (LUA_INCLUDE_DIR MATCHES "luajit-[0-9]+\\.[0-9]+$")
+    list(PREPEND _lua_library_names
+      luajit-${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}
+    )
+  endif()
 endif ()
 
 find_library(LUA_LIBRARY

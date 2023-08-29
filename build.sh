@@ -85,6 +85,10 @@ for ac_option in "$@"; do
             has_test=1
             continue
             ;;
+        -D*)
+            EXTRA_CMAKE_OPTIONS="$EXTRA_CMAKE_OPTIONS '$ac_option'"
+            continue
+            ;;
     esac
 
     case "$ac_option" in
@@ -148,15 +152,19 @@ CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE:-Release}"
 CONFIG_NAME=${CONFIG_NAME:-Linux-GCC-$CMAKE_BUILD_TYPE}
 BUILD_FOLDER="${BUILD_FOLDER:-$PWD/out/build/$CONFIG_NAME}"
 CMAKE_INSTALL_PREFIX="${PREFIX:-$PWD/out/install/$CONFIG_NAME}"
-if [[ "$TARGET" == 'lua' || "$TARGET" == 'luarocks' ]]; then
+if [[ "$TARGET" == 'lua' || "$TARGET" == 'luajit' || "$TARGET" == 'luarocks' ]]; then
     export LUA_ONLY=ON
+fi
+
+if [[ "$TARGET" == 'luarocks' ]]; then
+    export LUA_DIR="${CMAKE_INSTALL_PREFIX}"
 fi
 
 ${try_run}mkdir -p "$BUILD_FOLDER" && ${try_run}cd "$BUILD_FOLDER" || die "Cannot access build directory $BUILD_FOLDER" $?
 
 test ${#PLATFORM} -eq 0 || GENERATOR="$GENERATOR -A $PLATFORM"
 
-test $skip_config -eq 1 || ${try_run}cmake -G $GENERATOR -DCMAKE_BUILD_TYPE:STRING=$CMAKE_BUILD_TYPE "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}" "$SCRIPTPATH" || exit $?
+test $skip_config -eq 1 || ${try_run}cmake -G $GENERATOR $EXTRA_CMAKE_OPTIONS -DCMAKE_BUILD_TYPE:STRING=$CMAKE_BUILD_TYPE "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}" "$SCRIPTPATH" || exit $?
 test $skip_build -eq 1 || ${try_run}cmake --build . --target $TARGET -j4 || exit $?
 test $has_install -eq 0 || ${try_run}cmake --install . --prefix "$CMAKE_INSTALL_PREFIX" || exit $?
 

@@ -1,0 +1,5 @@
+@echo off
+setlocal
+set "LUAROCKS_SYSCONFDIR=@LUAROCKS_SYSCONFDIR@"
+"@LUAROCKS_EXE@" --project-tree %~dp0lua_modules %*
+exit /b %ERRORLEVEL%
