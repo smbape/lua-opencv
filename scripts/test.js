@@ -28,7 +28,7 @@ const config = {
 
 if (os.platform() !== "win32") {
     const {env, exe} = config.Debug;
-    // env.LUA_CPATH = `${ sysPath.resolve(exe, "../../lib/lua/?.so") };${ spawnSync(exe, ["-e", "print(package.cpath)"]).stdout.toString().trim() }`;
+    env.LUA_CPATH = `${ sysPath.resolve(exe, "../../lib/?.so") };${ spawnSync(exe, ["-e", "print(package.cpath)"]).stdout.toString().trim() }`;
 }
 
 const run = (file, cwd, env, next) => {

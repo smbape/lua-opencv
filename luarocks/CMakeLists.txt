@@ -5,6 +5,8 @@ cmake_minimum_required(VERSION 3.19)
 # Name of the project (will be the name of the plugin)
 project(luarocks)
 
+include(../cmake/FindPatch.cmake)
+
 set(LuaRocks_VERSION 3.9.2)
 
 set(LUA_DIR "$ENV{LUA_DIR}")
@@ -39,7 +41,7 @@ if (WIN32)
               COMMAND   "${CMAKE_COMMAND}"
                           "-DLUAROCKS_EXE=<SOURCE_DIR>\\luarocks.exe"
                           "-DLUA_BINDIR=${LUA_BINDIR}"
-                          "-DLUA_INTERPRETER_NAME=${DLUA_INTERPRETER_NAME}"
+                          "-DLUA_INTERPRETER_NAME=${LUA_INTERPRETER_NAME}"
                           "-DABIVER=${ABIVER}"
                           "-DEXTNAME=.bat"
                           -P luarocks-init.cmake
@@ -53,6 +55,7 @@ else()
   ExternalProject_Add(luarocks
     URL                 ${LuaRocks_URL}
     URL_HASH            ${LuaRocks_URL_HASH}
+    PATCH_COMMAND       "${PATCH}" -p 1 -d "<SOURCE_DIR>" -i "${CMAKE_CURRENT_SOURCE_DIR}/patches/001-luarocks-src.patch"
     CONFIGURE_COMMAND   cd "<SOURCE_DIR>" COMMAND ./configure "--prefix=<BINARY_DIR>" "--with-lua=${LUA_DIR}"
     BUILD_COMMAND       cd "<SOURCE_DIR>" COMMAND make COMMAND make install
     INSTALL_COMMAND     cd "${PROJECT_DIR}"

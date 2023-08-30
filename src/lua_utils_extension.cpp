@@ -4,6 +4,28 @@
 namespace {
 	using namespace LUA_MODULE_NAME;
 
+	template<typename... Args>
+	inline auto mat_at(sol::this_state ts, const cv::Mat& m, Args&&... args) {
+		switch (m.depth()) {
+		case CV_8U:
+			return sol::object(ts, sol::in_place, m.at<uchar>(std::forward<Args>(args)...));
+		case CV_8S:
+			return sol::object(ts, sol::in_place, m.at<char>(std::forward<Args>(args)...));
+		case CV_16U:
+			return sol::object(ts, sol::in_place, m.at<ushort>(std::forward<Args>(args)...));
+		case CV_16S:
+			return sol::object(ts, sol::in_place, m.at<short>(std::forward<Args>(args)...));
+		case CV_32S:
+			return sol::object(ts, sol::in_place, m.at<int>(std::forward<Args>(args)...));
+		case CV_32F:
+			return sol::object(ts, sol::in_place, m.at<float>(std::forward<Args>(args)...));
+		case CV_64F:
+			return sol::object(ts, sol::in_place, m.at<double>(std::forward<Args>(args)...));
+		default:
+			LUA_MODULE_THROW("Unsupported mat type");
+		}
+	}
+
 	sol::object mat_index(cv::Mat& self, int idx, sol::this_state ts) {
 		const auto& size = self.size;
 		const auto dims = size.dims();
@@ -17,7 +39,7 @@ namespace {
 				return mat_index(row, idx, ts);
 			}
 
-			return sol::object(ts, sol::in_place, cvextra::mat_at(self, idx));
+			return mat_at(ts, self, idx);
 		}
 
 		if (dims > 2) {
@@ -38,7 +60,7 @@ namespace {
 		// opencv Mat does not support 1D matrix
 		// treat a matrix with 1 channel and (1 row or 1 column) as a 1D matrix
 		if (size[0] == 1 || size[1] == 1) {
-			return sol::object(ts, sol::in_place, cvextra::mat_at(self, idx));
+			return mat_at(ts, self, idx);
 		}
 
 		auto row = self.row(idx);
@@ -221,7 +243,7 @@ namespace {
 	double mat_index_maybe(cv::Mat& self, sol::stack_object obj, sol::this_state ts) {
 		sol::state_view lua(ts);
 
-		auto maybe_idx = maybe<std::vector<int>>(obj);
+		auto maybe_idx = maybe_impl(obj, static_cast<std::vector<int>*>(nullptr));
 		if (!maybe_idx) {
 			luaL_error(lua.lua_state(), "Overload resolution failed");
 			return 0.;
@@ -240,7 +262,7 @@ namespace {
 	void mat_new_index_maybe(cv::Mat& self, sol::stack_object obj, double value, sol::this_state ts) {
 		sol::state_view lua(ts);
 
-		auto maybe_idx = maybe<std::vector<int>>(obj);
+		auto maybe_idx = maybe_impl(obj, static_cast<std::vector<int>*>(nullptr));
 		if (!maybe_idx) {
 			luaL_error(lua.lua_state(), "Overload resolution failed");
 			return;
@@ -262,7 +284,7 @@ namespace LUA_MODULE_NAME {
 		sol::table ns = module["cv"][sol::metatable_key];
 
 		// https://github.com/ThePhD/sol2/issues/1405
-		sol::usertype<cv::Mat> mat_type = module["cv"]["Mat"];
+		sol::usertype<cv::Mat> mat_type = ns["Mat"];
 
 		mat_type[sol::meta_function::index] = sol::overload(
 			&mat_index,

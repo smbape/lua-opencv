@@ -7,7 +7,7 @@ Sources:
 
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
-local round = opencv_lua.math.round
+local int = opencv_lua.math.int
 
 -- Make the starting point unpredictable
 cv.theRNG().state = cv.getTickCount()
@@ -50,8 +50,8 @@ local function perspectiveCorrection(img1Path, img2Path, patternSize)
         pt1 = pt1:reshape(1, 3)
         local pt2 = H * pt1
         pt2 = pt2 / pt2[2]
-        local start = { round(corners1[i][0]), round(corners1[i][1]) }
-        local end_ = { round(img1.width + pt2[0]), round(pt2[1]) }
+        local start = { int(corners1[i][0]), int(corners1[i][1]) }
+        local end_ = { int(img1.width + pt2[0]), int(pt2[1]) }
         cv.line(img_draw_matches, start, end_, randomColor(), 2)
     end
 

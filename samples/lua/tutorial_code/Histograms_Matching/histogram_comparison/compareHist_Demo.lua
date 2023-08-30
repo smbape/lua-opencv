@@ -8,7 +8,7 @@ Sources:
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local kwargs = opencv_lua.kwargs
-local round = opencv_lua.math.round
+local int = opencv_lua.math.int
 
 -- [Load three images with different environment settings]
 -- parser = argparse.ArgumentParser(description='Code for Histogram Comparison tutorial.')
@@ -54,7 +54,7 @@ local hsv_test2 = cv.cvtColor(src_test2, cv.COLOR_BGR2HSV)
 -- [Convert to HSV]
 
 -- [Convert to HSV half]
-local hsv_half_down = hsv_base:new(cv.Range(round(hsv_base.rows / 2), hsv_base.rows), cv.Range(0, hsv_base.cols))
+local hsv_half_down = hsv_base:new(cv.Range(int(hsv_base.rows / 2), hsv_base.rows), cv.Range(0, hsv_base.cols))
 -- [Convert to HSV half]
 
 -- [Using 50 bins for hue and 60 for saturation]

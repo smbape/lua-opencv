@@ -9,7 +9,7 @@ local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local kwargs = opencv_lua.kwargs
 local bit = bit or opencv_lua.bit
-local round = opencv_lua.math.round
+local int = opencv_lua.math.int
 local INDEX_BASE = 1 -- lua is 1-based indexed
 
 local function print_help()
@@ -59,8 +59,8 @@ local function main(argv)
     local magI_rows, magI_cols = magI.rows, magI.cols
     -- crop the spectrum, if it has an odd number of rows or columns
     magI = magI:new({ 0, 0, bit.band(magI_cols, -2), bit.band(magI_rows, -2) })
-    local cx = round(magI_rows / 2)
-    local cy = round(magI_cols / 2)
+    local cx = int(magI_rows / 2)
+    local cy = int(magI_cols / 2)
 
     local q0 = magI:new({ 0, 0, cx, cy }) -- Top-Left - Create a ROI per quadrant
     local q1 = magI:new({ cx, 0, cx, cy }) -- Top-Right

@@ -60,7 +60,7 @@ local r_hist = cv.calcHist(bgr_planes, { 2 }, nil, { histSize }, histRange, kwar
 -- [Draw the histograms for B, G and R]
 local hist_w = 512
 local hist_h = 400
-local bin_w = round(hist_w / histSize)
+local bin_w = int(round(hist_w / histSize))
 
 local histImage = cv.Mat.zeros(hist_h, hist_w, cv.CV_8UC3)
 -- [Draw the histograms for B, G and R]

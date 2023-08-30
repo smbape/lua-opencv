@@ -1,0 +1,16 @@
+diff -rupN a/etc/lua.pc b/etc/lua.pc
+--- a/src/luarocks/src/luarocks/build/cmake.lua
++++ b/src/luarocks/src/luarocks/build/cmake.lua
+@@ -62,7 +62,11 @@
+    end
+ 
+    if do_build then
+-      if not fs.execute_string(rockspec.variables.CMAKE.." --build build.luarocks --config Release") then
++      args = rockspec.variables.CMAKE.." --build build.luarocks --config Release"
++      if cfg.cmake_build_args then
++         args = args .. ' ' .. cfg.cmake_build_args
++      end
++      if not fs.execute_string(args) then
+          return nil, "Failed building."
+       end
+    end
