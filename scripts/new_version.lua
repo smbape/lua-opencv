@@ -59,7 +59,7 @@ function new_version.command(args)
    local prefix = args.prefix or ""
    local abi = args.abi
 
-   if prefix and prefix:sub(-1) ~= "/" then
+   if prefix ~= "" and prefix:sub(-1) ~= "/" then
       prefix = prefix .. "/"
    end
 
@@ -72,6 +72,12 @@ function new_version.command(args)
       out_rs.source.url = ""
       out_rs.build.type = "none"
       out_rs.build.variables = nil
+      local dependencies = out_rs.dependencies
+      for k, dependency in pairs(dependencies) do
+         if dependency:sub(1, 4) == "lua " then
+            dependencies[k] = "lua == " .. abi
+         end
+      end
 
       if args.platform == "win32" then
          out_rs.build.install = {

@@ -9,7 +9,7 @@ const { findFile } = require("../generator/FileUtils");
 const platform = os.platform() === "win32" ? (/cygwin/.test(process.env.HOME) ? "Cygwin" : "x64") : "*-GCC";
 const exeSuffix = os.platform() === "win32" ? ".exe" : "";
 const batchSuffix = os.platform() === "win32" ? ".bat" : "";
-const luarocksDir = sysPath.resolve(__dirname, "..", "luarocks");
+const luarocksDir = process.env.LUAROCKS_BINDIR ? process.env.LUAROCKS_BINDIR : sysPath.resolve(__dirname, "..", "luarocks");
 const luarcoks = sysPath.join(luarocksDir, `luarocks${ batchSuffix }`);
 
 const lua_interpreter = spawnSync(luarcoks, ["config", "lua_interpreter"]).stdout.toString().trim();

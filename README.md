@@ -11,10 +11,14 @@ Therefore the [OpenCV documentation](https://docs.opencv.org/4.x/index.html) sho
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [Installation](#installation)
-  - [Build from sources](#build-from-sources)
-  - [Install for LuaJIT 2.1](#install-for-luajit-21)
+  - [Prerequisites to source rock install](#prerequisites-to-source-rock-install)
+    - [Windows](#windows)
+    - [Linux](#linux)
+  - [Automatic guess install](#automatic-guess-install)
+  - [Install the source rock](#install-the-source-rock)
+  - [Install the prebuilt binaries for lua 5.4](#install-the-prebuilt-binaries-for-lua-54)
+  - [Install the prebuilt binaries for LuaJIT 2.1](#install-the-prebuilt-binaries-for-luajit-21)
 - [Examples](#examples)
   - [Show image](#show-image)
   - [Video capture Camera](#video-capture-camera)
@@ -26,25 +30,67 @@ Therefore the [OpenCV documentation](https://docs.opencv.org/4.x/index.html) sho
 
 ## Installation
 
-### Build from sources
+Prebuilt binaries are available for [LuaJIT 2.1](https://luajit.org/) and [Lua 5.4](https://www.lua.org/versions.html), and only on Windows and Linux.
+
+### Prerequisites to source rock install
+
+#### Windows
+
+  - Install [git](https://git-scm.com/)
+  - Install [nodejs](https://nodejs.org/en/download/current)
+  - Install [python](https://www.python.org/downloads/)
+  - Install [Visual Studio](https://visualstudio.microsoft.com/fr/downloads/)
+  - In your windows search, search and open the `x64 Native Tools Command Prompt for VS`
+
+#### Linux
+
+  - Install [git](https://git-scm.com/)
+  - Install [nodejs](https://nodejs.org/en/download/current)
+  - Install needed packages `sudo apt -y install build-essential cmake git python3-pip libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-dev libreadline-dev`
+  - For faster build timer, you can use [Ninja](https://ninja-build.org/) `luarocks config --scope project cmake_generator Ninja`
+
+### Automatic guess install
+
+This will install suitable prebuilt binaries if found, otherwise will build from the source rock
 
 ```sh
-luarocks install --server=https://gitlab.smbape.com/smbape/lua-opencv/releases/download/v0.0.0//luajit.org/) and [Lua 5.4](https://www.lua.org/versions.html).
+luarocks install --server=https://gitlab.smbape.com/smbape/lua-opencv/releases/download/v0.0.0 opencv_lua
 ```
 
-### Install for lua 5.4
+### Install the source rock
 
 ```sh
-luarocks install --server=https://gitlab.smbape.com/smbape/lua-opencv/releases/download/v0.0.0 opencv_lua 4.8.0v0.0.0lua5.4
+luarocks install --server=https://gitlab.smbape.com/smbape/lua-opencv/releases/download/v0.0.0 opencv_lua 4.8.0
 ```
 
-### Install for LuaJIT 2.1
+### Install the prebuilt binaries for lua 5.4
 
 ```sh
-luarocks install --server=https://gitlab.smbape.com/smbape/lua-opencv/releases/download/v0.0.0 opencv_lua 4.8.0v0.0.0luajit2.1
+luarocks install --server=https://gitlab.smbape.com/smbape/lua-opencv/releases/download/v0.0.0 opencv_lua 4.8.0lua5.4
+```
+
+### Install the prebuilt binaries for LuaJIT 2.1
+
+```sh
+luarocks install --server=https://gitlab.smbape.com/smbape/lua-opencv/releases/download/v0.0.0 opencv_lua 4.8.0luajit2.1
 ```
 
 ## Examples
+
+On Windows, the lua_modules modules should be added to PATH as show with `luarocks path`
+
+```sh
+set "PATH=%LUA_MODULES%\bin;%APPDATA%\luarocks\bin;%PATH%"
+```
+
+`LUA_MODULES` pointing to your lua_modules folder if any.
+
+For example, in your lua project, initialized with `luarocks init`, modify the file `lua.bat` and after the line `set "LUAROCKS_SYSCONFDIR=` add
+
+```sh
+set LUA_MODULES=%~dp0lua_modules
+set "PATH=%LUA_MODULES%\bin;%APPDATA%\luarocks\bin;%PATH%"
+```
 
 ### Show image
 

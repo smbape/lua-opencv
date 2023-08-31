@@ -59,7 +59,7 @@ waterfall([
         }
 
         const start = pos + "/lua-opencv/releases/download/v".length;
-        const end = oldContent.indexOf("/", start);
+        const end = Math.min(oldContent.indexOf("/", start), oldContent.indexOf(" ", start));
         if (end === -1) {
             next(null, false);
             return;

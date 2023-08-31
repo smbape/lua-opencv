@@ -1,14 +1,10 @@
 const { spawn, spawnSync } = require("node:child_process");
 const sysPath = require("node:path");
-const fs = require("node:fs");
+const fs = require("fs-extra");
 const os = require("node:os");
 const eachOfLimit = require("async/eachOfLimit");
 const waterfall = require("async/waterfall");
 const pkg = require("../package.json");
-
-const regexEscape = str => {
-    return str.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
-};
 
 const version = process.env.npm_package_version || pkg.version;
 const OpenCV_NAME_VERSION = "opencv-4.8.0";
@@ -16,57 +12,92 @@ const OpenCV_VERSION = OpenCV_NAME_VERSION.slice("opencv-".length);
 const distVersion = "1"; // TODO : find a way to automatically update it
 const workspaceRoot = sysPath.resolve(__dirname, "..");
 
-const readme = sysPath.join(workspaceRoot, "README.md");
-
 const batchSuffix = os.platform() === "win32" ? ".bat" : "";
 const luarocksDir = sysPath.join(workspaceRoot, "luarocks");
 const luarocks = sysPath.join(luarocksDir, `luarocks${ batchSuffix }`);
 const lua = sysPath.join(luarocksDir, `lua${ batchSuffix }`);
 const new_version = sysPath.join(__dirname, "new_version.lua");
+const rocksDir = sysPath.join(workspaceRoot, "out", "install", "luarocks");
 
 const scmRockSpec = sysPath.join(luarocksDir, `${ pkg.name }-scm-1.rockspec`);
+const srcRockSpec = `${ pkg.name }-${ OpenCV_VERSION }-${ distVersion }.rockspec`;
+const srcRock = `${ pkg.name }-${ OpenCV_VERSION }-${ distVersion }.src.rock`;
 
 const spawnExec = (cmd, args, options, next) => {
+    const {stdio} = options;
+
+    if (stdio === "tee") {
+        options.stdio = ["inherit", "pipe", "pipe"];
+    }
+
+    const stdout = Object.assign([], {
+        nread: 0
+    });
+    const stderr = Object.assign([], {
+        nread: 0
+    });
+
     const child = spawn(cmd, args, options);
     child.on("error", next);
     child.on("close", () => {
-        next();
+        if (stdio === "tee") {
+            next(null, Buffer.concat(stdout, stdout.nread), Buffer.concat(stderr, stderr.nread));
+        } else {
+            next();
+        }
     });
-};
 
-const updateContent = (file, replacer, cb) => {
-    waterfall([
-        next => {
-            fs.readFile(file, (err, buffer) => {
-                if (err && err.code === "ENOENT") {
-                    err = null;
-                    buffer = "";
-                }
-                next(err, buffer);
-            });
-        },
+    if (stdio === "tee") {
+        child.stdout.on("data", chunk => {
+            stdout.push(chunk);
+            stdout.nread += chunk.length;
+            process.stdout.write(chunk);
+        });
 
-        (buffer, next) => {
-            const oldContent = buffer.toString();
-            const newContent = replacer(oldContent);
-
-            if (newContent === oldContent) {
-                next(null, false);
-                return;
-            }
-
-            fs.writeFile(file, newContent, err => {
-                next(err, true);
-            });
-        },
-    ], cb);
+        child.stderr.on("data", chunk => {
+            stderr.push(chunk);
+            stderr.nread += chunk.length;
+            process.stderr.write(chunk);
+        });
+    }
 };
 
 waterfall([
     next => {
+        fs.symlink("../../docs", sysPath.join(luarocksDir, "lua_modules", "docs"), "junction", err => {
+            next(err && err.code === "EEXIST" ? null : err);
+        });
+    },
+
+    next => {
+        fs.symlink("../../samples", sysPath.join(luarocksDir, "lua_modules", "samples"), "junction", err => {
+            next(err && err.code === "EEXIST" ? null : err);
+        });
+    },
+
+    next => {
+        fs.mkdirs(rocksDir, next);
+    },
+
+    (performed, next) => {
         spawnExec(luarocks, ["new_version", "--tag", `v${ version }`, scmRockSpec, `${ OpenCV_VERSION }-${ distVersion }`], {
             stdio: "inherit",
             cwd: workspaceRoot
+        }, next);
+    },
+
+    next => {
+        spawnExec(luarocks, ["pack", srcRockSpec], {
+            stdio: "inherit",
+            cwd: workspaceRoot
+        }, next);
+    },
+
+    next => {
+        eachOfLimit([srcRockSpec, srcRock], 1, (filename, i, next) => {
+            fs.move(sysPath.join(workspaceRoot, filename), sysPath.join(rocksDir, filename), {
+                overwrite: true,
+            }, next);
         }, next);
     },
 
@@ -84,35 +115,63 @@ waterfall([
     },
 
     next => {
-        fs.readFile(scmRockSpec, next);
-    },
-
-    (buffer, next) => {
-        const scmContent = buffer.toString();
-
         eachOfLimit([
             // ["luajit", "luajit-2.1.0-beta3", "5.1"],
             ["lua", "5.4.6", "5.4"],
         ], 1, ([target, lua_VERSION, abi], i, next) => {
             const [, ver] = lua_VERSION.match(/^(?:luajit-)?(\d+\.\d+)/);
-            const binary = `${ OpenCV_VERSION }v${ version }${ target }${ ver }-${ distVersion }`;
+            const binary = `${ OpenCV_VERSION }${ target }${ ver }-${ distVersion }`;
+            const binaryRockSpec = `${ pkg.name }-${ binary }.rockspec`;
+            const lua_modules = sysPath.join(luarocksDir, "lua_modules");
+
             waterfall([
                 next => {
-                    spawnExec(lua, [new_version, scmRockSpec, binary, abi, "--prefix", "luarocks/lua_modules", "--platform", os.platform()], {
+                    spawnExec(lua, [new_version, scmRockSpec, binary, abi, "--platform", os.platform()], {
                         stdio: "inherit",
-                        cwd: sysPath.join(luarocksDir, "lua_modules")
+                        cwd: lua_modules
                     }, next);
                 },
 
                 next => {
-                    spawnExec(luarocks, ["make", "--pack-binary-rock", sysPath.join(luarocksDir, "lua_modules", `${ pkg.name }-${ binary }.rockspec`)], {
-                        stdio: "inherit",
-                        cwd: workspaceRoot
+                    spawnExec(luarocks, ["make", "--pack-binary-rock", binaryRockSpec], {
+                        stdio: "tee",
+                        cwd: lua_modules
                     }, next);
                 },
+
+                (stdout, stderr, next) => {
+                    stdout = stdout.toString();
+                    const start = stdout.indexOf("Packed: ") + "Packed: ".length;
+                    const binaryRock = stdout.slice(start).trim().slice(lua_modules.length + 1);
+
+                    eachOfLimit([binaryRockSpec, binaryRock], 1, (filename, i2, next) => {
+                        fs.move(sysPath.join(lua_modules, filename), sysPath.join(rocksDir, filename), {
+                            overwrite: true,
+                        }, next);
+                    }, next);
+                },
+
             ], next);
         }, next);
-    }
+    },
+
+    next => {
+        fs.readFile(luarocks, next);
+    },
+
+    (buffer, next) => {
+        const content = buffer.toString();
+        const pos = content.indexOf(" --project-tree ");
+        const quote = os.platform() === "win32" ? "\"" : "'";
+        const end = content.lastIndexOf(quote, pos - 1);
+        const start = content.lastIndexOf(quote, end - 1) + quote.length;
+        const exe = content.slice(start, end);
+
+        spawnExec(exe.replace(/(?<=^|[/\\])luarocks([^/\\]*)$/, "luarocks-admin$1"), ["make-manifest", rocksDir], {
+            stdio: "inherit",
+            cwd: luarocksDir
+        }, next);
+    },
 ], err => {
     if (err) {
         throw err;

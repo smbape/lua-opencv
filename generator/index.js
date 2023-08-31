@@ -131,8 +131,26 @@ const LuaGenerator = require("./LuaGenerator");
 
 const PROJECT_DIR = sysPath.dirname(__dirname);
 const SRC_DIR = sysPath.join(PROJECT_DIR, "src");
-const platform = os.platform() === "win32" ? (/cygwin/.test(process.env.HOME) ? "Cygwin" : "x64") : "*-GCC";
-const opencv_SOURCE_DIR = findFile(`out/build/${ platform }-*/opencv/opencv-src`, PROJECT_DIR);
+const opencv_SOURCE_DIR = (() => {
+    const platform = os.platform() === "win32" ? (/cygwin/.test(process.env.HOME) ? "Cygwin" : "x64") : "*-GCC";
+    for (const buildDir of [
+        process.env.CMAKE_CURRENT_BINARY_DIR,
+        `out/build/${ platform }-*`,
+        "build.luarocks",
+
+    ]) {
+        if (!buildDir) {
+            continue;
+        }
+
+        const file = findFile(`${ buildDir }/opencv/opencv-src`, PROJECT_DIR);
+        if (file) {
+            return file;
+        }
+    }
+
+    return null;
+})();
 
 const python_bindings_generator = sysPath.join(sysPath.dirname(opencv_SOURCE_DIR), "opencv-build", "modules", "python_bindings_generator");
 const src2 = sysPath.resolve(opencv_SOURCE_DIR, "modules/python/src2");

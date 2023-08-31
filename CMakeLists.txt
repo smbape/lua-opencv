@@ -142,6 +142,21 @@ if (LUA_ONLY)
   return()
 endif()
 
+include(cmake/UsePython3Venv.cmake)
+
+if (VIRTUAL_ENV_created)
+  execute_process(
+    COMMAND "${Python3_EXECUTABLE}" -m pip install --upgrade pip
+    COMMAND_ECHO STDERR
+    COMMAND_ERROR_IS_FATAL ANY
+  )
+  execute_process(
+    COMMAND "${Python3_EXECUTABLE}" -m pip install numpy
+    COMMAND_ECHO STDERR
+    COMMAND_ERROR_IS_FATAL ANY
+  )
+endif()
+
 # find OpenCV
 if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
   add_subdirectory(opencv)
@@ -180,14 +195,20 @@ set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib" CACHE PATH "Output directory f
 
 # generate source files
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/node_modules")
+if (WIN32)
+  set(npm npm.cmd)
+else()
+  set(npm npm)
+endif()
 execute_process(
-  COMMAND npm ci
+  COMMAND ${npm} ci
   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
   COMMAND_ECHO STDERR
   COMMAND_ERROR_IS_FATAL ANY
 )
 endif()
 
+set(ENV{CMAKE_CURRENT_BINARY_DIR} "${CMAKE_CURRENT_BINARY_DIR}")
 execute_process(
   COMMAND node --unhandled-rejections=strict --trace-uncaught --trace-warnings generator/index.js
   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"

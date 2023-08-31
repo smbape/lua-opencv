@@ -59,13 +59,14 @@ const findFile = (path, rootPath = ".") => {
     path = path.split(/[\\/]/).join(sysPath.sep);
     const pos = path.indexOf("*");
     let parent = sysPath.resolve(rootPath);
+    const isAbsolute = sysPath.isAbsolute(path);
 
     do {
         rootPath = parent;
         parent = sysPath.dirname(rootPath);
 
         if (pos === -1) {
-            const rpath = sysPath.resolve(rootPath, path);
+            const rpath = isAbsolute ? sysPath.resolve(path) : sysPath.resolve(rootPath, path);
             try {
                 fs.accessSync(rpath, fs.constants.R_OK);
                 return rpath;
@@ -98,7 +99,7 @@ const findFile = (path, rootPath = ".") => {
         }
 
         continue;
-    } while (parent !== rootPath);
+    } while (!isAbsolute && parent !== rootPath);
 
     return null;
 };

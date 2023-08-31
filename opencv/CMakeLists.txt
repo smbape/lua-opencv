@@ -50,32 +50,38 @@ FetchContent_Populate(opencv
                   -P "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/git_patch_once.cmake"
 )
 
-# https://github.com/opencv/opencv-python/tree/74
-set(OPENCV_CONTRIB_TAG_480 f10c84d48b0714f2b408c9e5cccfac1277c8e6cc)
-set(OPENCV_CONTRIB_TAG_470 e247b680a6bd396f110274b6c214406a93171350)
-set(OPENCV_CONTRIB_TAG_460 db16caf6ceee76b43b94c846be276e92a43e9700)
-set(OPENCV_CONTRIB_TAG_455 49e8f123ca08e76891856a1ecce491b62d08ba20)
-set(OPENCV_CONTRIB_TAG_454 2bc3e1a169afd2675ef68221176f32cc0ea5427a)
-set(OPENCV_CONTRIB_TAG_453 d5317d6297a8129b66dba1a1f7cc784e94639da9)
-set(OPENCV_CONTRIB_TAG_452 f5d7f6712d4ff229ba4f45cf79dfd11c557d56fd)
-set(OPENCV_CONTRIB_TAG_451 b91a781cbc1285d441aa682926d93d8c23678b0b)
+option(BUILD_contrib "Build with opencv contrib" OFF)
 
-# Tell cmake that we will need opencv_contrib.
-include(FetchContent)
-FetchContent_Populate(opencv_contrib
-  GIT_REPOSITORY  https://github.com/opencv/opencv_contrib.git
-  GIT_TAG         ${OPENCV_CONTRIB_TAG_${OpenCV_DLLVERSION}}
-  GIT_SHALLOW     TRUE
+if (BUILD_contrib)
+  # https://github.com/opencv/opencv-python/tree/74
+  set(OPENCV_CONTRIB_TAG_480 f10c84d48b0714f2b408c9e5cccfac1277c8e6cc)
+  set(OPENCV_CONTRIB_TAG_470 e247b680a6bd396f110274b6c214406a93171350)
+  set(OPENCV_CONTRIB_TAG_460 db16caf6ceee76b43b94c846be276e92a43e9700)
+  set(OPENCV_CONTRIB_TAG_455 49e8f123ca08e76891856a1ecce491b62d08ba20)
+  set(OPENCV_CONTRIB_TAG_454 2bc3e1a169afd2675ef68221176f32cc0ea5427a)
+  set(OPENCV_CONTRIB_TAG_453 d5317d6297a8129b66dba1a1f7cc784e94639da9)
+  set(OPENCV_CONTRIB_TAG_452 f5d7f6712d4ff229ba4f45cf79dfd11c557d56fd)
+  set(OPENCV_CONTRIB_TAG_451 b91a781cbc1285d441aa682926d93d8c23678b0b)
 
-  # PATCH_COMMAND is run once for each BUILD_TYPE
-  # however, source download is only done once when it is a git repository
-  # use a custom patch command to perform patch only once
-  PATCH_COMMAND "${CMAKE_COMMAND}"
-                  "-DSOURCE_DIR=<SOURCE_DIR>"
-                  "-DGIT_EXECUTABLE=${GIT_EXECUTABLE}"
-                  "-DPATCH_FILE=${CMAKE_CURRENT_SOURCE_DIR}/../patches/001-opencv_contrib-src.patch"
-                  -P "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/git_patch_once.cmake"
-)
+  # Tell cmake that we will need opencv_contrib.
+  include(FetchContent)
+  FetchContent_Populate(opencv_contrib
+    GIT_REPOSITORY  https://github.com/opencv/opencv_contrib.git
+    GIT_TAG         ${OPENCV_CONTRIB_TAG_${OpenCV_DLLVERSION}}
+    GIT_SHALLOW     TRUE
+
+    # PATCH_COMMAND is run once for each BUILD_TYPE
+    # however, source download is only done once when it is a git repository
+    # use a custom patch command to perform patch only once
+    PATCH_COMMAND "${CMAKE_COMMAND}"
+                    "-DSOURCE_DIR=<SOURCE_DIR>"
+                    "-DGIT_EXECUTABLE=${GIT_EXECUTABLE}"
+                    "-DPATCH_FILE=${CMAKE_CURRENT_SOURCE_DIR}/../patches/001-opencv_contrib-src.patch"
+                    -P "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/git_patch_once.cmake"
+  )
+
+  set(OPENCV_EXTRA_MODULES_PATH "${opencv_contrib_SOURCE_DIR}/modules" CACHE PATH "Where to look for additional OpenCV modules (can be ;-separated list of paths)")
+endif()
 
 include("${opencv_SOURCE_DIR}/cmake/OpenCVUtils.cmake")
 
@@ -94,14 +100,8 @@ OCV_OPTION(BUILD_TESTS              "Build accuracy & regression tests"         
 # ===================================================
 OCV_OPTION(INSTALL_CREATE_DISTRIB   "Change install rules to build the distribution package" ON)
 
-option(BUILD_contrib "Build with opencv contrib" OFF)
-
 if (MSVC AND BUILD_SHARED_LIBS)
   option(INSTALL_PDB_COMPONENT_EXCLUDE_FROM_ALL "Don't install PDB files by default" OFF)
-endif()
-
-if (BUILD_contrib)
-  set(OPENCV_EXTRA_MODULES_PATH "${opencv_contrib_SOURCE_DIR}/modules" CACHE PATH "Where to look for additional OpenCV modules (can be ;-separated list of paths)")
 endif()
 
 # set(VIDEOIO_PLUGIN_LIST "" CACHE STRING "List of videoio backends to be compiled as plugins (ffmpeg, gstreamer, mfx, msmf or special value 'all')")
