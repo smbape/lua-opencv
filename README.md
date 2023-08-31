@@ -30,6 +30,7 @@ Therefore the [OpenCV documentation](https://docs.opencv.org/4.x/index.html) sho
 
 ```sh
 luarocks install --server=https://gitlab.smbape.com/smbape/lua-opencv/releases/download/v0.0.0//luajit.org/) and [Lua 5.4](https://www.lua.org/versions.html).
+```
 
 ### Install for lua 5.4
 
