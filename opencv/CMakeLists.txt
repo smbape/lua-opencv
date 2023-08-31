@@ -92,7 +92,7 @@ OCV_OPTION(BUILD_TESTS              "Build accuracy & regression tests"         
 
 # OpenCV installation options
 # ===================================================
-OCV_OPTION(INSTALL_CREATE_DISTRIB   "Change install rules to build the distribution package" ON )
+OCV_OPTION(INSTALL_CREATE_DISTRIB   "Change install rules to build the distribution package" OFF )
 
 option(BUILD_contrib "Build with opencv contrib" OFF)
 
@@ -103,8 +103,6 @@ endif()
 if (BUILD_contrib)
   set(OPENCV_EXTRA_MODULES_PATH "${opencv_contrib_SOURCE_DIR}/modules" CACHE PATH "Where to look for additional OpenCV modules (can be ;-separated list of paths)")
 endif()
-
-# set(INSTALL_CREATE_DISTRIB ON)
 
 # set(VIDEOIO_PLUGIN_LIST "" CACHE STRING "List of videoio backends to be compiled as plugins (ffmpeg, gstreamer, mfx, msmf or special value 'all')")
 option(BUILD_opencv_world "All OpenCV modules" ON)
@@ -143,13 +141,18 @@ foreach(m opencv_core ${OPENCV_MODULES_PUBLIC})
     install(TARGETS ${m}
       LIBRARY
         DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-        PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
-                        GROUP_EXECUTE GROUP_READ
-      ARCHIVE
-        DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+        # PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
+        #                 GROUP_EXECUTE GROUP_READ
       RUNTIME
         DESTINATION "${CMAKE_INSTALL_BINDIR}"
     )
+
+    if (NOT WITH_LUA_ROCKS)
+      install(TARGETS ${m}
+        ARCHIVE
+          DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+      )
+    endif()
   endif()
 
   if(EXISTS "${OPENCV_MODULE_${m}_LOCATION}/include")

@@ -59,7 +59,7 @@ if (NOT DEFINED ENV{LUA_DIR})
     VS_DEBUGGER_WORKING_DIRECTORY "${VS_DEBUGGER_WORKING_DIRECTORY}"
   )
 else()
-  if (DEFINED WITH_LUA_ROCKS)
+  if (WITH_LUA_ROCKS)
     unset(LUA_INCLUDE_DIR CACHE)
     unset(LUA_INTERPRETER CACHE)
     unset(LUA_LIBRARY CACHE)
@@ -145,13 +145,6 @@ endif()
 # find OpenCV
 if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
   add_subdirectory(opencv)
-  # message(STATUS "opencv_SOURCE_DIR = ${opencv_SOURCE_DIR}")
-  # message(STATUS "OPENCV_CONFIG_FILE_INCLUDE_DIR = ${OPENCV_CONFIG_FILE_INCLUDE_DIR}")
-
-  # Opencv examples
-  add_executable(introduction_to_pca "${opencv_SOURCE_DIR}/samples/cpp/tutorial_code/ml/introduction_to_pca/introduction_to_pca.cpp")
-  target_link_libraries(introduction_to_pca PRIVATE ${OpenCV_LIBS})
-  target_include_directories(introduction_to_pca PRIVATE "${OpenCV_INCLUDE_DIRS}")
 else()
   find_package(OpenCV REQUIRED)
 endif()
@@ -229,13 +222,18 @@ add_library(${PROJECT_NAME} SHARED ${SRC_FILES})
 install(TARGETS ${PROJECT_NAME}
   LIBRARY
     DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-    PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
-                    GROUP_EXECUTE GROUP_READ
-  ARCHIVE
-    DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    # PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
+    #                 GROUP_EXECUTE GROUP_READ
   RUNTIME
     DESTINATION "${CMAKE_INSTALL_LIBDIR}"
 )
+
+if (NOT WITH_LUA_ROCKS)
+  install(TARGETS ${PROJECT_NAME}
+    ARCHIVE
+      DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+  )
+endif()
 
 target_compile_definitions(${PROJECT_NAME}
   PUBLIC

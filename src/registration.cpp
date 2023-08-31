@@ -145,7 +145,7 @@ namespace {
 			}, round));
 
 		math.set_function("int", [](double num) {
-			return (int) num;
+			return static_cast<int>(num);
 			});
 	}
 

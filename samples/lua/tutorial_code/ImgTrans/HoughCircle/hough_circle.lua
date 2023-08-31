@@ -48,7 +48,7 @@ local function main(args)
 
     -- [draw]
     if not circles:empty() then
-        circles = circles:convertTo(cv.CV_32S)
+        circles = circles:convertTo(cv.CV_16U)
         for _, i in circles[0]:__pairs() do
             local center = { i[0], i[1] }
             -- circle center
