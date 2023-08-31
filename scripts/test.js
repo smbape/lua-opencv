@@ -9,11 +9,11 @@ const { findFile } = require("../generator/FileUtils");
 const platform = os.platform() === "win32" ? (/cygwin/.test(process.env.HOME) ? "Cygwin" : "x64") : "*-GCC";
 const exeSuffix = os.platform() === "win32" ? ".exe" : "";
 const batchSuffix = os.platform() === "win32" ? ".bat" : "";
+const luarocksDir = sysPath.resolve(__dirname, "..", "luarocks");
+const luarcoks = sysPath.join(luarocksDir, `luarocks${ batchSuffix }`);
 
-const luarocks = sysPath.resolve(__dirname, "..", "luarocks");
-
-const lua_interpreter = spawnSync(sysPath.join(luarocks, `luarocks${ batchSuffix }`), ["config", "lua_interpreter"]).stdout.toString().trim()
-const LUA_BINDIR = spawnSync(sysPath.join(luarocks, `luarocks${ batchSuffix }`), ["config", "variables.LUA_BINDIR"]).stdout.toString().trim()
+const lua_interpreter = spawnSync(luarcoks, ["config", "lua_interpreter"]).stdout.toString().trim();
+const LUA_BINDIR = spawnSync(luarcoks, ["config", "variables.LUA_BINDIR"]).stdout.toString().trim();
 
 const config = {
     Debug: {
@@ -21,7 +21,7 @@ const config = {
         env: {},
     },
     Release: {
-        exe: sysPath.join(luarocks, `lua${ batchSuffix }`),
+        exe: sysPath.join(luarocksDir, `lua${ batchSuffix }`),
         env: {},
     },
 };

@@ -12,3 +12,4 @@ generated
 /out
 /build.luarocks
 /*.rock
+/*.rockspec

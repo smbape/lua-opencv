@@ -31,5 +31,4 @@ end
 
 cv.imshow("res.png", img_rgb)
 cv.waitKey()
-
 cv.destroyAllWindows()

@@ -1,6 +1,6 @@
-diff -rupN a/etc/lua.pc b/etc/lua.pc
---- a/src/luarocks/src/luarocks/build/cmake.lua
-+++ b/src/luarocks/src/luarocks/build/cmake.lua
+diff -rupN a/src/luarocks/build/cmake.lua b/src/luarocks/build/cmake.lua
+--- a/src/luarocks/build/cmake.lua
++++ b/src/luarocks/build/cmake.lua
 @@ -62,7 +62,11 @@
     end
  

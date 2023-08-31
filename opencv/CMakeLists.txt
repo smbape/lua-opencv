@@ -92,7 +92,7 @@ OCV_OPTION(BUILD_TESTS              "Build accuracy & regression tests"         
 
 # OpenCV installation options
 # ===================================================
-OCV_OPTION(INSTALL_CREATE_DISTRIB   "Change install rules to build the distribution package" OFF )
+OCV_OPTION(INSTALL_CREATE_DISTRIB   "Change install rules to build the distribution package" ON)
 
 option(BUILD_contrib "Build with opencv contrib" OFF)
 
