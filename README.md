@@ -25,27 +25,35 @@ Therefore the [OpenCV documentation](https://docs.opencv.org/4.x/index.html) sho
   - [Rotate image](#rotate-image)
   - [Drawing contours](#drawing-contours)
   - [Template matching](#template-matching)
+- [Runing examples](#runing-examples)
+  - [Prerequisites](#prerequisites)
+    - [Windows](#windows-1)
+    - [Linux](#linux-1)
+  - [Initialize the project](#initialize-the-project)
+    - [Windows](#windows-2)
+    - [Linux](#linux-2)
+- [Hosting you own binary rocks](#hosting-you-own-binary-rocks)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Installation
 
-Prebuilt binaries are available for [LuaJIT 2.1](https://luajit.org/) and [Lua 5.4](https://www.lua.org/versions.html), and only on Windows and Linux.
+Prebuilt binaries are available for [LuaJIT 2.1](https://luajit.org/) and [Lua 5.1/5.2/5.3/5.4](https://www.lua.org/versions.html), and only on Windows and Linux.
 
 ### Prerequisites to source rock install
 
 #### Windows
 
-  - Install [git](https://git-scm.com/)
-  - Install [nodejs](https://nodejs.org/en/download/current)
-  - Install [python](https://www.python.org/downloads/)
+  - Install [CMake](https://cmake.org/download/)
+  - Install [Git](https://git-scm.com/)
+  - Install [NodeJS](https://nodejs.org/en/download/current)
+  - Install [Python](https://www.python.org/downloads/)
   - Install [Visual Studio](https://visualstudio.microsoft.com/fr/downloads/)
   - In your windows search, search and open the `x64 Native Tools Command Prompt for VS`
 
 #### Linux
 
-  - Install [git](https://git-scm.com/)
-  - Install [nodejs](https://nodejs.org/en/download/current)
+  - Install [NodeJS](https://nodejs.org/en/download/current)
   - Install needed packages `sudo apt -y install build-essential cmake git python3-pip libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-dev libreadline-dev`
   - For faster build timer, you can use [Ninja](https://ninja-build.org/) `luarocks config --scope project cmake_generator Ninja`
 
@@ -54,25 +62,25 @@ Prebuilt binaries are available for [LuaJIT 2.1](https://luajit.org/) and [Lua 5
 This will install suitable prebuilt binaries if found, otherwise will build from the source rock
 
 ```sh
-luarocks install --server=https://gitlab.smbape.com/smbape/lua-opencv/releases/download/v0.0.0 opencv_lua
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.0 opencv_lua
 ```
 
 ### Install the source rock
 
 ```sh
-luarocks install --server=https://gitlab.smbape.com/smbape/lua-opencv/releases/download/v0.0.0 opencv_lua 4.8.0
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.0 opencv_lua 4.8.0
 ```
 
 ### Install the prebuilt binaries for lua 5.4
 
 ```sh
-luarocks install --server=https://gitlab.smbape.com/smbape/lua-opencv/releases/download/v0.0.0 opencv_lua 4.8.0lua5.4
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.0 opencv_lua 4.8.0lua5.4
 ```
 
 ### Install the prebuilt binaries for LuaJIT 2.1
 
 ```sh
-luarocks install --server=https://gitlab.smbape.com/smbape/lua-opencv/releases/download/v0.0.0 opencv_lua 4.8.0luajit2.1
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.0 opencv_lua 4.8.0luajit2.1
 ```
 
 ## Examples
@@ -87,7 +95,7 @@ set "PATH=%LUA_MODULES%\bin;%APPDATA%\luarocks\bin;%PATH%"
 
 For example, in your lua project, initialized with `luarocks init`, modify the file `lua.bat` and after the line `set "LUAROCKS_SYSCONFDIR=` add
 
-```sh
+```cmd
 set LUA_MODULES=%~dp0lua_modules
 set "PATH=%LUA_MODULES%\bin;%APPDATA%\luarocks\bin;%PATH%"
 ```
@@ -221,4 +229,75 @@ end
 cv.imshow("res.png", img_rgb)
 cv.waitKey()
 cv.destroyAllWindows()
+```
+
+## Runing examples
+
+### Prerequisites
+
+#### Windows
+
+  - Install [CMake](https://cmake.org/download/)
+  - Install [Git](https://git-scm.com/)
+  - Install [NodeJS](https://nodejs.org/en/download/current)
+
+#### Linux
+
+  - Install [NodeJS](https://nodejs.org/en/download/current)
+  - Install needed packages `sudo apt -y install cmake git`
+
+### Initialize the project
+
+#### Windows
+
+```cmd
+git clone --depth 1 --branch 4.8.0 https://github.com/opencv/opencv.git
+git clone --depth 1 --branch v0.0.0 https://github.com/smbape/lua-opencv.git
+cd lua-opencv
+build.bat --target lua "-DLua_VERSION=5.4" --install
+build.bat --target luarocks
+luarocks\luarocks.bat install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.0 opencv_lua
+node scripts\test.js --Release
+```
+
+#### Linux
+
+```cmd
+git clone --depth 1 --branch 4.8.0 https://github.com/opencv/opencv.git
+git clone --depth 1 --branch v0.0.0 https://github.com/smbape/lua-opencv.git
+cd lua-opencv
+./build.sh --target lua "-DLua_VERSION=5.4" --install
+./build.sh --target luarocks
+./luarocks/luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.0 opencv_lua
+node scripts\test.js --Release
+```
+
+## Hosting you own binary rocks
+
+If the provided binray rocks are not suitable for your environnment, you can install the source rock.  
+Installing the source rock takes a long time (01h25mn on my computer).  
+Therefore, it is not practical to repeat that process again.  
+To avoid that long install time, you can host your own prebuilt binary rocks.
+
+```sh
+git clone --depth 1 --branch v0.0.0 https://github.com/smbape/lua-opencv.git
+cd lua-opencv/luarocks
+luarocks --lua-version <Which Lua version to use> --lua-dir "<Which Lua installation to use>" init --lua-versions "5.1,5.2,5.3,5.4"
+cd ..
+luarocks/luarocks make luarocks/opencv_lua-scm-1.rockspec
+LUAROCKS_SERVER="<Where to install the prebuilt binary>" node scripts/packs.js
+```
+
+Now you can install the prebuilt binary with
+
+```sh
+luarocks install --server=$LUAROCKS_SERVER`
+```
+
+Alternatively, If you want an installation over http, upload the contents of `LUAROCKS_SERVER` into an HTTP/S server
+
+For example, if you uploaded it into http://example.com/binary-rock/, you can install the prebuilt binary with
+
+```sh
+luarocks install --server=http://example.com/binary-rock opencv_lua
 ```

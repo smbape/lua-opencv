@@ -33,10 +33,12 @@ opencv_lua.path = sysPath
 local OPENCV_SAMPLES_DATA_PATH = sysPath.dirname(opencv_lua.fs_utils.findFile("samples/data/lena.jpg", opencv_lua.kwargs({
     hints={
         ".",
+        "build.luarocks/opencv/opencv-src",
         "out/build/x64-Debug/opencv/opencv-src",
         "out/build/x64-Release/opencv/opencv-src",
         "out/build/Linux-GCC-Debug/opencv/opencv-src",
         "out/build/Linux-GCC-Release/opencv/opencv-src",
+        "opencv",
     }
 })))
 cv.samples.addSamplesDataSearchPath(OPENCV_SAMPLES_DATA_PATH)

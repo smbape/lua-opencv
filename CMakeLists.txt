@@ -123,9 +123,6 @@ else()
   unset(_lua_interpreter_names)
 endif()
 
-# message(STATUS "LUA_VERSION_MAJOR = ${LUA_VERSION_MAJOR}")
-# message(STATUS "LUA_VERSION_MINOR = ${LUA_VERSION_MINOR}")
-# message(STATUS "LUA_VERSION_PATCH = ${LUA_VERSION_PATCH}")
 message(STATUS "LUA_VERSION_STRING = ${LUA_VERSION_STRING}")
 message(STATUS "LUA_LIBRARIES = ${LUA_LIBRARIES}")
 message(STATUS "LUA_INCLUDE_DIR = ${LUA_INCLUDE_DIR}")
@@ -164,16 +161,6 @@ else()
   find_package(OpenCV REQUIRED)
 endif()
 
-# message(STATUS "OpenCV_LIBS = ${OpenCV_LIBS}")
-# message(STATUS "OpenCV_INCLUDE_DIRS = ${OpenCV_INCLUDE_DIRS}")
-
-# include(cmake/RequireOpenCV.cmake)
-# set(OpenCV_LIBS "")
-# set(OpenCV_DLLVERSION 480)
-# set(OpenCV_DEBUG_POSTFIX d)
-
-# include(cmake/vcpkg_regex_replace_string.cmake)
-
 set(SOL2_VERSION 3.3.0 CACHE STRING "Choose the sol2 version.")
 set_property(CACHE SOL2_VERSION PROPERTY STRINGS "3.3.0" "3.2.2")
 
@@ -185,9 +172,6 @@ FetchContent_Declare(sol2
 )
 FetchContent_MakeAvailable(sol2)
 
-# update version in files
-# TODO
-
 include(cmake/version.cmake)
 
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin" CACHE PATH "Output directory for applications")
@@ -195,17 +179,17 @@ set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib" CACHE PATH "Output directory f
 
 # generate source files
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/node_modules")
-if (WIN32)
-  set(npm npm.cmd)
-else()
-  set(npm npm)
-endif()
-execute_process(
-  COMMAND ${npm} ci
-  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-  COMMAND_ECHO STDERR
-  COMMAND_ERROR_IS_FATAL ANY
-)
+  if (WIN32)
+    set(npm npm.cmd)
+  else()
+    set(npm npm)
+  endif()
+  execute_process(
+    COMMAND ${npm} ci
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+    COMMAND_ECHO STDERR
+    COMMAND_ERROR_IS_FATAL ANY
+  )
 endif()
 
 set(ENV{CMAKE_CURRENT_BINARY_DIR} "${CMAKE_CURRENT_BINARY_DIR}")
@@ -308,8 +292,6 @@ IF (WIN32 AND CMAKE_GENERATOR STREQUAL Ninja)
   target_compile_definitions(${PROJECT_NAME} PRIVATE WIN32 _WINDOWS _WINDLL)
 ENDIF()
 
-add_subdirectory(test)
-
 # Test
 include(CTest)
 enable_testing()
@@ -336,3 +318,19 @@ endif()
 include(CPack)
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
+
+include(cmake/vcpkg_regex_replace_string.cmake)
+
+file(GLOB_RECURSE files_to_change
+  README.md
+  generator/index.js
+  samples/*.lua
+  scripts/pack.js
+)
+
+foreach(item ${files_to_change})
+  vcpkg_regex_replace_string("${item}" "(/lua-opencv/releases/download/v)[0-9]+\\.[0-9]+\\.[0-9]+" "\\1${PROJECT_VERSION}")
+  vcpkg_regex_replace_string("${item}" "(opencv-|/opencv/opencv/blob/|opencv_lua )[0-9]+\\.[0-9]+\\.[0-9]+" "\\1${OpenCV_VERSION}")
+  vcpkg_regex_replace_string("${item}" "(--branch )[0-9]+\\.[0-9]+\\.[0-9]+( https://github.com/opencv/opencv)" "\\1${OpenCV_VERSION}\\2")
+  vcpkg_regex_replace_string("${item}" "(--branch )[0-9]+\\.[0-9]+\\.[0-9]+( https://github.com/smbape/lua-opencv)" "\\1${PROJECT_VERSION}\\2")
+endforeach()

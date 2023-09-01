@@ -9,8 +9,9 @@ const { findFile } = require("../generator/FileUtils");
 const platform = os.platform() === "win32" ? (/cygwin/.test(process.env.HOME) ? "Cygwin" : "x64") : "*-GCC";
 const exeSuffix = os.platform() === "win32" ? ".exe" : "";
 const batchSuffix = os.platform() === "win32" ? ".bat" : "";
-const luarocksDir = process.env.LUAROCKS_BINDIR ? process.env.LUAROCKS_BINDIR : sysPath.resolve(__dirname, "..", "luarocks");
-const luarcoks = sysPath.join(luarocksDir, `luarocks${ batchSuffix }`);
+const WORKSPACE_ROOT = process.env.WORKSPACE_ROOT ? sysPath.resolve(process.env.WORKSPACE_ROOT) : sysPath.resolve(__dirname, "..");
+const LUAROCKS_BINDIR = process.env.LUAROCKS_BINDIR ? sysPath.resolve(process.env.LUAROCKS_BINDIR) : sysPath.join(WORKSPACE_ROOT, "luarocks");
+const luarcoks = sysPath.join(LUAROCKS_BINDIR, `luarocks${ batchSuffix }`);
 
 const lua_interpreter = spawnSync(luarcoks, ["config", "lua_interpreter"]).stdout.toString().trim();
 const LUA_BINDIR = spawnSync(luarcoks, ["config", "variables.LUA_BINDIR"]).stdout.toString().trim();
@@ -18,15 +19,24 @@ const LUA_BINDIR = spawnSync(luarcoks, ["config", "variables.LUA_BINDIR"]).stdou
 const config = {
     Debug: {
         exe: sysPath.join(LUA_BINDIR.replace("Release", "Debug"), lua_interpreter),
-        env: {},
+        env: {
+            LUAROCKS_BINDIR,
+            WORKSPACE_ROOT,
+        },
     },
     Release: {
-        exe: sysPath.join(luarocksDir, `lua${ batchSuffix }`),
-        env: {},
+        exe: sysPath.join(LUAROCKS_BINDIR, `lua${ batchSuffix }`),
+        env: {
+            LUAROCKS_BINDIR,
+            WORKSPACE_ROOT,
+        },
     },
 };
 
-if (os.platform() !== "win32") {
+if (os.platform() === "win32") {
+    const { APPDATA, PATH } = process.env;
+    config.Release.env.PATH = `${ sysPath.join(LUAROCKS_BINDIR, "lua_modules", "bin") };${ sysPath.join(APPDATA, "luarocks", "bin") };${ PATH }`;
+} else {
     const {env, exe} = config.Debug;
     env.LUA_CPATH = `${ sysPath.resolve(exe, "../../lib/?.so") };${ spawnSync(exe, ["-e", "print(package.cpath)"]).stdout.toString().trim() }`;
 }
@@ -64,7 +74,7 @@ const run = (file, cwd, env, next) => {
 };
 
 const options = {
-    cwd: sysPath.resolve(__dirname, ".."),
+    cwd: WORKSPACE_ROOT,
     includes: [],
     "--": false,
 };

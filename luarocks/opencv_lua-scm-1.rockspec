@@ -2,7 +2,7 @@ rockspec_format = "3.0"
 package = "opencv_lua"
 version = "scm-1"
 source = {
-   url = "git+ssh://git@gitlab.smbape.com/smbape/lua-opencv.git"
+   url = "git+https://github.com/smbape/lua-opencv.git"
 }
 description = {
    summary = "OpenCV bindings for lua",
