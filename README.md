@@ -291,7 +291,7 @@ LUAROCKS_SERVER="<Where to install the prebuilt binary>" node scripts/packs.js
 Now you can install the prebuilt binary with
 
 ```sh
-luarocks install --server=$LUAROCKS_SERVER`
+luarocks install --server=$LUAROCKS_SERVER
 ```
 
 Alternatively, If you want an installation over http, upload the contents of `LUAROCKS_SERVER` into an HTTP/S server

@@ -75,7 +75,6 @@ eachOfLimit([
         },
 
         (performed, next) => {
-            // git@gitlab.smbape.com:smbape/lua-opencv.git
             fs.access(sysPath.join(projectRoot, ".git"), fs.constants.X_OK, err => {
                 next(null, !err);
             });
