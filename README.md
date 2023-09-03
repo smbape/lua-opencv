@@ -44,18 +44,18 @@ Prebuilt binaries are available for [LuaJIT 2.1](https://luajit.org/) and [Lua 5
 
 #### Windows
 
-  - Install [CMake](https://cmake.org/download/)
+  - Install [CMake >= 3.25](https://cmake.org/download/)
   - Install [Git](https://git-scm.com/)
   - Install [NodeJS](https://nodejs.org/en/download/current)
   - Install [Python](https://www.python.org/downloads/)
-  - Install [Visual Studio](https://visualstudio.microsoft.com/fr/downloads/)
-  - In your windows search, search and open the `x64 Native Tools Command Prompt for VS`
+  - Install [Visual Studio 2022 >= 17.7.2](https://visualstudio.microsoft.com/fr/downloads/)
+  - In your windows search, search and open the `x64 Native Tools Command Prompt for VS 2022`
 
 #### Linux
 
   - Install [NodeJS](https://nodejs.org/en/download/current)
-  - Install needed packages `sudo apt -y install build-essential cmake git python3-pip libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-dev libreadline-dev`
-  - For faster build timer, you can use [Ninja](https://ninja-build.org/) `luarocks config --scope project cmake_generator Ninja`
+  - Install needed packages `sudo snap install cmake --classic && sudo apt -y install build-essential git python3-pip libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-dev libreadline-dev`
+  - For faster build time, you can use [Ninja](https://ninja-build.org/) `luarocks config --scope project cmake_generator Ninja`
 
 ### Automatic guess install
 
@@ -131,7 +131,7 @@ cap:set(cv.CAP_PROP_FRAME_HEIGHT, 720)
 cap:set(cv.CAP_PROP_FPS, CAP_FPS)
 
 while true do
-    -- Without this, memory grows indefenitely
+    -- Without this, memory grows indefinitely
     collectgarbage()
 
     local start = cv.getTickCount()
@@ -237,14 +237,14 @@ cv.destroyAllWindows()
 
 #### Windows
 
-  - Install [CMake](https://cmake.org/download/)
   - Install [Git](https://git-scm.com/)
   - Install [NodeJS](https://nodejs.org/en/download/current)
+  - Install [Visual Studio 2022 >= 17.7.2](https://visualstudio.microsoft.com/fr/downloads/)
 
 #### Linux
 
   - Install [NodeJS](https://nodejs.org/en/download/current)
-  - Install needed packages `sudo apt -y install cmake git`
+  - Install needed packages `sudo snap install cmake --classic && sudo apt -y install build-essential git ninja-build libreadline-dev unzip`
 
 ### Initialize the project
 
@@ -252,11 +252,12 @@ cv.destroyAllWindows()
 
 ```cmd
 git clone --depth 1 --branch 4.8.0 https://github.com/opencv/opencv.git
-git clone --depth 1 --branch v0.0.0 https://github.com/smbape/lua-opencv.git
+git clone --depth 1 --branch v0.0.1 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
 build.bat --target lua "-DLua_VERSION=5.4" --install
 build.bat --target luarocks
 luarocks\luarocks.bat install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.0 opencv_lua
+npm ci
 node scripts\test.js --Release
 ```
 
@@ -264,12 +265,13 @@ node scripts\test.js --Release
 
 ```cmd
 git clone --depth 1 --branch 4.8.0 https://github.com/opencv/opencv.git
-git clone --depth 1 --branch v0.0.0 https://github.com/smbape/lua-opencv.git
+git clone --depth 1 --branch v0.0.1 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
 ./build.sh --target lua "-DLua_VERSION=5.4" --install
 ./build.sh --target luarocks
 ./luarocks/luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.0 opencv_lua
-node scripts\test.js --Release
+npm ci
+node scripts/test.js --Release
 ```
 
 ## Hosting you own binary rocks
@@ -280,9 +282,10 @@ Therefore, it is not practical to repeat that process again.
 To avoid that long install time, you can host your own prebuilt binary rocks.
 
 ```sh
-git clone --depth 1 --branch v0.0.0 https://github.com/smbape/lua-opencv.git
+git clone --depth 1 --branch v0.0.1 https://github.com/smbape/lua-opencv.git
 cd lua-opencv/luarocks
 luarocks --lua-version <Which Lua version to use> --lua-dir "<Which Lua installation to use>" init --lua-versions "5.1,5.2,5.3,5.4"
+luarocks --lua-version <Which Lua version to use> config --scope project cmake_generator Ninja
 cd ..
 luarocks/luarocks make luarocks/opencv_lua-scm-1.rockspec
 LUAROCKS_SERVER="<Where to install the prebuilt binary>" node scripts/packs.js

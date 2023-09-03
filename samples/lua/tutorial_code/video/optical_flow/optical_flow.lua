@@ -74,7 +74,7 @@ cv.goodFeaturesToTrack(old_gray, kwargs(feature_params))
 local mask = cv.Mat.zeros(old_frame:size(), old_frame:type())
 
 while true do
-    -- Without this, memory grows indefenitely
+    -- Without this, memory grows indefinitely
     collectgarbage()
 
     local ret, frame = cap:read()

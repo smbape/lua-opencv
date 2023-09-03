@@ -157,6 +157,9 @@ local function main()
     print(string.format("PSNR trigger value %d", psnrTriggerValue))
 
     while true do -- Show the image captured in the window and repeat
+        -- Without this, memory grows indefinitely
+        collectgarbage()
+
         local _, frameReference = captRefrnc:read()
         local _, frameUnderTest = captUndTst:read()
 

@@ -1,15 +1,13 @@
 const { spawn } = require("node:child_process");
 const sysPath = require("node:path");
 const fs = require("node:fs");
+const os = require("node:os");
+const eachOfLimit = require("async/eachOfLimit");
 const waterfall = require("async/waterfall");
 const doctoc = require("../generator/doctoc");
 
-const regexEscape = str => {
-    return str.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
-};
-
 const version = process.env.npm_package_version || require("../package.json").version;
-const readme = sysPath.join(__dirname, "..", "README.md");
+const workspaceRoot = sysPath.resolve(__dirname, "..");
 
 const updateContent = (file, replacer, cb) => {
     waterfall([
@@ -51,58 +49,41 @@ const updateContent = (file, replacer, cb) => {
 
 waterfall([
     next => {
-        const oldContent = fs.readFileSync(readme).toString();
-        const pos = oldContent.indexOf("/lua-opencv/releases/download/v");
-        if (pos === -1) {
-            next(null, false);
-            return;
-        }
-
-        const start = pos + "/lua-opencv/releases/download/v".length;
-        const end = Math.min(oldContent.indexOf("/", start), oldContent.indexOf(" ", start));
-        if (end === -1) {
-            next(null, false);
-            return;
-        }
-
-        const oldVersion = oldContent.slice(start, end);
-        next(null, oldVersion);
+        const files_to_change = [
+            "README.md",
+            "luarocks/opencv_lua-scm-1.rockspec",
+        ];
+        eachOfLimit(files_to_change, os.cpus().length, (filename, i, next) => {
+            updateContent(sysPath.join(workspaceRoot, filename), oldContent => {
+                return oldContent
+                    .replace(new RegExp("(/lua-opencv/releases/download/v|/lua-opencv/tree/v)[0-9]+\\.[0-9]+\\.[0-9]+", "g"), `$1${ version }`)
+                    .replace(new RegExp("(--branch )[0-9]+\\.[0-9]+\\.[0-9]+( https://github.com/smbape/lua-opencv)", "g"), `$1${ version }$2`);
+            }, (err, hasChanged) => {
+                next(err);
+            });
+        }, next);
     },
 
-    (oldVersion, next) => {
-        if (!oldVersion) {
-            next();
-            return;
-        }
+    next => {
+        const readme = sysPath.join(workspaceRoot, "README.md");
 
-        waterfall([
-            next => {
-                updateContent(readme, oldContent => {
-                    const replacer = new RegExp(regexEscape(oldVersion), "g");
-                    return oldContent.replace(replacer, version);
-                }, next);
-            },
+        doctoc.transformAndSave([readme], (err, transformed) => {
+            if (!transformed) {
+                next(null, transformed);
+                return;
+            }
 
-            (hasChanged, next) => {
-                doctoc.transformAndSave([readme], (err, transformed) => {
-                    if (!transformed) {
-                        next(null, transformed);
-                        return;
-                    }
+            const child = spawn("git", ["add", readme], {
+                stdio: "inherit"
+            });
 
-                    const child = spawn("git", ["add", readme], {
-                        stdio: "inherit"
-                    });
+            child.on("error", next);
+            child.on("close", () => {
+                next(null, transformed);
+            });
 
-                    child.on("error", next);
-                    child.on("close", () => {
-                        next(null, transformed);
-                    });
-
-                    next(err, transformed);
-                });
-            },
-        ], next);
+            next(err, transformed);
+        });
     }
 ], err => {
     if (err) {

@@ -16,7 +16,7 @@ cap:set(cv.CAP_PROP_FRAME_HEIGHT, 720)
 cap:set(cv.CAP_PROP_FPS, CAP_FPS)
 
 while true do
-    -- Without this, memory grows indefenitely
+    -- Without this, memory grows indefinitely
     collectgarbage()
 
     local start = cv.getTickCount()

@@ -27,13 +27,14 @@ IF %nparms% == 0 GOTO :MAIN
 
 SET "_param=%~1"
 IF ["%_param%"] == [""] GOTO :NEXT_OPT
+
 IF ["%_param:~0,2%"] == ["-D"] (
     echo %_param% | find "=" 1>NUL 2>NUL
     if errorlevel 1 SET _param=%_param%=%~2
     if errorlevel 1 SET /a nparms -=1
     if errorlevel 1 SHIFT
     SET EXTRA_CMAKE_OPTIONS=%EXTRA_CMAKE_OPTIONS% "!_param!"
-    IF %nparms% == 0 GOTO :MAIN
+    GOTO :NEXT_OPT
 )
 
 IF [%1] == [-d] SET CMAKE_BUILD_TYPE=Debug
@@ -65,6 +66,14 @@ IF [%1] == [-G] (
     SET has_generator=1
     GOTO :NEXT_OPT
 )
+
+IF ["%_param:~0,2%"] == ["-G"] (
+    IF ["%_param%-%TARGET%"] == ["Ninja-ALL_BUILD"] SET TARGET=all
+    SET CMAKE_GENERATOR="%_param%"
+    SET has_generator=1
+    GOTO :NEXT_OPT
+)
+
 IF [%1] == [-A] (
     SET CMAKE_GENERATOR_PLATFORM=-A %2
     GOTO :NEXT_OPT

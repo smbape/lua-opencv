@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.25)
 
 # Sources: https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Windows
 
@@ -22,6 +22,23 @@ set(ABIVER ${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR})
 file(TO_NATIVE_PATH "${CMAKE_CURRENT_SOURCE_DIR}" PROJECT_DIR)
 
 if (WIN32)
+  set(luarocks_exe "<SOURCE_DIR>\\luarocks.exe")
+  set(luarocks luarocks.bat)
+else()
+  set(luarocks_exe "<BINARY_DIR>/bin/luarocks")
+  set(luarocks ./luarocks)
+endif()
+
+set(COMMANDS
+  COMMAND     "${luarocks_exe}" --lua-version "${ABIVER}" --lua-dir "${LUA_DIR}" init --lua-versions "5.1,5.2,5.3,5.4"
+  COMMAND     "${luarocks_exe}" --lua-version "${ABIVER}" --lua-dir "${LUA_DIR}" init --lua-versions "5.1,5.2,5.3,5.4"
+  COMMAND ${luarocks} --lua-version "${ABIVER}" config --scope project lua_interpreter "${LUA_INTERPRETER_NAME}"
+  COMMAND ${luarocks} --lua-version "${ABIVER}" config --scope project variables.LUA_BINDIR "${LUA_BINDIR}"
+  COMMAND ${luarocks} --lua-version "${ABIVER}" config --scope project variables.LUA_DIR "${LUA_DIR}"
+  COMMAND ${luarocks} --lua-version "${ABIVER}" config --scope project variables.LUA_INCDIR "${LUA_INCDIR}"
+)
+
+if (WIN32)
   set(LuaRocks_URL https://luarocks.github.io/luarocks/releases/luarocks-${LuaRocks_VERSION}-windows-64.zip)
   set(LuaRocks_URL_HASH SHA256=ab7e34332eedd6270b97f44df462e4584d3a60377205d88ea2806ecc547f074f)
 
@@ -31,14 +48,8 @@ if (WIN32)
     URL_HASH            ${LuaRocks_URL_HASH}
     CONFIGURE_COMMAND   ""
     BUILD_COMMAND       ""
-    INSTALL_COMMAND     cd /d "${PROJECT_DIR}"
-              COMMAND   "<SOURCE_DIR>\\luarocks.exe" --lua-version "${ABIVER}" --lua-dir "${LUA_DIR}" init --lua-versions "5.1,5.2,5.3,5.4"
-              COMMAND   "<SOURCE_DIR>\\luarocks.exe" --lua-version "${ABIVER}" --lua-dir "${LUA_DIR}" init --lua-versions "5.1,5.2,5.3,5.4"
-              COMMAND   luarocks.bat --lua-version "${ABIVER}" config --scope project lua_interpreter "${LUA_INTERPRETER_NAME}"
-              COMMAND   luarocks.bat --lua-version "${ABIVER}" config --scope project variables.LUA_BINDIR "${LUA_BINDIR}"
-              COMMAND   luarocks.bat --lua-version "${ABIVER}" config --scope project variables.LUA_DIR "${LUA_DIR}"
-              COMMAND   luarocks.bat --lua-version "${ABIVER}" config --scope project variables.LUA_INCDIR "${LUA_INCDIR}"
-              COMMAND   "${CMAKE_COMMAND}"
+    INSTALL_COMMAND     cd /d "${PROJECT_DIR}" ${COMMANDS}
+            COMMAND     "${CMAKE_COMMAND}"
                           "-DLUAROCKS_EXE=<SOURCE_DIR>\\luarocks.exe"
                           "-DLUA_BINDIR=${LUA_BINDIR}"
                           "-DLUA_INTERPRETER_NAME=${LUA_INTERPRETER_NAME}"
@@ -58,14 +69,7 @@ else()
     PATCH_COMMAND       "${PATCH}" -p 1 -d "<SOURCE_DIR>" -i "${CMAKE_CURRENT_SOURCE_DIR}/patches/001-luarocks-src.patch"
     CONFIGURE_COMMAND   cd "<SOURCE_DIR>" COMMAND ./configure "--prefix=<BINARY_DIR>" "--with-lua=${LUA_DIR}"
     BUILD_COMMAND       cd "<SOURCE_DIR>" COMMAND make COMMAND make install
-    INSTALL_COMMAND     cd "${PROJECT_DIR}"
-            COMMAND     "<BINARY_DIR>/bin/luarocks" --lua-version "${ABIVER}" --lua-dir "${LUA_DIR}" init --lua-versions "5.1,5.2,5.3,5.4"
-            COMMAND     "<BINARY_DIR>/bin/luarocks" --lua-version "${ABIVER}" --lua-dir "${LUA_DIR}" init --lua-versions "5.1,5.2,5.3,5.4"
-            COMMAND     ./luarocks --lua-version "${ABIVER}" config --scope project cmake_generator Ninja
-            COMMAND     ./luarocks --lua-version "${ABIVER}" config --scope project lua_interpreter "${LUA_INTERPRETER_NAME}"
-            COMMAND     ./luarocks --lua-version "${ABIVER}" config --scope project variables.LUA_BINDIR "${LUA_BINDIR}"
-            COMMAND     ./luarocks --lua-version "${ABIVER}" config --scope project variables.LUA_DIR "${LUA_DIR}"
-            COMMAND     ./luarocks --lua-version "${ABIVER}" config --scope project variables.LUA_INCDIR "${LUA_INCDIR}"
+    INSTALL_COMMAND     cd "${PROJECT_DIR}" ${COMMANDS}
     EXCLUDE_FROM_ALL    TRUE
   )
 endif()

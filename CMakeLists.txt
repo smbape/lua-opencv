@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.25)
 
 # https://www.youtube.com/watch?v=mczb2COlt1g
 
@@ -324,12 +324,13 @@ include(cmake/vcpkg_regex_replace_string.cmake)
 file(GLOB_RECURSE files_to_change
   README.md
   generator/index.js
+  luarocks/opencv_lua-scm-1.rockspec
   samples/*.lua
   scripts/pack.js
 )
 
 foreach(item ${files_to_change})
-  vcpkg_regex_replace_string("${item}" "(/lua-opencv/releases/download/v)[0-9]+\\.[0-9]+\\.[0-9]+" "\\1${PROJECT_VERSION}")
+  vcpkg_regex_replace_string("${item}" "(/lua-opencv/releases/download/v|/lua-opencv/tree/v)[0-9]+\\.[0-9]+\\.[0-9]+" "\\1${PROJECT_VERSION}")
   vcpkg_regex_replace_string("${item}" "(opencv-|/opencv/opencv/blob/|opencv_lua )[0-9]+\\.[0-9]+\\.[0-9]+" "\\1${OpenCV_VERSION}")
   vcpkg_regex_replace_string("${item}" "(--branch )[0-9]+\\.[0-9]+\\.[0-9]+( https://github.com/opencv/opencv)" "\\1${OpenCV_VERSION}\\2")
   vcpkg_regex_replace_string("${item}" "(--branch )[0-9]+\\.[0-9]+\\.[0-9]+( https://github.com/smbape/lua-opencv)" "\\1${PROJECT_VERSION}\\2")

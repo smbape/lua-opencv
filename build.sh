@@ -111,6 +111,16 @@ for ac_option in "$@"; do
         -G)
             key=--generator
             ;;
+        -G*)
+            if test $ac_opt -eq 1; then
+                ac_opt=0
+                value="${key:2}"
+                key=--generator
+            else
+                echo "Unknown option $key" 1>&2
+                exit 1
+            fi
+            ;;
         -A)
             key=--platform
             ;;

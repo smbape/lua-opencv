@@ -47,7 +47,7 @@ end
 -- [capture]
 
 while true do
-    -- Without this, memory grows indefenitely
+    -- Without this, memory grows indefinitely
     collectgarbage()
 
     local ret, frame = capture:read()

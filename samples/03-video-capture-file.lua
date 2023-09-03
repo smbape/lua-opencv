@@ -7,7 +7,7 @@ local cap = cv.VideoCapture(cv.samples.findFile("vtest.avi"))
 if not cap:isOpened() then error("!>Error: cannot open the video file.") end
 
 while true do
-    -- Without this, memory grows indefenitely
+    -- Without this, memory grows indefinitely
     collectgarbage()
 
     local read, frame = cap:read()

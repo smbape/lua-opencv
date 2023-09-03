@@ -19,6 +19,7 @@ cv.samples.addSamplesDataSearchPath(opencv_lua.fs_utils.findFile(
         "out/build/x64-Release/opencv/opencv-src",
         "out/build/Linux-GCC-Debug/opencv/opencv-src",
         "out/build/Linux-GCC-Release/opencv/opencv-src",
+        "opencv",
     }
 })))
 

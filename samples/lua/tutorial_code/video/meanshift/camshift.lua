@@ -52,7 +52,7 @@ cv.normalize(roi_hist, roi_hist, 0, 255, cv.NORM_MINMAX)
 local term_crit = cv.TermCriteria(bit.bor(cv.TermCriteria.EPS, cv.TermCriteria.COUNT), 10, 1)
 
 while true do
-    -- Without this, memory grows indefenitely
+    -- Without this, memory grows indefinitely
     collectgarbage()
 
     ret, frame = cap:read()

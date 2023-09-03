@@ -26,7 +26,7 @@ hsv_parts[1 + INDEX_BASE]:setTo(255)
 local flow_parts = opencv_lua.VectorOfMat()
 
 while true do
-    -- Without this, memory grows indefenitely
+    -- Without this, memory grows indefinitely
     collectgarbage()
 
     local ret, frame2 = cap:read()

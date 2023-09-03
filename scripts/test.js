@@ -1,13 +1,11 @@
 const process = require("node:process");
+const fs = require("node:fs");
 const os = require("node:os");
 const { spawn, spawnSync } = require("node:child_process");
 const sysPath = require("node:path");
 const waterfall = require("async/waterfall");
 const { explore } = require("fs-explorer");
-const { findFile } = require("../generator/FileUtils");
 
-const platform = os.platform() === "win32" ? (/cygwin/.test(process.env.HOME) ? "Cygwin" : "x64") : "*-GCC";
-const exeSuffix = os.platform() === "win32" ? ".exe" : "";
 const batchSuffix = os.platform() === "win32" ? ".bat" : "";
 const WORKSPACE_ROOT = process.env.WORKSPACE_ROOT ? sysPath.resolve(process.env.WORKSPACE_ROOT) : sysPath.resolve(__dirname, "..");
 const LUAROCKS_BINDIR = process.env.LUAROCKS_BINDIR ? sysPath.resolve(process.env.LUAROCKS_BINDIR) : sysPath.join(WORKSPACE_ROOT, "luarocks");
@@ -36,7 +34,7 @@ const config = {
 if (os.platform() === "win32") {
     const { APPDATA, PATH } = process.env;
     config.Release.env.PATH = `${ sysPath.join(LUAROCKS_BINDIR, "lua_modules", "bin") };${ sysPath.join(APPDATA, "luarocks", "bin") };${ PATH }`;
-} else {
+} else if (fs.existsSync(config.Debug.exe)) {
     const {env, exe} = config.Debug;
     env.LUA_CPATH = `${ sysPath.resolve(exe, "../../lib/?.so") };${ spawnSync(exe, ["-e", "print(package.cpath)"]).stdout.toString().trim() }`;
 }
