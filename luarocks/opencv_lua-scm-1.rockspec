@@ -11,12 +11,12 @@ description = {
 
       Linux/Windows users:
       I recommend you to try installing the prebuilt binary with
-      luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.0 opencv_lua
+      luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.1 opencv_lua
 
       If the prebuilt binary does not work, then I recommend to host your own binary rocks by following the instructions at
-      https://github.com/smbape/lua-opencv/tree/v0.0.0#hosting-you-own-binary-rocks
+      https://github.com/smbape/lua-opencv/tree/v0.0.1#hosting-you-own-binary-rocks
 
-      Otherwise, follow the instructions at https://github.com/smbape/lua-opencv/tree/v0.0.0#prerequisites-to-source-rock-install
+      Otherwise, follow the instructions at https://github.com/smbape/lua-opencv/tree/v0.0.1#prerequisites-to-source-rock-install
       before attempting to install the source rock.
    ]],
    homepage = "https://github.com/smbape/lua-opencv",

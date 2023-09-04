@@ -62,25 +62,25 @@ Prebuilt binaries are available for [LuaJIT 2.1](https://luajit.org/) and [Lua 5
 This will install suitable prebuilt binaries if found, otherwise will build from the source rock
 
 ```sh
-luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.0 opencv_lua
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.1 opencv_lua
 ```
 
 ### Install the source rock
 
 ```sh
-luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.0 opencv_lua 4.8.0
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.1 opencv_lua 4.8.0
 ```
 
 ### Install the prebuilt binaries for lua 5.4
 
 ```sh
-luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.0 opencv_lua 4.8.0lua5.4
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.1 opencv_lua 4.8.0lua5.4
 ```
 
 ### Install the prebuilt binaries for LuaJIT 2.1
 
 ```sh
-luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.0 opencv_lua 4.8.0luajit2.1
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.1 opencv_lua 4.8.0luajit2.1
 ```
 
 ## Examples
@@ -256,7 +256,7 @@ git clone --depth 1 --branch v0.0.1 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
 build.bat --target lua "-DLua_VERSION=5.4" --install
 build.bat --target luarocks
-luarocks\luarocks.bat install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.0 opencv_lua
+luarocks\luarocks.bat install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.1 opencv_lua
 npm ci
 node scripts\test.js --Release
 ```
@@ -269,7 +269,7 @@ git clone --depth 1 --branch v0.0.1 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
 ./build.sh --target lua "-DLua_VERSION=5.4" --install
 ./build.sh --target luarocks
-./luarocks/luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.0 opencv_lua
+./luarocks/luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.1 opencv_lua
 npm ci
 node scripts/test.js --Release
 ```
