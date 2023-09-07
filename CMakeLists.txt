@@ -201,10 +201,10 @@ execute_process(
 )
 
 file(GLOB_RECURSE project_source_headers "src/*.h*")
-file(GLOB_RECURSE project_sources_files "src/*.cpp")
+file(GLOB_RECURSE project_sources_files "src/*.c" "src/*.cpp")
 
 file(GLOB_RECURSE project_generated_headers "generated/*.h*")
-file(GLOB_RECURSE project_generated_files "generated/*.cpp")
+file(GLOB_RECURSE project_generated_files "generated/*.c" "generated/*.cpp")
 
 source_group("Source Headers" FILES ${project_source_headers})
 source_group("Source Files" FILES ${project_sources_files})
