@@ -36,48 +36,31 @@ local image = cv.Mat.zeros(height, width, cv.CV_8UC3)
 -- [show]
 local green = { 0, 255, 0 }
 local blue = { 255, 0, 0 }
+local rows, cols, type = image.rows, image.cols, image:type()
 local sampleMat = cv.Mat.zeros(1, 2, cv.CV_32F)
-local use_sweet_spots = true
 
 local t = os.clock()
 
-if use_sweet_spots then
-    -- give channels a new dimension to be able to do image(y, x, c), which is a speed sweet spot
-    image = image:reshape(1, { height, width, 3 })
-end
+-- transform into an lua table for faster processing in lua
+image = image:table()
 
-for i = 0, height - 1 do
-    for j = 0, width - 1 do
+for i = 0, rows - 1 do
+    for j = 0, cols - 1 do
         sampleMat[0] = j
         sampleMat[1] = i
         local _, results = svm:predict(sampleMat)
         local response = results[0]
 
-        if use_sweet_spots then
-            if response == 1 then
-                image:set(green[0 + INDEX_BASE], i, j, 0)
-                image:set(green[1 + INDEX_BASE], i, j, 1)
-                image:set(green[2 + INDEX_BASE], i, j, 2)
-            elseif response == -1 then
-                image:set(blue[0 + INDEX_BASE], i, j, 0)
-                image:set(blue[1 + INDEX_BASE], i, j, 1)
-                image:set(blue[2 + INDEX_BASE], i, j, 2)
-            end
-        else
-            if response == 1 then
-                image:Vec3b_set_at(i, j, green)
-            elseif response == -1 then
-                image:Vec3b_set_at(i, j, blue)
-            end
+        if response == 1 then
+            image[i + INDEX_BASE][j + INDEX_BASE] = green
+        elseif response == -1 then
+            image[i + INDEX_BASE][j + INDEX_BASE] = blue
         end
     end
 end
--- [show]
 
-if use_sweet_spots then
-    -- restore channels
-    image = image:reshape(3, { height, width })
-end
+-- transform back to mat
+image = cv.Mat.createFromArray(image, type)
 
 print(string.format("Hand written function time passed in seconds: %.3f", os.clock() - t))
 

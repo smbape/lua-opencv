@@ -8,6 +8,7 @@ Sources:
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local kwargs = opencv_lua.kwargs
+local INDEX_BASE = 1 -- lua is 1-based indexed
 
 local myHarris_window = 'My Harris corner detector'
 local myShiTomasi_window = 'My Shi Tomasi corner detector'
@@ -27,7 +28,7 @@ local function myHarris_function(val)
 
     for i = 0, src.rows - 1 do
         for j = 0, src.cols - 1 do
-            if Mc(i, j) > myHarris_minVal + (myHarris_maxVal - myHarris_minVal) * myHarris_qualityLevel / max_qualityLevel then
+            if Mc[i + INDEX_BASE][j + INDEX_BASE] > myHarris_minVal + (myHarris_maxVal - myHarris_minVal) * myHarris_qualityLevel / max_qualityLevel then
                 cv.circle(myHarris_copy, { j, i }, 4, { rng:uniform(0, 256), rng:uniform(0, 256), rng:uniform(0, 256) },
                     cv.FILLED)
             end
@@ -43,7 +44,7 @@ local function myShiTomasi_function(val)
 
     for i = 0, src.rows - 1 do
         for j = 0, src.cols - 1 do
-            if myShiTomasi_dst(i, j) > myShiTomasi_minVal + (myShiTomasi_maxVal - myShiTomasi_minVal) * myShiTomasi_qualityLevel / max_qualityLevel then
+            if myShiTomasi_dst[i + INDEX_BASE][j + INDEX_BASE] > myShiTomasi_minVal + (myShiTomasi_maxVal - myShiTomasi_minVal) * myShiTomasi_qualityLevel / max_qualityLevel then
                 cv.circle(myShiTomasi_copy, { j, i }, 4,
                     { rng:uniform(0, 256), rng:uniform(0, 256), rng:uniform(0, 256) },
                     cv.FILLED)
@@ -87,20 +88,21 @@ local apertureSize = 3
 -- My Harris matrix -- Using cornerEigenValsAndVecs
 local myHarris_dst = cv.cornerEigenValsAndVecs(src_gray, blockSize, apertureSize)
 
--- give channels a new dimension to be able to do myHarris_dst(i, j, k), which is a speed sweet spot
-myHarris_dst = myHarris_dst:reshape(1, { myHarris_dst.rows, myHarris_dst.cols, myHarris_dst:channels() })
+-- transform into an lua table for faster processing in lua
+myHarris_dst = myHarris_dst:table()
 
 -- calculate Mc
-Mc = cv.Mat(src_gray:size(), cv.CV_32F)
-for i = 0, src.rows - 1 do
-    for j = 0, src.cols - 1 do
-        local lambda_1 = myHarris_dst(i, j, 0)
-        local lambda_2 = myHarris_dst(i, j, 1)
-        Mc:set(lambda_1 * lambda_2 - 0.04 * math.pow((lambda_1 + lambda_2), 2), i, j)
+Mc = {}
+for i = 1, src.rows do
+    Mc[i] = {}
+    for j = 1, src.cols do
+        local lambda_1 = myHarris_dst[i][j][0 + INDEX_BASE]
+        local lambda_2 = myHarris_dst[i][j][1 + INDEX_BASE]
+        Mc[i][j] = lambda_1 * lambda_2 - 0.04 * math.pow((lambda_1 + lambda_2), 2)
     end
 end
 
-myHarris_minVal, myHarris_maxVal, _, _ = cv.minMaxLoc(Mc)
+myHarris_minVal, myHarris_maxVal, _, _ = cv.minMaxLoc(cv.Mat.createFromArray(Mc, cv.CV_32F))
 
 -- Create Window and Trackbar
 cv.namedWindow(myHarris_window)
@@ -111,6 +113,9 @@ myHarris_function(myHarris_qualityLevel)
 myShiTomasi_dst = cv.cornerMinEigenVal(src_gray, blockSize, kwargs({ ksize = apertureSize }))
 
 myShiTomasi_minVal, myShiTomasi_maxVal, _, _ = cv.minMaxLoc(myShiTomasi_dst)
+
+-- transform into an lua table for faster processing in lua
+myShiTomasi_dst = myShiTomasi_dst:table()
 
 -- Create Window and Trackbar
 cv.namedWindow(myShiTomasi_window)

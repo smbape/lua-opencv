@@ -57,7 +57,7 @@ waterfall([
             updateContent(sysPath.join(workspaceRoot, filename), oldContent => {
                 return oldContent
                     .replace(new RegExp("(/lua-opencv/releases/download/v|/lua-opencv/tree/v)[0-9]+\\.[0-9]+\\.[0-9]+", "g"), `$1${ version }`)
-                    .replace(new RegExp("(--branch )[0-9]+\\.[0-9]+\\.[0-9]+( https://github.com/smbape/lua-opencv)", "g"), `$1${ version }$2`);
+                    .replace(new RegExp("(--branch v)[0-9]+\\.[0-9]+\\.[0-9]+( https://github.com/smbape/lua-opencv)", "g"), `$1${ version }$2`);
             }, (err, hasChanged) => {
                 next(err);
             });

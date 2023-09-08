@@ -9,27 +9,26 @@ local opencv_lua = require("init")
 local cv = opencv_lua.cv
 
 -- [Update]
-local function update_map(ind, map_x, map_y)
-    local rows, cols = map_x.rows, map_x.cols
+local function update_map(ind, map_x, map_y, rows, cols)
     for i = 0, rows - 1 do
         for j = 0, cols - 1 do
             if ind == 0 then
                 if j > cols * 0.25 and j < cols * 0.75 and i > rows * 0.25 and i < rows * 0.75 then
-                    map_x:set(2 * (j - cols * 0.25) + 0.5, i, j)
-                    map_y:set(2 * (i - rows * 0.25) + 0.5, i, j)
+                    map_x[i + 1][j + 1] = 2 * (j - cols * 0.25) + 0.5
+                    map_y[i + 1][j + 1] = 2 * (i - rows * 0.25) + 0.5
                 else
-                    map_x:set(0, i, j)
-                    map_y:set(0, i, j)
+                    map_x[i + 1][j + 1] = 0
+                    map_y[i + 1][j + 1] = 0
                 end
             elseif ind == 1 then
-                map_x:set(j, i, j)
-                map_y:set(rows - i, i, j)
+                map_x[i + 1][j + 1] = j
+                map_y[i + 1][j + 1] = rows - i
             elseif ind == 2 then
-                map_x:set(cols - j, i, j)
-                map_y:set(i, i, j)
+                map_x[i + 1][j + 1] = cols - j
+                map_y[i + 1][j + 1] = i
             elseif ind == 3 then
-                map_x:set(cols - j, i, j)
-                map_y:set(rows - i, i, j)
+                map_x[i + 1][j + 1] = cols - j
+                map_y[i + 1][j + 1] = rows - i
             end
         end
     end
@@ -62,8 +61,8 @@ end
 -- [Load]
 
 -- [Create]
-local map_x = cv.Mat.zeros(src:size(), cv.CV_32FC1)
-local map_y = cv.Mat.zeros(src:size(), cv.CV_32FC1)
+local map_x_tbl = cv.Mat.zeros(src:size(), cv.CV_32FC1):table()
+local map_y_tbl = cv.Mat.zeros(src:size(), cv.CV_32FC1):table()
 -- [Create]
 
 -- [Window]
@@ -75,7 +74,9 @@ cv.namedWindow(window_name)
 local ind = 0
 while true do
     local t = os.clock()
-    update_map(ind, map_x, map_y)
+    update_map(ind, map_x_tbl, map_y_tbl, src.rows, src.cols)
+    local map_x = cv.Mat.createFromArray(map_x_tbl, cv.CV_32FC1)
+    local map_y = cv.Mat.createFromArray(map_y_tbl, cv.CV_32FC1)
     print(string.format("Update map %i seconds: %.3f", ind, os.clock() - t))
     ind = (ind + 1) % 4
     local dst = cv.remap(src, map_x, map_y, cv.INTER_LINEAR)

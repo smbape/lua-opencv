@@ -1,4 +1,4 @@
-package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:sub(1,1)) .. package.path
+package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:sub(1, 1)) .. package.path
 
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
@@ -9,21 +9,25 @@ Sources:
 --]]
 
 local img_rgb = cv.imread(cv.samples.findFile("mario.png"))
-assert(img_rgb, "file could not be read, check with os.path.exists()")
+assert(not img_rgb:empty(), "file could not be read, check with os.path.exists()")
 local img_gray = cv.cvtColor(img_rgb, cv.COLOR_BGR2GRAY)
 local template = cv.imread(cv.samples.findFile("mario_coin.png"), cv.IMREAD_GRAYSCALE)
-assert(template, "file could not be read, check with os.path.exists()")
+assert(not template:empty(), "file could not be read, check with os.path.exists()")
 
 local h, w = template.height, template.width
 
-local res = cv.matchTemplate(img_gray,template,cv.TM_CCOEFF_NORMED)
+local res = cv.matchTemplate(img_gray, template, cv.TM_CCOEFF_NORMED)
 local threshold = 0.8
 
-for j=1,res.rows do
+-- transform into an lua table for faster processing in lua
+local rows, cols = res.rows, res.cols
+res = res:table()
+
+for j = 1, rows do
     local y = j - 1
-    for i=1,res.cols do
+    for i = 1, cols do
         local x = i - 1
-        if res(y, x) >= threshold then
+        if res[j][i] >= threshold then
             cv.rectangle(img_rgb, { x, y }, { x + w, y + h }, { 0, 0, 255 }, 2)
         end
     end

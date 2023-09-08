@@ -147,35 +147,25 @@ end
 -- Create the result image
 local dst = cv.Mat.zeros(markers:size(), cv.CV_8UC3)
 
--- give channels a new dimension to be able to do image(y, x, c), which is a speed sweet spot
-local channels = dst:channels()
-dst = dst:reshape(1, { dst.rows, dst.cols, channels })
-local use_sweet_spots = true
+local rows, cols, channels, depth = dst.rows, dst.cols, dst:channels(), dst:depth()
+
+-- transform into an lua table for faster processing in lua
+markers = markers:table()
+dst = dst:table()
 
 -- Fill labeled objects with random colors
-for i = 0, markers.rows - 1 do
-    for j = 0, markers.cols - 1 do
-        local index
-        if use_sweet_spots then
-            index = markers(i, j)
-        else
-            index = markers[{i, j}]
-        end
+for i = 1, rows do
+    for j = 1, cols do
+        local index = markers[i][j]
         if index > 0 and index <= n_contours then
-            if use_sweet_spots then
-                dst:set(colors[index][0 + INDEX_BASE], i, j, 0)
-                dst:set(colors[index][1 + INDEX_BASE], i, j, 1)
-                dst:set(colors[index][2 + INDEX_BASE], i, j, 2)
-            else
-                dst:Vec3b_set_at(i, j, colors[index])
-            end
+            dst[i][j] = colors[index]
         end
     end
 end
 print(string.format("Hand written function time passed in seconds: %.3f", os.clock() - t))
 
--- restore channels
-dst = dst:reshape(3, { markers.rows, markers.cols })
+-- transform back to matrix
+dst = cv.Mat.createFromArray(dst, depth):reshape(channels, { rows, cols })
 
 -- Visualize the final image
 cv.imshow('Final Result', dst)

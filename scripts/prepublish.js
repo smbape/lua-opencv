@@ -85,6 +85,7 @@ eachOfLimit([
 
             if (exists) {
                 cmds.push(["git", ["reset", "--hard", "HEAD"]]);
+                cmds.push(["git", ["clean", "-fd"]]);
                 cmds.push(["git", ["pull"]]);
             } else {
                 cmds.push(...[

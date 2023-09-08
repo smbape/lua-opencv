@@ -32,11 +32,15 @@ local function cornerHarris_demo(val)
     cv.normalize(dst, dst_norm, kwargs({ alpha = 0, beta = 255, norm_type = cv.NORM_MINMAX }))
     local dst_norm_scaled = cv.convertScaleAbs(dst_norm)
 
+    -- transform into an lua table for faster processing in lua
+    local rows, cols = dst_norm.rows, dst_norm.cols
+    dst_norm = dst_norm:table()
+
     -- Drawing a circle around corners
-    for i = 0, dst_norm.rows - 1 do
-        for j = 0, dst_norm.cols - 1 do
-            if int(dst_norm(i, j)) > thresh then
-                cv.circle(dst_norm_scaled, { j, i }, 5, { 0 }, 2)
+    for i = 1, rows do
+        for j = 1, cols do
+            if int(dst_norm[i][j]) > thresh then
+                cv.circle(dst_norm_scaled, { j - 1, i - 1 }, 5, { 0 }, 2)
             end
         end
     end

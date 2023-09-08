@@ -2491,6 +2491,7 @@
   - [cv.Mat.step1](#cvmatstep1)
   - [cv.Mat.sum](#cvmatsum)
   - [cv.Mat.t](#cvmatt)
+  - [cv.Mat.table](#cvmattable)
   - [cv.Mat.tolist](#cvmattolist)
   - [cv.Mat.total](#cvmattotal)
   - [cv.Mat.type](#cvmattype)
@@ -28857,9 +28858,9 @@ lua:
 
 ```cpp
 static cv::Mat cv::Mat::createFromArray( sol::table array,
-                                         int        depth = -1 );
+                                         int        type = CV_64F );
 lua:
-    cv.Mat.createFromArray( array[, depth] ) -> retval
+    cv.Mat.createFromArray( array[, type] ) -> retval
 ```
 
 ### cv.Mat.createFromVec2b
@@ -30047,12 +30048,20 @@ lua:
     oMat:t() -> retval
 ```
 
+### cv.Mat.table
+
+```cpp
+sol::table cv::Mat::table();
+lua:
+    oMat:table() -> retval
+```
+
 ### cv.Mat.tolist
 
 ```cpp
-sol::table cv::Mat::tolist();
+sol::table cv::Mat::table();
 lua:
-    oMat:tolist() -> retval
+    oMat:table() -> retval
 ```
 
 ### cv.Mat.total

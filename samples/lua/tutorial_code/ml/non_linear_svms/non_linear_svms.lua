@@ -83,16 +83,13 @@ print('Finished training process')
 -- [show]
 local green = { 0, 100, 0 }
 local blue = { 100, 0, 0 }
-local rows, cols = I.rows, I.cols
+local rows, cols, type = I.rows, I.cols, I:type()
 local sampleMat = cv.Mat.zeros(1, 2, cv.CV_32F)
-local use_sweet_spots = true
 
 local t = os.clock()
 
-if use_sweet_spots then
-    -- give channels a new dimension to be able to do I(y, x, c), which is a speed sweet spot
-    I = I:reshape(1, { rows, cols, 3 })
-end
+-- transform into an lua table for faster processing in lua
+I = I:table()
 
 for i = 0, rows - 1 do
     for j = 0, cols - 1 do
@@ -101,30 +98,16 @@ for i = 0, rows - 1 do
         local _, results = svm:predict(sampleMat)
         local response = results[0]
 
-        if use_sweet_spots then
-            if response == 1 then
-                I:set(green[0 + INDEX_BASE], i, j, 0)
-                I:set(green[1 + INDEX_BASE], i, j, 1)
-                I:set(green[2 + INDEX_BASE], i, j, 2)
-            elseif response == 2 then
-                I:set(blue[0 + INDEX_BASE], i, j, 0)
-                I:set(blue[1 + INDEX_BASE], i, j, 1)
-                I:set(blue[2 + INDEX_BASE], i, j, 2)
-            end
-        else
-            if response == 1 then
-                I:Vec3b_set_at(i, j, green)
-            elseif response == 2 then
-                I:Vec3b_set_at(i, j, blue)
-            end
+        if response == 1 then
+            I[i + INDEX_BASE][j + INDEX_BASE] = green
+        elseif response == 2 then
+            I[i + INDEX_BASE][j + INDEX_BASE] = blue
         end
     end
 end
 
-if use_sweet_spots then
-    -- restore channels
-    I = I:reshape(3, { rows, cols })
-end
+-- transform back to matrix
+I = cv.Mat.createFromArray(I, type)
 
 print(string.format('Show the decision regions took %s seconds', os.clock() - t))
 -- [show]

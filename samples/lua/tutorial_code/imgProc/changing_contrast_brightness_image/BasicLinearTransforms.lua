@@ -58,28 +58,29 @@ io.write('* Enter the beta value [0-100]: ')
 local beta = io.read("*n") -- read a number
 -- [basic-linear-transform-parameters]
 
-local rows, cols, channels = image.rows, image.cols, image:channels()
+local rows, cols, channels, type = image.rows, image.cols, image:channels(), image:type()
 
--- give channels a new dimension to be able to do image(y, x, c), which is a speed sweet spot
-image = image:reshape(1, { rows, cols, channels })
-new_image = new_image:reshape(1, { rows, cols, channels })
+-- transform into an lua table for faster processing in lua
+image = image:table()
+new_image = new_image:table()
 
 -- Do the operation new_image(i,j) = alpha*image(i,j) + beta
 -- Instead of these 'for' loops we could have used simply:
 -- new_image = cv.convertScaleAbs(image, alpha=alpha, beta=beta)
 -- but we wanted to show you how to access the pixels :)
 -- [basic-linear-transform-operation]
-for y = 0, rows - 1 do
-    for x = 0, cols - 1 do
-        for c = 0, channels - 1 do
-            new_image:set(saturate_cast(alpha * image(y, x, c) + beta, 0, 255), y, x, c)
+for y = 1, rows do
+    for x = 1, cols do
+        for c = 1, channels do
+            new_image[y][x][c] = saturate_cast(alpha * image[y][x][c] + beta, 0, 255)
         end
     end
 end
 
--- restore channels
-image = image:reshape(channels, { rows, cols })
-new_image = new_image:reshape(channels, { rows, cols })
+-- restore matrices
+image = cv.Mat.createFromArray(image, type)
+new_image = cv.Mat.createFromArray(new_image, type)
+
 -- [basic-linear-transform-operation]
 
 -- [basic-linear-transform-display]

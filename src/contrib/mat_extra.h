@@ -6,7 +6,7 @@
 
 namespace cvextra {
 	cv::Mat createMatFromVectorOfMat(const std::vector<cv::Mat>& vec, sol::state_view& lua);
-	cv::Mat createMatFromArray(sol::table array, int depth, sol::state_view& lua);
+	cv::Mat createMatFromArray(sol::table array, int type, sol::state_view& lua);
     sol::table tolistMat(const cv::Mat& self, sol::state_view& lua);
 
 	template<typename... Args>

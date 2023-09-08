@@ -1,4 +1,4 @@
-package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:sub(1,1)) .. package.path
+package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:sub(1, 1)) .. package.path
 
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
@@ -29,7 +29,7 @@ while true do
     -- Flip the image horizontally to give the mirror impression
     local frame = cv.flip(frame, 1)
 
-    cv.putText(frame, string.format("FPS : %.2f", fps), { 10, 30 }, cv.FONT_HERSHEY_PLAIN, 2, {255, 0, 255}, 3)
+    cv.putText(frame, string.format("FPS : %.2f", fps), { 10, 30 }, cv.FONT_HERSHEY_PLAIN, 2, { 255, 0, 255 }, 3)
     cv.imshow("capture camera", frame)
 
     local key = cv.waitKey(CAP_SPF)

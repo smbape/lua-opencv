@@ -496,10 +496,11 @@ module.exports = ({ self, self_get, shared_ptr }) => {
 
         ["cv.Mat.createFromArray", "Mat", ["/S", "/Call=::cvextra::createMatFromArray", "/Expr=$0, lua"], [
             ["sol::table", "array", "", []],
-            ["int", "depth", "-1", []],
+            ["int", "type", "CV_64F", []],
         ], "", ""],
 
         ["cv.Mat.tolist", "sol::table", ["/Call=::cvextra::tolistMat", `/Expr=${ self }, lua`], [], "", ""],
+        ["cv.Mat.table", "sol::table", ["/Call=::cvextra::tolistMat", `/Expr=${ self }, lua`], [], "", ""],
     ];
 
     const types = new Set(["int", "float", "double"]);

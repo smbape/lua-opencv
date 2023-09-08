@@ -46,6 +46,18 @@ typedef unsigned __int64 uint64_t;
 typedef int32_t SBits;
 typedef uint32_t UBits;
 
+#if LUA_VERSION_NUM > 502
+/* Convert argument to bit type. */
+static UBits barg(lua_State *L, int idx)
+{
+  lua_Integer p;
+  lua_numbertointeger(luaL_checknumber(L, idx), &p);
+  return (UBits) p;
+}
+
+/* Return bit type. */
+#define BRET(b)  lua_pushinteger(L, (lua_Integer)(SBits)(b)); return 1;
+#else
 typedef union {
   lua_Number n;
 #ifdef LUA_NUMBER_DOUBLE
@@ -94,6 +106,7 @@ static UBits barg(lua_State *L, int idx)
 
 /* Return bit type. */
 #define BRET(b)  lua_pushnumber(L, (lua_Number)(SBits)(b)); return 1;
+#endif
 
 static int bit_tobit(lua_State *L) { BRET(barg(L, 1)) }
 static int bit_bnot(lua_State *L) { BRET(~barg(L, 1)) }

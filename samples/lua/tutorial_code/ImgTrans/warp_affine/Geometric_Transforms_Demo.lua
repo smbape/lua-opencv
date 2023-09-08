@@ -35,8 +35,7 @@ end
 
 -- [Set your 3 points to calculate the  Affine Transform]
 local srcTri = cv.Mat.createFromArray({ { 0, 0 }, { src.cols - 1, 0 }, { 0, src.rows - 1 } }, cv.CV_32F)
-local dstTri = cv.Mat.createFromArray(
-{ { 0, src.cols * 0.33 }, { src.cols * 0.85, src.rows * 0.25 }, { src.cols * 0.15, src.rows * 0.7 } }, cv.CV_32F)
+local dstTri = cv.Mat.createFromArray({ { 0, src.cols * 0.33 }, { src.cols * 0.85, src.rows * 0.25 }, { src.cols * 0.15, src.rows * 0.7 } }, cv.CV_32F)
 -- [Set your 3 points to calculate the  Affine Transform]
 
 -- [Get the Affine Transform]

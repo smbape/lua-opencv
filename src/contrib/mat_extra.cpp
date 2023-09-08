@@ -1,5 +1,6 @@
 #include <lua_utils.hpp>
 #include <limits>
+#include <type_traits>
 #include "mat_extra.h"
 
 #if (LUA_VERSION_NUM == 501 && !defined(lua_rawlen))
@@ -116,8 +117,7 @@ namespace {
 				// lua_rawseti will pop the table from the stack
 				// added it back onto the stack
 				// because the top of the stack is table we are filling
-				lua_pushnumber(L, index);
-				lua_rawget(L, -2);
+				lua_rawgeti(L, -1, index);
 
 				i--;
 				continue;
@@ -133,7 +133,12 @@ namespace {
 				nexti %= ssizes[k];
 			}
 
-			lua_pushnumber(L, *reinterpret_cast<const _Tp*>(data + offset));
+			if constexpr (LUA_VERSION_NUM > 502 && std::is_integral_v<_Tp>) {
+			    lua_pushinteger(L, *reinterpret_cast<const _Tp*>(data + offset));
+			} else {
+			    lua_pushnumber(L, *reinterpret_cast<const _Tp*>(data + offset));
+			}
+
 			lua_rawseti(L, -2, 1 + indexes[j]++);
 		}
 
@@ -188,7 +193,7 @@ namespace cvextra {
 		return result;
 	}
 
-	cv::Mat createMatFromArray(sol::table array, int depth, sol::state_view& lua) {
+	cv::Mat createMatFromArray(sol::table array, int type, sol::state_view& lua) {
 		std::vector<double> values;
 		std::vector<int> sizes;
 		std::vector<int> indexes;
@@ -198,13 +203,27 @@ namespace cvextra {
 		traverse_matrix(L, values, sizes, indexes);
 		lua_pop(L, 1);
 
-		if (depth == -1) {
-			depth = CV_64F;
+		if (type == -1) {
+			type = CV_64F;
 		}
+
+		auto flags = CV_MAT_TYPE(type);
+		auto cn = CV_MAT_CN(flags);
+		auto depth = CV_MAT_DEPTH(flags);
 
 		cv::Mat data(sizes, CV_64F, reinterpret_cast<void*>(values.data()));
 		cv::Mat result;
 		data.convertTo(result, depth);
+
+		if (cn != 1) {
+			auto dims = sizes.size();
+			if (cn == sizes.back()) {
+				result = result.reshape(cn, dims - 1, result.size.p);
+			}
+			else {
+				luaL_error(lua.lua_state(), "the given array has %i channels, while given type has %i channels", sizes.back(), cn);
+			}
+		}
 
 		return result;
 	}

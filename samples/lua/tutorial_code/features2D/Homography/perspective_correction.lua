@@ -10,12 +10,10 @@ local cv = opencv_lua.cv
 local int = opencv_lua.math.int
 
 -- Make the starting point unpredictable
-cv.theRNG().state = cv.getTickCount()
+local rng = cv.RNG(cv.getTickCount())
 
 local function randomColor()
-    local color = cv.Mat.zeros(3, 1, cv.CV_8UC1)
-    cv.randu(color, 0.0, 255.0)
-    return color:tolist()
+    return { rng:uniform_int(0, 256), rng:uniform_int(0, 256), rng:uniform_int(0, 256) }
 end
 
 local function perspectiveCorrection(img1Path, img2Path, patternSize)
