@@ -8,7 +8,7 @@ Sources:
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local kwargs = opencv_lua.kwargs
-local bit = bit or opencv_lua.bit
+local bit = bit or opencv_lua.bit ---@diagnostic disable-line: undefined-global
 local int = opencv_lua.math.int
 local INDEX_BASE = 1 -- lua is 1-based indexed
 

@@ -8,7 +8,7 @@ Sources:
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local kwargs = opencv_lua.kwargs
-local bit = bit or opencv_lua.bit
+local bit = bit or opencv_lua.bit ---@diagnostic disable-line: undefined-global
 
 local low = 20
 local up = 20

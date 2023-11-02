@@ -7,7 +7,7 @@ Sources:
 
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
-local bit = bit or opencv_lua.bit
+local bit = bit or opencv_lua.bit ---@diagnostic disable-line: undefined-global
 
 -- parser = argparse.ArgumentParser(description='This sample demonstrates the camshift algorithm. \
 --                                               The example file can be downloaded from: \

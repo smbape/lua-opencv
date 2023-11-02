@@ -14,8 +14,8 @@ module.exports = ({ self, self_get, shared_ptr }) => {
 
             ["int", "width", "", ["/RW", "=cols"]],
             ["int", "height", "", ["/RW", "=rows"]],
-            ["std::tuple<int, int, int>", "shape", "", ["/R", `/RExpr=std::make_tuple(${ self_get("rows") }, ${ self_get("cols") }, ${ self_get("channels") }())`]],
-            ["std::vector<int>", "sizes", "", ["/R", `/RExpr=std::vector<int>(${ self_get("size") }.p, ${ self_get("size") }.p + ${ self_get("size") }.dims())`]],
+            ["std::vector<int>", "shape", "", ["/R", `/RExpr=::cvextra::mat_shape(${ self })`]],
+            ["std::vector<int>", "sizes", "", ["/R", `/RExpr=std::vector<int>(${ self_get("size") }.p, ${ self_get("size") }.p + ${ self_get("dims") })`]],
             ["std::vector<size_t>", "steps", "", ["/R", `/RExpr=std::vector<size_t>(${ self_get("step") }.p, ${ self_get("step") }.p + ${ self_get("dims") })`]],
         ], "", ""],
 

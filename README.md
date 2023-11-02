@@ -22,7 +22,7 @@ Therefore the [OpenCV documentation](https://docs.opencv.org/4.x/index.html) sho
 - [Examples](#examples)
   - [Show image](#show-image)
   - [Video capture Camera](#video-capture-camera)
-  - [Rotate image](#rotate-image)
+  - [Rotate an image](#rotate-image)
   - [Drawing contours](#drawing-contours)
   - [Template matching](#template-matching)
 - [Runing examples](#runing-examples)
@@ -163,7 +163,7 @@ end
 cv.destroyAllWindows()
 ```
 
-### Rotate image
+### Rotate an image
 
 ```lua
 local opencv_lua = require("opencv_lua")
@@ -276,7 +276,7 @@ node scripts\test.js --Release
 
 #### Linux
 
-```cmd
+```sh
 git clone --depth 1 --branch 4.8.0 https://github.com/opencv/opencv.git
 git clone --depth 1 --branch v0.0.2 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
@@ -297,17 +297,17 @@ To avoid that long install time, you can host your own prebuilt binary rocks.
 ```sh
 git clone --depth 1 --branch v0.0.2 https://github.com/smbape/lua-opencv.git
 cd lua-opencv/luarocks
-luarocks --lua-version <Which Lua version to use> --lua-dir "<Which Lua installation to use>" init --lua-versions "5.1,5.2,5.3,5.4"
-luarocks --lua-version <Which Lua version to use> config --scope project cmake_generator Ninja
+luarocks --lua-version "<Which Lua version to use>" --lua-dir "<Which Lua installation to use>" init --lua-versions "5.1,5.2,5.3,5.4"
+luarocks --lua-version "<Which Lua version to use>" config --scope project cmake_generator Ninja
 cd ..
-luarocks/luarocks make luarocks/opencv_lua-scm-1.rockspec
-LUAROCKS_SERVER="<Where to install the prebuilt binary>" node scripts/packs.js
+./luarocks/luarocks make luarocks/opencv_lua-scm-1.rockspec
+LUAROCKS_SERVER="<Where to install the prebuilt binary>" DIST_VERSION=1 node scripts/pack.js
 ```
 
 Now you can install the prebuilt binary with
 
 ```sh
-luarocks install --server=$LUAROCKS_SERVER
+luarocks install --server="$LUAROCKS_SERVER"
 ```
 
 Alternatively, If you want an installation over http, upload the contents of `LUAROCKS_SERVER` into an HTTP/S server
@@ -422,7 +422,7 @@ end
 
 ### Instance method calls
 
-Instance method are called with ':' not '.'.
+Instance method are called with `:` not `.`.
 
 If you see in python
 

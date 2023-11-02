@@ -1,10 +1,3 @@
-const {ALIASES} = require("./constants");
-
-exports.getAlias = str => {
-    str = str.trim();
-    return ALIASES.has(str) ? ALIASES.get(str) : str;
-};
-
 exports.removeNamespaces = (str, options = {}) => {
     if (!options.remove_namespaces || options.remove_namespaces.size === 0) {
         return str;
@@ -61,4 +54,11 @@ exports.getTypeDef = (type, options) => {
         .replace(/[<>]/g, "");
 
     return type_def;
+};
+
+const {ALIASES} = require("./constants");
+
+exports.getAlias = str => {
+    str = str.trim();
+    return ALIASES.has(str) ? ALIASES.get(str) : str;
 };

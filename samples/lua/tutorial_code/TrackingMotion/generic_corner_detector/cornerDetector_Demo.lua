@@ -10,6 +10,10 @@ local cv = opencv_lua.cv
 local kwargs = opencv_lua.kwargs
 local INDEX_BASE = 1 -- lua is 1-based indexed
 
+if not math.pow then
+    math.pow = function(x, y) return x ^ y end
+end
+
 local myHarris_window = 'My Harris corner detector'
 local myShiTomasi_window = 'My Shi Tomasi corner detector'
 local myHarris_qualityLevel = 50

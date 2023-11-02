@@ -46,13 +46,11 @@ typedef unsigned __int64 uint64_t;
 typedef int32_t SBits;
 typedef uint32_t UBits;
 
-#if LUA_VERSION_NUM > 502
+#if LUA_VERSION_NUM >= 503
 /* Convert argument to bit type. */
 static UBits barg(lua_State *L, int idx)
 {
-  lua_Integer p;
-  lua_numbertointeger(luaL_checknumber(L, idx), &p);
-  return (UBits) p;
+  return (UBits) luaL_checkinteger(L, idx);
 }
 
 /* Return bit type. */

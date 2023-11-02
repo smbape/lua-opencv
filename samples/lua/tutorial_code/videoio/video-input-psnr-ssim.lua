@@ -9,8 +9,12 @@ local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local int = opencv_lua.math.int
 local round = opencv_lua.math.round
-local log10 = math.log10 or function(x) return math.log(x, 10) end
 local INDEX_BASE = 1 -- lua is 1-based indexed
+
+if not math.log10 then
+    ---@diagnostic disable-next-line: duplicate-set-field
+    math.log10 = function(x) return math.log(x, 10) end
+end
 
 -- [get-psnr]
 local function getPSNR(I1, I2)
@@ -26,8 +30,9 @@ local function getPSNR(I1, I2)
     if sse <= 1e-10 then
         return 0                    -- for small values return zero
     else
-        local mse = 1.0 * sse / (I1:channels() * I1:total())
-        local psnr = 10.0 * log10((255 * 255) / mse)
+        local shape = I1.shape
+        local mse = 1.0 * sse / (shape[1] * shape[2] * shape[3])
+        local psnr = 10.0 * math.log10((255 * 255) / mse)
         return psnr
     end
 end

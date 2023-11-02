@@ -8,6 +8,8 @@ namespace cvextra {
 	cv::Mat createMatFromVectorOfMat(const std::vector<cv::Mat>& vec, sol::state_view& lua);
 	cv::Mat createMatFromArray(sol::table array, int type, sol::state_view& lua);
     sol::table tolistMat(const cv::Mat& self, sol::state_view& lua);
+    std::vector<int> mat_shape(const cv::Mat& self);
+    std::vector<int> umat_shape(const cv::UMat& self);
 
 	template<typename... Args>
 	inline double mat_at(const cv::Mat& m, Args&&... args) {

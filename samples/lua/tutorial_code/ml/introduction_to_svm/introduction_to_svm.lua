@@ -44,17 +44,17 @@ local t = os.clock()
 -- transform into an lua table for faster processing in lua
 image = image:table()
 
-for i = 0, rows - 1 do
-    for j = 0, cols - 1 do
-        sampleMat[0] = j
-        sampleMat[1] = i
+for i = 1, rows do
+    for j = 1, cols do
+        sampleMat[0] = j - INDEX_BASE
+        sampleMat[1] = i - INDEX_BASE
         local _, results = svm:predict(sampleMat)
         local response = results[0]
 
         if response == 1 then
-            image[i + INDEX_BASE][j + INDEX_BASE] = green
+            image[i][j] = green
         elseif response == -1 then
-            image[i + INDEX_BASE][j + INDEX_BASE] = blue
+            image[i][j] = blue
         end
     end
 end

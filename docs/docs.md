@@ -26849,7 +26849,7 @@ lua:
 ### Mat.shape
 
 ```cpp
-std::tuple<int, int, int> cv::Mat::shape
+std::vector<int> cv::Mat::shape
 lua:
     [propget] oMat.shape
 ```
@@ -30059,9 +30059,9 @@ lua:
 ### cv.Mat.tolist
 
 ```cpp
-sol::table cv::Mat::table();
+sol::table cv::Mat::tolist();
 lua:
-    oMat:table() -> retval
+    oMat:tolist() -> retval
 ```
 
 ### cv.Mat.total
@@ -40363,7 +40363,7 @@ lua:
 ### UMat.shape
 
 ```cpp
-std::tuple<int, int, int> cv::UMat::shape
+std::vector<int> cv::UMat::shape
 lua:
     [propget] oUMat.shape
 ```

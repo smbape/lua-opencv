@@ -7,6 +7,7 @@ const waterfall = require("async/waterfall");
 const prepublish = sysPath.resolve(__dirname, "..", "out", "prepublish");
 const wrapperSuffix = os.platform() === "win32" ? ".bat" : "";
 const shellSuffix = os.platform() === "win32" ? ".bat" : ".sh";
+const pack = process.argv.includes("--pack");
 
 const spawnExec = (cmd, args, options, next) => {
     const {stdio} = options;
@@ -110,8 +111,11 @@ eachOfLimit([
                 [sysPath.join(projectRoot, `build${ shellSuffix }`), ["--target", target, `-DLua_VERSION=${ version }`, "--install"]],
                 [sysPath.join(projectRoot, `build${ shellSuffix }`), ["--target", "luarocks"]],
                 [luarocks, ["make", sysPath.join("luarocks", "opencv_lua-scm-1.rockspec")]],
-                ["node", [sysPath.join("scripts", "pack.js")]],
             ];
+
+            if (pack) {
+                cmds.push(["node", [sysPath.join("scripts", "pack.js")]]);
+            }
 
             if (os.platform() !== "win32") {
                 cmds.splice(2, 0, ...[
