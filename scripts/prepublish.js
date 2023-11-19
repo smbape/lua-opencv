@@ -85,9 +85,12 @@ eachOfLimit([
             const cmds = [];
 
             if (exists) {
-                cmds.push(["git", ["reset", "--hard", "HEAD"]]);
-                cmds.push(["git", ["clean", "-fd"]]);
-                cmds.push(["git", ["pull"]]);
+                cmds.push(...[
+                    ["git", ["remote", "set-url", "origin", sysPath.resolve(__dirname, "..")]],
+                    ["git", ["reset", "--hard", "HEAD"]],
+                    ["git", ["clean", "-fd"]],
+                    ["git", ["pull"]],
+                ]);
             } else {
                 cmds.push(...[
                     ["git", ["init", "-b", "main"]],
@@ -120,7 +123,7 @@ eachOfLimit([
             if (os.platform() !== "win32") {
                 cmds.splice(2, 0, ...[
                     [luarocks, ["config", "--scope", "project", "cmake_generator", "Ninja"]],
-                    [luarocks, ["config", "--scope", "project", "cmake_build_args", "--", "-j4"]],
+                    [luarocks, ["config", "--scope", "project", "cmake_build_args", "--", `-j${ Math.max(1, os.cpus().length - 2) }`]],
                 ]);
             }
 
