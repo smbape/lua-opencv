@@ -15,7 +15,7 @@ add_custom_command(
     DEPENDS minilua
     COMMENT "Generate buildvm_arch.h"
 )
-add_custom_target(gen_buildvm_arch ALL DEPENDS minilua "${BUILDVM_ARCH_HEADER}")
+add_custom_target(gen_buildvm_arch ALL DEPENDS minilua "${BUILDVM_ARCH_HEADER}" "${luajit_SRC}/luajit.h")
 
 if (NOT CMAKE_CROSSCOMPILING)
   add_subdirectory(buildvm)

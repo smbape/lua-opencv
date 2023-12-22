@@ -9,13 +9,11 @@ option(BUILD_SHARED_LIBS "Build shared libraries (.dll/.so) instead of static on
 include(cmake/initialize.cmake)
 include(cmake/options.cmake)
 
-set(Luajit_URL_HASH_210beta3 409f7fe570d3c16558e594421c47bdd130238323c9d6fd6c83dedd2aaeb082a8)
-
 include(FetchContent)
 FetchContent_Declare(luajit
   # URL                 https://github.com/openresty/luajit2/archive/refs/tags/v2.1-20230410.tar.gz
-  URL                 https://github.com/LuaJIT/LuaJIT/archive/refs/tags/v${VERSION}.tar.gz
-  URL_HASH            SHA256=${Luajit_URL_HASH_${Luajit_DLLVERSION}}
+  URL                 https://github.com/LuaJIT/LuaJIT/archive/${Luajit_HASH_${Luajit_HASH_VERSION}}.zip
+  URL_HASH            SHA256=${Luajit_URL_HASH_${Luajit_HASH_VERSION}}
 )
 Fetchcontent_Populate(luajit)
 
@@ -149,6 +147,10 @@ set(LJLIB_C
   lib_ffi.c
 )
 
+if (EXISTS "${luajit_SRC}/lib_buffer.c")
+  list(APPEND LJLIB_C lib_buffer.c)
+endif()
+
 set(LJ_BCDEF_HEADER "${LUA_INCLUDE_DIR}/lj_bcdef.h")
 file(TO_NATIVE_PATH "${LJ_BCDEF_HEADER}" LJ_BCDEF_HEADER_NATIVE)
 
@@ -167,15 +169,18 @@ file(TO_NATIVE_PATH "${LJ_VMDEF_LUA}" LJ_VMDEF_LUA_NATIVE)
 set(LJ_FOLDDEF_HEADER "${LUA_INCLUDE_DIR}/lj_folddef.h")
 file(TO_NATIVE_PATH "${LJ_FOLDDEF_HEADER}" LJ_FOLDDEF_HEADER_NATIVE)
 
+set(ALL_HDRGEN
+  "${LJ_BCDEF_HEADER}"
+  "${LJ_FFDEF_HEADER}"
+  "${LJ_LIBDEF_HEADER}"
+  "${LJ_RECDEF_HEADER}"
+  "${LJ_VMDEF_LUA}"
+  "${LJ_FOLDDEF_HEADER}"
+)
+
 file(MAKE_DIRECTORY "${LUA_INCLUDE_DIR}" "${LUA_SHARE_DIR}")
 add_custom_command(
-  OUTPUT
-    "${LJ_BCDEF_HEADER}"
-    "${LJ_FFDEF_HEADER}"
-    "${LJ_LIBDEF_HEADER}"
-    "${LJ_RECDEF_HEADER}"
-    "${LJ_VMDEF_LUA}"
-    "${LJ_FOLDDEF_HEADER}"
+  OUTPUT ${ALL_HDRGEN}
   COMMAND "${BUILDVM_TARGET_FILE}" -m bcdef -o "${LJ_BCDEF_HEADER_NATIVE}" ${LJLIB_C}
   COMMAND "${BUILDVM_TARGET_FILE}" -m ffdef -o "${LJ_FFDEF_HEADER_NATIVE}" ${LJLIB_C}
   COMMAND "${BUILDVM_TARGET_FILE}" -m libdef -o "${LJ_LIBDEF_HEADER_NATIVE}" ${LJLIB_C}
@@ -184,8 +189,31 @@ add_custom_command(
   COMMAND "${BUILDVM_TARGET_FILE}" -m folddef -o "${LJ_FOLDDEF_HEADER_NATIVE}" lj_opt_fold.c
   WORKING_DIRECTORY "${luajit_SRC}"
   DEPENDS buildvm
+  COMMENT "Generating headers"
 )
-add_custom_target(gen_lj_headers ALL DEPENDS buildvm "${LJ_FOLDDEF_HEADER}")
+
+
+if (EXISTS "${luajit_SRC}/host/genversion.lua")
+  list(APPEND ALL_HDRGEN
+    "${luajit_SRC}/luajit.h"
+    "${luajit_SRC}/luajit_relver.txt"
+  )
+  file(TO_NATIVE_PATH "host/genversion.lua" LJ_GENVERSION_LUA)
+  file(TO_NATIVE_PATH ../.relver LJ_RELVER)
+
+  add_custom_command(
+    OUTPUT "${luajit_SRC}/luajit.h"
+    OUTPUT "${luajit_SRC}/luajit_relver.txt"
+    COMMAND "${CMAKE_COMMAND}" -E copy ${LJ_RELVER} luajit_relver.txt
+    COMMAND "${MINILUA_TARGET_FILE}" "${LJ_GENVERSION_LUA}"
+    WORKING_DIRECTORY "${luajit_SRC}"
+    DEPENDS minilua
+    COMMENT "Generating version file"
+  )
+endif()
+
+
+add_custom_target(gen_lj_headers ALL DEPENDS buildvm ${ALL_HDRGEN})
 list(APPEND gen_lj_targets gen_lj_headers)
 
 file(GLOB_RECURSE libluajit_source_files "${luajit_SRC}/lj_*.c" "${luajit_SRC}/lib_*.c")
@@ -222,7 +250,7 @@ IF (WIN32 AND (CMAKE_GENERATOR STREQUAL Ninja))
   target_compile_definitions(libluajit PRIVATE _WINDLL)
 ENDIF()
 
-if (("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin") AND ("${TARGET_LJARCH}" STREQUAL x64))
+if (("${Luajit_VERSION}" STREQUAL "2.1.0-beta3") AND ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin") AND ("${TARGET_LJARCH}" STREQUAL x64))
   target_link_options(libluajit PRIVATE -image_base 7fff04c4a000)
 endif()
 
@@ -288,8 +316,11 @@ target_include_directories(luajit PRIVATE ${LUA_INCLUDE_DIRS})
 set_target_output_directories(luajit)
 set_target_properties(luajit PROPERTIES OUTPUT_NAME "luajit-${VERSION}")
 
-if (("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin") AND ("${TARGET_LJARCH}" STREQUAL x64))
-  target_link_options(luajit PRIVATE -pagezero_size 10000 -image_base 100000000)
+if (("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin"))
+  add_compile_definitions(LUAJIT_UNWIND_EXTERNAL)
+  if (("${Luajit_VERSION}" STREQUAL "2.1.0-beta3") AND ("${TARGET_LJARCH}" STREQUAL x64))
+    target_link_options(luajit PRIVATE -pagezero_size 10000 -image_base 100000000)
+  endif()
 endif()
 
 if ((NOT WIN32) AND (NOT APPLE) AND (NOT (CMAKE_SYSTEM MATCHES "SunOS")) AND (NOT ("${CMAKE_SYSTEM_NAME}" STREQUAL "PS3")))

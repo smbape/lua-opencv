@@ -30,7 +30,11 @@ Please see LJ_ARCH_NUMMODE in lj_arch.h for details."
 )
 
 include(CMakeDependentOption)
-cmake_dependent_option(ENABLE_GC64 "Enable GC64 mode for x64." OFF "USE_X64" OFF)
+if ("${Luajit_VERSION}" STREQUAL "2.1.0-beta3")
+  cmake_dependent_option(ENABLE_GC64 "Enable GC64 mode for x64." OFF "USE_X64" OFF)
+else()
+  cmake_dependent_option(DISABLE_GC64 "Disable GC64 mode for x64." OFF "USE_X64" OFF)
+endif()
 
 set(USE_SYSMALLOC OFF CACHE BOOL
   "Use the system provided memory allocator (realloc) instead of the
