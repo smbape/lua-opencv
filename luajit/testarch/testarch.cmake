@@ -1,9 +1,68 @@
 ##############################################################################
-# Target system detection.
+# Target architecture selection.
 ##############################################################################
 
+set(TARGET_TESTARCH_INPUT "
+#include <stdio.h>
+#include <lj_arch.h>
+
+#define _stringify(s) #s
+#define stringify(s) _stringify(s)
+
+static const char * const DEFINES = \"\"")
+
+foreach(variable IN ITEMS
+  __AARCH64EB__
+  LJ_ABI_SOFTFP
+  LJ_ARCH_BITS
+  LJ_ABI_PAUTH
+  LJ_ARCH_HASFPU
+  LJ_ARCH_PPC32ON64
+  LJ_ARCH_PPC64
+  LJ_ARCH_ROUND
+  LJ_TARGET_MIPSR6
+  LJ_ARCH_SQRT
+  LJ_ARCH_VERSION
+  LJ_DUALNUM
+  LJ_FR2
+  LJ_HASFFI
+  LJ_HASJIT
+  LJ_LE
+  LJ_NO_UNWIND
+  LJ_TARGET_ARM
+  LJ_TARGET_ARM64
+  LJ_TARGET_MIPS
+  LJ_TARGET_MIPS64
+  LJ_TARGET_PPC
+  LJ_TARGET_PS3
+  LJ_TARGET_X64
+  LJ_TARGET_X86
+  MIPSEL
+)
+  set(TARGET_TESTARCH_INPUT "${TARGET_TESTARCH_INPUT}
+    #ifdef ${variable}
+    \"#define ${variable} \" stringify(${variable}) \"\\n\"
+    #endif
+")
+endforeach()
+
+set(TARGET_TESTARCH_INPUT "${TARGET_TESTARCH_INPUT};
+
+int main(int argc, char **argv)
+{
+    puts(DEFINES);
+    return 0;
+}")
+
+set(testarch_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/testarch")
+file(MAKE_DIRECTORY "${testarch_BINARY_DIR}")
+
+set(TARGET_TESTARCH_FILE "${testarch_BINARY_DIR}/testarch.c")
+string(STRIP "${TARGET_TESTARCH_INPUT}" TARGET_TESTARCH_INPUT)
+file(CONFIGURE OUTPUT "${TARGET_TESTARCH_FILE}" CONTENT "${TARGET_TESTARCH_INPUT}\n")
+
 try_run(TARGET_TESTARCH TARGET_TESTARCH_COMPILED
-  SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/testarch/testarch.c"
+  SOURCES "${TARGET_TESTARCH_FILE}"
   CMAKE_FLAGS "-DINCLUDE_DIRECTORIES=${LUA_INCLUDE_DIRS}"
   RUN_OUTPUT_VARIABLE TARGET_TESTARCH_OUTPUT
 )
@@ -91,6 +150,11 @@ if (TARGET_TESTARCH_OUTPUT MATCHES " LJ_NO_UNWIND 1")
   list(APPEND TARGET_ARCH LUAJIT_NO_UNWIND)
 endif()
 
+if (TARGET_TESTARCH_OUTPUT MATCHES " LJ_ABI_PAUTH 1")
+  list(APPEND DASM_FLAGS -D PAUTH)
+  list(APPEND TARGET_ARCH "LJ_ABI_PAUTH=1")
+endif()
+
 # TODO : DASM_AFLAGS+= -D VER=$(subst LJ_ARCH_VERSION_,,$(filter LJ_ARCH_VERSION_%,$(subst LJ_ARCH_VERSION ,LJ_ARCH_VERSION_,$(TARGET_TESTARCH))))
 
 if (WIN32 OR CYGWIN OR MINGW)
@@ -108,6 +172,10 @@ elseif ("${TARGET_LJARCH}" STREQUAL "arm")
     list(APPEND DASM_FLAGS -D IOS)
   endif()
 elseif ("${TARGET_LJARCH}" STREQUAL "ppc")
+  if (TARGET_TESTARCH_OUTPUT MATCHES "LJ_TARGET_MIPSR6 ")
+    list(APPEND DASM_FLAGS -D MIPSR6)
+  endif()
+
   if (TARGET_TESTARCH_OUTPUT MATCHES " LJ_ARCH_SQRT 1")
     list(APPEND DASM_FLAGS -D SQRT)
   endif()
