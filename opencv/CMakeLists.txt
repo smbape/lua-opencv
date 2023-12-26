@@ -53,7 +53,7 @@ FetchContent_Populate(opencv
 option(BUILD_contrib "Build with opencv contrib" OFF)
 
 if (BUILD_contrib)
-  # https://github.com/opencv/opencv-python/tree/74
+  # https://github.com/opencv/opencv-python/tree/78
   set(OPENCV_CONTRIB_TAG_480 f10c84d48b0714f2b408c9e5cccfac1277c8e6cc)
   set(OPENCV_CONTRIB_TAG_470 e247b680a6bd396f110274b6c214406a93171350)
   set(OPENCV_CONTRIB_TAG_460 db16caf6ceee76b43b94c846be276e92a43e9700)

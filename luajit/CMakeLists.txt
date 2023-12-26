@@ -9,6 +9,10 @@ option(BUILD_SHARED_LIBS "Build shared libraries (.dll/.so) instead of static on
 include(cmake/initialize.cmake)
 include(cmake/options.cmake)
 
+
+# ================================
+# Get the source files
+# ================================
 include(FetchContent)
 FetchContent_Declare(luajit
   # URL                 https://github.com/openresty/luajit2/archive/refs/tags/v2.1-20230410.tar.gz
@@ -20,7 +24,6 @@ Fetchcontent_Populate(luajit)
 set(luajit_SRC "${luajit_SOURCE_DIR}/src")
 set(LUA_SHARE_DIR "${luajit_BINARY_DIR}/share/luajit-${VERSION}/jit")
 set(LUA_INCLUDE_DIR "${luajit_BINARY_DIR}/include/luajit-${MAJVER}.${MINVER}")
-
 set(DASMDIR "${luajit_SOURCE_DIR}/dynasm")
 
 set(LUA_INCLUDE_DIRS
@@ -29,11 +32,19 @@ set(LUA_INCLUDE_DIRS
   "${DASMDIR}"
 )
 
+
+# ================================
+# Include needed dependencies
+# ================================
 include(testarch/testarch.cmake)
 include(cmake/standalone.cmake)
 include(minilua/minilua.cmake)
 include(buildvm/buildvm.cmake)
 
+
+# ================================
+# Set compiling and linking options
+# ================================
 if ("${CMAKE_SYSTEM_NAME}" STREQUAL "PS3")
   add_compile_definitions(LUAJIT_USE_SYSMALLOC)
   link_libraries(pthread)
@@ -109,9 +120,13 @@ else()
   set(LJVM_MODE elfasm)
 endif()
 
+
 set(gen_lj_targets "")
 
-# gen_lj_vm
+
+# ================================
+# Generate lj_vm
+# ================================
 file(MAKE_DIRECTORY "${luajit_BINARY_DIR}/objects")
 
 if (WIN32 OR CYGWIN OR MINGW)
@@ -132,7 +147,10 @@ add_custom_command(
 add_custom_target(gen_lj_vm ALL DEPENDS buildvm "${LJ_VM_OBJECT}")
 list(APPEND gen_lj_targets gen_lj_vm)
 
-# gen_lj_headers
+
+# ================================
+# Generate luajit headers
+# ================================
 set(LJLIB_C
   lib_base.c
   lib_math.c
@@ -193,32 +211,41 @@ add_custom_command(
 )
 
 
+# ================================
+# Generate luajit.h header
+# ================================
 if (EXISTS "${luajit_SRC}/host/genversion.lua")
-  list(APPEND ALL_HDRGEN
-    "${luajit_SRC}/luajit.h"
-    "${luajit_SRC}/luajit_relver.txt"
-  )
-  file(TO_NATIVE_PATH "host/genversion.lua" LJ_GENVERSION_LUA)
-  file(TO_NATIVE_PATH ../.relver LJ_RELVER)
+  if (EXISTS "${luajit_SRC}/../.git")
+    execute_process(COMMAND git show -s "--format=%ct" OUTPUT_FILE "${luajit_SRC}/luajit_relver.txt")
+  else()
+    configure_file("${luajit_SRC}/../.relver" "${luajit_SRC}/luajit_relver.txt" COPYONLY)
+  endif()
 
   add_custom_command(
     OUTPUT "${luajit_SRC}/luajit.h"
-    OUTPUT "${luajit_SRC}/luajit_relver.txt"
-    COMMAND "${CMAKE_COMMAND}" -E copy ${LJ_RELVER} luajit_relver.txt
-    COMMAND "${MINILUA_TARGET_FILE}" "${LJ_GENVERSION_LUA}"
+    COMMAND "${MINILUA_TARGET_FILE}" host/genversion.lua
     WORKING_DIRECTORY "${luajit_SRC}"
     DEPENDS minilua
     COMMENT "Generating version file"
   )
-endif()
 
+  list(APPEND ALL_HDRGEN
+    "${luajit_SRC}/luajit.h"
+    "${luajit_SRC}/luajit_relver.txt"
+  )
+endif()
 
 add_custom_target(gen_lj_headers ALL DEPENDS buildvm ${ALL_HDRGEN})
 list(APPEND gen_lj_targets gen_lj_headers)
 
+
+# ================================
+# Add library libluajit
+# ================================
 file(GLOB_RECURSE libluajit_source_files "${luajit_SRC}/lj_*.c" "${luajit_SRC}/lib_*.c")
 
 add_library(libluajit SHARED ${libluajit_source_files})
+add_library(libluajit::libluajit ALIAS libluajit)
 
 # Always generate debug files
 if(MSVC AND NOT "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
@@ -236,9 +263,6 @@ target_sources(libluajit
     "${luajit_SRC}/lua.hpp"
     "${luajit_SRC}/luajit.h"
 )
-
-
-add_library(libluajit::libluajit ALIAS libluajit)
 
 target_link_libraries(libluajit PRIVATE "${LJ_VM_OBJECT}")
 target_include_directories(libluajit PRIVATE ${LUA_INCLUDE_DIRS})
@@ -288,6 +312,10 @@ if (UNIX)
   install(DIRECTORY "${LIBRARY_OUTPUT_PATH}/pkgconfig" DESTINATION "${CMAKE_INSTALL_LIBDIR}" USE_SOURCE_PERMISSIONS)
 endif()
 
+
+# ================================
+# Add library amalg
+# ================================
 add_library(amalg STATIC
   "${luajit_SRC}/ljamalg.c"
 )
@@ -301,6 +329,10 @@ target_link_libraries(amalg PRIVATE "${LJ_VM_OBJECT}")
 target_include_directories(amalg PRIVATE ${LUA_INCLUDE_DIRS})
 add_dependencies(amalg ${gen_lj_targets})
 
+
+# ================================
+# Add executable luajit
+# ================================
 add_executable(luajit "${luajit_SRC}/luajit.c")
 if (MSVC)
   target_sources(luajit PRIVATE luajit.manifest)
@@ -337,6 +369,10 @@ add_custom_command(
   WORKING_DIRECTORY "${EXECUTABLE_OUTPUT_PATH}"
   VERBATIM)
 
+
+# ================================
+# Install targets
+# ================================
 if (UNIX)
   install(FILES "${luajit_SOURCE_DIR}/etc/luajit.1" DESTINATION "${CMAKE_INSTALL_MANDIR}/man1")
 endif()
@@ -385,8 +421,11 @@ install(DIRECTORY "${LUA_SHARE_DIR}"
 )
 endif()
 
-set(LUA_SUFFIX jit PARENT_SCOPE)
 
+# ================================
+# Expose project variables
+# ================================
+set(LUA_SUFFIX jit PARENT_SCOPE)
 set(LUA_LIBRARIES liblua${LUA_SUFFIX}::liblua${LUA_SUFFIX} PARENT_SCOPE)
 set(LUA_INTERPRETER $<TARGET_FILE:lua${LUA_SUFFIX}> PARENT_SCOPE)
 set(LUA_INCDIR "${lua${LUA_SUFFIX}_SRC}" PARENT_SCOPE)
