@@ -40,7 +40,7 @@ endforeach()
 # find LuaJIT
 if (NOT DEFINED ENV{LUA_DIR})
   set(Lua_VERSION 5.4.6 CACHE STRING "Choose the Lua version.")
-  set_property(CACHE Lua_VERSION PROPERTY STRINGS "luajit-2.1.0-beta3" "5.4.6" "5.3.6" "5.2.4" "5.1.5")
+  set_property(CACHE Lua_VERSION PROPERTY STRINGS "luajit-2.1" "5.4.6" "5.3.6" "5.2.4" "5.1.5")
 
   if (Lua_VERSION MATCHES "^luajit-")
     string(SUBSTRING "${Lua_VERSION}" 7 -1 Luajit_VERSION)

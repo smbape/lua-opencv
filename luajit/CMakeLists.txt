@@ -68,6 +68,10 @@ if (NOT WIN32)
   if (NO_STACK_PROTECTOR_FLAG)
     add_compile_options(-fno-stack-protector)
   endif()
+
+  if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
+    add_compile_definitions(LUAJIT_UNWIND_EXTERNAL)
+  endif()
 endif()
 
 if (NOT WIN32)
@@ -274,6 +278,10 @@ IF (WIN32 AND (CMAKE_GENERATOR STREQUAL Ninja))
   target_compile_definitions(libluajit PRIVATE _WINDLL)
 ENDIF()
 
+if (APPLE AND BUILD_SHARED_LIBS)
+  target_link_options(libluajit PRIVATE -dynamiclib -single_module -undefined dynamic_lookup)
+endif()
+
 if (("${Luajit_VERSION}" STREQUAL "2.1.0-beta3") AND ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin") AND ("${TARGET_LJARCH}" STREQUAL x64))
   target_link_options(libluajit PRIVATE -image_base 7fff04c4a000)
 endif()
@@ -348,10 +356,30 @@ target_include_directories(luajit PRIVATE ${LUA_INCLUDE_DIRS})
 set_target_output_directories(luajit)
 set_target_properties(luajit PROPERTIES OUTPUT_NAME "luajit-${VERSION}")
 
-if (("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin"))
+if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
   add_compile_definitions(LUAJIT_UNWIND_EXTERNAL)
   if (("${Luajit_VERSION}" STREQUAL "2.1.0-beta3") AND ("${TARGET_LJARCH}" STREQUAL x64))
     target_link_options(luajit PRIVATE -pagezero_size 10000 -image_base 100000000)
+  endif()
+endif()
+
+if (UNIX AND (NOT APPLE))
+  if(NOT (TARGET_TESTARCH MATCHES " LJ_NO_UNWIND 1"))
+    # Find out whether the target toolchain always generates unwind tables.
+    file(CONFIGURE OUTPUT "${testarch_BINARY_DIR}/tmpunwind.c" CONTENT "extern void b(void);int a(void){b();return 0;}")
+
+    execute_process(
+      COMMAND "${CMAKE_C_COMPILER}" -c -x c tmpunwind.c -o tmpunwind.o
+      WORKING_DIRECTORY "${testarch_BINARY_DIR}"
+      COMMAND_ECHO STDERR
+      COMMAND_ERROR_IS_FATAL ANY
+    )
+
+    file(STRINGS "${testarch_BINARY_DIR}/tmpunwind.o" TARGET_TESTARCH_UNWIND LIMIT_COUNT 1 REGEX "eh_frame|__unwind_info")
+
+    if (TARGET_TESTARCH_UNWIND)
+      add_compile_definitions(LUAJIT_UNWIND_EXTERNAL)
+    endif()
   endif()
 endif()
 
