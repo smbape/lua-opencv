@@ -7,4 +7,5 @@
 /*.rock
 /*.rockspec
 /*.sublime-workspace
+/samples/dnn/object_detection/models
 generated

@@ -5,5 +5,8 @@ execute_process(
     COMMAND_ERROR_IS_FATAL ANY
 )
 
+file(TO_NATIVE_PATH "${LUAROCKS_SYSCONFDIR}" LUAROCKS_SYSCONFDIR)
+file(TO_NATIVE_PATH "${LUAROCKS_EXE}" LUAROCKS_EXE)
+
 configure_file(luarocks${EXTNAME}.in luarocks${EXTNAME} @ONLY)
 configure_file(lua${EXTNAME}.in lua${EXTNAME} @ONLY)

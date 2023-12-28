@@ -82,8 +82,8 @@ function new_version.command(args)
       if args.platform == "win32" then
          out_rs.build.install = {
             bin = {
-               prefix .. "bin/opencv_videoio_ffmpeg480_64.dll",
-               prefix .. "bin/opencv_world480.dll",
+               prefix .. "bin/opencv_videoio_ffmpeg490_64.dll",
+               prefix .. "bin/opencv_world490.dll",
             },
             lib = {
                prefix .. "lib/lua/" .. abi .. "/opencv_lua.dll",

@@ -237,6 +237,7 @@ file(GLOB_RECURSE files_to_change
   generator/index.js
   luarocks/opencv_lua-scm-1.rockspec
   samples/*.lua
+  scripts/new_version.lua
   scripts/pack.js
 )
 
@@ -245,6 +246,8 @@ foreach(item ${files_to_change})
   vcpkg_regex_replace_string("${item}" "(opencv-|/opencv/opencv/blob/|opencv_lua )[0-9]+\\.[0-9]+\\.[0-9]+" "\\1${OpenCV_VERSION}")
   vcpkg_regex_replace_string("${item}" "(--branch )[0-9]+\\.[0-9]+\\.[0-9]+( https://github.com/opencv/opencv)" "\\1${OpenCV_VERSION}\\2")
   vcpkg_regex_replace_string("${item}" "(--branch v)[0-9]+\\.[0-9]+\\.[0-9]+( https://github.com/smbape/lua-opencv)" "\\1${PROJECT_VERSION}\\2")
+  vcpkg_regex_replace_string("${item}" "opencv_videoio_ffmpeg[0-9]+_64\\.dll" "opencv_videoio_ffmpeg${OpenCV_DLLVERSION}_64.dll")
+  vcpkg_regex_replace_string("${item}" "opencv_world[0-9]+\\.dll" "opencv_world${OpenCV_DLLVERSION}.dll")
 
   # Force LF EOL
   configure_file(${item} ${item} @ONLY NEWLINE_STYLE LF)

@@ -15,11 +15,15 @@ else
     git remote add origin "$projectDir"
 fi
 
-git reset --hard HEAD && git pull || exit $?
+git reset --hard HEAD && git clean -fd && git pull || exit $?
 
 rsync -t --delete -v -r \
+    --exclude=.git \
+    --exclude=.idea \
+    --exclude=.venv \
     --exclude=.vs \
-    --exclude=.git '--exclude=*.rock' '--exclude=*.rockspec' \
+    --exclude='*.rock' \
+    --exclude='*.rockspec' \
     --exclude=build.luarocks \
     --exclude=luarocks/lua.bat \
     --exclude=luarocks/lua \

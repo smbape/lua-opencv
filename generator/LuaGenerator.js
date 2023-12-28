@@ -240,11 +240,6 @@ class LuaGenerator {
             let r_tuple_types = false;
 
             if (has_propget) {
-                const shared_ptr = removeNamespaces(options.shared_ptr, options);
-                const is_ptr = type.endsWith("*");
-                const is_shared_ptr = cpptype.startsWith(`${ shared_ptr }<`);
-                const is_std = cpptype.startsWith("std::");
-                const is_by_ref = !is_ptr && !is_shared_ptr && (is_std || processor.classes.has(cpptype) && !processor.enums.has(cpptype));
                 let has_expr = false;
 
                 if (cpptype.startsWith("std::tuple<")) {
@@ -275,12 +270,7 @@ class LuaGenerator {
                     }
 
                     if (!has_expr) {
-                        if (is_by_ref) {
-                            const is_const = modifiers.includes("/C");
-                            rexpr = `std::${ is_const ? "c" : "" }ref(${ rexpr })`;
-                        } else {
-                            rexpr = LuaGenerator.returnVariant(rexpr, cpptype, options);
-                        }
+                        rexpr = LuaGenerator.returnVariant(rexpr, cpptype, options);
                     }
                 }
             }
@@ -735,6 +725,11 @@ class LuaGenerator {
 
                     cpptype = processor.getCppType(argtype, coclass, options);
 
+                    if (cpptype === "char*") {
+                        cpptype = "std::string";
+                        callarg = `${ callarg }.c_str()`;
+                    }
+
                     for (const modifier of arg_modifiers) {
                         if (modifier.startsWith("/Cast=")) {
                             callarg = `${ modifier.slice("/Cast=".length) }(${ callarg })`;
@@ -824,7 +819,7 @@ class LuaGenerator {
                     }
 
                     if (is_optional || is_array && is_out_arg) {
-                        const ref = defval !== "" && is_by_ref && !defval.includes("(") ? "&" : "";
+                        const ref = defval !== "" && is_by_ref && !defval.includes("(") && !defval.includes("'") && !defval.includes("\"") && !/^(?:\.|\d+\.)\d+$/.test(defval) ? "&" : "";
                         overload.push(`${ ref || is_out_arg ? "" : "static " }${ cpptype }${ ref } ${ argname }_default${ defval !== "" ? ` = ${ defval }` : "" };`);
                     }
 

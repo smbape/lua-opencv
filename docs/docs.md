@@ -557,6 +557,34 @@
   - [cv.COLOR\_BayerGB2RGBA](#cvcolor%5C_bayergb2rgba)
   - [cv.COLOR\_BayerRG2RGBA](#cvcolor%5C_bayerrg2rgba)
   - [cv.COLOR\_BayerGR2RGBA](#cvcolor%5C_bayergr2rgba)
+  - [cv.COLOR\_RGB2YUV\_UYVY](#cvcolor%5C_rgb2yuv%5C_uyvy)
+  - [cv.COLOR\_BGR2YUV\_UYVY](#cvcolor%5C_bgr2yuv%5C_uyvy)
+  - [cv.COLOR\_RGB2YUV\_Y422](#cvcolor%5C_rgb2yuv%5C_y422)
+  - [cv.COLOR\_BGR2YUV\_Y422](#cvcolor%5C_bgr2yuv%5C_y422)
+  - [cv.COLOR\_RGB2YUV\_UYNV](#cvcolor%5C_rgb2yuv%5C_uynv)
+  - [cv.COLOR\_BGR2YUV\_UYNV](#cvcolor%5C_bgr2yuv%5C_uynv)
+  - [cv.COLOR\_RGBA2YUV\_UYVY](#cvcolor%5C_rgba2yuv%5C_uyvy)
+  - [cv.COLOR\_BGRA2YUV\_UYVY](#cvcolor%5C_bgra2yuv%5C_uyvy)
+  - [cv.COLOR\_RGBA2YUV\_Y422](#cvcolor%5C_rgba2yuv%5C_y422)
+  - [cv.COLOR\_BGRA2YUV\_Y422](#cvcolor%5C_bgra2yuv%5C_y422)
+  - [cv.COLOR\_RGBA2YUV\_UYNV](#cvcolor%5C_rgba2yuv%5C_uynv)
+  - [cv.COLOR\_BGRA2YUV\_UYNV](#cvcolor%5C_bgra2yuv%5C_uynv)
+  - [cv.COLOR\_RGB2YUV\_YUY2](#cvcolor%5C_rgb2yuv%5C_yuy2)
+  - [cv.COLOR\_BGR2YUV\_YUY2](#cvcolor%5C_bgr2yuv%5C_yuy2)
+  - [cv.COLOR\_RGB2YUV\_YVYU](#cvcolor%5C_rgb2yuv%5C_yvyu)
+  - [cv.COLOR\_BGR2YUV\_YVYU](#cvcolor%5C_bgr2yuv%5C_yvyu)
+  - [cv.COLOR\_RGB2YUV\_YUYV](#cvcolor%5C_rgb2yuv%5C_yuyv)
+  - [cv.COLOR\_BGR2YUV\_YUYV](#cvcolor%5C_bgr2yuv%5C_yuyv)
+  - [cv.COLOR\_RGB2YUV\_YUNV](#cvcolor%5C_rgb2yuv%5C_yunv)
+  - [cv.COLOR\_BGR2YUV\_YUNV](#cvcolor%5C_bgr2yuv%5C_yunv)
+  - [cv.COLOR\_RGBA2YUV\_YUY2](#cvcolor%5C_rgba2yuv%5C_yuy2)
+  - [cv.COLOR\_BGRA2YUV\_YUY2](#cvcolor%5C_bgra2yuv%5C_yuy2)
+  - [cv.COLOR\_RGBA2YUV\_YVYU](#cvcolor%5C_rgba2yuv%5C_yvyu)
+  - [cv.COLOR\_BGRA2YUV\_YVYU](#cvcolor%5C_bgra2yuv%5C_yvyu)
+  - [cv.COLOR\_RGBA2YUV\_YUYV](#cvcolor%5C_rgba2yuv%5C_yuyv)
+  - [cv.COLOR\_BGRA2YUV\_YUYV](#cvcolor%5C_bgra2yuv%5C_yuyv)
+  - [cv.COLOR\_RGBA2YUV\_YUNV](#cvcolor%5C_rgba2yuv%5C_yunv)
+  - [cv.COLOR\_BGRA2YUV\_YUNV](#cvcolor%5C_bgra2yuv%5C_yunv)
   - [cv.COLOR\_COLORCVT\_MAX](#cvcolor%5C_colorcvt%5C_max)
   - [cv.INTERSECT\_NONE](#cvintersect%5C_none)
   - [cv.INTERSECT\_PARTIAL](#cvintersect%5C_partial)
@@ -799,6 +827,9 @@
   - [cv.VIDEOWRITER\_PROP\_HW\_ACCELERATION](#cvvideowriter%5C_prop%5C_hw%5C_acceleration)
   - [cv.VIDEOWRITER\_PROP\_HW\_DEVICE](#cvvideowriter%5C_prop%5C_hw%5C_device)
   - [cv.VIDEOWRITER\_PROP\_HW\_ACCELERATION\_USE\_OPENCL](#cvvideowriter%5C_prop%5C_hw%5C_acceleration%5C_use%5C_opencl)
+  - [cv.VIDEOWRITER\_PROP\_RAW\_VIDEO](#cvvideowriter%5C_prop%5C_raw%5C_video)
+  - [cv.VIDEOWRITER\_PROP\_KEY\_INTERVAL](#cvvideowriter%5C_prop%5C_key%5C_interval)
+  - [cv.VIDEOWRITER\_PROP\_KEY\_FLAG](#cvvideowriter%5C_prop%5C_key%5C_flag)
   - [cv.VIDEO\_ACCELERATION\_NONE](#cvvideo%5C_acceleration%5C_none)
   - [cv.VIDEO\_ACCELERATION\_ANY](#cvvideo%5C_acceleration%5C_any)
   - [cv.VIDEO\_ACCELERATION\_D3D11](#cvvideo%5C_acceleration%5C_d3d11)
@@ -1100,6 +1131,7 @@
   - [cv.CALIB\_CB\_ACCURACY](#cvcalib%5C_cb%5C_accuracy)
   - [cv.CALIB\_CB\_LARGER](#cvcalib%5C_cb%5C_larger)
   - [cv.CALIB\_CB\_MARKER](#cvcalib%5C_cb%5C_marker)
+  - [cv.CALIB\_CB\_PLAIN](#cvcalib%5C_cb%5C_plain)
   - [cv.CALIB\_CB\_SYMMETRIC\_GRID](#cvcalib%5C_cb%5C_symmetric%5C_grid)
   - [cv.CALIB\_CB\_ASYMMETRIC\_GRID](#cvcalib%5C_cb%5C_asymmetric%5C_grid)
   - [cv.CALIB\_CB\_CLUSTERING](#cvcalib%5C_cb%5C_clustering)
@@ -1318,6 +1350,7 @@
   - [cv.boundingRect](#cvboundingrect)
   - [cv.boxFilter](#cvboxfilter)
   - [cv.boxPoints](#cvboxpoints)
+  - [cv.broadcast](#cvbroadcast)
   - [cv.buildOpticalFlowPyramid](#cvbuildopticalflowpyramid)
   - [cv.calcBackProject](#cvcalcbackproject)
   - [cv.calcCovarMatrix](#cvcalccovarmatrix)
@@ -1675,6 +1708,7 @@
   - [cv.AKAZE.getDescriptorSize](#cvakazegetdescriptorsize)
   - [cv.AKAZE.getDescriptorType](#cvakazegetdescriptortype)
   - [cv.AKAZE.getDiffusivity](#cvakazegetdiffusivity)
+  - [cv.AKAZE.getMaxPoints](#cvakazegetmaxpoints)
   - [cv.AKAZE.getNOctaveLayers](#cvakazegetnoctavelayers)
   - [cv.AKAZE.getNOctaves](#cvakazegetnoctaves)
   - [cv.AKAZE.getThreshold](#cvakazegetthreshold)
@@ -1682,6 +1716,7 @@
   - [cv.AKAZE.setDescriptorSize](#cvakazesetdescriptorsize)
   - [cv.AKAZE.setDescriptorType](#cvakazesetdescriptortype)
   - [cv.AKAZE.setDiffusivity](#cvakazesetdiffusivity)
+  - [cv.AKAZE.setMaxPoints](#cvakazesetmaxpoints)
   - [cv.AKAZE.setNOctaveLayers](#cvakazesetnoctavelayers)
   - [cv.AKAZE.setNOctaves](#cvakazesetnoctaves)
   - [cv.AKAZE.setThreshold](#cvakazesetthreshold)
@@ -3689,6 +3724,16 @@
   - [Params.backend](#paramsbackend-1)
   - [Params.target](#paramstarget-1)
   - [cv.TrackerNano.Params.new](#cvtrackernanoparamsnew)
+- [cv::TrackerVit](#cvtrackervit)
+  - [cv.TrackerVit.create](#cvtrackervitcreate)
+  - [cv.TrackerVit.getTrackingScore](#cvtrackervitgettrackingscore)
+- [cv::TrackerVit::Params](#cvtrackervitparams)
+  - [Params.net](#paramsnet)
+  - [Params.backend](#paramsbackend-2)
+  - [Params.target](#paramstarget-2)
+  - [Params.meanvalue](#paramsmeanvalue)
+  - [Params.stdvalue](#paramsstdvalue)
+  - [cv.TrackerVit.Params.new](#cvtrackervitparamsnew)
 - [cv::UMat](#cvumat)
   - [UMat.MAGIC\_VAL](#umatmagic%5C_val)
   - [UMat.AUTO\_STEP](#umatauto%5C_step)
@@ -4205,8 +4250,10 @@
   - [DetectorParameters.minCornerDistanceRate](#detectorparametersmincornerdistancerate)
   - [DetectorParameters.minDistanceToBorder](#detectorparametersmindistancetoborder)
   - [DetectorParameters.minMarkerDistanceRate](#detectorparametersminmarkerdistancerate)
+  - [DetectorParameters.minGroupDistance](#detectorparametersmingroupdistance)
   - [DetectorParameters.cornerRefinementMethod](#detectorparameterscornerrefinementmethod)
   - [DetectorParameters.cornerRefinementWinSize](#detectorparameterscornerrefinementwinsize)
+  - [DetectorParameters.relativeCornerRefinmentWinSize](#detectorparametersrelativecornerrefinmentwinsize)
   - [DetectorParameters.cornerRefinementMaxIterations](#detectorparameterscornerrefinementmaxiterations)
   - [DetectorParameters.cornerRefinementMinAccuracy](#detectorparameterscornerrefinementminaccuracy)
   - [DetectorParameters.markerBorderBits](#detectorparametersmarkerborderbits)
@@ -4732,7 +4779,10 @@
   - [Image2BlobParams.ddepth](#image2blobparamsddepth)
   - [Image2BlobParams.datalayout](#image2blobparamsdatalayout)
   - [Image2BlobParams.paddingmode](#image2blobparamspaddingmode)
+  - [Image2BlobParams.borderValue](#image2blobparamsbordervalue)
   - [cv.dnn.Image2BlobParams.new](#cvdnnimage2blobparamsnew)
+  - [cv.dnn.Image2BlobParams.blobRectToImageRect](#cvdnnimage2blobparamsblobrecttoimagerect)
+  - [cv.dnn.Image2BlobParams.blobRectsToImageRects](#cvdnnimage2blobparamsblobrectstoimagerects)
 - [cv::dnn::KeypointsModel](#cvdnnkeypointsmodel)
   - [cv.dnn.KeypointsModel.new](#cvdnnkeypointsmodelnew)
   - [cv.dnn.KeypointsModel.estimate](#cvdnnkeypointsmodelestimate)
@@ -4746,6 +4796,7 @@
   - [cv.dnn.Layer.run](#cvdnnlayerrun)
 - [cv::dnn::Model](#cvdnnmodel)
   - [cv.dnn.Model.new](#cvdnnmodelnew)
+  - [cv.dnn.Model.enableWinograd](#cvdnnmodelenablewinograd)
   - [cv.dnn.Model.predict](#cvdnnmodelpredict)
   - [cv.dnn.Model.setInputCrop](#cvdnnmodelsetinputcrop)
   - [cv.dnn.Model.setInputMean](#cvdnnmodelsetinputmean)
@@ -4991,8 +5042,39 @@
   - [cv.gapi.onnx.params](#cvgapionnxparams)
 - [cv::gapi::onnx::PyParams](#cvgapionnxpyparams)
   - [cv.gapi.onnx.PyParams.new](#cvgapionnxpyparamsnew)
+  - [cv.gapi.onnx.PyParams.cfgAddExecutionProvider](#cvgapionnxpyparamscfgaddexecutionprovider)
+  - [cv.gapi.onnx.PyParams.cfgDisableMemPattern](#cvgapionnxpyparamscfgdisablemempattern)
   - [cv.gapi.onnx.PyParams.cfgMeanStd](#cvgapionnxpyparamscfgmeanstd)
   - [cv.gapi.onnx.PyParams.cfgNormalize](#cvgapionnxpyparamscfgnormalize)
+- [cv::gapi::onnx::ep::CUDA](#cvgapionnxepcuda)
+  - [cv.gapi.onnx.ep.CUDA.new](#cvgapionnxepcudanew)
+- [cv::gapi::onnx::ep::CoreML](#cvgapionnxepcoreml)
+  - [cv.gapi.onnx.ep.CoreML.new](#cvgapionnxepcoremlnew)
+  - [cv.gapi.onnx.ep.CoreML.cfgEnableOnSubgraph](#cvgapionnxepcoremlcfgenableonsubgraph)
+  - [cv.gapi.onnx.ep.CoreML.cfgEnableOnlyNeuralEngine](#cvgapionnxepcoremlcfgenableonlyneuralengine)
+  - [cv.gapi.onnx.ep.CoreML.cfgUseCPUOnly](#cvgapionnxepcoremlcfgusecpuonly)
+- [cv::gapi::onnx::ep::DirectML](#cvgapionnxepdirectml)
+  - [cv.gapi.onnx.ep.DirectML.new](#cvgapionnxepdirectmlnew)
+- [cv::gapi::onnx::ep::OpenVINO](#cvgapionnxepopenvino)
+  - [cv.gapi.onnx.ep.OpenVINO.new](#cvgapionnxepopenvinonew)
+  - [cv.gapi.onnx.ep.OpenVINO.cfgCacheDir](#cvgapionnxepopenvinocfgcachedir)
+  - [cv.gapi.onnx.ep.OpenVINO.cfgEnableDynamicShapes](#cvgapionnxepopenvinocfgenabledynamicshapes)
+  - [cv.gapi.onnx.ep.OpenVINO.cfgEnableOpenCLThrottling](#cvgapionnxepopenvinocfgenableopenclthrottling)
+  - [cv.gapi.onnx.ep.OpenVINO.cfgNumThreads](#cvgapionnxepopenvinocfgnumthreads)
+- [cv::gapi::onnx::ep::TensorRT](#cvgapionnxeptensorrt)
+  - [cv.gapi.onnx.ep.TensorRT.new](#cvgapionnxeptensorrtnew)
+- [cv::gapi::ot](#cvgapiot)
+  - [ot.NEW](#otnew)
+  - [ot.TRACKED](#ottracked)
+  - [ot.LOST](#otlost)
+  - [cv.gapi.ot.track](#cvgapiottrack)
+- [cv::gapi::ot::ObjectTrackerParams](#cvgapiotobjecttrackerparams)
+  - [ObjectTrackerParams.max\_num\_objects](#objecttrackerparamsmax%5C_num%5C_objects)
+  - [ObjectTrackerParams.input\_image\_format](#objecttrackerparamsinput%5C_image%5C_format)
+  - [ObjectTrackerParams.tracking\_per\_class](#objecttrackerparamstracking%5C_per%5C_class)
+  - [cv.gapi.ot.ObjectTrackerParams.new](#cvgapiotobjecttrackerparamsnew)
+- [cv::gapi::ot::cpu](#cvgapiotcpu)
+  - [cv.gapi.ot.cpu.kernels](#cvgapiotcpukernels)
 - [cv::gapi::ov](#cvgapiov)
   - [cv.gapi.ov.params](#cvgapiovparams)
 - [cv::gapi::ov::PyParams](#cvgapiovpyparams)
@@ -10673,6 +10755,230 @@ lua:
     [propget] cv.COLOR_BayerGR2RGBA
 ```
 
+### cv.COLOR\_RGB2YUV\_UYVY
+
+```cpp
+int cv::COLOR_RGB2YUV_UYVY
+lua:
+    [propget] cv.COLOR_RGB2YUV_UYVY
+```
+
+### cv.COLOR\_BGR2YUV\_UYVY
+
+```cpp
+int cv::COLOR_BGR2YUV_UYVY
+lua:
+    [propget] cv.COLOR_BGR2YUV_UYVY
+```
+
+### cv.COLOR\_RGB2YUV\_Y422
+
+```cpp
+int cv::COLOR_RGB2YUV_Y422
+lua:
+    [propget] cv.COLOR_RGB2YUV_Y422
+```
+
+### cv.COLOR\_BGR2YUV\_Y422
+
+```cpp
+int cv::COLOR_BGR2YUV_Y422
+lua:
+    [propget] cv.COLOR_BGR2YUV_Y422
+```
+
+### cv.COLOR\_RGB2YUV\_UYNV
+
+```cpp
+int cv::COLOR_RGB2YUV_UYNV
+lua:
+    [propget] cv.COLOR_RGB2YUV_UYNV
+```
+
+### cv.COLOR\_BGR2YUV\_UYNV
+
+```cpp
+int cv::COLOR_BGR2YUV_UYNV
+lua:
+    [propget] cv.COLOR_BGR2YUV_UYNV
+```
+
+### cv.COLOR\_RGBA2YUV\_UYVY
+
+```cpp
+int cv::COLOR_RGBA2YUV_UYVY
+lua:
+    [propget] cv.COLOR_RGBA2YUV_UYVY
+```
+
+### cv.COLOR\_BGRA2YUV\_UYVY
+
+```cpp
+int cv::COLOR_BGRA2YUV_UYVY
+lua:
+    [propget] cv.COLOR_BGRA2YUV_UYVY
+```
+
+### cv.COLOR\_RGBA2YUV\_Y422
+
+```cpp
+int cv::COLOR_RGBA2YUV_Y422
+lua:
+    [propget] cv.COLOR_RGBA2YUV_Y422
+```
+
+### cv.COLOR\_BGRA2YUV\_Y422
+
+```cpp
+int cv::COLOR_BGRA2YUV_Y422
+lua:
+    [propget] cv.COLOR_BGRA2YUV_Y422
+```
+
+### cv.COLOR\_RGBA2YUV\_UYNV
+
+```cpp
+int cv::COLOR_RGBA2YUV_UYNV
+lua:
+    [propget] cv.COLOR_RGBA2YUV_UYNV
+```
+
+### cv.COLOR\_BGRA2YUV\_UYNV
+
+```cpp
+int cv::COLOR_BGRA2YUV_UYNV
+lua:
+    [propget] cv.COLOR_BGRA2YUV_UYNV
+```
+
+### cv.COLOR\_RGB2YUV\_YUY2
+
+```cpp
+int cv::COLOR_RGB2YUV_YUY2
+lua:
+    [propget] cv.COLOR_RGB2YUV_YUY2
+```
+
+### cv.COLOR\_BGR2YUV\_YUY2
+
+```cpp
+int cv::COLOR_BGR2YUV_YUY2
+lua:
+    [propget] cv.COLOR_BGR2YUV_YUY2
+```
+
+### cv.COLOR\_RGB2YUV\_YVYU
+
+```cpp
+int cv::COLOR_RGB2YUV_YVYU
+lua:
+    [propget] cv.COLOR_RGB2YUV_YVYU
+```
+
+### cv.COLOR\_BGR2YUV\_YVYU
+
+```cpp
+int cv::COLOR_BGR2YUV_YVYU
+lua:
+    [propget] cv.COLOR_BGR2YUV_YVYU
+```
+
+### cv.COLOR\_RGB2YUV\_YUYV
+
+```cpp
+int cv::COLOR_RGB2YUV_YUYV
+lua:
+    [propget] cv.COLOR_RGB2YUV_YUYV
+```
+
+### cv.COLOR\_BGR2YUV\_YUYV
+
+```cpp
+int cv::COLOR_BGR2YUV_YUYV
+lua:
+    [propget] cv.COLOR_BGR2YUV_YUYV
+```
+
+### cv.COLOR\_RGB2YUV\_YUNV
+
+```cpp
+int cv::COLOR_RGB2YUV_YUNV
+lua:
+    [propget] cv.COLOR_RGB2YUV_YUNV
+```
+
+### cv.COLOR\_BGR2YUV\_YUNV
+
+```cpp
+int cv::COLOR_BGR2YUV_YUNV
+lua:
+    [propget] cv.COLOR_BGR2YUV_YUNV
+```
+
+### cv.COLOR\_RGBA2YUV\_YUY2
+
+```cpp
+int cv::COLOR_RGBA2YUV_YUY2
+lua:
+    [propget] cv.COLOR_RGBA2YUV_YUY2
+```
+
+### cv.COLOR\_BGRA2YUV\_YUY2
+
+```cpp
+int cv::COLOR_BGRA2YUV_YUY2
+lua:
+    [propget] cv.COLOR_BGRA2YUV_YUY2
+```
+
+### cv.COLOR\_RGBA2YUV\_YVYU
+
+```cpp
+int cv::COLOR_RGBA2YUV_YVYU
+lua:
+    [propget] cv.COLOR_RGBA2YUV_YVYU
+```
+
+### cv.COLOR\_BGRA2YUV\_YVYU
+
+```cpp
+int cv::COLOR_BGRA2YUV_YVYU
+lua:
+    [propget] cv.COLOR_BGRA2YUV_YVYU
+```
+
+### cv.COLOR\_RGBA2YUV\_YUYV
+
+```cpp
+int cv::COLOR_RGBA2YUV_YUYV
+lua:
+    [propget] cv.COLOR_RGBA2YUV_YUYV
+```
+
+### cv.COLOR\_BGRA2YUV\_YUYV
+
+```cpp
+int cv::COLOR_BGRA2YUV_YUYV
+lua:
+    [propget] cv.COLOR_BGRA2YUV_YUYV
+```
+
+### cv.COLOR\_RGBA2YUV\_YUNV
+
+```cpp
+int cv::COLOR_RGBA2YUV_YUNV
+lua:
+    [propget] cv.COLOR_RGBA2YUV_YUNV
+```
+
+### cv.COLOR\_BGRA2YUV\_YUNV
+
+```cpp
+int cv::COLOR_BGRA2YUV_YUNV
+lua:
+    [propget] cv.COLOR_BGRA2YUV_YUNV
+```
+
 ### cv.COLOR\_COLORCVT\_MAX
 
 ```cpp
@@ -12607,6 +12913,30 @@ lua:
 int cv::VIDEOWRITER_PROP_HW_ACCELERATION_USE_OPENCL
 lua:
     [propget] cv.VIDEOWRITER_PROP_HW_ACCELERATION_USE_OPENCL
+```
+
+### cv.VIDEOWRITER\_PROP\_RAW\_VIDEO
+
+```cpp
+int cv::VIDEOWRITER_PROP_RAW_VIDEO
+lua:
+    [propget] cv.VIDEOWRITER_PROP_RAW_VIDEO
+```
+
+### cv.VIDEOWRITER\_PROP\_KEY\_INTERVAL
+
+```cpp
+int cv::VIDEOWRITER_PROP_KEY_INTERVAL
+lua:
+    [propget] cv.VIDEOWRITER_PROP_KEY_INTERVAL
+```
+
+### cv.VIDEOWRITER\_PROP\_KEY\_FLAG
+
+```cpp
+int cv::VIDEOWRITER_PROP_KEY_FLAG
+lua:
+    [propget] cv.VIDEOWRITER_PROP_KEY_FLAG
 ```
 
 ### cv.VIDEO\_ACCELERATION\_NONE
@@ -15017,6 +15347,14 @@ lua:
     [propget] cv.CALIB_CB_MARKER
 ```
 
+### cv.CALIB\_CB\_PLAIN
+
+```cpp
+int cv::CALIB_CB_PLAIN
+lua:
+    [propget] cv.CALIB_CB_PLAIN
+```
+
 ### cv.CALIB\_CB\_SYMMETRIC\_GRID
 
 ```cpp
@@ -17002,6 +17340,16 @@ void cv::boxPoints( cv::RotatedRect box,
                     OutputArray     points );
 lua:
     cv.boxPoints( box[, points] ) -> points
+```
+
+### cv.broadcast
+
+```cpp
+void cv::broadcast( InputArray  src,
+                    InputArray  shape,
+                    OutputArray dst );
+lua:
+    cv.broadcast( src, shape[, dst] ) -> dst
 ```
 
 ### cv.buildOpticalFlowPyramid
@@ -19329,9 +19677,10 @@ lua:
 ```cpp
 bool cv::imdecodemulti( InputArray            buf,
                         int                   flags,
-                        std::vector<cv::Mat>& mats );
+                        std::vector<cv::Mat>& mats,
+                        const cv::Range&      range = Range::all() );
 lua:
-    cv.imdecodemulti( buf, flags[, mats] ) -> retval, mats
+    cv.imdecodemulti( buf, flags[, range[, mats]] ) -> retval, mats
 ```
 
 ### cv.imencode
@@ -21313,9 +21662,10 @@ static cv::Ptr<cv::AKAZE> cv::AKAZE::create( cv::AKAZE::DescriptorType descripto
                                              float                     threshold = 0.001f,
                                              int                       nOctaves = 4,
                                              int                       nOctaveLayers = 4,
-                                             cv::KAZE::DiffusivityType diffusivity = KAZE::DIFF_PM_G2 );
+                                             cv::KAZE::DiffusivityType diffusivity = KAZE::DIFF_PM_G2,
+                                             int                       max_points = -1 );
 lua:
-    cv.AKAZE.create( [descriptor_type[, descriptor_size[, descriptor_channels[, threshold[, nOctaves[, nOctaveLayers[, diffusivity]]]]]]] ) -> retval
+    cv.AKAZE.create( [descriptor_type[, descriptor_size[, descriptor_channels[, threshold[, nOctaves[, nOctaveLayers[, diffusivity[, max_points]]]]]]]] ) -> retval
 ```
 
 ### cv.AKAZE.getDefaultName
@@ -21356,6 +21706,14 @@ lua:
 cv::KAZE::DiffusivityType cv::AKAZE::getDiffusivity() const;
 lua:
     oAKAZE:getDiffusivity() -> retval
+```
+
+### cv.AKAZE.getMaxPoints
+
+```cpp
+int cv::AKAZE::getMaxPoints() const;
+lua:
+    oAKAZE:getMaxPoints() -> retval
 ```
 
 ### cv.AKAZE.getNOctaveLayers
@@ -21412,6 +21770,14 @@ lua:
 void cv::AKAZE::setDiffusivity( cv::KAZE::DiffusivityType diff );
 lua:
     oAKAZE:setDiffusivity( diff ) -> None
+```
+
+### cv.AKAZE.setMaxPoints
+
+```cpp
+void cv::AKAZE::setMaxPoints( int max_points );
+lua:
+    oAKAZE:setMaxPoints( max_points ) -> None
 ```
 
 ### cv.AKAZE.setNOctaveLayers
@@ -23796,6 +24162,20 @@ static cv::Ptr<cv::FaceDetectorYN> cv::FaceDetectorYN::create( const std::string
                                                                int                target_id = 0 );
 lua:
     cv.FaceDetectorYN.create( model, config, input_size[, score_threshold[, nms_threshold[, top_k[, backend_id[, target_id]]]]] ) -> retval
+```
+
+```cpp
+static cv::Ptr<cv::FaceDetectorYN> cv::FaceDetectorYN::create( const std::string&        framework,
+                                                               const std::vector<uchar>& bufferModel,
+                                                               const std::vector<uchar>& bufferConfig,
+                                                               const cv::Size&           input_size,
+                                                               float                     score_threshold = 0.9f,
+                                                               float                     nms_threshold = 0.3f,
+                                                               int                       top_k = 5000,
+                                                               int                       backend_id = 0,
+                                                               int                       target_id = 0 );
+lua:
+    cv.FaceDetectorYN.create( framework, bufferModel, bufferConfig, input_size[, score_threshold[, nms_threshold[, top_k[, backend_id[, target_id]]]]] ) -> retval
 ```
 
 ### cv.FaceDetectorYN.detect
@@ -40246,6 +40626,75 @@ lua:
     cv.TrackerNano.Params() -> <cv.TrackerNano.Params object>
 ```
 
+## cv::TrackerVit
+
+### cv.TrackerVit.create
+
+```cpp
+static cv::Ptr<cv::TrackerVit> cv::TrackerVit::create( const cv::TrackerVit::Params& parameters = TrackerVit::Params() );
+lua:
+    cv.TrackerVit.create( [parameters] ) -> retval
+```
+
+### cv.TrackerVit.getTrackingScore
+
+```cpp
+float cv::TrackerVit::getTrackingScore();
+lua:
+    oTrackerVit:getTrackingScore() -> retval
+```
+
+## cv::TrackerVit::Params
+
+### Params.net
+
+```cpp
+std::string cv::TrackerVit::Params::net
+lua:
+    [propget, propput] oParams.net
+```
+
+### Params.backend
+
+```cpp
+int cv::TrackerVit::Params::backend
+lua:
+    [propget, propput] oParams.backend
+```
+
+### Params.target
+
+```cpp
+int cv::TrackerVit::Params::target
+lua:
+    [propget, propput] oParams.target
+```
+
+### Params.meanvalue
+
+```cpp
+cv::Scalar cv::TrackerVit::Params::meanvalue
+lua:
+    [propget, propput] oParams.meanvalue
+```
+
+### Params.stdvalue
+
+```cpp
+cv::Scalar cv::TrackerVit::Params::stdvalue
+lua:
+    [propget, propput] oParams.stdvalue
+```
+
+### cv.TrackerVit.Params.new
+
+```cpp
+static cv::TrackerVit::Params cv::TrackerVit::Params();
+lua:
+    cv.TrackerVit.Params.new() -> <cv.TrackerVit.Params object>
+    cv.TrackerVit.Params() -> <cv.TrackerVit.Params object>
+```
+
 ## cv::UMat
 
 ### UMat.MAGIC\_VAL
@@ -44956,6 +45405,14 @@ lua:
     [propget, propput] oDetectorParameters.minMarkerDistanceRate
 ```
 
+### DetectorParameters.minGroupDistance
+
+```cpp
+float cv::aruco::DetectorParameters::minGroupDistance
+lua:
+    [propget, propput] oDetectorParameters.minGroupDistance
+```
+
 ### DetectorParameters.cornerRefinementMethod
 
 ```cpp
@@ -44970,6 +45427,14 @@ lua:
 int cv::aruco::DetectorParameters::cornerRefinementWinSize
 lua:
     [propget, propput] oDetectorParameters.cornerRefinementWinSize
+```
+
+### DetectorParameters.relativeCornerRefinmentWinSize
+
+```cpp
+float cv::aruco::DetectorParameters::relativeCornerRefinmentWinSize
+lua:
+    [propget, propput] oDetectorParameters.relativeCornerRefinmentWinSize
 ```
 
 ### DetectorParameters.cornerRefinementMaxIterations
@@ -46464,14 +46929,7 @@ lua:
 ### cv.cuda.GpuMat.convertTo
 
 ```cpp
-void cv::cuda::GpuMat::convertTo( OutputArray dst,
-                                  int         rtype ) const;
-lua:
-    oGpuMat:convertTo( rtype[, dst] ) -> dst
-```
-
-```cpp
-void cv::cuda::GpuMat::convertTo( OutputArray       dst,
+void cv::cuda::GpuMat::convertTo( cv::cuda::GpuMat& dst,
                                   int               rtype,
                                   cv::cuda::Stream& stream ) const;
 lua:
@@ -46479,25 +46937,16 @@ lua:
 ```
 
 ```cpp
-void cv::cuda::GpuMat::convertTo( OutputArray dst,
-                                  int         rtype,
-                                  double      alpha,
-                                  double      beta = 0.0 ) const;
-lua:
-    oGpuMat:convertTo( rtype, alpha[, dst[, beta]] ) -> dst
-```
-
-```cpp
-void cv::cuda::GpuMat::convertTo( OutputArray       dst,
+void cv::cuda::GpuMat::convertTo( cv::cuda::GpuMat& dst,
                                   int               rtype,
-                                  double            alpha,
-                                  cv::cuda::Stream& stream ) const;
+                                  double            alpha = 1.0,
+                                  double            beta = 0.0 ) const;
 lua:
-    oGpuMat:convertTo( rtype, alpha, stream[, dst] ) -> dst
+    oGpuMat:convertTo( rtype[, alpha[, beta[, dst]]] ) -> dst
 ```
 
 ```cpp
-void cv::cuda::GpuMat::convertTo( OutputArray       dst,
+void cv::cuda::GpuMat::convertTo( cv::cuda::GpuMat& dst,
                                   int               rtype,
                                   double            alpha,
                                   double            beta,
@@ -46509,28 +46958,28 @@ lua:
 ### cv.cuda.GpuMat.copyTo
 
 ```cpp
-void cv::cuda::GpuMat::copyTo( OutputArray dst ) const;
+void cv::cuda::GpuMat::copyTo( cv::cuda::GpuMat& dst ) const;
 lua:
     oGpuMat:copyTo( [dst] ) -> dst
 ```
 
 ```cpp
-void cv::cuda::GpuMat::copyTo( OutputArray       dst,
+void cv::cuda::GpuMat::copyTo( cv::cuda::GpuMat& dst,
                                cv::cuda::Stream& stream ) const;
 lua:
     oGpuMat:copyTo( stream[, dst] ) -> dst
 ```
 
 ```cpp
-void cv::cuda::GpuMat::copyTo( OutputArray dst,
-                               InputArray  mask ) const;
+void cv::cuda::GpuMat::copyTo( cv::cuda::GpuMat& dst,
+                               cv::cuda::GpuMat& mask ) const;
 lua:
     oGpuMat:copyTo( mask[, dst] ) -> dst
 ```
 
 ```cpp
-void cv::cuda::GpuMat::copyTo( OutputArray       dst,
-                               InputArray        mask,
+void cv::cuda::GpuMat::copyTo( cv::cuda::GpuMat& dst,
+                               cv::cuda::GpuMat& mask,
                                cv::cuda::Stream& stream ) const;
 lua:
     oGpuMat:copyTo( mask, stream[, dst] ) -> dst
@@ -49147,9 +49596,9 @@ lua:
 
 ```cpp
 cv::dnn::Net cv::dnn::readNetFromModelOptimizer( const std::string& xml,
-                                                 const std::string& bin );
+                                                 const std::string& bin = "" );
 lua:
-    cv.dnn.readNetFromModelOptimizer( xml, bin ) -> retval
+    cv.dnn.readNetFromModelOptimizer( xml[, bin] ) -> retval
 ```
 
 ```cpp
@@ -49489,6 +49938,14 @@ lua:
     [propget, propput] oImage2BlobParams.paddingmode
 ```
 
+### Image2BlobParams.borderValue
+
+```cpp
+cv::Scalar cv::dnn::Image2BlobParams::borderValue
+lua:
+    [propget, propput] oImage2BlobParams.borderValue
+```
+
 ### cv.dnn.Image2BlobParams.new
 
 ```cpp
@@ -49505,10 +49962,30 @@ static cv::dnn::Image2BlobParams cv::dnn::Image2BlobParams( const cv::Scalar&   
                                                             bool                      swapRB = false,
                                                             int                       ddepth = CV_32F,
                                                             cv::dnn::DataLayout       datalayout = DNN_LAYOUT_NCHW,
-                                                            cv::dnn::ImagePaddingMode mode = DNN_PMODE_NULL );
+                                                            cv::dnn::ImagePaddingMode mode = DNN_PMODE_NULL,
+                                                            cv::Scalar                borderValue = 0.0 );
 lua:
-    cv.dnn.Image2BlobParams.new( scalefactor[, size[, mean[, swapRB[, ddepth[, datalayout[, mode]]]]]] ) -> <cv.dnn.Image2BlobParams object>
-    cv.dnn.Image2BlobParams( scalefactor[, size[, mean[, swapRB[, ddepth[, datalayout[, mode]]]]]] ) -> <cv.dnn.Image2BlobParams object>
+    cv.dnn.Image2BlobParams.new( scalefactor[, size[, mean[, swapRB[, ddepth[, datalayout[, mode[, borderValue]]]]]]] ) -> <cv.dnn.Image2BlobParams object>
+    cv.dnn.Image2BlobParams( scalefactor[, size[, mean[, swapRB[, ddepth[, datalayout[, mode[, borderValue]]]]]]] ) -> <cv.dnn.Image2BlobParams object>
+```
+
+### cv.dnn.Image2BlobParams.blobRectToImageRect
+
+```cpp
+cv::Rect cv::dnn::Image2BlobParams::blobRectToImageRect( const cv::Rect& rBlob,
+                                                         const cv::Size& size );
+lua:
+    oImage2BlobParams:blobRectToImageRect( rBlob, size ) -> retval
+```
+
+### cv.dnn.Image2BlobParams.blobRectsToImageRects
+
+```cpp
+void cv::dnn::Image2BlobParams::blobRectsToImageRects( const std::vector<cv::Rect>& rBlob,
+                                                       std::vector<cv::Rect>&       rImg,
+                                                       const cv::Size&              size );
+lua:
+    oImage2BlobParams:blobRectsToImageRects( rBlob, size[, rImg] ) -> rImg
 ```
 
 ## cv::dnn::KeypointsModel
@@ -49617,6 +50094,14 @@ static cv::dnn::Model cv::dnn::Model( const cv::dnn::Net& network );
 lua:
     cv.dnn.Model.new( network ) -> <cv.dnn.Model object>
     cv.dnn.Model( network ) -> <cv.dnn.Model object>
+```
+
+### cv.dnn.Model.enableWinograd
+
+```cpp
+cv::dnn::Model cv::dnn::Model::enableWinograd( bool useWinograd );
+lua:
+    oModel:enableWinograd( useWinograd ) -> retval
 ```
 
 ### cv.dnn.Model.predict
@@ -52168,6 +52653,46 @@ lua:
     cv.gapi.onnx.PyParams( tag, model_path ) -> <cv.gapi.onnx.PyParams object>
 ```
 
+### cv.gapi.onnx.PyParams.cfgAddExecutionProvider
+
+```cpp
+cv::gapi::onnx::PyParams cv::gapi::onnx::PyParams::cfgAddExecutionProvider( cv::gapi::onnx::ep::OpenVINO ep );
+lua:
+    oPyParams:cfgAddExecutionProvider( ep ) -> retval
+```
+
+```cpp
+cv::gapi::onnx::PyParams cv::gapi::onnx::PyParams::cfgAddExecutionProvider( cv::gapi::onnx::ep::DirectML ep );
+lua:
+    oPyParams:cfgAddExecutionProvider( ep ) -> retval
+```
+
+```cpp
+cv::gapi::onnx::PyParams cv::gapi::onnx::PyParams::cfgAddExecutionProvider( cv::gapi::onnx::ep::CoreML ep );
+lua:
+    oPyParams:cfgAddExecutionProvider( ep ) -> retval
+```
+
+```cpp
+cv::gapi::onnx::PyParams cv::gapi::onnx::PyParams::cfgAddExecutionProvider( cv::gapi::onnx::ep::CUDA ep );
+lua:
+    oPyParams:cfgAddExecutionProvider( ep ) -> retval
+```
+
+```cpp
+cv::gapi::onnx::PyParams cv::gapi::onnx::PyParams::cfgAddExecutionProvider( cv::gapi::onnx::ep::TensorRT ep );
+lua:
+    oPyParams:cfgAddExecutionProvider( ep ) -> retval
+```
+
+### cv.gapi.onnx.PyParams.cfgDisableMemPattern
+
+```cpp
+cv::gapi::onnx::PyParams cv::gapi::onnx::PyParams::cfgDisableMemPattern();
+lua:
+    oPyParams:cfgDisableMemPattern() -> retval
+```
+
 ### cv.gapi.onnx.PyParams.cfgMeanStd
 
 ```cpp
@@ -52185,6 +52710,243 @@ cv::gapi::onnx::PyParams cv::gapi::onnx::PyParams::cfgNormalize( const std::stri
                                                                  bool               flag );
 lua:
     oPyParams:cfgNormalize( layer_name, flag ) -> retval
+```
+
+## cv::gapi::onnx::ep::CUDA
+
+### cv.gapi.onnx.ep.CUDA.new
+
+```cpp
+static cv::gapi::onnx::ep::CUDA cv::gapi::onnx::ep::CUDA();
+lua:
+    cv.gapi.onnx.ep.CUDA.new() -> <cv.gapi.onnx.ep.CUDA object>
+    cv.gapi.onnx.ep.CUDA() -> <cv.gapi.onnx.ep.CUDA object>
+```
+
+```cpp
+static cv::gapi::onnx::ep::CUDA cv::gapi::onnx::ep::CUDA( const int dev_id );
+lua:
+    cv.gapi.onnx.ep.CUDA.new( dev_id ) -> <cv.gapi.onnx.ep.CUDA object>
+    cv.gapi.onnx.ep.CUDA( dev_id ) -> <cv.gapi.onnx.ep.CUDA object>
+```
+
+## cv::gapi::onnx::ep::CoreML
+
+### cv.gapi.onnx.ep.CoreML.new
+
+```cpp
+static cv::gapi::onnx::ep::CoreML cv::gapi::onnx::ep::CoreML();
+lua:
+    cv.gapi.onnx.ep.CoreML.new() -> <cv.gapi.onnx.ep.CoreML object>
+    cv.gapi.onnx.ep.CoreML() -> <cv.gapi.onnx.ep.CoreML object>
+```
+
+### cv.gapi.onnx.ep.CoreML.cfgEnableOnSubgraph
+
+```cpp
+cv::gapi::onnx::ep::CoreML cv::gapi::onnx::ep::CoreML::cfgEnableOnSubgraph();
+lua:
+    oCoreML:cfgEnableOnSubgraph() -> retval
+```
+
+### cv.gapi.onnx.ep.CoreML.cfgEnableOnlyNeuralEngine
+
+```cpp
+cv::gapi::onnx::ep::CoreML cv::gapi::onnx::ep::CoreML::cfgEnableOnlyNeuralEngine();
+lua:
+    oCoreML:cfgEnableOnlyNeuralEngine() -> retval
+```
+
+### cv.gapi.onnx.ep.CoreML.cfgUseCPUOnly
+
+```cpp
+cv::gapi::onnx::ep::CoreML cv::gapi::onnx::ep::CoreML::cfgUseCPUOnly();
+lua:
+    oCoreML:cfgUseCPUOnly() -> retval
+```
+
+## cv::gapi::onnx::ep::DirectML
+
+### cv.gapi.onnx.ep.DirectML.new
+
+```cpp
+static cv::gapi::onnx::ep::DirectML cv::gapi::onnx::ep::DirectML();
+lua:
+    cv.gapi.onnx.ep.DirectML.new() -> <cv.gapi.onnx.ep.DirectML object>
+    cv.gapi.onnx.ep.DirectML() -> <cv.gapi.onnx.ep.DirectML object>
+```
+
+```cpp
+static cv::gapi::onnx::ep::DirectML cv::gapi::onnx::ep::DirectML( const int device_id );
+lua:
+    cv.gapi.onnx.ep.DirectML.new( device_id ) -> <cv.gapi.onnx.ep.DirectML object>
+    cv.gapi.onnx.ep.DirectML( device_id ) -> <cv.gapi.onnx.ep.DirectML object>
+```
+
+```cpp
+static cv::gapi::onnx::ep::DirectML cv::gapi::onnx::ep::DirectML( const std::string& adapter_name );
+lua:
+    cv.gapi.onnx.ep.DirectML.new( adapter_name ) -> <cv.gapi.onnx.ep.DirectML object>
+    cv.gapi.onnx.ep.DirectML( adapter_name ) -> <cv.gapi.onnx.ep.DirectML object>
+```
+
+## cv::gapi::onnx::ep::OpenVINO
+
+### cv.gapi.onnx.ep.OpenVINO.new
+
+```cpp
+static cv::gapi::onnx::ep::OpenVINO cv::gapi::onnx::ep::OpenVINO();
+lua:
+    cv.gapi.onnx.ep.OpenVINO.new() -> <cv.gapi.onnx.ep.OpenVINO object>
+    cv.gapi.onnx.ep.OpenVINO() -> <cv.gapi.onnx.ep.OpenVINO object>
+```
+
+```cpp
+static cv::gapi::onnx::ep::OpenVINO cv::gapi::onnx::ep::OpenVINO( const std::string& dev_type );
+lua:
+    cv.gapi.onnx.ep.OpenVINO.new( dev_type ) -> <cv.gapi.onnx.ep.OpenVINO object>
+    cv.gapi.onnx.ep.OpenVINO( dev_type ) -> <cv.gapi.onnx.ep.OpenVINO object>
+```
+
+### cv.gapi.onnx.ep.OpenVINO.cfgCacheDir
+
+```cpp
+cv::gapi::onnx::ep::OpenVINO cv::gapi::onnx::ep::OpenVINO::cfgCacheDir( const std::string& dir );
+lua:
+    oOpenVINO:cfgCacheDir( dir ) -> retval
+```
+
+### cv.gapi.onnx.ep.OpenVINO.cfgEnableDynamicShapes
+
+```cpp
+cv::gapi::onnx::ep::OpenVINO cv::gapi::onnx::ep::OpenVINO::cfgEnableDynamicShapes();
+lua:
+    oOpenVINO:cfgEnableDynamicShapes() -> retval
+```
+
+### cv.gapi.onnx.ep.OpenVINO.cfgEnableOpenCLThrottling
+
+```cpp
+cv::gapi::onnx::ep::OpenVINO cv::gapi::onnx::ep::OpenVINO::cfgEnableOpenCLThrottling();
+lua:
+    oOpenVINO:cfgEnableOpenCLThrottling() -> retval
+```
+
+### cv.gapi.onnx.ep.OpenVINO.cfgNumThreads
+
+```cpp
+cv::gapi::onnx::ep::OpenVINO cv::gapi::onnx::ep::OpenVINO::cfgNumThreads( size_t nthreads );
+lua:
+    oOpenVINO:cfgNumThreads( nthreads ) -> retval
+```
+
+## cv::gapi::onnx::ep::TensorRT
+
+### cv.gapi.onnx.ep.TensorRT.new
+
+```cpp
+static cv::gapi::onnx::ep::TensorRT cv::gapi::onnx::ep::TensorRT();
+lua:
+    cv.gapi.onnx.ep.TensorRT.new() -> <cv.gapi.onnx.ep.TensorRT object>
+    cv.gapi.onnx.ep.TensorRT() -> <cv.gapi.onnx.ep.TensorRT object>
+```
+
+```cpp
+static cv::gapi::onnx::ep::TensorRT cv::gapi::onnx::ep::TensorRT( const int dev_id );
+lua:
+    cv.gapi.onnx.ep.TensorRT.new( dev_id ) -> <cv.gapi.onnx.ep.TensorRT object>
+    cv.gapi.onnx.ep.TensorRT( dev_id ) -> <cv.gapi.onnx.ep.TensorRT object>
+```
+
+## cv::gapi::ot
+
+### ot.NEW
+
+```cpp
+int cv::gapi::ot::NEW
+lua:
+    [propget] ot.NEW
+```
+
+### ot.TRACKED
+
+```cpp
+int cv::gapi::ot::TRACKED
+lua:
+    [propget] ot.TRACKED
+```
+
+### ot.LOST
+
+```cpp
+int cv::gapi::ot::LOST
+lua:
+    [propget] ot.LOST
+```
+
+### cv.gapi.ot.track
+
+```cpp
+std::tuple<cv::GArray<cv::Rect>, cv::GArray<int>, cv::GArray<uint64_t>, cv::GArray<int>> cv::gapi::ot::track( const cv::GMat&             mat,
+                                                                                                              const cv::GArray<cv::Rect>& detected_rects,
+                                                                                                              const cv::GArray<int>&      detected_class_labels,
+                                                                                                              float                       delta );
+lua:
+    cv.gapi.ot.track( mat, detected_rects, detected_class_labels, delta ) -> retval
+```
+
+```cpp
+std::tuple<cv::GArray<cv::Rect>, cv::GArray<int>, cv::GArray<uint64_t>, cv::GArray<int>> cv::gapi::ot::track( const cv::GFrame&           frame,
+                                                                                                              const cv::GArray<cv::Rect>& detected_rects,
+                                                                                                              const cv::GArray<int>&      detected_class_labels,
+                                                                                                              float                       delta );
+lua:
+    cv.gapi.ot.track( frame, detected_rects, detected_class_labels, delta ) -> retval
+```
+
+## cv::gapi::ot::ObjectTrackerParams
+
+### ObjectTrackerParams.max\_num\_objects
+
+```cpp
+int32_t cv::gapi::ot::ObjectTrackerParams::max_num_objects
+lua:
+    [propget, propput] oObjectTrackerParams.max_num_objects
+```
+
+### ObjectTrackerParams.input\_image\_format
+
+```cpp
+int32_t cv::gapi::ot::ObjectTrackerParams::input_image_format
+lua:
+    [propget, propput] oObjectTrackerParams.input_image_format
+```
+
+### ObjectTrackerParams.tracking\_per\_class
+
+```cpp
+bool cv::gapi::ot::ObjectTrackerParams::tracking_per_class
+lua:
+    [propget, propput] oObjectTrackerParams.tracking_per_class
+```
+
+### cv.gapi.ot.ObjectTrackerParams.new
+
+```cpp
+static cv::gapi::ot::ObjectTrackerParams cv::gapi::ot::ObjectTrackerParams();
+lua:
+    cv.gapi.ot.ObjectTrackerParams.new() -> <cv.gapi.ot.ObjectTrackerParams object>
+    cv.gapi.ot.ObjectTrackerParams() -> <cv.gapi.ot.ObjectTrackerParams object>
+```
+
+## cv::gapi::ot::cpu
+
+### cv.gapi.ot.cpu.kernels
+
+```cpp
+cv::GKernelPackage cv::gapi::ot::cpu::kernels();
+lua:
+    cv.gapi.ot.cpu.kernels() -> retval
 ```
 
 ## cv::gapi::ov

@@ -2,7 +2,7 @@ package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', packa
 
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.8.0/samples/python/tutorial_code/Histograms_Matching/histogram_comparison/compareHist_Demo.py
+    https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/Histograms_Matching/histogram_comparison/compareHist_Demo.py
 --]]
 
 local opencv_lua = require("init")

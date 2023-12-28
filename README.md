@@ -15,17 +15,14 @@ Therefore the [OpenCV documentation](https://docs.opencv.org/4.x/index.html) sho
   - [Prerequisites to source rock install](#prerequisites-to-source-rock-install)
     - [Windows](#windows)
     - [Linux](#linux)
-  - [Automatic guess install](#automatic-guess-install)
-  - [Install the source rock](#install-the-source-rock)
-  - [Install the prebuilt binaries for lua 5.4](#install-the-prebuilt-binaries-for-lua-54)
-  - [Install the prebuilt binaries for LuaJIT 2.1](#install-the-prebuilt-binaries-for-luajit-21)
+  - [How to install](#how-to-install)
 - [Examples](#examples)
   - [Show image](#show-image)
   - [Video capture Camera](#video-capture-camera)
-  - [Rotate an image](#rotate-image)
+  - [Rotate an image](#rotate-an-image)
   - [Drawing contours](#drawing-contours)
   - [Template matching](#template-matching)
-- [Runing examples](#runing-examples)
+- [Running examples](#running-examples)
   - [Prerequisites](#prerequisites)
     - [Windows](#windows-1)
     - [Linux](#linux-1)
@@ -63,33 +60,25 @@ Prebuilt binaries are available for [LuaJIT 2.1](https://luajit.org/) and [Lua 5
 #### Linux
 
   - Install [NodeJS](https://nodejs.org/en/download/current)
-  - Install needed packages `sudo snap install cmake --classic && sudo apt -y install build-essential git python3-pip python3-venv python-is-python3 ninja-build unzip libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-dev libreadline-dev`
+  - Install needed packages `sudo snap install cmake --classic && sudo apt -y install build-essential git python3-pip python3-venv python-is-python3 ninja-build unzip zip libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-dev libreadline-dev`
   - For faster build time, you can use [Ninja](https://ninja-build.org/) `luarocks config --scope project cmake_generator Ninja`
 
-### Automatic guess install
+### How to install
 
-This will install suitable prebuilt binaries if found, otherwise will build from the source rock
+I recommend you to try installing the prebuilt binary with
 
 ```sh
 luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.2 opencv_lua
 ```
 
-### Install the source rock
+Or to specify the target lua version
 
 ```sh
-luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.2 opencv_lua 4.8.0
-```
-
-### Install the prebuilt binaries for lua 5.4
-
-```sh
-luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.2 opencv_lua 4.8.0lua5.4
-```
-
-### Install the prebuilt binaries for LuaJIT 2.1
-
-```sh
-luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.2 opencv_lua 4.8.0luajit2.1
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.2 opencv_lua 4.9.0luajit2.1
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.2 opencv_lua 4.9.0lua5.4
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.2 opencv_lua 4.9.0lua5.3
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.2 opencv_lua 4.9.0lua5.2
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.2 opencv_lua 4.9.0lua5.1
 ```
 
 ## Examples
@@ -244,7 +233,7 @@ cv.waitKey()
 cv.destroyAllWindows()
 ```
 
-## Runing examples
+## Running examples
 
 ### Prerequisites
 
@@ -253,23 +242,25 @@ cv.destroyAllWindows()
   - Install [Git](https://git-scm.com/)
   - Install [NodeJS](https://nodejs.org/en/download/current)
   - Install [Visual Studio 2022 >= 17.7.2](https://visualstudio.microsoft.com/fr/downloads/)
+  - In your windows search, search and open the `x64 Native Tools Command Prompt for VS 2022`
 
 #### Linux
 
   - Install [NodeJS](https://nodejs.org/en/download/current)
-  - Install needed packages `sudo snap install cmake --classic && sudo apt -y install build-essential git ninja-build libreadline-dev unzip`
+  - Install needed packages `sudo snap install cmake --classic && sudo apt -y install build-essential git ninja-build libreadline-dev unzip ffmpeg libsm6 libxext6`
 
 ### Initialize the project
 
 #### Windows
 
 ```cmd
-git clone --depth 1 --branch 4.8.0 https://github.com/opencv/opencv.git
+git clone --depth 1 --branch 4.9.0 https://github.com/opencv/opencv.git
 git clone --depth 1 --branch v0.0.2 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
 build.bat --target lua "-DLua_VERSION=5.4" --install
 build.bat --target luarocks
 luarocks\luarocks.bat install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.2 opencv_lua
+luarocks\luarocks.bat install --deps-only samples/samples-scm-1.rockspec
 npm ci
 node scripts\test.js --Release
 ```
@@ -277,12 +268,13 @@ node scripts\test.js --Release
 #### Linux
 
 ```sh
-git clone --depth 1 --branch 4.8.0 https://github.com/opencv/opencv.git
+git clone --depth 1 --branch 4.9.0 https://github.com/opencv/opencv.git
 git clone --depth 1 --branch v0.0.2 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
 ./build.sh --target lua "-DLua_VERSION=5.4" --install
 ./build.sh --target luarocks
 ./luarocks/luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.2 opencv_lua
+./luarocks/luarocks install --deps-only samples/samples-scm-1.rockspec
 npm ci
 node scripts/test.js --Release
 ```

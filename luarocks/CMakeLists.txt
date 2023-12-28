@@ -50,7 +50,7 @@ if (WIN32)
     BUILD_COMMAND       ""
     INSTALL_COMMAND     cd /d "${PROJECT_DIR}" ${COMMANDS}
             COMMAND     "${CMAKE_COMMAND}"
-                          "-DLUAROCKS_EXE=<SOURCE_DIR>\\luarocks.exe"
+                          "-DLUAROCKS_EXE=<SOURCE_DIR>/luarocks.exe"
                           "-DLUA_BINDIR=${LUA_BINDIR}"
                           "-DLUA_INTERPRETER_NAME=${LUA_INTERPRETER_NAME}"
                           "-DABIVER=${ABIVER}"

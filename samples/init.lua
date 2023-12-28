@@ -9,8 +9,22 @@ local cv = opencv_lua.cv
 -- opencv_lua.call_garbage_collect(true)
 
 local sysPath = {
+    basename = function (file)
+        local index
+
+        for i=#file,1,-1 do
+            local c = file:sub(i,i)
+            if c == "/" or c == "\\" then
+                if i == 1 then return c end
+                return file:sub(i + 1, #file)
+            end
+        end
+
+        return file
+    end,
+
     dirname = function (file)
-        local index;
+        local index
 
         for i=#file,1,-1 do
             local c = file:sub(i,i)

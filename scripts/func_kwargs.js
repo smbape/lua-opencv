@@ -46,10 +46,10 @@ function ${ libname }.${ fname } ( ... )
             elseif ${ mandatory } then
                 error('${ kwname || argname } is mandatory')
             end
-        `.replace(/^ {8}/mg, "").trim();
+        `.replace(/^ {8}/mg, "").replace("elseif true then", "else").replace(/\n[^\S\n]+elseif false then\n[^\n]+/, "").trim();
     }).join(`\n\n${ " ".repeat(4) }`) }
 
-    if not (usedkw == kwargs:size()) then
+    if usedkw ~= kwargs:size() then
         error('there are ' .. (kwargs:size() - usedkw) .. ' unknown named parameters')
     end
 

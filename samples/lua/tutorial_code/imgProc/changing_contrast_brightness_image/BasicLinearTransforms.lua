@@ -2,7 +2,7 @@ package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', packa
 
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.8.0/samples/python/tutorial_code/imgProc/changing_contrast_brightness_image/BasicLinearTransforms.py
+    https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/imgProc/changing_contrast_brightness_image/BasicLinearTransforms.py
 --]]
 
 local opencv_lua = require("init")

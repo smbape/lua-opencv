@@ -1,6 +1,5 @@
 #pragma once
 
-#include <lua_utils.hpp>
 #include <lua_generated_include.hpp>
 #include <lua_utils_arrays.hpp>
 
@@ -67,7 +66,7 @@ namespace LUA_MODULE_NAME {
 
 	// cv::Point_
 	template<typename _To, typename _Tp>
-	inline auto maybe_impl(_To& obj, cv::Point_<_Tp>*, bool nested = false) {
+	inline auto maybe_impl(_To& obj, cv::Point_<_Tp>*, bool nested) {
 		if (obj == sol::lua_nil) {
 			std::shared_ptr<cv::Point_<_Tp>> res(new cv::Point_<_Tp>());
 			return res;
@@ -126,13 +125,18 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _To, typename _Tp>
+	inline auto maybe_impl(_To& obj, cv::Point_<_Tp>* ptr) {
+		return maybe_impl(obj, ptr, false);
+	}
+
+	template<typename _To, typename _Tp>
 	inline auto maybe_impl(const _To& obj, cv::Point_<_Tp>* ptr) {
 		return maybe_impl(const_cast<_To&>(obj), ptr);
 	}
 
 	// cv::Point3_
 	template<typename _To, typename _Tp>
-	inline auto maybe_impl(_To& obj, cv::Point3_<_Tp>*, bool nested = false) {
+	inline auto maybe_impl(_To& obj, cv::Point3_<_Tp>*, bool nested) {
 		if (obj == sol::lua_nil) {
 			std::shared_ptr<cv::Point3_<_Tp>> res(new cv::Point3_<_Tp>());
 			return res;
@@ -192,13 +196,18 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _To, typename _Tp>
+	inline auto maybe_impl(_To& obj, cv::Point3_<_Tp>* ptr) {
+		return maybe_impl(obj, ptr, false);
+	}
+
+	template<typename _To, typename _Tp>
 	inline auto maybe_impl(const _To& obj, cv::Point3_<_Tp>* ptr) {
 		return maybe_impl(const_cast<_To&>(obj), ptr);
 	}
 
 	// cv::Rect_
 	template<typename _To, typename _Tp>
-	inline auto maybe_impl(_To& obj, cv::Rect_<_Tp>*, bool nested = false) {
+	inline auto maybe_impl(_To& obj, cv::Rect_<_Tp>*, bool nested) {
 		if (obj == sol::lua_nil) {
 			std::shared_ptr<cv::Rect_<_Tp>> res(new cv::Rect_<_Tp>());
 			return res;
@@ -258,6 +267,12 @@ namespace LUA_MODULE_NAME {
 		return res;
 	}
 
+
+	template<typename _To, typename _Tp>
+	inline auto maybe_impl(_To& obj, cv::Rect_<_Tp>* ptr) {
+		return maybe_impl(obj, ptr, false);
+	}
+
 	template<typename _To, typename _Tp>
 	inline auto maybe_impl(const _To& obj, cv::Rect_<_Tp>* ptr) {
 		return maybe_impl(const_cast<_To&>(obj), ptr);
@@ -309,7 +324,7 @@ namespace LUA_MODULE_NAME {
 
 	// cv::Size_
 	template<typename _To, typename _Tp>
-	inline auto maybe_impl(_To& obj, cv::Size_<_Tp>*, bool nested = false) {
+	inline auto maybe_impl(_To& obj, cv::Size_<_Tp>*, bool nested) {
 		if (obj == sol::lua_nil) {
 			std::shared_ptr<cv::Size_<_Tp>> res(new cv::Size_<_Tp>());
 			return res;
@@ -365,6 +380,11 @@ namespace LUA_MODULE_NAME {
 		(*res).height = (*vec)[1];
 
 		return res;
+	}
+
+	template<typename _To, typename _Tp>
+	inline auto maybe_impl(_To& obj, cv::Size_<_Tp>* ptr) {
+		return maybe_impl(obj, ptr, false);
 	}
 
 	template<typename _To, typename _Tp>

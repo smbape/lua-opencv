@@ -22,15 +22,15 @@ endif()
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release;MinSizeRel;RelWithDebInfo" CACHE STRING "Configs" FORCE)
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "${CMAKE_CONFIGURATION_TYPES}")
 
-set(OpenCV_VERSION 4.8.0 CACHE STRING "Choose the OpenCV version.")
-set_property(CACHE OpenCV_VERSION PROPERTY STRINGS "4.8.0" "4.7.0" "4.6.0" "4.5.5" "4.5.4" "4.5.3" "4.5.2" "4.5.1")
+set(OpenCV_VERSION 4.9.0 CACHE STRING "Choose the OpenCV version.")
+set_property(CACHE OpenCV_VERSION PROPERTY STRINGS "4.9.0" "4.8.1" "4.8.0" "4.7.0" "4.6.0" "4.5.5" "4.5.4" "4.5.3" "4.5.2" "4.5.1")
 
 string(REPLACE "." ";" OpenCV_VERSION_LIST ${OpenCV_VERSION})
 list(GET OpenCV_VERSION_LIST 0 OpenCV_VERSION_MAJOR)
 list(GET OpenCV_VERSION_LIST 1 OpenCV_VERSION_MINOR)
 list(GET OpenCV_VERSION_LIST 2 OpenCV_VERSION_PATCH)
 
-set(OpenCV_DLLVERSION "${OpenCV_VERSION_MAJOR}${OpenCV_VERSION_MINOR}${OpenCV_VERSION_PATCH}")
+set(OpenCV_DLLVERSION "${OpenCV_VERSION_MAJOR}${OpenCV_VERSION_MINOR}${OpenCV_VERSION_PATCH}" PARENT_SCOPE)
 set(OpenCV_DEBUG_POSTFIX d)
 
 # Tell cmake we will need opencv.
@@ -54,6 +54,8 @@ option(BUILD_contrib "Build with opencv contrib" OFF)
 
 if (BUILD_contrib)
   # https://github.com/opencv/opencv-python/tree/78
+  set(OPENCV_CONTRIB_TAG_490 c7602a8f74205e44389bd6a4e8d727d32e7e27b4)
+  set(OPENCV_CONTRIB_TAG_481 f10c84d48b0714f2b408c9e5cccfac1277c8e6cc)
   set(OPENCV_CONTRIB_TAG_480 f10c84d48b0714f2b408c9e5cccfac1277c8e6cc)
   set(OPENCV_CONTRIB_TAG_470 e247b680a6bd396f110274b6c214406a93171350)
   set(OPENCV_CONTRIB_TAG_460 db16caf6ceee76b43b94c846be276e92a43e9700)

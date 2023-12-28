@@ -3,8 +3,8 @@ package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', packa
 --[[
 Sources:
     https://docs.opencv.org/4.x/d4/d70/tutorial_anisotropic_image_segmentation_by_a_gst.html
-    https://github.com/opencv/opencv/blob/4.8.0/samples/python/tutorial_code/imgProc/anisotropic_image_segmentation/anisotropic_image_segmentation.py
-    https://github.com/opencv/opencv/blob/4.8.0/samples/cpp/tutorial_code/ImgProc/anisotropic_image_segmentation/anisotropic_image_segmentation.cpp
+    https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/imgProc/anisotropic_image_segmentation/anisotropic_image_segmentation.py
+    https://github.com/opencv/opencv/blob/4.9.0/samples/cpp/tutorial_code/ImgProc/anisotropic_image_segmentation/anisotropic_image_segmentation.cpp
 --]]
 
 local opencv_lua = require("init")

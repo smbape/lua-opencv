@@ -2,7 +2,7 @@ package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', packa
 
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.8.0/samples/python/tutorial_code/TrackingMotion/generic_corner_detector/cornerDetector_Demo.py
+    https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/TrackingMotion/generic_corner_detector/cornerDetector_Demo.py
 --]]
 
 local opencv_lua = require("init")
@@ -130,7 +130,7 @@ while true do
     -- lua is not thread safe
     -- therefore, calling callbacks from another thread
     -- will certainly causes unwanted behaviour
-    -- for that reason, callbacks are registered and called from the main thred
+    -- for that reason, callbacks are registered and called from the main thread
     opencv_lua.notifyCallbacks()
 
     -- Wait until user press some key

@@ -10,7 +10,7 @@ const { mkdirp } = require("mkdirp");
 const waterfall = require("async/waterfall");
 const {explore} = require("fs-explorer");
 
-const OpenCV_VERSION = "opencv-4.8.0";
+const OpenCV_VERSION = "opencv-4.9.0";
 const OpenCV_DLLVERSION = OpenCV_VERSION.slice("opencv-".length).replaceAll(".", "");
 global.OpenCV_VERSION = OpenCV_VERSION;
 

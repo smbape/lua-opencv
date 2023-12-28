@@ -2,8 +2,8 @@ package.path = arg[0]:gsub("[^/\\]+%.lua", '../../../../?.lua;'):gsub('/', packa
 
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.8.0/samples/python/tutorial_code/imgProc/morph_lines_detection/morph_lines_detection.py
-    https://github.com/opencv/opencv/blob/4.8.0/samples/cpp/tutorial_code/ImgProc/morph_lines_detection/Morphology_3.cpp
+    https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/imgProc/morph_lines_detection/morph_lines_detection.py
+    https://github.com/opencv/opencv/blob/4.9.0/samples/cpp/tutorial_code/ImgProc/morph_lines_detection/Morphology_3.cpp
 --]]
 
 local opencv_lua = require("init")

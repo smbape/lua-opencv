@@ -13,14 +13,17 @@ const luarcoks = sysPath.join(LUAROCKS_BINDIR, `luarocks${ batchSuffix }`);
 
 const lua_interpreter = spawnSync(luarcoks, ["config", "lua_interpreter"]).stdout.toString().trim();
 const LUA_BINDIR = spawnSync(luarcoks, ["config", "variables.LUA_BINDIR"]).stdout.toString().trim();
+const LUAROCKS_SYSCONFDIR = spawnSync(luarcoks, ["config", "sysconfdir"]).stdout.toString().trim();
+const LUA_BINDIR_DEBUG = LUA_BINDIR.replace("Release", "Debug");
 
 const config = {
     Debug: {
-        exe: sysPath.join(LUA_BINDIR.replace("Release", "Debug"), lua_interpreter),
+        exe: sysPath.join(LUA_BINDIR_DEBUG, lua_interpreter),
         env: {
             LUAROCKS_BINDIR,
             WORKSPACE_ROOT,
         },
+        argv: [],
     },
     Release: {
         exe: sysPath.join(LUAROCKS_BINDIR, `lua${ batchSuffix }`),
@@ -28,18 +31,46 @@ const config = {
             LUAROCKS_BINDIR,
             WORKSPACE_ROOT,
         },
+        argv: [],
     },
 };
 
 if (os.platform() === "win32") {
     const { APPDATA, PATH } = process.env;
+
     config.Release.env.PATH = `${ sysPath.join(LUAROCKS_BINDIR, "lua_modules", "bin") };${ sysPath.join(APPDATA, "luarocks", "bin") };${ PATH }`;
+    config.Debug.env.LUAROCKS_SYSCONFDIR = LUAROCKS_SYSCONFDIR;
+
+    config.Debug.env.PATH = `${ LUA_BINDIR_DEBUG };${ sysPath.join(LUAROCKS_BINDIR, "lua_modules", "bin") };${ sysPath.join(APPDATA, "luarocks", "bin") };${ PATH }`;
+    config.Debug.env.LUAROCKS_SYSCONFDIR = LUAROCKS_SYSCONFDIR;
+
+    const ABIVER = spawnSync(luarcoks, ["config", "lua_version"]).stdout.toString().trim();
+    const LUA_MODULES = sysPath.join(LUAROCKS_BINDIR, "lua_modules");
+
+    config.Debug.argv = [
+        "-e",
+        [
+            `package.path="${ [
+                `${ LUA_MODULES }/share/lua/${ ABIVER }/?.lua`,
+                `${ LUA_MODULES }/share/lua/${ ABIVER }/?/init.lua`,
+                `${ APPDATA }/luarocks/share/lua/${ ABIVER }/?.lua`,
+                `${ APPDATA }/luarocks/share/lua/${ ABIVER }/?/init.lua`,
+            ].join(";").replace(/[\\/]/g, sysPath.sep.repeat(2)) };"..package.path`,
+
+            `package.cpath="${ [
+                `${ LUA_BINDIR_DEBUG }/?.dll`,
+                `${ LUA_BINDIR_DEBUG }/loadall.dll`,
+                `${ LUA_MODULES }/lib/lua/${ ABIVER }/?.dll`,
+                `${ APPDATA }/luarocks/lib/lua/${ ABIVER }/?.dll`
+            ].join(";").replace(/[\\/]/g, sysPath.sep.repeat(2)) };"..package.cpath`,
+        ].join(";"),
+    ];
 } else if (fs.existsSync(config.Debug.exe)) {
     const {env, exe} = config.Debug;
     env.LUA_CPATH = `${ sysPath.resolve(exe, "../../lib/?.so") };${ spawnSync(exe, ["-e", "print(package.cpath)"]).stdout.toString().trim() }`;
 }
 
-const run = (file, cwd, env, next) => {
+const run = (file, options, env, next) => {
     const { BUILD_TYPE, OPENCV_BUILD_TYPE } = process.env;
     if (BUILD_TYPE && BUILD_TYPE !== env.BUILD_TYPE || OPENCV_BUILD_TYPE && OPENCV_BUILD_TYPE !== env.OPENCV_BUILD_TYPE) {
         next(0, null);
@@ -52,7 +83,11 @@ const run = (file, cwd, env, next) => {
     const args = [];
 
     if (extname === ".lua") {
-        args.push(config[env.BUILD_TYPE].exe, [file]);
+        const argv = [...config[env.BUILD_TYPE].argv, file, ...options.argv];
+        if (sysPath.basename(file) === "object_detection.lua" && options.argv.length === 0) {
+            argv.push("ssd_tf", "--input", "vtest.avi");
+        }
+        args.push(config[env.BUILD_TYPE].exe, argv);
     } else {
         throw new Error(`Unsupported extenstion ${ extname }`);
     }
@@ -62,7 +97,7 @@ const run = (file, cwd, env, next) => {
     args.push({
         stdio: "inherit",
         env: Object.assign({}, config[env.BUILD_TYPE].env, process.env, env),
-        cwd,
+        cwd: options.cwd,
     });
 
     const child = spawn(...args);
@@ -74,24 +109,27 @@ const run = (file, cwd, env, next) => {
 const options = {
     cwd: WORKSPACE_ROOT,
     includes: [],
-    "--": false,
+    argv: [],
+    "--": 0,
 };
 
 for (const arg of process.argv.slice(2)) {
-    if (!options["--"] && arg === "--") {
-        options["--"] = true;
-    } else if (options["--"]) {
+    if (arg === "--") {
+        options[arg]++;
+    } else if (options["--"] === 1 && arg[0] !== "-") {
         options.includes.push(arg);
+    } else if (options["--"] > 1 || options["--"] !== 0 && arg[0] === "-") {
+        options.argv.push(arg);
     } else if (arg === "--Debug" || arg === "--Release") {
         process.env.BUILD_TYPE = arg.slice(2);
     } else {
         options.cwd = sysPath.resolve(arg);
-        options["--"] = true;
+        options["--"] = 1;
     }
 }
 
 const INCLUDED_EXT = [".lua"];
-const EXCLUDED_FILES = ["init.lua"];
+const EXCLUDED_FILES = ["init.lua", "common.lua"];
 const { cwd, includes } = options;
 
 explore(sysPath.join(cwd, "samples"), (path, stats, next) => {
@@ -110,14 +148,14 @@ explore(sysPath.join(cwd, "samples"), (path, stats, next) => {
 
     waterfall([
         next => {
-            run(file, cwd, {
+            run(file, options, {
                 BUILD_TYPE: "Release",
                 OPENCV_BUILD_TYPE: "Release",
             }, next);
         },
 
         (signal, next) => {
-            run(file, cwd, {
+            run(file, options, {
                 BUILD_TYPE: "Debug",
                 OPENCV_BUILD_TYPE: "Debug",
             }, next);
