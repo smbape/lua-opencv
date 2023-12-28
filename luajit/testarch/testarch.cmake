@@ -1,5 +1,5 @@
 ##############################################################################
-# Target architecture selection.
+# Target system detection.
 ##############################################################################
 
 set(TARGET_TESTARCH_INPUT "
@@ -69,6 +69,7 @@ try_run(TARGET_TESTARCH_CODE TARGET_TESTARCH_COMPILED
 )
 
 set(TARGET_ARCH "")
+set(HOST_XCFLAGS "")
 
 if (NOT TARGET_TESTARCH_COMPILED)
     message(FATAL_ERROR "Unsupported target architecture:\n${TARGET_TESTARCH_COMPILE}")
@@ -111,6 +112,23 @@ if (TARGET_TESTARCH MATCHES " LJ_TARGET_PS3 ")
 endif()
 
 list(APPEND TARGET_ARCH "LUAJIT_TARGET=LUAJIT_ARCH_${TARGET_LJARCH}")
+
+if (CMAKE_CROSSCOMPILING)
+  if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Android")
+    list(APPEND TARGET_ARCH "LUAJIT_OS=LUAJIT_OS_LINUX")
+    list(APPEND HOST_XCFLAGS "-malign-double")
+  elseif ("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
+    list(APPEND TARGET_ARCH "LUAJIT_OS=LUAJIT_OS_WINDOWS")
+  elseif ("${CMAKE_SYSTEM_NAME}" STREQUAL "iOS")
+    list(APPEND TARGET_ARCH "LUAJIT_OS=LUAJIT_OS_OSX" "TARGET_OS_IPHONE=1")
+  elseif ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
+    list(APPEND TARGET_ARCH "LUAJIT_OS=LUAJIT_OS_OSX" "TARGET_OS_IPHONE=0")
+  elseif ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+    list(APPEND TARGET_ARCH "LUAJIT_OS=LUAJIT_OS_LINUX")
+  else()
+    list(APPEND TARGET_ARCH "LUAJIT_OS=LUAJIT_OS_OTHER")
+  endif()
+endif()
 
 set(DASM_FLAGS "")
 

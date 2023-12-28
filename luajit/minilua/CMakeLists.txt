@@ -8,6 +8,7 @@ include(../cmake/common.cmake)
 
 add_executable(minilua "${luajit_SRC}/host/minilua.c")
 add_compile_definitions(${TARGET_ARCH})
+add_compile_options(${HOST_XCFLAGS})
 
 if (UNIX)
   find_library(LIBM_LIBRARIES NAMES m REQUIRED)

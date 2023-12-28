@@ -10,6 +10,7 @@ file(GLOB_RECURSE buildvm_source_files "${luajit_SRC}/host/buildvm*.c")
 add_executable(buildvm ${buildvm_source_files})
 target_include_directories(buildvm PRIVATE "${LUA_INCLUDE_DIR}/host" ${LUA_INCLUDE_DIRS})
 add_compile_definitions(${TARGET_ARCH})
+add_compile_options(${HOST_XCFLAGS})
 
 set_target_output_directories(buildvm)
 
