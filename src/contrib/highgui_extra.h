@@ -7,13 +7,13 @@
 namespace cvextra {
 	void setMouseCallback(
 		const std::string& winname,
-		sol::safe_function onMouse,
+		sol::function onMouse,
 		sol::object userdata
 	);
 
 	int createButton(
 		const std::string& bar_name,
-		sol::safe_function on_change,
+		sol::function on_change,
 		sol::object userdata,
 		int type,
 		bool initial_button_state
@@ -31,7 +31,7 @@ namespace cvextra {
 		const std::string& winname,
 		int value,
 		int count,
-		sol::safe_function onChange,
+		sol::function onChange,
 		sol::object userdata
 	);
 }

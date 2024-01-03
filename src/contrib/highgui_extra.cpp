@@ -5,7 +5,7 @@ namespace {
 	using namespace LUA_MODULE_NAME;
 
 	template<typename... Args>
-	inline void check_error(sol::this_state& ts, sol::safe_function& fn, Args&&... args) {
+	inline void check_error(sol::this_state& ts, sol::function& fn, Args&&... args) {
 		sol::state_view lua(ts);
 
 		sol::protected_function_result result = fn(std::forward<Args>(args)...);
@@ -25,7 +25,7 @@ namespace {
 
 	struct HighGui {
 		HighGui(
-			sol::safe_function callback,
+			sol::function callback,
 			sol::object userdata
 		) :
 			callback(callback),
@@ -34,7 +34,7 @@ namespace {
 
 		static std::map<size_t, HighGui> registered_workers;
 
-		static HighGui& add_worker(sol::safe_function callback, sol::object userdata) {
+		static HighGui& add_worker(sol::function callback, sol::object userdata) {
 			auto key = registered_workers.size();
 			{
 				std::lock_guard<std::mutex> lock(callback_mutex);
@@ -93,7 +93,7 @@ namespace {
 			}
 		}
 
-		sol::safe_function callback;
+		sol::function callback;
 		sol::object userdata;
 		bool has_data;
 		int pos;
@@ -110,7 +110,7 @@ namespace {
 namespace cvextra {
 	void setMouseCallback(
 		const std::string& winname,
-		sol::safe_function onMouse,
+		sol::function onMouse,
 		sol::object userdata
 	) {
 		auto& worker = HighGui::add_worker(onMouse, userdata);
@@ -120,7 +120,7 @@ namespace cvextra {
 
 	int createButton(
 		const std::string& bar_name,
-		sol::safe_function on_change,
+		sol::function on_change,
 		sol::object userdata,
 		int type,
 		bool initial_button_state
@@ -146,7 +146,7 @@ namespace cvextra {
 		const std::string& winname,
 		int value,
 		int count,
-		sol::safe_function onChange,
+		sol::function onChange,
 		sol::object userdata
 	) {
 		auto& worker = HighGui::add_worker(onChange, userdata);

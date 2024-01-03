@@ -4,6 +4,10 @@ cmake_minimum_required(VERSION 3.25)
 
 project(luajit LANGUAGES C CXX ASM)
 
+if(MSVC AND NOT (CMAKE_GENERATOR STREQUAL Ninja))
+  add_compile_options(/MP)
+endif()
+
 option(BUILD_SHARED_LIBS "Build shared libraries (.dll/.so) instead of static ones (.lib/.a)" ON)
 
 include(cmake/initialize.cmake)

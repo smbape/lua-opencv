@@ -23,7 +23,7 @@ Therefore the [OpenCV documentation](https://docs.opencv.org/4.x/index.html) sho
   - [Drawing contours](#drawing-contours)
   - [Template matching](#template-matching)
 - [Running examples](#running-examples)
-  - [Prerequisites](#prerequisites)
+  - [Prerequisites to run examples](#prerequisites-to-run-examples)
     - [Windows](#windows-1)
     - [Linux](#linux-1)
   - [Initialize the project](#initialize-the-project)
@@ -36,7 +36,7 @@ Therefore the [OpenCV documentation](https://docs.opencv.org/4.x/index.html) sho
 - [Python Gotchas](#python-gotchas)
   - [1-indexed](#1-indexed)
   - [Instance method calls](#instance-method-calls)
-  - [Strict compliance with documentation](#strict-compliance-with-documentation)
+  - [Strict compliance with the documentation](#strict-compliance-with-the-documentation)
   - [Memory](#memory)
   - [Matrix manipulation](#matrix-manipulation)
 
@@ -79,6 +79,12 @@ luarocks install --server=https://github.com/smbape/lua-opencv/releases/download
 luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.2 opencv_lua 4.9.0lua5.3
 luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.2 opencv_lua 4.9.0lua5.2
 luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.2 opencv_lua 4.9.0lua5.1
+```
+
+If none of the above works for you, then install the source rock
+
+```sh
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.2 opencv_lua 4.9.0
 ```
 
 ## Examples
@@ -235,7 +241,7 @@ cv.destroyAllWindows()
 
 ## Running examples
 
-### Prerequisites
+### Prerequisites to run examples
 
 #### Windows
 
@@ -257,10 +263,12 @@ cv.destroyAllWindows()
 git clone --depth 1 --branch 4.9.0 https://github.com/opencv/opencv.git
 git clone --depth 1 --branch v0.0.2 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
+@REM build.bat --target luajit "-DLua_VERSION=luajit-2.1"
+@REM available versions are 5.1, 5.2, 5.3, 5.4
 build.bat --target lua "-DLua_VERSION=5.4" --install
 build.bat --target luarocks
 luarocks\luarocks.bat install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.2 opencv_lua
-luarocks\luarocks.bat install --deps-only samples/samples-scm-1.rockspec
+luarocks\luarocks.bat install --deps-only samples\samples-scm-1.rockspec
 npm ci
 node scripts\test.js --Release
 ```
@@ -271,6 +279,8 @@ node scripts\test.js --Release
 git clone --depth 1 --branch 4.9.0 https://github.com/opencv/opencv.git
 git clone --depth 1 --branch v0.0.2 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
+# ./build.sh --target luajit "-DLua_VERSION=luajit-2.1"
+# available versions are 5.1, 5.2, 5.3, 5.4
 ./build.sh --target lua "-DLua_VERSION=5.4" --install
 ./build.sh --target luarocks
 ./luarocks/luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.2 opencv_lua
@@ -314,7 +324,7 @@ luarocks install --server=http://example.com/binary-rock opencv_lua
 
 Similar to python [keyword arguments](https://docs.python.org/3/glossary.html#term-argument) or c# [Named parameters](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/named-and-optional-arguments#named-arguments), keyword arguments free you from matching the order of arguments to the order of parameters in the parameter lists of called methods.
 
-When a function has multiple default parameters, keyword arguments allows you to override only the needed parameters without specifying the previous default parameters.
+When a function has multiple default parameters, keyword arguments allow you to override only the needed parameters without specifying the previous default parameters.
 
 As an example, given the documentation of [cv.normalize](https://docs.opencv.org/4.x/d2/de8/group__core__array.html#ga87eef7ee3970f86906d69a92cbf064bd)
 
@@ -354,7 +364,7 @@ cv.normalize(src, dst, opencv_lua.kwargs({ norm_type = cv.NORM_L1 }))
 
 The transformation will usually be straight from python.
 
-`tuples` and `arrays` becomes `tables`.
+`tuples` and `arrays` become `tables`.
 
 `numpy` calls and `arrays` manipulations have their `cv.Mat` counter parts.
 
@@ -414,7 +424,7 @@ end
 
 ### Instance method calls
 
-Instance method are called with `:` not `.`.
+Instance methods are called with `:` not `.`.
 
 If you see in python
 
@@ -430,9 +440,9 @@ cap = cv.VideoCapture(camId)
 read, frame = cap:read()
 ```
 
-### Strict compliance with documentation
+### Strict compliance with the documentation
 
-For backwards compatibility, python still allow an old syntax for enums and call constructors. This library does not.
+For backwards compatibility, python still allows an old syntax for enums and call constructors. This library does not.
 
 If you see in python
 

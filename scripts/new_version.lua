@@ -83,7 +83,6 @@ function new_version.command(args)
          out_rs.build.install = {
             bin = {
                prefix .. "bin/opencv_videoio_ffmpeg490_64.dll",
-               prefix .. "bin/opencv_world490.dll",
             },
             lib = {
                prefix .. "lib/lua/" .. abi .. "/opencv_lua.dll",
@@ -92,7 +91,6 @@ function new_version.command(args)
       else
          out_rs.build.install = {
             lib = {
-               prefix .. "lib/lua/" .. abi .. "/libopencv_world.so",
                prefix .. "lib/lua/" .. abi .. "/opencv_lua.so",
             }
          }

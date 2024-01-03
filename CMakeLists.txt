@@ -17,7 +17,16 @@ endif()
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release;MinSizeRel;RelWithDebInfo" CACHE STRING "Configs" FORCE)
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "${CMAKE_CONFIGURATION_TYPES}")
 
-option(BUILD_SHARED_LIBS "Build shared libraries (.dll/.so) instead of static ones (.lib/.a)" ON)
+if (WIN32)
+  # We want a unique dll with all it's dependencies.
+  # On Windows, this is only achievable through static libraries
+  # Therefore, build a static library on Windows
+  option(BUILD_SHARED_LIBS "Build shared libraries (.dll/.so) instead of static ones (.lib/.a)" OFF)
+else()
+  # On Linux, lua look for shared libraries by default.
+  # Therefore, build a shared library on Linux.
+  option(BUILD_SHARED_LIBS "Build shared libraries (.dll/.so) instead of static ones (.lib/.a)" ON)
+endif()
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -25,6 +34,10 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 if(MSVC AND NOT (CMAKE_GENERATOR STREQUAL Ninja))
   add_compile_options(/MP)
+endif()
+
+if(POLICY CMP0091)
+  cmake_policy(SET CMP0091 NEW) # CMake 3.15+: leave MSVC runtime selection out of default CMAKE_<LANG>_FLAGS_<CONFIG> flags
 endif()
 
 foreach(env_var BINDIR DIR INCDIR)
@@ -37,9 +50,12 @@ foreach(env_var BINDIR DIR INCDIR)
   endif()
 endforeach()
 
+# Hack to ensure that Lua is built with BUILD_SHARED_LIBS ON
+set(BUILD_SHARED_LIBS_BACKUP ${BUILD_SHARED_LIBS})
+set(BUILD_SHARED_LIBS ON)
 include(cmake/FindLua.cmake)
-
 add_subdirectory(luarocks)
+set(BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS_BACKUP})
 
 set(LUA_ONLY "$ENV{LUA_ONLY}")
 if (LUA_ONLY)
@@ -67,13 +83,25 @@ endif()
 
 # find OpenCV
 if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
-  add_subdirectory(opencv)
+  if (WIN32)
+    # On Windows, BUILD_SHARED_LIBS must be the same in other for the build to be successfull
+    add_subdirectory(opencv)
+  else()
+    # On Linux, we want OpenCV to be embeded in the library, be it shared or static
+    # Therefore, enforce BUILD_SHARED_LIBS OFF when building OpenCV
+    # Hack to ensure that OpenCV is built with BUILD_SHARED_LIBS ON
+    set(BUILD_SHARED_LIBS_BACKUP ${BUILD_SHARED_LIBS})
+    set(BUILD_SHARED_LIBS OFF)
+    add_subdirectory(opencv)
+    set(BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS_BACKUP})
+  endif()
 else()
   find_package(OpenCV REQUIRED)
 endif()
 
 set(SOL2_VERSION 3.3.0 CACHE STRING "Choose the sol2 version.")
 set_property(CACHE SOL2_VERSION PROPERTY STRINGS "3.3.0" "3.2.2")
+option(SOL2_ENABLE_INSTALL "Enable installation of Sol2" OFF)
 
 # Tell cmake that we will need sol2. These command will pull in sol2.
 include(FetchContent)
@@ -132,6 +160,14 @@ set(SRC_FILES
 )
 
 # Build a shared library named as the project
+if(POLICY CMP0091)
+  cmake_policy(GET CMP0091 MSVC_RUNTIME_SET_BY_ABSTRACTION)
+endif()
+
+if(NOT BUILD_SHARED_LIBS AND BUILD_WITH_STATIC_CRT AND MSVC_RUNTIME_SET_BY_ABSTRACTION STREQUAL "NEW")
+  set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+endif()
+
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
 add_library(${PROJECT_NAME} SHARED ${SRC_FILES})
 

@@ -23,7 +23,7 @@ namespace {
 
 	struct ErrWorker {
 		ErrWorker(
-			sol::safe_function errCallback,
+			sol::function errCallback,
 			sol::object userdata
 		) :
 			errCallback(errCallback),
@@ -32,7 +32,7 @@ namespace {
 
 		static std::map<size_t, ErrWorker> registered_workers;
 
-		static ErrWorker& add_worker(sol::safe_function errCallback, sol::object userdata) {
+		static ErrWorker& add_worker(sol::function errCallback, sol::object userdata) {
 			auto key = registered_workers.size();
 			{
 				std::lock_guard<std::mutex> lock(callback_mutex);
@@ -67,7 +67,7 @@ namespace {
 			auto worker = reinterpret_cast<ErrWorker*>(userdata);
 		}
 
-		sol::safe_function errCallback;
+		sol::function errCallback;
 		sol::object userdata;
 		bool has_data;
 		int status;
@@ -81,7 +81,7 @@ namespace {
 }
 
 namespace cvextra {
-	void redirectError(sol::safe_function errCallback, sol::object userdata) {
+	void redirectError(sol::function errCallback, sol::object userdata) {
 		auto& worker = ErrWorker::add_worker(errCallback, userdata);
 		registerCallback(&ErrWorker::onCallbackNotify, &worker);
 		cv::redirectError(&ErrWorker::registerErrCallback, &worker);

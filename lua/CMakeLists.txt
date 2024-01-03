@@ -3,6 +3,10 @@ cmake_minimum_required(VERSION 3.25)
 
 project(lua)
 
+if(MSVC AND NOT (CMAKE_GENERATOR STREQUAL Ninja))
+  add_compile_options(/MP)
+endif()
+
 include(../cmake/FindPatch.cmake)
 include(cmake/initialize.cmake)
 
