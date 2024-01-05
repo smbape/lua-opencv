@@ -6,7 +6,12 @@
 namespace {
 	using namespace LUA_MODULE_NAME;
 
-	inline void check_error(sol::protected_function_result result, sol::this_state& ts) {
+	template<typename... Args>
+	inline void check_error(sol::this_state& ts, const sol::function& fn, Args&&... args) {
+		sol::state_view lua(ts);
+
+		sol::protected_function_result result = fn(std::forward<Args>(args)...);
+
 		if (!result.valid()) {
 			sol::error err = result;
 
@@ -16,29 +21,55 @@ namespace {
 				<< sol::to_string(status) << " error"
 				<< "\n\t" << err.what());
 
-			sol::state_view lua(ts);
 			luaL_error(lua.lua_state(), "callback");
 		}
 	}
 
 	struct ErrWorker {
 		ErrWorker(
-			sol::function errCallback,
+			sol::state_view& lua,
+			sol::function callback,
 			sol::object userdata
-		) :
-			errCallback(errCallback),
-			userdata(userdata),
-			has_data(false) {}
+		) {
+			L = lua.lua_state();
+
+			callback.push();
+			callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+
+			if (userdata != sol::nil) {
+				userdata.push();
+				userdata_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+			}
+		}
+
+		sol::function callback() {
+			lua_rawgeti(L, LUA_REGISTRYINDEX, callback_ref);
+			sol::stack_aligned_unsafe_function stack_callback(L, -1);
+			sol::function callback = stack_callback;
+			lua_pop(L, 1);
+			return callback;
+		}
+
+		sol::object userdata() {
+			if (userdata_ref == LUA_REFNIL) {
+				return sol::nil;
+			}
+			lua_rawgeti(L, LUA_REGISTRYINDEX, userdata_ref);
+			sol::stack_object stack_obj(L, -1);
+			sol::object obj = stack_obj;
+			lua_pop(L, 1);
+			return obj;
+		}
 
 		static std::map<size_t, ErrWorker> registered_workers;
 
-		static ErrWorker& add_worker(sol::function errCallback, sol::object userdata) {
+		static ErrWorker& add_worker(sol::state_view& lua, sol::function callback, sol::object userdata) {
 			auto key = registered_workers.size();
 			{
 				std::lock_guard<std::mutex> lock(callback_mutex);
 				registered_workers.emplace(std::piecewise_construct,
 					std::forward_as_tuple(key),
-					std::forward_as_tuple(errCallback, userdata));
+					std::forward_as_tuple(lua, callback, userdata));
 			}
 			return registered_workers.at(key);
 		}
@@ -59,7 +90,7 @@ namespace {
 			auto worker = reinterpret_cast<ErrWorker*>(userdata);
 			if (worker->has_data) {
 				worker->has_data = false;
-				check_error(worker->errCallback(worker->status, worker->func_name, worker->err_msg, worker->file_name, worker->line, worker->userdata), ts);
+				check_error(ts, worker->callback(), worker->status, worker->func_name, worker->err_msg, worker->file_name, worker->line, worker->userdata());
 			}
 		}
 
@@ -67,9 +98,10 @@ namespace {
 			auto worker = reinterpret_cast<ErrWorker*>(userdata);
 		}
 
-		sol::function errCallback;
-		sol::object userdata;
-		bool has_data;
+		lua_State* L;
+		int callback_ref = LUA_REFNIL;
+		int userdata_ref = LUA_REFNIL;
+		bool has_data = false;
 		int status;
 		std::string func_name;
 		std::string err_msg;
@@ -81,8 +113,8 @@ namespace {
 }
 
 namespace cvextra {
-	void redirectError(sol::function errCallback, sol::object userdata) {
-		auto& worker = ErrWorker::add_worker(errCallback, userdata);
+	void redirectError(sol::state_view& lua, sol::function errCallback, sol::object userdata) {
+		auto& worker = ErrWorker::add_worker(lua, errCallback, userdata);
 		registerCallback(&ErrWorker::onCallbackNotify, &worker);
 		cv::redirectError(&ErrWorker::registerErrCallback, &worker);
 	}

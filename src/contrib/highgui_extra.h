@@ -6,12 +6,14 @@
 
 namespace cvextra {
 	void setMouseCallback(
+		sol::state_view& lua,
 		const std::string& winname,
 		sol::function onMouse,
 		sol::object userdata
 	);
 
 	int createButton(
+		sol::state_view& lua,
 		const std::string& bar_name,
 		sol::function on_change,
 		sol::object userdata,
@@ -20,6 +22,7 @@ namespace cvextra {
 	);
 
 	int createTrackbar(
+		sol::state_view& lua,
 		const std::string& trackbarname,
 		const std::string& winname,
 		int value,
@@ -27,6 +30,7 @@ namespace cvextra {
 	);
 
 	int createTrackbar(
+		sol::state_view& lua,
 		const std::string& trackbarname,
 		const std::string& winname,
 		int value,
