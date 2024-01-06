@@ -499,8 +499,7 @@ module.exports = ({ self, self_get, shared_ptr }) => {
             ["int", "type", "CV_64F", []],
         ], "", ""],
 
-        ["cv.Mat.tolist", "sol::table", ["/Call=::cvextra::tolistMat", `/Expr=${ self }, lua`], [], "", ""],
-        ["cv.Mat.table", "sol::table", ["/Call=::cvextra::tolistMat", `/Expr=${ self }, lua`], [], "", ""],
+        ["cv.Mat.table", "sol::table", ["/Call=::cvextra::tableMat", `/Expr=${ self }, lua`], [], "", ""],
     ];
 
     const types = new Set(["int", "float", "double"]);

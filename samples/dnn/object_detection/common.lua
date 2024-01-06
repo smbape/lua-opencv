@@ -480,6 +480,14 @@ local function get_dims(matrix)
     return dims
 end
 
+local function map_tostring(obj)
+    local res = {}
+    for k,v in pairs(obj) do
+        res[k] = tostring(v)
+    end
+    return res
+end
+
 return {
     add_argument = add_argument,
     add_preproc_args = add_preproc_args,
@@ -489,4 +497,5 @@ return {
     trim = trim,
     argmax = argmax,
     get_dims = get_dims,
+    map_tostring = map_tostring,
 }

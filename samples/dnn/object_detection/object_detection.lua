@@ -22,7 +22,7 @@ local common = require("common")
 
 local cv = opencv_lua.cv
 local kwargs = opencv_lua.kwargs
-local int = opencv_lua.math.int
+local int = function(val) return opencv_lua.math.int(tonumber(val)) end
 local float = tonumber
 local unpack = table.unpack or unpack ---@diagnostic disable-line: deprecated
 local findFile = common.findFile
@@ -52,7 +52,7 @@ parser:option('--framework'):choices({ 'caffe', 'tensorflow', 'torch', 'darknet'
         'Detect it automatically if it does not set.')
 parser:option('--thr'):convert(float):default(0.5):description('Confidence threshold')
 parser:option('--nms'):convert(float):default(0.4):description('Non-maximum suppression threshold')
-parser:option('--backend'):choices(backends):default(cv.dnn.DNN_BACKEND_DEFAULT):convert(int)
+parser:option('--backend'):choices(common.map_tostring(backends)):default(cv.dnn.DNN_BACKEND_DEFAULT):convert(int)
     :description(string.format("Choose one of computation backends: " ..
         "%d: automatically (by default), " ..
         "%d: Halide language (http://halide-lang.org/), " ..
@@ -60,7 +60,7 @@ parser:option('--backend'):choices(backends):default(cv.dnn.DNN_BACKEND_DEFAULT)
         "%d: OpenCV implementation, " ..
         "%d: VKCOM, " ..
         "%d: CUDA", unpack(backends)))
-parser:option('--target'):choices(targets):default(cv.dnn.DNN_TARGET_CPU):convert(int)
+parser:option('--target'):choices(common.map_tostring(targets)):default(cv.dnn.DNN_TARGET_CPU):convert(int)
     :description(string.format('Choose one of target computation devices: ' ..
         '%d: CPU target (by default), ' ..
         '%d: OpenCL, ' ..
@@ -154,7 +154,7 @@ args.classes = findFile(args.classes)
 local capture_counter = 0
 local network_counter = 0
 local tick_init = 0
-local frame = cv.Mat()
+local frame = cv.UMat()
 local input_fps, future_outputs
 local winName = 'Deep learning object detection in OpenCV'
 
@@ -337,7 +337,7 @@ local function postprocess(frame, imgScale, inpWidth, inpHeight, outs)
             elseif shape[1] == #classes + 4 then
                 -- yolo v8 has an output of shape (batchSize, 84,  8400) (Num classes + box[x,y,w,h])
                 offset = 4
-                out = cv.transpose(cv.Mat.createFromArray(out, cv.CV_32F)):table()
+                out = cv.transpose(frame.createFromArray(out, cv.CV_32F)):table()
             else
                 print(UNSUPPORTED_YOLO_VERSION .. ' shape[1] ~= #classes + 4 && shape[2] != #classes + 5')
                 os.exit(1)
@@ -363,8 +363,7 @@ local function postprocess(frame, imgScale, inpWidth, inpHeight, outs)
         local top = box[1 + INDEX_BASE]
         local width = box[2 + INDEX_BASE]
         local height = box[3 + INDEX_BASE]
-        drawPred(frame, imgScale, classIds[i + INDEX_BASE], confidences[i + INDEX_BASE], left, top, left + width,
-            top + height)
+        drawPred(frame, imgScale, classIds[i + INDEX_BASE], confidences[i + INDEX_BASE], left, top, left + width, top + height)
     end
 
     resize_and_show(winName, frame)
@@ -406,7 +405,7 @@ local function process_frame(future_outputs, frame)
     -- The model expects images of size [ inpWidth x inpHeight ]
     -- Performing a high quality shrinking, instead of the provided one in blobFromImage
     -- improves detection
-    local image = cv.Mat.zeros(inpHeight, inpWidth, frame:type())
+    local image = frame.zeros(inpHeight, inpWidth, frame:type())
     local imgWidth = math.floor(frameWidth / imgScale)
     local imgHeight = math.floor(frameHeight / imgScale)
     cv.resize(frame, kwargs({
@@ -425,7 +424,7 @@ local function process_frame(future_outputs, frame)
     -- Run a model
     net:setInput(blob, kwargs({ scalefactor = args.scale, mean = args.mean }))
     if net:getLayer(0):outputNameToIndex('im_info') ~= -1 then -- Faster-RCNN or R-FCN
-        net:setInput(cv.Mat.createFromArray({ { inpHeight, inpWidth, 1.6 } }, cv.CV_32F), 'im_info')
+        net:setInput(frame.createFromArray({ { inpHeight, inpWidth, 1.6 } }, cv.CV_32F), 'im_info')
     end
 
     if args.async > 0 and args.backend == cv.dnn.DNN_BACKEND_INFERENCE_ENGINE then
@@ -478,8 +477,6 @@ local function read_frame()
         capture_fps = capture_counter / elapsed
         network_fps = network_counter / elapsed
     end
-
-    frame:setTo(0.0)
 
     if not cap:read(frame) then
         cap:release()

@@ -41,7 +41,7 @@ local function sharpen(my_image)
     -- it is way faster (5 to 20 times) to do all the image manipulations in lua
     t = os.clock()
     my_image = my_image:table() -- get a table representation of the image
-    print(string.format("tolist time passed in seconds: %.3f", os.clock() - t))
+    print(string.format("table time passed in seconds: %.3f", os.clock() - t))
 
     -- intialize the result image
     t = os.clock()

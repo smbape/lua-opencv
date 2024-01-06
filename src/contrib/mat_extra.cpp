@@ -46,8 +46,6 @@ namespace {
 			LUA_MODULE_THROW("all arrays must have the same size");
 		}
 
-		int depth = -1;
-
 		for (int i = 0; i < size; i++) {
 			indexes[dim] = i;
 
@@ -67,8 +65,50 @@ namespace {
 		indexes[dim] = 1;
 	}
 
-	template<typename _Tp>
-	inline void _tolistMat(const cv::Mat& self, sol::table& res, sol::state_view& lua) {
+	template<typename _Tm>
+	inline void _createFromArray(sol::table array, int type, sol::state_view& lua, _Tm& result) {
+		std::vector<double> values;
+		std::vector<int> sizes;
+		std::vector<int> indexes;
+
+		lua_State* L = lua.lua_state();
+		sol::stack::push(L, array);
+		traverse_matrix(L, values, sizes, indexes);
+		lua_pop(L, 1);
+
+		if (type == -1) {
+			type = CV_64F;
+		}
+
+		auto flags = CV_MAT_TYPE(type);
+		auto cn = CV_MAT_CN(flags);
+		auto depth = CV_MAT_DEPTH(flags);
+
+		cv::Mat data(sizes, CV_64F, reinterpret_cast<void*>(values.data()));
+
+		data.convertTo(result, depth);
+
+		if (cn != 1) {
+			auto dims = sizes.size();
+			if (cn == sizes.back()) {
+				result = result.reshape(cn, dims - 1, result.size.p);
+			}
+			else {
+				luaL_error(lua.lua_state(), "the given array has %i channels, while given type has %i channels", sizes.back(), cn);
+			}
+		}
+	}
+
+	template<typename _Tp, typename _Tm>
+	inline void _table(const _Tm& _self, sol::table& res, sol::state_view& lua) {
+		const cv::Mat self = [&]{
+			if constexpr (std::is_same_v<_Tm, cv::UMat>) {
+				return _self.getMat(cv::ACCESS_READ);
+			} else {
+				return _self;
+			}
+		}();
+
 		auto channels = self.channels();
 		auto total = self.total() * channels;
 		auto dims = self.dims;
@@ -134,9 +174,9 @@ namespace {
 			}
 
 			if constexpr (LUA_VERSION_NUM > 502 && std::is_integral_v<_Tp>) {
-			    lua_pushinteger(L, *reinterpret_cast<const _Tp*>(data + offset));
+				lua_pushinteger(L, *reinterpret_cast<const _Tp*>(data + offset));
 			} else {
-			    lua_pushnumber(L, *reinterpret_cast<const _Tp*>(data + offset));
+				lua_pushnumber(L, *reinterpret_cast<const _Tp*>(data + offset));
 			}
 
 			lua_rawseti(L, -2, 1 + indexes[j]++);
@@ -147,6 +187,39 @@ namespace {
 		// there were dims tables pushed onto the stack
 		// remove them from the stack
 		lua_pop(L, dims);
+	}
+
+	template<typename _Tm>
+	inline sol::table _table(const _Tm& self, sol::state_view& lua) {
+		sol::table res = lua.create_table();
+
+		switch (self.depth()) {
+		case CV_8U:
+			_table<byte, _Tm>(self, res, lua);
+			break;
+		case CV_8S:
+			_table<char, _Tm>(self, res, lua);
+			break;
+		case CV_16U:
+			_table<ushort, _Tm>(self, res, lua);
+			break;
+		case CV_16S:
+			_table<short, _Tm>(self, res, lua);
+			break;
+		case CV_32S:
+			_table<int, _Tm>(self, res, lua);
+			break;
+		case CV_32F:
+			_table<float, _Tm>(self, res, lua);
+			break;
+		case CV_64F:
+			_table<double, _Tm>(self, res, lua);
+			break;
+		default:
+			luaL_error(lua.lua_state(), "depth must be one of CV_8U CV_8S CV_16U CV_16S CV_32S CV_32F CV_64F");
+		}
+
+		return res;
 	}
 }
 
@@ -214,69 +287,22 @@ namespace cvextra {
 	}
 
 	cv::Mat createMatFromArray(sol::table array, int type, sol::state_view& lua) {
-		std::vector<double> values;
-		std::vector<int> sizes;
-		std::vector<int> indexes;
-
-		lua_State* L = lua.lua_state();
-		sol::stack::push(L, array);
-		traverse_matrix(L, values, sizes, indexes);
-		lua_pop(L, 1);
-
-		if (type == -1) {
-			type = CV_64F;
-		}
-
-		auto flags = CV_MAT_TYPE(type);
-		auto cn = CV_MAT_CN(flags);
-		auto depth = CV_MAT_DEPTH(flags);
-
-		cv::Mat data(sizes, CV_64F, reinterpret_cast<void*>(values.data()));
-		cv::Mat result;
-		data.convertTo(result, depth);
-
-		if (cn != 1) {
-			auto dims = sizes.size();
-			if (cn == sizes.back()) {
-				result = result.reshape(cn, dims - 1, result.size.p);
-			}
-			else {
-				luaL_error(lua.lua_state(), "the given array has %i channels, while given type has %i channels", sizes.back(), cn);
-			}
-		}
-
-		return result;
+		cv::Mat _result;
+		_createFromArray(array, type, lua, _result);
+		return _result;
 	}
 
-	sol::table tolistMat(const cv::Mat& self, sol::state_view& lua) {
-		sol::table res = lua.create_table();
+	sol::table tableMat(const cv::Mat& self, sol::state_view& lua) {
+		return _table(self, lua);
+	}
 
-		switch (self.depth()) {
-		case CV_8U:
-			_tolistMat<byte>(self, res, lua);
-			break;
-		case CV_8S:
-			_tolistMat<char>(self, res, lua);
-			break;
-		case CV_16U:
-			_tolistMat<ushort>(self, res, lua);
-			break;
-		case CV_16S:
-			_tolistMat<short>(self, res, lua);
-			break;
-		case CV_32S:
-			_tolistMat<int>(self, res, lua);
-			break;
-		case CV_32F:
-			_tolistMat<float>(self, res, lua);
-			break;
-		case CV_64F:
-			_tolistMat<double>(self, res, lua);
-			break;
-		default:
-			luaL_error(lua.lua_state(), "depth must be one of CV_8U CV_8S CV_16U CV_16S CV_32S CV_32F CV_64F");
-		}
+	cv::UMat createUMatFromArray(sol::table array, int type, cv::UMatUsageFlags usageFlags, sol::state_view& lua) {
+		cv::UMat _result(usageFlags);
+		_createFromArray(array, type, lua, _result);
+		return _result;
+	}
 
-		return res;
+	sol::table tableUMat(const cv::UMat& self, sol::state_view& lua) {
+		return _table(self, lua);
 	}
 }

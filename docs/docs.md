@@ -2527,7 +2527,6 @@
   - [cv.Mat.sum](#cvmatsum)
   - [cv.Mat.t](#cvmatt)
   - [cv.Mat.table](#cvmattable)
-  - [cv.Mat.tolist](#cvmattolist)
   - [cv.Mat.total](#cvmattotal)
   - [cv.Mat.type](#cvmattype)
   - [cv.Mat.updateContinuityFlag](#cvmatupdatecontinuityflag)
@@ -3764,6 +3763,7 @@
   - [cv.UMat.copy](#cvumatcopy)
   - [cv.UMat.copySize](#cvumatcopysize)
   - [cv.UMat.copyTo](#cvumatcopyto)
+  - [cv.UMat.createFromArray](#cvumatcreatefromarray)
   - [cv.UMat.depth](#cvumatdepth)
   - [cv.UMat.diag](#cvumatdiag)
   - [cv.UMat.dot](#cvumatdot)
@@ -3794,6 +3794,7 @@
   - [cv.UMat.step1](#cvumatstep1)
   - [cv.UMat.sum](#cvumatsum)
   - [cv.UMat.t](#cvumatt)
+  - [cv.UMat.table](#cvumattable)
   - [cv.UMat.total](#cvumattotal)
   - [cv.UMat.type](#cvumattype)
   - [cv.UMat.updateContinuityFlag](#cvumatupdatecontinuityflag)
@@ -30436,14 +30437,6 @@ lua:
     oMat:table() -> retval
 ```
 
-### cv.Mat.tolist
-
-```cpp
-sol::table cv::Mat::tolist();
-lua:
-    oMat:tolist() -> retval
-```
-
 ### cv.Mat.total
 
 ```cpp
@@ -41067,6 +41060,16 @@ lua:
     oUMat:copyTo( mask[, m] ) -> m
 ```
 
+### cv.UMat.createFromArray
+
+```cpp
+static cv::UMat cv::UMat::createFromArray( sol::table         array,
+                                           int                type = CV_64F,
+                                           cv::UMatUsageFlags usageFlags = USAGE_DEFAULT );
+lua:
+    cv.UMat.createFromArray( array[, type[, usageFlags]] ) -> retval
+```
+
 ### cv.UMat.depth
 
 ```cpp
@@ -41481,6 +41484,14 @@ lua:
 cv::UMat cv::UMat::t();
 lua:
     oUMat:t() -> retval
+```
+
+### cv.UMat.table
+
+```cpp
+sol::table cv::UMat::table();
+lua:
+    oUMat:table() -> retval
 ```
 
 ### cv.UMat.total

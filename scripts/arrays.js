@@ -20,7 +20,9 @@ const getTypename = type => {
 const plain = new Set([
     "bool",
     "double",
+    "cv::cuda::GpuMat",
     "cv::Mat",
+    "cv::UMat",
     "cv::Scalar",
 ]);
 
