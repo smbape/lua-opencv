@@ -1,7 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 export PATH="${PATH//\/mnt\/*:/}"
 
+workspaceHash=53b58a2f-f3e5-480b-8803-dc266ac326de
 projectDir="$PWD"
 projectDirName=$(basename "$projectDir")
 sources="$HOME/.vs/${projectDirName}/${workspaceHash}/src"
@@ -22,8 +23,8 @@ rsync -t --delete -v -r \
     --exclude=.idea \
     --exclude=.venv \
     --exclude=.vs \
-    --exclude='*.rock' \
-    --exclude='*.rockspec' \
+    --exclude="*.rock" \
+    --exclude="*.rockspec" \
     --exclude=build.luarocks \
     --exclude=.luarocks \
     --exclude=luarocks/lua.bat \
@@ -36,5 +37,3 @@ rsync -t --delete -v -r \
     --exclude=node_modules \
     --exclude=out \
     "${projectDir}/" "${sources}" || exit $?
-
-LUAROCKS_SERVER="$projectDir/out/prepublish/server" node scripts/prepublish.js "$@"
