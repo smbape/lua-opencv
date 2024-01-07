@@ -51,20 +51,22 @@ set(Luajit_URL_HASH_2_1_0_beta3 7f3b1ec1e12b1e3ce31adcd33d73dd7c5056b1df02c7779e
 
 set(Luajit_VERSION_LATEST 2.1.1702296283)
 
-include (GNUInstallDirs)
 if ((NOT DEFINED Luajit_VERSION) OR ("${Luajit_VERSION} " STREQUAL " "))
-  set(Luajit_VERSION ${Luajit_VERSION_LATEST} CACHE STRING "Choose the LuaJIT version." FORCE)
-  set_property(CACHE Luajit_VERSION PROPERTY STRINGS "${Luajit_VERSION}")
-else()
-  if ("${Luajit_VERSION}" STREQUAL "2.1")
-    set(Luajit_VERSION ${Luajit_VERSION_LATEST})
-    set(Luajit_VERSION ${Luajit_VERSION} PARENT_SCOPE)
-    set(Luajit_VERSION ${Luajit_VERSION} CACHE STRING "Choose the LuaJIT version." FORCE)
-    set(Lua_VERSION luajit-${Luajit_VERSION})
-    set(Lua_VERSION luajit-${Luajit_VERSION} PARENT_SCOPE)
-    set(Lua_VERSION luajit-${Luajit_VERSION} CACHE STRING "Choose the Lua version." FORCE)
-  endif()
+  set(Luajit_VERSION "2.1")
 endif()
+
+set(Luajit_VERSION "${Luajit_VERSION}" CACHE STRING "Choose the LuaJIT version." FORCE)
+set_property(CACHE Luajit_VERSION PROPERTY STRINGS "2.1;2.1.1702296283;2.1.1702233742;2.1.1700008891;2.1.0-beta3")
+
+if ("${Luajit_VERSION}" STREQUAL "2.1")
+  set(Luajit_VERSION ${Luajit_VERSION_LATEST})
+  set(Luajit_VERSION ${Luajit_VERSION} PARENT_SCOPE)
+endif()
+
+set(Lua_INTERPRETER_NAME "luajit-${Luajit_VERSION}" CACHE STRING "Lua interpreter name" FORCE)
+set(Lua_VERSION luajit-${Luajit_VERSION})
+set(Lua_VERSION luajit-${Luajit_VERSION} PARENT_SCOPE)
+
 string(REGEX REPLACE "[.-]" "_" Luajit_HASH_VERSION ${Luajit_VERSION})
 
 string(REPLACE "." ";" Luajit_VERSION_LIST ${Luajit_VERSION})
@@ -75,3 +77,5 @@ list(GET Luajit_VERSION_LIST 2 RELVER)
 set(VERSION ${Luajit_VERSION})
 set(ABIVER  5.1)
 string(REPLACE "." "" NODOTABIVER ${ABIVER})
+
+include(GNUInstallDirs)

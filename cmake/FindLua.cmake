@@ -1,4 +1,4 @@
-if (NOT DEFINED ENV{LUA_DIR})
+if (NOT WITH_LUA_ROCKS)
   set(Lua_VERSION 5.4.6 CACHE STRING "Choose the Lua version.")
   set_property(CACHE Lua_VERSION PROPERTY STRINGS "luajit-2.1" "5.4.6" "5.3.6" "5.2.4" "5.1.5")
 
@@ -18,13 +18,20 @@ if (NOT DEFINED ENV{LUA_DIR})
     VS_DEBUGGER_COMMAND_ARGUMENTS test.lua
     VS_DEBUGGER_WORKING_DIRECTORY "${VS_DEBUGGER_WORKING_DIRECTORY}"
   )
-else()
-  if (WITH_LUA_ROCKS)
-    unset(LUA_INCLUDE_DIR CACHE)
-    unset(LUA_INTERPRETER CACHE)
-    unset(LUA_LIBRARY CACHE)
-  endif()
+endif()
 
+if (WITH_LUA_ROCKS OR (DEFINED ENV{LUA_DIR}))
+  unset(LUA_INCLUDE_DIR)
+  unset(LUA_INCLUDE_DIR CACHE)
+  unset(LUA_INTERPRETER)
+  unset(LUA_INTERPRETER CACHE)
+  unset(LUA_LIBRARY)
+  unset(LUA_LIBRARY CACHE)
+  unset(LUA_LIBRARIES)
+  unset(LUA_LIBRARIES CACHE)
+endif()
+
+if (DEFINED ENV{LUA_DIR})
   message(STATUS "LUA_BINDIR=${LUA_BINDIR}")
   message(STATUS "LUA_DIR=${LUA_DIR}")
   message(STATUS "LUA_INCDIR=${LUA_INCDIR}")
@@ -48,12 +55,8 @@ else()
 
   unset(_lua_interpreter_names)
 
-  if (Lua_VERSION)
-    if (Luajit_VERSION)
-      set(_lua_interpreter_names luajit-${Luajit_VERSION})
-    else()
-      set(_lua_interpreter_names lua-${Lua_VERSION})
-    endif()
+  if (Lua_INTERPRETER_NAME)
+    set(_lua_interpreter_names ${Lua_INTERPRETER_NAME})
   else()
     if (LUA_VERSION_STRING)
       set(_lua_interpreter_names
