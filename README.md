@@ -480,7 +480,7 @@ end
 
 ### Matrix manipulation
 
-For maximum speed performance, when you need to manipulate matrices in lua, convert them `table`, do your manipulation and convert them back to matrices
+For maximum speed performance, when you need to manipulate matrices in lua, convert them to `table`s, do your manipulation and convert them back to matrices
 
 ```lua
 -- transform into an lua table for faster processing in lua

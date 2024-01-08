@@ -76,7 +76,9 @@ namespace {
 			return 0.;
 		}
 
-		std::vector<int> idx(size);
+		static std::vector<int> idx;
+		idx.resize(size);
+
 		int i = 0;
 		for (const auto& v : vargs) {
 			auto maybe_int = v.as<std::optional<int>>();
@@ -280,7 +282,7 @@ namespace {
 }
 
 namespace LUA_MODULE_NAME {
-	void register_extension(sol::state_view& lua, sol::table& module) {
+	void register_utils_extension(sol::state_view& lua, sol::table& module) {
 		sol::table ns = module["cv"][sol::metatable_key];
 
 		// https://github.com/ThePhD/sol2/issues/1405

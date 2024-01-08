@@ -4,7 +4,7 @@
 #include <lua_utils_arrays.hpp>
 
 namespace LUA_MODULE_NAME {
-	void register_extension(sol::state_view& lua, sol::table& module);
+	void register_utils_extension(sol::state_view& lua, sol::table& module);
 
 	// cv::Ptr
 	template<typename _To, typename _Tp>

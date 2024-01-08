@@ -1,6 +1,7 @@
 #include <register_all.hpp>
 #include <cmath>
 #include <bit.hpp>
+#include <lua_extensions.hpp>
 
 namespace {
 	using namespace LUA_MODULE_NAME;
@@ -152,7 +153,8 @@ namespace LUA_MODULE_NAME {
 		register_garbage_collect(lua, module);
 		regiter_callbacks(lua, module);
 		register_all(lua, module);
-		register_extension(lua, module);
+		register_utils_extension(lua, module);
+		register_extensions(lua, module);
 
 		return module;
 	}
