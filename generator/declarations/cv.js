@@ -51,6 +51,48 @@ module.exports = [
         ["OutputArray", "dst", "", []],
     ], "", ""],
 
+    ["cv.randu", "double", ["/Call=::cvextra::randu"], [], "", ""],
+
+    ["cv.randu", "void", ["/Call=::cvextra::randu"], [
+        ["int", "rows", "", []],
+        ["int", "cols", "", []],
+        ["InputOutputArray", "dst", "cv::Mat()", []],
+        ["int", "type", "CV_32F", []],
+    ], "", ""],
+
+    ["cv.randu", "void", ["/Call=::cvextra::randu"], [
+        ["Size", "size", "", []],
+        ["InputOutputArray", "dst", "cv::Mat()", []],
+        ["int", "type", "CV_32F", []],
+    ], "", ""],
+
+    ["cv.randu", "void", ["/Call=::cvextra::randu"], [
+        ["std::vector<int>", "sizes", "", ["/Ref", "/C"]],
+        ["InputOutputArray", "dst", "cv::Mat()", []],
+        ["int", "type", "CV_32F", []],
+    ], "", ""],
+
+    ["cv.randn", "double", ["/Call=::cvextra::randn"], [], "", ""],
+
+    ["cv.randn", "void", ["/Call=::cvextra::randn"], [
+        ["int", "rows", "", []],
+        ["int", "cols", "", []],
+        ["InputOutputArray", "dst", "cv::Mat()", []],
+        ["int", "type", "CV_32F", []],
+    ], "", ""],
+
+    ["cv.randn", "void", ["/Call=::cvextra::randn"], [
+        ["Size", "size", "", []],
+        ["InputOutputArray", "dst", "cv::Mat()", []],
+        ["int", "type", "CV_32F", []],
+    ], "", ""],
+
+    ["cv.randn", "void", ["/Call=::cvextra::randn"], [
+        ["std::vector<int>", "sizes", "", ["/Ref", "/C"]],
+        ["InputOutputArray", "dst", "cv::Mat()", []],
+        ["int", "type", "CV_32F", []],
+    ], "", ""],
+
     ["cv.redirectError", "void", ["/Call=::cvextra::redirectError", "/Expr=lua, $0"], [
         ["sol::safe_function", "errCallback", "", []],
         ["sol::object", "userdata", "sol::lua_nil", []],

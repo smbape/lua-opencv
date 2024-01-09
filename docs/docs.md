@@ -20465,6 +20465,37 @@ lua:
     cv.randn( dst, mean, stddev ) -> dst
 ```
 
+```cpp
+double cv::randn();
+lua:
+    cv.randn() -> retval
+```
+
+```cpp
+void cv::randn( int              rows,
+                int              cols,
+                InputOutputArray dst = cv::Mat(),
+                int              type = CV_32F );
+lua:
+    cv.randn( rows, cols[, dst[, type]] ) -> dst
+```
+
+```cpp
+void cv::randn( cv::Size         size,
+                InputOutputArray dst = cv::Mat(),
+                int              type = CV_32F );
+lua:
+    cv.randn( size[, dst[, type]] ) -> dst
+```
+
+```cpp
+void cv::randn( const std::vector<int>& sizes,
+                InputOutputArray        dst = cv::Mat(),
+                int                     type = CV_32F );
+lua:
+    cv.randn( sizes[, dst[, type]] ) -> dst
+```
+
 ### cv.randu
 
 ```cpp
@@ -20473,6 +20504,37 @@ void cv::randu( InputOutputArray dst,
                 InputArray       high );
 lua:
     cv.randu( dst, low, high ) -> dst
+```
+
+```cpp
+double cv::randu();
+lua:
+    cv.randu() -> retval
+```
+
+```cpp
+void cv::randu( int              rows,
+                int              cols,
+                InputOutputArray dst = cv::Mat(),
+                int              type = CV_32F );
+lua:
+    cv.randu( rows, cols[, dst[, type]] ) -> dst
+```
+
+```cpp
+void cv::randu( cv::Size         size,
+                InputOutputArray dst = cv::Mat(),
+                int              type = CV_32F );
+lua:
+    cv.randu( size[, dst[, type]] ) -> dst
+```
+
+```cpp
+void cv::randu( const std::vector<int>& sizes,
+                InputOutputArray        dst = cv::Mat(),
+                int                     type = CV_32F );
+lua:
+    cv.randu( sizes[, dst[, type]] ) -> dst
 ```
 
 ### cv.readDMatch
