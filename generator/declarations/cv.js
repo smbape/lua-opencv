@@ -45,6 +45,12 @@ module.exports = [
         ["DMatch", "default_value", "", []],
     ], "", ""],
 
+    ["cv.gemm", "void", ["=dot", "/Expr=src1, src2, 1.0, cv::noArray(), 0.0, dst"], [
+        ["InputArray", "src1", "", []],
+        ["InputArray", "src2", "", []],
+        ["OutputArray", "dst", "", []],
+    ], "", ""],
+
     ["cv.redirectError", "void", ["/Call=::cvextra::redirectError", "/Expr=lua, $0"], [
         ["sol::safe_function", "errCallback", "", []],
         ["sol::object", "userdata", "sol::lua_nil", []],

@@ -71,13 +71,10 @@ if [ -d out/test/${version}/lua-opencv ]; then
     git remote set-url origin "file://${projectDir}" && \
     git reset --hard HEAD && \
     git clean -fd && \
-    git branch tmp && \
     git pull && \
-    git checkout v0.0.3 && \
-    git branch -d tmp && \
     cd "${PWD_BCK}" || exit $?
 else
-    git clone --depth 1 --branch v0.0.3 "file://${projectDir}" out/test/${version}/lua-opencv || exit $?
+    git clone "${projectDir}" out/test/${version}/lua-opencv || exit $?
 fi
 
 source scripts/vcvars_restore_start.sh || exit $?
@@ -116,13 +113,10 @@ if [ -d out/test/${version}/lua-opencv ]; then
     git remote set-url origin "file://${projectDir}" && \
     git reset --hard HEAD && \
     git clean -fd && \
-    git branch tmp && \
     git pull && \
-    git checkout v0.0.3 && \
-    git branch -d tmp && \
     cd "${PWD_BCK}" || exit $?
 else
-    git clone --depth 1 --branch v0.0.3 "file://${projectDir}" out/test/${version}/lua-opencv || exit $?
+    git clone "${projectDir}" out/test/${version}/lua-opencv || exit $?
 fi
 
 PWD_BCK="$PWD" && \
@@ -172,13 +166,10 @@ if [ -d out/test/${version}/lua-opencv ]; then
     git remote set-url origin "file://${projectDir}" && \
     git reset --hard HEAD && \
     git clean -fd && \
-    git branch tmp && \
     git pull && \
-    git checkout v0.0.3 && \
-    git branch -d tmp && \
     cd "${PWD_BCK}" || exit $?
 else
-    git clone --depth 1 --branch v0.0.3 "file://${projectDir}" out/test/${version}/lua-opencv || exit $?
+    git clone "${projectDir}" out/test/${version}/lua-opencv || exit $?
 fi
 
 cd out/test/${version}/lua-opencv || exit $?
@@ -212,13 +203,10 @@ if [ -d out/test/${version}/lua-opencv ]; then
     git remote set-url origin "file://${projectDir}" && \
     git reset --hard HEAD && \
     git clean -fd && \
-    git branch tmp && \
     git pull && \
-    git checkout v0.0.3 && \
-    git branch -d tmp && \
     cd "${PWD_BCK}" || exit $?
 else
-    git clone --depth 1 --branch v0.0.3 "file://${projectDir}" out/test/${version}/lua-opencv || exit $?
+    git clone "${projectDir}" out/test/${version}/lua-opencv || exit $?
 fi
 
 PWD_BCK="$PWD" && \

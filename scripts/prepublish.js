@@ -1,4 +1,4 @@
-const { spawn, spawnSync } = require("node:child_process");
+const { spawn } = require("node:child_process");
 const sysPath = require("node:path");
 const fs = require("fs-extra");
 const os = require("node:os");

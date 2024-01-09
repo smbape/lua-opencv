@@ -1438,6 +1438,7 @@
   - [cv.distanceTransformWithLabels](#cvdistancetransformwithlabels)
   - [cv.divSpectrums](#cvdivspectrums)
   - [cv.divide](#cvdivide)
+  - [cv.dot](#cvdot)
   - [cv.drawChessboardCorners](#cvdrawchessboardcorners)
   - [cv.drawContours](#cvdrawcontours)
   - [cv.drawFrameAxes](#cvdrawframeaxes)
@@ -18382,6 +18383,16 @@ void cv::divide( double      scale,
                  int         dtype = -1 );
 lua:
     cv.divide( scale, src2[, dst[, dtype]] ) -> dst
+```
+
+### cv.dot
+
+```cpp
+void cv::gemm( InputArray  src1,
+               InputArray  src2,
+               OutputArray dst );
+lua:
+    cv.dot( src1, src2[, dst] ) -> dst
 ```
 
 ### cv.drawChessboardCorners
