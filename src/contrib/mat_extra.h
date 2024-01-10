@@ -9,9 +9,9 @@ namespace cvextra {
 	std::vector<int> umat_shape(const cv::UMat& self);
 	cv::Mat createMatFromVectorOfMat(const std::vector<cv::Mat>& vec, sol::state_view& lua);
 	cv::Mat createMatFromArray(sol::table array, int type, sol::state_view& lua);
-	sol::table tableMat(const cv::Mat& self, sol::state_view& lua);
+	sol::table tableMat(const cv::Mat& self, bool nested, sol::state_view& lua);
 	cv::UMat createUMatFromArray(sol::table array, int type, cv::UMatUsageFlags usageFlags, sol::state_view& lua);
-	sol::table tableUMat(const cv::UMat& self, sol::state_view& lua);
+	sol::table tableUMat(const cv::UMat& self, bool nested, sol::state_view& lua);
 
 	template<typename... Args>
 	inline double mat_at(const cv::Mat& m, Args&&... args) {

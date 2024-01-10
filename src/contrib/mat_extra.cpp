@@ -100,7 +100,7 @@ namespace {
 	}
 
 	template<typename _Tp, typename _Tm>
-	inline void _table(const _Tm& _self, sol::table& res, sol::state_view& lua) {
+	inline void _table(const _Tm& _self, bool nested, sol::table& res, sol::state_view& lua) {
 		const cv::Mat self = [&]{
 			if constexpr (std::is_same_v<_Tm, cv::UMat>) {
 				return _self.getMat(cv::ACCESS_READ);
@@ -109,8 +109,8 @@ namespace {
 			}
 		}();
 
-		auto channels = self.channels();
-		auto total = self.total() * channels;
+		const auto channels = self.channels();
+		const auto total = self.total() * channels;
 		auto dims = self.dims;
 
 		if (self.cols == 1) {
@@ -137,29 +137,33 @@ namespace {
 		}
 
 		const uchar* data = self.ptr();
-
 		lua_State* L = lua.lua_state();
 
 		sol::stack::push(L, res);
 
 		for (uint64_t i = 0, j = 0; i < total; i++) {
 			while (indexes[j] == sizes[j]) {
-				lua_pop(L, 1);
+				if (nested) {
+					lua_pop(L, 1);
+				}
 				indexes[j--] = 0;
 				indexes[j]++;
 			}
 
 			if (j != dims - 1) {
-				int index = 1 + indexes[j++];
-				lua_newtable(L);
-				lua_rawseti(L, -2, index);
+				if (nested) {
+					int index = 1 + indexes[j];
+					lua_newtable(L);
+					lua_rawseti(L, -2, index);
 
-				// lua_rawseti will pop the table from the stack
-				// added it back onto the stack
-				// because the top of the stack is table we are filling
-				lua_rawgeti(L, -1, index);
+					// lua_rawseti will pop the table from the stack
+					// added it back onto the stack
+					// because the top of the stack is the table we are filling
+					lua_rawgeti(L, -1, index);
+				}
 
 				i--;
+				j++;
 				continue;
 			}
 
@@ -179,41 +183,52 @@ namespace {
 				lua_pushnumber(L, *reinterpret_cast<const _Tp*>(data + offset));
 			}
 
-			lua_rawseti(L, -2, 1 + indexes[j]++);
+			if (nested) {
+				lua_rawseti(L, -2, 1 + indexes[j]);
+			} else {
+				lua_rawseti(L, -2, 1 + i);
+			}
+
+			indexes[j]++;
 		}
 
-		// for j = 0; j < dims - 1; j++ lua_newtable
-		// +1 = sol::stack::push(L, res);
-		// there were dims tables pushed onto the stack
-		// remove them from the stack
-		lua_pop(L, dims);
+		if (nested) {
+			// for j = 0; j < dims - 1; j++ lua_newtable
+			// +1 = sol::stack::push(L, res);
+			// there were dims tables pushed onto the stack
+			// remove them from the stack
+			lua_pop(L, dims);
+		} else {
+			// remove sol::stack::push(L, res);
+			lua_pop(L, 1);
+		}
 	}
 
 	template<typename _Tm>
-	inline sol::table _table(const _Tm& self, sol::state_view& lua) {
+	inline sol::table _table(const _Tm& self, bool nested, sol::state_view& lua) {
 		sol::table res = lua.create_table();
 
 		switch (self.depth()) {
 		case CV_8U:
-			_table<byte, _Tm>(self, res, lua);
+			_table<byte, _Tm>(self, nested, res, lua);
 			break;
 		case CV_8S:
-			_table<char, _Tm>(self, res, lua);
+			_table<char, _Tm>(self, nested, res, lua);
 			break;
 		case CV_16U:
-			_table<ushort, _Tm>(self, res, lua);
+			_table<ushort, _Tm>(self, nested, res, lua);
 			break;
 		case CV_16S:
-			_table<short, _Tm>(self, res, lua);
+			_table<short, _Tm>(self, nested, res, lua);
 			break;
 		case CV_32S:
-			_table<int, _Tm>(self, res, lua);
+			_table<int, _Tm>(self, nested, res, lua);
 			break;
 		case CV_32F:
-			_table<float, _Tm>(self, res, lua);
+			_table<float, _Tm>(self, nested, res, lua);
 			break;
 		case CV_64F:
-			_table<double, _Tm>(self, res, lua);
+			_table<double, _Tm>(self, nested, res, lua);
 			break;
 		default:
 			luaL_error(lua.lua_state(), "depth must be one of CV_8U CV_8S CV_16U CV_16S CV_32S CV_32F CV_64F");
@@ -292,8 +307,8 @@ namespace cvextra {
 		return _result;
 	}
 
-	sol::table tableMat(const cv::Mat& self, sol::state_view& lua) {
-		return _table(self, lua);
+	sol::table tableMat(const cv::Mat& self, bool nested, sol::state_view& lua) {
+		return _table(self, nested, lua);
 	}
 
 	cv::UMat createUMatFromArray(sol::table array, int type, cv::UMatUsageFlags usageFlags, sol::state_view& lua) {
@@ -302,7 +317,7 @@ namespace cvextra {
 		return _result;
 	}
 
-	sol::table tableUMat(const cv::UMat& self, sol::state_view& lua) {
-		return _table(self, lua);
+	sol::table tableUMat(const cv::UMat& self, bool nested, sol::state_view& lua) {
+		return _table(self, nested, lua);
 	}
 }

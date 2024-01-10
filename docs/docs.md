@@ -30517,9 +30517,9 @@ lua:
 ### cv.Mat.table
 
 ```cpp
-sol::table cv::Mat::table();
+sol::table cv::Mat::table( bool nested = true );
 lua:
-    oMat:table() -> retval
+    oMat:table( [nested] ) -> retval
 ```
 
 ### cv.Mat.total
@@ -41574,9 +41574,9 @@ lua:
 ### cv.UMat.table
 
 ```cpp
-sol::table cv::UMat::table();
+sol::table cv::UMat::table( bool nested = false );
 lua:
-    oUMat:table() -> retval
+    oUMat:table( [nested] ) -> retval
 ```
 
 ### cv.UMat.total

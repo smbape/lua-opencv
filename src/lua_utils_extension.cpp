@@ -201,6 +201,7 @@ namespace {
 		for (int idx = 0; idx < total; idx++) {
 			vres.push_back(mat_index(self, idx, ts));
 		}
+
 		return vres;
 	}
 
@@ -221,63 +222,6 @@ namespace {
 		}
 		sol::state_view lua(ts);
 		luaL_error(lua.lua_state(), "matrix has %d dimensions, but given index has %d dimensions", self.dims, idx.value().size());
-	}
-
-	double mat_index_as_vector(cv::Mat& self, std::vector<int> idx, sol::this_state ts) {
-		if (idx.size() == self.dims) {
-			return cvextra::mat_at(self, idx.data());
-		}
-
-		sol::state_view lua(ts);
-		luaL_error(lua.lua_state(), "matrix has %d dimensions, but given index has %d dimensions", self.dims, idx.size());
-		return 0.;
-	}
-
-	void mat_new_index_as_vector(cv::Mat& self, std::vector<int> idx, double value, sol::this_state ts) {
-		if (idx.size() == self.dims) {
-			cvextra::mat_set_at(self, value, idx.data());
-			return;
-		}
-		sol::state_view lua(ts);
-		luaL_error(lua.lua_state(), "matrix has %d dimensions, but given index has %d dimensions", self.dims, idx.size());
-	}
-
-	double mat_index_maybe(cv::Mat& self, sol::stack_object obj, sol::this_state ts) {
-		sol::state_view lua(ts);
-
-		auto maybe_idx = maybe_impl(obj, static_cast<std::vector<int>*>(nullptr));
-		if (!maybe_idx) {
-			luaL_error(lua.lua_state(), "Overload resolution failed");
-			return 0.;
-		}
-
-		auto& idx = *maybe_idx;
-
-		if (idx.size() == self.dims) {
-			return cvextra::mat_at(self, idx.data());
-		}
-
-		luaL_error(lua.lua_state(), "matrix has %d dimensions, but given index has %d dimensions", self.dims, idx.size());
-		return 0.;
-	}
-
-	void mat_new_index_maybe(cv::Mat& self, sol::stack_object obj, double value, sol::this_state ts) {
-		sol::state_view lua(ts);
-
-		auto maybe_idx = maybe_impl(obj, static_cast<std::vector<int>*>(nullptr));
-		if (!maybe_idx) {
-			luaL_error(lua.lua_state(), "Overload resolution failed");
-			return;
-		}
-
-		auto& idx = *maybe_idx;
-
-		if (idx.size() == self.dims) {
-			cvextra::mat_set_at(self, value, idx.data());
-			return;
-		}
-
-		luaL_error(lua.lua_state(), "matrix has %d dimensions, but given index has %d dimensions", self.dims, idx.size());
 	}
 }
 
@@ -309,12 +253,6 @@ namespace LUA_MODULE_NAME {
 
 		mat_type.set_function("index_table", &mat_index_as_table);
 		mat_type.set_function("new_index_table", &mat_new_index_as_table);
-
-		mat_type.set_function("index_vector", &mat_index_as_vector);
-		mat_type.set_function("new_index_vector", &mat_new_index_as_vector);
-
-		mat_type.set_function("index_maybe", &mat_index_maybe);
-		mat_type.set_function("new_index_maybe", &mat_new_index_maybe);
 
 		mat_type[sol::meta_function::call] = &mat_get;
 		mat_type.set_function("get", &mat_get);

@@ -456,7 +456,9 @@ module.exports = ({ self, self_get, shared_ptr }) => [
         ["UMatUsageFlags", "usageFlags", "USAGE_DEFAULT", []]
     ], "", ""],
 
-    ["cv.UMat.table", "sol::table", ["/Call=::cvextra::tableUMat", `/Expr=${ self }, lua`], [], "", ""],
+    ["cv.UMat.table", "sol::table", ["/Call=::cvextra::tableUMat", `/Expr=${ self }, nested, lua`], [
+        ["bool", "nested", "false", []],
+    ], "", ""],
 
     // ["cv.UMat.convertToShow", "void", ["/Call=::autoit::cvextra::convertToShow", "/Expr=*__self->get(), $0"], [
     //     ["Mat", "dst", "Mat::zeros(self.rows, self.cols, CV_8UC3)", ["/IO"]],
