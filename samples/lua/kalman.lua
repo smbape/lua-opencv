@@ -1,3 +1,5 @@
+#!/usr/bin/env lua
+
 package.path = arg[0]:gsub("[^/\\]+%.lua", '../?.lua;'):gsub('/', package.config:sub(1, 1)) .. package.path
 
 --[[
@@ -43,12 +45,12 @@ local function main()
    while true do
       local img = cv.Mat.zeros(img_height, img_width, cv.CV_8UC3)
       local state = cv.Mat.createFromArray({ { 0.0 }, { (2 * pi) / num_circle_steps } }, cv.CV_32F) -- start state
-      kalman.transitionMatrix = cv.Mat.createFromArray({ { 1., 1. }, { 0., 1. } }, cv.CV_32F) -- F. input
-      kalman.measurementMatrix = 1. * cv.Mat.eye(1, 2, cv.CV_32F)                       -- H. input
-      kalman.processNoiseCov = 1e-5 * cv.Mat.eye(2, cv.CV_32F)                          -- Q. input
-      kalman.measurementNoiseCov = 1e-1 * cv.Mat.ones({ 1, 1 }, cv.CV_32F)              -- R. input
-      kalman.errorCovPost = 1. * cv.Mat.eye(2, 2, cv.CV_32F)                            -- P._k|k  KF state var
-      kalman.statePost = 0.1 * cv.randn(2, 1)                                              -- x^_k|k  KF state var
+      kalman.transitionMatrix = cv.Mat.createFromArray({ { 1., 1. }, { 0., 1. } }, cv.CV_32F)       -- F. input
+      kalman.measurementMatrix = 1. * cv.Mat.eye(1, 2, cv.CV_32F)                                   -- H. input
+      kalman.processNoiseCov = 1e-5 * cv.Mat.eye(2, cv.CV_32F)                                      -- Q. input
+      kalman.measurementNoiseCov = 1e-1 * cv.Mat.ones({ 1, 1 }, cv.CV_32F)                          -- R. input
+      kalman.errorCovPost = 1. * cv.Mat.eye(2, 2, cv.CV_32F)                                        -- P._k|k  KF state var
+      kalman.statePost = 0.1 * cv.randn(2, 1)                                                       -- x^_k|k  KF state var
 
       while true do
          local function calc_point(angle)
@@ -87,8 +89,8 @@ local function main()
             { 255, 255, 0 }, cv.MARKER_SQUARE, 12, 1)
 
          cv.line(img, state_pt, measurement_pt, { 0, 0, 255 }, 1, cv.LINE_AA, 0) -- red measurement error
-         cv.line(img, state_pt, predict_pt, { 0, 255, 255 }, 1, cv.LINE_AA, 0) -- yellow pre-meas error
-         cv.line(img, state_pt, improved_pt, { 0, 255, 0 }, 1, cv.LINE_AA, 0)  -- green post-meas error
+         cv.line(img, state_pt, predict_pt, { 0, 255, 255 }, 1, cv.LINE_AA, 0)   -- yellow pre-meas error
+         cv.line(img, state_pt, improved_pt, { 0, 255, 0 }, 1, cv.LINE_AA, 0)    -- green post-meas error
 
          -- update the real process
          local process_noise = sqrt(kalman.processNoiseCov:at(0, 0)) * cv.randn(2, 1)

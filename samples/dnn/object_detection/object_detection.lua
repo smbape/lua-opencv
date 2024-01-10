@@ -1,3 +1,5 @@
+#!/usr/bin/env lua
+
 package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:sub(1, 1)) ..
     arg[0]:gsub("[^/\\]+%.lua", '../../?.lua;'):gsub('/', package.config:sub(1, 1)) .. package.path
 
@@ -99,20 +101,7 @@ local args = parser:parse()
 local __dirname__ = sysPath.dirname(sysPath.abspath(__file__))
 local models = sysPath.join(__dirname__, 'models')
 
-local OPENCV_SAMPLES_DATA_PATH = opencv_lua.fs_utils.findFile("samples/data", opencv_lua.kwargs({
-    hints = {
-        "out/build/x64-Debug/opencv/opencv-src",
-        "out/build/x64-Release/opencv/opencv-src",
-        "out/build/Linux-GCC-Debug/opencv/opencv-src",
-        "out/build/Linux-GCC-Release/opencv/opencv-src",
-        "out/prepublish/luajit-2.1/lua-opencv/build.luarocks/opencv/opencv-src",
-        "out/prepublish/5.4/lua-opencv/build.luarocks/opencv/opencv-src",
-        "out/prepublish/5.3/lua-opencv/build.luarocks/opencv/opencv-src",
-        "out/prepublish/5.2/lua-opencv/build.luarocks/opencv/opencv-src",
-        "out/prepublish/5.1/lua-opencv/build.luarocks/opencv/opencv-src",
-        "opencv",
-    }
-}))
+local OPENCV_SAMPLES_DATA_PATH = opencv_lua.env.OPENCV_SAMPLES_DATA_PATH
 
 local SAMPLES_PATH = opencv_lua.fs_utils.findFile("samples")
 local PYTHON_VENV_PATH = sysPath.join(SAMPLES_PATH, ".venv")
@@ -143,7 +132,6 @@ end
 
 cv.samples.addSamplesDataSearchPath(models)
 cv.samples.addSamplesDataSearchPath(__dirname__)
-cv.samples.addSamplesDataSearchPath(OPENCV_SAMPLES_DATA_PATH)
 cv.samples.addSamplesDataSearchPath(sysPath.join(OPENCV_SAMPLES_DATA_PATH, "dnn"))
 
 args.model = findFile(args.model)

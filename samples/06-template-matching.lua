@@ -1,3 +1,5 @@
+#!/usr/bin/env lua
+
 package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:sub(1, 1)) .. package.path
 
 local opencv_lua = require("init")
