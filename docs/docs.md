@@ -17973,7 +17973,7 @@ lua:
 
 ```cpp
 int cv::createButton( const std::string& bar_name,
-                      sol::safe_function onChange,
+                      sol::function      onChange,
                       sol::object        userdata = sol::lua_nil,
                       int                type = QT_PUSH_BUTTON,
                       bool               initial_button_state = false );
@@ -18122,7 +18122,7 @@ int cv::createTrackbar( const std::string& trackbarname,
                         const std::string& winname,
                         int                value,
                         int                count,
-                        sol::safe_function onChange,
+                        sol::function      onChange,
                         sol::object        userdata = sol::lua_nil );
 lua:
     cv.createTrackbar( trackbarname, winname, value, count, onChange[, userdata] ) -> retval
@@ -20743,8 +20743,8 @@ lua:
 ### cv.redirectError
 
 ```cpp
-void cv::redirectError( sol::safe_function errCallback,
-                        sol::object        userdata = sol::lua_nil );
+void cv::redirectError( sol::function errCallback,
+                        sol::object   userdata = sol::lua_nil );
 lua:
     cv.redirectError( errCallback[, userdata] ) -> None
 ```
@@ -20988,7 +20988,7 @@ lua:
 
 ```cpp
 void cv::setMouseCallback( const std::string& winname,
-                           sol::safe_function onMouse,
+                           sol::function      onMouse,
                            sol::object        userdata = sol::lua_nil );
 lua:
     cv.setMouseCallback( winname, onMouse[, userdata] ) -> None
@@ -30127,97 +30127,109 @@ lua:
 ### cv.Mat.operator*
 
 ```cpp
-cv::Mat cv::Mat::operator*( cv::Mat m );
+void cv::Mat::operator*( cv::Mat     m,
+                         OutputArray dst );
 lua:
-    oMat:__mul( m ) -> retval
-    self * m -> retval
+    oMat:__mul( m[, dst] ) -> dst
+    self * m -> dst
 ```
 
 ```cpp
-cv::Mat cv::Mat::operator*( double s );
+void cv::Mat::operator*( double      s,
+                         OutputArray dst );
 lua:
-    oMat:__mul( s ) -> retval
-    self * s -> retval
+    oMat:__mul( s[, dst] ) -> dst
+    self * s -> dst
 ```
 
 ```cpp
-static cv::Mat cv::Mat::operator*( double  s,
-                                   cv::Mat m );
+static void cv::Mat::operator*( double      s,
+                                cv::Mat     m,
+                                OutputArray dst );
 lua:
-    cv.Mat.__mul( s, m ) -> retval
-    s * m -> retval
+    cv.Mat.__mul( s, m[, dst] ) -> dst
+    s * m -> dst
 ```
 
 ### cv.Mat.operator+
 
 ```cpp
-cv::Mat cv::Mat::operator+( cv::Mat m );
+void cv::Mat::operator+( cv::Mat     m,
+                         OutputArray dst );
 lua:
-    oMat:__add( m ) -> retval
-    self + m -> retval
+    oMat:__add( m[, dst] ) -> dst
+    self + m -> dst
 ```
 
 ```cpp
-cv::Mat cv::Mat::operator+( cv::Scalar s );
+void cv::Mat::operator+( cv::Scalar  s,
+                         OutputArray dst );
 lua:
-    oMat:__add( s ) -> retval
-    self + s -> retval
+    oMat:__add( s[, dst] ) -> dst
+    self + s -> dst
 ```
 
 ```cpp
-static cv::Mat cv::Mat::operator+( cv::Scalar s,
-                                   cv::Mat    m );
+static void cv::Mat::operator+( cv::Scalar  s,
+                                cv::Mat     m,
+                                OutputArray dst );
 lua:
-    cv.Mat.__add( s, m ) -> retval
-    s + m -> retval
+    cv.Mat.__add( s, m[, dst] ) -> dst
+    s + m -> dst
 ```
 
 ### cv.Mat.operator-
 
 ```cpp
-cv::Mat cv::Mat::operator-( cv::Mat m );
+void cv::Mat::operator-( cv::Mat     m,
+                         OutputArray dst );
 lua:
-    oMat:__sub( m ) -> retval
-    self - m -> retval
+    oMat:__sub( m[, dst] ) -> dst
+    self - m -> dst
 ```
 
 ```cpp
-cv::Mat cv::Mat::operator-( cv::Scalar s );
+void cv::Mat::operator-( cv::Scalar  s,
+                         OutputArray dst );
 lua:
-    oMat:__sub( s ) -> retval
-    self - s -> retval
+    oMat:__sub( s[, dst] ) -> dst
+    self - s -> dst
 ```
 
 ```cpp
-static cv::Mat cv::Mat::operator-( cv::Scalar s,
-                                   cv::Mat    m );
+static void cv::Mat::operator-( cv::Scalar  s,
+                                cv::Mat     m,
+                                OutputArray dst );
 lua:
-    cv.Mat.__sub( s, m ) -> retval
-    s - m -> retval
+    cv.Mat.__sub( s, m[, dst] ) -> dst
+    s - m -> dst
 ```
 
 ### cv.Mat.operator/
 
 ```cpp
-cv::Mat cv::Mat::operator/( cv::Mat m );
+void cv::Mat::operator/( cv::Mat     m,
+                         OutputArray dst );
 lua:
-    oMat:__div( m ) -> retval
-    self / m -> retval
+    oMat:__div( m[, dst] ) -> dst
+    self / m -> dst
 ```
 
 ```cpp
-cv::Mat cv::Mat::operator/( double s );
+void cv::Mat::operator/( double      s,
+                         OutputArray dst );
 lua:
-    oMat:__div( s ) -> retval
-    self / s -> retval
+    oMat:__div( s[, dst] ) -> dst
+    self / s -> dst
 ```
 
 ```cpp
-static cv::Mat cv::Mat::operator/( double  s,
-                                   cv::Mat m );
+static void cv::Mat::operator/( double      s,
+                                cv::Mat     m,
+                                OutputArray dst );
 lua:
-    cv.Mat.__div( s, m ) -> retval
-    s / m -> retval
+    cv.Mat.__div( s, m[, dst] ) -> dst
+    s / m -> dst
 ```
 
 ### cv.Mat.operator<
