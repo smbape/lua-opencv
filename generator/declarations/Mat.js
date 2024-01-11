@@ -150,7 +150,7 @@ module.exports = ({ self, self_get, shared_ptr }) => {
         ], "", ""],
 
         ["cv.Mat.convertTo", "void", [], [
-            ["OutputArray", "m", "", []],
+            ["OutputArray", "dst", "", []],
             ["int", "rtype", "", []],
             ["double", "alpha", "1.0", []],
             ["double", "beta", "0.0", []],
@@ -161,11 +161,11 @@ module.exports = ({ self, self_get, shared_ptr }) => {
         ], "", ""],
 
         ["cv.Mat.copyTo", "void", [], [
-            ["OutputArray", "m", "", []],
+            ["OutputArray", "dst", "", []],
         ], "", ""],
 
         ["cv.Mat.copyTo", "void", [], [
-            ["OutputArray", "m", "", []],
+            ["OutputArray", "dst", "", []],
             ["InputArray", "mask", "", []],
         ], "", ""],
 
