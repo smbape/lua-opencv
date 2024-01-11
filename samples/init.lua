@@ -44,18 +44,27 @@ local sysPath = {
 
 opencv_lua.path = sysPath
 
-local OPENCV_SAMPLES_DATA_PATH = sysPath.dirname(opencv_lua.fs_utils.findFile("samples/data/lena.jpg", opencv_lua.kwargs({
-    hints={
-        ".",
-        "build.luarocks/opencv/opencv-src",
+local OPENCV_SAMPLES_DATA_PATH = os.getenv("OPENCV_SAMPLES_DATA_PATH") or sysPath.dirname(opencv_lua.fs_utils.findFile("samples/data/lena.jpg", opencv_lua.kwargs({
+    hints = {
         "out/build/x64-Debug/opencv/opencv-src",
         "out/build/x64-Release/opencv/opencv-src",
         "out/build/Linux-GCC-Debug/opencv/opencv-src",
         "out/build/Linux-GCC-Release/opencv/opencv-src",
+        "out/prepublish/luajit-2.1/lua-opencv/build.luarocks/opencv/opencv-src",
+        "out/prepublish/5.4/lua-opencv/build.luarocks/opencv/opencv-src",
+        "out/prepublish/5.3/lua-opencv/build.luarocks/opencv/opencv-src",
+        "out/prepublish/5.2/lua-opencv/build.luarocks/opencv/opencv-src",
+        "out/prepublish/5.1/lua-opencv/build.luarocks/opencv/opencv-src",
         "opencv",
     }
 })))
 cv.samples.addSamplesDataSearchPath(OPENCV_SAMPLES_DATA_PATH)
+
+local env = {
+    OPENCV_SAMPLES_DATA_PATH = OPENCV_SAMPLES_DATA_PATH,
+}
+
+opencv_lua.env = env
 
 local LOCAL_SAMPLES_DATA_PATH = opencv_lua.fs_utils.findFile("samples/data")
 cv.samples.addSamplesDataSearchPath(LOCAL_SAMPLES_DATA_PATH)

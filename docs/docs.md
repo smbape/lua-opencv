@@ -29269,12 +29269,12 @@ lua:
 ### cv.Mat.convertTo
 
 ```cpp
-void cv::Mat::convertTo( OutputArray m,
+void cv::Mat::convertTo( OutputArray dst,
                          int         rtype,
                          double      alpha = 1.0,
                          double      beta = 0.0 );
 lua:
-    oMat:convertTo( rtype[, m[, alpha[, beta]]] ) -> m
+    oMat:convertTo( rtype[, dst[, alpha[, beta]]] ) -> dst
 ```
 
 ### cv.Mat.copy
@@ -29296,16 +29296,16 @@ lua:
 ### cv.Mat.copyTo
 
 ```cpp
-void cv::Mat::copyTo( OutputArray m );
+void cv::Mat::copyTo( OutputArray dst );
 lua:
-    oMat:copyTo( [m] ) -> m
+    oMat:copyTo( [dst] ) -> dst
 ```
 
 ```cpp
-void cv::Mat::copyTo( OutputArray m,
+void cv::Mat::copyTo( OutputArray dst,
                       InputArray  mask );
 lua:
-    oMat:copyTo( mask[, m] ) -> m
+    oMat:copyTo( mask[, dst] ) -> dst
 ```
 
 ### cv.Mat.createFromArray
@@ -41097,21 +41097,21 @@ lua:
 ### cv.UMat.convertTo
 
 ```cpp
-void cv::UMat::convertTo( OutputArray m,
+void cv::UMat::convertTo( OutputArray dst,
                           int         rtype,
                           double      alpha = 1.0,
                           double      beta = 0.0 );
 lua:
-    oUMat:convertTo( rtype[, m[, alpha[, beta]]] ) -> m
+    oUMat:convertTo( rtype[, dst[, alpha[, beta]]] ) -> dst
 ```
 
 ```cpp
-void cv::UMat::convertTo( OutputArray m,
+void cv::UMat::convertTo( OutputArray dst,
                           int         rtype = -1,
                           double      alpha = 1.0,
                           double      beta = 0.0 );
 lua:
-    oUMat:convertTo( [m[, rtype[, alpha[, beta]]]] ) -> m
+    oUMat:convertTo( [dst[, rtype[, alpha[, beta]]]] ) -> dst
 ```
 
 ### cv.UMat.copy
@@ -41133,16 +41133,16 @@ lua:
 ### cv.UMat.copyTo
 
 ```cpp
-void cv::UMat::copyTo( OutputArray m );
+void cv::UMat::copyTo( OutputArray dst );
 lua:
-    oUMat:copyTo( [m] ) -> m
+    oUMat:copyTo( [dst] ) -> dst
 ```
 
 ```cpp
-void cv::UMat::copyTo( OutputArray m,
+void cv::UMat::copyTo( OutputArray dst,
                        InputArray  mask );
 lua:
-    oUMat:copyTo( mask[, m] ) -> m
+    oUMat:copyTo( mask[, dst] ) -> dst
 ```
 
 ### cv.UMat.createFromArray

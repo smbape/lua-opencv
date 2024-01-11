@@ -36,7 +36,7 @@ time DIST_VERSION=1 node scripts/prepublish.js --pack 2>&1 | tee prepublish_win.
 time DIST_VERSION=1 WSLENV=DIST_VERSION/u wsl -e bash -li -c './scripts/wsl_prepublish.sh --pack' 2>&1 | tee prepublish_linux.log
 
 for version in luajit-2.1 5.{4,3,2,1}; do
-    bash -c "cd out/prepublish/${version}/lua-opencv && git stash pop"
+    bash -c "cd out/prepublish/${version}/lua-opencv && git reset --hard HEAD && git stash pop"
     wsl -e bash -li -c 'source scripts/wsl_init.sh; cd out/prepublish/'${version}'/lua-opencv && git reset --hard HEAD && git stash pop'
 done
 

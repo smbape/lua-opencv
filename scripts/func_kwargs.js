@@ -1,11 +1,21 @@
 const genFunc = (libname, fname, args) => {
     let mandatory = true;
+    let kwargs;
+    const fdecl = ["function"];
+    if (libname === "local") {
+        kwargs = `${ libname }.kwargs`;
+        fdecl.unshift(libname);
+        fdecl.push(fname);
+    } else {
+        kwargs = "opencv_lua.kwargs";
+        fdecl.push(`${ libname }.${ fname }`);
+    }
 
     return `
-function ${ libname }.${ fname } ( ... )
+${ fdecl.join(" ") } ( ... )
     local args={...}
-    local has_kwarg = ${ libname }.kwargs.is_instance(args[#args])
-    local kwargs = has_kwarg and args[#args] or ${ libname }.kwargs()
+    local has_kwarg = ${ kwargs }.is_instance(args[#args])
+    local kwargs = has_kwarg and args[#args] or ${ kwargs }()
     local usedkw = 0
 
     ${ args.map((decl, i) => {
