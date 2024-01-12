@@ -428,6 +428,10 @@ class DeclProcessor {
             return `${ shared_ptr }<${ this.getCppType(type.slice(`${ shared_ptr_ }<`.length, -">".length), coclass, options) }>`;
         }
 
+        if (type.startsWith("shared_ptr<")) {
+            return `std::shared_ptr<${ this.getCppType(type.slice("shared_ptr<".length, -">".length), coclass, options) }>`;
+        }
+
         if (type.startsWith("optional<")) {
             return `std::optional<${ this.getCppType(type.slice("optional<".length, -">".length), coclass, options) }>`;
         }
@@ -451,9 +455,14 @@ class DeclProcessor {
             return `std::pair<${ types.map(itype => this.getCppType(itype, coclass, options)).join(", ") }>`;
         }
 
-        if (type.startsWith("GArray<") || type.startsWith("GOpaque<")) {
+        if (type.startsWith("variant<")) {
+            const types = CoClass.getTupleTypes(type.slice("variant<".length, -">".length));
+            return `std::variant<${ types.map(itype => this.getCppType(itype, coclass, options)).join(", ") }>`;
+        }
+
+        if (type.includes("<") && type.endsWith(">")) {
             const pos = type.indexOf("<");
-            return `cv::${ type.slice(0, pos) }<${ this.getCppType(type.slice(pos + 1, -">".length), coclass, options) }>`;
+            return `${ this.getCppType(type.slice(0, pos), coclass, options) }<${ this.getCppType(type.slice(pos + 1, -">".length), coclass, options) }>`;
         }
 
         if (type.endsWith("*")) {
@@ -499,6 +508,11 @@ class DeclProcessor {
             this.setAssignOperator(type.slice("std::vector<".length, -">".length), coclass, options);
         } else if (type.startsWith("std::tuple<")) {
             const types = CoClass.getTupleTypes(type.slice("std::tuple<".length, -">".length));
+            for (const ttype of types) {
+                this.setAssignOperator(ttype, coclass, options);
+            }
+        } else if (type.startsWith("std::variant<")) {
+            const types = CoClass.getTupleTypes(type.slice("std::variant<".length, -">".length));
             for (const ttype of types) {
                 this.setAssignOperator(ttype, coclass, options);
             }

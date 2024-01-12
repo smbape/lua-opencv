@@ -17202,9 +17202,9 @@ lua:
 ```
 
 ```cpp
-std::variant<std::shared_ptr<Mat>, int> cv::argmax( InputArray src,
-                                                    int        axis,
-                                                    bool       lastIndex = false );
+std::variant<std::shared_ptr<cv::Mat>, int> cv::argmax( InputArray src,
+                                                        int        axis,
+                                                        bool       lastIndex = false );
 lua:
     cv.argmax( src, axis[, lastIndex] ) -> retval
 ```

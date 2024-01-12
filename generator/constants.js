@@ -55,8 +55,8 @@ exports.CPP_TYPES = new Map([
     ["gapi_wip_IStreamSource_Ptr", "cv::Ptr<cv::gapi::wip::IStreamSource>"],
 
     ["GMetaArg", "cv::GMetaArg"],
-
-    ["variant_shared_ptr_Mat_and_int", "std::variant<std::shared_ptr<Mat>, int>"],
+    ["GArray", "cv::GArray"],
+    ["GOpaque", "cv::GOpaque"],
 ]);
 
 exports.ALIASES = new Map([
@@ -111,5 +111,10 @@ if (semver.gt(global.OpenCV_VERSION.slice("opencv-".length), "4.5.0")) {
         ["cv.GOpaqueDesc", ["/Simple"]],
     ]);
 }
+
+exports.TEMPLATED_TYPES = new Set([
+    "GArray",
+    "GOpaque",
+]);
 
 exports.IGNORED_CLASSES = new Set([]);

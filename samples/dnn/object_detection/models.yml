@@ -178,7 +178,7 @@ yolov7-tiny:
 
 yolov8n:
   load_info:
-    sha1: "8f7985f8da3cc79161ecedd3bfaf0558315476c3"
+    sha1: "9e38d8af0eedc8ce695ec23b8e5e1b73ef43a602"
   model: "yolov8n.onnx"
   mean: [0, 0, 0]
   scale: 0.00392156862745098

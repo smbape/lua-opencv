@@ -414,59 +414,43 @@ local function read_file(file_path)
     return content
 end
 
+-- http://lua-users.org/wiki/StringTrim
 local match = string.match
 local function trim(s)
     return match(s, '^()%s*$') and '' or match(s, '^%s*(.*%S)')
 end
 
-local function argmax_matrix(matrix, result, starti, endi, depth)
-    if #matrix == 0 then
-        return nil
+-- https://stackoverflow.com/a/24823383
+local function slice(tbl, first, last, step)
+    local sliced = {}
+
+    for i = first or 1, last or #tbl, step or 1 do
+        sliced[#sliced + 1] = tbl[i]
     end
 
-    local min
-    if type(starti) == 'table' then
-        min = starti[depth]
-    elseif starti ~= nil then
-        min = starti
-        starti = nil
-    else
-        min = 1
-    end
-
-    local max
-    if type(endi) == 'table' then
-        max = endi[depth]
-    elseif endi ~= nil then
-        max = endi
-        endi = nil
-    else
-        max = #matrix
-    end
-
-    if type(matrix[min]) == 'number' then
-        local max_index = min
-        local max_value = matrix[min]
-
-        for i = min + 1, max do
-            if matrix[i] > max_value then
-                max_index = i
-                max_value = matrix[i]
-            end
-        end
-
-        return { max_index, max_value }
-    end
-
-    for i = min, max do
-        result[i] = argmax_matrix(matrix[i], {}, starti, endi, depth + 1)
-    end
-
-    return result
+    return sliced
 end
 
-local function argmax(matrix, starti, endi)
-    return argmax_matrix(matrix, {}, starti, endi, 1)
+local function argmax(_matrix)
+    local max_index, max_value, index = nil, nil, 1
+
+    local function find_argmax(matrix)
+        for i = 1, #matrix do
+            if type(matrix[i]) == 'number' then
+                if index == 1 or matrix[i] > max_value then
+                    max_value = matrix[i]
+                    max_index = index
+                end
+                index = index + 1
+            else
+                find_argmax(matrix[i])
+            end
+        end
+    end
+
+    find_argmax(_matrix)
+
+    return max_index
 end
 
 local function get_dims(matrix)
@@ -482,7 +466,7 @@ end
 
 local function map_tostring(obj)
     local res = {}
-    for k,v in pairs(obj) do
+    for k, v in pairs(obj) do
         res[k] = tostring(v)
     end
     return res
@@ -495,6 +479,7 @@ return {
     execute = execute,
     read_file = read_file,
     trim = trim,
+    slice = slice,
     argmax = argmax,
     get_dims = get_dims,
     map_tostring = map_tostring,

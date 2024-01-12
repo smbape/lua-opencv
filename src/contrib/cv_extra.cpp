@@ -47,10 +47,12 @@ namespace cv {
 	}
 
 	std::variant<std::shared_ptr<Mat>, int> argmax(InputArray src, int axis, bool lastIndex) {
-		Mat dst;
-		cv::reduceArgMax(src, dst, axis, lastIndex);
+		const auto is1D = src.dims() == 1 || src.dims() == 2 && (src.rows() == 1 || src.cols() == 1);
 
-		if (src.dims() <= 2) {
+		Mat dst;
+		cv::reduceArgMax(src, dst, axis == 0 && is1D && src.dims() == 2 ? 1 : axis, lastIndex);
+
+		if (is1D) {
 			return dst.at<int>(0, 0);
 		}
 

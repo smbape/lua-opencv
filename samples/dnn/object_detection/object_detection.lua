@@ -216,9 +216,8 @@ end
 local function yolo_object_detection_postprocess(box_scale_w, box_scale_h, out, classIds, confidences, boxes, offset)
     for i, detection in pairs(out) do
         if offset ~= 5 or args.background_label_id >= 0 or detection[4 + INDEX_BASE] > confThreshold then
-            local argmax = common.argmax(detection, offset + INDEX_BASE)
-            local classId = argmax[1] - (offset + INDEX_BASE)
-            local confidence = argmax[2]
+            local classId = common.argmax(common.slice(detection, offset + INDEX_BASE)) - INDEX_BASE
+            local confidence = detection[classId + offset + INDEX_BASE]
             if confidence > confThreshold then
                 local center_x = detection[0 + INDEX_BASE] * box_scale_w
                 local center_y = detection[1 + INDEX_BASE] * box_scale_h
