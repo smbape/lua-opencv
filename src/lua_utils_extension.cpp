@@ -1,32 +1,35 @@
 #include <lua_generated_pch.hpp>
 #include <mutex>
+#include <variant>
+
+using MatIndexType = std::variant<std::shared_ptr<cv::Mat>, uchar, char, ushort, short, int, float, double>;
 
 namespace {
 	using namespace LUA_MODULE_NAME;
 
 	template<typename... Args>
-	inline auto mat_at(sol::this_state ts, const cv::Mat& m, Args&&... args) {
+	inline MatIndexType mat_at(sol::this_state ts, const cv::Mat& m, Args&&... args) {
 		switch (m.depth()) {
 		case CV_8U:
-			return sol::object(ts, sol::in_place, m.at<uchar>(std::forward<Args>(args)...));
+			return m.at<uchar>(std::forward<Args>(args)...);
 		case CV_8S:
-			return sol::object(ts, sol::in_place, m.at<char>(std::forward<Args>(args)...));
+			return m.at<char>(std::forward<Args>(args)...);
 		case CV_16U:
-			return sol::object(ts, sol::in_place, m.at<ushort>(std::forward<Args>(args)...));
+			return m.at<ushort>(std::forward<Args>(args)...);
 		case CV_16S:
-			return sol::object(ts, sol::in_place, m.at<short>(std::forward<Args>(args)...));
+			return m.at<short>(std::forward<Args>(args)...);
 		case CV_32S:
-			return sol::object(ts, sol::in_place, m.at<int>(std::forward<Args>(args)...));
+			return m.at<int>(std::forward<Args>(args)...);
 		case CV_32F:
-			return sol::object(ts, sol::in_place, m.at<float>(std::forward<Args>(args)...));
+			return m.at<float>(std::forward<Args>(args)...);
 		case CV_64F:
-			return sol::object(ts, sol::in_place, m.at<double>(std::forward<Args>(args)...));
+			return m.at<double>(std::forward<Args>(args)...);
 		default:
 			LUA_MODULE_THROW("Unsupported mat type");
 		}
 	}
 
-	sol::object mat_index(cv::Mat& self, int idx, sol::this_state ts) {
+	MatIndexType mat_index(cv::Mat& self, int idx, sol::this_state ts) {
 		const auto& size = self.size;
 		const auto dims = size.dims();
 		const auto channels = self.channels();
@@ -44,7 +47,7 @@ namespace {
 
 		if (dims > 2) {
 			auto row = self.row(idx).reshape(channels, dims - 1, size.p + 1);
-			return sol::object(ts, sol::in_place, std::make_shared<cv::Mat>(row));
+			return std::make_shared<cv::Mat>(row);
 		}
 
 		// dims == 2
@@ -52,7 +55,7 @@ namespace {
 			// treated as dims = 3
 			int newsz[] = { size[1], channels };
 			auto row = self.row(idx).reshape(1, 2, newsz);
-			return sol::object(ts, sol::in_place, std::make_shared<cv::Mat>(row));
+			return std::make_shared<cv::Mat>(row);
 		}
 
 		// dims == 2, channels == 1
@@ -64,7 +67,7 @@ namespace {
 		}
 
 		auto row = self.row(idx);
-		return sol::object(ts, sol::in_place, std::make_shared<cv::Mat>(row));
+		return std::make_shared<cv::Mat>(row);
 	}
 
 	double mat_get(cv::Mat& self, sol::this_state ts, sol::variadic_args vargs) {
@@ -161,7 +164,7 @@ namespace {
 		// the state is left alone
 		auto r = std::make_tuple(
 			sol::object(ts, sol::in_place, it_state.it),
-			mat_index(it_state.self, it_state.it, ts));
+			sol::object(ts, sol::in_place, mat_index(it_state.self, it_state.it, ts)));
 
 		// the iterator must be moved forward one before we return
 		it_state.it++;
@@ -199,7 +202,7 @@ namespace {
 		}
 
 		for (int idx = 0; idx < total; idx++) {
-			vres.push_back(mat_index(self, idx, ts));
+			vres.push_back(sol::object(ts, sol::in_place, mat_index(self, idx, ts)));
 		}
 
 		return vres;

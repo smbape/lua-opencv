@@ -97,7 +97,7 @@ class CoClass {
             "vector",
             "GArray",
             "GOpaque",
-            shared_ptr
+            ... new Set(["shared_ptr", shared_ptr]),
         ];
 
         const templates = new RegExp(`\\b(?:${ [
@@ -111,7 +111,7 @@ class CoClass {
             "cv::GOpaque",
             "cv::util::variant",
             "util::variant",
-            options.shared_ptr
+            ... new Set(["std::shared_ptr", options.shared_ptr]),
         ].join("|") })<`, "g");
 
         type = type

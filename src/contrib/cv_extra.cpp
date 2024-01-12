@@ -1,6 +1,6 @@
 #include "cv_extra.h"
 
-namespace cvextra {
+namespace cv {
 	double randu() {
 		return cv::theRNG().gaussian(1.0);
 	}
@@ -15,7 +15,7 @@ namespace cvextra {
 		cv::theRNG().fill(dst, cv::RNG::UNIFORM, 0, 1);
 	}
 
-	void randu(std::vector<int> sizes, cv::InputOutputArray dst, int type) {
+	void randu(const std::vector<int>& sizes, cv::InputOutputArray dst, int type) {
 		dst.create(sizes.size(), sizes.data(), type);
 		cv::theRNG().fill(dst, cv::RNG::UNIFORM, 0, 1);
 	}
@@ -34,8 +34,26 @@ namespace cvextra {
 		cv::theRNG().fill(dst, cv::RNG::NORMAL, 0, 1);
 	}
 
-	void randn(std::vector<int> sizes, cv::InputOutputArray dst, int type) {
+	void randn(const std::vector<int>& sizes, cv::InputOutputArray dst, int type) {
 		dst.create(sizes.size(), sizes.data(), type);
 		cv::theRNG().fill(dst, cv::RNG::NORMAL, 0, 1);
+	}
+
+	int argmax(InputArray _src, bool lastIndex) {
+		const auto src = _src.getMat().reshape(_src.channels(), _src.total());
+		Mat dst;
+		cv::reduceArgMax(src, dst, 0, lastIndex);
+		return dst.at<int>(0, 0);
+	}
+
+	std::variant<std::shared_ptr<Mat>, int> argmax(InputArray src, int axis, bool lastIndex) {
+		Mat dst;
+		cv::reduceArgMax(src, dst, axis, lastIndex);
+
+		if (src.dims() <= 2) {
+			return dst.at<int>(0, 0);
+		}
+
+		return std::make_shared<cv::Mat>(dst);
 	}
 }

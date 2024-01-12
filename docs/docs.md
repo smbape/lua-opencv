@@ -1337,6 +1337,7 @@
   - [cv.applyColorMap](#cvapplycolormap)
   - [cv.approxPolyDP](#cvapproxpolydp)
   - [cv.arcLength](#cvarclength)
+  - [cv.argmax](#cvargmax)
   - [cv.arrowedLine](#cvarrowedline)
   - [cv.batchDistance](#cvbatchdistance)
   - [cv.bilateralFilter](#cvbilateralfilter)
@@ -17191,6 +17192,23 @@ lua:
     cv.arcLength( curve, closed ) -> retval
 ```
 
+### cv.argmax
+
+```cpp
+int cv::argmax( InputArray src,
+                bool       lastIndex = false );
+lua:
+    cv.argmax( src[, lastIndex] ) -> retval
+```
+
+```cpp
+std::variant<std::shared_ptr<Mat>, int> cv::argmax( InputArray src,
+                                                    int        axis,
+                                                    bool       lastIndex = false );
+lua:
+    cv.argmax( src, axis[, lastIndex] ) -> retval
+```
+
 ### cv.arrowedLine
 
 ```cpp
@@ -20474,7 +20492,7 @@ lua:
 ```cpp
 void cv::randn( int              rows,
                 int              cols,
-                InputOutputArray dst = cv::Mat(),
+                InputOutputArray dst = Mat(),
                 int              type = CV_32F );
 lua:
     cv.randn( rows, cols[, dst[, type]] ) -> dst
@@ -20482,7 +20500,7 @@ lua:
 
 ```cpp
 void cv::randn( cv::Size         size,
-                InputOutputArray dst = cv::Mat(),
+                InputOutputArray dst = Mat(),
                 int              type = CV_32F );
 lua:
     cv.randn( size[, dst[, type]] ) -> dst
@@ -20490,7 +20508,7 @@ lua:
 
 ```cpp
 void cv::randn( const std::vector<int>& sizes,
-                InputOutputArray        dst = cv::Mat(),
+                InputOutputArray        dst = Mat(),
                 int                     type = CV_32F );
 lua:
     cv.randn( sizes[, dst[, type]] ) -> dst
@@ -20515,7 +20533,7 @@ lua:
 ```cpp
 void cv::randu( int              rows,
                 int              cols,
-                InputOutputArray dst = cv::Mat(),
+                InputOutputArray dst = Mat(),
                 int              type = CV_32F );
 lua:
     cv.randu( rows, cols[, dst[, type]] ) -> dst
@@ -20523,7 +20541,7 @@ lua:
 
 ```cpp
 void cv::randu( cv::Size         size,
-                InputOutputArray dst = cv::Mat(),
+                InputOutputArray dst = Mat(),
                 int              type = CV_32F );
 lua:
     cv.randu( size[, dst[, type]] ) -> dst
@@ -20531,7 +20549,7 @@ lua:
 
 ```cpp
 void cv::randu( const std::vector<int>& sizes,
-                InputOutputArray        dst = cv::Mat(),
+                InputOutputArray        dst = Mat(),
                 int                     type = CV_32F );
 lua:
     cv.randu( sizes[, dst[, type]] ) -> dst

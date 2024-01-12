@@ -55,6 +55,8 @@ exports.CPP_TYPES = new Map([
     ["gapi_wip_IStreamSource_Ptr", "cv::Ptr<cv::gapi::wip::IStreamSource>"],
 
     ["GMetaArg", "cv::GMetaArg"],
+
+    ["variant_shared_ptr_Mat_and_int", "std::variant<std::shared_ptr<Mat>, int>"],
 ]);
 
 exports.ALIASES = new Map([
