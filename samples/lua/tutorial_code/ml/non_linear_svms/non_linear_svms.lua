@@ -10,7 +10,7 @@ Sources:
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local int = opencv_lua.math.int
-local INDEX_BASE = 1 -- lua is 1-based indexed
+local INDEX_BASE = 1          -- lua is 1-based indexed
 
 local NTRAINING_SAMPLES = 100 -- Number of training samples per class
 local FRAC_LINEAR_SEP = 0.9   -- Fraction of samples which compose the linear separable part
@@ -62,7 +62,7 @@ rng:fill(c, cv.RNG.UNIFORM, 0, HEIGHT)
 -- [setup2]
 
 --------------------------- Set up the labels for the classes ---------------------------------
-labels:rowRange(0, NTRAINING_SAMPLES):setTo(1)                   -- Class 1
+labels:rowRange(0, NTRAINING_SAMPLES):setTo(1)                     -- Class 1
 labels:rowRange(NTRAINING_SAMPLES, 2 * NTRAINING_SAMPLES):setTo(2) -- Class 2
 
 -------------------------- 2. Set up the support vector machines parameters --------------------

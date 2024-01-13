@@ -116,7 +116,7 @@ local function main(argv)
     -- [kern]
     local kernel = cv.Mat.createFromArray({ { 0, -1, 0 },
         { -1, 5,  -1 },
-        { 0,  -1, 0 } }, cv.CV_32F)            -- kernel should be floating point type
+        { 0,  -1, 0 } }, cv.CV_32F) -- kernel should be floating point type
     -- [kern]
     -- [filter2D]
     local dst1 = cv.filter2D(src, -1, kernel)

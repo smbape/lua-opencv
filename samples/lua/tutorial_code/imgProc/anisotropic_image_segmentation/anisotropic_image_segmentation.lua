@@ -14,16 +14,20 @@ local cv = opencv_lua.cv
 local kwargs = opencv_lua.kwargs
 
 cv.samples.addSamplesDataSearchPath(opencv_lua.fs_utils.findFile(
-"doc/tutorials/imgproc/anisotropic_image_segmentation/images", opencv_lua.kwargs({
-    hints = {
-        ".",
-        "out/build/x64-Debug/opencv/opencv-src",
-        "out/build/x64-Release/opencv/opencv-src",
-        "out/build/Linux-GCC-Debug/opencv/opencv-src",
-        "out/build/Linux-GCC-Release/opencv/opencv-src",
-        "opencv",
-    }
-})))
+    "doc/tutorials/imgproc/anisotropic_image_segmentation/images", opencv_lua.kwargs({
+        hints = {
+            "out/build/x64-Debug/opencv/opencv-src",
+            "out/build/x64-Release/opencv/opencv-src",
+            "out/build/Linux-GCC-Debug/opencv/opencv-src",
+            "out/build/Linux-GCC-Release/opencv/opencv-src",
+            "out/prepublish/luajit-2.1/lua-opencv/build.luarocks/opencv/opencv-src",
+            "out/prepublish/5.4/lua-opencv/build.luarocks/opencv/opencv-src",
+            "out/prepublish/5.3/lua-opencv/build.luarocks/opencv/opencv-src",
+            "out/prepublish/5.2/lua-opencv/build.luarocks/opencv/opencv-src",
+            "out/prepublish/5.1/lua-opencv/build.luarocks/opencv/opencv-src",
+            "opencv",
+        }
+    })))
 
 local W = 52       -- window size is WxW
 local C_Thr = 0.43 -- threshold for coherency

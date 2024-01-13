@@ -9,6 +9,7 @@ Sources:
 
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
+local INDEX_BASE = 1 -- lua is 1-based indexed
 
 -- [Update]
 local function update_map(ind, map_x, map_y, rows, cols)
@@ -16,21 +17,21 @@ local function update_map(ind, map_x, map_y, rows, cols)
         for j = 0, cols - 1 do
             if ind == 0 then
                 if j > cols * 0.25 and j < cols * 0.75 and i > rows * 0.25 and i < rows * 0.75 then
-                    map_x[i + 1][j + 1] = 2 * (j - cols * 0.25) + 0.5
-                    map_y[i + 1][j + 1] = 2 * (i - rows * 0.25) + 0.5
+                    map_x[i + INDEX_BASE][j + INDEX_BASE] = 2 * (j - cols * 0.25) + 0.5
+                    map_y[i + INDEX_BASE][j + INDEX_BASE] = 2 * (i - rows * 0.25) + 0.5
                 else
-                    map_x[i + 1][j + 1] = 0
-                    map_y[i + 1][j + 1] = 0
+                    map_x[i + INDEX_BASE][j + INDEX_BASE] = 0
+                    map_y[i + INDEX_BASE][j + INDEX_BASE] = 0
                 end
             elseif ind == 1 then
-                map_x[i + 1][j + 1] = j
-                map_y[i + 1][j + 1] = rows - i
+                map_x[i + INDEX_BASE][j + INDEX_BASE] = j
+                map_y[i + INDEX_BASE][j + INDEX_BASE] = rows - i
             elseif ind == 2 then
-                map_x[i + 1][j + 1] = cols - j
-                map_y[i + 1][j + 1] = i
+                map_x[i + INDEX_BASE][j + INDEX_BASE] = cols - j
+                map_y[i + INDEX_BASE][j + INDEX_BASE] = i
             elseif ind == 3 then
-                map_x[i + 1][j + 1] = cols - j
-                map_y[i + 1][j + 1] = rows - i
+                map_x[i + INDEX_BASE][j + INDEX_BASE] = cols - j
+                map_y[i + INDEX_BASE][j + INDEX_BASE] = rows - i
             end
         end
     end
@@ -79,7 +80,7 @@ while true do
     update_map(ind, map_x_tbl, map_y_tbl, src.rows, src.cols)
     local map_x = cv.Mat.createFromArray(map_x_tbl, cv.CV_32FC1)
     local map_y = cv.Mat.createFromArray(map_y_tbl, cv.CV_32FC1)
-    print(string.format("Update map %i seconds: %.3f", ind, os.clock() - t))
+    print(string.format("Update map took %i seconds: %.3f", ind, os.clock() - t))
     ind = (ind + 1) % 4
     local dst = cv.remap(src, map_x, map_y, cv.INTER_LINEAR)
     cv.imshow(window_name, dst)

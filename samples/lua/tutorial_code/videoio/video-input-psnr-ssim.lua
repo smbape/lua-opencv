@@ -20,17 +20,17 @@ end
 
 -- [get-psnr]
 local function getPSNR(I1, I2)
-    local s1 = cv.absdiff(I1, I2)   --|I1 - I2|
-    s1 = s1:convertTo(cv.CV_32F)    -- cannot make a square on 8 bits
+    local s1 = cv.absdiff(I1, I2) --|I1 - I2|
+    s1 = s1:convertTo(cv.CV_32F)  -- cannot make a square on 8 bits
 
     -- Note that this is not a matrix multiplication that corresponds to a simpler "\*" operator.
     -- Performs an element-wise multiplication or division of the two matrices.
-    s1 = s1:mul(s1)                 -- |I1 - I2|^2
+    s1 = s1 * s1                   -- |I1 - I2|^2
 
-    local s = s1:sum()              -- sum elements per channel
-    local sse = s[1] + s[2] + s[3]  -- sum channels
+    local s = s1:sum()             -- sum elements per channel
+    local sse = s[1] + s[2] + s[3] -- sum channels
     if sse <= 1e-10 then
-        return 0                    -- for small values return zero
+        return 0                   -- for small values return zero
     else
         local shape = I1.shape
         local mse = 1.0 * sse / (shape[1] * shape[2] * shape[3])
@@ -50,18 +50,18 @@ local function getMSSISM(i1, i2)
     local I1 = i1:convertTo(cv.CV_32F) -- cannot calculate on one byte large values
     local I2 = i2:convertTo(cv.CV_32F)
 
-    local I2_2 = I2:mul(I2)  -- I2^2
-    local I1_2 = I1:mul(I1)  -- I1^2
-    local I1_I2 = I1:mul(I2) -- I1 * I2
+    local I2_2 = I2 * I2  -- I2^2
+    local I1_2 = I1 * I1  -- I1^2
+    local I1_I2 = I1 * I2 -- I1 * I2
     -- END INITS
 
     -- PRELIMINARY COMPUTING
     local mu1 = cv.GaussianBlur(I1, { 11, 11 }, 1.5)
     local mu2 = cv.GaussianBlur(I2, { 11, 11 }, 1.5)
 
-    local mu1_2 = mu1:mul(mu1)
-    local mu2_2 = mu2:mul(mu2)
-    local mu1_mu2 = mu1:mul(mu2)
+    local mu1_2 = mu1 * mu1
+    local mu2_2 = mu2 * mu2
+    local mu1_mu2 = mu1 * mu2
 
     local sigma1_2 = cv.GaussianBlur(I1_2, { 11, 11 }, 1.5)
     sigma1_2 = sigma1_2 - mu1_2
@@ -74,11 +74,11 @@ local function getMSSISM(i1, i2)
 
     local t1 = 2 * mu1_mu2 + C1
     local t2 = 2 * sigma12 + C2
-    local t3 = t1:mul(t2) -- t3 = ((2*mu1_mu2 + C1).*(2*sigma12 + C2))
+    local t3 = t1 * t2 -- t3 = ((2*mu1_mu2 + C1).*(2*sigma12 + C2))
 
     t1 = mu1_2 + mu2_2 + C1
     t2 = sigma1_2 + sigma2_2 + C2
-    t1 = t1:mul(t2)                       -- t1 =((mu1_2 + mu2_2 + C1).*(sigma1_2 + sigma2_2 + C2))
+    t1 = t1 * t2                       -- t1 =((mu1_2 + mu2_2 + C1).*(sigma1_2 + sigma2_2 + C2))
 
     local ssim_map = cv.divide(t3, t1) -- ssim_map =  t3./t1;
 
@@ -156,7 +156,7 @@ local function main()
 
     cv.namedWindow(WIN_RF, cv.WINDOW_AUTOSIZE)
     cv.namedWindow(WIN_UT, cv.WINDOW_AUTOSIZE)
-    cv.moveWindow(WIN_RF, 400, 0)     --750,  2 (bernat =0)
+    cv.moveWindow(WIN_RF, 400, 0)                  --750,  2 (bernat =0)
     cv.moveWindow(WIN_UT, refS[0 + INDEX_BASE], 0) --1500, 2
 
     print(string.format("Reference frame resolution: Width=%d Height=%d of nr#: %d", refS[0 + INDEX_BASE], refS[1 + INDEX_BASE],

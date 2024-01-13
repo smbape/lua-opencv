@@ -4,8 +4,8 @@
 /build.luarocks
 /node_modules
 /out
+/samples/dnn/object_detection/models
 /*.rock
 /*.rockspec
 /*.sublime-workspace
-/samples/dnn/object_detection/models
 generated

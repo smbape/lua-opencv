@@ -17,8 +17,8 @@ local function drawAxis(img, p_, q_, colour, scale)
     local i0 = 0 + INDEX_BASE
     local i1 = 1 + INDEX_BASE
 
-    local p = {p_[i0], p_[i1]}
-    local q = {q_[i0], q_[i1]}
+    local p = { p_[i0], p_[i1] }
+    local q = { q_[i0], q_[i1] }
 
     -- [visualization1]
     local angle = math.atan2(p[i1] - q[i1], p[i0] - q[i0]) -- angle in radians
@@ -27,16 +27,16 @@ local function drawAxis(img, p_, q_, colour, scale)
     -- Here we lengthen the arrow by a factor of scale
     q[i0] = p[i0] - scale * hypotenuse * math.cos(angle)
     q[i1] = p[i1] - scale * hypotenuse * math.sin(angle)
-    cv.line(img, {int(p[i0]), int(p[i1])}, {int(q[i0]), int(q[i1])}, colour, 1, cv.LINE_AA)
+    cv.line(img, { int(p[i0]), int(p[i1]) }, { int(q[i0]), int(q[i1]) }, colour, 1, cv.LINE_AA)
 
     -- create the arrow hooks
     p[i0] = q[i0] + 9 * math.cos(angle + math.pi / 4)
     p[i1] = q[i1] + 9 * math.sin(angle + math.pi / 4)
-    cv.line(img, {int(p[i0]), int(p[i1])}, {int(q[i0]), int(q[i1])}, colour, 1, cv.LINE_AA)
+    cv.line(img, { int(p[i0]), int(p[i1]) }, { int(q[i0]), int(q[i1]) }, colour, 1, cv.LINE_AA)
 
     p[i0] = q[i0] + 9 * math.cos(angle - math.pi / 4)
     p[i1] = q[i1] + 9 * math.sin(angle - math.pi / 4)
-    cv.line(img, {int(p[i0]), int(p[i1])}, {int(q[i0]), int(q[i1])}, colour, 1, cv.LINE_AA)
+    cv.line(img, { int(p[i0]), int(p[i1]) }, { int(q[i0]), int(q[i1]) }, colour, 1, cv.LINE_AA)
     -- [visualization1]
 end
 
@@ -58,18 +58,18 @@ local function getOrientation(pts, img)
     local mean, eigenvectors, eigenvalues = cv.PCACompute2(data_pts, nil)
 
     -- Store the center of the object
-    local cntr = {int(mean[0]), int(mean[1])}
+    local cntr = { int(mean[0]), int(mean[1]) }
     -- [pca]
 
     -- [visualization]
     -- Draw the principal components
-    cv.circle(img, cntr, 3, {255, 0, 255}, 2)
-    local p1 = {cntr[1] + 0.02 * eigenvectors(0,0) * eigenvalues(0,0), cntr[2] + 0.02 * eigenvectors(0,1) * eigenvalues(0,0)}
-    local p2 = {cntr[1] - 0.02 * eigenvectors(1,0) * eigenvalues(1,0), cntr[2] - 0.02 * eigenvectors(1,1) * eigenvalues(1,0)}
-    drawAxis(img, cntr, p1, {0, 255, 0}, 1)
-    drawAxis(img, cntr, p2, {255, 255, 0}, 5)
+    cv.circle(img, cntr, 3, { 255, 0, 255 }, 2)
+    local p1 = { cntr[1] + 0.02 * eigenvectors(0, 0) * eigenvalues(0, 0), cntr[2] + 0.02 * eigenvectors(0, 1) * eigenvalues(0, 0) }
+    local p2 = { cntr[1] - 0.02 * eigenvectors(1, 0) * eigenvalues(1, 0), cntr[2] - 0.02 * eigenvectors(1, 1) * eigenvalues(1, 0) }
+    drawAxis(img, cntr, p1, { 0, 255, 0 }, 1)
+    drawAxis(img, cntr, p2, { 255, 255, 0 }, 5)
 
-    local angle = math.atan2(eigenvectors(0,1), eigenvectors(0,0)) -- orientation in radians
+    local angle = math.atan2(eigenvectors(0, 1), eigenvectors(0, 0)) -- orientation in radians
     -- [visualization]
 
     return angle
@@ -121,7 +121,7 @@ for i, c in contours:pairs() do
     -- Ignore contours that are too small or too large
     if area >= 1e2 and 1e5 >= area then
         -- Draw each contour only for visualisation purposes
-        cv.drawContours(src, contours, i - 1, {0, 0, 255}, 2)
+        cv.drawContours(src, contours, i - 1, { 0, 0, 255 }, 2)
         -- Find the orientation of each shape
         getOrientation(c, src)
     end

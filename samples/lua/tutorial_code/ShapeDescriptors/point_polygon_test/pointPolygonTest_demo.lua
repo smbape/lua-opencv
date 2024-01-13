@@ -19,10 +19,10 @@ local src = cv.Mat.zeros(4 * r, 4 * r, cv.CV_8U)
 -- Create a sequence of points to make a contour
 local vert = {
     { int(3 * r / 2), int(1.34 * r) },
-    { 1 * r,      2 * r },
+    { 1 * r,          2 * r },
     { int(3 * r / 2), int(2.866 * r) },
     { int(5 * r / 2), int(2.866 * r) },
-    { 3 * r,      2 * r },
+    { 3 * r,          2 * r },
     { int(5 * r / 2), int(1.34 * r) },
 }
 

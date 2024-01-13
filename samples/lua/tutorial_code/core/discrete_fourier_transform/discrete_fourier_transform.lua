@@ -48,8 +48,8 @@ local function main(argv)
     -- compute the magnitude and switch to logarithmic scale
     -- = > log(1 + sqrt(Re(DFT(I)) ^ 2 + Im(DFT(I)) ^ 2))
     -- [magnitude]
-    cv.split(complexI, planes)                    -- planes[0] = Re(DFT(I), planes[1] = Im(DFT(I))
-    cv.magnitude(planes[0 + INDEX_BASE], planes[1 + INDEX_BASE], planes[0 + INDEX_BASE]) -- planes[0 + INDEX_BASE] = magnitude
+    cv.split(complexI, planes)                                                           -- planes[0] = Re(DFT(I), planes[1] = Im(DFT(I))
+    cv.magnitude(planes[0 + INDEX_BASE], planes[1 + INDEX_BASE], planes[0 + INDEX_BASE]) -- planes[0] = magnitude
     local magI = planes[0 + INDEX_BASE]
     -- [magnitude]
     -- [log]
@@ -64,12 +64,12 @@ local function main(argv)
     local cx = int(magI_rows / 2)
     local cy = int(magI_cols / 2)
 
-    local q0 = magI:new({ 0, 0, cx, cy }) -- Top-Left - Create a ROI per quadrant
-    local q1 = magI:new({ cx, 0, cx, cy }) -- Top-Right
-    local q2 = magI:new({ 0, cy, cx, cy }) -- Bottom-Left
+    local q0 = magI:new({ 0, 0, cx, cy })   -- Top-Left - Create a ROI per quadrant
+    local q1 = magI:new({ cx, 0, cx, cy })  -- Top-Right
+    local q2 = magI:new({ 0, cy, cx, cy })  -- Bottom-Left
     local q3 = magI:new({ cx, cy, cx, cy }) -- Bottom-Right
 
-    local tmp = q0:copy()                 -- swap quadrants (Top-Left with Bottom-Right)
+    local tmp = q0:copy()                   -- swap quadrants (Top-Left with Bottom-Right)
     q3:copyTo(q0)
     tmp:copyTo(q3)
 
@@ -81,7 +81,7 @@ local function main(argv)
     cv.normalize(magI, magI, 0, 1, cv.NORM_MINMAX) -- Transform the matrix with float values into a
     -- viewable image form(float between values 0 and 1).
     -- [normalize]
-    cv.imshow("Input Image", I)           -- Show the result
+    cv.imshow("Input Image", I) -- Show the result
     cv.imshow("spectrum magnitude", magI)
     cv.waitKey()
 end

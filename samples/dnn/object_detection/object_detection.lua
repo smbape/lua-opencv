@@ -453,8 +453,6 @@ local function read_frame()
         local expected = input_fps * elapsed
         if expected < capture_counter then
             delay = math.max(1, int(1000 * (capture_counter - expected) / input_fps))
-        else
-            skip_frame = true
         end
 
         -- Wait until user press some key

@@ -18,11 +18,16 @@ local kwargs = opencv_lua.kwargs
 cv.samples.addSamplesDataSearchPath(dirname(dirname(dirname(findFile(
     "data/haarcascades/haarcascade_frontalface_alt.xml", kwargs({
         hints = {
-            ".",
             "out/build/x64-Debug/opencv/opencv-src",
             "out/build/x64-Release/opencv/opencv-src",
             "out/build/Linux-GCC-Debug/opencv/opencv-src",
             "out/build/Linux-GCC-Release/opencv/opencv-src",
+            "out/prepublish/luajit-2.1/lua-opencv/build.luarocks/opencv/opencv-src",
+            "out/prepublish/5.4/lua-opencv/build.luarocks/opencv/opencv-src",
+            "out/prepublish/5.3/lua-opencv/build.luarocks/opencv/opencv-src",
+            "out/prepublish/5.2/lua-opencv/build.luarocks/opencv/opencv-src",
+            "out/prepublish/5.1/lua-opencv/build.luarocks/opencv/opencv-src",
+            "opencv",
         }
     }))))))
 
