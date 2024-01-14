@@ -1,4 +1,7 @@
 #include "cv_extra.h"
+#include <algorithm>
+
+using byte = unsigned char;
 
 namespace cv {
 	double randu() {
@@ -57,5 +60,73 @@ namespace cv {
 		}
 
 		return std::make_shared<cv::Mat>(dst);
+	}
+
+	void bincount(InputArray _x, OutputArray out, InputArray _weights, int minlength) {
+		// minlength must not be negative
+		CV_Assert(minlength >= 0);
+
+		const Mat x = _x.getMat();
+
+		// x must be 1-dimensional
+		CV_Assert(x.dims <= 2 && x.channels() == 1 && x.depth() == CV_32S);
+		CV_Assert(x.dims == 1 || x.rows == 1 || x.cols == 1);
+
+		const Mat weights = _weights.getMat();
+		if (!weights.empty()) {
+			// weights must be 1-dimensional
+			CV_Assert(weights.dims <= 2 && weights.channels() == 1);
+			CV_Assert(weights.dims == 1 || weights.rows == 1 || weights.cols == 1);
+
+			// x and weights must have the same size
+			CV_Assert(x.total() == weights.total());
+		}
+
+		double min_x_val = 0, max_x_val = 0;
+		minMaxLoc(x, &min_x_val, &max_x_val);
+
+		// x must not contains elements with negative values
+		CV_Assert(min_x_val >= 0);
+
+		std::vector<double> bins(std::max((int)max_x_val + 1, minlength));
+		const auto total = x.total();
+
+		if (weights.empty()) {
+			for (int i = 0; i < total; i++) {
+				bins[x.at<int>(i)] += 1;
+			}
+		}
+		else {
+			for (int i = 0; i < total; i++) {
+				switch (weights.depth()) {
+				case CV_8U:
+					bins[x.at<int>(i)] += weights.at<byte>(i);
+					break;
+				case CV_8S:
+					bins[x.at<int>(i)] += weights.at<char>(i);
+					break;
+				case CV_16U:
+					bins[x.at<int>(i)] += weights.at<ushort>(i);
+					break;
+				case CV_16S:
+					bins[x.at<int>(i)] += weights.at<short>(i);
+					break;
+				case CV_32S:
+					bins[x.at<int>(i)] += weights.at<int>(i);
+					break;
+				case CV_32F:
+					bins[x.at<int>(i)] += weights.at<float>(i);
+					break;
+				case CV_64F:
+					bins[x.at<int>(i)] += weights.at<double>(i);
+					break;
+				default:
+					cv::error(cv::Error::StsAssert, "depth must be one of CV_8U CV_8S CV_16U CV_16S CV_32S CV_32F CV_64F", CV_Func, __FILE__, __LINE__);
+				}
+			}
+		}
+
+		Mat _bins(Size(bins.size(), 1), CV_64F, static_cast<void*>(const_cast<double*>(bins.data())));
+		_bins.copyTo(out);
 	}
 }

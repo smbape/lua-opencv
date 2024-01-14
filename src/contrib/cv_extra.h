@@ -18,4 +18,6 @@ namespace cv {
 
 	CV_EXPORTS_W int argmax(InputArray src, bool lastIndex = false);
 	CV_EXPORTS_W std::variant<std::shared_ptr<Mat>, int> argmax(InputArray src, int axis, bool lastIndex = false);
+
+	CV_EXPORTS_W void bincount(InputArray x, OutputArray out, InputArray weights = noArray(), int minlength = 0);
 }

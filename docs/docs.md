@@ -1341,6 +1341,7 @@
   - [cv.arrowedLine](#cvarrowedline)
   - [cv.batchDistance](#cvbatchdistance)
   - [cv.bilateralFilter](#cvbilateralfilter)
+  - [cv.bincount](#cvbincount)
   - [cv.bitwise\_and](#cvbitwise%5C_and)
   - [cv.bitwise\_not](#cvbitwise%5C_not)
   - [cv.bitwise\_or](#cvbitwise%5C_or)
@@ -17252,6 +17253,17 @@ void cv::bilateralFilter( InputArray  src,
                           int         borderType = BORDER_DEFAULT );
 lua:
     cv.bilateralFilter( src, d, sigmaColor, sigmaSpace[, dst[, borderType]] ) -> dst
+```
+
+### cv.bincount
+
+```cpp
+void cv::bincount( InputArray  x,
+                   OutputArray out,
+                   InputArray  weights = noArray(),
+                   int         minlength = 0 );
+lua:
+    cv.bincount( x[, out[, weights[, minlength]]] ) -> out
 ```
 
 ### cv.bitwise\_and
