@@ -63,7 +63,9 @@ ${ fdecl.join(" ") } ( ... )
         error('there are ' .. (kwargs:size() - usedkw) .. ' unknown named parameters')
     end
 
-    -- ... YOUR CODE HERE
+    --- ====================== ---
+    --- CODE LOGIC STARTS HERE ---
+    --- ====================== ---
 end
 `.trim();
 };
