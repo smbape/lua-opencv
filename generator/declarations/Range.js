@@ -2,6 +2,7 @@ module.exports = [
     ["class cv.Range", "", ["/Simple"], [
         ["int", "start", "", ["/RW"]],
         ["int", "end", "", ["/RW"]],
+        ["cv::Range", "Ellipsis", "", ["/R", "/S", "/RExpr=cvextra::Ellipsis"]],
     ], "", ""],
 
     ["cv.Range.Range", "", [], [], "", ""],

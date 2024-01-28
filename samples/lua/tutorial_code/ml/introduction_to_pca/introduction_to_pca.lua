@@ -45,13 +45,11 @@ local function getOrientation(pts, img)
     -- Construct a buffer used by the pca analysis
     local sz = pts.rows
     local cols = pts.cols
-    local channels = pts:channels()
 
     local data_pts = cv.Mat(sz, 2, cv.CV_64F)
     for i = 0, sz - 1 do
-        local pt = pts:Point_at(i)
-        data_pts:set(pt[1], i, 0)
-        data_pts:set(pt[2], i, 1)
+        data_pts[{ i, 0 }] = pts[{ i, 0, 0 }]
+        data_pts[{ i, 1 }] = pts[{ i, 0, 1 }]
     end
 
     -- Perform PCA analysis
@@ -115,7 +113,7 @@ local _, bw = cv.threshold(gray, 50, 255, bit.bor(cv.THRESH_BINARY, cv.THRESH_OT
 -- Find all the contours in the thresholded image
 local contours, _ = cv.findContours(bw, cv.RETR_LIST, cv.CHAIN_APPROX_NONE)
 
-for i, c in contours:pairs() do
+for i, c in ipairs(contours) do
     -- Calculate the area of each contour
     local area = cv.contourArea(c)
     -- Ignore contours that are too small or too large

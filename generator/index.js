@@ -22,35 +22,6 @@ const getOptions = output => {
         variantTypeReg: /(?:<cv::Ptr)/,
         shared_ptr: "cv::Ptr",
         cname: "new",
-        implemented: {
-            test: (signature, opts) => {
-                if (/auto return_as_impl\(cv::Ptr<[^&]+>& obj, sol::state_view& lua\)/.test(signature)) {
-                    return true;
-                }
-
-                // if (/auto return_as_impl\(std::vector<cv::Ptr<[^&]+>>& obj, sol::state_view& lua\)/.test(signature)) {
-                //     return true;
-                // }
-
-                // if (/auto return_as_impl\(cv::(?:Point3?|Rect|Scalar|Size|Vec)(?:\d[bdfisw])?& obj, sol::state_view& lua\)/.test(signature)) {
-                //     return true;
-                // }
-
-                // if (/auto return_as_impl\(std::vector<cv::(?:Point3?|Rect|Size|Vec)(?:\d[bdfisw])?>& obj, sol::state_view& lua\)/.test(signature)) {
-                //     return true;
-                // }
-
-                // if (/auto return_as_impl\(std::vector<std::vector<cv::(?:Point3?)(?:\d[bdfisw])?>>& obj, sol::state_view& lua\)/.test(signature)) {
-                //     return true;
-                // }
-
-                if (/auto return_as_impl\(std::vector<std::tuple<cv::(?:Point)(?:\d[bdfisw])?, double>>& obj, sol::state_view& lua\)/.test(signature)) {
-                    return true;
-                }
-
-                return false;
-            }
-        },
 
         isCaseSensitive: true,
         hasInheritanceSupport: true, // do not duplicate parent methods
@@ -88,6 +59,10 @@ const getOptions = output => {
         onCoClass: (processor, coclass, opts) => {
             // Nothing to do
         },
+
+        vectors: new Set([
+            "std::vector<std::variant<int, cv::Range>>",
+        ]),
     };
 
     for (const opt of ["hdr", "impl", "save"]) {

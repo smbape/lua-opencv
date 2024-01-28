@@ -129,4 +129,12 @@ namespace cv {
 		Mat _bins(Size(bins.size(), 1), CV_64F, static_cast<void*>(const_cast<double*>(bins.data())));
 		_bins.copyTo(out);
 	}
+
+	void ravel(const cv::Mat& src, cv::Mat& out) {
+		if (src.isContinuous()) {
+			out = src.reshape(src.channels(), src.total());
+		} else {
+			out = src.clone().reshape(src.channels(), src.total());
+		}
+	}
 }

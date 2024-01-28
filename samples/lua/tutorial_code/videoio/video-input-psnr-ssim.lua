@@ -43,8 +43,8 @@ end
 -- [get-mssim]
 local function getMSSISM(i1, i2)
     -- https://github.com/opencv/opencv/issues/16739
-    local C1 = cv.Scalar.all(6.5025)
-    local C2 = cv.Scalar.all(58.5225)
+    local C1 = { 6.5025, 6.5025, 6.5025, 6.5025 }
+    local C2 = { 58.5225, 58.5225, 58.5225, 58.5225 }
     -- INITS
 
     local I1 = i1:convertTo(cv.CV_32F) -- cannot calculate on one byte large values

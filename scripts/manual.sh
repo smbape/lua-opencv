@@ -125,10 +125,12 @@ cd out/test/${version}/lua-opencv && \
 ./build.bat --target luarocks && \
 cd "${PWD_BCK}" || exit $?
 
-LUA_BINDIR="$PWD/out/test/${version}/lua-opencv/luarocks"
+luarocks="'`cygpath -u "$(sed -nre 's/^.*["'"'"']([^"'"'"']+)["'"'"'] --project-tree .+$/\1/p' out/test/${version}/lua-opencv/luarocks/luarocks.bat)"`'"
+source scripts/vcvars_restore_start.sh || exit $?
 cd out/test/${version}/lua-project && \
-"${LUA_BINDIR}/luarocks.bat" init --lua-versions "5.1,5.2,5.3,5.4" && \
-./luarocks.bat install "--server=${projectDir}/out/prepublish/server" opencv_lua 4.9.0
+"$luarocks" init --lua-versions "5.1,5.2,5.3,5.4" && \
+./luarocks.bat install "--server=${projectDir}/out/prepublish/server" opencv_lua 4.9.0 && \
+./luarocks.bat install --deps-only ../lua-opencv/samples/samples-scm-1.rockspec
 '
 done
 
@@ -215,12 +217,13 @@ cd out/test/${version}/lua-opencv && \
 ./build.sh --target luarocks && \
 cd "${PWD_BCK}" || exit $?
 
-LUA_BINDIR="$PWD/out/test/${version}/lua-opencv/luarocks"
+luarocks="'$(sed -nre 's/^.*["'"'"']([^"'"'"']+)["'"'"'] --project-tree .+$/\1/p' out/test/${version}/lua-opencv/luarocks/luarocks)'"
 cd out/test/${version}/lua-project && \
-"${LUA_BINDIR}/luarocks" init --lua-versions "5.1,5.2,5.3,5.4" && \
+"$luarocks" init --lua-versions "5.1,5.2,5.3,5.4" && \
 ./luarocks config --scope project cmake_generator Ninja && \
 ./luarocks config --scope project cmake_build_args -- -j$(( $(nproc) - 2 )) && \
-./luarocks install "--server=${projectDir}/out/prepublish/server" opencv_lua 4.9.0
+./luarocks install "--server=${projectDir}/out/prepublish/server" opencv_lua 4.9.0 && \
+./luarocks install --deps-only ../lua-opencv/samples/samples-scm-1.rockspec
 '
 done
 

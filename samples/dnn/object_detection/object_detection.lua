@@ -190,9 +190,9 @@ local function resize_and_show(title, image)
 end
 
 
-local function drawPred(frame, imgScale, classId, conf, left, top, right, bottom)
-    local fontScale = 0.3 * imgScale
-    local thickness = math.max(1, int(imgScale))
+local function drawPred(frame, classId, conf, left, top, right, bottom)
+    local fontScale = 0.8
+    local thickness = 2
 
     -- Draw a bounding box.
     cv.rectangle(frame, { left, top }, { right, bottom }, { 0, 255, 0 }, thickness)
@@ -344,13 +344,13 @@ local function postprocess(frame, imgScale, inpWidth, inpHeight, outs)
     -- Perform non maximum suppression to eliminate redundant overlapping bounding boxes with lower confidences.
     local indices = cv.dnn.NMSBoxes(boxes, confidences, confThreshold, nmsThreshold)
 
-    for _, i in indices:pairs() do
+    for _, i in ipairs(indices) do
         local box = boxes[i + INDEX_BASE]
         local left = box[0 + INDEX_BASE]
         local top = box[1 + INDEX_BASE]
         local width = box[2 + INDEX_BASE]
         local height = box[3 + INDEX_BASE]
-        drawPred(frame, imgScale, classIds[i + INDEX_BASE], confidences[i + INDEX_BASE], left, top, left + width, top + height)
+        drawPred(frame, classIds[i + INDEX_BASE], confidences[i + INDEX_BASE], left, top, left + width, top + height)
     end
 
     resize_and_show(winName, frame)

@@ -1,0 +1,37 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index f3e69b84..7fa4ac87 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -461,6 +461,8 @@ macro(ei_add_target_property target prop value)
+   set_target_properties(${target} PROPERTIES ${prop} "${previous} ${value}")
+ endmacro()
+ 
++option(EIGEN_ENABLE_INSTALL "Enable installation of Eigen3" ON)
++if(EIGEN_ENABLE_INSTALL)
+ install(FILES
+   signature_of_eigen3_matrix_library
+   DESTINATION ${INCLUDE_INSTALL_DIR} COMPONENT Devel
+@@ -474,6 +476,7 @@ if(EIGEN_BUILD_PKGCONFIG)
+ endif()
+ 
+ install(DIRECTORY Eigen DESTINATION ${INCLUDE_INSTALL_DIR} COMPONENT Devel)
++endif()
+ 
+ 
+ option(EIGEN_BUILD_DOC "Enable creation of Eigen documentation" ON)
+@@ -639,6 +642,7 @@ export (PACKAGE Eigen3)
+ 
+ install (EXPORT Eigen3Targets NAMESPACE Eigen3:: DESTINATION ${CMAKEPACKAGE_INSTALL_DIR})
+ 
++if(EIGEN_ENABLE_INSTALL)
+ install ( FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/UseEigen3.cmake
+                 ${CMAKE_CURRENT_BINARY_DIR}/Eigen3Config.cmake
+                 ${CMAKE_CURRENT_BINARY_DIR}/Eigen3ConfigVersion.cmake
+@@ -647,6 +651,7 @@ install ( FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/UseEigen3.cmake
+ # Add uninstall target
+ add_custom_target ( uninstall
+     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/EigenUninstall.cmake)
++endif()
+ 
+ if (EIGEN_SPLIT_TESTSUITE)
+   ei_split_testsuite("${EIGEN_SPLIT_TESTSUITE}")

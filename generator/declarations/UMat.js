@@ -102,7 +102,7 @@ module.exports = ({ self, self_get, shared_ptr }) => [
     ], "", ""],
 
     ["cv.UMat.assignTo", "void", [], [
-        ["UMat", "m", "", ["/Ref", "/C"]],
+        ["UMat", "m", "", ["/Ref"]],
         ["int", "type", "-1", []],
     ], "", ""],
 
@@ -450,28 +450,13 @@ module.exports = ({ self, self_get, shared_ptr }) => [
         ["cv::UMat", "dst", "cv::UMat()", ["/O"]],
     ], "", ""],
 
-    ["cv.UMat.createFromArray", "UMat", ["/S", "/Call=::cvextra::createUMatFromArray", "/Expr=$0, lua"], [
-        ["sol::table", "array", "", []],
+    ["cv.UMat.createFromArray", "UMat", ["/S", "/Call=::cvextra::createUMatFromArray", "/Expr=L, $0"], [
+        ["Table", "array", "", ["/Ref", "/C"]],
         ["int", "type", "CV_64F", []],
         ["UMatUsageFlags", "usageFlags", "USAGE_DEFAULT", []]
     ], "", ""],
 
-    ["cv.UMat.table", "sol::table", ["/Call=::cvextra::tableUMat", `/Expr=${ self }, nested, lua`], [
+    ["cv.UMat.table", "void", ["/Call=::cvextra::pushtable_UMat", `/Expr=L, ${ self }, $0`], [
         ["bool", "nested", "false", []],
     ], "", ""],
-
-    // ["cv.UMat.convertToShow", "void", ["/Call=::autoit::cvextra::convertToShow", "/Expr=*__self->get(), $0"], [
-    //     ["Mat", "dst", "Mat::zeros(self.rows, self.cols, CV_8UC3)", ["/IO"]],
-    //     ["bool", "toRGB", "false", []],
-    // ], "", ""],
-    // ["cv.UMat.convertToBitmap", "void*", ["/Call=::autoit::cvextra::convertToBitmap", "/Expr=*__self->get(), $0"], [
-    //     ["bool", "copy", "true", []],
-    // ], "", ""],
-    // ["cv.UMat.GdiplusResize", "void", ["/Call=::autoit::cvextra::GdiplusResize", "/Expr=*__self->get(), $0"], [
-    //     ["Mat", "dst", "", ["/O"]],
-    //     ["float", "newWidth", "", []],
-    //     ["float", "newHeight", "", []],
-    //     ["int", "interpolation", "7", []],
-    // ], "", ""],
-
 ];

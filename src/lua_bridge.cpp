@@ -1,0 +1,216 @@
+#include <registration.hpp>
+
+namespace {
+	using namespace LUA_MODULE_NAME;
+	using namespace cvextra;
+
+	auto Lua_sol_meta_function_length(lua_State* L) {
+		::cv::Mat* self = lua_is(L, 1, static_cast<cv::Mat*>(nullptr)) ? lua_to(L, 1, static_cast<cv::Mat*>(nullptr)).get() : nullptr;
+		if (!self) {
+			return luaL_typeerror(L, 1, "cv::Mat");
+		}
+		return lua_push(L, self->size.p[0]);
+	}
+
+	auto Lua_sol_meta_function_index(lua_State* L) {
+		if (lua_is(L, 2, static_cast<int*>(nullptr))) {
+			::cv::Mat* self = lua_is(L, 1, static_cast<cv::Mat*>(nullptr)) ? lua_to(L, 1, static_cast<cv::Mat*>(nullptr)).get() : nullptr;
+			if (!self) {
+				return luaL_typeerror(L, 1, "cv::Mat");
+			}
+
+			const auto& index = lua_to(L, 2, static_cast<int*>(nullptr));
+			return lua_push(L, Mat_index_at(L, *self, index));
+		}
+
+		if (lua_is(L, 2, static_cast<cv::Range*>(nullptr))) {
+			::cv::Mat* self = lua_is(L, 1, static_cast<cv::Mat*>(nullptr)) ? lua_to(L, 1, static_cast<cv::Mat*>(nullptr)).get() : nullptr;
+			if (!self) {
+				return luaL_typeerror(L, 1, "cv::Mat");
+			}
+
+			const auto& index = *lua_to(L, 2, static_cast<cv::Range*>(nullptr));
+			return lua_push(L, Mat_index_at(L, *self, index));
+		}
+
+		if (lua_istable(L, 2) && lua_is(L, 2, static_cast<std::vector<int>*>(nullptr))) {
+			::cv::Mat* self = lua_is(L, 1, static_cast<cv::Mat*>(nullptr)) ? lua_to(L, 1, static_cast<cv::Mat*>(nullptr)).get() : nullptr;
+			if (!self) {
+				return luaL_typeerror(L, 1, "cv::Mat");
+			}
+
+			static std::vector<int> index; lua_to(L, 2, index);
+			return lua_push(L, Mat_index_at(L, *self, index));
+		}
+
+		if (lua_istable(L, 2) && lua_is(L, 2, static_cast<std::vector<cv::Range>*>(nullptr))) {
+			::cv::Mat* self = lua_is(L, 1, static_cast<cv::Mat*>(nullptr)) ? lua_to(L, 1, static_cast<cv::Mat*>(nullptr)).get() : nullptr;
+			if (!self) {
+				return luaL_typeerror(L, 1, "cv::Mat");
+			}
+
+			static std::vector<cv::Range> index; lua_to(L, 2, index);
+			return lua_push(L, Mat_index_at(L, *self, index));
+		}
+
+		if (lua_istable(L, 2) && lua_is(L, 2, static_cast<std::vector<std::variant<int, cv::Range>>*>(nullptr))) {
+			::cv::Mat* self = lua_is(L, 1, static_cast<cv::Mat*>(nullptr)) ? lua_to(L, 1, static_cast<cv::Mat*>(nullptr)).get() : nullptr;
+			if (!self) {
+				return luaL_typeerror(L, 1, "cv::Mat");
+			}
+
+			static std::vector<std::variant<int, cv::Range>> index; lua_to(L, 2, index);
+			return lua_push(L, Mat_index_at(L, *self, index));
+		}
+
+		return lua_class__index<0, ::cv::Mat>(L); // fallback to the default __index method
+	}
+
+	auto Lua_sol_meta_function_newindex(lua_State* L) {
+		if (lua_is(L, 3, static_cast<MatIndexType*>(nullptr))) {
+			if (lua_is(L, 2, static_cast<int*>(nullptr))) {
+				::cv::Mat* self = lua_is(L, 1, static_cast<cv::Mat*>(nullptr)) ? lua_to(L, 1, static_cast<cv::Mat*>(nullptr)).get() : nullptr;
+				if (!self) {
+					return luaL_typeerror(L, 1, "cv::Mat");
+				}
+
+				const auto& index = lua_to(L, 2, static_cast<int*>(nullptr));
+				const auto& value = lua_to(L, 3, static_cast<MatIndexType*>(nullptr));
+				Mat_newindex_at(L, *self, index, value);
+				return 0;
+			}
+
+			if (lua_is(L, 2, static_cast<cv::Range*>(nullptr))) {
+				::cv::Mat* self = lua_is(L, 1, static_cast<cv::Mat*>(nullptr)) ? lua_to(L, 1, static_cast<cv::Mat*>(nullptr)).get() : nullptr;
+				if (!self) {
+					return luaL_typeerror(L, 1, "cv::Mat");
+				}
+
+				const auto& index = *lua_to(L, 2, static_cast<cv::Range*>(nullptr));
+				const auto& value = lua_to(L, 3, static_cast<MatIndexType*>(nullptr));
+				Mat_newindex_at(L, *self, index, value);
+				return 0;
+			}
+
+			if (lua_istable(L, 2) && lua_is(L, 2, static_cast<std::vector<int>*>(nullptr))) {
+				::cv::Mat* self = lua_is(L, 1, static_cast<cv::Mat*>(nullptr)) ? lua_to(L, 1, static_cast<cv::Mat*>(nullptr)).get() : nullptr;
+				if (!self) {
+					return luaL_typeerror(L, 1, "cv::Mat");
+				}
+
+				static std::vector<int> index; lua_to(L, 2, index);
+				const auto& value = lua_to(L, 3, static_cast<MatIndexType*>(nullptr));
+				Mat_newindex_at(L, *self, index, value);
+				return 0;
+			}
+
+			if (lua_istable(L, 2) && lua_is(L, 2, static_cast<std::vector<cv::Range>*>(nullptr))) {
+				::cv::Mat* self = lua_is(L, 1, static_cast<cv::Mat*>(nullptr)) ? lua_to(L, 1, static_cast<cv::Mat*>(nullptr)).get() : nullptr;
+				if (!self) {
+					return luaL_typeerror(L, 1, "cv::Mat");
+				}
+
+				static std::vector<cv::Range> index; lua_to(L, 2, index);
+				const auto& value = lua_to(L, 3, static_cast<MatIndexType*>(nullptr));
+				Mat_newindex_at(L, *self, index, value);
+				return 0;
+			}
+
+			if (lua_istable(L, 2) && lua_is(L, 2, static_cast<std::vector<std::variant<int, cv::Range>>*>(nullptr))) {
+				::cv::Mat* self = lua_is(L, 1, static_cast<cv::Mat*>(nullptr)) ? lua_to(L, 1, static_cast<cv::Mat*>(nullptr)).get() : nullptr;
+				if (!self) {
+					return luaL_typeerror(L, 1, "cv::Mat");
+				}
+
+				static std::vector<std::variant<int, cv::Range>> index; lua_to(L, 2, index);
+				const auto& value = lua_to(L, 3, static_cast<MatIndexType*>(nullptr));
+				Mat_newindex_at(L, *self, index, value);
+				return 0;
+			}
+		}
+
+		return lua_class__newindex<0, ::cv::Mat>(L); // fallback to the default __newindex method
+	}
+
+	auto Lua_get(lua_State* L) {
+		if (!lua_is(L, 1, static_cast<cv::Mat*>(nullptr))) {
+			return luaL_typeerror(L, 1, "cv::Mat");
+		}
+
+		auto self = lua_to(L, 1, static_cast<cv::Mat*>(nullptr));
+		auto size = lua_gettop(L) - 1;
+
+		static std::vector<std::variant<int, cv::Range>> idx; idx.resize(size);
+		static std::vector<int> indexes; indexes.resize(size);
+		static std::vector<cv::Range> ranges; ranges.resize(size);
+
+		bool has_int = false;
+		bool has_range = false;
+		bool has_both = false;
+
+		for (int i = 0; i < size; i++) {
+			has_int = lua_is(L, i + 2, static_cast<int*>(nullptr)) || has_int;
+			has_range = lua_is(L, i + 2, static_cast<cv::Range*>(nullptr)) || has_range;
+			if (!has_int && !has_range) {
+				return luaL_typeerror(L, i + 2, "std::variant<int, cv::Range>");
+			}
+
+			if (has_int && has_range && !has_both) {
+				has_both = true;
+				if (lua_is(L, i + 2, static_cast<int*>(nullptr))) {
+					for (int j = 0; j < i; j++) {
+						idx[j] = ranges[j];
+					}
+				}
+				else {
+					for (int j = 0; j < i; j++) {
+						idx[j] = indexes[j];
+					}
+				}
+			}
+
+			if (!has_range) {
+				indexes[i] = lua_to(L, i + 2, static_cast<int*>(nullptr));
+			}
+			else if (!has_int) {
+				ranges[i] = *lua_to(L, i + 2, static_cast<cv::Range*>(nullptr));
+			}
+			else {
+				idx[i] = lua_is(L, i + 2, static_cast<std::variant<int, cv::Range>*>(nullptr));
+			}
+		}
+
+		if (!has_range) {
+			return lua_push(L, Mat_index_at(L, *self, indexes));
+		}
+
+		if (!has_int) {
+			return lua_push(L, Mat_index_at(L, *self, ranges));
+		}
+
+		return lua_push(L, Mat_index_at(L, *self, idx));
+	}
+
+	const struct luaL_Reg extended_methods[] = {
+		{"__len", Lua_sol_meta_function_length},
+		{"__index", Lua_sol_meta_function_index},
+		{"__newindex", Lua_sol_meta_function_newindex},
+		{"__call", Lua_get},
+		{"get", Lua_get},
+		{NULL, NULL} // Sentinel
+	};
+
+	void extend_Mat(lua_State* L) {
+		lua_rawget_create_if_nil(L, { "cv", "Mat" });
+
+		lua_pushfuncs(L, extended_methods);
+
+		lua_pop(L, 1);
+	}
+}
+
+namespace LUA_MODULE_NAME {
+	void register_extensions(lua_State* L) {
+		extend_Mat(L);
+	}
+}

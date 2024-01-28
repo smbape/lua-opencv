@@ -60,7 +60,7 @@ io.write('* Enter the beta value [0-100]: ')
 local beta = io.read("*n") -- read a number
 -- [basic-linear-transform-parameters]
 
-local rows, cols, channels, type = image.rows, image.cols, image:channels(), image:type()
+local rows, cols, channels, type_ = image.rows, image.cols, image:channels(), image:type()
 
 -- transform into an lua table for faster processing in lua
 image = image:table()
@@ -80,8 +80,8 @@ for y = 1, rows do
 end
 
 -- restore matrices
-image = cv.Mat.createFromArray(image, type)
-new_image = cv.Mat.createFromArray(new_image, type)
+image = cv.Mat.createFromArray(image, type_)
+new_image = cv.Mat.createFromArray(new_image, type_)
 
 -- [basic-linear-transform-operation]
 

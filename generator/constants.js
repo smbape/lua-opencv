@@ -57,6 +57,7 @@ exports.CPP_TYPES = new Map([
     ["GMetaArg", "cv::GMetaArg"],
     ["GArray", "cv::GArray"],
     ["GOpaque", "cv::GOpaque"],
+    ["Prim", "cv::gapi::wip::draw::Prim"],
 ]);
 
 exports.ALIASES = new Map([
@@ -90,7 +91,6 @@ exports.PTR = new Set([
 ]);
 
 exports.CUSTOM_CLASSES = [
-    ["cv.gapi.wip.draw.Prim", ["/Simple", "/DC"]],
     ["cv.gapi.wip.IStreamSource", []],
     ["cv.GProtoInputArgs", ["/Simple"]],
     ["cv.GProtoOutputArgs", ["/Simple"]],

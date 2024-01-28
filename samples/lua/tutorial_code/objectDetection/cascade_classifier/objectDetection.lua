@@ -14,6 +14,7 @@ local round = opencv_lua.math.round
 local dirname = opencv_lua.path.dirname
 local findFile = opencv_lua.fs_utils.findFile
 local kwargs = opencv_lua.kwargs
+local unpack = table.unpack or unpack ---@diagnostic disable-line: deprecated
 
 cv.samples.addSamplesDataSearchPath(dirname(dirname(dirname(findFile(
     "data/haarcascades/haarcascade_frontalface_alt.xml", kwargs({
@@ -39,16 +40,16 @@ local function detectAndDisplay(frame)
 
     ---- Detect faces
     local faces = face_cascade:detectMultiScale(frame_gray)
-    for i, face in faces:pairs() do
-        local x, y, w, h = face.x, face.y, face.width, face.height
+    for i, face in ipairs(faces) do
+        local x, y, w, h = unpack(face)
         local center = { x + int(w / 2), y + int(h / 2) }
         frame = cv.ellipse(frame, center, { int(w / 2), int(h / 2) }, 0, 0, 360, { 255, 0, 255 }, 4)
 
         local faceROI = frame_gray:new(face)
         ---- In each face, detect eyes
         local eyes = eyes_cascade:detectMultiScale(faceROI)
-        for i, eye in eyes:pairs() do
-            local x2, y2, w2, h2 = eye.x, eye.y, eye.width, eye.height
+        for i, eye in ipairs(eyes) do
+            local x2, y2, w2, h2 = unpack(eye)
             local eye_center = { x + x2 + int(w2 / 2), y + y2 + int(h2 / 2) }
             local radius = int(round((w2 + h2) * 0.25))
             frame = cv.circle(frame, eye_center, radius, { 255, 0, 0 }, 4)

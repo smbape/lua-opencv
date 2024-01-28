@@ -10,6 +10,7 @@ Sources:
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local int = opencv_lua.math.int
+local unpack = table.unpack or unpack ---@diagnostic disable-line: deprecated
 
 -- Make the starting point predictable
 local rng = cv.RNG(12345)
@@ -36,7 +37,7 @@ local function thresh_callback(val)
     local boundRect = {}
     local centers = {}
     local radius = {}
-    for i, c in contours:pairs() do
+    for i, c in ipairs(contours) do
         contours_poly[i] = cv.approxPolyDP(c, 3, true)
         boundRect[i] = cv.boundingRect(contours_poly[i])
         centers[i], radius[i] = cv.minEnclosingCircle(contours_poly[i])
@@ -51,10 +52,12 @@ local function thresh_callback(val)
     -- Draw polygonal contour + bonding rects + circles
     for i = 1, #contours do
         local color = { rng:uniform(0, 256), rng:uniform(0, 256), rng:uniform(0, 256) }
+        local x, y, width, height = unpack(boundRect[i])
+        local cx, cy = unpack(centers[i])
         cv.drawContours(drawing, contours_poly, i - 1, color)
-        cv.rectangle(drawing, { int(boundRect[i].x), int(boundRect[i].y) },
-            { int(boundRect[i].x + boundRect[i].width), int(boundRect[i].y + boundRect[i].height) }, color, 2)
-        cv.circle(drawing, { int(centers[i].x), int(centers[i].y) }, int(radius[i]), color, 2)
+        cv.rectangle(drawing, { int(x), int(y) },
+            { int(x + width), int(y + height) }, color, 2)
+        cv.circle(drawing, { int(cx), int(cy) }, int(radius[i]), color, 2)
     end
     -- [forContour]
 

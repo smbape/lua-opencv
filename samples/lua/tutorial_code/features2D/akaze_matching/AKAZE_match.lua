@@ -60,7 +60,7 @@ local t = os.clock()
 local matched1 = {}
 local matched2 = {}
 local nn_match_ratio = 0.8 -- Nearest neighbor matching ratio
-for i, v in nn_matches:pairs() do
+for i, v in ipairs(nn_matches) do
     local m, n = v[0 + INDEX_BASE], v[1 + INDEX_BASE]
     if m.distance < nn_match_ratio * n.distance then
         -- lua use 1-based index array

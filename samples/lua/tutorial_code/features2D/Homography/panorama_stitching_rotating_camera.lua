@@ -38,13 +38,13 @@ local function basicPanoramaStitching(img1Path, img2Path)
     --[extract-rotation]
 
     -- [compute-rotation-displacement]
-    local R_2to1 = R1 * R2:t()
+    local R_2to1 = cv.dot(R1, R2:t())
     -- [compute-rotation-displacement]
 
     -- [compute-homography]
-    local H = cameraMatrix * R_2to1 * cameraMatrix:inv()
+    local H = cv.dot(cv.dot(cameraMatrix, R_2to1), cameraMatrix:inv())
     H = H / H(2, 2)
-    -- [compute-homography]
+    -- [compute-homography])
 
     -- [stitch]
     local img_stitch = cv.warpPerspective(img2, H, { img2.width * 2, img2.height })

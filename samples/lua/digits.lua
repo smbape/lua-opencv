@@ -88,7 +88,7 @@ end
 local KNearest = class({
     __init__ = function(self, ...)
         local args = { ... }
-        local has_kwarg = opencv_lua.kwargs.is_instance(args[#args])
+        local has_kwarg = opencv_lua.kwargs.isinstance(args[#args])
         local kwargs = has_kwarg and args[#args] or opencv_lua.kwargs()
         local usedkw = 0
 
@@ -133,7 +133,7 @@ local KNearest = class({
 
     predict = function(self, samples)
         local _retval, results, _neigh_resp, _dists = self.model:findNearest(samples, self.k)
-        return results:reshape(results:channels(), results:total()):table()
+        return results:ravel():table()
     end,
 
     load = function(self, fn)
@@ -148,7 +148,7 @@ local KNearest = class({
 local SVM = class({
     __init__ = function(self, ...)
         local args = { ... }
-        local has_kwarg = opencv_lua.kwargs.is_instance(args[#args])
+        local has_kwarg = opencv_lua.kwargs.isinstance(args[#args])
         local kwargs = has_kwarg and args[#args] or opencv_lua.kwargs()
         local usedkw = 0
 
@@ -215,7 +215,7 @@ local SVM = class({
 
     predict = function(self, samples)
         local _retval, results = self.model:predict(samples)
-        return results:reshape(results:channels(), results:total()):table()
+        return results:ravel():table()
     end,
 
     load = function(self, fn)
@@ -257,8 +257,8 @@ local function evaluate_model(model, digits, samples, labels)
         if resp[i] ~= labels[i] then
             -- img[...,:2] = 0
             img:reshape(1, img.shape):new({
-                cv.Range(0, img.rows),
-                cv.Range(0, img.cols),
+                cv.Range.all(),
+                cv.Range.all(),
                 cv.Range(0, 2),
             }):setTo(0)
         end
@@ -317,15 +317,9 @@ local function preprocess_hog(digits)
         t = os.clock()
         local hists = {}
         for i = 1, #bin_cells do
-            -- bincount requires a 1-dimensional matrix
-            -- reshape requires a continuous matrix
-            -- copy will create a new continuous matrix
-            bin_cells[i] = bin_cells[i]:copy():reshape(1, 10 * 10)
-            mag_cells[i] = mag_cells[i]:copy():reshape(1, 10 * 10)
-
-            -- hists[#hists + 1] = cv.bincount(bin_cells[i], nil, mag_cells[i], bin_n)
-            hists[#hists + 1] = cv.bincount(bin_cells[i], opencv_lua.kwargs({
-                weights = mag_cells[i],
+            -- hists[#hists + 1] = cv.bincount(bin_cells[i]:ravel(), nil, mag_cells[i]:ravel(), bin_n)
+            hists[#hists + 1] = cv.bincount(bin_cells[i]:ravel(), opencv_lua.kwargs({
+                weights = mag_cells[i]:ravel(),
                 minlength = bin_n,
             }))
         end

@@ -41,8 +41,8 @@ local function goodFeaturesToTrack_Demo(val)
     print('** Number of corners detected:', #corners)
     local radius = 4
     for i = 0, #corners - 1 do
-        local pt = corners:Point_at(i, 0)
-        cv.circle(copy, pt, radius, { rng:uniform(0, 256), rng:uniform(0, 256), rng:uniform(0, 256) }, cv.FILLED)
+        cv.circle(copy, { int(corners[{ i, 0, 0 }]), int(corners[{ i, 0, 1 }]) }, radius,
+            { rng:uniform(0, 256), rng:uniform(0, 256), rng:uniform(0, 256) }, cv.FILLED)
     end
 
     -- Show what you got
@@ -59,8 +59,7 @@ local function goodFeaturesToTrack_Demo(val)
 
     -- Write them down
     for i = 0, #corners - 1 do
-        local pt = corners:Point_at(i, 0)
-        print(" -- Refined Corner [", i, "]  (", pt.x, ",", pt.y, ")")
+        print(" -- Refined Corner [", i, "]  (", corners[{ i, 0, 0 }], ",", corners[{ i, 0, 1 }], ")")
     end
 end
 

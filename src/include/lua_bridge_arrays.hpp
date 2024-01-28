@@ -1,750 +1,1183 @@
 #pragma once
 
-#include <lua_utils.hpp>
-#include <lua_generated_include.hpp>
+#include <lua_bridge_common.hpp>
+#include <opencv2/core.hpp>
 
 namespace LUA_MODULE_NAME {
 	// InputArray, outputArray, InputOutputArray
 	// InputArrayOfArrays, outputArrayOfArrays, InputOutputArrayOfArrays
-	template<typename Array, typename _To, bool is_arrays_type>
+	template<typename Array, bool is_arrays_type>
 	struct _OptionalArray
 	{
-		_OptionalArray() = default;
+		static const bool is_valid(lua_State* L, int index) {
+			if (lua_isnil(L, index)) {
+				return true;
+			}
 
-		_OptionalArray(_To& obj) {
-			if (obj == sol::lua_nil) {
+			if (lua_isuserdata(L, index) && lua_is(L, index, static_cast<Array*>(nullptr))) {
+				return true;
+			}
+
+			if constexpr (!is_arrays_type && (std::is_same_v<Array, cv::_InputArray>)) {
+				if (lua_is(L, index, static_cast<bool*>(nullptr))) {
+					return true;
+				}
+			}
+
+			if constexpr (!is_arrays_type && (std::is_same_v<Array, cv::_InputArray>)) {
+				if (lua_is(L, index, static_cast<double*>(nullptr))) {
+					return true;
+				}
+			}
+
+			if constexpr (!is_arrays_type) {
+				if (lua_is(L, index, static_cast<cv::cuda::GpuMat*>(nullptr))) {
+					return true;
+				}
+			}
+
+			if constexpr (!is_arrays_type) {
+				if (lua_is(L, index, static_cast<cv::Mat*>(nullptr))) {
+					return true;
+				}
+			}
+
+			if constexpr (!is_arrays_type) {
+				if (lua_is(L, index, static_cast<cv::UMat*>(nullptr))) {
+					return true;
+				}
+			}
+
+			if constexpr (!is_arrays_type && (std::is_same_v<Array, cv::_InputArray>)) {
+				if (lua_is(L, index, static_cast<cv::Scalar*>(nullptr))) {
+					return true;
+				}
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Mat>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::UMat>*>(nullptr))) {
+				return true;
+			}
+
+			if constexpr (std::is_same_v<Array, cv::_InputArray>) {
+				if (lua_is(L, index, static_cast<std::vector<bool>*>(nullptr))) {
+					return true;
+				}
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::RotatedRect>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Range>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Moments>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<uchar>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<schar>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<char>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<ushort>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<short>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<int>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<float>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<double>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Point3i>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Point3f>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Point3d>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Point2f>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Point2d>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Point>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Rect2f>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Rect2d>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Rect>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Size2f>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Size2d>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Size>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec2b>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec3b>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec4b>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec2s>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec3s>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec4s>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec2w>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec3w>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec4w>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec2i>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec3i>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec4i>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec6i>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec8i>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec2f>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec3f>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec4f>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec6f>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec2d>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec3d>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec4d>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec6d>*>(nullptr))) {
+				return true;
+			}
+
+			if constexpr (std::is_same_v<Array, cv::_InputOutputArray>) {
+				if (lua_is(L, index, static_cast<std::vector<std::vector<bool>>*>(nullptr))) {
+					return true;
+				}
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::RotatedRect>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Range>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Moments>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<uchar>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<schar>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<char>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<ushort>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<short>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<int>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<float>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<double>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Point3i>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Point3f>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Point3d>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Point2f>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Point2d>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Point>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Rect2f>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Rect2d>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Rect>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Size2f>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Size2d>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Size>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec2b>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec3b>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec4b>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec2s>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec3s>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec4s>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec2w>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec3w>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec4w>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec2i>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec3i>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec4i>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec6i>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec8i>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec2f>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec3f>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec4f>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec6f>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec2d>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec3d>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec4d>>*>(nullptr))) {
+				return true;
+			}
+
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec6d>>*>(nullptr))) {
+				return true;
+			}
+
+			return false;
+		}
+
+		_OptionalArray() {
+			if constexpr (is_arrays_type) {
+				setField(*this, *this, 101);
+			}
+			else {
+				setField(*this, *this, 102);
+			}
+		};
+
+		_OptionalArray(lua_State* L, int index) {
+			if (lua_isnil(L, index)) {
 				if constexpr (is_arrays_type) {
 					setField(*this, *this, 101);
-				} else {
+				}
+				else {
 					setField(*this, *this, 102);
 				}
 				return;
 			}
 
-			auto maybe_Array = maybe_impl(obj, static_cast<Array*>(nullptr));
-			if (maybe_Array) {
-				ptr = reference_internal(*maybe_Array);
+			if (lua_isuserdata(L, index) && lua_is(L, index, static_cast<Array*>(nullptr))) {
+				ptr = lua_to(L, index, static_cast<Array*>(nullptr));
 				return;
 			}
 
 			if constexpr (!is_arrays_type && (std::is_same_v<Array, cv::_InputArray>)) {
-				auto maybe_Bool = maybe_impl(obj, static_cast<bool*>(nullptr));
-				if (maybe_Bool) {
-					this->obj = new std::shared_ptr<bool>(maybe_Bool);
+				if (lua_is(L, index, static_cast<bool*>(nullptr))) {
+					auto value = lua_to(L, index, static_cast<bool*>(nullptr));
+					assign_maybe_shared(this->obj, value, static_cast<bool*>(nullptr));
 					setField(*this, *this, 1);
 					return;
 				}
 			}
 
 			if constexpr (!is_arrays_type && (std::is_same_v<Array, cv::_InputArray>)) {
-				auto maybe_Double = maybe_impl(obj, static_cast<double*>(nullptr));
-				if (maybe_Double) {
-					this->obj = new std::shared_ptr<double>(maybe_Double);
+				if (lua_is(L, index, static_cast<double*>(nullptr))) {
+					auto value = lua_to(L, index, static_cast<double*>(nullptr));
+					assign_maybe_shared(this->obj, value, static_cast<double*>(nullptr));
 					setField(*this, *this, 2);
 					return;
 				}
 			}
 
 			if constexpr (!is_arrays_type) {
-				auto maybe_Cuda_GpuMat = maybe_impl(obj, static_cast<cv::cuda::GpuMat*>(nullptr));
-				if (maybe_Cuda_GpuMat) {
-					this->obj = new std::shared_ptr<cv::cuda::GpuMat>(maybe_Cuda_GpuMat);
+				if (lua_is(L, index, static_cast<cv::cuda::GpuMat*>(nullptr))) {
+					auto value = lua_to(L, index, static_cast<cv::cuda::GpuMat*>(nullptr));
+					assign_maybe_shared(this->obj, value, static_cast<cv::cuda::GpuMat*>(nullptr));
 					setField(*this, *this, 3);
 					return;
 				}
 			}
 
 			if constexpr (!is_arrays_type) {
-				auto maybe_Mat = maybe_impl(obj, static_cast<cv::Mat*>(nullptr));
-				if (maybe_Mat) {
-					this->obj = new std::shared_ptr<cv::Mat>(maybe_Mat);
+				if (lua_is(L, index, static_cast<cv::Mat*>(nullptr))) {
+					auto value = lua_to(L, index, static_cast<cv::Mat*>(nullptr));
+					assign_maybe_shared(this->obj, value, static_cast<cv::Mat*>(nullptr));
 					setField(*this, *this, 4);
 					return;
 				}
 			}
 
 			if constexpr (!is_arrays_type) {
-				auto maybe_UMat = maybe_impl(obj, static_cast<cv::UMat*>(nullptr));
-				if (maybe_UMat) {
-					this->obj = new std::shared_ptr<cv::UMat>(maybe_UMat);
+				if (lua_is(L, index, static_cast<cv::UMat*>(nullptr))) {
+					auto value = lua_to(L, index, static_cast<cv::UMat*>(nullptr));
+					assign_maybe_shared(this->obj, value, static_cast<cv::UMat*>(nullptr));
 					setField(*this, *this, 5);
 					return;
 				}
 			}
 
 			if constexpr (!is_arrays_type && (std::is_same_v<Array, cv::_InputArray>)) {
-				auto maybe_Scalar = maybe_impl(obj, static_cast<cv::Scalar*>(nullptr));
-				if (maybe_Scalar) {
-					this->obj = new std::shared_ptr<cv::Scalar>(maybe_Scalar);
+				if (lua_is(L, index, static_cast<cv::Scalar*>(nullptr))) {
+					auto value = lua_to(L, index, static_cast<cv::Scalar*>(nullptr));
+					assign_maybe_shared(this->obj, value, static_cast<cv::Scalar*>(nullptr));
 					setField(*this, *this, 6);
 					return;
 				}
 			}
 
-			auto maybe_VectorOfMat = maybe_impl(obj, static_cast<std::vector<cv::Mat>*>(nullptr));
-			if (maybe_VectorOfMat) {
-				this->obj = new std::shared_ptr<std::vector<cv::Mat>>(maybe_VectorOfMat);
+			if (lua_is(L, index, static_cast<std::vector<cv::Mat>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Mat>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Mat>*>(nullptr));
 				setField(*this, *this, 7);
 				return;
 			}
 
-			auto maybe_VectorOfUMat = maybe_impl(obj, static_cast<std::vector<cv::UMat>*>(nullptr));
-			if (maybe_VectorOfUMat) {
-				this->obj = new std::shared_ptr<std::vector<cv::UMat>>(maybe_VectorOfUMat);
+			if (lua_is(L, index, static_cast<std::vector<cv::UMat>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::UMat>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::UMat>*>(nullptr));
 				setField(*this, *this, 8);
 				return;
 			}
 
 			if constexpr (std::is_same_v<Array, cv::_InputArray>) {
-				auto maybe_VectorOfBool = maybe_impl(obj, static_cast<std::vector<bool>*>(nullptr));
-				if (maybe_VectorOfBool) {
-					this->obj = new std::shared_ptr<std::vector<bool>>(maybe_VectorOfBool);
+				if (lua_is(L, index, static_cast<std::vector<bool>*>(nullptr))) {
+					auto value = lua_to(L, index, static_cast<std::vector<bool>*>(nullptr));
+					assign_maybe_shared(this->obj, value, static_cast<std::vector<bool>*>(nullptr));
 					setField(*this, *this, 9);
 					return;
 				}
 			}
 
-			auto maybe_VectorOfRotatedRect = maybe_impl(obj, static_cast<std::vector<cv::RotatedRect>*>(nullptr));
-			if (maybe_VectorOfRotatedRect) {
-				this->obj = new std::shared_ptr<std::vector<cv::RotatedRect>>(maybe_VectorOfRotatedRect);
+			if (lua_is(L, index, static_cast<std::vector<cv::RotatedRect>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::RotatedRect>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::RotatedRect>*>(nullptr));
 				setField(*this, *this, 10);
 				return;
 			}
 
-			auto maybe_VectorOfRange = maybe_impl(obj, static_cast<std::vector<cv::Range>*>(nullptr));
-			if (maybe_VectorOfRange) {
-				this->obj = new std::shared_ptr<std::vector<cv::Range>>(maybe_VectorOfRange);
+			if (lua_is(L, index, static_cast<std::vector<cv::Range>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Range>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Range>*>(nullptr));
 				setField(*this, *this, 11);
 				return;
 			}
 
-			auto maybe_VectorOfMoments = maybe_impl(obj, static_cast<std::vector<cv::Moments>*>(nullptr));
-			if (maybe_VectorOfMoments) {
-				this->obj = new std::shared_ptr<std::vector<cv::Moments>>(maybe_VectorOfMoments);
+			if (lua_is(L, index, static_cast<std::vector<cv::Moments>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Moments>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Moments>*>(nullptr));
 				setField(*this, *this, 12);
 				return;
 			}
 
-			auto maybe_VectorOfUchar = maybe_impl(obj, static_cast<std::vector<uchar>*>(nullptr));
-			if (maybe_VectorOfUchar) {
-				this->obj = new std::shared_ptr<std::vector<uchar>>(maybe_VectorOfUchar);
+			if (lua_is(L, index, static_cast<std::vector<uchar>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<uchar>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<uchar>*>(nullptr));
 				setField(*this, *this, 13);
 				return;
 			}
 
-			auto maybe_VectorOfSchar = maybe_impl(obj, static_cast<std::vector<schar>*>(nullptr));
-			if (maybe_VectorOfSchar) {
-				this->obj = new std::shared_ptr<std::vector<schar>>(maybe_VectorOfSchar);
+			if (lua_is(L, index, static_cast<std::vector<schar>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<schar>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<schar>*>(nullptr));
 				setField(*this, *this, 14);
 				return;
 			}
 
-			auto maybe_VectorOfChar = maybe_impl(obj, static_cast<std::vector<char>*>(nullptr));
-			if (maybe_VectorOfChar) {
-				this->obj = new std::shared_ptr<std::vector<char>>(maybe_VectorOfChar);
+			if (lua_is(L, index, static_cast<std::vector<char>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<char>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<char>*>(nullptr));
 				setField(*this, *this, 15);
 				return;
 			}
 
-			auto maybe_VectorOfUshort = maybe_impl(obj, static_cast<std::vector<ushort>*>(nullptr));
-			if (maybe_VectorOfUshort) {
-				this->obj = new std::shared_ptr<std::vector<ushort>>(maybe_VectorOfUshort);
+			if (lua_is(L, index, static_cast<std::vector<ushort>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<ushort>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<ushort>*>(nullptr));
 				setField(*this, *this, 16);
 				return;
 			}
 
-			auto maybe_VectorOfShort = maybe_impl(obj, static_cast<std::vector<short>*>(nullptr));
-			if (maybe_VectorOfShort) {
-				this->obj = new std::shared_ptr<std::vector<short>>(maybe_VectorOfShort);
+			if (lua_is(L, index, static_cast<std::vector<short>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<short>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<short>*>(nullptr));
 				setField(*this, *this, 17);
 				return;
 			}
 
-			auto maybe_VectorOfInt = maybe_impl(obj, static_cast<std::vector<int>*>(nullptr));
-			if (maybe_VectorOfInt) {
-				this->obj = new std::shared_ptr<std::vector<int>>(maybe_VectorOfInt);
+			if (lua_is(L, index, static_cast<std::vector<int>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<int>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<int>*>(nullptr));
 				setField(*this, *this, 18);
 				return;
 			}
 
-			auto maybe_VectorOfFloat = maybe_impl(obj, static_cast<std::vector<float>*>(nullptr));
-			if (maybe_VectorOfFloat) {
-				this->obj = new std::shared_ptr<std::vector<float>>(maybe_VectorOfFloat);
+			if (lua_is(L, index, static_cast<std::vector<float>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<float>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<float>*>(nullptr));
 				setField(*this, *this, 19);
 				return;
 			}
 
-			auto maybe_VectorOfDouble = maybe_impl(obj, static_cast<std::vector<double>*>(nullptr));
-			if (maybe_VectorOfDouble) {
-				this->obj = new std::shared_ptr<std::vector<double>>(maybe_VectorOfDouble);
+			if (lua_is(L, index, static_cast<std::vector<double>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<double>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<double>*>(nullptr));
 				setField(*this, *this, 20);
 				return;
 			}
 
-			auto maybe_VectorOfPoint3i = maybe_impl(obj, static_cast<std::vector<cv::Point3i>*>(nullptr));
-			if (maybe_VectorOfPoint3i) {
-				this->obj = new std::shared_ptr<std::vector<cv::Point3i>>(maybe_VectorOfPoint3i);
+			if (lua_is(L, index, static_cast<std::vector<cv::Point3i>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Point3i>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Point3i>*>(nullptr));
 				setField(*this, *this, 21);
 				return;
 			}
 
-			auto maybe_VectorOfPoint3f = maybe_impl(obj, static_cast<std::vector<cv::Point3f>*>(nullptr));
-			if (maybe_VectorOfPoint3f) {
-				this->obj = new std::shared_ptr<std::vector<cv::Point3f>>(maybe_VectorOfPoint3f);
+			if (lua_is(L, index, static_cast<std::vector<cv::Point3f>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Point3f>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Point3f>*>(nullptr));
 				setField(*this, *this, 22);
 				return;
 			}
 
-			auto maybe_VectorOfPoint3d = maybe_impl(obj, static_cast<std::vector<cv::Point3d>*>(nullptr));
-			if (maybe_VectorOfPoint3d) {
-				this->obj = new std::shared_ptr<std::vector<cv::Point3d>>(maybe_VectorOfPoint3d);
+			if (lua_is(L, index, static_cast<std::vector<cv::Point3d>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Point3d>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Point3d>*>(nullptr));
 				setField(*this, *this, 23);
 				return;
 			}
 
-			auto maybe_VectorOfPoint2f = maybe_impl(obj, static_cast<std::vector<cv::Point2f>*>(nullptr));
-			if (maybe_VectorOfPoint2f) {
-				this->obj = new std::shared_ptr<std::vector<cv::Point2f>>(maybe_VectorOfPoint2f);
+			if (lua_is(L, index, static_cast<std::vector<cv::Point2f>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Point2f>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Point2f>*>(nullptr));
 				setField(*this, *this, 24);
 				return;
 			}
 
-			auto maybe_VectorOfPoint2d = maybe_impl(obj, static_cast<std::vector<cv::Point2d>*>(nullptr));
-			if (maybe_VectorOfPoint2d) {
-				this->obj = new std::shared_ptr<std::vector<cv::Point2d>>(maybe_VectorOfPoint2d);
+			if (lua_is(L, index, static_cast<std::vector<cv::Point2d>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Point2d>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Point2d>*>(nullptr));
 				setField(*this, *this, 25);
 				return;
 			}
 
-			auto maybe_VectorOfPoint = maybe_impl(obj, static_cast<std::vector<cv::Point>*>(nullptr));
-			if (maybe_VectorOfPoint) {
-				this->obj = new std::shared_ptr<std::vector<cv::Point>>(maybe_VectorOfPoint);
+			if (lua_is(L, index, static_cast<std::vector<cv::Point>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Point>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Point>*>(nullptr));
 				setField(*this, *this, 26);
 				return;
 			}
 
-			auto maybe_VectorOfRect2f = maybe_impl(obj, static_cast<std::vector<cv::Rect2f>*>(nullptr));
-			if (maybe_VectorOfRect2f) {
-				this->obj = new std::shared_ptr<std::vector<cv::Rect2f>>(maybe_VectorOfRect2f);
+			if (lua_is(L, index, static_cast<std::vector<cv::Rect2f>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Rect2f>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Rect2f>*>(nullptr));
 				setField(*this, *this, 27);
 				return;
 			}
 
-			auto maybe_VectorOfRect2d = maybe_impl(obj, static_cast<std::vector<cv::Rect2d>*>(nullptr));
-			if (maybe_VectorOfRect2d) {
-				this->obj = new std::shared_ptr<std::vector<cv::Rect2d>>(maybe_VectorOfRect2d);
+			if (lua_is(L, index, static_cast<std::vector<cv::Rect2d>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Rect2d>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Rect2d>*>(nullptr));
 				setField(*this, *this, 28);
 				return;
 			}
 
-			auto maybe_VectorOfRect = maybe_impl(obj, static_cast<std::vector<cv::Rect>*>(nullptr));
-			if (maybe_VectorOfRect) {
-				this->obj = new std::shared_ptr<std::vector<cv::Rect>>(maybe_VectorOfRect);
+			if (lua_is(L, index, static_cast<std::vector<cv::Rect>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Rect>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Rect>*>(nullptr));
 				setField(*this, *this, 29);
 				return;
 			}
 
-			auto maybe_VectorOfSize2f = maybe_impl(obj, static_cast<std::vector<cv::Size2f>*>(nullptr));
-			if (maybe_VectorOfSize2f) {
-				this->obj = new std::shared_ptr<std::vector<cv::Size2f>>(maybe_VectorOfSize2f);
+			if (lua_is(L, index, static_cast<std::vector<cv::Size2f>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Size2f>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Size2f>*>(nullptr));
 				setField(*this, *this, 30);
 				return;
 			}
 
-			auto maybe_VectorOfSize2d = maybe_impl(obj, static_cast<std::vector<cv::Size2d>*>(nullptr));
-			if (maybe_VectorOfSize2d) {
-				this->obj = new std::shared_ptr<std::vector<cv::Size2d>>(maybe_VectorOfSize2d);
+			if (lua_is(L, index, static_cast<std::vector<cv::Size2d>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Size2d>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Size2d>*>(nullptr));
 				setField(*this, *this, 31);
 				return;
 			}
 
-			auto maybe_VectorOfSize = maybe_impl(obj, static_cast<std::vector<cv::Size>*>(nullptr));
-			if (maybe_VectorOfSize) {
-				this->obj = new std::shared_ptr<std::vector<cv::Size>>(maybe_VectorOfSize);
+			if (lua_is(L, index, static_cast<std::vector<cv::Size>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Size>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Size>*>(nullptr));
 				setField(*this, *this, 32);
 				return;
 			}
 
-			auto maybe_VectorOfVec2b = maybe_impl(obj, static_cast<std::vector<cv::Vec2b>*>(nullptr));
-			if (maybe_VectorOfVec2b) {
-				this->obj = new std::shared_ptr<std::vector<cv::Vec2b>>(maybe_VectorOfVec2b);
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec2b>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Vec2b>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Vec2b>*>(nullptr));
 				setField(*this, *this, 33);
 				return;
 			}
 
-			auto maybe_VectorOfVec3b = maybe_impl(obj, static_cast<std::vector<cv::Vec3b>*>(nullptr));
-			if (maybe_VectorOfVec3b) {
-				this->obj = new std::shared_ptr<std::vector<cv::Vec3b>>(maybe_VectorOfVec3b);
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec3b>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Vec3b>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Vec3b>*>(nullptr));
 				setField(*this, *this, 34);
 				return;
 			}
 
-			auto maybe_VectorOfVec4b = maybe_impl(obj, static_cast<std::vector<cv::Vec4b>*>(nullptr));
-			if (maybe_VectorOfVec4b) {
-				this->obj = new std::shared_ptr<std::vector<cv::Vec4b>>(maybe_VectorOfVec4b);
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec4b>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Vec4b>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Vec4b>*>(nullptr));
 				setField(*this, *this, 35);
 				return;
 			}
 
-			auto maybe_VectorOfVec2s = maybe_impl(obj, static_cast<std::vector<cv::Vec2s>*>(nullptr));
-			if (maybe_VectorOfVec2s) {
-				this->obj = new std::shared_ptr<std::vector<cv::Vec2s>>(maybe_VectorOfVec2s);
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec2s>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Vec2s>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Vec2s>*>(nullptr));
 				setField(*this, *this, 36);
 				return;
 			}
 
-			auto maybe_VectorOfVec3s = maybe_impl(obj, static_cast<std::vector<cv::Vec3s>*>(nullptr));
-			if (maybe_VectorOfVec3s) {
-				this->obj = new std::shared_ptr<std::vector<cv::Vec3s>>(maybe_VectorOfVec3s);
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec3s>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Vec3s>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Vec3s>*>(nullptr));
 				setField(*this, *this, 37);
 				return;
 			}
 
-			auto maybe_VectorOfVec4s = maybe_impl(obj, static_cast<std::vector<cv::Vec4s>*>(nullptr));
-			if (maybe_VectorOfVec4s) {
-				this->obj = new std::shared_ptr<std::vector<cv::Vec4s>>(maybe_VectorOfVec4s);
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec4s>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Vec4s>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Vec4s>*>(nullptr));
 				setField(*this, *this, 38);
 				return;
 			}
 
-			auto maybe_VectorOfVec2w = maybe_impl(obj, static_cast<std::vector<cv::Vec2w>*>(nullptr));
-			if (maybe_VectorOfVec2w) {
-				this->obj = new std::shared_ptr<std::vector<cv::Vec2w>>(maybe_VectorOfVec2w);
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec2w>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Vec2w>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Vec2w>*>(nullptr));
 				setField(*this, *this, 39);
 				return;
 			}
 
-			auto maybe_VectorOfVec3w = maybe_impl(obj, static_cast<std::vector<cv::Vec3w>*>(nullptr));
-			if (maybe_VectorOfVec3w) {
-				this->obj = new std::shared_ptr<std::vector<cv::Vec3w>>(maybe_VectorOfVec3w);
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec3w>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Vec3w>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Vec3w>*>(nullptr));
 				setField(*this, *this, 40);
 				return;
 			}
 
-			auto maybe_VectorOfVec4w = maybe_impl(obj, static_cast<std::vector<cv::Vec4w>*>(nullptr));
-			if (maybe_VectorOfVec4w) {
-				this->obj = new std::shared_ptr<std::vector<cv::Vec4w>>(maybe_VectorOfVec4w);
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec4w>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Vec4w>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Vec4w>*>(nullptr));
 				setField(*this, *this, 41);
 				return;
 			}
 
-			auto maybe_VectorOfVec2i = maybe_impl(obj, static_cast<std::vector<cv::Vec2i>*>(nullptr));
-			if (maybe_VectorOfVec2i) {
-				this->obj = new std::shared_ptr<std::vector<cv::Vec2i>>(maybe_VectorOfVec2i);
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec2i>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Vec2i>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Vec2i>*>(nullptr));
 				setField(*this, *this, 42);
 				return;
 			}
 
-			auto maybe_VectorOfVec3i = maybe_impl(obj, static_cast<std::vector<cv::Vec3i>*>(nullptr));
-			if (maybe_VectorOfVec3i) {
-				this->obj = new std::shared_ptr<std::vector<cv::Vec3i>>(maybe_VectorOfVec3i);
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec3i>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Vec3i>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Vec3i>*>(nullptr));
 				setField(*this, *this, 43);
 				return;
 			}
 
-			auto maybe_VectorOfVec4i = maybe_impl(obj, static_cast<std::vector<cv::Vec4i>*>(nullptr));
-			if (maybe_VectorOfVec4i) {
-				this->obj = new std::shared_ptr<std::vector<cv::Vec4i>>(maybe_VectorOfVec4i);
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec4i>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Vec4i>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Vec4i>*>(nullptr));
 				setField(*this, *this, 44);
 				return;
 			}
 
-			auto maybe_VectorOfVec6i = maybe_impl(obj, static_cast<std::vector<cv::Vec6i>*>(nullptr));
-			if (maybe_VectorOfVec6i) {
-				this->obj = new std::shared_ptr<std::vector<cv::Vec6i>>(maybe_VectorOfVec6i);
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec6i>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Vec6i>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Vec6i>*>(nullptr));
 				setField(*this, *this, 45);
 				return;
 			}
 
-			auto maybe_VectorOfVec8i = maybe_impl(obj, static_cast<std::vector<cv::Vec8i>*>(nullptr));
-			if (maybe_VectorOfVec8i) {
-				this->obj = new std::shared_ptr<std::vector<cv::Vec8i>>(maybe_VectorOfVec8i);
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec8i>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Vec8i>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Vec8i>*>(nullptr));
 				setField(*this, *this, 46);
 				return;
 			}
 
-			auto maybe_VectorOfVec2f = maybe_impl(obj, static_cast<std::vector<cv::Vec2f>*>(nullptr));
-			if (maybe_VectorOfVec2f) {
-				this->obj = new std::shared_ptr<std::vector<cv::Vec2f>>(maybe_VectorOfVec2f);
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec2f>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Vec2f>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Vec2f>*>(nullptr));
 				setField(*this, *this, 47);
 				return;
 			}
 
-			auto maybe_VectorOfVec3f = maybe_impl(obj, static_cast<std::vector<cv::Vec3f>*>(nullptr));
-			if (maybe_VectorOfVec3f) {
-				this->obj = new std::shared_ptr<std::vector<cv::Vec3f>>(maybe_VectorOfVec3f);
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec3f>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Vec3f>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Vec3f>*>(nullptr));
 				setField(*this, *this, 48);
 				return;
 			}
 
-			auto maybe_VectorOfVec4f = maybe_impl(obj, static_cast<std::vector<cv::Vec4f>*>(nullptr));
-			if (maybe_VectorOfVec4f) {
-				this->obj = new std::shared_ptr<std::vector<cv::Vec4f>>(maybe_VectorOfVec4f);
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec4f>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Vec4f>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Vec4f>*>(nullptr));
 				setField(*this, *this, 49);
 				return;
 			}
 
-			auto maybe_VectorOfVec6f = maybe_impl(obj, static_cast<std::vector<cv::Vec6f>*>(nullptr));
-			if (maybe_VectorOfVec6f) {
-				this->obj = new std::shared_ptr<std::vector<cv::Vec6f>>(maybe_VectorOfVec6f);
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec6f>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Vec6f>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Vec6f>*>(nullptr));
 				setField(*this, *this, 50);
 				return;
 			}
 
-			auto maybe_VectorOfVec2d = maybe_impl(obj, static_cast<std::vector<cv::Vec2d>*>(nullptr));
-			if (maybe_VectorOfVec2d) {
-				this->obj = new std::shared_ptr<std::vector<cv::Vec2d>>(maybe_VectorOfVec2d);
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec2d>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Vec2d>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Vec2d>*>(nullptr));
 				setField(*this, *this, 51);
 				return;
 			}
 
-			auto maybe_VectorOfVec3d = maybe_impl(obj, static_cast<std::vector<cv::Vec3d>*>(nullptr));
-			if (maybe_VectorOfVec3d) {
-				this->obj = new std::shared_ptr<std::vector<cv::Vec3d>>(maybe_VectorOfVec3d);
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec3d>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Vec3d>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Vec3d>*>(nullptr));
 				setField(*this, *this, 52);
 				return;
 			}
 
-			auto maybe_VectorOfVec4d = maybe_impl(obj, static_cast<std::vector<cv::Vec4d>*>(nullptr));
-			if (maybe_VectorOfVec4d) {
-				this->obj = new std::shared_ptr<std::vector<cv::Vec4d>>(maybe_VectorOfVec4d);
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec4d>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Vec4d>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Vec4d>*>(nullptr));
 				setField(*this, *this, 53);
 				return;
 			}
 
-			auto maybe_VectorOfVec6d = maybe_impl(obj, static_cast<std::vector<cv::Vec6d>*>(nullptr));
-			if (maybe_VectorOfVec6d) {
-				this->obj = new std::shared_ptr<std::vector<cv::Vec6d>>(maybe_VectorOfVec6d);
+			if (lua_is(L, index, static_cast<std::vector<cv::Vec6d>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<cv::Vec6d>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<cv::Vec6d>*>(nullptr));
 				setField(*this, *this, 54);
 				return;
 			}
 
 			if constexpr (std::is_same_v<Array, cv::_InputOutputArray>) {
-				auto maybe_VectorOfVectorOfBool = maybe_impl(obj, static_cast<std::vector<std::vector<bool>>*>(nullptr));
-				if (maybe_VectorOfVectorOfBool) {
-					this->obj = new std::shared_ptr<std::vector<std::vector<bool>>>(maybe_VectorOfVectorOfBool);
+				if (lua_is(L, index, static_cast<std::vector<std::vector<bool>>*>(nullptr))) {
+					auto value = lua_to(L, index, static_cast<std::vector<std::vector<bool>>*>(nullptr));
+					assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<bool>>*>(nullptr));
 					setField(*this, *this, 55);
 					return;
 				}
 			}
 
-			auto maybe_VectorOfVectorOfRotatedRect = maybe_impl(obj, static_cast<std::vector<std::vector<cv::RotatedRect>>*>(nullptr));
-			if (maybe_VectorOfVectorOfRotatedRect) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::RotatedRect>>>(maybe_VectorOfVectorOfRotatedRect);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::RotatedRect>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::RotatedRect>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::RotatedRect>>*>(nullptr));
 				setField(*this, *this, 56);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfRange = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Range>>*>(nullptr));
-			if (maybe_VectorOfVectorOfRange) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Range>>>(maybe_VectorOfVectorOfRange);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Range>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Range>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Range>>*>(nullptr));
 				setField(*this, *this, 57);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfMoments = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Moments>>*>(nullptr));
-			if (maybe_VectorOfVectorOfMoments) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Moments>>>(maybe_VectorOfVectorOfMoments);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Moments>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Moments>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Moments>>*>(nullptr));
 				setField(*this, *this, 58);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfUchar = maybe_impl(obj, static_cast<std::vector<std::vector<uchar>>*>(nullptr));
-			if (maybe_VectorOfVectorOfUchar) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<uchar>>>(maybe_VectorOfVectorOfUchar);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<uchar>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<uchar>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<uchar>>*>(nullptr));
 				setField(*this, *this, 59);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfSchar = maybe_impl(obj, static_cast<std::vector<std::vector<schar>>*>(nullptr));
-			if (maybe_VectorOfVectorOfSchar) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<schar>>>(maybe_VectorOfVectorOfSchar);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<schar>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<schar>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<schar>>*>(nullptr));
 				setField(*this, *this, 60);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfChar = maybe_impl(obj, static_cast<std::vector<std::vector<char>>*>(nullptr));
-			if (maybe_VectorOfVectorOfChar) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<char>>>(maybe_VectorOfVectorOfChar);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<char>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<char>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<char>>*>(nullptr));
 				setField(*this, *this, 61);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfUshort = maybe_impl(obj, static_cast<std::vector<std::vector<ushort>>*>(nullptr));
-			if (maybe_VectorOfVectorOfUshort) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<ushort>>>(maybe_VectorOfVectorOfUshort);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<ushort>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<ushort>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<ushort>>*>(nullptr));
 				setField(*this, *this, 62);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfShort = maybe_impl(obj, static_cast<std::vector<std::vector<short>>*>(nullptr));
-			if (maybe_VectorOfVectorOfShort) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<short>>>(maybe_VectorOfVectorOfShort);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<short>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<short>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<short>>*>(nullptr));
 				setField(*this, *this, 63);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfInt = maybe_impl(obj, static_cast<std::vector<std::vector<int>>*>(nullptr));
-			if (maybe_VectorOfVectorOfInt) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<int>>>(maybe_VectorOfVectorOfInt);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<int>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<int>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<int>>*>(nullptr));
 				setField(*this, *this, 64);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfFloat = maybe_impl(obj, static_cast<std::vector<std::vector<float>>*>(nullptr));
-			if (maybe_VectorOfVectorOfFloat) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<float>>>(maybe_VectorOfVectorOfFloat);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<float>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<float>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<float>>*>(nullptr));
 				setField(*this, *this, 65);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfDouble = maybe_impl(obj, static_cast<std::vector<std::vector<double>>*>(nullptr));
-			if (maybe_VectorOfVectorOfDouble) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<double>>>(maybe_VectorOfVectorOfDouble);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<double>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<double>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<double>>*>(nullptr));
 				setField(*this, *this, 66);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfPoint3i = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Point3i>>*>(nullptr));
-			if (maybe_VectorOfVectorOfPoint3i) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Point3i>>>(maybe_VectorOfVectorOfPoint3i);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Point3i>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Point3i>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Point3i>>*>(nullptr));
 				setField(*this, *this, 67);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfPoint3f = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Point3f>>*>(nullptr));
-			if (maybe_VectorOfVectorOfPoint3f) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Point3f>>>(maybe_VectorOfVectorOfPoint3f);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Point3f>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Point3f>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Point3f>>*>(nullptr));
 				setField(*this, *this, 68);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfPoint3d = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Point3d>>*>(nullptr));
-			if (maybe_VectorOfVectorOfPoint3d) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Point3d>>>(maybe_VectorOfVectorOfPoint3d);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Point3d>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Point3d>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Point3d>>*>(nullptr));
 				setField(*this, *this, 69);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfPoint2f = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Point2f>>*>(nullptr));
-			if (maybe_VectorOfVectorOfPoint2f) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Point2f>>>(maybe_VectorOfVectorOfPoint2f);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Point2f>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Point2f>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Point2f>>*>(nullptr));
 				setField(*this, *this, 70);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfPoint2d = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Point2d>>*>(nullptr));
-			if (maybe_VectorOfVectorOfPoint2d) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Point2d>>>(maybe_VectorOfVectorOfPoint2d);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Point2d>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Point2d>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Point2d>>*>(nullptr));
 				setField(*this, *this, 71);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfPoint = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Point>>*>(nullptr));
-			if (maybe_VectorOfVectorOfPoint) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Point>>>(maybe_VectorOfVectorOfPoint);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Point>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Point>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Point>>*>(nullptr));
 				setField(*this, *this, 72);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfRect2f = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Rect2f>>*>(nullptr));
-			if (maybe_VectorOfVectorOfRect2f) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Rect2f>>>(maybe_VectorOfVectorOfRect2f);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Rect2f>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Rect2f>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Rect2f>>*>(nullptr));
 				setField(*this, *this, 73);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfRect2d = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Rect2d>>*>(nullptr));
-			if (maybe_VectorOfVectorOfRect2d) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Rect2d>>>(maybe_VectorOfVectorOfRect2d);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Rect2d>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Rect2d>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Rect2d>>*>(nullptr));
 				setField(*this, *this, 74);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfRect = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Rect>>*>(nullptr));
-			if (maybe_VectorOfVectorOfRect) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Rect>>>(maybe_VectorOfVectorOfRect);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Rect>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Rect>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Rect>>*>(nullptr));
 				setField(*this, *this, 75);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfSize2f = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Size2f>>*>(nullptr));
-			if (maybe_VectorOfVectorOfSize2f) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Size2f>>>(maybe_VectorOfVectorOfSize2f);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Size2f>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Size2f>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Size2f>>*>(nullptr));
 				setField(*this, *this, 76);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfSize2d = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Size2d>>*>(nullptr));
-			if (maybe_VectorOfVectorOfSize2d) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Size2d>>>(maybe_VectorOfVectorOfSize2d);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Size2d>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Size2d>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Size2d>>*>(nullptr));
 				setField(*this, *this, 77);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfSize = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Size>>*>(nullptr));
-			if (maybe_VectorOfVectorOfSize) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Size>>>(maybe_VectorOfVectorOfSize);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Size>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Size>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Size>>*>(nullptr));
 				setField(*this, *this, 78);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfVec2b = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Vec2b>>*>(nullptr));
-			if (maybe_VectorOfVectorOfVec2b) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Vec2b>>>(maybe_VectorOfVectorOfVec2b);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec2b>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Vec2b>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Vec2b>>*>(nullptr));
 				setField(*this, *this, 79);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfVec3b = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Vec3b>>*>(nullptr));
-			if (maybe_VectorOfVectorOfVec3b) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Vec3b>>>(maybe_VectorOfVectorOfVec3b);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec3b>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Vec3b>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Vec3b>>*>(nullptr));
 				setField(*this, *this, 80);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfVec4b = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Vec4b>>*>(nullptr));
-			if (maybe_VectorOfVectorOfVec4b) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Vec4b>>>(maybe_VectorOfVectorOfVec4b);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec4b>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Vec4b>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Vec4b>>*>(nullptr));
 				setField(*this, *this, 81);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfVec2s = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Vec2s>>*>(nullptr));
-			if (maybe_VectorOfVectorOfVec2s) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Vec2s>>>(maybe_VectorOfVectorOfVec2s);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec2s>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Vec2s>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Vec2s>>*>(nullptr));
 				setField(*this, *this, 82);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfVec3s = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Vec3s>>*>(nullptr));
-			if (maybe_VectorOfVectorOfVec3s) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Vec3s>>>(maybe_VectorOfVectorOfVec3s);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec3s>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Vec3s>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Vec3s>>*>(nullptr));
 				setField(*this, *this, 83);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfVec4s = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Vec4s>>*>(nullptr));
-			if (maybe_VectorOfVectorOfVec4s) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Vec4s>>>(maybe_VectorOfVectorOfVec4s);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec4s>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Vec4s>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Vec4s>>*>(nullptr));
 				setField(*this, *this, 84);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfVec2w = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Vec2w>>*>(nullptr));
-			if (maybe_VectorOfVectorOfVec2w) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Vec2w>>>(maybe_VectorOfVectorOfVec2w);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec2w>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Vec2w>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Vec2w>>*>(nullptr));
 				setField(*this, *this, 85);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfVec3w = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Vec3w>>*>(nullptr));
-			if (maybe_VectorOfVectorOfVec3w) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Vec3w>>>(maybe_VectorOfVectorOfVec3w);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec3w>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Vec3w>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Vec3w>>*>(nullptr));
 				setField(*this, *this, 86);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfVec4w = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Vec4w>>*>(nullptr));
-			if (maybe_VectorOfVectorOfVec4w) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Vec4w>>>(maybe_VectorOfVectorOfVec4w);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec4w>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Vec4w>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Vec4w>>*>(nullptr));
 				setField(*this, *this, 87);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfVec2i = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Vec2i>>*>(nullptr));
-			if (maybe_VectorOfVectorOfVec2i) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Vec2i>>>(maybe_VectorOfVectorOfVec2i);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec2i>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Vec2i>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Vec2i>>*>(nullptr));
 				setField(*this, *this, 88);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfVec3i = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Vec3i>>*>(nullptr));
-			if (maybe_VectorOfVectorOfVec3i) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Vec3i>>>(maybe_VectorOfVectorOfVec3i);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec3i>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Vec3i>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Vec3i>>*>(nullptr));
 				setField(*this, *this, 89);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfVec4i = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Vec4i>>*>(nullptr));
-			if (maybe_VectorOfVectorOfVec4i) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Vec4i>>>(maybe_VectorOfVectorOfVec4i);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec4i>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Vec4i>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Vec4i>>*>(nullptr));
 				setField(*this, *this, 90);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfVec6i = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Vec6i>>*>(nullptr));
-			if (maybe_VectorOfVectorOfVec6i) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Vec6i>>>(maybe_VectorOfVectorOfVec6i);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec6i>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Vec6i>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Vec6i>>*>(nullptr));
 				setField(*this, *this, 91);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfVec8i = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Vec8i>>*>(nullptr));
-			if (maybe_VectorOfVectorOfVec8i) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Vec8i>>>(maybe_VectorOfVectorOfVec8i);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec8i>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Vec8i>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Vec8i>>*>(nullptr));
 				setField(*this, *this, 92);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfVec2f = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Vec2f>>*>(nullptr));
-			if (maybe_VectorOfVectorOfVec2f) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Vec2f>>>(maybe_VectorOfVectorOfVec2f);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec2f>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Vec2f>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Vec2f>>*>(nullptr));
 				setField(*this, *this, 93);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfVec3f = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Vec3f>>*>(nullptr));
-			if (maybe_VectorOfVectorOfVec3f) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Vec3f>>>(maybe_VectorOfVectorOfVec3f);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec3f>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Vec3f>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Vec3f>>*>(nullptr));
 				setField(*this, *this, 94);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfVec4f = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Vec4f>>*>(nullptr));
-			if (maybe_VectorOfVectorOfVec4f) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Vec4f>>>(maybe_VectorOfVectorOfVec4f);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec4f>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Vec4f>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Vec4f>>*>(nullptr));
 				setField(*this, *this, 95);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfVec6f = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Vec6f>>*>(nullptr));
-			if (maybe_VectorOfVectorOfVec6f) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Vec6f>>>(maybe_VectorOfVectorOfVec6f);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec6f>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Vec6f>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Vec6f>>*>(nullptr));
 				setField(*this, *this, 96);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfVec2d = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Vec2d>>*>(nullptr));
-			if (maybe_VectorOfVectorOfVec2d) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Vec2d>>>(maybe_VectorOfVectorOfVec2d);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec2d>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Vec2d>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Vec2d>>*>(nullptr));
 				setField(*this, *this, 97);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfVec3d = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Vec3d>>*>(nullptr));
-			if (maybe_VectorOfVectorOfVec3d) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Vec3d>>>(maybe_VectorOfVectorOfVec3d);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec3d>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Vec3d>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Vec3d>>*>(nullptr));
 				setField(*this, *this, 98);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfVec4d = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Vec4d>>*>(nullptr));
-			if (maybe_VectorOfVectorOfVec4d) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Vec4d>>>(maybe_VectorOfVectorOfVec4d);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec4d>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Vec4d>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Vec4d>>*>(nullptr));
 				setField(*this, *this, 99);
 				return;
 			}
 
-			auto maybe_VectorOfVectorOfVec6d = maybe_impl(obj, static_cast<std::vector<std::vector<cv::Vec6d>>*>(nullptr));
-			if (maybe_VectorOfVectorOfVec6d) {
-				this->obj = new std::shared_ptr<std::vector<std::vector<cv::Vec6d>>>(maybe_VectorOfVectorOfVec6d);
+			if (lua_is(L, index, static_cast<std::vector<std::vector<cv::Vec6d>>*>(nullptr))) {
+				auto value = lua_to(L, index, static_cast<std::vector<std::vector<cv::Vec6d>>*>(nullptr));
+				assign_maybe_shared(this->obj, value, static_cast<std::vector<std::vector<cv::Vec6d>>*>(nullptr));
 				setField(*this, *this, 100);
 				return;
 			}
 		}
-
-		_OptionalArray(const _To& obj) : _OptionalArray(const_cast<_To&>(obj)) {}
 
 		_OptionalArray(const std::shared_ptr<Array>& ptr) : ptr(ptr) {}
 
@@ -1525,1419 +1958,1519 @@ namespace LUA_MODULE_NAME {
 			switch (_field) {
 			case 1:
 				if constexpr (!is_arrays_type && (std::is_same_v<Array, cv::_InputArray>)) {
-					
+
 					if (&src != &dst) {
 						if (dst.obj) {
 							*reinterpret_cast<std::shared_ptr<bool>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<bool>*>(src.obj);
-						} else {
+						}
+						else {
 							dst.obj = new std::shared_ptr<bool>(*reinterpret_cast<std::shared_ptr<bool>*>(src.obj));
 						}
 					}
 					if (dst.obj) {
 						dst.reset(**reinterpret_cast<std::shared_ptr<bool>*>(dst.obj));
 					}
-					
+
 				}
 				break;
 			case 2:
 				if constexpr (!is_arrays_type && (std::is_same_v<Array, cv::_InputArray>)) {
-					
+
 					if (&src != &dst) {
 						if (dst.obj) {
 							*reinterpret_cast<std::shared_ptr<double>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<double>*>(src.obj);
-						} else {
+						}
+						else {
 							dst.obj = new std::shared_ptr<double>(*reinterpret_cast<std::shared_ptr<double>*>(src.obj));
 						}
 					}
 					if (dst.obj) {
 						dst.reset(**reinterpret_cast<std::shared_ptr<double>*>(dst.obj));
 					}
-					
+
 				}
 				break;
 			case 3:
 				if constexpr (!is_arrays_type) {
-					
+
 					if (&src != &dst) {
 						if (dst.obj) {
 							*reinterpret_cast<std::shared_ptr<cv::cuda::GpuMat>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<cv::cuda::GpuMat>*>(src.obj);
-						} else {
+						}
+						else {
 							dst.obj = new std::shared_ptr<cv::cuda::GpuMat>(*reinterpret_cast<std::shared_ptr<cv::cuda::GpuMat>*>(src.obj));
 						}
 					}
 					if (dst.obj) {
 						dst.reset(**reinterpret_cast<std::shared_ptr<cv::cuda::GpuMat>*>(dst.obj));
 					}
-					
+
 				}
 				break;
 			case 4:
 				if constexpr (!is_arrays_type) {
-					
+
 					if (&src != &dst) {
 						if (dst.obj) {
 							*reinterpret_cast<std::shared_ptr<cv::Mat>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<cv::Mat>*>(src.obj);
-						} else {
+						}
+						else {
 							dst.obj = new std::shared_ptr<cv::Mat>(*reinterpret_cast<std::shared_ptr<cv::Mat>*>(src.obj));
 						}
 					}
 					if (dst.obj) {
 						dst.reset(**reinterpret_cast<std::shared_ptr<cv::Mat>*>(dst.obj));
 					}
-					
+
 				}
 				break;
 			case 5:
 				if constexpr (!is_arrays_type) {
-					
+
 					if (&src != &dst) {
 						if (dst.obj) {
 							*reinterpret_cast<std::shared_ptr<cv::UMat>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<cv::UMat>*>(src.obj);
-						} else {
+						}
+						else {
 							dst.obj = new std::shared_ptr<cv::UMat>(*reinterpret_cast<std::shared_ptr<cv::UMat>*>(src.obj));
 						}
 					}
 					if (dst.obj) {
 						dst.reset(**reinterpret_cast<std::shared_ptr<cv::UMat>*>(dst.obj));
 					}
-					
+
 				}
 				break;
 			case 6:
 				if constexpr (!is_arrays_type && (std::is_same_v<Array, cv::_InputArray>)) {
-					
+
 					if (&src != &dst) {
 						if (dst.obj) {
 							*reinterpret_cast<std::shared_ptr<cv::Scalar>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<cv::Scalar>*>(src.obj);
-						} else {
+						}
+						else {
 							dst.obj = new std::shared_ptr<cv::Scalar>(*reinterpret_cast<std::shared_ptr<cv::Scalar>*>(src.obj));
 						}
 					}
 					if (dst.obj) {
 						dst.reset(**reinterpret_cast<std::shared_ptr<cv::Scalar>*>(dst.obj));
 					}
-					
+
 				}
 				break;
 			case 7:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Mat>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Mat>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Mat>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Mat>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Mat>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 8:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::UMat>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::UMat>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::UMat>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::UMat>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::UMat>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 9:
 				if constexpr (std::is_same_v<Array, cv::_InputArray>) {
-					
+
 					if (&src != &dst) {
 						if (dst.obj) {
 							*reinterpret_cast<std::shared_ptr<std::vector<bool>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<bool>>*>(src.obj);
-						} else {
+						}
+						else {
 							dst.obj = new std::shared_ptr<std::vector<bool>>(*reinterpret_cast<std::shared_ptr<std::vector<bool>>*>(src.obj));
 						}
 					}
 					if (dst.obj) {
 						dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<bool>>*>(dst.obj));
 					}
-					
+
 				}
 				break;
 			case 10:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::RotatedRect>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::RotatedRect>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::RotatedRect>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::RotatedRect>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::RotatedRect>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 11:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Range>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Range>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Range>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Range>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Range>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 12:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Moments>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Moments>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Moments>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Moments>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Moments>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 13:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<uchar>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<uchar>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<uchar>>(*reinterpret_cast<std::shared_ptr<std::vector<uchar>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<uchar>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 14:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<schar>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<schar>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<schar>>(*reinterpret_cast<std::shared_ptr<std::vector<schar>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<schar>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 15:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<char>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<char>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<char>>(*reinterpret_cast<std::shared_ptr<std::vector<char>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<char>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 16:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<ushort>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<ushort>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<ushort>>(*reinterpret_cast<std::shared_ptr<std::vector<ushort>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<ushort>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 17:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<short>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<short>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<short>>(*reinterpret_cast<std::shared_ptr<std::vector<short>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<short>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 18:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<int>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<int>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<int>>(*reinterpret_cast<std::shared_ptr<std::vector<int>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<int>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 19:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<float>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<float>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<float>>(*reinterpret_cast<std::shared_ptr<std::vector<float>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<float>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 20:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<double>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<double>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<double>>(*reinterpret_cast<std::shared_ptr<std::vector<double>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<double>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 21:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Point3i>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Point3i>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Point3i>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Point3i>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Point3i>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 22:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Point3f>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Point3f>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Point3f>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Point3f>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Point3f>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 23:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Point3d>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Point3d>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Point3d>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Point3d>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Point3d>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 24:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Point2f>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Point2f>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Point2f>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Point2f>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Point2f>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 25:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Point2d>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Point2d>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Point2d>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Point2d>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Point2d>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 26:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Point>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Point>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Point>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Point>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Point>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 27:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Rect2f>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Rect2f>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Rect2f>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Rect2f>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Rect2f>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 28:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Rect2d>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Rect2d>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Rect2d>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Rect2d>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Rect2d>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 29:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Rect>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Rect>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Rect>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Rect>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Rect>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 30:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Size2f>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Size2f>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Size2f>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Size2f>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Size2f>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 31:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Size2d>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Size2d>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Size2d>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Size2d>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Size2d>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 32:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Size>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Size>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Size>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Size>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Size>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 33:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2b>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2b>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Vec2b>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2b>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2b>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 34:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3b>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3b>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Vec3b>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3b>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3b>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 35:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4b>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4b>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Vec4b>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4b>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4b>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 36:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2s>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2s>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Vec2s>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2s>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2s>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 37:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3s>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3s>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Vec3s>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3s>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3s>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 38:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4s>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4s>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Vec4s>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4s>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4s>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 39:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2w>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2w>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Vec2w>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2w>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2w>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 40:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3w>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3w>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Vec3w>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3w>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3w>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 41:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4w>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4w>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Vec4w>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4w>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4w>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 42:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2i>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2i>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Vec2i>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2i>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2i>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 43:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3i>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3i>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Vec3i>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3i>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3i>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 44:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4i>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4i>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Vec4i>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4i>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4i>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 45:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec6i>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec6i>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Vec6i>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec6i>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Vec6i>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 46:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec8i>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec8i>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Vec8i>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec8i>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Vec8i>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 47:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2f>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2f>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Vec2f>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2f>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2f>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 48:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3f>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3f>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Vec3f>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3f>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3f>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 49:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4f>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4f>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Vec4f>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4f>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4f>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 50:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec6f>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec6f>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Vec6f>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec6f>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Vec6f>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 51:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2d>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2d>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Vec2d>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2d>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2d>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 52:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3d>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3d>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Vec3d>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3d>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3d>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 53:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4d>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4d>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Vec4d>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4d>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4d>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 54:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec6d>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec6d>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<cv::Vec6d>>(*reinterpret_cast<std::shared_ptr<std::vector<cv::Vec6d>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<cv::Vec6d>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 55:
 				if constexpr (std::is_same_v<Array, cv::_InputOutputArray>) {
-					
+
 					if (&src != &dst) {
 						if (dst.obj) {
 							*reinterpret_cast<std::shared_ptr<std::vector<std::vector<bool>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<bool>>>*>(src.obj);
-						} else {
+						}
+						else {
 							dst.obj = new std::shared_ptr<std::vector<std::vector<bool>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<bool>>>*>(src.obj));
 						}
 					}
 					if (dst.obj) {
 						dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<bool>>>*>(dst.obj));
 					}
-					
+
 				}
 				break;
 			case 56:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::RotatedRect>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::RotatedRect>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::RotatedRect>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::RotatedRect>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::RotatedRect>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 57:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Range>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Range>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Range>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Range>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Range>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 58:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Moments>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Moments>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Moments>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Moments>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Moments>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 59:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<uchar>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<uchar>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<uchar>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<uchar>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<uchar>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 60:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<schar>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<schar>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<schar>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<schar>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<schar>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 61:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<char>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<char>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<char>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<char>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<char>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 62:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<ushort>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<ushort>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<ushort>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<ushort>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<ushort>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 63:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<short>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<short>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<short>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<short>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<short>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 64:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<int>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<int>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<int>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<int>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<int>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 65:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<float>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<float>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<float>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<float>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<float>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 66:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<double>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<double>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<double>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<double>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<double>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 67:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point3i>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point3i>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Point3i>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point3i>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point3i>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 68:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point3f>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point3f>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Point3f>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point3f>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point3f>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 69:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point3d>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point3d>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Point3d>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point3d>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point3d>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 70:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point2f>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point2f>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Point2f>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point2f>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point2f>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 71:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point2d>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point2d>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Point2d>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point2d>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point2d>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 72:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Point>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 73:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Rect2f>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Rect2f>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Rect2f>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Rect2f>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Rect2f>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 74:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Rect2d>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Rect2d>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Rect2d>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Rect2d>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Rect2d>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 75:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Rect>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Rect>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Rect>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Rect>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Rect>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 76:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Size2f>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Size2f>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Size2f>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Size2f>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Size2f>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 77:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Size2d>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Size2d>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Size2d>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Size2d>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Size2d>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 78:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Size>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Size>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Size>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Size>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Size>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 79:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2b>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2b>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Vec2b>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2b>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2b>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 80:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3b>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3b>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Vec3b>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3b>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3b>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 81:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4b>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4b>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Vec4b>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4b>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4b>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 82:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2s>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2s>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Vec2s>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2s>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2s>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 83:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3s>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3s>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Vec3s>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3s>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3s>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 84:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4s>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4s>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Vec4s>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4s>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4s>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 85:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2w>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2w>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Vec2w>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2w>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2w>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 86:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3w>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3w>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Vec3w>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3w>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3w>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 87:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4w>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4w>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Vec4w>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4w>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4w>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 88:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2i>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2i>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Vec2i>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2i>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2i>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 89:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3i>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3i>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Vec3i>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3i>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3i>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 90:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4i>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4i>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Vec4i>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4i>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4i>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 91:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6i>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6i>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Vec6i>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6i>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6i>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 92:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec8i>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec8i>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Vec8i>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec8i>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec8i>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 93:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2f>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2f>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Vec2f>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2f>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2f>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 94:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3f>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3f>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Vec3f>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3f>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3f>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 95:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4f>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4f>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Vec4f>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4f>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4f>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 96:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6f>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6f>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Vec6f>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6f>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6f>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 97:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2d>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2d>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Vec2d>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2d>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2d>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 98:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3d>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3d>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Vec3d>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3d>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3d>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 99:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4d>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4d>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Vec4d>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4d>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4d>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 100:
-				
+
 				if (&src != &dst) {
 					if (dst.obj) {
 						*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6d>>>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6d>>>*>(src.obj);
-					} else {
+					}
+					else {
 						dst.obj = new std::shared_ptr<std::vector<std::vector<cv::Vec6d>>>(*reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6d>>>*>(src.obj));
 					}
 				}
 				if (dst.obj) {
 					dst.reset(**reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6d>>>*>(dst.obj));
 				}
-				
+
 				break;
 			case 101:
 				dst.reset(dst.vval);
@@ -2950,6 +3483,10 @@ namespace LUA_MODULE_NAME {
 					dst.ptr = src.ptr;
 				}
 			}
+		}
+
+		auto get() {
+			return ptr;
 		}
 
 		operator bool() const {
@@ -2967,31 +3504,367 @@ namespace LUA_MODULE_NAME {
 		void* obj = nullptr;
 	};
 
+	template<typename Array, bool is_arrays_type>
+	inline int lua_push(lua_State* L, const _OptionalArray<Array, is_arrays_type>& dst) {
+		switch (dst.field) {
+		case 1:
+			if constexpr (!is_arrays_type && (std::is_same_v<Array, cv::_InputArray>)) {
+				return lua_push(L, *reinterpret_cast<std::shared_ptr<bool>*>(dst.obj));
+			}
+			break;
+		case 2:
+			if constexpr (!is_arrays_type && (std::is_same_v<Array, cv::_InputArray>)) {
+				return lua_push(L, *reinterpret_cast<std::shared_ptr<double>*>(dst.obj));
+			}
+			break;
+		case 3:
+			if constexpr (!is_arrays_type) {
+				return lua_push(L, *reinterpret_cast<std::shared_ptr<cv::cuda::GpuMat>*>(dst.obj));
+			}
+			break;
+		case 4:
+			if constexpr (!is_arrays_type) {
+				return lua_push(L, *reinterpret_cast<std::shared_ptr<cv::Mat>*>(dst.obj));
+			}
+			break;
+		case 5:
+			if constexpr (!is_arrays_type) {
+				return lua_push(L, *reinterpret_cast<std::shared_ptr<cv::UMat>*>(dst.obj));
+			}
+			break;
+		case 6:
+			if constexpr (!is_arrays_type && (std::is_same_v<Array, cv::_InputArray>)) {
+				return lua_push(L, *reinterpret_cast<std::shared_ptr<cv::Scalar>*>(dst.obj));
+			}
+			break;
+		case 7:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Mat>>*>(dst.obj));
+			break;
+		case 8:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::UMat>>*>(dst.obj));
+			break;
+		case 9:
+			if constexpr (std::is_same_v<Array, cv::_InputArray>) {
+				return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<bool>>*>(dst.obj));
+			}
+			break;
+		case 10:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::RotatedRect>>*>(dst.obj));
+			break;
+		case 11:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Range>>*>(dst.obj));
+			break;
+		case 12:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Moments>>*>(dst.obj));
+			break;
+		case 13:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<uchar>>*>(dst.obj));
+			break;
+		case 14:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<schar>>*>(dst.obj));
+			break;
+		case 15:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<char>>*>(dst.obj));
+			break;
+		case 16:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<ushort>>*>(dst.obj));
+			break;
+		case 17:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<short>>*>(dst.obj));
+			break;
+		case 18:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<int>>*>(dst.obj));
+			break;
+		case 19:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<float>>*>(dst.obj));
+			break;
+		case 20:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<double>>*>(dst.obj));
+			break;
+		case 21:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Point3i>>*>(dst.obj));
+			break;
+		case 22:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Point3f>>*>(dst.obj));
+			break;
+		case 23:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Point3d>>*>(dst.obj));
+			break;
+		case 24:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Point2f>>*>(dst.obj));
+			break;
+		case 25:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Point2d>>*>(dst.obj));
+			break;
+		case 26:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Point>>*>(dst.obj));
+			break;
+		case 27:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Rect2f>>*>(dst.obj));
+			break;
+		case 28:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Rect2d>>*>(dst.obj));
+			break;
+		case 29:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Rect>>*>(dst.obj));
+			break;
+		case 30:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Size2f>>*>(dst.obj));
+			break;
+		case 31:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Size2d>>*>(dst.obj));
+			break;
+		case 32:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Size>>*>(dst.obj));
+			break;
+		case 33:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2b>>*>(dst.obj));
+			break;
+		case 34:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3b>>*>(dst.obj));
+			break;
+		case 35:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4b>>*>(dst.obj));
+			break;
+		case 36:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2s>>*>(dst.obj));
+			break;
+		case 37:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3s>>*>(dst.obj));
+			break;
+		case 38:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4s>>*>(dst.obj));
+			break;
+		case 39:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2w>>*>(dst.obj));
+			break;
+		case 40:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3w>>*>(dst.obj));
+			break;
+		case 41:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4w>>*>(dst.obj));
+			break;
+		case 42:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2i>>*>(dst.obj));
+			break;
+		case 43:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3i>>*>(dst.obj));
+			break;
+		case 44:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4i>>*>(dst.obj));
+			break;
+		case 45:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec6i>>*>(dst.obj));
+			break;
+		case 46:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec8i>>*>(dst.obj));
+			break;
+		case 47:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2f>>*>(dst.obj));
+			break;
+		case 48:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3f>>*>(dst.obj));
+			break;
+		case 49:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4f>>*>(dst.obj));
+			break;
+		case 50:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec6f>>*>(dst.obj));
+			break;
+		case 51:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec2d>>*>(dst.obj));
+			break;
+		case 52:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec3d>>*>(dst.obj));
+			break;
+		case 53:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec4d>>*>(dst.obj));
+			break;
+		case 54:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<cv::Vec6d>>*>(dst.obj));
+			break;
+		case 55:
+			if constexpr (std::is_same_v<Array, cv::_InputOutputArray>) {
+				return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<bool>>>*>(dst.obj));
+			}
+			break;
+		case 56:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::RotatedRect>>>*>(dst.obj));
+			break;
+		case 57:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Range>>>*>(dst.obj));
+			break;
+		case 58:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Moments>>>*>(dst.obj));
+			break;
+		case 59:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<uchar>>>*>(dst.obj));
+			break;
+		case 60:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<schar>>>*>(dst.obj));
+			break;
+		case 61:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<char>>>*>(dst.obj));
+			break;
+		case 62:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<ushort>>>*>(dst.obj));
+			break;
+		case 63:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<short>>>*>(dst.obj));
+			break;
+		case 64:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<int>>>*>(dst.obj));
+			break;
+		case 65:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<float>>>*>(dst.obj));
+			break;
+		case 66:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<double>>>*>(dst.obj));
+			break;
+		case 67:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point3i>>>*>(dst.obj));
+			break;
+		case 68:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point3f>>>*>(dst.obj));
+			break;
+		case 69:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point3d>>>*>(dst.obj));
+			break;
+		case 70:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point2f>>>*>(dst.obj));
+			break;
+		case 71:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point2d>>>*>(dst.obj));
+			break;
+		case 72:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Point>>>*>(dst.obj));
+			break;
+		case 73:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Rect2f>>>*>(dst.obj));
+			break;
+		case 74:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Rect2d>>>*>(dst.obj));
+			break;
+		case 75:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Rect>>>*>(dst.obj));
+			break;
+		case 76:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Size2f>>>*>(dst.obj));
+			break;
+		case 77:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Size2d>>>*>(dst.obj));
+			break;
+		case 78:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Size>>>*>(dst.obj));
+			break;
+		case 79:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2b>>>*>(dst.obj));
+			break;
+		case 80:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3b>>>*>(dst.obj));
+			break;
+		case 81:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4b>>>*>(dst.obj));
+			break;
+		case 82:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2s>>>*>(dst.obj));
+			break;
+		case 83:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3s>>>*>(dst.obj));
+			break;
+		case 84:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4s>>>*>(dst.obj));
+			break;
+		case 85:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2w>>>*>(dst.obj));
+			break;
+		case 86:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3w>>>*>(dst.obj));
+			break;
+		case 87:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4w>>>*>(dst.obj));
+			break;
+		case 88:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2i>>>*>(dst.obj));
+			break;
+		case 89:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3i>>>*>(dst.obj));
+			break;
+		case 90:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4i>>>*>(dst.obj));
+			break;
+		case 91:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6i>>>*>(dst.obj));
+			break;
+		case 92:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec8i>>>*>(dst.obj));
+			break;
+		case 93:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2f>>>*>(dst.obj));
+			break;
+		case 94:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3f>>>*>(dst.obj));
+			break;
+		case 95:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4f>>>*>(dst.obj));
+			break;
+		case 96:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6f>>>*>(dst.obj));
+			break;
+		case 97:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2d>>>*>(dst.obj));
+			break;
+		case 98:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3d>>>*>(dst.obj));
+			break;
+		case 99:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4d>>>*>(dst.obj));
+			break;
+		case 100:
+			return lua_push(L, *reinterpret_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6d>>>*>(dst.obj));
+			break;
+		case 101:
+			return lua_push(L, dst.vval);
+		case 102:
+			return lua_push(L, dst.mval);
+		default:
+			// Nothind do do
+			break;
+		}
+
+		lua_pushnil(L);
+		return 1;
+	}
+
 	// InputArray, outputArray, InputOutputArray
-	template<typename Array, typename _To = sol::object>
-	struct OptionalArray : public _OptionalArray<Array, _To, false> {};
+	template<typename Array>
+	struct OptionalArray : public _OptionalArray<Array, false> {
+		using _OptionalArray<Array, false>::_OptionalArray;
+	};
 
 	// InputArrayOfArrays, outputArrayOfArrays, InputOutputArrayOfArrays
-	template<typename Array, typename _To = sol::object>
-	struct OptionalArrays : public _OptionalArray<Array, _To, true> {};
+	template<typename Array>
+	struct OptionalArrays : public _OptionalArray<Array, true> {
+		using _OptionalArray<Array, true>::_OptionalArray;
+	};
 
-	template<typename Array, typename _To = sol::object>
-	inline decltype(auto) maybe_arrays(const _To& obj, Array*) {
-		return OptionalArrays<Array>(obj);
+	template<typename Array>
+	inline bool lua_isarrays(lua_State* L, int index, Array*) {
+		return OptionalArrays<Array>::is_valid(L, index);
 	}
 
 	template<typename Array>
-	inline decltype(auto) maybe_arrays(const std::shared_ptr<Array>& ptr) {
-		return OptionalArrays<Array>(ptr);
-	}
-
-	template<typename Array, typename _To = sol::object>
-	inline decltype(auto) maybe_array(const _To& obj, Array*) {
-		return OptionalArray<Array>(obj);
+	inline decltype(auto) lua_toarrays(lua_State* L, int index, Array*) {
+		return OptionalArrays<Array>(L, index);
 	}
 
 	template<typename Array>
-	inline decltype(auto) maybe_array(const std::shared_ptr<Array>& ptr) {
-		return OptionalArray<Array>(ptr);
+	inline bool lua_isarray(lua_State* L, int index, Array*) {
+		return OptionalArray<Array>::is_valid(L, index);
+	}
+
+	template<typename Array>
+	inline decltype(auto) lua_toarray(lua_State* L, int index, Array*) {
+		return OptionalArray<Array>(L, index);
 	}
 }

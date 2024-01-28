@@ -1,22 +1,6 @@
 const fs = require("node:fs");
 const sysPath = require("node:path");
 
-const getTypename = type => {
-    return type
-        .replace(/\b(u?int(?:8|16|32|64))_t\b/g, "$1")
-        .replaceAll("std::map", "MapOf")
-        .replaceAll("std::pair", "PairOf")
-        .replaceAll("std::vector", "VectorOf")
-        .replaceAll("std::shared_ptr", "SharedPtrOf")
-        .replace("cv::", "")
-        .replace("std::", "")
-        .replace(/\b_variant_t\b/g, "Variant")
-        .replace(/::/g, "_")
-        .replace(/\b[a-z]/g, m => m.toUpperCase())
-        .replace(/, /g, "And")
-        .replace(/[<>]/g, "");
-};
-
 const plain = new Set([
     "bool",
     "double",
@@ -137,43 +121,65 @@ types.unshift(...plain);
 const code = `
     #pragma once
 
-    #include <lua_utils.hpp>
-    #include <lua_generated_include.hpp>
+    #include <lua_bridge_common.hpp>
+    #include <opencv2/core.hpp>
 
     namespace LUA_MODULE_NAME {
         // InputArray, outputArray, InputOutputArray
         // InputArrayOfArrays, outputArrayOfArrays, InputOutputArrayOfArrays
-        template<typename Array, typename _To, bool is_arrays_type>
+        template<typename Array, bool is_arrays_type>
         struct _OptionalArray
         {
-            _OptionalArray() = default;
+            static const bool is_valid(lua_State* L, int index) {
+                if (lua_isnil(L, index)) {
+                    return true;
+                }
 
-            _OptionalArray(_To& obj) {
-                if (obj == sol::lua_nil) {
+                if (lua_isuserdata(L, index) && lua_is(L, index, static_cast<Array*>(nullptr))) {
+                    return true;
+                }
+
+                ${ types.map((type, i) => constexpr(type, 16, `
+                if (lua_is(L, index, static_cast<${ type }*>(nullptr))) {
+                    return true;
+                }`.trim())).join(`\n\n${ " ".repeat(16) }`) }
+
+                return false;
+            }
+
+            _OptionalArray() {
+                if constexpr (is_arrays_type) {
+                    setField(*this, *this, ${ types.length + 1 });
+                }
+                else {
+                    setField(*this, *this, ${ types.length + 2 });
+                }
+            };
+
+            _OptionalArray(lua_State* L, int index) {
+                if (lua_isnil(L, index)) {
                     if constexpr (is_arrays_type) {
                         setField(*this, *this, ${ types.length + 1 });
-                    } else {
+                    }
+                    else {
                         setField(*this, *this, ${ types.length + 2 });
                     }
                     return;
                 }
 
-                auto maybe_Array = maybe_impl(obj, static_cast<Array*>(nullptr));
-                if (maybe_Array) {
-                    ptr = reference_internal(*maybe_Array);
+                if (lua_isuserdata(L, index) && lua_is(L, index, static_cast<Array*>(nullptr))) {
+                    ptr = lua_to(L, index, static_cast<Array*>(nullptr));
                     return;
                 }
 
                 ${ types.map((type, i) => constexpr(type, 16, `
-                auto maybe_${ getTypename(type) } = maybe_impl(obj, static_cast<${ type }*>(nullptr));
-                if (maybe_${ getTypename(type) }) {
-                    this->obj = new std::shared_ptr<${ type }>(maybe_${ getTypename(type) });
+                if (lua_is(L, index, static_cast<${ type }*>(nullptr))) {
+                    auto value = lua_to(L, index, static_cast<${ type }*>(nullptr));
+                    assign_maybe_shared(this->obj, value, static_cast<${ type }*>(nullptr));
                     setField(*this, *this, ${ i + 1 });
                     return;
                 }`.trim())).join(`\n\n${ " ".repeat(16) }`) }
             }
-
-            _OptionalArray(const _To& obj) : _OptionalArray(const_cast<_To&>(obj)) {}
 
             _OptionalArray(const std::shared_ptr<Array>& ptr) : ptr(ptr) {}
 
@@ -241,7 +247,8 @@ const code = `
                     if (&src != &dst) {
                         if (dst.obj) {
                             *reinterpret_cast<std::shared_ptr<${ type }>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<${ type }>*>(src.obj);
-                        } else {
+                        }
+                        else {
                             dst.obj = new std::shared_ptr<${ type }>(*reinterpret_cast<std::shared_ptr<${ type }>*>(src.obj));
                         }
                     }
@@ -264,6 +271,10 @@ const code = `
                 }
             }
 
+            auto get() {
+                return ptr;
+            }
+
             operator bool() const {
                 return static_cast<bool>(ptr);
             }
@@ -279,34 +290,78 @@ const code = `
             void* obj = nullptr;
         };
 
+        template<typename Array, bool is_arrays_type>
+        inline int lua_push(lua_State* L, const _OptionalArray<Array, is_arrays_type>& dst) {
+            switch (dst.field) {
+            ${ types.map((type, i) => `
+            case ${ i + 1 }:
+                ${ constexpr(type, 16, `
+                return lua_push(L, *reinterpret_cast<std::shared_ptr<${ type }>*>(dst.obj));
+                `.trim()) }
+                break;
+            `.trim()).join(`\n${ " ".repeat(12) }`) }
+            case ${ types.length + 1 }:
+                return lua_push(L, dst.vval);
+            case ${ types.length + 2 }:
+                return lua_push(L, dst.mval);
+            default:
+                // Nothind do do
+                break;
+            }
+
+            lua_pushnil(L);
+            return 1;
+        }
+
         // InputArray, outputArray, InputOutputArray
-        template<typename Array, typename _To = sol::object>
-        struct OptionalArray : public _OptionalArray<Array, _To, false> {};
+        template<typename Array>
+        struct OptionalArray : public _OptionalArray<Array, false> {
+            using _OptionalArray<Array, false>::_OptionalArray;
+        };
 
         // InputArrayOfArrays, outputArrayOfArrays, InputOutputArrayOfArrays
-        template<typename Array, typename _To = sol::object>
-        struct OptionalArrays : public _OptionalArray<Array, _To, true> {};
+        template<typename Array>
+        struct OptionalArrays : public _OptionalArray<Array, true> {
+            using _OptionalArray<Array, true>::_OptionalArray;
+        };
 
-        template<typename Array, typename _To = sol::object>
-        inline decltype(auto) maybe_arrays(const _To& obj, Array*) {
-            return OptionalArrays<Array>(obj);
+        template<typename Array>
+        inline bool lua_isarrays(lua_State* L, int index, Array*) {
+            return OptionalArrays<Array>::is_valid(L, index);
         }
 
         template<typename Array>
-        inline decltype(auto) maybe_arrays(const std::shared_ptr<Array>& ptr) {
-            return OptionalArrays<Array>(ptr);
-        }
-
-        template<typename Array, typename _To = sol::object>
-        inline decltype(auto) maybe_array(const _To& obj, Array*) {
-            return OptionalArray<Array>(obj);
+        inline decltype(auto) lua_toarrays(lua_State* L, int index, Array*) {
+            return OptionalArrays<Array>(L, index);
         }
 
         template<typename Array>
-        inline decltype(auto) maybe_array(const std::shared_ptr<Array>& ptr) {
-            return OptionalArray<Array>(ptr);
+        inline bool lua_isarray(lua_State* L, int index, Array*) {
+            return OptionalArray<Array>::is_valid(L, index);
+        }
+
+        template<typename Array>
+        inline decltype(auto) lua_toarray(lua_State* L, int index, Array*) {
+            return OptionalArray<Array>(L, index);
         }
     }
-`.replace(/^ {4}/mg, "").trim().replaceAll(" ".repeat(4), "\t");
+`.replace(/^ {4}/mg, "").trim().replace(/[^\S\n]+$/mg, "").replaceAll(" ".repeat(4), "\t");
 
-fs.writeFileSync(sysPath.join(__dirname, "../src/include/lua_utils_arrays.hpp"), code);
+const hdr = `
+    #pragma once
+
+    #include <lua_bridge_arrays.hpp>
+    namespace LUA_MODULE_NAME {
+        template<typename Array, bool is_arrays_type>
+        struct _OptionalArray;
+
+        template<typename Array, bool is_arrays_type>
+        inline int lua_push(lua_State* L, const _OptionalArray<Array, is_arrays_type>& array);
+    }
+`.replace(/^ {4}/mg, "").trim().replace(/[^\S\n]+$/mg, "").replaceAll(" ".repeat(4), "\t");
+
+fs.writeFileSync(sysPath.join(__dirname, "../src/include/lua_bridge_arrays.hdr.hpp"), hdr);
+
+fs.writeFileSync(sysPath.join(__dirname, "../src/include/lua_bridge_arrays.hpp"), code);
+
+fs.writeFileSync(sysPath.join(__dirname, "../generator/vectors.js"), `module.exports = ${ JSON.stringify(types.filter(type => type.startsWith("std::vector")), null, 4) };`);

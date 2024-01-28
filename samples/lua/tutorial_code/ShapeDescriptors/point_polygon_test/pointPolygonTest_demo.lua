@@ -38,7 +38,7 @@ local contours, _ = cv.findContours(src, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
 local raw_dist = cv.Mat(src:size(), cv.CV_32F)
 for i = 0, src.rows - 1 do
     for j = 0, src.cols - 1 do
-        raw_dist:set(cv.pointPolygonTest(contours[0 + INDEX_BASE], { j, i }, true), i, j)
+        raw_dist[{ i, j }] = cv.pointPolygonTest(contours[0 + INDEX_BASE], { j, i }, true)
     end
 end
 
@@ -48,21 +48,19 @@ maxVal = math.abs(maxVal)
 
 -- Depicting the  distances graphically
 local drawing = cv.Mat.zeros(src:size(), cv.CV_8UC3)
-drawing = drawing:reshape(1, { src.rows, src.cols, 3 })
 for i = 0, src.rows - 1 do
     for j = 0, src.cols - 1 do
-        if raw_dist(i, j) < 0 then
-            drawing:set(255 - math.abs(raw_dist(i, j)) * 255 / minVal, i, j, 0)
-        elseif raw_dist(i, j) > 0 then
-            drawing:set(255 - raw_dist(i, j) * 255 / maxVal, i, j, 2)
+        if raw_dist[{ i, j }] < 0 then
+            drawing[{ i, j, 0 }] = 255 - math.abs(raw_dist[{ i, j }]) * 255 / minVal
+        elseif raw_dist[{ i, j }] > 0 then
+            drawing[{ i, j, 2 }] = 255 - raw_dist[{ i, j }] * 255 / maxVal
         else
-            drawing:set(255, i, j, 0)
-            drawing:set(255, i, j, 1)
-            drawing:set(255, i, j, 2)
+            drawing[{ i, j, 0 }] = 255
+            drawing[{ i, j, 1 }] = 255
+            drawing[{ i, j, 2 }] = 255
         end
     end
 end
-drawing = drawing:reshape(3, { src.rows, src.cols })
 
 cv.circle(drawing, maxDistPt, int(maxVal), { 255, 255, 255 }, 1, cv.LINE_8, 0)
 cv.imshow('Source', src)

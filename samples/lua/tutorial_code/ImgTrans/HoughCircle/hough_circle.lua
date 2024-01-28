@@ -10,6 +10,7 @@ Sources:
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local kwargs = opencv_lua.kwargs
+local INDEX_BASE = 1 -- lua is 1-based indexed
 
 local function main(args)
     -- [load]
@@ -51,12 +52,12 @@ local function main(args)
     -- [draw]
     if not circles:empty() then
         circles = circles:convertTo(cv.CV_16U)
-        for _, i in circles[0]:__pairs() do
-            local center = { i[0], i[1] }
+        for _, i in ipairs(circles[0]:table()) do
+            local center = { i[0 + INDEX_BASE], i[1 + INDEX_BASE] }
             -- circle center
             cv.circle(src, center, 1, { 0, 100, 100 }, 3)
             -- circle outline
-            local radius = i[2]
+            local radius = i[2 + INDEX_BASE]
             cv.circle(src, center, radius, { 255, 0, 255 }, 3)
         end
     end

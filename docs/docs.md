@@ -5,136 +5,813 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
+- [GArray\_Point2f](#garray%5C_point2f)
+- [GArray\_Point2i](#garray%5C_point2i)
+- [GArray\_Point3f](#garray%5C_point3f)
+- [GArray\_Prim](#garray%5C_prim)
+- [GArray\_Rect](#garray%5C_rect)
+- [GArray\_int](#garray%5C_int)
+- [GArray\_uint64\_t](#garray%5C_uint64%5C_t)
+- [GOpaque\_Rect](#gopaque%5C_rect)
+- [GOpaque\_Size](#gopaque%5C_size)
+- [GOpaque\_double](#gopaque%5C_double)
+- [GOpaque\_int](#gopaque%5C_int)
+- [MapOfIntAndDouble](#mapofintanddouble)
+  - [MapOfIntAndDouble.new](#mapofintanddoublenew)
+  - [MapOfIntAndDouble.contains](#mapofintanddoublecontains)
+  - [MapOfIntAndDouble.count](#mapofintanddoublecount)
+  - [MapOfIntAndDouble.delete](#mapofintanddoubledelete)
+  - [MapOfIntAndDouble.erase](#mapofintanddoubleerase)
+  - [MapOfIntAndDouble.has](#mapofintanddoublehas)
+  - [MapOfIntAndDouble.keys](#mapofintanddoublekeys)
+  - [MapOfIntAndDouble.merge](#mapofintanddoublemerge)
+  - [MapOfIntAndDouble.remove](#mapofintanddoubleremove)
+  - [MapOfIntAndDouble.sol::meta\_function::index](#mapofintanddoublesolmeta%5C_functionindex)
+  - [MapOfIntAndDouble.sol::meta\_function::length](#mapofintanddoublesolmeta%5C_functionlength)
+  - [MapOfIntAndDouble.sol::meta\_function::new\_index](#mapofintanddoublesolmeta%5C_functionnew%5C_index)
+  - [MapOfIntAndDouble.table](#mapofintanddoubletable)
+- [MapOfStringAndInt](#mapofstringandint)
+  - [MapOfStringAndInt.new](#mapofstringandintnew)
+  - [MapOfStringAndInt.contains](#mapofstringandintcontains)
+  - [MapOfStringAndInt.count](#mapofstringandintcount)
+  - [MapOfStringAndInt.delete](#mapofstringandintdelete)
+  - [MapOfStringAndInt.erase](#mapofstringandinterase)
+  - [MapOfStringAndInt.has](#mapofstringandinthas)
+  - [MapOfStringAndInt.keys](#mapofstringandintkeys)
+  - [MapOfStringAndInt.merge](#mapofstringandintmerge)
+  - [MapOfStringAndInt.remove](#mapofstringandintremove)
+  - [MapOfStringAndInt.sol::meta\_function::index](#mapofstringandintsolmeta%5C_functionindex)
+  - [MapOfStringAndInt.sol::meta\_function::length](#mapofstringandintsolmeta%5C_functionlength)
+  - [MapOfStringAndInt.sol::meta\_function::new\_index](#mapofstringandintsolmeta%5C_functionnew%5C_index)
+  - [MapOfStringAndInt.table](#mapofstringandinttable)
+- [MapOfStringAndString](#mapofstringandstring)
+  - [MapOfStringAndString.new](#mapofstringandstringnew)
+  - [MapOfStringAndString.contains](#mapofstringandstringcontains)
+  - [MapOfStringAndString.count](#mapofstringandstringcount)
+  - [MapOfStringAndString.delete](#mapofstringandstringdelete)
+  - [MapOfStringAndString.erase](#mapofstringandstringerase)
+  - [MapOfStringAndString.has](#mapofstringandstringhas)
+  - [MapOfStringAndString.keys](#mapofstringandstringkeys)
+  - [MapOfStringAndString.merge](#mapofstringandstringmerge)
+  - [MapOfStringAndString.remove](#mapofstringandstringremove)
+  - [MapOfStringAndString.sol::meta\_function::index](#mapofstringandstringsolmeta%5C_functionindex)
+  - [MapOfStringAndString.sol::meta\_function::length](#mapofstringandstringsolmeta%5C_functionlength)
+  - [MapOfStringAndString.sol::meta\_function::new\_index](#mapofstringandstringsolmeta%5C_functionnew%5C_index)
+  - [MapOfStringAndString.table](#mapofstringandstringtable)
+- [MapOfStringAndVectorOfFloat](#mapofstringandvectoroffloat)
+  - [MapOfStringAndVectorOfFloat.new](#mapofstringandvectoroffloatnew)
+  - [MapOfStringAndVectorOfFloat.contains](#mapofstringandvectoroffloatcontains)
+  - [MapOfStringAndVectorOfFloat.count](#mapofstringandvectoroffloatcount)
+  - [MapOfStringAndVectorOfFloat.delete](#mapofstringandvectoroffloatdelete)
+  - [MapOfStringAndVectorOfFloat.erase](#mapofstringandvectoroffloaterase)
+  - [MapOfStringAndVectorOfFloat.has](#mapofstringandvectoroffloathas)
+  - [MapOfStringAndVectorOfFloat.keys](#mapofstringandvectoroffloatkeys)
+  - [MapOfStringAndVectorOfFloat.merge](#mapofstringandvectoroffloatmerge)
+  - [MapOfStringAndVectorOfFloat.remove](#mapofstringandvectoroffloatremove)
+  - [MapOfStringAndVectorOfFloat.sol::meta\_function::index](#mapofstringandvectoroffloatsolmeta%5C_functionindex)
+  - [MapOfStringAndVectorOfFloat.sol::meta\_function::length](#mapofstringandvectoroffloatsolmeta%5C_functionlength)
+  - [MapOfStringAndVectorOfFloat.sol::meta\_function::new\_index](#mapofstringandvectoroffloatsolmeta%5C_functionnew%5C_index)
+  - [MapOfStringAndVectorOfFloat.table](#mapofstringandvectoroffloattable)
+- [MapOfStringAndVectorOfSize\_t](#mapofstringandvectorofsize%5C_t)
+  - [MapOfStringAndVectorOfSize\_t.new](#mapofstringandvectorofsize%5C_tnew)
+  - [MapOfStringAndVectorOfSize\_t.contains](#mapofstringandvectorofsize%5C_tcontains)
+  - [MapOfStringAndVectorOfSize\_t.count](#mapofstringandvectorofsize%5C_tcount)
+  - [MapOfStringAndVectorOfSize\_t.delete](#mapofstringandvectorofsize%5C_tdelete)
+  - [MapOfStringAndVectorOfSize\_t.erase](#mapofstringandvectorofsize%5C_terase)
+  - [MapOfStringAndVectorOfSize\_t.has](#mapofstringandvectorofsize%5C_thas)
+  - [MapOfStringAndVectorOfSize\_t.keys](#mapofstringandvectorofsize%5C_tkeys)
+  - [MapOfStringAndVectorOfSize\_t.merge](#mapofstringandvectorofsize%5C_tmerge)
+  - [MapOfStringAndVectorOfSize\_t.remove](#mapofstringandvectorofsize%5C_tremove)
+  - [MapOfStringAndVectorOfSize\_t.sol::meta\_function::index](#mapofstringandvectorofsize%5C_tsolmeta%5C_functionindex)
+  - [MapOfStringAndVectorOfSize\_t.sol::meta\_function::length](#mapofstringandvectorofsize%5C_tsolmeta%5C_functionlength)
+  - [MapOfStringAndVectorOfSize\_t.sol::meta\_function::new\_index](#mapofstringandvectorofsize%5C_tsolmeta%5C_functionnew%5C_index)
+  - [MapOfStringAndVectorOfSize\_t.table](#mapofstringandvectorofsize%5C_ttable)
+- [VectorOfBool](#vectorofbool)
+  - [VectorOfBool.new](#vectorofboolnew)
+  - [VectorOfBool.sol::meta\_function::index](#vectorofboolsolmeta%5C_functionindex)
+  - [VectorOfBool.sol::meta\_function::length](#vectorofboolsolmeta%5C_functionlength)
+  - [VectorOfBool.sol::meta\_function::new\_index](#vectorofboolsolmeta%5C_functionnew%5C_index)
+  - [VectorOfBool.table](#vectorofbooltable)
 - [VectorOfChar](#vectorofchar)
   - [VectorOfChar.new](#vectorofcharnew)
+  - [VectorOfChar.sol::meta\_function::index](#vectorofcharsolmeta%5C_functionindex)
+  - [VectorOfChar.sol::meta\_function::length](#vectorofcharsolmeta%5C_functionlength)
+  - [VectorOfChar.sol::meta\_function::new\_index](#vectorofcharsolmeta%5C_functionnew%5C_index)
+  - [VectorOfChar.table](#vectorofchartable)
 - [VectorOfDMatch](#vectorofdmatch)
   - [VectorOfDMatch.new](#vectorofdmatchnew)
+  - [VectorOfDMatch.sol::meta\_function::index](#vectorofdmatchsolmeta%5C_functionindex)
+  - [VectorOfDMatch.sol::meta\_function::length](#vectorofdmatchsolmeta%5C_functionlength)
+  - [VectorOfDMatch.sol::meta\_function::new\_index](#vectorofdmatchsolmeta%5C_functionnew%5C_index)
+  - [VectorOfDMatch.table](#vectorofdmatchtable)
 - [VectorOfDetail\_CameraParams](#vectorofdetail%5C_cameraparams)
   - [VectorOfDetail\_CameraParams.new](#vectorofdetail%5C_cameraparamsnew)
+  - [VectorOfDetail\_CameraParams.sol::meta\_function::index](#vectorofdetail%5C_cameraparamssolmeta%5C_functionindex)
+  - [VectorOfDetail\_CameraParams.sol::meta\_function::length](#vectorofdetail%5C_cameraparamssolmeta%5C_functionlength)
+  - [VectorOfDetail\_CameraParams.sol::meta\_function::new\_index](#vectorofdetail%5C_cameraparamssolmeta%5C_functionnew%5C_index)
+  - [VectorOfDetail\_CameraParams.table](#vectorofdetail%5C_cameraparamstable)
 - [VectorOfDetail\_ImageFeatures](#vectorofdetail%5C_imagefeatures)
   - [VectorOfDetail\_ImageFeatures.new](#vectorofdetail%5C_imagefeaturesnew)
+  - [VectorOfDetail\_ImageFeatures.sol::meta\_function::index](#vectorofdetail%5C_imagefeaturessolmeta%5C_functionindex)
+  - [VectorOfDetail\_ImageFeatures.sol::meta\_function::length](#vectorofdetail%5C_imagefeaturessolmeta%5C_functionlength)
+  - [VectorOfDetail\_ImageFeatures.sol::meta\_function::new\_index](#vectorofdetail%5C_imagefeaturessolmeta%5C_functionnew%5C_index)
+  - [VectorOfDetail\_ImageFeatures.table](#vectorofdetail%5C_imagefeaturestable)
 - [VectorOfDetail\_MatchesInfo](#vectorofdetail%5C_matchesinfo)
   - [VectorOfDetail\_MatchesInfo.new](#vectorofdetail%5C_matchesinfonew)
+  - [VectorOfDetail\_MatchesInfo.sol::meta\_function::index](#vectorofdetail%5C_matchesinfosolmeta%5C_functionindex)
+  - [VectorOfDetail\_MatchesInfo.sol::meta\_function::length](#vectorofdetail%5C_matchesinfosolmeta%5C_functionlength)
+  - [VectorOfDetail\_MatchesInfo.sol::meta\_function::new\_index](#vectorofdetail%5C_matchesinfosolmeta%5C_functionnew%5C_index)
+  - [VectorOfDetail\_MatchesInfo.table](#vectorofdetail%5C_matchesinfotable)
 - [VectorOfDnn\_Target](#vectorofdnn%5C_target)
   - [VectorOfDnn\_Target.new](#vectorofdnn%5C_targetnew)
+  - [VectorOfDnn\_Target.sol::meta\_function::index](#vectorofdnn%5C_targetsolmeta%5C_functionindex)
+  - [VectorOfDnn\_Target.sol::meta\_function::length](#vectorofdnn%5C_targetsolmeta%5C_functionlength)
+  - [VectorOfDnn\_Target.sol::meta\_function::new\_index](#vectorofdnn%5C_targetsolmeta%5C_functionnew%5C_index)
+  - [VectorOfDnn\_Target.table](#vectorofdnn%5C_targettable)
 - [VectorOfDouble](#vectorofdouble)
   - [VectorOfDouble.new](#vectorofdoublenew)
+  - [VectorOfDouble.sol::meta\_function::index](#vectorofdoublesolmeta%5C_functionindex)
+  - [VectorOfDouble.sol::meta\_function::length](#vectorofdoublesolmeta%5C_functionlength)
+  - [VectorOfDouble.sol::meta\_function::new\_index](#vectorofdoublesolmeta%5C_functionnew%5C_index)
+  - [VectorOfDouble.table](#vectorofdoubletable)
 - [VectorOfFloat](#vectoroffloat)
   - [VectorOfFloat.new](#vectoroffloatnew)
+  - [VectorOfFloat.sol::meta\_function::index](#vectoroffloatsolmeta%5C_functionindex)
+  - [VectorOfFloat.sol::meta\_function::length](#vectoroffloatsolmeta%5C_functionlength)
+  - [VectorOfFloat.sol::meta\_function::new\_index](#vectoroffloatsolmeta%5C_functionnew%5C_index)
+  - [VectorOfFloat.table](#vectoroffloattable)
 - [VectorOfGCompileArg](#vectorofgcompilearg)
   - [VectorOfGCompileArg.new](#vectorofgcompileargnew)
+  - [VectorOfGCompileArg.sol::meta\_function::index](#vectorofgcompileargsolmeta%5C_functionindex)
+  - [VectorOfGCompileArg.sol::meta\_function::length](#vectorofgcompileargsolmeta%5C_functionlength)
+  - [VectorOfGCompileArg.sol::meta\_function::new\_index](#vectorofgcompileargsolmeta%5C_functionnew%5C_index)
+  - [VectorOfGCompileArg.table](#vectorofgcompileargtable)
 - [VectorOfGMat](#vectorofgmat)
   - [VectorOfGMat.new](#vectorofgmatnew)
+  - [VectorOfGMat.sol::meta\_function::index](#vectorofgmatsolmeta%5C_functionindex)
+  - [VectorOfGMat.sol::meta\_function::length](#vectorofgmatsolmeta%5C_functionlength)
+  - [VectorOfGMat.sol::meta\_function::new\_index](#vectorofgmatsolmeta%5C_functionnew%5C_index)
+  - [VectorOfGMat.table](#vectorofgmattable)
 - [VectorOfGMetaArg](#vectorofgmetaarg)
   - [VectorOfGMetaArg.new](#vectorofgmetaargnew)
+  - [VectorOfGMetaArg.sol::meta\_function::index](#vectorofgmetaargsolmeta%5C_functionindex)
+  - [VectorOfGMetaArg.sol::meta\_function::length](#vectorofgmetaargsolmeta%5C_functionlength)
+  - [VectorOfGMetaArg.sol::meta\_function::new\_index](#vectorofgmetaargsolmeta%5C_functionnew%5C_index)
+  - [VectorOfGMetaArg.table](#vectorofgmetaargtable)
 - [VectorOfGRunArg](#vectorofgrunarg)
   - [VectorOfGRunArg.new](#vectorofgrunargnew)
+  - [VectorOfGRunArg.sol::meta\_function::index](#vectorofgrunargsolmeta%5C_functionindex)
+  - [VectorOfGRunArg.sol::meta\_function::length](#vectorofgrunargsolmeta%5C_functionlength)
+  - [VectorOfGRunArg.sol::meta\_function::new\_index](#vectorofgrunargsolmeta%5C_functionnew%5C_index)
+  - [VectorOfGRunArg.table](#vectorofgrunargtable)
 - [VectorOfGapi\_GNetParam](#vectorofgapi%5C_gnetparam)
   - [VectorOfGapi\_GNetParam.new](#vectorofgapi%5C_gnetparamnew)
+  - [VectorOfGapi\_GNetParam.sol::meta\_function::index](#vectorofgapi%5C_gnetparamsolmeta%5C_functionindex)
+  - [VectorOfGapi\_GNetParam.sol::meta\_function::length](#vectorofgapi%5C_gnetparamsolmeta%5C_functionlength)
+  - [VectorOfGapi\_GNetParam.sol::meta\_function::new\_index](#vectorofgapi%5C_gnetparamsolmeta%5C_functionnew%5C_index)
+  - [VectorOfGapi\_GNetParam.table](#vectorofgapi%5C_gnetparamtable)
 - [VectorOfGapi\_wip\_draw\_Prim](#vectorofgapi%5C_wip%5C_draw%5C_prim)
   - [VectorOfGapi\_wip\_draw\_Prim.new](#vectorofgapi%5C_wip%5C_draw%5C_primnew)
+  - [VectorOfGapi\_wip\_draw\_Prim.sol::meta\_function::index](#vectorofgapi%5C_wip%5C_draw%5C_primsolmeta%5C_functionindex)
+  - [VectorOfGapi\_wip\_draw\_Prim.sol::meta\_function::length](#vectorofgapi%5C_wip%5C_draw%5C_primsolmeta%5C_functionlength)
+  - [VectorOfGapi\_wip\_draw\_Prim.sol::meta\_function::new\_index](#vectorofgapi%5C_wip%5C_draw%5C_primsolmeta%5C_functionnew%5C_index)
+  - [VectorOfGapi\_wip\_draw\_Prim.table](#vectorofgapi%5C_wip%5C_draw%5C_primtable)
 - [VectorOfInt](#vectorofint)
   - [VectorOfInt.new](#vectorofintnew)
+  - [VectorOfInt.sol::meta\_function::index](#vectorofintsolmeta%5C_functionindex)
+  - [VectorOfInt.sol::meta\_function::length](#vectorofintsolmeta%5C_functionlength)
+  - [VectorOfInt.sol::meta\_function::new\_index](#vectorofintsolmeta%5C_functionnew%5C_index)
+  - [VectorOfInt.table](#vectorofinttable)
 - [VectorOfKeyPoint](#vectorofkeypoint)
   - [VectorOfKeyPoint.new](#vectorofkeypointnew)
+  - [VectorOfKeyPoint.sol::meta\_function::index](#vectorofkeypointsolmeta%5C_functionindex)
+  - [VectorOfKeyPoint.sol::meta\_function::length](#vectorofkeypointsolmeta%5C_functionlength)
+  - [VectorOfKeyPoint.sol::meta\_function::new\_index](#vectorofkeypointsolmeta%5C_functionnew%5C_index)
+  - [VectorOfKeyPoint.table](#vectorofkeypointtable)
 - [VectorOfMat](#vectorofmat)
   - [VectorOfMat.new](#vectorofmatnew)
+  - [VectorOfMat.sol::meta\_function::index](#vectorofmatsolmeta%5C_functionindex)
+  - [VectorOfMat.sol::meta\_function::length](#vectorofmatsolmeta%5C_functionlength)
+  - [VectorOfMat.sol::meta\_function::new\_index](#vectorofmatsolmeta%5C_functionnew%5C_index)
+  - [VectorOfMat.table](#vectorofmattable)
+- [VectorOfMoments](#vectorofmoments)
+  - [VectorOfMoments.new](#vectorofmomentsnew)
+  - [VectorOfMoments.sol::meta\_function::index](#vectorofmomentssolmeta%5C_functionindex)
+  - [VectorOfMoments.sol::meta\_function::length](#vectorofmomentssolmeta%5C_functionlength)
+  - [VectorOfMoments.sol::meta\_function::new\_index](#vectorofmomentssolmeta%5C_functionnew%5C_index)
+  - [VectorOfMoments.table](#vectorofmomentstable)
+- [VectorOfPairOfIntAndDouble](#vectorofpairofintanddouble)
+  - [VectorOfPairOfIntAndDouble.new](#vectorofpairofintanddoublenew)
+  - [VectorOfPairOfIntAndDouble.sol::meta\_function::index](#vectorofpairofintanddoublesolmeta%5C_functionindex)
+  - [VectorOfPairOfIntAndDouble.sol::meta\_function::length](#vectorofpairofintanddoublesolmeta%5C_functionlength)
+  - [VectorOfPairOfIntAndDouble.sol::meta\_function::new\_index](#vectorofpairofintanddoublesolmeta%5C_functionnew%5C_index)
+  - [VectorOfPairOfIntAndDouble.table](#vectorofpairofintanddoubletable)
+- [VectorOfPairOfStringAndInt](#vectorofpairofstringandint)
+  - [VectorOfPairOfStringAndInt.new](#vectorofpairofstringandintnew)
+  - [VectorOfPairOfStringAndInt.sol::meta\_function::index](#vectorofpairofstringandintsolmeta%5C_functionindex)
+  - [VectorOfPairOfStringAndInt.sol::meta\_function::length](#vectorofpairofstringandintsolmeta%5C_functionlength)
+  - [VectorOfPairOfStringAndInt.sol::meta\_function::new\_index](#vectorofpairofstringandintsolmeta%5C_functionnew%5C_index)
+  - [VectorOfPairOfStringAndInt.table](#vectorofpairofstringandinttable)
+- [VectorOfPairOfStringAndString](#vectorofpairofstringandstring)
+  - [VectorOfPairOfStringAndString.new](#vectorofpairofstringandstringnew)
+  - [VectorOfPairOfStringAndString.sol::meta\_function::index](#vectorofpairofstringandstringsolmeta%5C_functionindex)
+  - [VectorOfPairOfStringAndString.sol::meta\_function::length](#vectorofpairofstringandstringsolmeta%5C_functionlength)
+  - [VectorOfPairOfStringAndString.sol::meta\_function::new\_index](#vectorofpairofstringandstringsolmeta%5C_functionnew%5C_index)
+  - [VectorOfPairOfStringAndString.table](#vectorofpairofstringandstringtable)
+- [VectorOfPairOfStringAndVectorOfFloat](#vectorofpairofstringandvectoroffloat)
+  - [VectorOfPairOfStringAndVectorOfFloat.new](#vectorofpairofstringandvectoroffloatnew)
+  - [VectorOfPairOfStringAndVectorOfFloat.sol::meta\_function::index](#vectorofpairofstringandvectoroffloatsolmeta%5C_functionindex)
+  - [VectorOfPairOfStringAndVectorOfFloat.sol::meta\_function::length](#vectorofpairofstringandvectoroffloatsolmeta%5C_functionlength)
+  - [VectorOfPairOfStringAndVectorOfFloat.sol::meta\_function::new\_index](#vectorofpairofstringandvectoroffloatsolmeta%5C_functionnew%5C_index)
+  - [VectorOfPairOfStringAndVectorOfFloat.table](#vectorofpairofstringandvectoroffloattable)
+- [VectorOfPairOfStringAndVectorOfSize\_t](#vectorofpairofstringandvectorofsize%5C_t)
+  - [VectorOfPairOfStringAndVectorOfSize\_t.new](#vectorofpairofstringandvectorofsize%5C_tnew)
+  - [VectorOfPairOfStringAndVectorOfSize\_t.sol::meta\_function::index](#vectorofpairofstringandvectorofsize%5C_tsolmeta%5C_functionindex)
+  - [VectorOfPairOfStringAndVectorOfSize\_t.sol::meta\_function::length](#vectorofpairofstringandvectorofsize%5C_tsolmeta%5C_functionlength)
+  - [VectorOfPairOfStringAndVectorOfSize\_t.sol::meta\_function::new\_index](#vectorofpairofstringandvectorofsize%5C_tsolmeta%5C_functionnew%5C_index)
+  - [VectorOfPairOfStringAndVectorOfSize\_t.table](#vectorofpairofstringandvectorofsize%5C_ttable)
 - [VectorOfPoint](#vectorofpoint)
   - [VectorOfPoint.new](#vectorofpointnew)
+  - [VectorOfPoint.sol::meta\_function::index](#vectorofpointsolmeta%5C_functionindex)
+  - [VectorOfPoint.sol::meta\_function::length](#vectorofpointsolmeta%5C_functionlength)
+  - [VectorOfPoint.sol::meta\_function::new\_index](#vectorofpointsolmeta%5C_functionnew%5C_index)
+  - [VectorOfPoint.table](#vectorofpointtable)
+- [VectorOfPoint2d](#vectorofpoint2d)
+  - [VectorOfPoint2d.new](#vectorofpoint2dnew)
+  - [VectorOfPoint2d.sol::meta\_function::index](#vectorofpoint2dsolmeta%5C_functionindex)
+  - [VectorOfPoint2d.sol::meta\_function::length](#vectorofpoint2dsolmeta%5C_functionlength)
+  - [VectorOfPoint2d.sol::meta\_function::new\_index](#vectorofpoint2dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfPoint2d.table](#vectorofpoint2dtable)
 - [VectorOfPoint2f](#vectorofpoint2f)
   - [VectorOfPoint2f.new](#vectorofpoint2fnew)
+  - [VectorOfPoint2f.sol::meta\_function::index](#vectorofpoint2fsolmeta%5C_functionindex)
+  - [VectorOfPoint2f.sol::meta\_function::length](#vectorofpoint2fsolmeta%5C_functionlength)
+  - [VectorOfPoint2f.sol::meta\_function::new\_index](#vectorofpoint2fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfPoint2f.table](#vectorofpoint2ftable)
+- [VectorOfPoint3d](#vectorofpoint3d)
+  - [VectorOfPoint3d.new](#vectorofpoint3dnew)
+  - [VectorOfPoint3d.sol::meta\_function::index](#vectorofpoint3dsolmeta%5C_functionindex)
+  - [VectorOfPoint3d.sol::meta\_function::length](#vectorofpoint3dsolmeta%5C_functionlength)
+  - [VectorOfPoint3d.sol::meta\_function::new\_index](#vectorofpoint3dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfPoint3d.table](#vectorofpoint3dtable)
 - [VectorOfPoint3f](#vectorofpoint3f)
   - [VectorOfPoint3f.new](#vectorofpoint3fnew)
+  - [VectorOfPoint3f.sol::meta\_function::index](#vectorofpoint3fsolmeta%5C_functionindex)
+  - [VectorOfPoint3f.sol::meta\_function::length](#vectorofpoint3fsolmeta%5C_functionlength)
+  - [VectorOfPoint3f.sol::meta\_function::new\_index](#vectorofpoint3fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfPoint3f.table](#vectorofpoint3ftable)
+- [VectorOfPoint3i](#vectorofpoint3i)
+  - [VectorOfPoint3i.new](#vectorofpoint3inew)
+  - [VectorOfPoint3i.sol::meta\_function::index](#vectorofpoint3isolmeta%5C_functionindex)
+  - [VectorOfPoint3i.sol::meta\_function::length](#vectorofpoint3isolmeta%5C_functionlength)
+  - [VectorOfPoint3i.sol::meta\_function::new\_index](#vectorofpoint3isolmeta%5C_functionnew%5C_index)
+  - [VectorOfPoint3i.table](#vectorofpoint3itable)
 - [VectorOfRange](#vectorofrange)
   - [VectorOfRange.new](#vectorofrangenew)
+  - [VectorOfRange.sol::meta\_function::index](#vectorofrangesolmeta%5C_functionindex)
+  - [VectorOfRange.sol::meta\_function::length](#vectorofrangesolmeta%5C_functionlength)
+  - [VectorOfRange.sol::meta\_function::new\_index](#vectorofrangesolmeta%5C_functionnew%5C_index)
+  - [VectorOfRange.table](#vectorofrangetable)
 - [VectorOfRect](#vectorofrect)
   - [VectorOfRect.new](#vectorofrectnew)
+  - [VectorOfRect.sol::meta\_function::index](#vectorofrectsolmeta%5C_functionindex)
+  - [VectorOfRect.sol::meta\_function::length](#vectorofrectsolmeta%5C_functionlength)
+  - [VectorOfRect.sol::meta\_function::new\_index](#vectorofrectsolmeta%5C_functionnew%5C_index)
+  - [VectorOfRect.table](#vectorofrecttable)
 - [VectorOfRect2d](#vectorofrect2d)
   - [VectorOfRect2d.new](#vectorofrect2dnew)
+  - [VectorOfRect2d.sol::meta\_function::index](#vectorofrect2dsolmeta%5C_functionindex)
+  - [VectorOfRect2d.sol::meta\_function::length](#vectorofrect2dsolmeta%5C_functionlength)
+  - [VectorOfRect2d.sol::meta\_function::new\_index](#vectorofrect2dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfRect2d.table](#vectorofrect2dtable)
+- [VectorOfRect2f](#vectorofrect2f)
+  - [VectorOfRect2f.new](#vectorofrect2fnew)
+  - [VectorOfRect2f.sol::meta\_function::index](#vectorofrect2fsolmeta%5C_functionindex)
+  - [VectorOfRect2f.sol::meta\_function::length](#vectorofrect2fsolmeta%5C_functionlength)
+  - [VectorOfRect2f.sol::meta\_function::new\_index](#vectorofrect2fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfRect2f.table](#vectorofrect2ftable)
 - [VectorOfRotatedRect](#vectorofrotatedrect)
   - [VectorOfRotatedRect.new](#vectorofrotatedrectnew)
+  - [VectorOfRotatedRect.sol::meta\_function::index](#vectorofrotatedrectsolmeta%5C_functionindex)
+  - [VectorOfRotatedRect.sol::meta\_function::length](#vectorofrotatedrectsolmeta%5C_functionlength)
+  - [VectorOfRotatedRect.sol::meta\_function::new\_index](#vectorofrotatedrectsolmeta%5C_functionnew%5C_index)
+  - [VectorOfRotatedRect.table](#vectorofrotatedrecttable)
+- [VectorOfSchar](#vectorofschar)
+  - [VectorOfSchar.new](#vectorofscharnew)
+  - [VectorOfSchar.sol::meta\_function::index](#vectorofscharsolmeta%5C_functionindex)
+  - [VectorOfSchar.sol::meta\_function::length](#vectorofscharsolmeta%5C_functionlength)
+  - [VectorOfSchar.sol::meta\_function::new\_index](#vectorofscharsolmeta%5C_functionnew%5C_index)
+  - [VectorOfSchar.table](#vectorofschartable)
 - [VectorOfShort](#vectorofshort)
   - [VectorOfShort.new](#vectorofshortnew)
+  - [VectorOfShort.sol::meta\_function::index](#vectorofshortsolmeta%5C_functionindex)
+  - [VectorOfShort.sol::meta\_function::length](#vectorofshortsolmeta%5C_functionlength)
+  - [VectorOfShort.sol::meta\_function::new\_index](#vectorofshortsolmeta%5C_functionnew%5C_index)
+  - [VectorOfShort.table](#vectorofshorttable)
 - [VectorOfSize](#vectorofsize)
   - [VectorOfSize.new](#vectorofsizenew)
+  - [VectorOfSize.sol::meta\_function::index](#vectorofsizesolmeta%5C_functionindex)
+  - [VectorOfSize.sol::meta\_function::length](#vectorofsizesolmeta%5C_functionlength)
+  - [VectorOfSize.sol::meta\_function::new\_index](#vectorofsizesolmeta%5C_functionnew%5C_index)
+  - [VectorOfSize.table](#vectorofsizetable)
+- [VectorOfSize2d](#vectorofsize2d)
+  - [VectorOfSize2d.new](#vectorofsize2dnew)
+  - [VectorOfSize2d.sol::meta\_function::index](#vectorofsize2dsolmeta%5C_functionindex)
+  - [VectorOfSize2d.sol::meta\_function::length](#vectorofsize2dsolmeta%5C_functionlength)
+  - [VectorOfSize2d.sol::meta\_function::new\_index](#vectorofsize2dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfSize2d.table](#vectorofsize2dtable)
+- [VectorOfSize2f](#vectorofsize2f)
+  - [VectorOfSize2f.new](#vectorofsize2fnew)
+  - [VectorOfSize2f.sol::meta\_function::index](#vectorofsize2fsolmeta%5C_functionindex)
+  - [VectorOfSize2f.sol::meta\_function::length](#vectorofsize2fsolmeta%5C_functionlength)
+  - [VectorOfSize2f.sol::meta\_function::new\_index](#vectorofsize2fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfSize2f.table](#vectorofsize2ftable)
 - [VectorOfSize\_t](#vectorofsize%5C_t)
   - [VectorOfSize\_t.new](#vectorofsize%5C_tnew)
+  - [VectorOfSize\_t.sol::meta\_function::index](#vectorofsize%5C_tsolmeta%5C_functionindex)
+  - [VectorOfSize\_t.sol::meta\_function::length](#vectorofsize%5C_tsolmeta%5C_functionlength)
+  - [VectorOfSize\_t.sol::meta\_function::new\_index](#vectorofsize%5C_tsolmeta%5C_functionnew%5C_index)
+  - [VectorOfSize\_t.table](#vectorofsize%5C_ttable)
 - [VectorOfString](#vectorofstring)
   - [VectorOfString.new](#vectorofstringnew)
+  - [VectorOfString.sol::meta\_function::index](#vectorofstringsolmeta%5C_functionindex)
+  - [VectorOfString.sol::meta\_function::length](#vectorofstringsolmeta%5C_functionlength)
+  - [VectorOfString.sol::meta\_function::new\_index](#vectorofstringsolmeta%5C_functionnew%5C_index)
+  - [VectorOfString.table](#vectorofstringtable)
 - [VectorOfTuplePointAndDouble](#vectoroftuplepointanddouble)
   - [VectorOfTuplePointAndDouble.new](#vectoroftuplepointanddoublenew)
+  - [VectorOfTuplePointAndDouble.sol::meta\_function::index](#vectoroftuplepointanddoublesolmeta%5C_functionindex)
+  - [VectorOfTuplePointAndDouble.sol::meta\_function::length](#vectoroftuplepointanddoublesolmeta%5C_functionlength)
+  - [VectorOfTuplePointAndDouble.sol::meta\_function::new\_index](#vectoroftuplepointanddoublesolmeta%5C_functionnew%5C_index)
+  - [VectorOfTuplePointAndDouble.table](#vectoroftuplepointanddoubletable)
 - [VectorOfUMat](#vectorofumat)
   - [VectorOfUMat.new](#vectorofumatnew)
+  - [VectorOfUMat.sol::meta\_function::index](#vectorofumatsolmeta%5C_functionindex)
+  - [VectorOfUMat.sol::meta\_function::length](#vectorofumatsolmeta%5C_functionlength)
+  - [VectorOfUMat.sol::meta\_function::new\_index](#vectorofumatsolmeta%5C_functionnew%5C_index)
+  - [VectorOfUMat.table](#vectorofumattable)
 - [VectorOfUchar](#vectorofuchar)
   - [VectorOfUchar.new](#vectorofucharnew)
+  - [VectorOfUchar.sol::meta\_function::index](#vectorofucharsolmeta%5C_functionindex)
+  - [VectorOfUchar.sol::meta\_function::length](#vectorofucharsolmeta%5C_functionlength)
+  - [VectorOfUchar.sol::meta\_function::new\_index](#vectorofucharsolmeta%5C_functionnew%5C_index)
+  - [VectorOfUchar.table](#vectorofuchartable)
 - [VectorOfUshort](#vectorofushort)
   - [VectorOfUshort.new](#vectorofushortnew)
+  - [VectorOfUshort.sol::meta\_function::index](#vectorofushortsolmeta%5C_functionindex)
+  - [VectorOfUshort.sol::meta\_function::length](#vectorofushortsolmeta%5C_functionlength)
+  - [VectorOfUshort.sol::meta\_function::new\_index](#vectorofushortsolmeta%5C_functionnew%5C_index)
+  - [VectorOfUshort.table](#vectorofushorttable)
+- [VectorOfVariantOfIntAndRange](#vectorofvariantofintandrange)
+  - [VectorOfVariantOfIntAndRange.new](#vectorofvariantofintandrangenew)
+  - [VectorOfVariantOfIntAndRange.sol::meta\_function::index](#vectorofvariantofintandrangesolmeta%5C_functionindex)
+  - [VectorOfVariantOfIntAndRange.sol::meta\_function::length](#vectorofvariantofintandrangesolmeta%5C_functionlength)
+  - [VectorOfVariantOfIntAndRange.sol::meta\_function::new\_index](#vectorofvariantofintandrangesolmeta%5C_functionnew%5C_index)
+  - [VectorOfVariantOfIntAndRange.table](#vectorofvariantofintandrangetable)
 - [VectorOfVec2b](#vectorofvec2b)
   - [VectorOfVec2b.new](#vectorofvec2bnew)
+  - [VectorOfVec2b.sol::meta\_function::index](#vectorofvec2bsolmeta%5C_functionindex)
+  - [VectorOfVec2b.sol::meta\_function::length](#vectorofvec2bsolmeta%5C_functionlength)
+  - [VectorOfVec2b.sol::meta\_function::new\_index](#vectorofvec2bsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec2b.table](#vectorofvec2btable)
 - [VectorOfVec2d](#vectorofvec2d)
   - [VectorOfVec2d.new](#vectorofvec2dnew)
+  - [VectorOfVec2d.sol::meta\_function::index](#vectorofvec2dsolmeta%5C_functionindex)
+  - [VectorOfVec2d.sol::meta\_function::length](#vectorofvec2dsolmeta%5C_functionlength)
+  - [VectorOfVec2d.sol::meta\_function::new\_index](#vectorofvec2dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec2d.table](#vectorofvec2dtable)
 - [VectorOfVec2f](#vectorofvec2f)
   - [VectorOfVec2f.new](#vectorofvec2fnew)
+  - [VectorOfVec2f.sol::meta\_function::index](#vectorofvec2fsolmeta%5C_functionindex)
+  - [VectorOfVec2f.sol::meta\_function::length](#vectorofvec2fsolmeta%5C_functionlength)
+  - [VectorOfVec2f.sol::meta\_function::new\_index](#vectorofvec2fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec2f.table](#vectorofvec2ftable)
 - [VectorOfVec2i](#vectorofvec2i)
   - [VectorOfVec2i.new](#vectorofvec2inew)
+  - [VectorOfVec2i.sol::meta\_function::index](#vectorofvec2isolmeta%5C_functionindex)
+  - [VectorOfVec2i.sol::meta\_function::length](#vectorofvec2isolmeta%5C_functionlength)
+  - [VectorOfVec2i.sol::meta\_function::new\_index](#vectorofvec2isolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec2i.table](#vectorofvec2itable)
 - [VectorOfVec2s](#vectorofvec2s)
   - [VectorOfVec2s.new](#vectorofvec2snew)
+  - [VectorOfVec2s.sol::meta\_function::index](#vectorofvec2ssolmeta%5C_functionindex)
+  - [VectorOfVec2s.sol::meta\_function::length](#vectorofvec2ssolmeta%5C_functionlength)
+  - [VectorOfVec2s.sol::meta\_function::new\_index](#vectorofvec2ssolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec2s.table](#vectorofvec2stable)
 - [VectorOfVec2w](#vectorofvec2w)
   - [VectorOfVec2w.new](#vectorofvec2wnew)
+  - [VectorOfVec2w.sol::meta\_function::index](#vectorofvec2wsolmeta%5C_functionindex)
+  - [VectorOfVec2w.sol::meta\_function::length](#vectorofvec2wsolmeta%5C_functionlength)
+  - [VectorOfVec2w.sol::meta\_function::new\_index](#vectorofvec2wsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec2w.table](#vectorofvec2wtable)
 - [VectorOfVec3b](#vectorofvec3b)
   - [VectorOfVec3b.new](#vectorofvec3bnew)
+  - [VectorOfVec3b.sol::meta\_function::index](#vectorofvec3bsolmeta%5C_functionindex)
+  - [VectorOfVec3b.sol::meta\_function::length](#vectorofvec3bsolmeta%5C_functionlength)
+  - [VectorOfVec3b.sol::meta\_function::new\_index](#vectorofvec3bsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec3b.table](#vectorofvec3btable)
 - [VectorOfVec3d](#vectorofvec3d)
   - [VectorOfVec3d.new](#vectorofvec3dnew)
+  - [VectorOfVec3d.sol::meta\_function::index](#vectorofvec3dsolmeta%5C_functionindex)
+  - [VectorOfVec3d.sol::meta\_function::length](#vectorofvec3dsolmeta%5C_functionlength)
+  - [VectorOfVec3d.sol::meta\_function::new\_index](#vectorofvec3dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec3d.table](#vectorofvec3dtable)
 - [VectorOfVec3f](#vectorofvec3f)
   - [VectorOfVec3f.new](#vectorofvec3fnew)
+  - [VectorOfVec3f.sol::meta\_function::index](#vectorofvec3fsolmeta%5C_functionindex)
+  - [VectorOfVec3f.sol::meta\_function::length](#vectorofvec3fsolmeta%5C_functionlength)
+  - [VectorOfVec3f.sol::meta\_function::new\_index](#vectorofvec3fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec3f.table](#vectorofvec3ftable)
 - [VectorOfVec3i](#vectorofvec3i)
   - [VectorOfVec3i.new](#vectorofvec3inew)
+  - [VectorOfVec3i.sol::meta\_function::index](#vectorofvec3isolmeta%5C_functionindex)
+  - [VectorOfVec3i.sol::meta\_function::length](#vectorofvec3isolmeta%5C_functionlength)
+  - [VectorOfVec3i.sol::meta\_function::new\_index](#vectorofvec3isolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec3i.table](#vectorofvec3itable)
 - [VectorOfVec3s](#vectorofvec3s)
   - [VectorOfVec3s.new](#vectorofvec3snew)
+  - [VectorOfVec3s.sol::meta\_function::index](#vectorofvec3ssolmeta%5C_functionindex)
+  - [VectorOfVec3s.sol::meta\_function::length](#vectorofvec3ssolmeta%5C_functionlength)
+  - [VectorOfVec3s.sol::meta\_function::new\_index](#vectorofvec3ssolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec3s.table](#vectorofvec3stable)
 - [VectorOfVec3w](#vectorofvec3w)
   - [VectorOfVec3w.new](#vectorofvec3wnew)
+  - [VectorOfVec3w.sol::meta\_function::index](#vectorofvec3wsolmeta%5C_functionindex)
+  - [VectorOfVec3w.sol::meta\_function::length](#vectorofvec3wsolmeta%5C_functionlength)
+  - [VectorOfVec3w.sol::meta\_function::new\_index](#vectorofvec3wsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec3w.table](#vectorofvec3wtable)
 - [VectorOfVec4b](#vectorofvec4b)
   - [VectorOfVec4b.new](#vectorofvec4bnew)
+  - [VectorOfVec4b.sol::meta\_function::index](#vectorofvec4bsolmeta%5C_functionindex)
+  - [VectorOfVec4b.sol::meta\_function::length](#vectorofvec4bsolmeta%5C_functionlength)
+  - [VectorOfVec4b.sol::meta\_function::new\_index](#vectorofvec4bsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec4b.table](#vectorofvec4btable)
 - [VectorOfVec4d](#vectorofvec4d)
   - [VectorOfVec4d.new](#vectorofvec4dnew)
+  - [VectorOfVec4d.sol::meta\_function::index](#vectorofvec4dsolmeta%5C_functionindex)
+  - [VectorOfVec4d.sol::meta\_function::length](#vectorofvec4dsolmeta%5C_functionlength)
+  - [VectorOfVec4d.sol::meta\_function::new\_index](#vectorofvec4dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec4d.table](#vectorofvec4dtable)
 - [VectorOfVec4f](#vectorofvec4f)
   - [VectorOfVec4f.new](#vectorofvec4fnew)
+  - [VectorOfVec4f.sol::meta\_function::index](#vectorofvec4fsolmeta%5C_functionindex)
+  - [VectorOfVec4f.sol::meta\_function::length](#vectorofvec4fsolmeta%5C_functionlength)
+  - [VectorOfVec4f.sol::meta\_function::new\_index](#vectorofvec4fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec4f.table](#vectorofvec4ftable)
 - [VectorOfVec4i](#vectorofvec4i)
   - [VectorOfVec4i.new](#vectorofvec4inew)
+  - [VectorOfVec4i.sol::meta\_function::index](#vectorofvec4isolmeta%5C_functionindex)
+  - [VectorOfVec4i.sol::meta\_function::length](#vectorofvec4isolmeta%5C_functionlength)
+  - [VectorOfVec4i.sol::meta\_function::new\_index](#vectorofvec4isolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec4i.table](#vectorofvec4itable)
 - [VectorOfVec4s](#vectorofvec4s)
   - [VectorOfVec4s.new](#vectorofvec4snew)
+  - [VectorOfVec4s.sol::meta\_function::index](#vectorofvec4ssolmeta%5C_functionindex)
+  - [VectorOfVec4s.sol::meta\_function::length](#vectorofvec4ssolmeta%5C_functionlength)
+  - [VectorOfVec4s.sol::meta\_function::new\_index](#vectorofvec4ssolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec4s.table](#vectorofvec4stable)
 - [VectorOfVec4w](#vectorofvec4w)
   - [VectorOfVec4w.new](#vectorofvec4wnew)
+  - [VectorOfVec4w.sol::meta\_function::index](#vectorofvec4wsolmeta%5C_functionindex)
+  - [VectorOfVec4w.sol::meta\_function::length](#vectorofvec4wsolmeta%5C_functionlength)
+  - [VectorOfVec4w.sol::meta\_function::new\_index](#vectorofvec4wsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec4w.table](#vectorofvec4wtable)
 - [VectorOfVec6d](#vectorofvec6d)
   - [VectorOfVec6d.new](#vectorofvec6dnew)
+  - [VectorOfVec6d.sol::meta\_function::index](#vectorofvec6dsolmeta%5C_functionindex)
+  - [VectorOfVec6d.sol::meta\_function::length](#vectorofvec6dsolmeta%5C_functionlength)
+  - [VectorOfVec6d.sol::meta\_function::new\_index](#vectorofvec6dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec6d.table](#vectorofvec6dtable)
 - [VectorOfVec6f](#vectorofvec6f)
   - [VectorOfVec6f.new](#vectorofvec6fnew)
+  - [VectorOfVec6f.sol::meta\_function::index](#vectorofvec6fsolmeta%5C_functionindex)
+  - [VectorOfVec6f.sol::meta\_function::length](#vectorofvec6fsolmeta%5C_functionlength)
+  - [VectorOfVec6f.sol::meta\_function::new\_index](#vectorofvec6fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec6f.table](#vectorofvec6ftable)
 - [VectorOfVec6i](#vectorofvec6i)
   - [VectorOfVec6i.new](#vectorofvec6inew)
+  - [VectorOfVec6i.sol::meta\_function::index](#vectorofvec6isolmeta%5C_functionindex)
+  - [VectorOfVec6i.sol::meta\_function::length](#vectorofvec6isolmeta%5C_functionlength)
+  - [VectorOfVec6i.sol::meta\_function::new\_index](#vectorofvec6isolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec6i.table](#vectorofvec6itable)
 - [VectorOfVec8i](#vectorofvec8i)
   - [VectorOfVec8i.new](#vectorofvec8inew)
+  - [VectorOfVec8i.sol::meta\_function::index](#vectorofvec8isolmeta%5C_functionindex)
+  - [VectorOfVec8i.sol::meta\_function::length](#vectorofvec8isolmeta%5C_functionlength)
+  - [VectorOfVec8i.sol::meta\_function::new\_index](#vectorofvec8isolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec8i.table](#vectorofvec8itable)
+- [VectorOfVectorOfBool](#vectorofvectorofbool)
+  - [VectorOfVectorOfBool.new](#vectorofvectorofboolnew)
+  - [VectorOfVectorOfBool.sol::meta\_function::index](#vectorofvectorofboolsolmeta%5C_functionindex)
+  - [VectorOfVectorOfBool.sol::meta\_function::length](#vectorofvectorofboolsolmeta%5C_functionlength)
+  - [VectorOfVectorOfBool.sol::meta\_function::new\_index](#vectorofvectorofboolsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfBool.table](#vectorofvectorofbooltable)
 - [VectorOfVectorOfChar](#vectorofvectorofchar)
   - [VectorOfVectorOfChar.new](#vectorofvectorofcharnew)
+  - [VectorOfVectorOfChar.sol::meta\_function::index](#vectorofvectorofcharsolmeta%5C_functionindex)
+  - [VectorOfVectorOfChar.sol::meta\_function::length](#vectorofvectorofcharsolmeta%5C_functionlength)
+  - [VectorOfVectorOfChar.sol::meta\_function::new\_index](#vectorofvectorofcharsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfChar.table](#vectorofvectorofchartable)
 - [VectorOfVectorOfDMatch](#vectorofvectorofdmatch)
   - [VectorOfVectorOfDMatch.new](#vectorofvectorofdmatchnew)
+  - [VectorOfVectorOfDMatch.sol::meta\_function::index](#vectorofvectorofdmatchsolmeta%5C_functionindex)
+  - [VectorOfVectorOfDMatch.sol::meta\_function::length](#vectorofvectorofdmatchsolmeta%5C_functionlength)
+  - [VectorOfVectorOfDMatch.sol::meta\_function::new\_index](#vectorofvectorofdmatchsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfDMatch.table](#vectorofvectorofdmatchtable)
+- [VectorOfVectorOfDouble](#vectorofvectorofdouble)
+  - [VectorOfVectorOfDouble.new](#vectorofvectorofdoublenew)
+  - [VectorOfVectorOfDouble.sol::meta\_function::index](#vectorofvectorofdoublesolmeta%5C_functionindex)
+  - [VectorOfVectorOfDouble.sol::meta\_function::length](#vectorofvectorofdoublesolmeta%5C_functionlength)
+  - [VectorOfVectorOfDouble.sol::meta\_function::new\_index](#vectorofvectorofdoublesolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfDouble.table](#vectorofvectorofdoubletable)
+- [VectorOfVectorOfFloat](#vectorofvectoroffloat)
+  - [VectorOfVectorOfFloat.new](#vectorofvectoroffloatnew)
+  - [VectorOfVectorOfFloat.sol::meta\_function::index](#vectorofvectoroffloatsolmeta%5C_functionindex)
+  - [VectorOfVectorOfFloat.sol::meta\_function::length](#vectorofvectoroffloatsolmeta%5C_functionlength)
+  - [VectorOfVectorOfFloat.sol::meta\_function::new\_index](#vectorofvectoroffloatsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfFloat.table](#vectorofvectoroffloattable)
 - [VectorOfVectorOfInt](#vectorofvectorofint)
   - [VectorOfVectorOfInt.new](#vectorofvectorofintnew)
+  - [VectorOfVectorOfInt.sol::meta\_function::index](#vectorofvectorofintsolmeta%5C_functionindex)
+  - [VectorOfVectorOfInt.sol::meta\_function::length](#vectorofvectorofintsolmeta%5C_functionlength)
+  - [VectorOfVectorOfInt.sol::meta\_function::new\_index](#vectorofvectorofintsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfInt.table](#vectorofvectorofinttable)
 - [VectorOfVectorOfKeyPoint](#vectorofvectorofkeypoint)
   - [VectorOfVectorOfKeyPoint.new](#vectorofvectorofkeypointnew)
+  - [VectorOfVectorOfKeyPoint.sol::meta\_function::index](#vectorofvectorofkeypointsolmeta%5C_functionindex)
+  - [VectorOfVectorOfKeyPoint.sol::meta\_function::length](#vectorofvectorofkeypointsolmeta%5C_functionlength)
+  - [VectorOfVectorOfKeyPoint.sol::meta\_function::new\_index](#vectorofvectorofkeypointsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfKeyPoint.table](#vectorofvectorofkeypointtable)
 - [VectorOfVectorOfMat](#vectorofvectorofmat)
   - [VectorOfVectorOfMat.new](#vectorofvectorofmatnew)
+  - [VectorOfVectorOfMat.sol::meta\_function::index](#vectorofvectorofmatsolmeta%5C_functionindex)
+  - [VectorOfVectorOfMat.sol::meta\_function::length](#vectorofvectorofmatsolmeta%5C_functionlength)
+  - [VectorOfVectorOfMat.sol::meta\_function::new\_index](#vectorofvectorofmatsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfMat.table](#vectorofvectorofmattable)
+- [VectorOfVectorOfMoments](#vectorofvectorofmoments)
+  - [VectorOfVectorOfMoments.new](#vectorofvectorofmomentsnew)
+  - [VectorOfVectorOfMoments.sol::meta\_function::index](#vectorofvectorofmomentssolmeta%5C_functionindex)
+  - [VectorOfVectorOfMoments.sol::meta\_function::length](#vectorofvectorofmomentssolmeta%5C_functionlength)
+  - [VectorOfVectorOfMoments.sol::meta\_function::new\_index](#vectorofvectorofmomentssolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfMoments.table](#vectorofvectorofmomentstable)
 - [VectorOfVectorOfPoint](#vectorofvectorofpoint)
   - [VectorOfVectorOfPoint.new](#vectorofvectorofpointnew)
+  - [VectorOfVectorOfPoint.sol::meta\_function::index](#vectorofvectorofpointsolmeta%5C_functionindex)
+  - [VectorOfVectorOfPoint.sol::meta\_function::length](#vectorofvectorofpointsolmeta%5C_functionlength)
+  - [VectorOfVectorOfPoint.sol::meta\_function::new\_index](#vectorofvectorofpointsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfPoint.table](#vectorofvectorofpointtable)
+- [VectorOfVectorOfPoint2d](#vectorofvectorofpoint2d)
+  - [VectorOfVectorOfPoint2d.new](#vectorofvectorofpoint2dnew)
+  - [VectorOfVectorOfPoint2d.sol::meta\_function::index](#vectorofvectorofpoint2dsolmeta%5C_functionindex)
+  - [VectorOfVectorOfPoint2d.sol::meta\_function::length](#vectorofvectorofpoint2dsolmeta%5C_functionlength)
+  - [VectorOfVectorOfPoint2d.sol::meta\_function::new\_index](#vectorofvectorofpoint2dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfPoint2d.table](#vectorofvectorofpoint2dtable)
 - [VectorOfVectorOfPoint2f](#vectorofvectorofpoint2f)
   - [VectorOfVectorOfPoint2f.new](#vectorofvectorofpoint2fnew)
+  - [VectorOfVectorOfPoint2f.sol::meta\_function::index](#vectorofvectorofpoint2fsolmeta%5C_functionindex)
+  - [VectorOfVectorOfPoint2f.sol::meta\_function::length](#vectorofvectorofpoint2fsolmeta%5C_functionlength)
+  - [VectorOfVectorOfPoint2f.sol::meta\_function::new\_index](#vectorofvectorofpoint2fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfPoint2f.table](#vectorofvectorofpoint2ftable)
+- [VectorOfVectorOfPoint3d](#vectorofvectorofpoint3d)
+  - [VectorOfVectorOfPoint3d.new](#vectorofvectorofpoint3dnew)
+  - [VectorOfVectorOfPoint3d.sol::meta\_function::index](#vectorofvectorofpoint3dsolmeta%5C_functionindex)
+  - [VectorOfVectorOfPoint3d.sol::meta\_function::length](#vectorofvectorofpoint3dsolmeta%5C_functionlength)
+  - [VectorOfVectorOfPoint3d.sol::meta\_function::new\_index](#vectorofvectorofpoint3dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfPoint3d.table](#vectorofvectorofpoint3dtable)
 - [VectorOfVectorOfPoint3f](#vectorofvectorofpoint3f)
   - [VectorOfVectorOfPoint3f.new](#vectorofvectorofpoint3fnew)
+  - [VectorOfVectorOfPoint3f.sol::meta\_function::index](#vectorofvectorofpoint3fsolmeta%5C_functionindex)
+  - [VectorOfVectorOfPoint3f.sol::meta\_function::length](#vectorofvectorofpoint3fsolmeta%5C_functionlength)
+  - [VectorOfVectorOfPoint3f.sol::meta\_function::new\_index](#vectorofvectorofpoint3fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfPoint3f.table](#vectorofvectorofpoint3ftable)
+- [VectorOfVectorOfPoint3i](#vectorofvectorofpoint3i)
+  - [VectorOfVectorOfPoint3i.new](#vectorofvectorofpoint3inew)
+  - [VectorOfVectorOfPoint3i.sol::meta\_function::index](#vectorofvectorofpoint3isolmeta%5C_functionindex)
+  - [VectorOfVectorOfPoint3i.sol::meta\_function::length](#vectorofvectorofpoint3isolmeta%5C_functionlength)
+  - [VectorOfVectorOfPoint3i.sol::meta\_function::new\_index](#vectorofvectorofpoint3isolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfPoint3i.table](#vectorofvectorofpoint3itable)
+- [VectorOfVectorOfRange](#vectorofvectorofrange)
+  - [VectorOfVectorOfRange.new](#vectorofvectorofrangenew)
+  - [VectorOfVectorOfRange.sol::meta\_function::index](#vectorofvectorofrangesolmeta%5C_functionindex)
+  - [VectorOfVectorOfRange.sol::meta\_function::length](#vectorofvectorofrangesolmeta%5C_functionlength)
+  - [VectorOfVectorOfRange.sol::meta\_function::new\_index](#vectorofvectorofrangesolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfRange.table](#vectorofvectorofrangetable)
+- [VectorOfVectorOfRect](#vectorofvectorofrect)
+  - [VectorOfVectorOfRect.new](#vectorofvectorofrectnew)
+  - [VectorOfVectorOfRect.sol::meta\_function::index](#vectorofvectorofrectsolmeta%5C_functionindex)
+  - [VectorOfVectorOfRect.sol::meta\_function::length](#vectorofvectorofrectsolmeta%5C_functionlength)
+  - [VectorOfVectorOfRect.sol::meta\_function::new\_index](#vectorofvectorofrectsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfRect.table](#vectorofvectorofrecttable)
+- [VectorOfVectorOfRect2d](#vectorofvectorofrect2d)
+  - [VectorOfVectorOfRect2d.new](#vectorofvectorofrect2dnew)
+  - [VectorOfVectorOfRect2d.sol::meta\_function::index](#vectorofvectorofrect2dsolmeta%5C_functionindex)
+  - [VectorOfVectorOfRect2d.sol::meta\_function::length](#vectorofvectorofrect2dsolmeta%5C_functionlength)
+  - [VectorOfVectorOfRect2d.sol::meta\_function::new\_index](#vectorofvectorofrect2dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfRect2d.table](#vectorofvectorofrect2dtable)
+- [VectorOfVectorOfRect2f](#vectorofvectorofrect2f)
+  - [VectorOfVectorOfRect2f.new](#vectorofvectorofrect2fnew)
+  - [VectorOfVectorOfRect2f.sol::meta\_function::index](#vectorofvectorofrect2fsolmeta%5C_functionindex)
+  - [VectorOfVectorOfRect2f.sol::meta\_function::length](#vectorofvectorofrect2fsolmeta%5C_functionlength)
+  - [VectorOfVectorOfRect2f.sol::meta\_function::new\_index](#vectorofvectorofrect2fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfRect2f.table](#vectorofvectorofrect2ftable)
+- [VectorOfVectorOfRotatedRect](#vectorofvectorofrotatedrect)
+  - [VectorOfVectorOfRotatedRect.new](#vectorofvectorofrotatedrectnew)
+  - [VectorOfVectorOfRotatedRect.sol::meta\_function::index](#vectorofvectorofrotatedrectsolmeta%5C_functionindex)
+  - [VectorOfVectorOfRotatedRect.sol::meta\_function::length](#vectorofvectorofrotatedrectsolmeta%5C_functionlength)
+  - [VectorOfVectorOfRotatedRect.sol::meta\_function::new\_index](#vectorofvectorofrotatedrectsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfRotatedRect.table](#vectorofvectorofrotatedrecttable)
+- [VectorOfVectorOfSchar](#vectorofvectorofschar)
+  - [VectorOfVectorOfSchar.new](#vectorofvectorofscharnew)
+  - [VectorOfVectorOfSchar.sol::meta\_function::index](#vectorofvectorofscharsolmeta%5C_functionindex)
+  - [VectorOfVectorOfSchar.sol::meta\_function::length](#vectorofvectorofscharsolmeta%5C_functionlength)
+  - [VectorOfVectorOfSchar.sol::meta\_function::new\_index](#vectorofvectorofscharsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfSchar.table](#vectorofvectorofschartable)
+- [VectorOfVectorOfShort](#vectorofvectorofshort)
+  - [VectorOfVectorOfShort.new](#vectorofvectorofshortnew)
+  - [VectorOfVectorOfShort.sol::meta\_function::index](#vectorofvectorofshortsolmeta%5C_functionindex)
+  - [VectorOfVectorOfShort.sol::meta\_function::length](#vectorofvectorofshortsolmeta%5C_functionlength)
+  - [VectorOfVectorOfShort.sol::meta\_function::new\_index](#vectorofvectorofshortsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfShort.table](#vectorofvectorofshorttable)
+- [VectorOfVectorOfSize](#vectorofvectorofsize)
+  - [VectorOfVectorOfSize.new](#vectorofvectorofsizenew)
+  - [VectorOfVectorOfSize.sol::meta\_function::index](#vectorofvectorofsizesolmeta%5C_functionindex)
+  - [VectorOfVectorOfSize.sol::meta\_function::length](#vectorofvectorofsizesolmeta%5C_functionlength)
+  - [VectorOfVectorOfSize.sol::meta\_function::new\_index](#vectorofvectorofsizesolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfSize.table](#vectorofvectorofsizetable)
+- [VectorOfVectorOfSize2d](#vectorofvectorofsize2d)
+  - [VectorOfVectorOfSize2d.new](#vectorofvectorofsize2dnew)
+  - [VectorOfVectorOfSize2d.sol::meta\_function::index](#vectorofvectorofsize2dsolmeta%5C_functionindex)
+  - [VectorOfVectorOfSize2d.sol::meta\_function::length](#vectorofvectorofsize2dsolmeta%5C_functionlength)
+  - [VectorOfVectorOfSize2d.sol::meta\_function::new\_index](#vectorofvectorofsize2dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfSize2d.table](#vectorofvectorofsize2dtable)
+- [VectorOfVectorOfSize2f](#vectorofvectorofsize2f)
+  - [VectorOfVectorOfSize2f.new](#vectorofvectorofsize2fnew)
+  - [VectorOfVectorOfSize2f.sol::meta\_function::index](#vectorofvectorofsize2fsolmeta%5C_functionindex)
+  - [VectorOfVectorOfSize2f.sol::meta\_function::length](#vectorofvectorofsize2fsolmeta%5C_functionlength)
+  - [VectorOfVectorOfSize2f.sol::meta\_function::new\_index](#vectorofvectorofsize2fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfSize2f.table](#vectorofvectorofsize2ftable)
+- [VectorOfVectorOfUchar](#vectorofvectorofuchar)
+  - [VectorOfVectorOfUchar.new](#vectorofvectorofucharnew)
+  - [VectorOfVectorOfUchar.sol::meta\_function::index](#vectorofvectorofucharsolmeta%5C_functionindex)
+  - [VectorOfVectorOfUchar.sol::meta\_function::length](#vectorofvectorofucharsolmeta%5C_functionlength)
+  - [VectorOfVectorOfUchar.sol::meta\_function::new\_index](#vectorofvectorofucharsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfUchar.table](#vectorofvectorofuchartable)
+- [VectorOfVectorOfUshort](#vectorofvectorofushort)
+  - [VectorOfVectorOfUshort.new](#vectorofvectorofushortnew)
+  - [VectorOfVectorOfUshort.sol::meta\_function::index](#vectorofvectorofushortsolmeta%5C_functionindex)
+  - [VectorOfVectorOfUshort.sol::meta\_function::length](#vectorofvectorofushortsolmeta%5C_functionlength)
+  - [VectorOfVectorOfUshort.sol::meta\_function::new\_index](#vectorofvectorofushortsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfUshort.table](#vectorofvectorofushorttable)
+- [VectorOfVectorOfVec2b](#vectorofvectorofvec2b)
+  - [VectorOfVectorOfVec2b.new](#vectorofvectorofvec2bnew)
+  - [VectorOfVectorOfVec2b.sol::meta\_function::index](#vectorofvectorofvec2bsolmeta%5C_functionindex)
+  - [VectorOfVectorOfVec2b.sol::meta\_function::length](#vectorofvectorofvec2bsolmeta%5C_functionlength)
+  - [VectorOfVectorOfVec2b.sol::meta\_function::new\_index](#vectorofvectorofvec2bsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec2b.table](#vectorofvectorofvec2btable)
+- [VectorOfVectorOfVec2d](#vectorofvectorofvec2d)
+  - [VectorOfVectorOfVec2d.new](#vectorofvectorofvec2dnew)
+  - [VectorOfVectorOfVec2d.sol::meta\_function::index](#vectorofvectorofvec2dsolmeta%5C_functionindex)
+  - [VectorOfVectorOfVec2d.sol::meta\_function::length](#vectorofvectorofvec2dsolmeta%5C_functionlength)
+  - [VectorOfVectorOfVec2d.sol::meta\_function::new\_index](#vectorofvectorofvec2dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec2d.table](#vectorofvectorofvec2dtable)
+- [VectorOfVectorOfVec2f](#vectorofvectorofvec2f)
+  - [VectorOfVectorOfVec2f.new](#vectorofvectorofvec2fnew)
+  - [VectorOfVectorOfVec2f.sol::meta\_function::index](#vectorofvectorofvec2fsolmeta%5C_functionindex)
+  - [VectorOfVectorOfVec2f.sol::meta\_function::length](#vectorofvectorofvec2fsolmeta%5C_functionlength)
+  - [VectorOfVectorOfVec2f.sol::meta\_function::new\_index](#vectorofvectorofvec2fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec2f.table](#vectorofvectorofvec2ftable)
+- [VectorOfVectorOfVec2i](#vectorofvectorofvec2i)
+  - [VectorOfVectorOfVec2i.new](#vectorofvectorofvec2inew)
+  - [VectorOfVectorOfVec2i.sol::meta\_function::index](#vectorofvectorofvec2isolmeta%5C_functionindex)
+  - [VectorOfVectorOfVec2i.sol::meta\_function::length](#vectorofvectorofvec2isolmeta%5C_functionlength)
+  - [VectorOfVectorOfVec2i.sol::meta\_function::new\_index](#vectorofvectorofvec2isolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec2i.table](#vectorofvectorofvec2itable)
+- [VectorOfVectorOfVec2s](#vectorofvectorofvec2s)
+  - [VectorOfVectorOfVec2s.new](#vectorofvectorofvec2snew)
+  - [VectorOfVectorOfVec2s.sol::meta\_function::index](#vectorofvectorofvec2ssolmeta%5C_functionindex)
+  - [VectorOfVectorOfVec2s.sol::meta\_function::length](#vectorofvectorofvec2ssolmeta%5C_functionlength)
+  - [VectorOfVectorOfVec2s.sol::meta\_function::new\_index](#vectorofvectorofvec2ssolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec2s.table](#vectorofvectorofvec2stable)
+- [VectorOfVectorOfVec2w](#vectorofvectorofvec2w)
+  - [VectorOfVectorOfVec2w.new](#vectorofvectorofvec2wnew)
+  - [VectorOfVectorOfVec2w.sol::meta\_function::index](#vectorofvectorofvec2wsolmeta%5C_functionindex)
+  - [VectorOfVectorOfVec2w.sol::meta\_function::length](#vectorofvectorofvec2wsolmeta%5C_functionlength)
+  - [VectorOfVectorOfVec2w.sol::meta\_function::new\_index](#vectorofvectorofvec2wsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec2w.table](#vectorofvectorofvec2wtable)
+- [VectorOfVectorOfVec3b](#vectorofvectorofvec3b)
+  - [VectorOfVectorOfVec3b.new](#vectorofvectorofvec3bnew)
+  - [VectorOfVectorOfVec3b.sol::meta\_function::index](#vectorofvectorofvec3bsolmeta%5C_functionindex)
+  - [VectorOfVectorOfVec3b.sol::meta\_function::length](#vectorofvectorofvec3bsolmeta%5C_functionlength)
+  - [VectorOfVectorOfVec3b.sol::meta\_function::new\_index](#vectorofvectorofvec3bsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec3b.table](#vectorofvectorofvec3btable)
+- [VectorOfVectorOfVec3d](#vectorofvectorofvec3d)
+  - [VectorOfVectorOfVec3d.new](#vectorofvectorofvec3dnew)
+  - [VectorOfVectorOfVec3d.sol::meta\_function::index](#vectorofvectorofvec3dsolmeta%5C_functionindex)
+  - [VectorOfVectorOfVec3d.sol::meta\_function::length](#vectorofvectorofvec3dsolmeta%5C_functionlength)
+  - [VectorOfVectorOfVec3d.sol::meta\_function::new\_index](#vectorofvectorofvec3dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec3d.table](#vectorofvectorofvec3dtable)
+- [VectorOfVectorOfVec3f](#vectorofvectorofvec3f)
+  - [VectorOfVectorOfVec3f.new](#vectorofvectorofvec3fnew)
+  - [VectorOfVectorOfVec3f.sol::meta\_function::index](#vectorofvectorofvec3fsolmeta%5C_functionindex)
+  - [VectorOfVectorOfVec3f.sol::meta\_function::length](#vectorofvectorofvec3fsolmeta%5C_functionlength)
+  - [VectorOfVectorOfVec3f.sol::meta\_function::new\_index](#vectorofvectorofvec3fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec3f.table](#vectorofvectorofvec3ftable)
+- [VectorOfVectorOfVec3i](#vectorofvectorofvec3i)
+  - [VectorOfVectorOfVec3i.new](#vectorofvectorofvec3inew)
+  - [VectorOfVectorOfVec3i.sol::meta\_function::index](#vectorofvectorofvec3isolmeta%5C_functionindex)
+  - [VectorOfVectorOfVec3i.sol::meta\_function::length](#vectorofvectorofvec3isolmeta%5C_functionlength)
+  - [VectorOfVectorOfVec3i.sol::meta\_function::new\_index](#vectorofvectorofvec3isolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec3i.table](#vectorofvectorofvec3itable)
+- [VectorOfVectorOfVec3s](#vectorofvectorofvec3s)
+  - [VectorOfVectorOfVec3s.new](#vectorofvectorofvec3snew)
+  - [VectorOfVectorOfVec3s.sol::meta\_function::index](#vectorofvectorofvec3ssolmeta%5C_functionindex)
+  - [VectorOfVectorOfVec3s.sol::meta\_function::length](#vectorofvectorofvec3ssolmeta%5C_functionlength)
+  - [VectorOfVectorOfVec3s.sol::meta\_function::new\_index](#vectorofvectorofvec3ssolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec3s.table](#vectorofvectorofvec3stable)
+- [VectorOfVectorOfVec3w](#vectorofvectorofvec3w)
+  - [VectorOfVectorOfVec3w.new](#vectorofvectorofvec3wnew)
+  - [VectorOfVectorOfVec3w.sol::meta\_function::index](#vectorofvectorofvec3wsolmeta%5C_functionindex)
+  - [VectorOfVectorOfVec3w.sol::meta\_function::length](#vectorofvectorofvec3wsolmeta%5C_functionlength)
+  - [VectorOfVectorOfVec3w.sol::meta\_function::new\_index](#vectorofvectorofvec3wsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec3w.table](#vectorofvectorofvec3wtable)
+- [VectorOfVectorOfVec4b](#vectorofvectorofvec4b)
+  - [VectorOfVectorOfVec4b.new](#vectorofvectorofvec4bnew)
+  - [VectorOfVectorOfVec4b.sol::meta\_function::index](#vectorofvectorofvec4bsolmeta%5C_functionindex)
+  - [VectorOfVectorOfVec4b.sol::meta\_function::length](#vectorofvectorofvec4bsolmeta%5C_functionlength)
+  - [VectorOfVectorOfVec4b.sol::meta\_function::new\_index](#vectorofvectorofvec4bsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec4b.table](#vectorofvectorofvec4btable)
+- [VectorOfVectorOfVec4d](#vectorofvectorofvec4d)
+  - [VectorOfVectorOfVec4d.new](#vectorofvectorofvec4dnew)
+  - [VectorOfVectorOfVec4d.sol::meta\_function::index](#vectorofvectorofvec4dsolmeta%5C_functionindex)
+  - [VectorOfVectorOfVec4d.sol::meta\_function::length](#vectorofvectorofvec4dsolmeta%5C_functionlength)
+  - [VectorOfVectorOfVec4d.sol::meta\_function::new\_index](#vectorofvectorofvec4dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec4d.table](#vectorofvectorofvec4dtable)
+- [VectorOfVectorOfVec4f](#vectorofvectorofvec4f)
+  - [VectorOfVectorOfVec4f.new](#vectorofvectorofvec4fnew)
+  - [VectorOfVectorOfVec4f.sol::meta\_function::index](#vectorofvectorofvec4fsolmeta%5C_functionindex)
+  - [VectorOfVectorOfVec4f.sol::meta\_function::length](#vectorofvectorofvec4fsolmeta%5C_functionlength)
+  - [VectorOfVectorOfVec4f.sol::meta\_function::new\_index](#vectorofvectorofvec4fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec4f.table](#vectorofvectorofvec4ftable)
+- [VectorOfVectorOfVec4i](#vectorofvectorofvec4i)
+  - [VectorOfVectorOfVec4i.new](#vectorofvectorofvec4inew)
+  - [VectorOfVectorOfVec4i.sol::meta\_function::index](#vectorofvectorofvec4isolmeta%5C_functionindex)
+  - [VectorOfVectorOfVec4i.sol::meta\_function::length](#vectorofvectorofvec4isolmeta%5C_functionlength)
+  - [VectorOfVectorOfVec4i.sol::meta\_function::new\_index](#vectorofvectorofvec4isolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec4i.table](#vectorofvectorofvec4itable)
+- [VectorOfVectorOfVec4s](#vectorofvectorofvec4s)
+  - [VectorOfVectorOfVec4s.new](#vectorofvectorofvec4snew)
+  - [VectorOfVectorOfVec4s.sol::meta\_function::index](#vectorofvectorofvec4ssolmeta%5C_functionindex)
+  - [VectorOfVectorOfVec4s.sol::meta\_function::length](#vectorofvectorofvec4ssolmeta%5C_functionlength)
+  - [VectorOfVectorOfVec4s.sol::meta\_function::new\_index](#vectorofvectorofvec4ssolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec4s.table](#vectorofvectorofvec4stable)
+- [VectorOfVectorOfVec4w](#vectorofvectorofvec4w)
+  - [VectorOfVectorOfVec4w.new](#vectorofvectorofvec4wnew)
+  - [VectorOfVectorOfVec4w.sol::meta\_function::index](#vectorofvectorofvec4wsolmeta%5C_functionindex)
+  - [VectorOfVectorOfVec4w.sol::meta\_function::length](#vectorofvectorofvec4wsolmeta%5C_functionlength)
+  - [VectorOfVectorOfVec4w.sol::meta\_function::new\_index](#vectorofvectorofvec4wsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec4w.table](#vectorofvectorofvec4wtable)
+- [VectorOfVectorOfVec6d](#vectorofvectorofvec6d)
+  - [VectorOfVectorOfVec6d.new](#vectorofvectorofvec6dnew)
+  - [VectorOfVectorOfVec6d.sol::meta\_function::index](#vectorofvectorofvec6dsolmeta%5C_functionindex)
+  - [VectorOfVectorOfVec6d.sol::meta\_function::length](#vectorofvectorofvec6dsolmeta%5C_functionlength)
+  - [VectorOfVectorOfVec6d.sol::meta\_function::new\_index](#vectorofvectorofvec6dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec6d.table](#vectorofvectorofvec6dtable)
+- [VectorOfVectorOfVec6f](#vectorofvectorofvec6f)
+  - [VectorOfVectorOfVec6f.new](#vectorofvectorofvec6fnew)
+  - [VectorOfVectorOfVec6f.sol::meta\_function::index](#vectorofvectorofvec6fsolmeta%5C_functionindex)
+  - [VectorOfVectorOfVec6f.sol::meta\_function::length](#vectorofvectorofvec6fsolmeta%5C_functionlength)
+  - [VectorOfVectorOfVec6f.sol::meta\_function::new\_index](#vectorofvectorofvec6fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec6f.table](#vectorofvectorofvec6ftable)
+- [VectorOfVectorOfVec6i](#vectorofvectorofvec6i)
+  - [VectorOfVectorOfVec6i.new](#vectorofvectorofvec6inew)
+  - [VectorOfVectorOfVec6i.sol::meta\_function::index](#vectorofvectorofvec6isolmeta%5C_functionindex)
+  - [VectorOfVectorOfVec6i.sol::meta\_function::length](#vectorofvectorofvec6isolmeta%5C_functionlength)
+  - [VectorOfVectorOfVec6i.sol::meta\_function::new\_index](#vectorofvectorofvec6isolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec6i.table](#vectorofvectorofvec6itable)
+- [VectorOfVectorOfVec8i](#vectorofvectorofvec8i)
+  - [VectorOfVectorOfVec8i.new](#vectorofvectorofvec8inew)
+  - [VectorOfVectorOfVec8i.sol::meta\_function::index](#vectorofvectorofvec8isolmeta%5C_functionindex)
+  - [VectorOfVectorOfVec8i.sol::meta\_function::length](#vectorofvectorofvec8isolmeta%5C_functionlength)
+  - [VectorOfVectorOfVec8i.sol::meta\_function::new\_index](#vectorofvectorofvec8isolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec8i.table](#vectorofvectorofvec8itable)
 - [VectorOfVectorOfVectorOfInt](#vectorofvectorofvectorofint)
   - [VectorOfVectorOfVectorOfInt.new](#vectorofvectorofvectorofintnew)
+  - [VectorOfVectorOfVectorOfInt.sol::meta\_function::index](#vectorofvectorofvectorofintsolmeta%5C_functionindex)
+  - [VectorOfVectorOfVectorOfInt.sol::meta\_function::length](#vectorofvectorofvectorofintsolmeta%5C_functionlength)
+  - [VectorOfVectorOfVectorOfInt.sol::meta\_function::new\_index](#vectorofvectorofvectorofintsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVectorOfInt.table](#vectorofvectorofvectorofinttable)
 - [VectorOfVideoCapture](#vectorofvideocapture)
   - [VectorOfVideoCapture.new](#vectorofvideocapturenew)
+  - [VectorOfVideoCapture.sol::meta\_function::index](#vectorofvideocapturesolmeta%5C_functionindex)
+  - [VectorOfVideoCapture.sol::meta\_function::length](#vectorofvideocapturesolmeta%5C_functionlength)
+  - [VectorOfVideoCapture.sol::meta\_function::new\_index](#vectorofvideocapturesolmeta%5C_functionnew%5C_index)
+  - [VectorOfVideoCapture.table](#vectorofvideocapturetable)
 - [VectorOfVideoCaptureAPIs](#vectorofvideocaptureapis)
   - [VectorOfVideoCaptureAPIs.new](#vectorofvideocaptureapisnew)
+  - [VectorOfVideoCaptureAPIs.sol::meta\_function::index](#vectorofvideocaptureapissolmeta%5C_functionindex)
+  - [VectorOfVideoCaptureAPIs.sol::meta\_function::length](#vectorofvideocaptureapissolmeta%5C_functionlength)
+  - [VectorOfVideoCaptureAPIs.sol::meta\_function::new\_index](#vectorofvideocaptureapissolmeta%5C_functionnew%5C_index)
+  - [VectorOfVideoCaptureAPIs.table](#vectorofvideocaptureapistable)
 - [cv](#cv)
   - [cv.SORT\_EVERY\_ROW](#cvsort%5C_every%5C_row)
   - [cv.SORT\_EVERY\_COLUMN](#cvsort%5C_every%5C_column)
@@ -1610,6 +2287,7 @@
   - [cv.randShuffle](#cvrandshuffle)
   - [cv.randn](#cvrandn)
   - [cv.randu](#cvrandu)
+  - [cv.ravel](#cvravel)
   - [cv.readDMatch](#cvreaddmatch)
   - [cv.readDouble](#cvreaddouble)
   - [cv.readFloat](#cvreadfloat)
@@ -2517,6 +3195,7 @@
   - [cv.Mat.pop\_back](#cvmatpop%5C_back)
   - [cv.Mat.ptr](#cvmatptr)
   - [cv.Mat.push\_back](#cvmatpush%5C_back)
+  - [cv.Mat.ravel](#cvmatravel)
   - [cv.Mat.reserve](#cvmatreserve)
   - [cv.Mat.reserveBuffer](#cvmatreservebuffer)
   - [cv.Mat.reshape](#cvmatreshape)
@@ -2531,6 +3210,7 @@
   - [cv.Mat.t](#cvmatt)
   - [cv.Mat.table](#cvmattable)
   - [cv.Mat.total](#cvmattotal)
+  - [cv.Mat.transpose](#cvmattranspose)
   - [cv.Mat.type](#cvmattype)
   - [cv.Mat.updateContinuityFlag](#cvmatupdatecontinuityflag)
   - [cv.Mat.zeros](#cvmatzeros)
@@ -3222,69 +3902,6 @@
   - [Param.UINT64](#paramuint64)
   - [Param.UCHAR](#paramuchar)
   - [Param.SCALAR](#paramscalar)
-- [cv::Point](#cvpoint)
-  - [Point.x](#pointx)
-  - [Point.y](#pointy)
-  - [Point.1](#point1)
-  - [Point.2](#point2)
-  - [cv.Point.new](#cvpointnew)
-  - [cv.Point.cross](#cvpointcross)
-  - [cv.Point.ddot](#cvpointddot)
-  - [cv.Point.dot](#cvpointdot)
-  - [cv.Point.inside](#cvpointinside)
-- [cv::Point2d](#cvpoint2d)
-  - [Point2d.x](#point2dx)
-  - [Point2d.y](#point2dy)
-  - [Point2d.1](#point2d1)
-  - [Point2d.2](#point2d2)
-  - [cv.Point2d.new](#cvpoint2dnew)
-  - [cv.Point2d.cross](#cvpoint2dcross)
-  - [cv.Point2d.ddot](#cvpoint2dddot)
-  - [cv.Point2d.dot](#cvpoint2ddot)
-  - [cv.Point2d.inside](#cvpoint2dinside)
-- [cv::Point2f](#cvpoint2f)
-  - [Point2f.x](#point2fx)
-  - [Point2f.y](#point2fy)
-  - [Point2f.1](#point2f1)
-  - [Point2f.2](#point2f2)
-  - [cv.Point2f.new](#cvpoint2fnew)
-  - [cv.Point2f.cross](#cvpoint2fcross)
-  - [cv.Point2f.ddot](#cvpoint2fddot)
-  - [cv.Point2f.dot](#cvpoint2fdot)
-  - [cv.Point2f.inside](#cvpoint2finside)
-- [cv::Point3d](#cvpoint3d)
-  - [Point3d.x](#point3dx)
-  - [Point3d.y](#point3dy)
-  - [Point3d.z](#point3dz)
-  - [Point3d.1](#point3d1)
-  - [Point3d.2](#point3d2)
-  - [Point3d.3](#point3d3)
-  - [cv.Point3d.new](#cvpoint3dnew)
-  - [cv.Point3d.cross](#cvpoint3dcross)
-  - [cv.Point3d.ddot](#cvpoint3dddot)
-  - [cv.Point3d.dot](#cvpoint3ddot)
-- [cv::Point3f](#cvpoint3f)
-  - [Point3f.x](#point3fx)
-  - [Point3f.y](#point3fy)
-  - [Point3f.z](#point3fz)
-  - [Point3f.1](#point3f1)
-  - [Point3f.2](#point3f2)
-  - [Point3f.3](#point3f3)
-  - [cv.Point3f.new](#cvpoint3fnew)
-  - [cv.Point3f.cross](#cvpoint3fcross)
-  - [cv.Point3f.ddot](#cvpoint3fddot)
-  - [cv.Point3f.dot](#cvpoint3fdot)
-- [cv::Point3i](#cvpoint3i)
-  - [Point3i.x](#point3ix)
-  - [Point3i.y](#point3iy)
-  - [Point3i.z](#point3iz)
-  - [Point3i.1](#point3i1)
-  - [Point3i.2](#point3i2)
-  - [Point3i.3](#point3i3)
-  - [cv.Point3i.new](#cvpoint3inew)
-  - [cv.Point3i.cross](#cvpoint3icross)
-  - [cv.Point3i.ddot](#cvpoint3iddot)
-  - [cv.Point3i.dot](#cvpoint3idot)
 - [cv::PyRotationWarper](#cvpyrotationwarper)
   - [cv.PyRotationWarper.new](#cvpyrotationwarpernew)
   - [cv.PyRotationWarper.buildMaps](#cvpyrotationwarperbuildmaps)
@@ -3379,58 +3996,11 @@
 - [cv::Range](#cvrange)
   - [Range.start](#rangestart)
   - [Range.end](#rangeend)
+  - [Range.Ellipsis](#rangeellipsis)
   - [cv.Range.new](#cvrangenew)
   - [cv.Range.all](#cvrangeall)
   - [cv.Range.empty](#cvrangeempty)
   - [cv.Range.size](#cvrangesize)
-- [cv::Rect](#cvrect)
-  - [Rect.x](#rectx)
-  - [Rect.y](#recty)
-  - [Rect.width](#rectwidth)
-  - [Rect.height](#rectheight)
-  - [Rect.1](#rect1)
-  - [Rect.2](#rect2)
-  - [Rect.3](#rect3)
-  - [Rect.4](#rect4)
-  - [cv.Rect.new](#cvrectnew)
-  - [cv.Rect.area](#cvrectarea)
-  - [cv.Rect.br](#cvrectbr)
-  - [cv.Rect.contains](#cvrectcontains)
-  - [cv.Rect.empty](#cvrectempty)
-  - [cv.Rect.size](#cvrectsize)
-  - [cv.Rect.tl](#cvrecttl)
-- [cv::Rect2d](#cvrect2d)
-  - [Rect2d.x](#rect2dx)
-  - [Rect2d.y](#rect2dy)
-  - [Rect2d.width](#rect2dwidth)
-  - [Rect2d.height](#rect2dheight)
-  - [Rect2d.1](#rect2d1)
-  - [Rect2d.2](#rect2d2)
-  - [Rect2d.3](#rect2d3)
-  - [Rect2d.4](#rect2d4)
-  - [cv.Rect2d.new](#cvrect2dnew)
-  - [cv.Rect2d.area](#cvrect2darea)
-  - [cv.Rect2d.br](#cvrect2dbr)
-  - [cv.Rect2d.contains](#cvrect2dcontains)
-  - [cv.Rect2d.empty](#cvrect2dempty)
-  - [cv.Rect2d.size](#cvrect2dsize)
-  - [cv.Rect2d.tl](#cvrect2dtl)
-- [cv::Rect2f](#cvrect2f)
-  - [Rect2f.x](#rect2fx)
-  - [Rect2f.y](#rect2fy)
-  - [Rect2f.width](#rect2fwidth)
-  - [Rect2f.height](#rect2fheight)
-  - [Rect2f.1](#rect2f1)
-  - [Rect2f.2](#rect2f2)
-  - [Rect2f.3](#rect2f3)
-  - [Rect2f.4](#rect2f4)
-  - [cv.Rect2f.new](#cvrect2fnew)
-  - [cv.Rect2f.area](#cvrect2farea)
-  - [cv.Rect2f.br](#cvrect2fbr)
-  - [cv.Rect2f.contains](#cvrect2fcontains)
-  - [cv.Rect2f.empty](#cvrect2fempty)
-  - [cv.Rect2f.size](#cvrect2fsize)
-  - [cv.Rect2f.tl](#cvrect2ftl)
 - [cv::RotatedRect](#cvrotatedrect)
   - [RotatedRect.center](#rotatedrectcenter)
   - [RotatedRect.size](#rotatedrectsize)
@@ -3455,16 +4025,6 @@
   - [SVD.MODIFY\_A](#svdmodify%5C_a)
   - [SVD.NO\_UV](#svdno%5C_uv)
   - [SVD.FULL\_UV](#svdfull%5C_uv)
-- [cv::Scalar](#cvscalar)
-  - [Scalar.1](#scalar1)
-  - [Scalar.2](#scalar2)
-  - [Scalar.3](#scalar3)
-  - [Scalar.4](#scalar4)
-  - [cv.Scalar.new](#cvscalarnew)
-  - [cv.Scalar.all](#cvscalarall)
-  - [cv.Scalar.conj](#cvscalarconj)
-  - [cv.Scalar.isReal](#cvscalarisreal)
-  - [cv.Scalar.mul](#cvscalarmul)
 - [cv::SimpleBlobDetector](#cvsimpleblobdetector)
   - [cv.SimpleBlobDetector.create](#cvsimpleblobdetectorcreate)
   - [cv.SimpleBlobDetector.getBlobContours](#cvsimpleblobdetectorgetblobcontours)
@@ -3493,33 +4053,6 @@
   - [Params.maxConvexity](#paramsmaxconvexity)
   - [Params.collectContours](#paramscollectcontours)
   - [cv.SimpleBlobDetector.Params.new](#cvsimpleblobdetectorparamsnew)
-- [cv::Size](#cvsize)
-  - [Size.width](#sizewidth)
-  - [Size.height](#sizeheight)
-  - [Size.1](#size1)
-  - [Size.2](#size2)
-  - [cv.Size.new](#cvsizenew)
-  - [cv.Size.area](#cvsizearea)
-  - [cv.Size.aspectRatio](#cvsizeaspectratio)
-  - [cv.Size.empty](#cvsizeempty)
-- [cv::Size2d](#cvsize2d)
-  - [Size2d.width](#size2dwidth)
-  - [Size2d.height](#size2dheight)
-  - [Size2d.1](#size2d1)
-  - [Size2d.2](#size2d2)
-  - [cv.Size2d.new](#cvsize2dnew)
-  - [cv.Size2d.area](#cvsize2darea)
-  - [cv.Size2d.aspectRatio](#cvsize2daspectratio)
-  - [cv.Size2d.empty](#cvsize2dempty)
-- [cv::Size2f](#cvsize2f)
-  - [Size2f.width](#size2fwidth)
-  - [Size2f.height](#size2fheight)
-  - [Size2f.1](#size2f1)
-  - [Size2f.2](#size2f2)
-  - [cv.Size2f.new](#cvsize2fnew)
-  - [cv.Size2f.area](#cvsize2farea)
-  - [cv.Size2f.aspectRatio](#cvsize2faspectratio)
-  - [cv.Size2f.empty](#cvsize2fempty)
 - [cv::SparseMat](#cvsparsemat)
   - [SparseMat.MAGIC\_VAL](#sparsematmagic%5C_val)
   - [SparseMat.MAX\_DIM](#sparsematmax%5C_dim)
@@ -3841,268 +4374,6 @@
   - [cv.VariationalRefinement.setGamma](#cvvariationalrefinementsetgamma)
   - [cv.VariationalRefinement.setOmega](#cvvariationalrefinementsetomega)
   - [cv.VariationalRefinement.setSorIterations](#cvvariationalrefinementsetsoriterations)
-- [cv::Vec2b](#cvvec2b)
-  - [Vec2b.1](#vec2b1)
-  - [Vec2b.2](#vec2b2)
-  - [cv.Vec2b.new](#cvvec2bnew)
-  - [cv.Vec2b.all](#cvvec2ball)
-  - [cv.Vec2b.mul](#cvvec2bmul)
-  - [cv.Vec2b.ones](#cvvec2bones)
-  - [cv.Vec2b.randn](#cvvec2brandn)
-  - [cv.Vec2b.randu](#cvvec2brandu)
-  - [cv.Vec2b.zeros](#cvvec2bzeros)
-- [cv::Vec2d](#cvvec2d)
-  - [Vec2d.1](#vec2d1)
-  - [Vec2d.2](#vec2d2)
-  - [cv.Vec2d.new](#cvvec2dnew)
-  - [cv.Vec2d.all](#cvvec2dall)
-  - [cv.Vec2d.mul](#cvvec2dmul)
-  - [cv.Vec2d.ones](#cvvec2dones)
-  - [cv.Vec2d.randn](#cvvec2drandn)
-  - [cv.Vec2d.randu](#cvvec2drandu)
-  - [cv.Vec2d.zeros](#cvvec2dzeros)
-- [cv::Vec2f](#cvvec2f)
-  - [Vec2f.1](#vec2f1)
-  - [Vec2f.2](#vec2f2)
-  - [cv.Vec2f.new](#cvvec2fnew)
-  - [cv.Vec2f.all](#cvvec2fall)
-  - [cv.Vec2f.mul](#cvvec2fmul)
-  - [cv.Vec2f.ones](#cvvec2fones)
-  - [cv.Vec2f.randn](#cvvec2frandn)
-  - [cv.Vec2f.randu](#cvvec2frandu)
-  - [cv.Vec2f.zeros](#cvvec2fzeros)
-- [cv::Vec2i](#cvvec2i)
-  - [Vec2i.1](#vec2i1)
-  - [Vec2i.2](#vec2i2)
-  - [cv.Vec2i.new](#cvvec2inew)
-  - [cv.Vec2i.all](#cvvec2iall)
-  - [cv.Vec2i.mul](#cvvec2imul)
-  - [cv.Vec2i.ones](#cvvec2iones)
-  - [cv.Vec2i.randn](#cvvec2irandn)
-  - [cv.Vec2i.randu](#cvvec2irandu)
-  - [cv.Vec2i.zeros](#cvvec2izeros)
-- [cv::Vec2s](#cvvec2s)
-  - [Vec2s.1](#vec2s1)
-  - [Vec2s.2](#vec2s2)
-  - [cv.Vec2s.new](#cvvec2snew)
-  - [cv.Vec2s.all](#cvvec2sall)
-  - [cv.Vec2s.mul](#cvvec2smul)
-  - [cv.Vec2s.ones](#cvvec2sones)
-  - [cv.Vec2s.randn](#cvvec2srandn)
-  - [cv.Vec2s.randu](#cvvec2srandu)
-  - [cv.Vec2s.zeros](#cvvec2szeros)
-- [cv::Vec2w](#cvvec2w)
-  - [Vec2w.1](#vec2w1)
-  - [Vec2w.2](#vec2w2)
-  - [cv.Vec2w.new](#cvvec2wnew)
-  - [cv.Vec2w.all](#cvvec2wall)
-  - [cv.Vec2w.mul](#cvvec2wmul)
-  - [cv.Vec2w.ones](#cvvec2wones)
-  - [cv.Vec2w.randn](#cvvec2wrandn)
-  - [cv.Vec2w.randu](#cvvec2wrandu)
-  - [cv.Vec2w.zeros](#cvvec2wzeros)
-- [cv::Vec3b](#cvvec3b)
-  - [Vec3b.1](#vec3b1)
-  - [Vec3b.2](#vec3b2)
-  - [Vec3b.3](#vec3b3)
-  - [cv.Vec3b.new](#cvvec3bnew)
-  - [cv.Vec3b.all](#cvvec3ball)
-  - [cv.Vec3b.cross](#cvvec3bcross)
-  - [cv.Vec3b.mul](#cvvec3bmul)
-  - [cv.Vec3b.ones](#cvvec3bones)
-  - [cv.Vec3b.randn](#cvvec3brandn)
-  - [cv.Vec3b.randu](#cvvec3brandu)
-  - [cv.Vec3b.zeros](#cvvec3bzeros)
-- [cv::Vec3d](#cvvec3d)
-  - [Vec3d.1](#vec3d1)
-  - [Vec3d.2](#vec3d2)
-  - [Vec3d.3](#vec3d3)
-  - [cv.Vec3d.new](#cvvec3dnew)
-  - [cv.Vec3d.all](#cvvec3dall)
-  - [cv.Vec3d.cross](#cvvec3dcross)
-  - [cv.Vec3d.mul](#cvvec3dmul)
-  - [cv.Vec3d.ones](#cvvec3dones)
-  - [cv.Vec3d.randn](#cvvec3drandn)
-  - [cv.Vec3d.randu](#cvvec3drandu)
-  - [cv.Vec3d.zeros](#cvvec3dzeros)
-- [cv::Vec3f](#cvvec3f)
-  - [Vec3f.1](#vec3f1)
-  - [Vec3f.2](#vec3f2)
-  - [Vec3f.3](#vec3f3)
-  - [cv.Vec3f.new](#cvvec3fnew)
-  - [cv.Vec3f.all](#cvvec3fall)
-  - [cv.Vec3f.cross](#cvvec3fcross)
-  - [cv.Vec3f.mul](#cvvec3fmul)
-  - [cv.Vec3f.ones](#cvvec3fones)
-  - [cv.Vec3f.randn](#cvvec3frandn)
-  - [cv.Vec3f.randu](#cvvec3frandu)
-  - [cv.Vec3f.zeros](#cvvec3fzeros)
-- [cv::Vec3i](#cvvec3i)
-  - [Vec3i.1](#vec3i1)
-  - [Vec3i.2](#vec3i2)
-  - [Vec3i.3](#vec3i3)
-  - [cv.Vec3i.new](#cvvec3inew)
-  - [cv.Vec3i.all](#cvvec3iall)
-  - [cv.Vec3i.cross](#cvvec3icross)
-  - [cv.Vec3i.mul](#cvvec3imul)
-  - [cv.Vec3i.ones](#cvvec3iones)
-  - [cv.Vec3i.randn](#cvvec3irandn)
-  - [cv.Vec3i.randu](#cvvec3irandu)
-  - [cv.Vec3i.zeros](#cvvec3izeros)
-- [cv::Vec3s](#cvvec3s)
-  - [Vec3s.1](#vec3s1)
-  - [Vec3s.2](#vec3s2)
-  - [Vec3s.3](#vec3s3)
-  - [cv.Vec3s.new](#cvvec3snew)
-  - [cv.Vec3s.all](#cvvec3sall)
-  - [cv.Vec3s.cross](#cvvec3scross)
-  - [cv.Vec3s.mul](#cvvec3smul)
-  - [cv.Vec3s.ones](#cvvec3sones)
-  - [cv.Vec3s.randn](#cvvec3srandn)
-  - [cv.Vec3s.randu](#cvvec3srandu)
-  - [cv.Vec3s.zeros](#cvvec3szeros)
-- [cv::Vec3w](#cvvec3w)
-  - [Vec3w.1](#vec3w1)
-  - [Vec3w.2](#vec3w2)
-  - [Vec3w.3](#vec3w3)
-  - [cv.Vec3w.new](#cvvec3wnew)
-  - [cv.Vec3w.all](#cvvec3wall)
-  - [cv.Vec3w.cross](#cvvec3wcross)
-  - [cv.Vec3w.mul](#cvvec3wmul)
-  - [cv.Vec3w.ones](#cvvec3wones)
-  - [cv.Vec3w.randn](#cvvec3wrandn)
-  - [cv.Vec3w.randu](#cvvec3wrandu)
-  - [cv.Vec3w.zeros](#cvvec3wzeros)
-- [cv::Vec4b](#cvvec4b)
-  - [Vec4b.1](#vec4b1)
-  - [Vec4b.2](#vec4b2)
-  - [Vec4b.3](#vec4b3)
-  - [Vec4b.4](#vec4b4)
-  - [cv.Vec4b.new](#cvvec4bnew)
-  - [cv.Vec4b.all](#cvvec4ball)
-  - [cv.Vec4b.mul](#cvvec4bmul)
-  - [cv.Vec4b.ones](#cvvec4bones)
-  - [cv.Vec4b.randn](#cvvec4brandn)
-  - [cv.Vec4b.randu](#cvvec4brandu)
-  - [cv.Vec4b.zeros](#cvvec4bzeros)
-- [cv::Vec4d](#cvvec4d)
-  - [Vec4d.1](#vec4d1)
-  - [Vec4d.2](#vec4d2)
-  - [Vec4d.3](#vec4d3)
-  - [Vec4d.4](#vec4d4)
-  - [cv.Vec4d.new](#cvvec4dnew)
-  - [cv.Vec4d.all](#cvvec4dall)
-  - [cv.Vec4d.mul](#cvvec4dmul)
-  - [cv.Vec4d.ones](#cvvec4dones)
-  - [cv.Vec4d.randn](#cvvec4drandn)
-  - [cv.Vec4d.randu](#cvvec4drandu)
-  - [cv.Vec4d.zeros](#cvvec4dzeros)
-- [cv::Vec4f](#cvvec4f)
-  - [Vec4f.1](#vec4f1)
-  - [Vec4f.2](#vec4f2)
-  - [Vec4f.3](#vec4f3)
-  - [Vec4f.4](#vec4f4)
-  - [cv.Vec4f.new](#cvvec4fnew)
-  - [cv.Vec4f.all](#cvvec4fall)
-  - [cv.Vec4f.mul](#cvvec4fmul)
-  - [cv.Vec4f.ones](#cvvec4fones)
-  - [cv.Vec4f.randn](#cvvec4frandn)
-  - [cv.Vec4f.randu](#cvvec4frandu)
-  - [cv.Vec4f.zeros](#cvvec4fzeros)
-- [cv::Vec4i](#cvvec4i)
-  - [Vec4i.1](#vec4i1)
-  - [Vec4i.2](#vec4i2)
-  - [Vec4i.3](#vec4i3)
-  - [Vec4i.4](#vec4i4)
-  - [cv.Vec4i.new](#cvvec4inew)
-  - [cv.Vec4i.all](#cvvec4iall)
-  - [cv.Vec4i.mul](#cvvec4imul)
-  - [cv.Vec4i.ones](#cvvec4iones)
-  - [cv.Vec4i.randn](#cvvec4irandn)
-  - [cv.Vec4i.randu](#cvvec4irandu)
-  - [cv.Vec4i.zeros](#cvvec4izeros)
-- [cv::Vec4s](#cvvec4s)
-  - [Vec4s.1](#vec4s1)
-  - [Vec4s.2](#vec4s2)
-  - [Vec4s.3](#vec4s3)
-  - [Vec4s.4](#vec4s4)
-  - [cv.Vec4s.new](#cvvec4snew)
-  - [cv.Vec4s.all](#cvvec4sall)
-  - [cv.Vec4s.mul](#cvvec4smul)
-  - [cv.Vec4s.ones](#cvvec4sones)
-  - [cv.Vec4s.randn](#cvvec4srandn)
-  - [cv.Vec4s.randu](#cvvec4srandu)
-  - [cv.Vec4s.zeros](#cvvec4szeros)
-- [cv::Vec4w](#cvvec4w)
-  - [Vec4w.1](#vec4w1)
-  - [Vec4w.2](#vec4w2)
-  - [Vec4w.3](#vec4w3)
-  - [Vec4w.4](#vec4w4)
-  - [cv.Vec4w.new](#cvvec4wnew)
-  - [cv.Vec4w.all](#cvvec4wall)
-  - [cv.Vec4w.mul](#cvvec4wmul)
-  - [cv.Vec4w.ones](#cvvec4wones)
-  - [cv.Vec4w.randn](#cvvec4wrandn)
-  - [cv.Vec4w.randu](#cvvec4wrandu)
-  - [cv.Vec4w.zeros](#cvvec4wzeros)
-- [cv::Vec6d](#cvvec6d)
-  - [Vec6d.1](#vec6d1)
-  - [Vec6d.2](#vec6d2)
-  - [Vec6d.3](#vec6d3)
-  - [Vec6d.4](#vec6d4)
-  - [Vec6d.5](#vec6d5)
-  - [Vec6d.6](#vec6d6)
-  - [cv.Vec6d.new](#cvvec6dnew)
-  - [cv.Vec6d.all](#cvvec6dall)
-  - [cv.Vec6d.mul](#cvvec6dmul)
-  - [cv.Vec6d.ones](#cvvec6dones)
-  - [cv.Vec6d.randn](#cvvec6drandn)
-  - [cv.Vec6d.randu](#cvvec6drandu)
-  - [cv.Vec6d.zeros](#cvvec6dzeros)
-- [cv::Vec6f](#cvvec6f)
-  - [Vec6f.1](#vec6f1)
-  - [Vec6f.2](#vec6f2)
-  - [Vec6f.3](#vec6f3)
-  - [Vec6f.4](#vec6f4)
-  - [Vec6f.5](#vec6f5)
-  - [Vec6f.6](#vec6f6)
-  - [cv.Vec6f.new](#cvvec6fnew)
-  - [cv.Vec6f.all](#cvvec6fall)
-  - [cv.Vec6f.mul](#cvvec6fmul)
-  - [cv.Vec6f.ones](#cvvec6fones)
-  - [cv.Vec6f.randn](#cvvec6frandn)
-  - [cv.Vec6f.randu](#cvvec6frandu)
-  - [cv.Vec6f.zeros](#cvvec6fzeros)
-- [cv::Vec6i](#cvvec6i)
-  - [Vec6i.1](#vec6i1)
-  - [Vec6i.2](#vec6i2)
-  - [Vec6i.3](#vec6i3)
-  - [Vec6i.4](#vec6i4)
-  - [Vec6i.5](#vec6i5)
-  - [Vec6i.6](#vec6i6)
-  - [cv.Vec6i.new](#cvvec6inew)
-  - [cv.Vec6i.all](#cvvec6iall)
-  - [cv.Vec6i.mul](#cvvec6imul)
-  - [cv.Vec6i.ones](#cvvec6iones)
-  - [cv.Vec6i.randn](#cvvec6irandn)
-  - [cv.Vec6i.randu](#cvvec6irandu)
-  - [cv.Vec6i.zeros](#cvvec6izeros)
-- [cv::Vec8i](#cvvec8i)
-  - [Vec8i.1](#vec8i1)
-  - [Vec8i.2](#vec8i2)
-  - [Vec8i.3](#vec8i3)
-  - [Vec8i.4](#vec8i4)
-  - [Vec8i.5](#vec8i5)
-  - [Vec8i.6](#vec8i6)
-  - [Vec8i.7](#vec8i7)
-  - [Vec8i.8](#vec8i8)
-  - [cv.Vec8i.new](#cvvec8inew)
-  - [cv.Vec8i.all](#cvvec8iall)
-  - [cv.Vec8i.mul](#cvvec8imul)
-  - [cv.Vec8i.ones](#cvvec8iones)
-  - [cv.Vec8i.randn](#cvvec8irandn)
-  - [cv.Vec8i.randu](#cvvec8irandu)
-  - [cv.Vec8i.zeros](#cvvec8izeros)
 - [cv::VideoCapture](#cvvideocapture)
   - [cv.VideoCapture.new](#cvvideocapturenew)
   - [cv.VideoCapture.get](#cvvideocaptureget)
@@ -5149,8 +5420,6 @@
   - [Poly.lt](#polylt)
   - [Poly.shift](#polyshift)
   - [cv.gapi.wip.draw.Poly.new](#cvgapiwipdrawpolynew)
-- [cv::gapi::wip::draw::Prim](#cvgapiwipdrawprim)
-  - [cv.gapi.wip.draw.Prim.new](#cvgapiwipdrawprimnew)
 - [cv::gapi::wip::draw::Rect](#cvgapiwipdrawrect)
   - [Rect.rect](#rectrect)
   - [Rect.color](#rectcolor)
@@ -5764,29 +6033,738 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## GArray\_Point2f
+
+## GArray\_Point2i
+
+## GArray\_Point3f
+
+## GArray\_Prim
+
+## GArray\_Rect
+
+## GArray\_int
+
+## GArray\_uint64\_t
+
+## GOpaque\_Rect
+
+## GOpaque\_Size
+
+## GOpaque\_double
+
+## GOpaque\_int
+
+## MapOfIntAndDouble
+
+### MapOfIntAndDouble.new
+
+```cpp
+std::map<int, double>();
+lua:
+    MapOfIntAndDouble.new() -> <std::map<int, double> object>
+    MapOfIntAndDouble() -> <std::map<int, double> object>
+```
+
+```cpp
+static std::shared_ptr<MapOfIntAndDouble> MapOfIntAndDouble::new( std::vector<std::pair<int, double>> pairs );
+lua:
+    MapOfIntAndDouble.new( pairs ) -> retval
+```
+
+### MapOfIntAndDouble.contains
+
+```cpp
+bool MapOfIntAndDouble::count( int key );
+lua:
+    oMapOfIntAndDouble:contains( key ) -> retval
+```
+
+### MapOfIntAndDouble.count
+
+```cpp
+size_t MapOfIntAndDouble::count( int key );
+lua:
+    oMapOfIntAndDouble:count( key ) -> retval
+```
+
+### MapOfIntAndDouble.delete
+
+```cpp
+size_t MapOfIntAndDouble::erase( int key );
+lua:
+    oMapOfIntAndDouble:delete( key ) -> retval
+```
+
+### MapOfIntAndDouble.erase
+
+```cpp
+size_t MapOfIntAndDouble::erase( int key );
+lua:
+    oMapOfIntAndDouble:erase( key ) -> retval
+```
+
+### MapOfIntAndDouble.has
+
+```cpp
+bool MapOfIntAndDouble::count( int key );
+lua:
+    oMapOfIntAndDouble:has( key ) -> retval
+```
+
+### MapOfIntAndDouble.keys
+
+```cpp
+void MapOfIntAndDouble::keys( std::vector<int>& keys );
+lua:
+    oMapOfIntAndDouble:keys( [keys] ) -> keys
+```
+
+### MapOfIntAndDouble.merge
+
+```cpp
+void MapOfIntAndDouble::merge( MapOfIntAndDouble other );
+lua:
+    oMapOfIntAndDouble:merge( other ) -> None
+```
+
+### MapOfIntAndDouble.remove
+
+```cpp
+size_t MapOfIntAndDouble::erase( int key );
+lua:
+    oMapOfIntAndDouble:remove( key ) -> retval
+```
+
+### MapOfIntAndDouble.sol::meta\_function::index
+
+```cpp
+void MapOfIntAndDouble::sol::meta_function::index( int key );
+lua:
+    oMapOfIntAndDouble:__index( key ) -> None
+```
+
+### MapOfIntAndDouble.sol::meta\_function::length
+
+```cpp
+size_t MapOfIntAndDouble::size();
+lua:
+    oMapOfIntAndDouble:__len() -> retval
+```
+
+### MapOfIntAndDouble.sol::meta\_function::new\_index
+
+```cpp
+void MapOfIntAndDouble::insert_or_assign( int    key,
+                                          double value );
+lua:
+    oMapOfIntAndDouble:__newindex( key, value ) -> None
+```
+
+### MapOfIntAndDouble.table
+
+```cpp
+void MapOfIntAndDouble::table();
+lua:
+    oMapOfIntAndDouble:table() -> None
+```
+
+## MapOfStringAndInt
+
+### MapOfStringAndInt.new
+
+```cpp
+std::map<std::string, int>();
+lua:
+    MapOfStringAndInt.new() -> <std::map<std::string, int> object>
+    MapOfStringAndInt() -> <std::map<std::string, int> object>
+```
+
+```cpp
+static std::shared_ptr<MapOfStringAndInt> MapOfStringAndInt::new( std::vector<std::pair<std::string, int>> pairs );
+lua:
+    MapOfStringAndInt.new( pairs ) -> retval
+```
+
+### MapOfStringAndInt.contains
+
+```cpp
+bool MapOfStringAndInt::count( std::string key );
+lua:
+    oMapOfStringAndInt:contains( key ) -> retval
+```
+
+### MapOfStringAndInt.count
+
+```cpp
+size_t MapOfStringAndInt::count( std::string key );
+lua:
+    oMapOfStringAndInt:count( key ) -> retval
+```
+
+### MapOfStringAndInt.delete
+
+```cpp
+size_t MapOfStringAndInt::erase( std::string key );
+lua:
+    oMapOfStringAndInt:delete( key ) -> retval
+```
+
+### MapOfStringAndInt.erase
+
+```cpp
+size_t MapOfStringAndInt::erase( std::string key );
+lua:
+    oMapOfStringAndInt:erase( key ) -> retval
+```
+
+### MapOfStringAndInt.has
+
+```cpp
+bool MapOfStringAndInt::count( std::string key );
+lua:
+    oMapOfStringAndInt:has( key ) -> retval
+```
+
+### MapOfStringAndInt.keys
+
+```cpp
+void MapOfStringAndInt::keys( std::vector<std::string>& keys );
+lua:
+    oMapOfStringAndInt:keys( [keys] ) -> keys
+```
+
+### MapOfStringAndInt.merge
+
+```cpp
+void MapOfStringAndInt::merge( MapOfStringAndInt other );
+lua:
+    oMapOfStringAndInt:merge( other ) -> None
+```
+
+### MapOfStringAndInt.remove
+
+```cpp
+size_t MapOfStringAndInt::erase( std::string key );
+lua:
+    oMapOfStringAndInt:remove( key ) -> retval
+```
+
+### MapOfStringAndInt.sol::meta\_function::index
+
+```cpp
+void MapOfStringAndInt::sol::meta_function::index( std::string key );
+lua:
+    oMapOfStringAndInt:__index( key ) -> None
+```
+
+### MapOfStringAndInt.sol::meta\_function::length
+
+```cpp
+size_t MapOfStringAndInt::size();
+lua:
+    oMapOfStringAndInt:__len() -> retval
+```
+
+### MapOfStringAndInt.sol::meta\_function::new\_index
+
+```cpp
+void MapOfStringAndInt::insert_or_assign( std::string key,
+                                          int         value );
+lua:
+    oMapOfStringAndInt:__newindex( key, value ) -> None
+```
+
+### MapOfStringAndInt.table
+
+```cpp
+void MapOfStringAndInt::table();
+lua:
+    oMapOfStringAndInt:table() -> None
+```
+
+## MapOfStringAndString
+
+### MapOfStringAndString.new
+
+```cpp
+std::map<std::string, std::string>();
+lua:
+    MapOfStringAndString.new() -> <std::map<std::string, std::string> object>
+    MapOfStringAndString() -> <std::map<std::string, std::string> object>
+```
+
+```cpp
+static std::shared_ptr<MapOfStringAndString> MapOfStringAndString::new( std::vector<std::pair<std::string, std::string>> pairs );
+lua:
+    MapOfStringAndString.new( pairs ) -> retval
+```
+
+### MapOfStringAndString.contains
+
+```cpp
+bool MapOfStringAndString::count( std::string key );
+lua:
+    oMapOfStringAndString:contains( key ) -> retval
+```
+
+### MapOfStringAndString.count
+
+```cpp
+size_t MapOfStringAndString::count( std::string key );
+lua:
+    oMapOfStringAndString:count( key ) -> retval
+```
+
+### MapOfStringAndString.delete
+
+```cpp
+size_t MapOfStringAndString::erase( std::string key );
+lua:
+    oMapOfStringAndString:delete( key ) -> retval
+```
+
+### MapOfStringAndString.erase
+
+```cpp
+size_t MapOfStringAndString::erase( std::string key );
+lua:
+    oMapOfStringAndString:erase( key ) -> retval
+```
+
+### MapOfStringAndString.has
+
+```cpp
+bool MapOfStringAndString::count( std::string key );
+lua:
+    oMapOfStringAndString:has( key ) -> retval
+```
+
+### MapOfStringAndString.keys
+
+```cpp
+void MapOfStringAndString::keys( std::vector<std::string>& keys );
+lua:
+    oMapOfStringAndString:keys( [keys] ) -> keys
+```
+
+### MapOfStringAndString.merge
+
+```cpp
+void MapOfStringAndString::merge( MapOfStringAndString other );
+lua:
+    oMapOfStringAndString:merge( other ) -> None
+```
+
+### MapOfStringAndString.remove
+
+```cpp
+size_t MapOfStringAndString::erase( std::string key );
+lua:
+    oMapOfStringAndString:remove( key ) -> retval
+```
+
+### MapOfStringAndString.sol::meta\_function::index
+
+```cpp
+void MapOfStringAndString::sol::meta_function::index( std::string key );
+lua:
+    oMapOfStringAndString:__index( key ) -> None
+```
+
+### MapOfStringAndString.sol::meta\_function::length
+
+```cpp
+size_t MapOfStringAndString::size();
+lua:
+    oMapOfStringAndString:__len() -> retval
+```
+
+### MapOfStringAndString.sol::meta\_function::new\_index
+
+```cpp
+void MapOfStringAndString::insert_or_assign( std::string key,
+                                             std::string value );
+lua:
+    oMapOfStringAndString:__newindex( key, value ) -> None
+```
+
+### MapOfStringAndString.table
+
+```cpp
+void MapOfStringAndString::table();
+lua:
+    oMapOfStringAndString:table() -> None
+```
+
+## MapOfStringAndVectorOfFloat
+
+### MapOfStringAndVectorOfFloat.new
+
+```cpp
+std::map<std::string, std::vector<float>>();
+lua:
+    MapOfStringAndVectorOfFloat.new() -> <std::map<std::string, std::vector<float>> object>
+    MapOfStringAndVectorOfFloat() -> <std::map<std::string, std::vector<float>> object>
+```
+
+```cpp
+static std::shared_ptr<MapOfStringAndVectorOfFloat> MapOfStringAndVectorOfFloat::new( std::vector<std::pair<std::string, std::vector<float>>> pairs );
+lua:
+    MapOfStringAndVectorOfFloat.new( pairs ) -> retval
+```
+
+### MapOfStringAndVectorOfFloat.contains
+
+```cpp
+bool MapOfStringAndVectorOfFloat::count( std::string key );
+lua:
+    oMapOfStringAndVectorOfFloat:contains( key ) -> retval
+```
+
+### MapOfStringAndVectorOfFloat.count
+
+```cpp
+size_t MapOfStringAndVectorOfFloat::count( std::string key );
+lua:
+    oMapOfStringAndVectorOfFloat:count( key ) -> retval
+```
+
+### MapOfStringAndVectorOfFloat.delete
+
+```cpp
+size_t MapOfStringAndVectorOfFloat::erase( std::string key );
+lua:
+    oMapOfStringAndVectorOfFloat:delete( key ) -> retval
+```
+
+### MapOfStringAndVectorOfFloat.erase
+
+```cpp
+size_t MapOfStringAndVectorOfFloat::erase( std::string key );
+lua:
+    oMapOfStringAndVectorOfFloat:erase( key ) -> retval
+```
+
+### MapOfStringAndVectorOfFloat.has
+
+```cpp
+bool MapOfStringAndVectorOfFloat::count( std::string key );
+lua:
+    oMapOfStringAndVectorOfFloat:has( key ) -> retval
+```
+
+### MapOfStringAndVectorOfFloat.keys
+
+```cpp
+void MapOfStringAndVectorOfFloat::keys( std::vector<std::string>& keys );
+lua:
+    oMapOfStringAndVectorOfFloat:keys( [keys] ) -> keys
+```
+
+### MapOfStringAndVectorOfFloat.merge
+
+```cpp
+void MapOfStringAndVectorOfFloat::merge( MapOfStringAndVectorOfFloat other );
+lua:
+    oMapOfStringAndVectorOfFloat:merge( other ) -> None
+```
+
+### MapOfStringAndVectorOfFloat.remove
+
+```cpp
+size_t MapOfStringAndVectorOfFloat::erase( std::string key );
+lua:
+    oMapOfStringAndVectorOfFloat:remove( key ) -> retval
+```
+
+### MapOfStringAndVectorOfFloat.sol::meta\_function::index
+
+```cpp
+void MapOfStringAndVectorOfFloat::sol::meta_function::index( std::string key );
+lua:
+    oMapOfStringAndVectorOfFloat:__index( key ) -> None
+```
+
+### MapOfStringAndVectorOfFloat.sol::meta\_function::length
+
+```cpp
+size_t MapOfStringAndVectorOfFloat::size();
+lua:
+    oMapOfStringAndVectorOfFloat:__len() -> retval
+```
+
+### MapOfStringAndVectorOfFloat.sol::meta\_function::new\_index
+
+```cpp
+void MapOfStringAndVectorOfFloat::insert_or_assign( std::string        key,
+                                                    std::vector<float> value );
+lua:
+    oMapOfStringAndVectorOfFloat:__newindex( key, value ) -> None
+```
+
+### MapOfStringAndVectorOfFloat.table
+
+```cpp
+void MapOfStringAndVectorOfFloat::table();
+lua:
+    oMapOfStringAndVectorOfFloat:table() -> None
+```
+
+## MapOfStringAndVectorOfSize\_t
+
+### MapOfStringAndVectorOfSize\_t.new
+
+```cpp
+std::map<std::string, std::vector<size_t>>();
+lua:
+    MapOfStringAndVectorOfSize_t.new() -> <std::map<std::string, std::vector<size_t>> object>
+    MapOfStringAndVectorOfSize_t() -> <std::map<std::string, std::vector<size_t>> object>
+```
+
+```cpp
+static std::shared_ptr<MapOfStringAndVectorOfSize_t> MapOfStringAndVectorOfSize_t::new( std::vector<std::pair<std::string, std::vector<size_t>>> pairs );
+lua:
+    MapOfStringAndVectorOfSize_t.new( pairs ) -> retval
+```
+
+### MapOfStringAndVectorOfSize\_t.contains
+
+```cpp
+bool MapOfStringAndVectorOfSize_t::count( std::string key );
+lua:
+    oMapOfStringAndVectorOfSize_t:contains( key ) -> retval
+```
+
+### MapOfStringAndVectorOfSize\_t.count
+
+```cpp
+size_t MapOfStringAndVectorOfSize_t::count( std::string key );
+lua:
+    oMapOfStringAndVectorOfSize_t:count( key ) -> retval
+```
+
+### MapOfStringAndVectorOfSize\_t.delete
+
+```cpp
+size_t MapOfStringAndVectorOfSize_t::erase( std::string key );
+lua:
+    oMapOfStringAndVectorOfSize_t:delete( key ) -> retval
+```
+
+### MapOfStringAndVectorOfSize\_t.erase
+
+```cpp
+size_t MapOfStringAndVectorOfSize_t::erase( std::string key );
+lua:
+    oMapOfStringAndVectorOfSize_t:erase( key ) -> retval
+```
+
+### MapOfStringAndVectorOfSize\_t.has
+
+```cpp
+bool MapOfStringAndVectorOfSize_t::count( std::string key );
+lua:
+    oMapOfStringAndVectorOfSize_t:has( key ) -> retval
+```
+
+### MapOfStringAndVectorOfSize\_t.keys
+
+```cpp
+void MapOfStringAndVectorOfSize_t::keys( std::vector<std::string>& keys );
+lua:
+    oMapOfStringAndVectorOfSize_t:keys( [keys] ) -> keys
+```
+
+### MapOfStringAndVectorOfSize\_t.merge
+
+```cpp
+void MapOfStringAndVectorOfSize_t::merge( MapOfStringAndVectorOfSize_t other );
+lua:
+    oMapOfStringAndVectorOfSize_t:merge( other ) -> None
+```
+
+### MapOfStringAndVectorOfSize\_t.remove
+
+```cpp
+size_t MapOfStringAndVectorOfSize_t::erase( std::string key );
+lua:
+    oMapOfStringAndVectorOfSize_t:remove( key ) -> retval
+```
+
+### MapOfStringAndVectorOfSize\_t.sol::meta\_function::index
+
+```cpp
+void MapOfStringAndVectorOfSize_t::sol::meta_function::index( std::string key );
+lua:
+    oMapOfStringAndVectorOfSize_t:__index( key ) -> None
+```
+
+### MapOfStringAndVectorOfSize\_t.sol::meta\_function::length
+
+```cpp
+size_t MapOfStringAndVectorOfSize_t::size();
+lua:
+    oMapOfStringAndVectorOfSize_t:__len() -> retval
+```
+
+### MapOfStringAndVectorOfSize\_t.sol::meta\_function::new\_index
+
+```cpp
+void MapOfStringAndVectorOfSize_t::insert_or_assign( std::string         key,
+                                                     std::vector<size_t> value );
+lua:
+    oMapOfStringAndVectorOfSize_t:__newindex( key, value ) -> None
+```
+
+### MapOfStringAndVectorOfSize\_t.table
+
+```cpp
+void MapOfStringAndVectorOfSize_t::table();
+lua:
+    oMapOfStringAndVectorOfSize_t:table() -> None
+```
+
+## VectorOfBool
+
+### VectorOfBool.new
+
+```cpp
+std::vector<bool>();
+lua:
+    VectorOfBool.new() -> <std::vector<bool> object>
+    VectorOfBool() -> <std::vector<bool> object>
+```
+
+```cpp
+std::vector<bool>( size_t size );
+lua:
+    VectorOfBool.new( size ) -> <std::vector<bool> object>
+    VectorOfBool( size ) -> <std::vector<bool> object>
+```
+
+```cpp
+std::vector<bool>( std::vector<bool> other );
+lua:
+    VectorOfBool.new( other ) -> <std::vector<bool> object>
+    VectorOfBool( other ) -> <std::vector<bool> object>
+```
+
+### VectorOfBool.sol::meta\_function::index
+
+```cpp
+bool VectorOfBool::at( size_t index );
+lua:
+    oVectorOfBool:__index( index ) -> retval
+```
+
+```cpp
+bool VectorOfBool::at( const std::string& index );
+lua:
+    oVectorOfBool:__index( index ) -> retval
+```
+
+### VectorOfBool.sol::meta\_function::length
+
+```cpp
+size_t VectorOfBool::size();
+lua:
+    oVectorOfBool:__len() -> retval
+```
+
+### VectorOfBool.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfBool::sol::meta_function::new_index( size_t index,
+                                                  bool   value );
+lua:
+    oVectorOfBool:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfBool::sol::meta_function::new_index( const std::string& index,
+                                                  bool               value );
+lua:
+    oVectorOfBool:__newindex( index, value ) -> None
+```
+
+### VectorOfBool.table
+
+```cpp
+void VectorOfBool::table();
+lua:
+    oVectorOfBool:table() -> None
+```
+
 ## VectorOfChar
 
 ### VectorOfChar.new
 
 ```cpp
-std::vector<char> VectorOfChar::new();
+std::vector<char>();
 lua:
-    VectorOfChar.new() -> retval
-    VectorOfChar() -> retval
+    VectorOfChar.new() -> <std::vector<char> object>
+    VectorOfChar() -> <std::vector<char> object>
 ```
 
 ```cpp
-std::vector<char> VectorOfChar::new( size_t size );
+std::vector<char>( size_t size );
 lua:
-    VectorOfChar.new( size ) -> retval
-    VectorOfChar( size ) -> retval
+    VectorOfChar.new( size ) -> <std::vector<char> object>
+    VectorOfChar( size ) -> <std::vector<char> object>
 ```
 
 ```cpp
-std::vector<char> VectorOfChar::new( std::vector<char> other );
+std::vector<char>( std::vector<char> other );
 lua:
-    VectorOfChar.new( other ) -> retval
-    VectorOfChar( other ) -> retval
+    VectorOfChar.new( other ) -> <std::vector<char> object>
+    VectorOfChar( other ) -> <std::vector<char> object>
+```
+
+### VectorOfChar.sol::meta\_function::index
+
+```cpp
+char VectorOfChar::at( size_t index );
+lua:
+    oVectorOfChar:__index( index ) -> retval
+```
+
+```cpp
+char VectorOfChar::at( const std::string& index );
+lua:
+    oVectorOfChar:__index( index ) -> retval
+```
+
+### VectorOfChar.sol::meta\_function::length
+
+```cpp
+size_t VectorOfChar::size();
+lua:
+    oVectorOfChar:__len() -> retval
+```
+
+### VectorOfChar.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfChar::sol::meta_function::new_index( size_t index,
+                                                  char   value );
+lua:
+    oVectorOfChar:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfChar::sol::meta_function::new_index( const std::string& index,
+                                                  char               value );
+lua:
+    oVectorOfChar:__newindex( index, value ) -> None
+```
+
+### VectorOfChar.table
+
+```cpp
+void VectorOfChar::table();
+lua:
+    oVectorOfChar:table() -> None
 ```
 
 ## VectorOfDMatch
@@ -5794,24 +6772,70 @@ lua:
 ### VectorOfDMatch.new
 
 ```cpp
-std::vector<cv::DMatch> VectorOfDMatch::new();
+std::vector<cv::DMatch>();
 lua:
-    VectorOfDMatch.new() -> retval
-    VectorOfDMatch() -> retval
+    VectorOfDMatch.new() -> <std::vector<cv::DMatch> object>
+    VectorOfDMatch() -> <std::vector<cv::DMatch> object>
 ```
 
 ```cpp
-std::vector<cv::DMatch> VectorOfDMatch::new( size_t size );
+std::vector<cv::DMatch>( size_t size );
 lua:
-    VectorOfDMatch.new( size ) -> retval
-    VectorOfDMatch( size ) -> retval
+    VectorOfDMatch.new( size ) -> <std::vector<cv::DMatch> object>
+    VectorOfDMatch( size ) -> <std::vector<cv::DMatch> object>
 ```
 
 ```cpp
-std::vector<cv::DMatch> VectorOfDMatch::new( std::vector<cv::DMatch> other );
+std::vector<cv::DMatch>( std::vector<cv::DMatch> other );
 lua:
-    VectorOfDMatch.new( other ) -> retval
-    VectorOfDMatch( other ) -> retval
+    VectorOfDMatch.new( other ) -> <std::vector<cv::DMatch> object>
+    VectorOfDMatch( other ) -> <std::vector<cv::DMatch> object>
+```
+
+### VectorOfDMatch.sol::meta\_function::index
+
+```cpp
+cv::DMatch VectorOfDMatch::at( size_t index );
+lua:
+    oVectorOfDMatch:__index( index ) -> retval
+```
+
+```cpp
+cv::DMatch VectorOfDMatch::at( const std::string& index );
+lua:
+    oVectorOfDMatch:__index( index ) -> retval
+```
+
+### VectorOfDMatch.sol::meta\_function::length
+
+```cpp
+size_t VectorOfDMatch::size();
+lua:
+    oVectorOfDMatch:__len() -> retval
+```
+
+### VectorOfDMatch.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfDMatch::sol::meta_function::new_index( size_t     index,
+                                                    cv::DMatch value );
+lua:
+    oVectorOfDMatch:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfDMatch::sol::meta_function::new_index( const std::string& index,
+                                                    cv::DMatch         value );
+lua:
+    oVectorOfDMatch:__newindex( index, value ) -> None
+```
+
+### VectorOfDMatch.table
+
+```cpp
+void VectorOfDMatch::table();
+lua:
+    oVectorOfDMatch:table() -> None
 ```
 
 ## VectorOfDetail\_CameraParams
@@ -5819,24 +6843,70 @@ lua:
 ### VectorOfDetail\_CameraParams.new
 
 ```cpp
-std::vector<cv::detail::CameraParams> VectorOfDetail_CameraParams::new();
+std::vector<cv::detail::CameraParams>();
 lua:
-    VectorOfDetail_CameraParams.new() -> retval
-    VectorOfDetail_CameraParams() -> retval
+    VectorOfDetail_CameraParams.new() -> <std::vector<cv::detail::CameraParams> object>
+    VectorOfDetail_CameraParams() -> <std::vector<cv::detail::CameraParams> object>
 ```
 
 ```cpp
-std::vector<cv::detail::CameraParams> VectorOfDetail_CameraParams::new( size_t size );
+std::vector<cv::detail::CameraParams>( size_t size );
 lua:
-    VectorOfDetail_CameraParams.new( size ) -> retval
-    VectorOfDetail_CameraParams( size ) -> retval
+    VectorOfDetail_CameraParams.new( size ) -> <std::vector<cv::detail::CameraParams> object>
+    VectorOfDetail_CameraParams( size ) -> <std::vector<cv::detail::CameraParams> object>
 ```
 
 ```cpp
-std::vector<cv::detail::CameraParams> VectorOfDetail_CameraParams::new( std::vector<cv::detail::CameraParams> other );
+std::vector<cv::detail::CameraParams>( std::vector<cv::detail::CameraParams> other );
 lua:
-    VectorOfDetail_CameraParams.new( other ) -> retval
-    VectorOfDetail_CameraParams( other ) -> retval
+    VectorOfDetail_CameraParams.new( other ) -> <std::vector<cv::detail::CameraParams> object>
+    VectorOfDetail_CameraParams( other ) -> <std::vector<cv::detail::CameraParams> object>
+```
+
+### VectorOfDetail\_CameraParams.sol::meta\_function::index
+
+```cpp
+cv::detail::CameraParams VectorOfDetail_CameraParams::at( size_t index );
+lua:
+    oVectorOfDetail_CameraParams:__index( index ) -> retval
+```
+
+```cpp
+cv::detail::CameraParams VectorOfDetail_CameraParams::at( const std::string& index );
+lua:
+    oVectorOfDetail_CameraParams:__index( index ) -> retval
+```
+
+### VectorOfDetail\_CameraParams.sol::meta\_function::length
+
+```cpp
+size_t VectorOfDetail_CameraParams::size();
+lua:
+    oVectorOfDetail_CameraParams:__len() -> retval
+```
+
+### VectorOfDetail\_CameraParams.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfDetail_CameraParams::sol::meta_function::new_index( size_t                   index,
+                                                                 cv::detail::CameraParams value );
+lua:
+    oVectorOfDetail_CameraParams:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfDetail_CameraParams::sol::meta_function::new_index( const std::string&       index,
+                                                                 cv::detail::CameraParams value );
+lua:
+    oVectorOfDetail_CameraParams:__newindex( index, value ) -> None
+```
+
+### VectorOfDetail\_CameraParams.table
+
+```cpp
+void VectorOfDetail_CameraParams::table();
+lua:
+    oVectorOfDetail_CameraParams:table() -> None
 ```
 
 ## VectorOfDetail\_ImageFeatures
@@ -5844,24 +6914,70 @@ lua:
 ### VectorOfDetail\_ImageFeatures.new
 
 ```cpp
-std::vector<cv::detail::ImageFeatures> VectorOfDetail_ImageFeatures::new();
+std::vector<cv::detail::ImageFeatures>();
 lua:
-    VectorOfDetail_ImageFeatures.new() -> retval
-    VectorOfDetail_ImageFeatures() -> retval
+    VectorOfDetail_ImageFeatures.new() -> <std::vector<cv::detail::ImageFeatures> object>
+    VectorOfDetail_ImageFeatures() -> <std::vector<cv::detail::ImageFeatures> object>
 ```
 
 ```cpp
-std::vector<cv::detail::ImageFeatures> VectorOfDetail_ImageFeatures::new( size_t size );
+std::vector<cv::detail::ImageFeatures>( size_t size );
 lua:
-    VectorOfDetail_ImageFeatures.new( size ) -> retval
-    VectorOfDetail_ImageFeatures( size ) -> retval
+    VectorOfDetail_ImageFeatures.new( size ) -> <std::vector<cv::detail::ImageFeatures> object>
+    VectorOfDetail_ImageFeatures( size ) -> <std::vector<cv::detail::ImageFeatures> object>
 ```
 
 ```cpp
-std::vector<cv::detail::ImageFeatures> VectorOfDetail_ImageFeatures::new( std::vector<cv::detail::ImageFeatures> other );
+std::vector<cv::detail::ImageFeatures>( std::vector<cv::detail::ImageFeatures> other );
 lua:
-    VectorOfDetail_ImageFeatures.new( other ) -> retval
-    VectorOfDetail_ImageFeatures( other ) -> retval
+    VectorOfDetail_ImageFeatures.new( other ) -> <std::vector<cv::detail::ImageFeatures> object>
+    VectorOfDetail_ImageFeatures( other ) -> <std::vector<cv::detail::ImageFeatures> object>
+```
+
+### VectorOfDetail\_ImageFeatures.sol::meta\_function::index
+
+```cpp
+cv::detail::ImageFeatures VectorOfDetail_ImageFeatures::at( size_t index );
+lua:
+    oVectorOfDetail_ImageFeatures:__index( index ) -> retval
+```
+
+```cpp
+cv::detail::ImageFeatures VectorOfDetail_ImageFeatures::at( const std::string& index );
+lua:
+    oVectorOfDetail_ImageFeatures:__index( index ) -> retval
+```
+
+### VectorOfDetail\_ImageFeatures.sol::meta\_function::length
+
+```cpp
+size_t VectorOfDetail_ImageFeatures::size();
+lua:
+    oVectorOfDetail_ImageFeatures:__len() -> retval
+```
+
+### VectorOfDetail\_ImageFeatures.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfDetail_ImageFeatures::sol::meta_function::new_index( size_t                    index,
+                                                                  cv::detail::ImageFeatures value );
+lua:
+    oVectorOfDetail_ImageFeatures:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfDetail_ImageFeatures::sol::meta_function::new_index( const std::string&        index,
+                                                                  cv::detail::ImageFeatures value );
+lua:
+    oVectorOfDetail_ImageFeatures:__newindex( index, value ) -> None
+```
+
+### VectorOfDetail\_ImageFeatures.table
+
+```cpp
+void VectorOfDetail_ImageFeatures::table();
+lua:
+    oVectorOfDetail_ImageFeatures:table() -> None
 ```
 
 ## VectorOfDetail\_MatchesInfo
@@ -5869,24 +6985,70 @@ lua:
 ### VectorOfDetail\_MatchesInfo.new
 
 ```cpp
-std::vector<cv::detail::MatchesInfo> VectorOfDetail_MatchesInfo::new();
+std::vector<cv::detail::MatchesInfo>();
 lua:
-    VectorOfDetail_MatchesInfo.new() -> retval
-    VectorOfDetail_MatchesInfo() -> retval
+    VectorOfDetail_MatchesInfo.new() -> <std::vector<cv::detail::MatchesInfo> object>
+    VectorOfDetail_MatchesInfo() -> <std::vector<cv::detail::MatchesInfo> object>
 ```
 
 ```cpp
-std::vector<cv::detail::MatchesInfo> VectorOfDetail_MatchesInfo::new( size_t size );
+std::vector<cv::detail::MatchesInfo>( size_t size );
 lua:
-    VectorOfDetail_MatchesInfo.new( size ) -> retval
-    VectorOfDetail_MatchesInfo( size ) -> retval
+    VectorOfDetail_MatchesInfo.new( size ) -> <std::vector<cv::detail::MatchesInfo> object>
+    VectorOfDetail_MatchesInfo( size ) -> <std::vector<cv::detail::MatchesInfo> object>
 ```
 
 ```cpp
-std::vector<cv::detail::MatchesInfo> VectorOfDetail_MatchesInfo::new( std::vector<cv::detail::MatchesInfo> other );
+std::vector<cv::detail::MatchesInfo>( std::vector<cv::detail::MatchesInfo> other );
 lua:
-    VectorOfDetail_MatchesInfo.new( other ) -> retval
-    VectorOfDetail_MatchesInfo( other ) -> retval
+    VectorOfDetail_MatchesInfo.new( other ) -> <std::vector<cv::detail::MatchesInfo> object>
+    VectorOfDetail_MatchesInfo( other ) -> <std::vector<cv::detail::MatchesInfo> object>
+```
+
+### VectorOfDetail\_MatchesInfo.sol::meta\_function::index
+
+```cpp
+cv::detail::MatchesInfo VectorOfDetail_MatchesInfo::at( size_t index );
+lua:
+    oVectorOfDetail_MatchesInfo:__index( index ) -> retval
+```
+
+```cpp
+cv::detail::MatchesInfo VectorOfDetail_MatchesInfo::at( const std::string& index );
+lua:
+    oVectorOfDetail_MatchesInfo:__index( index ) -> retval
+```
+
+### VectorOfDetail\_MatchesInfo.sol::meta\_function::length
+
+```cpp
+size_t VectorOfDetail_MatchesInfo::size();
+lua:
+    oVectorOfDetail_MatchesInfo:__len() -> retval
+```
+
+### VectorOfDetail\_MatchesInfo.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfDetail_MatchesInfo::sol::meta_function::new_index( size_t                  index,
+                                                                cv::detail::MatchesInfo value );
+lua:
+    oVectorOfDetail_MatchesInfo:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfDetail_MatchesInfo::sol::meta_function::new_index( const std::string&      index,
+                                                                cv::detail::MatchesInfo value );
+lua:
+    oVectorOfDetail_MatchesInfo:__newindex( index, value ) -> None
+```
+
+### VectorOfDetail\_MatchesInfo.table
+
+```cpp
+void VectorOfDetail_MatchesInfo::table();
+lua:
+    oVectorOfDetail_MatchesInfo:table() -> None
 ```
 
 ## VectorOfDnn\_Target
@@ -5894,24 +7056,70 @@ lua:
 ### VectorOfDnn\_Target.new
 
 ```cpp
-std::vector<cv::dnn::Target> VectorOfDnn_Target::new();
+std::vector<cv::dnn::Target>();
 lua:
-    VectorOfDnn_Target.new() -> retval
-    VectorOfDnn_Target() -> retval
+    VectorOfDnn_Target.new() -> <std::vector<cv::dnn::Target> object>
+    VectorOfDnn_Target() -> <std::vector<cv::dnn::Target> object>
 ```
 
 ```cpp
-std::vector<cv::dnn::Target> VectorOfDnn_Target::new( size_t size );
+std::vector<cv::dnn::Target>( size_t size );
 lua:
-    VectorOfDnn_Target.new( size ) -> retval
-    VectorOfDnn_Target( size ) -> retval
+    VectorOfDnn_Target.new( size ) -> <std::vector<cv::dnn::Target> object>
+    VectorOfDnn_Target( size ) -> <std::vector<cv::dnn::Target> object>
 ```
 
 ```cpp
-std::vector<cv::dnn::Target> VectorOfDnn_Target::new( std::vector<cv::dnn::Target> other );
+std::vector<cv::dnn::Target>( std::vector<cv::dnn::Target> other );
 lua:
-    VectorOfDnn_Target.new( other ) -> retval
-    VectorOfDnn_Target( other ) -> retval
+    VectorOfDnn_Target.new( other ) -> <std::vector<cv::dnn::Target> object>
+    VectorOfDnn_Target( other ) -> <std::vector<cv::dnn::Target> object>
+```
+
+### VectorOfDnn\_Target.sol::meta\_function::index
+
+```cpp
+cv::dnn::Target VectorOfDnn_Target::at( size_t index );
+lua:
+    oVectorOfDnn_Target:__index( index ) -> retval
+```
+
+```cpp
+cv::dnn::Target VectorOfDnn_Target::at( const std::string& index );
+lua:
+    oVectorOfDnn_Target:__index( index ) -> retval
+```
+
+### VectorOfDnn\_Target.sol::meta\_function::length
+
+```cpp
+size_t VectorOfDnn_Target::size();
+lua:
+    oVectorOfDnn_Target:__len() -> retval
+```
+
+### VectorOfDnn\_Target.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfDnn_Target::sol::meta_function::new_index( size_t          index,
+                                                        cv::dnn::Target value );
+lua:
+    oVectorOfDnn_Target:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfDnn_Target::sol::meta_function::new_index( const std::string& index,
+                                                        cv::dnn::Target    value );
+lua:
+    oVectorOfDnn_Target:__newindex( index, value ) -> None
+```
+
+### VectorOfDnn\_Target.table
+
+```cpp
+void VectorOfDnn_Target::table();
+lua:
+    oVectorOfDnn_Target:table() -> None
 ```
 
 ## VectorOfDouble
@@ -5919,24 +7127,70 @@ lua:
 ### VectorOfDouble.new
 
 ```cpp
-std::vector<double> VectorOfDouble::new();
+std::vector<double>();
 lua:
-    VectorOfDouble.new() -> retval
-    VectorOfDouble() -> retval
+    VectorOfDouble.new() -> <std::vector<double> object>
+    VectorOfDouble() -> <std::vector<double> object>
 ```
 
 ```cpp
-std::vector<double> VectorOfDouble::new( size_t size );
+std::vector<double>( size_t size );
 lua:
-    VectorOfDouble.new( size ) -> retval
-    VectorOfDouble( size ) -> retval
+    VectorOfDouble.new( size ) -> <std::vector<double> object>
+    VectorOfDouble( size ) -> <std::vector<double> object>
 ```
 
 ```cpp
-std::vector<double> VectorOfDouble::new( std::vector<double> other );
+std::vector<double>( std::vector<double> other );
 lua:
-    VectorOfDouble.new( other ) -> retval
-    VectorOfDouble( other ) -> retval
+    VectorOfDouble.new( other ) -> <std::vector<double> object>
+    VectorOfDouble( other ) -> <std::vector<double> object>
+```
+
+### VectorOfDouble.sol::meta\_function::index
+
+```cpp
+double VectorOfDouble::at( size_t index );
+lua:
+    oVectorOfDouble:__index( index ) -> retval
+```
+
+```cpp
+double VectorOfDouble::at( const std::string& index );
+lua:
+    oVectorOfDouble:__index( index ) -> retval
+```
+
+### VectorOfDouble.sol::meta\_function::length
+
+```cpp
+size_t VectorOfDouble::size();
+lua:
+    oVectorOfDouble:__len() -> retval
+```
+
+### VectorOfDouble.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfDouble::sol::meta_function::new_index( size_t index,
+                                                    double value );
+lua:
+    oVectorOfDouble:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfDouble::sol::meta_function::new_index( const std::string& index,
+                                                    double             value );
+lua:
+    oVectorOfDouble:__newindex( index, value ) -> None
+```
+
+### VectorOfDouble.table
+
+```cpp
+void VectorOfDouble::table();
+lua:
+    oVectorOfDouble:table() -> None
 ```
 
 ## VectorOfFloat
@@ -5944,24 +7198,70 @@ lua:
 ### VectorOfFloat.new
 
 ```cpp
-std::vector<float> VectorOfFloat::new();
+std::vector<float>();
 lua:
-    VectorOfFloat.new() -> retval
-    VectorOfFloat() -> retval
+    VectorOfFloat.new() -> <std::vector<float> object>
+    VectorOfFloat() -> <std::vector<float> object>
 ```
 
 ```cpp
-std::vector<float> VectorOfFloat::new( size_t size );
+std::vector<float>( size_t size );
 lua:
-    VectorOfFloat.new( size ) -> retval
-    VectorOfFloat( size ) -> retval
+    VectorOfFloat.new( size ) -> <std::vector<float> object>
+    VectorOfFloat( size ) -> <std::vector<float> object>
 ```
 
 ```cpp
-std::vector<float> VectorOfFloat::new( std::vector<float> other );
+std::vector<float>( std::vector<float> other );
 lua:
-    VectorOfFloat.new( other ) -> retval
-    VectorOfFloat( other ) -> retval
+    VectorOfFloat.new( other ) -> <std::vector<float> object>
+    VectorOfFloat( other ) -> <std::vector<float> object>
+```
+
+### VectorOfFloat.sol::meta\_function::index
+
+```cpp
+float VectorOfFloat::at( size_t index );
+lua:
+    oVectorOfFloat:__index( index ) -> retval
+```
+
+```cpp
+float VectorOfFloat::at( const std::string& index );
+lua:
+    oVectorOfFloat:__index( index ) -> retval
+```
+
+### VectorOfFloat.sol::meta\_function::length
+
+```cpp
+size_t VectorOfFloat::size();
+lua:
+    oVectorOfFloat:__len() -> retval
+```
+
+### VectorOfFloat.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfFloat::sol::meta_function::new_index( size_t index,
+                                                   float  value );
+lua:
+    oVectorOfFloat:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfFloat::sol::meta_function::new_index( const std::string& index,
+                                                   float              value );
+lua:
+    oVectorOfFloat:__newindex( index, value ) -> None
+```
+
+### VectorOfFloat.table
+
+```cpp
+void VectorOfFloat::table();
+lua:
+    oVectorOfFloat:table() -> None
 ```
 
 ## VectorOfGCompileArg
@@ -5969,24 +7269,70 @@ lua:
 ### VectorOfGCompileArg.new
 
 ```cpp
-std::vector<cv::GCompileArg> VectorOfGCompileArg::new();
+std::vector<cv::GCompileArg>();
 lua:
-    VectorOfGCompileArg.new() -> retval
-    VectorOfGCompileArg() -> retval
+    VectorOfGCompileArg.new() -> <std::vector<cv::GCompileArg> object>
+    VectorOfGCompileArg() -> <std::vector<cv::GCompileArg> object>
 ```
 
 ```cpp
-std::vector<cv::GCompileArg> VectorOfGCompileArg::new( size_t size );
+std::vector<cv::GCompileArg>( size_t size );
 lua:
-    VectorOfGCompileArg.new( size ) -> retval
-    VectorOfGCompileArg( size ) -> retval
+    VectorOfGCompileArg.new( size ) -> <std::vector<cv::GCompileArg> object>
+    VectorOfGCompileArg( size ) -> <std::vector<cv::GCompileArg> object>
 ```
 
 ```cpp
-std::vector<cv::GCompileArg> VectorOfGCompileArg::new( std::vector<cv::GCompileArg> other );
+std::vector<cv::GCompileArg>( std::vector<cv::GCompileArg> other );
 lua:
-    VectorOfGCompileArg.new( other ) -> retval
-    VectorOfGCompileArg( other ) -> retval
+    VectorOfGCompileArg.new( other ) -> <std::vector<cv::GCompileArg> object>
+    VectorOfGCompileArg( other ) -> <std::vector<cv::GCompileArg> object>
+```
+
+### VectorOfGCompileArg.sol::meta\_function::index
+
+```cpp
+cv::GCompileArg VectorOfGCompileArg::at( size_t index );
+lua:
+    oVectorOfGCompileArg:__index( index ) -> retval
+```
+
+```cpp
+cv::GCompileArg VectorOfGCompileArg::at( const std::string& index );
+lua:
+    oVectorOfGCompileArg:__index( index ) -> retval
+```
+
+### VectorOfGCompileArg.sol::meta\_function::length
+
+```cpp
+size_t VectorOfGCompileArg::size();
+lua:
+    oVectorOfGCompileArg:__len() -> retval
+```
+
+### VectorOfGCompileArg.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfGCompileArg::sol::meta_function::new_index( size_t          index,
+                                                         cv::GCompileArg value );
+lua:
+    oVectorOfGCompileArg:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfGCompileArg::sol::meta_function::new_index( const std::string& index,
+                                                         cv::GCompileArg    value );
+lua:
+    oVectorOfGCompileArg:__newindex( index, value ) -> None
+```
+
+### VectorOfGCompileArg.table
+
+```cpp
+void VectorOfGCompileArg::table();
+lua:
+    oVectorOfGCompileArg:table() -> None
 ```
 
 ## VectorOfGMat
@@ -5994,24 +7340,70 @@ lua:
 ### VectorOfGMat.new
 
 ```cpp
-std::vector<cv::GMat> VectorOfGMat::new();
+std::vector<cv::GMat>();
 lua:
-    VectorOfGMat.new() -> retval
-    VectorOfGMat() -> retval
+    VectorOfGMat.new() -> <std::vector<cv::GMat> object>
+    VectorOfGMat() -> <std::vector<cv::GMat> object>
 ```
 
 ```cpp
-std::vector<cv::GMat> VectorOfGMat::new( size_t size );
+std::vector<cv::GMat>( size_t size );
 lua:
-    VectorOfGMat.new( size ) -> retval
-    VectorOfGMat( size ) -> retval
+    VectorOfGMat.new( size ) -> <std::vector<cv::GMat> object>
+    VectorOfGMat( size ) -> <std::vector<cv::GMat> object>
 ```
 
 ```cpp
-std::vector<cv::GMat> VectorOfGMat::new( std::vector<cv::GMat> other );
+std::vector<cv::GMat>( std::vector<cv::GMat> other );
 lua:
-    VectorOfGMat.new( other ) -> retval
-    VectorOfGMat( other ) -> retval
+    VectorOfGMat.new( other ) -> <std::vector<cv::GMat> object>
+    VectorOfGMat( other ) -> <std::vector<cv::GMat> object>
+```
+
+### VectorOfGMat.sol::meta\_function::index
+
+```cpp
+cv::GMat VectorOfGMat::at( size_t index );
+lua:
+    oVectorOfGMat:__index( index ) -> retval
+```
+
+```cpp
+cv::GMat VectorOfGMat::at( const std::string& index );
+lua:
+    oVectorOfGMat:__index( index ) -> retval
+```
+
+### VectorOfGMat.sol::meta\_function::length
+
+```cpp
+size_t VectorOfGMat::size();
+lua:
+    oVectorOfGMat:__len() -> retval
+```
+
+### VectorOfGMat.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfGMat::sol::meta_function::new_index( size_t   index,
+                                                  cv::GMat value );
+lua:
+    oVectorOfGMat:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfGMat::sol::meta_function::new_index( const std::string& index,
+                                                  cv::GMat           value );
+lua:
+    oVectorOfGMat:__newindex( index, value ) -> None
+```
+
+### VectorOfGMat.table
+
+```cpp
+void VectorOfGMat::table();
+lua:
+    oVectorOfGMat:table() -> None
 ```
 
 ## VectorOfGMetaArg
@@ -6019,24 +7411,70 @@ lua:
 ### VectorOfGMetaArg.new
 
 ```cpp
-std::vector<cv::GMetaArg> VectorOfGMetaArg::new();
+std::vector<cv::GMetaArg>();
 lua:
-    VectorOfGMetaArg.new() -> retval
-    VectorOfGMetaArg() -> retval
+    VectorOfGMetaArg.new() -> <std::vector<cv::GMetaArg> object>
+    VectorOfGMetaArg() -> <std::vector<cv::GMetaArg> object>
 ```
 
 ```cpp
-std::vector<cv::GMetaArg> VectorOfGMetaArg::new( size_t size );
+std::vector<cv::GMetaArg>( size_t size );
 lua:
-    VectorOfGMetaArg.new( size ) -> retval
-    VectorOfGMetaArg( size ) -> retval
+    VectorOfGMetaArg.new( size ) -> <std::vector<cv::GMetaArg> object>
+    VectorOfGMetaArg( size ) -> <std::vector<cv::GMetaArg> object>
 ```
 
 ```cpp
-std::vector<cv::GMetaArg> VectorOfGMetaArg::new( std::vector<cv::GMetaArg> other );
+std::vector<cv::GMetaArg>( std::vector<cv::GMetaArg> other );
 lua:
-    VectorOfGMetaArg.new( other ) -> retval
-    VectorOfGMetaArg( other ) -> retval
+    VectorOfGMetaArg.new( other ) -> <std::vector<cv::GMetaArg> object>
+    VectorOfGMetaArg( other ) -> <std::vector<cv::GMetaArg> object>
+```
+
+### VectorOfGMetaArg.sol::meta\_function::index
+
+```cpp
+cv::GMetaArg VectorOfGMetaArg::at( size_t index );
+lua:
+    oVectorOfGMetaArg:__index( index ) -> retval
+```
+
+```cpp
+cv::GMetaArg VectorOfGMetaArg::at( const std::string& index );
+lua:
+    oVectorOfGMetaArg:__index( index ) -> retval
+```
+
+### VectorOfGMetaArg.sol::meta\_function::length
+
+```cpp
+size_t VectorOfGMetaArg::size();
+lua:
+    oVectorOfGMetaArg:__len() -> retval
+```
+
+### VectorOfGMetaArg.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfGMetaArg::sol::meta_function::new_index( size_t       index,
+                                                      cv::GMetaArg value );
+lua:
+    oVectorOfGMetaArg:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfGMetaArg::sol::meta_function::new_index( const std::string& index,
+                                                      cv::GMetaArg       value );
+lua:
+    oVectorOfGMetaArg:__newindex( index, value ) -> None
+```
+
+### VectorOfGMetaArg.table
+
+```cpp
+void VectorOfGMetaArg::table();
+lua:
+    oVectorOfGMetaArg:table() -> None
 ```
 
 ## VectorOfGRunArg
@@ -6044,24 +7482,70 @@ lua:
 ### VectorOfGRunArg.new
 
 ```cpp
-std::vector<cv::GRunArg> VectorOfGRunArg::new();
+std::vector<cv::GRunArg>();
 lua:
-    VectorOfGRunArg.new() -> retval
-    VectorOfGRunArg() -> retval
+    VectorOfGRunArg.new() -> <std::vector<cv::GRunArg> object>
+    VectorOfGRunArg() -> <std::vector<cv::GRunArg> object>
 ```
 
 ```cpp
-std::vector<cv::GRunArg> VectorOfGRunArg::new( size_t size );
+std::vector<cv::GRunArg>( size_t size );
 lua:
-    VectorOfGRunArg.new( size ) -> retval
-    VectorOfGRunArg( size ) -> retval
+    VectorOfGRunArg.new( size ) -> <std::vector<cv::GRunArg> object>
+    VectorOfGRunArg( size ) -> <std::vector<cv::GRunArg> object>
 ```
 
 ```cpp
-std::vector<cv::GRunArg> VectorOfGRunArg::new( std::vector<cv::GRunArg> other );
+std::vector<cv::GRunArg>( std::vector<cv::GRunArg> other );
 lua:
-    VectorOfGRunArg.new( other ) -> retval
-    VectorOfGRunArg( other ) -> retval
+    VectorOfGRunArg.new( other ) -> <std::vector<cv::GRunArg> object>
+    VectorOfGRunArg( other ) -> <std::vector<cv::GRunArg> object>
+```
+
+### VectorOfGRunArg.sol::meta\_function::index
+
+```cpp
+cv::GRunArg VectorOfGRunArg::at( size_t index );
+lua:
+    oVectorOfGRunArg:__index( index ) -> retval
+```
+
+```cpp
+cv::GRunArg VectorOfGRunArg::at( const std::string& index );
+lua:
+    oVectorOfGRunArg:__index( index ) -> retval
+```
+
+### VectorOfGRunArg.sol::meta\_function::length
+
+```cpp
+size_t VectorOfGRunArg::size();
+lua:
+    oVectorOfGRunArg:__len() -> retval
+```
+
+### VectorOfGRunArg.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfGRunArg::sol::meta_function::new_index( size_t      index,
+                                                     cv::GRunArg value );
+lua:
+    oVectorOfGRunArg:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfGRunArg::sol::meta_function::new_index( const std::string& index,
+                                                     cv::GRunArg        value );
+lua:
+    oVectorOfGRunArg:__newindex( index, value ) -> None
+```
+
+### VectorOfGRunArg.table
+
+```cpp
+void VectorOfGRunArg::table();
+lua:
+    oVectorOfGRunArg:table() -> None
 ```
 
 ## VectorOfGapi\_GNetParam
@@ -6069,24 +7553,70 @@ lua:
 ### VectorOfGapi\_GNetParam.new
 
 ```cpp
-std::vector<cv::gapi::GNetParam> VectorOfGapi_GNetParam::new();
+std::vector<cv::gapi::GNetParam>();
 lua:
-    VectorOfGapi_GNetParam.new() -> retval
-    VectorOfGapi_GNetParam() -> retval
+    VectorOfGapi_GNetParam.new() -> <std::vector<cv::gapi::GNetParam> object>
+    VectorOfGapi_GNetParam() -> <std::vector<cv::gapi::GNetParam> object>
 ```
 
 ```cpp
-std::vector<cv::gapi::GNetParam> VectorOfGapi_GNetParam::new( size_t size );
+std::vector<cv::gapi::GNetParam>( size_t size );
 lua:
-    VectorOfGapi_GNetParam.new( size ) -> retval
-    VectorOfGapi_GNetParam( size ) -> retval
+    VectorOfGapi_GNetParam.new( size ) -> <std::vector<cv::gapi::GNetParam> object>
+    VectorOfGapi_GNetParam( size ) -> <std::vector<cv::gapi::GNetParam> object>
 ```
 
 ```cpp
-std::vector<cv::gapi::GNetParam> VectorOfGapi_GNetParam::new( std::vector<cv::gapi::GNetParam> other );
+std::vector<cv::gapi::GNetParam>( std::vector<cv::gapi::GNetParam> other );
 lua:
-    VectorOfGapi_GNetParam.new( other ) -> retval
-    VectorOfGapi_GNetParam( other ) -> retval
+    VectorOfGapi_GNetParam.new( other ) -> <std::vector<cv::gapi::GNetParam> object>
+    VectorOfGapi_GNetParam( other ) -> <std::vector<cv::gapi::GNetParam> object>
+```
+
+### VectorOfGapi\_GNetParam.sol::meta\_function::index
+
+```cpp
+cv::gapi::GNetParam VectorOfGapi_GNetParam::at( size_t index );
+lua:
+    oVectorOfGapi_GNetParam:__index( index ) -> retval
+```
+
+```cpp
+cv::gapi::GNetParam VectorOfGapi_GNetParam::at( const std::string& index );
+lua:
+    oVectorOfGapi_GNetParam:__index( index ) -> retval
+```
+
+### VectorOfGapi\_GNetParam.sol::meta\_function::length
+
+```cpp
+size_t VectorOfGapi_GNetParam::size();
+lua:
+    oVectorOfGapi_GNetParam:__len() -> retval
+```
+
+### VectorOfGapi\_GNetParam.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfGapi_GNetParam::sol::meta_function::new_index( size_t              index,
+                                                            cv::gapi::GNetParam value );
+lua:
+    oVectorOfGapi_GNetParam:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfGapi_GNetParam::sol::meta_function::new_index( const std::string&  index,
+                                                            cv::gapi::GNetParam value );
+lua:
+    oVectorOfGapi_GNetParam:__newindex( index, value ) -> None
+```
+
+### VectorOfGapi\_GNetParam.table
+
+```cpp
+void VectorOfGapi_GNetParam::table();
+lua:
+    oVectorOfGapi_GNetParam:table() -> None
 ```
 
 ## VectorOfGapi\_wip\_draw\_Prim
@@ -6094,24 +7624,70 @@ lua:
 ### VectorOfGapi\_wip\_draw\_Prim.new
 
 ```cpp
-std::vector<cv::gapi::wip::draw::Prim> VectorOfGapi_wip_draw_Prim::new();
+std::vector<cv::gapi::wip::draw::Prim>();
 lua:
-    VectorOfGapi_wip_draw_Prim.new() -> retval
-    VectorOfGapi_wip_draw_Prim() -> retval
+    VectorOfGapi_wip_draw_Prim.new() -> <std::vector<cv::gapi::wip::draw::Prim> object>
+    VectorOfGapi_wip_draw_Prim() -> <std::vector<cv::gapi::wip::draw::Prim> object>
 ```
 
 ```cpp
-std::vector<cv::gapi::wip::draw::Prim> VectorOfGapi_wip_draw_Prim::new( size_t size );
+std::vector<cv::gapi::wip::draw::Prim>( size_t size );
 lua:
-    VectorOfGapi_wip_draw_Prim.new( size ) -> retval
-    VectorOfGapi_wip_draw_Prim( size ) -> retval
+    VectorOfGapi_wip_draw_Prim.new( size ) -> <std::vector<cv::gapi::wip::draw::Prim> object>
+    VectorOfGapi_wip_draw_Prim( size ) -> <std::vector<cv::gapi::wip::draw::Prim> object>
 ```
 
 ```cpp
-std::vector<cv::gapi::wip::draw::Prim> VectorOfGapi_wip_draw_Prim::new( std::vector<cv::gapi::wip::draw::Prim> other );
+std::vector<cv::gapi::wip::draw::Prim>( std::vector<cv::gapi::wip::draw::Prim> other );
 lua:
-    VectorOfGapi_wip_draw_Prim.new( other ) -> retval
-    VectorOfGapi_wip_draw_Prim( other ) -> retval
+    VectorOfGapi_wip_draw_Prim.new( other ) -> <std::vector<cv::gapi::wip::draw::Prim> object>
+    VectorOfGapi_wip_draw_Prim( other ) -> <std::vector<cv::gapi::wip::draw::Prim> object>
+```
+
+### VectorOfGapi\_wip\_draw\_Prim.sol::meta\_function::index
+
+```cpp
+cv::gapi::wip::draw::Prim VectorOfGapi_wip_draw_Prim::at( size_t index );
+lua:
+    oVectorOfGapi_wip_draw_Prim:__index( index ) -> retval
+```
+
+```cpp
+cv::gapi::wip::draw::Prim VectorOfGapi_wip_draw_Prim::at( const std::string& index );
+lua:
+    oVectorOfGapi_wip_draw_Prim:__index( index ) -> retval
+```
+
+### VectorOfGapi\_wip\_draw\_Prim.sol::meta\_function::length
+
+```cpp
+size_t VectorOfGapi_wip_draw_Prim::size();
+lua:
+    oVectorOfGapi_wip_draw_Prim:__len() -> retval
+```
+
+### VectorOfGapi\_wip\_draw\_Prim.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfGapi_wip_draw_Prim::sol::meta_function::new_index( size_t                    index,
+                                                                cv::gapi::wip::draw::Prim value );
+lua:
+    oVectorOfGapi_wip_draw_Prim:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfGapi_wip_draw_Prim::sol::meta_function::new_index( const std::string&        index,
+                                                                cv::gapi::wip::draw::Prim value );
+lua:
+    oVectorOfGapi_wip_draw_Prim:__newindex( index, value ) -> None
+```
+
+### VectorOfGapi\_wip\_draw\_Prim.table
+
+```cpp
+void VectorOfGapi_wip_draw_Prim::table();
+lua:
+    oVectorOfGapi_wip_draw_Prim:table() -> None
 ```
 
 ## VectorOfInt
@@ -6119,24 +7695,70 @@ lua:
 ### VectorOfInt.new
 
 ```cpp
-std::vector<int> VectorOfInt::new();
+std::vector<int>();
 lua:
-    VectorOfInt.new() -> retval
-    VectorOfInt() -> retval
+    VectorOfInt.new() -> <std::vector<int> object>
+    VectorOfInt() -> <std::vector<int> object>
 ```
 
 ```cpp
-std::vector<int> VectorOfInt::new( size_t size );
+std::vector<int>( size_t size );
 lua:
-    VectorOfInt.new( size ) -> retval
-    VectorOfInt( size ) -> retval
+    VectorOfInt.new( size ) -> <std::vector<int> object>
+    VectorOfInt( size ) -> <std::vector<int> object>
 ```
 
 ```cpp
-std::vector<int> VectorOfInt::new( std::vector<int> other );
+std::vector<int>( std::vector<int> other );
 lua:
-    VectorOfInt.new( other ) -> retval
-    VectorOfInt( other ) -> retval
+    VectorOfInt.new( other ) -> <std::vector<int> object>
+    VectorOfInt( other ) -> <std::vector<int> object>
+```
+
+### VectorOfInt.sol::meta\_function::index
+
+```cpp
+int VectorOfInt::at( size_t index );
+lua:
+    oVectorOfInt:__index( index ) -> retval
+```
+
+```cpp
+int VectorOfInt::at( const std::string& index );
+lua:
+    oVectorOfInt:__index( index ) -> retval
+```
+
+### VectorOfInt.sol::meta\_function::length
+
+```cpp
+size_t VectorOfInt::size();
+lua:
+    oVectorOfInt:__len() -> retval
+```
+
+### VectorOfInt.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfInt::sol::meta_function::new_index( size_t index,
+                                                 int    value );
+lua:
+    oVectorOfInt:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfInt::sol::meta_function::new_index( const std::string& index,
+                                                 int                value );
+lua:
+    oVectorOfInt:__newindex( index, value ) -> None
+```
+
+### VectorOfInt.table
+
+```cpp
+void VectorOfInt::table();
+lua:
+    oVectorOfInt:table() -> None
 ```
 
 ## VectorOfKeyPoint
@@ -6144,24 +7766,70 @@ lua:
 ### VectorOfKeyPoint.new
 
 ```cpp
-std::vector<cv::KeyPoint> VectorOfKeyPoint::new();
+std::vector<cv::KeyPoint>();
 lua:
-    VectorOfKeyPoint.new() -> retval
-    VectorOfKeyPoint() -> retval
+    VectorOfKeyPoint.new() -> <std::vector<cv::KeyPoint> object>
+    VectorOfKeyPoint() -> <std::vector<cv::KeyPoint> object>
 ```
 
 ```cpp
-std::vector<cv::KeyPoint> VectorOfKeyPoint::new( size_t size );
+std::vector<cv::KeyPoint>( size_t size );
 lua:
-    VectorOfKeyPoint.new( size ) -> retval
-    VectorOfKeyPoint( size ) -> retval
+    VectorOfKeyPoint.new( size ) -> <std::vector<cv::KeyPoint> object>
+    VectorOfKeyPoint( size ) -> <std::vector<cv::KeyPoint> object>
 ```
 
 ```cpp
-std::vector<cv::KeyPoint> VectorOfKeyPoint::new( std::vector<cv::KeyPoint> other );
+std::vector<cv::KeyPoint>( std::vector<cv::KeyPoint> other );
 lua:
-    VectorOfKeyPoint.new( other ) -> retval
-    VectorOfKeyPoint( other ) -> retval
+    VectorOfKeyPoint.new( other ) -> <std::vector<cv::KeyPoint> object>
+    VectorOfKeyPoint( other ) -> <std::vector<cv::KeyPoint> object>
+```
+
+### VectorOfKeyPoint.sol::meta\_function::index
+
+```cpp
+cv::KeyPoint VectorOfKeyPoint::at( size_t index );
+lua:
+    oVectorOfKeyPoint:__index( index ) -> retval
+```
+
+```cpp
+cv::KeyPoint VectorOfKeyPoint::at( const std::string& index );
+lua:
+    oVectorOfKeyPoint:__index( index ) -> retval
+```
+
+### VectorOfKeyPoint.sol::meta\_function::length
+
+```cpp
+size_t VectorOfKeyPoint::size();
+lua:
+    oVectorOfKeyPoint:__len() -> retval
+```
+
+### VectorOfKeyPoint.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfKeyPoint::sol::meta_function::new_index( size_t       index,
+                                                      cv::KeyPoint value );
+lua:
+    oVectorOfKeyPoint:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfKeyPoint::sol::meta_function::new_index( const std::string& index,
+                                                      cv::KeyPoint       value );
+lua:
+    oVectorOfKeyPoint:__newindex( index, value ) -> None
+```
+
+### VectorOfKeyPoint.table
+
+```cpp
+void VectorOfKeyPoint::table();
+lua:
+    oVectorOfKeyPoint:table() -> None
 ```
 
 ## VectorOfMat
@@ -6169,24 +7837,496 @@ lua:
 ### VectorOfMat.new
 
 ```cpp
-std::vector<cv::Mat> VectorOfMat::new();
+std::vector<cv::Mat>();
 lua:
-    VectorOfMat.new() -> retval
-    VectorOfMat() -> retval
+    VectorOfMat.new() -> <std::vector<cv::Mat> object>
+    VectorOfMat() -> <std::vector<cv::Mat> object>
 ```
 
 ```cpp
-std::vector<cv::Mat> VectorOfMat::new( size_t size );
+std::vector<cv::Mat>( size_t size );
 lua:
-    VectorOfMat.new( size ) -> retval
-    VectorOfMat( size ) -> retval
+    VectorOfMat.new( size ) -> <std::vector<cv::Mat> object>
+    VectorOfMat( size ) -> <std::vector<cv::Mat> object>
 ```
 
 ```cpp
-std::vector<cv::Mat> VectorOfMat::new( std::vector<cv::Mat> other );
+std::vector<cv::Mat>( std::vector<cv::Mat> other );
 lua:
-    VectorOfMat.new( other ) -> retval
-    VectorOfMat( other ) -> retval
+    VectorOfMat.new( other ) -> <std::vector<cv::Mat> object>
+    VectorOfMat( other ) -> <std::vector<cv::Mat> object>
+```
+
+### VectorOfMat.sol::meta\_function::index
+
+```cpp
+cv::Mat VectorOfMat::at( size_t index );
+lua:
+    oVectorOfMat:__index( index ) -> retval
+```
+
+```cpp
+cv::Mat VectorOfMat::at( const std::string& index );
+lua:
+    oVectorOfMat:__index( index ) -> retval
+```
+
+### VectorOfMat.sol::meta\_function::length
+
+```cpp
+size_t VectorOfMat::size();
+lua:
+    oVectorOfMat:__len() -> retval
+```
+
+### VectorOfMat.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfMat::sol::meta_function::new_index( size_t  index,
+                                                 cv::Mat value );
+lua:
+    oVectorOfMat:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfMat::sol::meta_function::new_index( const std::string& index,
+                                                 cv::Mat            value );
+lua:
+    oVectorOfMat:__newindex( index, value ) -> None
+```
+
+### VectorOfMat.table
+
+```cpp
+void VectorOfMat::table();
+lua:
+    oVectorOfMat:table() -> None
+```
+
+## VectorOfMoments
+
+### VectorOfMoments.new
+
+```cpp
+std::vector<cv::Moments>();
+lua:
+    VectorOfMoments.new() -> <std::vector<cv::Moments> object>
+    VectorOfMoments() -> <std::vector<cv::Moments> object>
+```
+
+```cpp
+std::vector<cv::Moments>( size_t size );
+lua:
+    VectorOfMoments.new( size ) -> <std::vector<cv::Moments> object>
+    VectorOfMoments( size ) -> <std::vector<cv::Moments> object>
+```
+
+```cpp
+std::vector<cv::Moments>( std::vector<cv::Moments> other );
+lua:
+    VectorOfMoments.new( other ) -> <std::vector<cv::Moments> object>
+    VectorOfMoments( other ) -> <std::vector<cv::Moments> object>
+```
+
+### VectorOfMoments.sol::meta\_function::index
+
+```cpp
+cv::Moments VectorOfMoments::at( size_t index );
+lua:
+    oVectorOfMoments:__index( index ) -> retval
+```
+
+```cpp
+cv::Moments VectorOfMoments::at( const std::string& index );
+lua:
+    oVectorOfMoments:__index( index ) -> retval
+```
+
+### VectorOfMoments.sol::meta\_function::length
+
+```cpp
+size_t VectorOfMoments::size();
+lua:
+    oVectorOfMoments:__len() -> retval
+```
+
+### VectorOfMoments.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfMoments::sol::meta_function::new_index( size_t      index,
+                                                     cv::Moments value );
+lua:
+    oVectorOfMoments:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfMoments::sol::meta_function::new_index( const std::string& index,
+                                                     cv::Moments        value );
+lua:
+    oVectorOfMoments:__newindex( index, value ) -> None
+```
+
+### VectorOfMoments.table
+
+```cpp
+void VectorOfMoments::table();
+lua:
+    oVectorOfMoments:table() -> None
+```
+
+## VectorOfPairOfIntAndDouble
+
+### VectorOfPairOfIntAndDouble.new
+
+```cpp
+std::vector<std::pair<int, double>>();
+lua:
+    VectorOfPairOfIntAndDouble.new() -> <std::vector<std::pair<int, double>> object>
+    VectorOfPairOfIntAndDouble() -> <std::vector<std::pair<int, double>> object>
+```
+
+```cpp
+std::vector<std::pair<int, double>>( size_t size );
+lua:
+    VectorOfPairOfIntAndDouble.new( size ) -> <std::vector<std::pair<int, double>> object>
+    VectorOfPairOfIntAndDouble( size ) -> <std::vector<std::pair<int, double>> object>
+```
+
+```cpp
+std::vector<std::pair<int, double>>( std::vector<std::pair<int, double>> other );
+lua:
+    VectorOfPairOfIntAndDouble.new( other ) -> <std::vector<std::pair<int, double>> object>
+    VectorOfPairOfIntAndDouble( other ) -> <std::vector<std::pair<int, double>> object>
+```
+
+### VectorOfPairOfIntAndDouble.sol::meta\_function::index
+
+```cpp
+std::pair<int, double> VectorOfPairOfIntAndDouble::at( size_t index );
+lua:
+    oVectorOfPairOfIntAndDouble:__index( index ) -> retval
+```
+
+```cpp
+std::pair<int, double> VectorOfPairOfIntAndDouble::at( const std::string& index );
+lua:
+    oVectorOfPairOfIntAndDouble:__index( index ) -> retval
+```
+
+### VectorOfPairOfIntAndDouble.sol::meta\_function::length
+
+```cpp
+size_t VectorOfPairOfIntAndDouble::size();
+lua:
+    oVectorOfPairOfIntAndDouble:__len() -> retval
+```
+
+### VectorOfPairOfIntAndDouble.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfPairOfIntAndDouble::sol::meta_function::new_index( size_t                 index,
+                                                                std::pair<int, double> value );
+lua:
+    oVectorOfPairOfIntAndDouble:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfPairOfIntAndDouble::sol::meta_function::new_index( const std::string&     index,
+                                                                std::pair<int, double> value );
+lua:
+    oVectorOfPairOfIntAndDouble:__newindex( index, value ) -> None
+```
+
+### VectorOfPairOfIntAndDouble.table
+
+```cpp
+void VectorOfPairOfIntAndDouble::table();
+lua:
+    oVectorOfPairOfIntAndDouble:table() -> None
+```
+
+## VectorOfPairOfStringAndInt
+
+### VectorOfPairOfStringAndInt.new
+
+```cpp
+std::vector<std::pair<std::string, int>>();
+lua:
+    VectorOfPairOfStringAndInt.new() -> <std::vector<std::pair<std::string, int>> object>
+    VectorOfPairOfStringAndInt() -> <std::vector<std::pair<std::string, int>> object>
+```
+
+```cpp
+std::vector<std::pair<std::string, int>>( size_t size );
+lua:
+    VectorOfPairOfStringAndInt.new( size ) -> <std::vector<std::pair<std::string, int>> object>
+    VectorOfPairOfStringAndInt( size ) -> <std::vector<std::pair<std::string, int>> object>
+```
+
+```cpp
+std::vector<std::pair<std::string, int>>( std::vector<std::pair<std::string, int>> other );
+lua:
+    VectorOfPairOfStringAndInt.new( other ) -> <std::vector<std::pair<std::string, int>> object>
+    VectorOfPairOfStringAndInt( other ) -> <std::vector<std::pair<std::string, int>> object>
+```
+
+### VectorOfPairOfStringAndInt.sol::meta\_function::index
+
+```cpp
+std::pair<std::string, int> VectorOfPairOfStringAndInt::at( size_t index );
+lua:
+    oVectorOfPairOfStringAndInt:__index( index ) -> retval
+```
+
+```cpp
+std::pair<std::string, int> VectorOfPairOfStringAndInt::at( const std::string& index );
+lua:
+    oVectorOfPairOfStringAndInt:__index( index ) -> retval
+```
+
+### VectorOfPairOfStringAndInt.sol::meta\_function::length
+
+```cpp
+size_t VectorOfPairOfStringAndInt::size();
+lua:
+    oVectorOfPairOfStringAndInt:__len() -> retval
+```
+
+### VectorOfPairOfStringAndInt.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfPairOfStringAndInt::sol::meta_function::new_index( size_t                      index,
+                                                                std::pair<std::string, int> value );
+lua:
+    oVectorOfPairOfStringAndInt:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfPairOfStringAndInt::sol::meta_function::new_index( const std::string&          index,
+                                                                std::pair<std::string, int> value );
+lua:
+    oVectorOfPairOfStringAndInt:__newindex( index, value ) -> None
+```
+
+### VectorOfPairOfStringAndInt.table
+
+```cpp
+void VectorOfPairOfStringAndInt::table();
+lua:
+    oVectorOfPairOfStringAndInt:table() -> None
+```
+
+## VectorOfPairOfStringAndString
+
+### VectorOfPairOfStringAndString.new
+
+```cpp
+std::vector<std::pair<std::string, std::string>>();
+lua:
+    VectorOfPairOfStringAndString.new() -> <std::vector<std::pair<std::string, std::string>> object>
+    VectorOfPairOfStringAndString() -> <std::vector<std::pair<std::string, std::string>> object>
+```
+
+```cpp
+std::vector<std::pair<std::string, std::string>>( size_t size );
+lua:
+    VectorOfPairOfStringAndString.new( size ) -> <std::vector<std::pair<std::string, std::string>> object>
+    VectorOfPairOfStringAndString( size ) -> <std::vector<std::pair<std::string, std::string>> object>
+```
+
+```cpp
+std::vector<std::pair<std::string, std::string>>( std::vector<std::pair<std::string, std::string>> other );
+lua:
+    VectorOfPairOfStringAndString.new( other ) -> <std::vector<std::pair<std::string, std::string>> object>
+    VectorOfPairOfStringAndString( other ) -> <std::vector<std::pair<std::string, std::string>> object>
+```
+
+### VectorOfPairOfStringAndString.sol::meta\_function::index
+
+```cpp
+std::pair<std::string, std::string> VectorOfPairOfStringAndString::at( size_t index );
+lua:
+    oVectorOfPairOfStringAndString:__index( index ) -> retval
+```
+
+```cpp
+std::pair<std::string, std::string> VectorOfPairOfStringAndString::at( const std::string& index );
+lua:
+    oVectorOfPairOfStringAndString:__index( index ) -> retval
+```
+
+### VectorOfPairOfStringAndString.sol::meta\_function::length
+
+```cpp
+size_t VectorOfPairOfStringAndString::size();
+lua:
+    oVectorOfPairOfStringAndString:__len() -> retval
+```
+
+### VectorOfPairOfStringAndString.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfPairOfStringAndString::sol::meta_function::new_index( size_t                              index,
+                                                                   std::pair<std::string, std::string> value );
+lua:
+    oVectorOfPairOfStringAndString:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfPairOfStringAndString::sol::meta_function::new_index( const std::string&                  index,
+                                                                   std::pair<std::string, std::string> value );
+lua:
+    oVectorOfPairOfStringAndString:__newindex( index, value ) -> None
+```
+
+### VectorOfPairOfStringAndString.table
+
+```cpp
+void VectorOfPairOfStringAndString::table();
+lua:
+    oVectorOfPairOfStringAndString:table() -> None
+```
+
+## VectorOfPairOfStringAndVectorOfFloat
+
+### VectorOfPairOfStringAndVectorOfFloat.new
+
+```cpp
+std::vector<std::pair<std::string, std::vector<float>>>();
+lua:
+    VectorOfPairOfStringAndVectorOfFloat.new() -> <std::vector<std::pair<std::string, std::vector<float>>> object>
+    VectorOfPairOfStringAndVectorOfFloat() -> <std::vector<std::pair<std::string, std::vector<float>>> object>
+```
+
+```cpp
+std::vector<std::pair<std::string, std::vector<float>>>( size_t size );
+lua:
+    VectorOfPairOfStringAndVectorOfFloat.new( size ) -> <std::vector<std::pair<std::string, std::vector<float>>> object>
+    VectorOfPairOfStringAndVectorOfFloat( size ) -> <std::vector<std::pair<std::string, std::vector<float>>> object>
+```
+
+```cpp
+std::vector<std::pair<std::string, std::vector<float>>>( std::vector<std::pair<std::string, std::vector<float>>> other );
+lua:
+    VectorOfPairOfStringAndVectorOfFloat.new( other ) -> <std::vector<std::pair<std::string, std::vector<float>>> object>
+    VectorOfPairOfStringAndVectorOfFloat( other ) -> <std::vector<std::pair<std::string, std::vector<float>>> object>
+```
+
+### VectorOfPairOfStringAndVectorOfFloat.sol::meta\_function::index
+
+```cpp
+std::pair<std::string, std::vector<float>> VectorOfPairOfStringAndVectorOfFloat::at( size_t index );
+lua:
+    oVectorOfPairOfStringAndVectorOfFloat:__index( index ) -> retval
+```
+
+```cpp
+std::pair<std::string, std::vector<float>> VectorOfPairOfStringAndVectorOfFloat::at( const std::string& index );
+lua:
+    oVectorOfPairOfStringAndVectorOfFloat:__index( index ) -> retval
+```
+
+### VectorOfPairOfStringAndVectorOfFloat.sol::meta\_function::length
+
+```cpp
+size_t VectorOfPairOfStringAndVectorOfFloat::size();
+lua:
+    oVectorOfPairOfStringAndVectorOfFloat:__len() -> retval
+```
+
+### VectorOfPairOfStringAndVectorOfFloat.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfPairOfStringAndVectorOfFloat::sol::meta_function::new_index( size_t                                     index,
+                                                                          std::pair<std::string, std::vector<float>> value );
+lua:
+    oVectorOfPairOfStringAndVectorOfFloat:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfPairOfStringAndVectorOfFloat::sol::meta_function::new_index( const std::string&                         index,
+                                                                          std::pair<std::string, std::vector<float>> value );
+lua:
+    oVectorOfPairOfStringAndVectorOfFloat:__newindex( index, value ) -> None
+```
+
+### VectorOfPairOfStringAndVectorOfFloat.table
+
+```cpp
+void VectorOfPairOfStringAndVectorOfFloat::table();
+lua:
+    oVectorOfPairOfStringAndVectorOfFloat:table() -> None
+```
+
+## VectorOfPairOfStringAndVectorOfSize\_t
+
+### VectorOfPairOfStringAndVectorOfSize\_t.new
+
+```cpp
+std::vector<std::pair<std::string, std::vector<size_t>>>();
+lua:
+    VectorOfPairOfStringAndVectorOfSize_t.new() -> <std::vector<std::pair<std::string, std::vector<size_t>>> object>
+    VectorOfPairOfStringAndVectorOfSize_t() -> <std::vector<std::pair<std::string, std::vector<size_t>>> object>
+```
+
+```cpp
+std::vector<std::pair<std::string, std::vector<size_t>>>( size_t size );
+lua:
+    VectorOfPairOfStringAndVectorOfSize_t.new( size ) -> <std::vector<std::pair<std::string, std::vector<size_t>>> object>
+    VectorOfPairOfStringAndVectorOfSize_t( size ) -> <std::vector<std::pair<std::string, std::vector<size_t>>> object>
+```
+
+```cpp
+std::vector<std::pair<std::string, std::vector<size_t>>>( std::vector<std::pair<std::string, std::vector<size_t>>> other );
+lua:
+    VectorOfPairOfStringAndVectorOfSize_t.new( other ) -> <std::vector<std::pair<std::string, std::vector<size_t>>> object>
+    VectorOfPairOfStringAndVectorOfSize_t( other ) -> <std::vector<std::pair<std::string, std::vector<size_t>>> object>
+```
+
+### VectorOfPairOfStringAndVectorOfSize\_t.sol::meta\_function::index
+
+```cpp
+std::pair<std::string, std::vector<size_t>> VectorOfPairOfStringAndVectorOfSize_t::at( size_t index );
+lua:
+    oVectorOfPairOfStringAndVectorOfSize_t:__index( index ) -> retval
+```
+
+```cpp
+std::pair<std::string, std::vector<size_t>> VectorOfPairOfStringAndVectorOfSize_t::at( const std::string& index );
+lua:
+    oVectorOfPairOfStringAndVectorOfSize_t:__index( index ) -> retval
+```
+
+### VectorOfPairOfStringAndVectorOfSize\_t.sol::meta\_function::length
+
+```cpp
+size_t VectorOfPairOfStringAndVectorOfSize_t::size();
+lua:
+    oVectorOfPairOfStringAndVectorOfSize_t:__len() -> retval
+```
+
+### VectorOfPairOfStringAndVectorOfSize\_t.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfPairOfStringAndVectorOfSize_t::sol::meta_function::new_index( size_t                                      index,
+                                                                           std::pair<std::string, std::vector<size_t>> value );
+lua:
+    oVectorOfPairOfStringAndVectorOfSize_t:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfPairOfStringAndVectorOfSize_t::sol::meta_function::new_index( const std::string&                          index,
+                                                                           std::pair<std::string, std::vector<size_t>> value );
+lua:
+    oVectorOfPairOfStringAndVectorOfSize_t:__newindex( index, value ) -> None
+```
+
+### VectorOfPairOfStringAndVectorOfSize\_t.table
+
+```cpp
+void VectorOfPairOfStringAndVectorOfSize_t::table();
+lua:
+    oVectorOfPairOfStringAndVectorOfSize_t:table() -> None
 ```
 
 ## VectorOfPoint
@@ -6194,24 +8334,141 @@ lua:
 ### VectorOfPoint.new
 
 ```cpp
-std::vector<cv::Point> VectorOfPoint::new();
+std::vector<cv::Point>();
 lua:
-    VectorOfPoint.new() -> retval
-    VectorOfPoint() -> retval
+    VectorOfPoint.new() -> <std::vector<cv::Point> object>
+    VectorOfPoint() -> <std::vector<cv::Point> object>
 ```
 
 ```cpp
-std::vector<cv::Point> VectorOfPoint::new( size_t size );
+std::vector<cv::Point>( size_t size );
 lua:
-    VectorOfPoint.new( size ) -> retval
-    VectorOfPoint( size ) -> retval
+    VectorOfPoint.new( size ) -> <std::vector<cv::Point> object>
+    VectorOfPoint( size ) -> <std::vector<cv::Point> object>
 ```
 
 ```cpp
-std::vector<cv::Point> VectorOfPoint::new( std::vector<cv::Point> other );
+std::vector<cv::Point>( std::vector<cv::Point> other );
 lua:
-    VectorOfPoint.new( other ) -> retval
-    VectorOfPoint( other ) -> retval
+    VectorOfPoint.new( other ) -> <std::vector<cv::Point> object>
+    VectorOfPoint( other ) -> <std::vector<cv::Point> object>
+```
+
+### VectorOfPoint.sol::meta\_function::index
+
+```cpp
+cv::Point VectorOfPoint::at( size_t index );
+lua:
+    oVectorOfPoint:__index( index ) -> retval
+```
+
+```cpp
+cv::Point VectorOfPoint::at( const std::string& index );
+lua:
+    oVectorOfPoint:__index( index ) -> retval
+```
+
+### VectorOfPoint.sol::meta\_function::length
+
+```cpp
+size_t VectorOfPoint::size();
+lua:
+    oVectorOfPoint:__len() -> retval
+```
+
+### VectorOfPoint.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfPoint::sol::meta_function::new_index( size_t    index,
+                                                   cv::Point value );
+lua:
+    oVectorOfPoint:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfPoint::sol::meta_function::new_index( const std::string& index,
+                                                   cv::Point          value );
+lua:
+    oVectorOfPoint:__newindex( index, value ) -> None
+```
+
+### VectorOfPoint.table
+
+```cpp
+void VectorOfPoint::table();
+lua:
+    oVectorOfPoint:table() -> None
+```
+
+## VectorOfPoint2d
+
+### VectorOfPoint2d.new
+
+```cpp
+std::vector<cv::Point2d>();
+lua:
+    VectorOfPoint2d.new() -> <std::vector<cv::Point2d> object>
+    VectorOfPoint2d() -> <std::vector<cv::Point2d> object>
+```
+
+```cpp
+std::vector<cv::Point2d>( size_t size );
+lua:
+    VectorOfPoint2d.new( size ) -> <std::vector<cv::Point2d> object>
+    VectorOfPoint2d( size ) -> <std::vector<cv::Point2d> object>
+```
+
+```cpp
+std::vector<cv::Point2d>( std::vector<cv::Point2d> other );
+lua:
+    VectorOfPoint2d.new( other ) -> <std::vector<cv::Point2d> object>
+    VectorOfPoint2d( other ) -> <std::vector<cv::Point2d> object>
+```
+
+### VectorOfPoint2d.sol::meta\_function::index
+
+```cpp
+cv::Point2d VectorOfPoint2d::at( size_t index );
+lua:
+    oVectorOfPoint2d:__index( index ) -> retval
+```
+
+```cpp
+cv::Point2d VectorOfPoint2d::at( const std::string& index );
+lua:
+    oVectorOfPoint2d:__index( index ) -> retval
+```
+
+### VectorOfPoint2d.sol::meta\_function::length
+
+```cpp
+size_t VectorOfPoint2d::size();
+lua:
+    oVectorOfPoint2d:__len() -> retval
+```
+
+### VectorOfPoint2d.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfPoint2d::sol::meta_function::new_index( size_t      index,
+                                                     cv::Point2d value );
+lua:
+    oVectorOfPoint2d:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfPoint2d::sol::meta_function::new_index( const std::string& index,
+                                                     cv::Point2d        value );
+lua:
+    oVectorOfPoint2d:__newindex( index, value ) -> None
+```
+
+### VectorOfPoint2d.table
+
+```cpp
+void VectorOfPoint2d::table();
+lua:
+    oVectorOfPoint2d:table() -> None
 ```
 
 ## VectorOfPoint2f
@@ -6219,24 +8476,141 @@ lua:
 ### VectorOfPoint2f.new
 
 ```cpp
-std::vector<cv::Point2f> VectorOfPoint2f::new();
+std::vector<cv::Point2f>();
 lua:
-    VectorOfPoint2f.new() -> retval
-    VectorOfPoint2f() -> retval
+    VectorOfPoint2f.new() -> <std::vector<cv::Point2f> object>
+    VectorOfPoint2f() -> <std::vector<cv::Point2f> object>
 ```
 
 ```cpp
-std::vector<cv::Point2f> VectorOfPoint2f::new( size_t size );
+std::vector<cv::Point2f>( size_t size );
 lua:
-    VectorOfPoint2f.new( size ) -> retval
-    VectorOfPoint2f( size ) -> retval
+    VectorOfPoint2f.new( size ) -> <std::vector<cv::Point2f> object>
+    VectorOfPoint2f( size ) -> <std::vector<cv::Point2f> object>
 ```
 
 ```cpp
-std::vector<cv::Point2f> VectorOfPoint2f::new( std::vector<cv::Point2f> other );
+std::vector<cv::Point2f>( std::vector<cv::Point2f> other );
 lua:
-    VectorOfPoint2f.new( other ) -> retval
-    VectorOfPoint2f( other ) -> retval
+    VectorOfPoint2f.new( other ) -> <std::vector<cv::Point2f> object>
+    VectorOfPoint2f( other ) -> <std::vector<cv::Point2f> object>
+```
+
+### VectorOfPoint2f.sol::meta\_function::index
+
+```cpp
+cv::Point2f VectorOfPoint2f::at( size_t index );
+lua:
+    oVectorOfPoint2f:__index( index ) -> retval
+```
+
+```cpp
+cv::Point2f VectorOfPoint2f::at( const std::string& index );
+lua:
+    oVectorOfPoint2f:__index( index ) -> retval
+```
+
+### VectorOfPoint2f.sol::meta\_function::length
+
+```cpp
+size_t VectorOfPoint2f::size();
+lua:
+    oVectorOfPoint2f:__len() -> retval
+```
+
+### VectorOfPoint2f.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfPoint2f::sol::meta_function::new_index( size_t      index,
+                                                     cv::Point2f value );
+lua:
+    oVectorOfPoint2f:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfPoint2f::sol::meta_function::new_index( const std::string& index,
+                                                     cv::Point2f        value );
+lua:
+    oVectorOfPoint2f:__newindex( index, value ) -> None
+```
+
+### VectorOfPoint2f.table
+
+```cpp
+void VectorOfPoint2f::table();
+lua:
+    oVectorOfPoint2f:table() -> None
+```
+
+## VectorOfPoint3d
+
+### VectorOfPoint3d.new
+
+```cpp
+std::vector<cv::Point3d>();
+lua:
+    VectorOfPoint3d.new() -> <std::vector<cv::Point3d> object>
+    VectorOfPoint3d() -> <std::vector<cv::Point3d> object>
+```
+
+```cpp
+std::vector<cv::Point3d>( size_t size );
+lua:
+    VectorOfPoint3d.new( size ) -> <std::vector<cv::Point3d> object>
+    VectorOfPoint3d( size ) -> <std::vector<cv::Point3d> object>
+```
+
+```cpp
+std::vector<cv::Point3d>( std::vector<cv::Point3d> other );
+lua:
+    VectorOfPoint3d.new( other ) -> <std::vector<cv::Point3d> object>
+    VectorOfPoint3d( other ) -> <std::vector<cv::Point3d> object>
+```
+
+### VectorOfPoint3d.sol::meta\_function::index
+
+```cpp
+cv::Point3d VectorOfPoint3d::at( size_t index );
+lua:
+    oVectorOfPoint3d:__index( index ) -> retval
+```
+
+```cpp
+cv::Point3d VectorOfPoint3d::at( const std::string& index );
+lua:
+    oVectorOfPoint3d:__index( index ) -> retval
+```
+
+### VectorOfPoint3d.sol::meta\_function::length
+
+```cpp
+size_t VectorOfPoint3d::size();
+lua:
+    oVectorOfPoint3d:__len() -> retval
+```
+
+### VectorOfPoint3d.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfPoint3d::sol::meta_function::new_index( size_t      index,
+                                                     cv::Point3d value );
+lua:
+    oVectorOfPoint3d:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfPoint3d::sol::meta_function::new_index( const std::string& index,
+                                                     cv::Point3d        value );
+lua:
+    oVectorOfPoint3d:__newindex( index, value ) -> None
+```
+
+### VectorOfPoint3d.table
+
+```cpp
+void VectorOfPoint3d::table();
+lua:
+    oVectorOfPoint3d:table() -> None
 ```
 
 ## VectorOfPoint3f
@@ -6244,24 +8618,141 @@ lua:
 ### VectorOfPoint3f.new
 
 ```cpp
-std::vector<cv::Point3f> VectorOfPoint3f::new();
+std::vector<cv::Point3f>();
 lua:
-    VectorOfPoint3f.new() -> retval
-    VectorOfPoint3f() -> retval
+    VectorOfPoint3f.new() -> <std::vector<cv::Point3f> object>
+    VectorOfPoint3f() -> <std::vector<cv::Point3f> object>
 ```
 
 ```cpp
-std::vector<cv::Point3f> VectorOfPoint3f::new( size_t size );
+std::vector<cv::Point3f>( size_t size );
 lua:
-    VectorOfPoint3f.new( size ) -> retval
-    VectorOfPoint3f( size ) -> retval
+    VectorOfPoint3f.new( size ) -> <std::vector<cv::Point3f> object>
+    VectorOfPoint3f( size ) -> <std::vector<cv::Point3f> object>
 ```
 
 ```cpp
-std::vector<cv::Point3f> VectorOfPoint3f::new( std::vector<cv::Point3f> other );
+std::vector<cv::Point3f>( std::vector<cv::Point3f> other );
 lua:
-    VectorOfPoint3f.new( other ) -> retval
-    VectorOfPoint3f( other ) -> retval
+    VectorOfPoint3f.new( other ) -> <std::vector<cv::Point3f> object>
+    VectorOfPoint3f( other ) -> <std::vector<cv::Point3f> object>
+```
+
+### VectorOfPoint3f.sol::meta\_function::index
+
+```cpp
+cv::Point3f VectorOfPoint3f::at( size_t index );
+lua:
+    oVectorOfPoint3f:__index( index ) -> retval
+```
+
+```cpp
+cv::Point3f VectorOfPoint3f::at( const std::string& index );
+lua:
+    oVectorOfPoint3f:__index( index ) -> retval
+```
+
+### VectorOfPoint3f.sol::meta\_function::length
+
+```cpp
+size_t VectorOfPoint3f::size();
+lua:
+    oVectorOfPoint3f:__len() -> retval
+```
+
+### VectorOfPoint3f.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfPoint3f::sol::meta_function::new_index( size_t      index,
+                                                     cv::Point3f value );
+lua:
+    oVectorOfPoint3f:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfPoint3f::sol::meta_function::new_index( const std::string& index,
+                                                     cv::Point3f        value );
+lua:
+    oVectorOfPoint3f:__newindex( index, value ) -> None
+```
+
+### VectorOfPoint3f.table
+
+```cpp
+void VectorOfPoint3f::table();
+lua:
+    oVectorOfPoint3f:table() -> None
+```
+
+## VectorOfPoint3i
+
+### VectorOfPoint3i.new
+
+```cpp
+std::vector<cv::Point3i>();
+lua:
+    VectorOfPoint3i.new() -> <std::vector<cv::Point3i> object>
+    VectorOfPoint3i() -> <std::vector<cv::Point3i> object>
+```
+
+```cpp
+std::vector<cv::Point3i>( size_t size );
+lua:
+    VectorOfPoint3i.new( size ) -> <std::vector<cv::Point3i> object>
+    VectorOfPoint3i( size ) -> <std::vector<cv::Point3i> object>
+```
+
+```cpp
+std::vector<cv::Point3i>( std::vector<cv::Point3i> other );
+lua:
+    VectorOfPoint3i.new( other ) -> <std::vector<cv::Point3i> object>
+    VectorOfPoint3i( other ) -> <std::vector<cv::Point3i> object>
+```
+
+### VectorOfPoint3i.sol::meta\_function::index
+
+```cpp
+cv::Point3i VectorOfPoint3i::at( size_t index );
+lua:
+    oVectorOfPoint3i:__index( index ) -> retval
+```
+
+```cpp
+cv::Point3i VectorOfPoint3i::at( const std::string& index );
+lua:
+    oVectorOfPoint3i:__index( index ) -> retval
+```
+
+### VectorOfPoint3i.sol::meta\_function::length
+
+```cpp
+size_t VectorOfPoint3i::size();
+lua:
+    oVectorOfPoint3i:__len() -> retval
+```
+
+### VectorOfPoint3i.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfPoint3i::sol::meta_function::new_index( size_t      index,
+                                                     cv::Point3i value );
+lua:
+    oVectorOfPoint3i:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfPoint3i::sol::meta_function::new_index( const std::string& index,
+                                                     cv::Point3i        value );
+lua:
+    oVectorOfPoint3i:__newindex( index, value ) -> None
+```
+
+### VectorOfPoint3i.table
+
+```cpp
+void VectorOfPoint3i::table();
+lua:
+    oVectorOfPoint3i:table() -> None
 ```
 
 ## VectorOfRange
@@ -6269,24 +8760,70 @@ lua:
 ### VectorOfRange.new
 
 ```cpp
-std::vector<cv::Range> VectorOfRange::new();
+std::vector<cv::Range>();
 lua:
-    VectorOfRange.new() -> retval
-    VectorOfRange() -> retval
+    VectorOfRange.new() -> <std::vector<cv::Range> object>
+    VectorOfRange() -> <std::vector<cv::Range> object>
 ```
 
 ```cpp
-std::vector<cv::Range> VectorOfRange::new( size_t size );
+std::vector<cv::Range>( size_t size );
 lua:
-    VectorOfRange.new( size ) -> retval
-    VectorOfRange( size ) -> retval
+    VectorOfRange.new( size ) -> <std::vector<cv::Range> object>
+    VectorOfRange( size ) -> <std::vector<cv::Range> object>
 ```
 
 ```cpp
-std::vector<cv::Range> VectorOfRange::new( std::vector<cv::Range> other );
+std::vector<cv::Range>( std::vector<cv::Range> other );
 lua:
-    VectorOfRange.new( other ) -> retval
-    VectorOfRange( other ) -> retval
+    VectorOfRange.new( other ) -> <std::vector<cv::Range> object>
+    VectorOfRange( other ) -> <std::vector<cv::Range> object>
+```
+
+### VectorOfRange.sol::meta\_function::index
+
+```cpp
+cv::Range VectorOfRange::at( size_t index );
+lua:
+    oVectorOfRange:__index( index ) -> retval
+```
+
+```cpp
+cv::Range VectorOfRange::at( const std::string& index );
+lua:
+    oVectorOfRange:__index( index ) -> retval
+```
+
+### VectorOfRange.sol::meta\_function::length
+
+```cpp
+size_t VectorOfRange::size();
+lua:
+    oVectorOfRange:__len() -> retval
+```
+
+### VectorOfRange.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfRange::sol::meta_function::new_index( size_t    index,
+                                                   cv::Range value );
+lua:
+    oVectorOfRange:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfRange::sol::meta_function::new_index( const std::string& index,
+                                                   cv::Range          value );
+lua:
+    oVectorOfRange:__newindex( index, value ) -> None
+```
+
+### VectorOfRange.table
+
+```cpp
+void VectorOfRange::table();
+lua:
+    oVectorOfRange:table() -> None
 ```
 
 ## VectorOfRect
@@ -6294,24 +8831,70 @@ lua:
 ### VectorOfRect.new
 
 ```cpp
-std::vector<cv::Rect> VectorOfRect::new();
+std::vector<cv::Rect>();
 lua:
-    VectorOfRect.new() -> retval
-    VectorOfRect() -> retval
+    VectorOfRect.new() -> <std::vector<cv::Rect> object>
+    VectorOfRect() -> <std::vector<cv::Rect> object>
 ```
 
 ```cpp
-std::vector<cv::Rect> VectorOfRect::new( size_t size );
+std::vector<cv::Rect>( size_t size );
 lua:
-    VectorOfRect.new( size ) -> retval
-    VectorOfRect( size ) -> retval
+    VectorOfRect.new( size ) -> <std::vector<cv::Rect> object>
+    VectorOfRect( size ) -> <std::vector<cv::Rect> object>
 ```
 
 ```cpp
-std::vector<cv::Rect> VectorOfRect::new( std::vector<cv::Rect> other );
+std::vector<cv::Rect>( std::vector<cv::Rect> other );
 lua:
-    VectorOfRect.new( other ) -> retval
-    VectorOfRect( other ) -> retval
+    VectorOfRect.new( other ) -> <std::vector<cv::Rect> object>
+    VectorOfRect( other ) -> <std::vector<cv::Rect> object>
+```
+
+### VectorOfRect.sol::meta\_function::index
+
+```cpp
+cv::Rect VectorOfRect::at( size_t index );
+lua:
+    oVectorOfRect:__index( index ) -> retval
+```
+
+```cpp
+cv::Rect VectorOfRect::at( const std::string& index );
+lua:
+    oVectorOfRect:__index( index ) -> retval
+```
+
+### VectorOfRect.sol::meta\_function::length
+
+```cpp
+size_t VectorOfRect::size();
+lua:
+    oVectorOfRect:__len() -> retval
+```
+
+### VectorOfRect.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfRect::sol::meta_function::new_index( size_t   index,
+                                                  cv::Rect value );
+lua:
+    oVectorOfRect:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfRect::sol::meta_function::new_index( const std::string& index,
+                                                  cv::Rect           value );
+lua:
+    oVectorOfRect:__newindex( index, value ) -> None
+```
+
+### VectorOfRect.table
+
+```cpp
+void VectorOfRect::table();
+lua:
+    oVectorOfRect:table() -> None
 ```
 
 ## VectorOfRect2d
@@ -6319,24 +8902,141 @@ lua:
 ### VectorOfRect2d.new
 
 ```cpp
-std::vector<cv::Rect2d> VectorOfRect2d::new();
+std::vector<cv::Rect2d>();
 lua:
-    VectorOfRect2d.new() -> retval
-    VectorOfRect2d() -> retval
+    VectorOfRect2d.new() -> <std::vector<cv::Rect2d> object>
+    VectorOfRect2d() -> <std::vector<cv::Rect2d> object>
 ```
 
 ```cpp
-std::vector<cv::Rect2d> VectorOfRect2d::new( size_t size );
+std::vector<cv::Rect2d>( size_t size );
 lua:
-    VectorOfRect2d.new( size ) -> retval
-    VectorOfRect2d( size ) -> retval
+    VectorOfRect2d.new( size ) -> <std::vector<cv::Rect2d> object>
+    VectorOfRect2d( size ) -> <std::vector<cv::Rect2d> object>
 ```
 
 ```cpp
-std::vector<cv::Rect2d> VectorOfRect2d::new( std::vector<cv::Rect2d> other );
+std::vector<cv::Rect2d>( std::vector<cv::Rect2d> other );
 lua:
-    VectorOfRect2d.new( other ) -> retval
-    VectorOfRect2d( other ) -> retval
+    VectorOfRect2d.new( other ) -> <std::vector<cv::Rect2d> object>
+    VectorOfRect2d( other ) -> <std::vector<cv::Rect2d> object>
+```
+
+### VectorOfRect2d.sol::meta\_function::index
+
+```cpp
+cv::Rect2d VectorOfRect2d::at( size_t index );
+lua:
+    oVectorOfRect2d:__index( index ) -> retval
+```
+
+```cpp
+cv::Rect2d VectorOfRect2d::at( const std::string& index );
+lua:
+    oVectorOfRect2d:__index( index ) -> retval
+```
+
+### VectorOfRect2d.sol::meta\_function::length
+
+```cpp
+size_t VectorOfRect2d::size();
+lua:
+    oVectorOfRect2d:__len() -> retval
+```
+
+### VectorOfRect2d.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfRect2d::sol::meta_function::new_index( size_t     index,
+                                                    cv::Rect2d value );
+lua:
+    oVectorOfRect2d:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfRect2d::sol::meta_function::new_index( const std::string& index,
+                                                    cv::Rect2d         value );
+lua:
+    oVectorOfRect2d:__newindex( index, value ) -> None
+```
+
+### VectorOfRect2d.table
+
+```cpp
+void VectorOfRect2d::table();
+lua:
+    oVectorOfRect2d:table() -> None
+```
+
+## VectorOfRect2f
+
+### VectorOfRect2f.new
+
+```cpp
+std::vector<cv::Rect2f>();
+lua:
+    VectorOfRect2f.new() -> <std::vector<cv::Rect2f> object>
+    VectorOfRect2f() -> <std::vector<cv::Rect2f> object>
+```
+
+```cpp
+std::vector<cv::Rect2f>( size_t size );
+lua:
+    VectorOfRect2f.new( size ) -> <std::vector<cv::Rect2f> object>
+    VectorOfRect2f( size ) -> <std::vector<cv::Rect2f> object>
+```
+
+```cpp
+std::vector<cv::Rect2f>( std::vector<cv::Rect2f> other );
+lua:
+    VectorOfRect2f.new( other ) -> <std::vector<cv::Rect2f> object>
+    VectorOfRect2f( other ) -> <std::vector<cv::Rect2f> object>
+```
+
+### VectorOfRect2f.sol::meta\_function::index
+
+```cpp
+cv::Rect2f VectorOfRect2f::at( size_t index );
+lua:
+    oVectorOfRect2f:__index( index ) -> retval
+```
+
+```cpp
+cv::Rect2f VectorOfRect2f::at( const std::string& index );
+lua:
+    oVectorOfRect2f:__index( index ) -> retval
+```
+
+### VectorOfRect2f.sol::meta\_function::length
+
+```cpp
+size_t VectorOfRect2f::size();
+lua:
+    oVectorOfRect2f:__len() -> retval
+```
+
+### VectorOfRect2f.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfRect2f::sol::meta_function::new_index( size_t     index,
+                                                    cv::Rect2f value );
+lua:
+    oVectorOfRect2f:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfRect2f::sol::meta_function::new_index( const std::string& index,
+                                                    cv::Rect2f         value );
+lua:
+    oVectorOfRect2f:__newindex( index, value ) -> None
+```
+
+### VectorOfRect2f.table
+
+```cpp
+void VectorOfRect2f::table();
+lua:
+    oVectorOfRect2f:table() -> None
 ```
 
 ## VectorOfRotatedRect
@@ -6344,24 +9044,141 @@ lua:
 ### VectorOfRotatedRect.new
 
 ```cpp
-std::vector<cv::RotatedRect> VectorOfRotatedRect::new();
+std::vector<cv::RotatedRect>();
 lua:
-    VectorOfRotatedRect.new() -> retval
-    VectorOfRotatedRect() -> retval
+    VectorOfRotatedRect.new() -> <std::vector<cv::RotatedRect> object>
+    VectorOfRotatedRect() -> <std::vector<cv::RotatedRect> object>
 ```
 
 ```cpp
-std::vector<cv::RotatedRect> VectorOfRotatedRect::new( size_t size );
+std::vector<cv::RotatedRect>( size_t size );
 lua:
-    VectorOfRotatedRect.new( size ) -> retval
-    VectorOfRotatedRect( size ) -> retval
+    VectorOfRotatedRect.new( size ) -> <std::vector<cv::RotatedRect> object>
+    VectorOfRotatedRect( size ) -> <std::vector<cv::RotatedRect> object>
 ```
 
 ```cpp
-std::vector<cv::RotatedRect> VectorOfRotatedRect::new( std::vector<cv::RotatedRect> other );
+std::vector<cv::RotatedRect>( std::vector<cv::RotatedRect> other );
 lua:
-    VectorOfRotatedRect.new( other ) -> retval
-    VectorOfRotatedRect( other ) -> retval
+    VectorOfRotatedRect.new( other ) -> <std::vector<cv::RotatedRect> object>
+    VectorOfRotatedRect( other ) -> <std::vector<cv::RotatedRect> object>
+```
+
+### VectorOfRotatedRect.sol::meta\_function::index
+
+```cpp
+cv::RotatedRect VectorOfRotatedRect::at( size_t index );
+lua:
+    oVectorOfRotatedRect:__index( index ) -> retval
+```
+
+```cpp
+cv::RotatedRect VectorOfRotatedRect::at( const std::string& index );
+lua:
+    oVectorOfRotatedRect:__index( index ) -> retval
+```
+
+### VectorOfRotatedRect.sol::meta\_function::length
+
+```cpp
+size_t VectorOfRotatedRect::size();
+lua:
+    oVectorOfRotatedRect:__len() -> retval
+```
+
+### VectorOfRotatedRect.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfRotatedRect::sol::meta_function::new_index( size_t          index,
+                                                         cv::RotatedRect value );
+lua:
+    oVectorOfRotatedRect:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfRotatedRect::sol::meta_function::new_index( const std::string& index,
+                                                         cv::RotatedRect    value );
+lua:
+    oVectorOfRotatedRect:__newindex( index, value ) -> None
+```
+
+### VectorOfRotatedRect.table
+
+```cpp
+void VectorOfRotatedRect::table();
+lua:
+    oVectorOfRotatedRect:table() -> None
+```
+
+## VectorOfSchar
+
+### VectorOfSchar.new
+
+```cpp
+std::vector<schar>();
+lua:
+    VectorOfSchar.new() -> <std::vector<schar> object>
+    VectorOfSchar() -> <std::vector<schar> object>
+```
+
+```cpp
+std::vector<schar>( size_t size );
+lua:
+    VectorOfSchar.new( size ) -> <std::vector<schar> object>
+    VectorOfSchar( size ) -> <std::vector<schar> object>
+```
+
+```cpp
+std::vector<schar>( std::vector<schar> other );
+lua:
+    VectorOfSchar.new( other ) -> <std::vector<schar> object>
+    VectorOfSchar( other ) -> <std::vector<schar> object>
+```
+
+### VectorOfSchar.sol::meta\_function::index
+
+```cpp
+schar VectorOfSchar::at( size_t index );
+lua:
+    oVectorOfSchar:__index( index ) -> retval
+```
+
+```cpp
+schar VectorOfSchar::at( const std::string& index );
+lua:
+    oVectorOfSchar:__index( index ) -> retval
+```
+
+### VectorOfSchar.sol::meta\_function::length
+
+```cpp
+size_t VectorOfSchar::size();
+lua:
+    oVectorOfSchar:__len() -> retval
+```
+
+### VectorOfSchar.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfSchar::sol::meta_function::new_index( size_t index,
+                                                   schar  value );
+lua:
+    oVectorOfSchar:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfSchar::sol::meta_function::new_index( const std::string& index,
+                                                   schar              value );
+lua:
+    oVectorOfSchar:__newindex( index, value ) -> None
+```
+
+### VectorOfSchar.table
+
+```cpp
+void VectorOfSchar::table();
+lua:
+    oVectorOfSchar:table() -> None
 ```
 
 ## VectorOfShort
@@ -6369,24 +9186,70 @@ lua:
 ### VectorOfShort.new
 
 ```cpp
-std::vector<short> VectorOfShort::new();
+std::vector<short>();
 lua:
-    VectorOfShort.new() -> retval
-    VectorOfShort() -> retval
+    VectorOfShort.new() -> <std::vector<short> object>
+    VectorOfShort() -> <std::vector<short> object>
 ```
 
 ```cpp
-std::vector<short> VectorOfShort::new( size_t size );
+std::vector<short>( size_t size );
 lua:
-    VectorOfShort.new( size ) -> retval
-    VectorOfShort( size ) -> retval
+    VectorOfShort.new( size ) -> <std::vector<short> object>
+    VectorOfShort( size ) -> <std::vector<short> object>
 ```
 
 ```cpp
-std::vector<short> VectorOfShort::new( std::vector<short> other );
+std::vector<short>( std::vector<short> other );
 lua:
-    VectorOfShort.new( other ) -> retval
-    VectorOfShort( other ) -> retval
+    VectorOfShort.new( other ) -> <std::vector<short> object>
+    VectorOfShort( other ) -> <std::vector<short> object>
+```
+
+### VectorOfShort.sol::meta\_function::index
+
+```cpp
+short VectorOfShort::at( size_t index );
+lua:
+    oVectorOfShort:__index( index ) -> retval
+```
+
+```cpp
+short VectorOfShort::at( const std::string& index );
+lua:
+    oVectorOfShort:__index( index ) -> retval
+```
+
+### VectorOfShort.sol::meta\_function::length
+
+```cpp
+size_t VectorOfShort::size();
+lua:
+    oVectorOfShort:__len() -> retval
+```
+
+### VectorOfShort.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfShort::sol::meta_function::new_index( size_t index,
+                                                   short  value );
+lua:
+    oVectorOfShort:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfShort::sol::meta_function::new_index( const std::string& index,
+                                                   short              value );
+lua:
+    oVectorOfShort:__newindex( index, value ) -> None
+```
+
+### VectorOfShort.table
+
+```cpp
+void VectorOfShort::table();
+lua:
+    oVectorOfShort:table() -> None
 ```
 
 ## VectorOfSize
@@ -6394,24 +9257,212 @@ lua:
 ### VectorOfSize.new
 
 ```cpp
-std::vector<cv::Size> VectorOfSize::new();
+std::vector<cv::Size>();
 lua:
-    VectorOfSize.new() -> retval
-    VectorOfSize() -> retval
+    VectorOfSize.new() -> <std::vector<cv::Size> object>
+    VectorOfSize() -> <std::vector<cv::Size> object>
 ```
 
 ```cpp
-std::vector<cv::Size> VectorOfSize::new( size_t size );
+std::vector<cv::Size>( size_t size );
 lua:
-    VectorOfSize.new( size ) -> retval
-    VectorOfSize( size ) -> retval
+    VectorOfSize.new( size ) -> <std::vector<cv::Size> object>
+    VectorOfSize( size ) -> <std::vector<cv::Size> object>
 ```
 
 ```cpp
-std::vector<cv::Size> VectorOfSize::new( std::vector<cv::Size> other );
+std::vector<cv::Size>( std::vector<cv::Size> other );
 lua:
-    VectorOfSize.new( other ) -> retval
-    VectorOfSize( other ) -> retval
+    VectorOfSize.new( other ) -> <std::vector<cv::Size> object>
+    VectorOfSize( other ) -> <std::vector<cv::Size> object>
+```
+
+### VectorOfSize.sol::meta\_function::index
+
+```cpp
+cv::Size VectorOfSize::at( size_t index );
+lua:
+    oVectorOfSize:__index( index ) -> retval
+```
+
+```cpp
+cv::Size VectorOfSize::at( const std::string& index );
+lua:
+    oVectorOfSize:__index( index ) -> retval
+```
+
+### VectorOfSize.sol::meta\_function::length
+
+```cpp
+size_t VectorOfSize::size();
+lua:
+    oVectorOfSize:__len() -> retval
+```
+
+### VectorOfSize.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfSize::sol::meta_function::new_index( size_t   index,
+                                                  cv::Size value );
+lua:
+    oVectorOfSize:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfSize::sol::meta_function::new_index( const std::string& index,
+                                                  cv::Size           value );
+lua:
+    oVectorOfSize:__newindex( index, value ) -> None
+```
+
+### VectorOfSize.table
+
+```cpp
+void VectorOfSize::table();
+lua:
+    oVectorOfSize:table() -> None
+```
+
+## VectorOfSize2d
+
+### VectorOfSize2d.new
+
+```cpp
+std::vector<cv::Size2d>();
+lua:
+    VectorOfSize2d.new() -> <std::vector<cv::Size2d> object>
+    VectorOfSize2d() -> <std::vector<cv::Size2d> object>
+```
+
+```cpp
+std::vector<cv::Size2d>( size_t size );
+lua:
+    VectorOfSize2d.new( size ) -> <std::vector<cv::Size2d> object>
+    VectorOfSize2d( size ) -> <std::vector<cv::Size2d> object>
+```
+
+```cpp
+std::vector<cv::Size2d>( std::vector<cv::Size2d> other );
+lua:
+    VectorOfSize2d.new( other ) -> <std::vector<cv::Size2d> object>
+    VectorOfSize2d( other ) -> <std::vector<cv::Size2d> object>
+```
+
+### VectorOfSize2d.sol::meta\_function::index
+
+```cpp
+cv::Size2d VectorOfSize2d::at( size_t index );
+lua:
+    oVectorOfSize2d:__index( index ) -> retval
+```
+
+```cpp
+cv::Size2d VectorOfSize2d::at( const std::string& index );
+lua:
+    oVectorOfSize2d:__index( index ) -> retval
+```
+
+### VectorOfSize2d.sol::meta\_function::length
+
+```cpp
+size_t VectorOfSize2d::size();
+lua:
+    oVectorOfSize2d:__len() -> retval
+```
+
+### VectorOfSize2d.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfSize2d::sol::meta_function::new_index( size_t     index,
+                                                    cv::Size2d value );
+lua:
+    oVectorOfSize2d:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfSize2d::sol::meta_function::new_index( const std::string& index,
+                                                    cv::Size2d         value );
+lua:
+    oVectorOfSize2d:__newindex( index, value ) -> None
+```
+
+### VectorOfSize2d.table
+
+```cpp
+void VectorOfSize2d::table();
+lua:
+    oVectorOfSize2d:table() -> None
+```
+
+## VectorOfSize2f
+
+### VectorOfSize2f.new
+
+```cpp
+std::vector<cv::Size2f>();
+lua:
+    VectorOfSize2f.new() -> <std::vector<cv::Size2f> object>
+    VectorOfSize2f() -> <std::vector<cv::Size2f> object>
+```
+
+```cpp
+std::vector<cv::Size2f>( size_t size );
+lua:
+    VectorOfSize2f.new( size ) -> <std::vector<cv::Size2f> object>
+    VectorOfSize2f( size ) -> <std::vector<cv::Size2f> object>
+```
+
+```cpp
+std::vector<cv::Size2f>( std::vector<cv::Size2f> other );
+lua:
+    VectorOfSize2f.new( other ) -> <std::vector<cv::Size2f> object>
+    VectorOfSize2f( other ) -> <std::vector<cv::Size2f> object>
+```
+
+### VectorOfSize2f.sol::meta\_function::index
+
+```cpp
+cv::Size2f VectorOfSize2f::at( size_t index );
+lua:
+    oVectorOfSize2f:__index( index ) -> retval
+```
+
+```cpp
+cv::Size2f VectorOfSize2f::at( const std::string& index );
+lua:
+    oVectorOfSize2f:__index( index ) -> retval
+```
+
+### VectorOfSize2f.sol::meta\_function::length
+
+```cpp
+size_t VectorOfSize2f::size();
+lua:
+    oVectorOfSize2f:__len() -> retval
+```
+
+### VectorOfSize2f.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfSize2f::sol::meta_function::new_index( size_t     index,
+                                                    cv::Size2f value );
+lua:
+    oVectorOfSize2f:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfSize2f::sol::meta_function::new_index( const std::string& index,
+                                                    cv::Size2f         value );
+lua:
+    oVectorOfSize2f:__newindex( index, value ) -> None
+```
+
+### VectorOfSize2f.table
+
+```cpp
+void VectorOfSize2f::table();
+lua:
+    oVectorOfSize2f:table() -> None
 ```
 
 ## VectorOfSize\_t
@@ -6419,24 +9470,70 @@ lua:
 ### VectorOfSize\_t.new
 
 ```cpp
-std::vector<size_t> VectorOfSize_t::new();
+std::vector<size_t>();
 lua:
-    VectorOfSize_t.new() -> retval
-    VectorOfSize_t() -> retval
+    VectorOfSize_t.new() -> <std::vector<size_t> object>
+    VectorOfSize_t() -> <std::vector<size_t> object>
 ```
 
 ```cpp
-std::vector<size_t> VectorOfSize_t::new( size_t size );
+std::vector<size_t>( size_t size );
 lua:
-    VectorOfSize_t.new( size ) -> retval
-    VectorOfSize_t( size ) -> retval
+    VectorOfSize_t.new( size ) -> <std::vector<size_t> object>
+    VectorOfSize_t( size ) -> <std::vector<size_t> object>
 ```
 
 ```cpp
-std::vector<size_t> VectorOfSize_t::new( std::vector<size_t> other );
+std::vector<size_t>( std::vector<size_t> other );
 lua:
-    VectorOfSize_t.new( other ) -> retval
-    VectorOfSize_t( other ) -> retval
+    VectorOfSize_t.new( other ) -> <std::vector<size_t> object>
+    VectorOfSize_t( other ) -> <std::vector<size_t> object>
+```
+
+### VectorOfSize\_t.sol::meta\_function::index
+
+```cpp
+size_t VectorOfSize_t::at( size_t index );
+lua:
+    oVectorOfSize_t:__index( index ) -> retval
+```
+
+```cpp
+size_t VectorOfSize_t::at( const std::string& index );
+lua:
+    oVectorOfSize_t:__index( index ) -> retval
+```
+
+### VectorOfSize\_t.sol::meta\_function::length
+
+```cpp
+size_t VectorOfSize_t::size();
+lua:
+    oVectorOfSize_t:__len() -> retval
+```
+
+### VectorOfSize\_t.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfSize_t::sol::meta_function::new_index( size_t index,
+                                                    size_t value );
+lua:
+    oVectorOfSize_t:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfSize_t::sol::meta_function::new_index( const std::string& index,
+                                                    size_t             value );
+lua:
+    oVectorOfSize_t:__newindex( index, value ) -> None
+```
+
+### VectorOfSize\_t.table
+
+```cpp
+void VectorOfSize_t::table();
+lua:
+    oVectorOfSize_t:table() -> None
 ```
 
 ## VectorOfString
@@ -6444,24 +9541,70 @@ lua:
 ### VectorOfString.new
 
 ```cpp
-std::vector<std::string> VectorOfString::new();
+std::vector<std::string>();
 lua:
-    VectorOfString.new() -> retval
-    VectorOfString() -> retval
+    VectorOfString.new() -> <std::vector<std::string> object>
+    VectorOfString() -> <std::vector<std::string> object>
 ```
 
 ```cpp
-std::vector<std::string> VectorOfString::new( size_t size );
+std::vector<std::string>( size_t size );
 lua:
-    VectorOfString.new( size ) -> retval
-    VectorOfString( size ) -> retval
+    VectorOfString.new( size ) -> <std::vector<std::string> object>
+    VectorOfString( size ) -> <std::vector<std::string> object>
 ```
 
 ```cpp
-std::vector<std::string> VectorOfString::new( std::vector<std::string> other );
+std::vector<std::string>( std::vector<std::string> other );
 lua:
-    VectorOfString.new( other ) -> retval
-    VectorOfString( other ) -> retval
+    VectorOfString.new( other ) -> <std::vector<std::string> object>
+    VectorOfString( other ) -> <std::vector<std::string> object>
+```
+
+### VectorOfString.sol::meta\_function::index
+
+```cpp
+std::string VectorOfString::at( size_t index );
+lua:
+    oVectorOfString:__index( index ) -> retval
+```
+
+```cpp
+std::string VectorOfString::at( const std::string& index );
+lua:
+    oVectorOfString:__index( index ) -> retval
+```
+
+### VectorOfString.sol::meta\_function::length
+
+```cpp
+size_t VectorOfString::size();
+lua:
+    oVectorOfString:__len() -> retval
+```
+
+### VectorOfString.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfString::sol::meta_function::new_index( size_t      index,
+                                                    std::string value );
+lua:
+    oVectorOfString:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfString::sol::meta_function::new_index( const std::string& index,
+                                                    std::string        value );
+lua:
+    oVectorOfString:__newindex( index, value ) -> None
+```
+
+### VectorOfString.table
+
+```cpp
+void VectorOfString::table();
+lua:
+    oVectorOfString:table() -> None
 ```
 
 ## VectorOfTuplePointAndDouble
@@ -6469,24 +9612,70 @@ lua:
 ### VectorOfTuplePointAndDouble.new
 
 ```cpp
-std::vector<std::tuple<cv::Point, double>> VectorOfTuplePointAndDouble::new();
+std::vector<std::tuple<cv::Point, double>>();
 lua:
-    VectorOfTuplePointAndDouble.new() -> retval
-    VectorOfTuplePointAndDouble() -> retval
+    VectorOfTuplePointAndDouble.new() -> <std::vector<std::tuple<cv::Point, double>> object>
+    VectorOfTuplePointAndDouble() -> <std::vector<std::tuple<cv::Point, double>> object>
 ```
 
 ```cpp
-std::vector<std::tuple<cv::Point, double>> VectorOfTuplePointAndDouble::new( size_t size );
+std::vector<std::tuple<cv::Point, double>>( size_t size );
 lua:
-    VectorOfTuplePointAndDouble.new( size ) -> retval
-    VectorOfTuplePointAndDouble( size ) -> retval
+    VectorOfTuplePointAndDouble.new( size ) -> <std::vector<std::tuple<cv::Point, double>> object>
+    VectorOfTuplePointAndDouble( size ) -> <std::vector<std::tuple<cv::Point, double>> object>
 ```
 
 ```cpp
-std::vector<std::tuple<cv::Point, double>> VectorOfTuplePointAndDouble::new( std::vector<std::tuple<cv::Point, double>> other );
+std::vector<std::tuple<cv::Point, double>>( std::vector<std::tuple<cv::Point, double>> other );
 lua:
-    VectorOfTuplePointAndDouble.new( other ) -> retval
-    VectorOfTuplePointAndDouble( other ) -> retval
+    VectorOfTuplePointAndDouble.new( other ) -> <std::vector<std::tuple<cv::Point, double>> object>
+    VectorOfTuplePointAndDouble( other ) -> <std::vector<std::tuple<cv::Point, double>> object>
+```
+
+### VectorOfTuplePointAndDouble.sol::meta\_function::index
+
+```cpp
+std::tuple<cv::Point, double> VectorOfTuplePointAndDouble::at( size_t index );
+lua:
+    oVectorOfTuplePointAndDouble:__index( index ) -> retval
+```
+
+```cpp
+std::tuple<cv::Point, double> VectorOfTuplePointAndDouble::at( const std::string& index );
+lua:
+    oVectorOfTuplePointAndDouble:__index( index ) -> retval
+```
+
+### VectorOfTuplePointAndDouble.sol::meta\_function::length
+
+```cpp
+size_t VectorOfTuplePointAndDouble::size();
+lua:
+    oVectorOfTuplePointAndDouble:__len() -> retval
+```
+
+### VectorOfTuplePointAndDouble.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfTuplePointAndDouble::sol::meta_function::new_index( size_t                        index,
+                                                                 std::tuple<cv::Point, double> value );
+lua:
+    oVectorOfTuplePointAndDouble:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfTuplePointAndDouble::sol::meta_function::new_index( const std::string&            index,
+                                                                 std::tuple<cv::Point, double> value );
+lua:
+    oVectorOfTuplePointAndDouble:__newindex( index, value ) -> None
+```
+
+### VectorOfTuplePointAndDouble.table
+
+```cpp
+void VectorOfTuplePointAndDouble::table();
+lua:
+    oVectorOfTuplePointAndDouble:table() -> None
 ```
 
 ## VectorOfUMat
@@ -6494,24 +9683,70 @@ lua:
 ### VectorOfUMat.new
 
 ```cpp
-std::vector<cv::UMat> VectorOfUMat::new();
+std::vector<cv::UMat>();
 lua:
-    VectorOfUMat.new() -> retval
-    VectorOfUMat() -> retval
+    VectorOfUMat.new() -> <std::vector<cv::UMat> object>
+    VectorOfUMat() -> <std::vector<cv::UMat> object>
 ```
 
 ```cpp
-std::vector<cv::UMat> VectorOfUMat::new( size_t size );
+std::vector<cv::UMat>( size_t size );
 lua:
-    VectorOfUMat.new( size ) -> retval
-    VectorOfUMat( size ) -> retval
+    VectorOfUMat.new( size ) -> <std::vector<cv::UMat> object>
+    VectorOfUMat( size ) -> <std::vector<cv::UMat> object>
 ```
 
 ```cpp
-std::vector<cv::UMat> VectorOfUMat::new( std::vector<cv::UMat> other );
+std::vector<cv::UMat>( std::vector<cv::UMat> other );
 lua:
-    VectorOfUMat.new( other ) -> retval
-    VectorOfUMat( other ) -> retval
+    VectorOfUMat.new( other ) -> <std::vector<cv::UMat> object>
+    VectorOfUMat( other ) -> <std::vector<cv::UMat> object>
+```
+
+### VectorOfUMat.sol::meta\_function::index
+
+```cpp
+cv::UMat VectorOfUMat::at( size_t index );
+lua:
+    oVectorOfUMat:__index( index ) -> retval
+```
+
+```cpp
+cv::UMat VectorOfUMat::at( const std::string& index );
+lua:
+    oVectorOfUMat:__index( index ) -> retval
+```
+
+### VectorOfUMat.sol::meta\_function::length
+
+```cpp
+size_t VectorOfUMat::size();
+lua:
+    oVectorOfUMat:__len() -> retval
+```
+
+### VectorOfUMat.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfUMat::sol::meta_function::new_index( size_t   index,
+                                                  cv::UMat value );
+lua:
+    oVectorOfUMat:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfUMat::sol::meta_function::new_index( const std::string& index,
+                                                  cv::UMat           value );
+lua:
+    oVectorOfUMat:__newindex( index, value ) -> None
+```
+
+### VectorOfUMat.table
+
+```cpp
+void VectorOfUMat::table();
+lua:
+    oVectorOfUMat:table() -> None
 ```
 
 ## VectorOfUchar
@@ -6519,24 +9754,70 @@ lua:
 ### VectorOfUchar.new
 
 ```cpp
-std::vector<uchar> VectorOfUchar::new();
+std::vector<uchar>();
 lua:
-    VectorOfUchar.new() -> retval
-    VectorOfUchar() -> retval
+    VectorOfUchar.new() -> <std::vector<uchar> object>
+    VectorOfUchar() -> <std::vector<uchar> object>
 ```
 
 ```cpp
-std::vector<uchar> VectorOfUchar::new( size_t size );
+std::vector<uchar>( size_t size );
 lua:
-    VectorOfUchar.new( size ) -> retval
-    VectorOfUchar( size ) -> retval
+    VectorOfUchar.new( size ) -> <std::vector<uchar> object>
+    VectorOfUchar( size ) -> <std::vector<uchar> object>
 ```
 
 ```cpp
-std::vector<uchar> VectorOfUchar::new( std::vector<uchar> other );
+std::vector<uchar>( std::vector<uchar> other );
 lua:
-    VectorOfUchar.new( other ) -> retval
-    VectorOfUchar( other ) -> retval
+    VectorOfUchar.new( other ) -> <std::vector<uchar> object>
+    VectorOfUchar( other ) -> <std::vector<uchar> object>
+```
+
+### VectorOfUchar.sol::meta\_function::index
+
+```cpp
+uchar VectorOfUchar::at( size_t index );
+lua:
+    oVectorOfUchar:__index( index ) -> retval
+```
+
+```cpp
+uchar VectorOfUchar::at( const std::string& index );
+lua:
+    oVectorOfUchar:__index( index ) -> retval
+```
+
+### VectorOfUchar.sol::meta\_function::length
+
+```cpp
+size_t VectorOfUchar::size();
+lua:
+    oVectorOfUchar:__len() -> retval
+```
+
+### VectorOfUchar.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfUchar::sol::meta_function::new_index( size_t index,
+                                                   uchar  value );
+lua:
+    oVectorOfUchar:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfUchar::sol::meta_function::new_index( const std::string& index,
+                                                   uchar              value );
+lua:
+    oVectorOfUchar:__newindex( index, value ) -> None
+```
+
+### VectorOfUchar.table
+
+```cpp
+void VectorOfUchar::table();
+lua:
+    oVectorOfUchar:table() -> None
 ```
 
 ## VectorOfUshort
@@ -6544,24 +9825,141 @@ lua:
 ### VectorOfUshort.new
 
 ```cpp
-std::vector<ushort> VectorOfUshort::new();
+std::vector<ushort>();
 lua:
-    VectorOfUshort.new() -> retval
-    VectorOfUshort() -> retval
+    VectorOfUshort.new() -> <std::vector<ushort> object>
+    VectorOfUshort() -> <std::vector<ushort> object>
 ```
 
 ```cpp
-std::vector<ushort> VectorOfUshort::new( size_t size );
+std::vector<ushort>( size_t size );
 lua:
-    VectorOfUshort.new( size ) -> retval
-    VectorOfUshort( size ) -> retval
+    VectorOfUshort.new( size ) -> <std::vector<ushort> object>
+    VectorOfUshort( size ) -> <std::vector<ushort> object>
 ```
 
 ```cpp
-std::vector<ushort> VectorOfUshort::new( std::vector<ushort> other );
+std::vector<ushort>( std::vector<ushort> other );
 lua:
-    VectorOfUshort.new( other ) -> retval
-    VectorOfUshort( other ) -> retval
+    VectorOfUshort.new( other ) -> <std::vector<ushort> object>
+    VectorOfUshort( other ) -> <std::vector<ushort> object>
+```
+
+### VectorOfUshort.sol::meta\_function::index
+
+```cpp
+ushort VectorOfUshort::at( size_t index );
+lua:
+    oVectorOfUshort:__index( index ) -> retval
+```
+
+```cpp
+ushort VectorOfUshort::at( const std::string& index );
+lua:
+    oVectorOfUshort:__index( index ) -> retval
+```
+
+### VectorOfUshort.sol::meta\_function::length
+
+```cpp
+size_t VectorOfUshort::size();
+lua:
+    oVectorOfUshort:__len() -> retval
+```
+
+### VectorOfUshort.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfUshort::sol::meta_function::new_index( size_t index,
+                                                    ushort value );
+lua:
+    oVectorOfUshort:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfUshort::sol::meta_function::new_index( const std::string& index,
+                                                    ushort             value );
+lua:
+    oVectorOfUshort:__newindex( index, value ) -> None
+```
+
+### VectorOfUshort.table
+
+```cpp
+void VectorOfUshort::table();
+lua:
+    oVectorOfUshort:table() -> None
+```
+
+## VectorOfVariantOfIntAndRange
+
+### VectorOfVariantOfIntAndRange.new
+
+```cpp
+std::vector<std::variant<int, cv::Range>>();
+lua:
+    VectorOfVariantOfIntAndRange.new() -> <std::vector<std::variant<int, cv::Range>> object>
+    VectorOfVariantOfIntAndRange() -> <std::vector<std::variant<int, cv::Range>> object>
+```
+
+```cpp
+std::vector<std::variant<int, cv::Range>>( size_t size );
+lua:
+    VectorOfVariantOfIntAndRange.new( size ) -> <std::vector<std::variant<int, cv::Range>> object>
+    VectorOfVariantOfIntAndRange( size ) -> <std::vector<std::variant<int, cv::Range>> object>
+```
+
+```cpp
+std::vector<std::variant<int, cv::Range>>( std::vector<std::variant<int, cv::Range>> other );
+lua:
+    VectorOfVariantOfIntAndRange.new( other ) -> <std::vector<std::variant<int, cv::Range>> object>
+    VectorOfVariantOfIntAndRange( other ) -> <std::vector<std::variant<int, cv::Range>> object>
+```
+
+### VectorOfVariantOfIntAndRange.sol::meta\_function::index
+
+```cpp
+std::variant<int, cv::Range> VectorOfVariantOfIntAndRange::at( size_t index );
+lua:
+    oVectorOfVariantOfIntAndRange:__index( index ) -> retval
+```
+
+```cpp
+std::variant<int, cv::Range> VectorOfVariantOfIntAndRange::at( const std::string& index );
+lua:
+    oVectorOfVariantOfIntAndRange:__index( index ) -> retval
+```
+
+### VectorOfVariantOfIntAndRange.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVariantOfIntAndRange::size();
+lua:
+    oVectorOfVariantOfIntAndRange:__len() -> retval
+```
+
+### VectorOfVariantOfIntAndRange.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVariantOfIntAndRange::sol::meta_function::new_index( size_t                       index,
+                                                                  std::variant<int, cv::Range> value );
+lua:
+    oVectorOfVariantOfIntAndRange:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVariantOfIntAndRange::sol::meta_function::new_index( const std::string&           index,
+                                                                  std::variant<int, cv::Range> value );
+lua:
+    oVectorOfVariantOfIntAndRange:__newindex( index, value ) -> None
+```
+
+### VectorOfVariantOfIntAndRange.table
+
+```cpp
+void VectorOfVariantOfIntAndRange::table();
+lua:
+    oVectorOfVariantOfIntAndRange:table() -> None
 ```
 
 ## VectorOfVec2b
@@ -6569,24 +9967,70 @@ lua:
 ### VectorOfVec2b.new
 
 ```cpp
-std::vector<cv::Vec2b> VectorOfVec2b::new();
+std::vector<cv::Vec2b>();
 lua:
-    VectorOfVec2b.new() -> retval
-    VectorOfVec2b() -> retval
+    VectorOfVec2b.new() -> <std::vector<cv::Vec2b> object>
+    VectorOfVec2b() -> <std::vector<cv::Vec2b> object>
 ```
 
 ```cpp
-std::vector<cv::Vec2b> VectorOfVec2b::new( size_t size );
+std::vector<cv::Vec2b>( size_t size );
 lua:
-    VectorOfVec2b.new( size ) -> retval
-    VectorOfVec2b( size ) -> retval
+    VectorOfVec2b.new( size ) -> <std::vector<cv::Vec2b> object>
+    VectorOfVec2b( size ) -> <std::vector<cv::Vec2b> object>
 ```
 
 ```cpp
-std::vector<cv::Vec2b> VectorOfVec2b::new( std::vector<cv::Vec2b> other );
+std::vector<cv::Vec2b>( std::vector<cv::Vec2b> other );
 lua:
-    VectorOfVec2b.new( other ) -> retval
-    VectorOfVec2b( other ) -> retval
+    VectorOfVec2b.new( other ) -> <std::vector<cv::Vec2b> object>
+    VectorOfVec2b( other ) -> <std::vector<cv::Vec2b> object>
+```
+
+### VectorOfVec2b.sol::meta\_function::index
+
+```cpp
+cv::Vec2b VectorOfVec2b::at( size_t index );
+lua:
+    oVectorOfVec2b:__index( index ) -> retval
+```
+
+```cpp
+cv::Vec2b VectorOfVec2b::at( const std::string& index );
+lua:
+    oVectorOfVec2b:__index( index ) -> retval
+```
+
+### VectorOfVec2b.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVec2b::size();
+lua:
+    oVectorOfVec2b:__len() -> retval
+```
+
+### VectorOfVec2b.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVec2b::sol::meta_function::new_index( size_t    index,
+                                                   cv::Vec2b value );
+lua:
+    oVectorOfVec2b:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVec2b::sol::meta_function::new_index( const std::string& index,
+                                                   cv::Vec2b          value );
+lua:
+    oVectorOfVec2b:__newindex( index, value ) -> None
+```
+
+### VectorOfVec2b.table
+
+```cpp
+void VectorOfVec2b::table();
+lua:
+    oVectorOfVec2b:table() -> None
 ```
 
 ## VectorOfVec2d
@@ -6594,24 +10038,70 @@ lua:
 ### VectorOfVec2d.new
 
 ```cpp
-std::vector<cv::Vec2d> VectorOfVec2d::new();
+std::vector<cv::Vec2d>();
 lua:
-    VectorOfVec2d.new() -> retval
-    VectorOfVec2d() -> retval
+    VectorOfVec2d.new() -> <std::vector<cv::Vec2d> object>
+    VectorOfVec2d() -> <std::vector<cv::Vec2d> object>
 ```
 
 ```cpp
-std::vector<cv::Vec2d> VectorOfVec2d::new( size_t size );
+std::vector<cv::Vec2d>( size_t size );
 lua:
-    VectorOfVec2d.new( size ) -> retval
-    VectorOfVec2d( size ) -> retval
+    VectorOfVec2d.new( size ) -> <std::vector<cv::Vec2d> object>
+    VectorOfVec2d( size ) -> <std::vector<cv::Vec2d> object>
 ```
 
 ```cpp
-std::vector<cv::Vec2d> VectorOfVec2d::new( std::vector<cv::Vec2d> other );
+std::vector<cv::Vec2d>( std::vector<cv::Vec2d> other );
 lua:
-    VectorOfVec2d.new( other ) -> retval
-    VectorOfVec2d( other ) -> retval
+    VectorOfVec2d.new( other ) -> <std::vector<cv::Vec2d> object>
+    VectorOfVec2d( other ) -> <std::vector<cv::Vec2d> object>
+```
+
+### VectorOfVec2d.sol::meta\_function::index
+
+```cpp
+cv::Vec2d VectorOfVec2d::at( size_t index );
+lua:
+    oVectorOfVec2d:__index( index ) -> retval
+```
+
+```cpp
+cv::Vec2d VectorOfVec2d::at( const std::string& index );
+lua:
+    oVectorOfVec2d:__index( index ) -> retval
+```
+
+### VectorOfVec2d.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVec2d::size();
+lua:
+    oVectorOfVec2d:__len() -> retval
+```
+
+### VectorOfVec2d.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVec2d::sol::meta_function::new_index( size_t    index,
+                                                   cv::Vec2d value );
+lua:
+    oVectorOfVec2d:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVec2d::sol::meta_function::new_index( const std::string& index,
+                                                   cv::Vec2d          value );
+lua:
+    oVectorOfVec2d:__newindex( index, value ) -> None
+```
+
+### VectorOfVec2d.table
+
+```cpp
+void VectorOfVec2d::table();
+lua:
+    oVectorOfVec2d:table() -> None
 ```
 
 ## VectorOfVec2f
@@ -6619,24 +10109,70 @@ lua:
 ### VectorOfVec2f.new
 
 ```cpp
-std::vector<cv::Vec2f> VectorOfVec2f::new();
+std::vector<cv::Vec2f>();
 lua:
-    VectorOfVec2f.new() -> retval
-    VectorOfVec2f() -> retval
+    VectorOfVec2f.new() -> <std::vector<cv::Vec2f> object>
+    VectorOfVec2f() -> <std::vector<cv::Vec2f> object>
 ```
 
 ```cpp
-std::vector<cv::Vec2f> VectorOfVec2f::new( size_t size );
+std::vector<cv::Vec2f>( size_t size );
 lua:
-    VectorOfVec2f.new( size ) -> retval
-    VectorOfVec2f( size ) -> retval
+    VectorOfVec2f.new( size ) -> <std::vector<cv::Vec2f> object>
+    VectorOfVec2f( size ) -> <std::vector<cv::Vec2f> object>
 ```
 
 ```cpp
-std::vector<cv::Vec2f> VectorOfVec2f::new( std::vector<cv::Vec2f> other );
+std::vector<cv::Vec2f>( std::vector<cv::Vec2f> other );
 lua:
-    VectorOfVec2f.new( other ) -> retval
-    VectorOfVec2f( other ) -> retval
+    VectorOfVec2f.new( other ) -> <std::vector<cv::Vec2f> object>
+    VectorOfVec2f( other ) -> <std::vector<cv::Vec2f> object>
+```
+
+### VectorOfVec2f.sol::meta\_function::index
+
+```cpp
+cv::Vec2f VectorOfVec2f::at( size_t index );
+lua:
+    oVectorOfVec2f:__index( index ) -> retval
+```
+
+```cpp
+cv::Vec2f VectorOfVec2f::at( const std::string& index );
+lua:
+    oVectorOfVec2f:__index( index ) -> retval
+```
+
+### VectorOfVec2f.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVec2f::size();
+lua:
+    oVectorOfVec2f:__len() -> retval
+```
+
+### VectorOfVec2f.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVec2f::sol::meta_function::new_index( size_t    index,
+                                                   cv::Vec2f value );
+lua:
+    oVectorOfVec2f:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVec2f::sol::meta_function::new_index( const std::string& index,
+                                                   cv::Vec2f          value );
+lua:
+    oVectorOfVec2f:__newindex( index, value ) -> None
+```
+
+### VectorOfVec2f.table
+
+```cpp
+void VectorOfVec2f::table();
+lua:
+    oVectorOfVec2f:table() -> None
 ```
 
 ## VectorOfVec2i
@@ -6644,24 +10180,70 @@ lua:
 ### VectorOfVec2i.new
 
 ```cpp
-std::vector<cv::Vec2i> VectorOfVec2i::new();
+std::vector<cv::Vec2i>();
 lua:
-    VectorOfVec2i.new() -> retval
-    VectorOfVec2i() -> retval
+    VectorOfVec2i.new() -> <std::vector<cv::Vec2i> object>
+    VectorOfVec2i() -> <std::vector<cv::Vec2i> object>
 ```
 
 ```cpp
-std::vector<cv::Vec2i> VectorOfVec2i::new( size_t size );
+std::vector<cv::Vec2i>( size_t size );
 lua:
-    VectorOfVec2i.new( size ) -> retval
-    VectorOfVec2i( size ) -> retval
+    VectorOfVec2i.new( size ) -> <std::vector<cv::Vec2i> object>
+    VectorOfVec2i( size ) -> <std::vector<cv::Vec2i> object>
 ```
 
 ```cpp
-std::vector<cv::Vec2i> VectorOfVec2i::new( std::vector<cv::Vec2i> other );
+std::vector<cv::Vec2i>( std::vector<cv::Vec2i> other );
 lua:
-    VectorOfVec2i.new( other ) -> retval
-    VectorOfVec2i( other ) -> retval
+    VectorOfVec2i.new( other ) -> <std::vector<cv::Vec2i> object>
+    VectorOfVec2i( other ) -> <std::vector<cv::Vec2i> object>
+```
+
+### VectorOfVec2i.sol::meta\_function::index
+
+```cpp
+cv::Vec2i VectorOfVec2i::at( size_t index );
+lua:
+    oVectorOfVec2i:__index( index ) -> retval
+```
+
+```cpp
+cv::Vec2i VectorOfVec2i::at( const std::string& index );
+lua:
+    oVectorOfVec2i:__index( index ) -> retval
+```
+
+### VectorOfVec2i.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVec2i::size();
+lua:
+    oVectorOfVec2i:__len() -> retval
+```
+
+### VectorOfVec2i.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVec2i::sol::meta_function::new_index( size_t    index,
+                                                   cv::Vec2i value );
+lua:
+    oVectorOfVec2i:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVec2i::sol::meta_function::new_index( const std::string& index,
+                                                   cv::Vec2i          value );
+lua:
+    oVectorOfVec2i:__newindex( index, value ) -> None
+```
+
+### VectorOfVec2i.table
+
+```cpp
+void VectorOfVec2i::table();
+lua:
+    oVectorOfVec2i:table() -> None
 ```
 
 ## VectorOfVec2s
@@ -6669,24 +10251,70 @@ lua:
 ### VectorOfVec2s.new
 
 ```cpp
-std::vector<cv::Vec2s> VectorOfVec2s::new();
+std::vector<cv::Vec2s>();
 lua:
-    VectorOfVec2s.new() -> retval
-    VectorOfVec2s() -> retval
+    VectorOfVec2s.new() -> <std::vector<cv::Vec2s> object>
+    VectorOfVec2s() -> <std::vector<cv::Vec2s> object>
 ```
 
 ```cpp
-std::vector<cv::Vec2s> VectorOfVec2s::new( size_t size );
+std::vector<cv::Vec2s>( size_t size );
 lua:
-    VectorOfVec2s.new( size ) -> retval
-    VectorOfVec2s( size ) -> retval
+    VectorOfVec2s.new( size ) -> <std::vector<cv::Vec2s> object>
+    VectorOfVec2s( size ) -> <std::vector<cv::Vec2s> object>
 ```
 
 ```cpp
-std::vector<cv::Vec2s> VectorOfVec2s::new( std::vector<cv::Vec2s> other );
+std::vector<cv::Vec2s>( std::vector<cv::Vec2s> other );
 lua:
-    VectorOfVec2s.new( other ) -> retval
-    VectorOfVec2s( other ) -> retval
+    VectorOfVec2s.new( other ) -> <std::vector<cv::Vec2s> object>
+    VectorOfVec2s( other ) -> <std::vector<cv::Vec2s> object>
+```
+
+### VectorOfVec2s.sol::meta\_function::index
+
+```cpp
+cv::Vec2s VectorOfVec2s::at( size_t index );
+lua:
+    oVectorOfVec2s:__index( index ) -> retval
+```
+
+```cpp
+cv::Vec2s VectorOfVec2s::at( const std::string& index );
+lua:
+    oVectorOfVec2s:__index( index ) -> retval
+```
+
+### VectorOfVec2s.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVec2s::size();
+lua:
+    oVectorOfVec2s:__len() -> retval
+```
+
+### VectorOfVec2s.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVec2s::sol::meta_function::new_index( size_t    index,
+                                                   cv::Vec2s value );
+lua:
+    oVectorOfVec2s:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVec2s::sol::meta_function::new_index( const std::string& index,
+                                                   cv::Vec2s          value );
+lua:
+    oVectorOfVec2s:__newindex( index, value ) -> None
+```
+
+### VectorOfVec2s.table
+
+```cpp
+void VectorOfVec2s::table();
+lua:
+    oVectorOfVec2s:table() -> None
 ```
 
 ## VectorOfVec2w
@@ -6694,24 +10322,70 @@ lua:
 ### VectorOfVec2w.new
 
 ```cpp
-std::vector<cv::Vec2w> VectorOfVec2w::new();
+std::vector<cv::Vec2w>();
 lua:
-    VectorOfVec2w.new() -> retval
-    VectorOfVec2w() -> retval
+    VectorOfVec2w.new() -> <std::vector<cv::Vec2w> object>
+    VectorOfVec2w() -> <std::vector<cv::Vec2w> object>
 ```
 
 ```cpp
-std::vector<cv::Vec2w> VectorOfVec2w::new( size_t size );
+std::vector<cv::Vec2w>( size_t size );
 lua:
-    VectorOfVec2w.new( size ) -> retval
-    VectorOfVec2w( size ) -> retval
+    VectorOfVec2w.new( size ) -> <std::vector<cv::Vec2w> object>
+    VectorOfVec2w( size ) -> <std::vector<cv::Vec2w> object>
 ```
 
 ```cpp
-std::vector<cv::Vec2w> VectorOfVec2w::new( std::vector<cv::Vec2w> other );
+std::vector<cv::Vec2w>( std::vector<cv::Vec2w> other );
 lua:
-    VectorOfVec2w.new( other ) -> retval
-    VectorOfVec2w( other ) -> retval
+    VectorOfVec2w.new( other ) -> <std::vector<cv::Vec2w> object>
+    VectorOfVec2w( other ) -> <std::vector<cv::Vec2w> object>
+```
+
+### VectorOfVec2w.sol::meta\_function::index
+
+```cpp
+cv::Vec2w VectorOfVec2w::at( size_t index );
+lua:
+    oVectorOfVec2w:__index( index ) -> retval
+```
+
+```cpp
+cv::Vec2w VectorOfVec2w::at( const std::string& index );
+lua:
+    oVectorOfVec2w:__index( index ) -> retval
+```
+
+### VectorOfVec2w.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVec2w::size();
+lua:
+    oVectorOfVec2w:__len() -> retval
+```
+
+### VectorOfVec2w.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVec2w::sol::meta_function::new_index( size_t    index,
+                                                   cv::Vec2w value );
+lua:
+    oVectorOfVec2w:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVec2w::sol::meta_function::new_index( const std::string& index,
+                                                   cv::Vec2w          value );
+lua:
+    oVectorOfVec2w:__newindex( index, value ) -> None
+```
+
+### VectorOfVec2w.table
+
+```cpp
+void VectorOfVec2w::table();
+lua:
+    oVectorOfVec2w:table() -> None
 ```
 
 ## VectorOfVec3b
@@ -6719,24 +10393,70 @@ lua:
 ### VectorOfVec3b.new
 
 ```cpp
-std::vector<cv::Vec3b> VectorOfVec3b::new();
+std::vector<cv::Vec3b>();
 lua:
-    VectorOfVec3b.new() -> retval
-    VectorOfVec3b() -> retval
+    VectorOfVec3b.new() -> <std::vector<cv::Vec3b> object>
+    VectorOfVec3b() -> <std::vector<cv::Vec3b> object>
 ```
 
 ```cpp
-std::vector<cv::Vec3b> VectorOfVec3b::new( size_t size );
+std::vector<cv::Vec3b>( size_t size );
 lua:
-    VectorOfVec3b.new( size ) -> retval
-    VectorOfVec3b( size ) -> retval
+    VectorOfVec3b.new( size ) -> <std::vector<cv::Vec3b> object>
+    VectorOfVec3b( size ) -> <std::vector<cv::Vec3b> object>
 ```
 
 ```cpp
-std::vector<cv::Vec3b> VectorOfVec3b::new( std::vector<cv::Vec3b> other );
+std::vector<cv::Vec3b>( std::vector<cv::Vec3b> other );
 lua:
-    VectorOfVec3b.new( other ) -> retval
-    VectorOfVec3b( other ) -> retval
+    VectorOfVec3b.new( other ) -> <std::vector<cv::Vec3b> object>
+    VectorOfVec3b( other ) -> <std::vector<cv::Vec3b> object>
+```
+
+### VectorOfVec3b.sol::meta\_function::index
+
+```cpp
+cv::Vec3b VectorOfVec3b::at( size_t index );
+lua:
+    oVectorOfVec3b:__index( index ) -> retval
+```
+
+```cpp
+cv::Vec3b VectorOfVec3b::at( const std::string& index );
+lua:
+    oVectorOfVec3b:__index( index ) -> retval
+```
+
+### VectorOfVec3b.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVec3b::size();
+lua:
+    oVectorOfVec3b:__len() -> retval
+```
+
+### VectorOfVec3b.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVec3b::sol::meta_function::new_index( size_t    index,
+                                                   cv::Vec3b value );
+lua:
+    oVectorOfVec3b:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVec3b::sol::meta_function::new_index( const std::string& index,
+                                                   cv::Vec3b          value );
+lua:
+    oVectorOfVec3b:__newindex( index, value ) -> None
+```
+
+### VectorOfVec3b.table
+
+```cpp
+void VectorOfVec3b::table();
+lua:
+    oVectorOfVec3b:table() -> None
 ```
 
 ## VectorOfVec3d
@@ -6744,24 +10464,70 @@ lua:
 ### VectorOfVec3d.new
 
 ```cpp
-std::vector<cv::Vec3d> VectorOfVec3d::new();
+std::vector<cv::Vec3d>();
 lua:
-    VectorOfVec3d.new() -> retval
-    VectorOfVec3d() -> retval
+    VectorOfVec3d.new() -> <std::vector<cv::Vec3d> object>
+    VectorOfVec3d() -> <std::vector<cv::Vec3d> object>
 ```
 
 ```cpp
-std::vector<cv::Vec3d> VectorOfVec3d::new( size_t size );
+std::vector<cv::Vec3d>( size_t size );
 lua:
-    VectorOfVec3d.new( size ) -> retval
-    VectorOfVec3d( size ) -> retval
+    VectorOfVec3d.new( size ) -> <std::vector<cv::Vec3d> object>
+    VectorOfVec3d( size ) -> <std::vector<cv::Vec3d> object>
 ```
 
 ```cpp
-std::vector<cv::Vec3d> VectorOfVec3d::new( std::vector<cv::Vec3d> other );
+std::vector<cv::Vec3d>( std::vector<cv::Vec3d> other );
 lua:
-    VectorOfVec3d.new( other ) -> retval
-    VectorOfVec3d( other ) -> retval
+    VectorOfVec3d.new( other ) -> <std::vector<cv::Vec3d> object>
+    VectorOfVec3d( other ) -> <std::vector<cv::Vec3d> object>
+```
+
+### VectorOfVec3d.sol::meta\_function::index
+
+```cpp
+cv::Vec3d VectorOfVec3d::at( size_t index );
+lua:
+    oVectorOfVec3d:__index( index ) -> retval
+```
+
+```cpp
+cv::Vec3d VectorOfVec3d::at( const std::string& index );
+lua:
+    oVectorOfVec3d:__index( index ) -> retval
+```
+
+### VectorOfVec3d.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVec3d::size();
+lua:
+    oVectorOfVec3d:__len() -> retval
+```
+
+### VectorOfVec3d.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVec3d::sol::meta_function::new_index( size_t    index,
+                                                   cv::Vec3d value );
+lua:
+    oVectorOfVec3d:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVec3d::sol::meta_function::new_index( const std::string& index,
+                                                   cv::Vec3d          value );
+lua:
+    oVectorOfVec3d:__newindex( index, value ) -> None
+```
+
+### VectorOfVec3d.table
+
+```cpp
+void VectorOfVec3d::table();
+lua:
+    oVectorOfVec3d:table() -> None
 ```
 
 ## VectorOfVec3f
@@ -6769,24 +10535,70 @@ lua:
 ### VectorOfVec3f.new
 
 ```cpp
-std::vector<cv::Vec3f> VectorOfVec3f::new();
+std::vector<cv::Vec3f>();
 lua:
-    VectorOfVec3f.new() -> retval
-    VectorOfVec3f() -> retval
+    VectorOfVec3f.new() -> <std::vector<cv::Vec3f> object>
+    VectorOfVec3f() -> <std::vector<cv::Vec3f> object>
 ```
 
 ```cpp
-std::vector<cv::Vec3f> VectorOfVec3f::new( size_t size );
+std::vector<cv::Vec3f>( size_t size );
 lua:
-    VectorOfVec3f.new( size ) -> retval
-    VectorOfVec3f( size ) -> retval
+    VectorOfVec3f.new( size ) -> <std::vector<cv::Vec3f> object>
+    VectorOfVec3f( size ) -> <std::vector<cv::Vec3f> object>
 ```
 
 ```cpp
-std::vector<cv::Vec3f> VectorOfVec3f::new( std::vector<cv::Vec3f> other );
+std::vector<cv::Vec3f>( std::vector<cv::Vec3f> other );
 lua:
-    VectorOfVec3f.new( other ) -> retval
-    VectorOfVec3f( other ) -> retval
+    VectorOfVec3f.new( other ) -> <std::vector<cv::Vec3f> object>
+    VectorOfVec3f( other ) -> <std::vector<cv::Vec3f> object>
+```
+
+### VectorOfVec3f.sol::meta\_function::index
+
+```cpp
+cv::Vec3f VectorOfVec3f::at( size_t index );
+lua:
+    oVectorOfVec3f:__index( index ) -> retval
+```
+
+```cpp
+cv::Vec3f VectorOfVec3f::at( const std::string& index );
+lua:
+    oVectorOfVec3f:__index( index ) -> retval
+```
+
+### VectorOfVec3f.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVec3f::size();
+lua:
+    oVectorOfVec3f:__len() -> retval
+```
+
+### VectorOfVec3f.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVec3f::sol::meta_function::new_index( size_t    index,
+                                                   cv::Vec3f value );
+lua:
+    oVectorOfVec3f:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVec3f::sol::meta_function::new_index( const std::string& index,
+                                                   cv::Vec3f          value );
+lua:
+    oVectorOfVec3f:__newindex( index, value ) -> None
+```
+
+### VectorOfVec3f.table
+
+```cpp
+void VectorOfVec3f::table();
+lua:
+    oVectorOfVec3f:table() -> None
 ```
 
 ## VectorOfVec3i
@@ -6794,24 +10606,70 @@ lua:
 ### VectorOfVec3i.new
 
 ```cpp
-std::vector<cv::Vec3i> VectorOfVec3i::new();
+std::vector<cv::Vec3i>();
 lua:
-    VectorOfVec3i.new() -> retval
-    VectorOfVec3i() -> retval
+    VectorOfVec3i.new() -> <std::vector<cv::Vec3i> object>
+    VectorOfVec3i() -> <std::vector<cv::Vec3i> object>
 ```
 
 ```cpp
-std::vector<cv::Vec3i> VectorOfVec3i::new( size_t size );
+std::vector<cv::Vec3i>( size_t size );
 lua:
-    VectorOfVec3i.new( size ) -> retval
-    VectorOfVec3i( size ) -> retval
+    VectorOfVec3i.new( size ) -> <std::vector<cv::Vec3i> object>
+    VectorOfVec3i( size ) -> <std::vector<cv::Vec3i> object>
 ```
 
 ```cpp
-std::vector<cv::Vec3i> VectorOfVec3i::new( std::vector<cv::Vec3i> other );
+std::vector<cv::Vec3i>( std::vector<cv::Vec3i> other );
 lua:
-    VectorOfVec3i.new( other ) -> retval
-    VectorOfVec3i( other ) -> retval
+    VectorOfVec3i.new( other ) -> <std::vector<cv::Vec3i> object>
+    VectorOfVec3i( other ) -> <std::vector<cv::Vec3i> object>
+```
+
+### VectorOfVec3i.sol::meta\_function::index
+
+```cpp
+cv::Vec3i VectorOfVec3i::at( size_t index );
+lua:
+    oVectorOfVec3i:__index( index ) -> retval
+```
+
+```cpp
+cv::Vec3i VectorOfVec3i::at( const std::string& index );
+lua:
+    oVectorOfVec3i:__index( index ) -> retval
+```
+
+### VectorOfVec3i.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVec3i::size();
+lua:
+    oVectorOfVec3i:__len() -> retval
+```
+
+### VectorOfVec3i.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVec3i::sol::meta_function::new_index( size_t    index,
+                                                   cv::Vec3i value );
+lua:
+    oVectorOfVec3i:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVec3i::sol::meta_function::new_index( const std::string& index,
+                                                   cv::Vec3i          value );
+lua:
+    oVectorOfVec3i:__newindex( index, value ) -> None
+```
+
+### VectorOfVec3i.table
+
+```cpp
+void VectorOfVec3i::table();
+lua:
+    oVectorOfVec3i:table() -> None
 ```
 
 ## VectorOfVec3s
@@ -6819,24 +10677,70 @@ lua:
 ### VectorOfVec3s.new
 
 ```cpp
-std::vector<cv::Vec3s> VectorOfVec3s::new();
+std::vector<cv::Vec3s>();
 lua:
-    VectorOfVec3s.new() -> retval
-    VectorOfVec3s() -> retval
+    VectorOfVec3s.new() -> <std::vector<cv::Vec3s> object>
+    VectorOfVec3s() -> <std::vector<cv::Vec3s> object>
 ```
 
 ```cpp
-std::vector<cv::Vec3s> VectorOfVec3s::new( size_t size );
+std::vector<cv::Vec3s>( size_t size );
 lua:
-    VectorOfVec3s.new( size ) -> retval
-    VectorOfVec3s( size ) -> retval
+    VectorOfVec3s.new( size ) -> <std::vector<cv::Vec3s> object>
+    VectorOfVec3s( size ) -> <std::vector<cv::Vec3s> object>
 ```
 
 ```cpp
-std::vector<cv::Vec3s> VectorOfVec3s::new( std::vector<cv::Vec3s> other );
+std::vector<cv::Vec3s>( std::vector<cv::Vec3s> other );
 lua:
-    VectorOfVec3s.new( other ) -> retval
-    VectorOfVec3s( other ) -> retval
+    VectorOfVec3s.new( other ) -> <std::vector<cv::Vec3s> object>
+    VectorOfVec3s( other ) -> <std::vector<cv::Vec3s> object>
+```
+
+### VectorOfVec3s.sol::meta\_function::index
+
+```cpp
+cv::Vec3s VectorOfVec3s::at( size_t index );
+lua:
+    oVectorOfVec3s:__index( index ) -> retval
+```
+
+```cpp
+cv::Vec3s VectorOfVec3s::at( const std::string& index );
+lua:
+    oVectorOfVec3s:__index( index ) -> retval
+```
+
+### VectorOfVec3s.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVec3s::size();
+lua:
+    oVectorOfVec3s:__len() -> retval
+```
+
+### VectorOfVec3s.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVec3s::sol::meta_function::new_index( size_t    index,
+                                                   cv::Vec3s value );
+lua:
+    oVectorOfVec3s:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVec3s::sol::meta_function::new_index( const std::string& index,
+                                                   cv::Vec3s          value );
+lua:
+    oVectorOfVec3s:__newindex( index, value ) -> None
+```
+
+### VectorOfVec3s.table
+
+```cpp
+void VectorOfVec3s::table();
+lua:
+    oVectorOfVec3s:table() -> None
 ```
 
 ## VectorOfVec3w
@@ -6844,24 +10748,70 @@ lua:
 ### VectorOfVec3w.new
 
 ```cpp
-std::vector<cv::Vec3w> VectorOfVec3w::new();
+std::vector<cv::Vec3w>();
 lua:
-    VectorOfVec3w.new() -> retval
-    VectorOfVec3w() -> retval
+    VectorOfVec3w.new() -> <std::vector<cv::Vec3w> object>
+    VectorOfVec3w() -> <std::vector<cv::Vec3w> object>
 ```
 
 ```cpp
-std::vector<cv::Vec3w> VectorOfVec3w::new( size_t size );
+std::vector<cv::Vec3w>( size_t size );
 lua:
-    VectorOfVec3w.new( size ) -> retval
-    VectorOfVec3w( size ) -> retval
+    VectorOfVec3w.new( size ) -> <std::vector<cv::Vec3w> object>
+    VectorOfVec3w( size ) -> <std::vector<cv::Vec3w> object>
 ```
 
 ```cpp
-std::vector<cv::Vec3w> VectorOfVec3w::new( std::vector<cv::Vec3w> other );
+std::vector<cv::Vec3w>( std::vector<cv::Vec3w> other );
 lua:
-    VectorOfVec3w.new( other ) -> retval
-    VectorOfVec3w( other ) -> retval
+    VectorOfVec3w.new( other ) -> <std::vector<cv::Vec3w> object>
+    VectorOfVec3w( other ) -> <std::vector<cv::Vec3w> object>
+```
+
+### VectorOfVec3w.sol::meta\_function::index
+
+```cpp
+cv::Vec3w VectorOfVec3w::at( size_t index );
+lua:
+    oVectorOfVec3w:__index( index ) -> retval
+```
+
+```cpp
+cv::Vec3w VectorOfVec3w::at( const std::string& index );
+lua:
+    oVectorOfVec3w:__index( index ) -> retval
+```
+
+### VectorOfVec3w.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVec3w::size();
+lua:
+    oVectorOfVec3w:__len() -> retval
+```
+
+### VectorOfVec3w.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVec3w::sol::meta_function::new_index( size_t    index,
+                                                   cv::Vec3w value );
+lua:
+    oVectorOfVec3w:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVec3w::sol::meta_function::new_index( const std::string& index,
+                                                   cv::Vec3w          value );
+lua:
+    oVectorOfVec3w:__newindex( index, value ) -> None
+```
+
+### VectorOfVec3w.table
+
+```cpp
+void VectorOfVec3w::table();
+lua:
+    oVectorOfVec3w:table() -> None
 ```
 
 ## VectorOfVec4b
@@ -6869,24 +10819,70 @@ lua:
 ### VectorOfVec4b.new
 
 ```cpp
-std::vector<cv::Vec4b> VectorOfVec4b::new();
+std::vector<cv::Vec4b>();
 lua:
-    VectorOfVec4b.new() -> retval
-    VectorOfVec4b() -> retval
+    VectorOfVec4b.new() -> <std::vector<cv::Vec4b> object>
+    VectorOfVec4b() -> <std::vector<cv::Vec4b> object>
 ```
 
 ```cpp
-std::vector<cv::Vec4b> VectorOfVec4b::new( size_t size );
+std::vector<cv::Vec4b>( size_t size );
 lua:
-    VectorOfVec4b.new( size ) -> retval
-    VectorOfVec4b( size ) -> retval
+    VectorOfVec4b.new( size ) -> <std::vector<cv::Vec4b> object>
+    VectorOfVec4b( size ) -> <std::vector<cv::Vec4b> object>
 ```
 
 ```cpp
-std::vector<cv::Vec4b> VectorOfVec4b::new( std::vector<cv::Vec4b> other );
+std::vector<cv::Vec4b>( std::vector<cv::Vec4b> other );
 lua:
-    VectorOfVec4b.new( other ) -> retval
-    VectorOfVec4b( other ) -> retval
+    VectorOfVec4b.new( other ) -> <std::vector<cv::Vec4b> object>
+    VectorOfVec4b( other ) -> <std::vector<cv::Vec4b> object>
+```
+
+### VectorOfVec4b.sol::meta\_function::index
+
+```cpp
+cv::Vec4b VectorOfVec4b::at( size_t index );
+lua:
+    oVectorOfVec4b:__index( index ) -> retval
+```
+
+```cpp
+cv::Vec4b VectorOfVec4b::at( const std::string& index );
+lua:
+    oVectorOfVec4b:__index( index ) -> retval
+```
+
+### VectorOfVec4b.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVec4b::size();
+lua:
+    oVectorOfVec4b:__len() -> retval
+```
+
+### VectorOfVec4b.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVec4b::sol::meta_function::new_index( size_t    index,
+                                                   cv::Vec4b value );
+lua:
+    oVectorOfVec4b:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVec4b::sol::meta_function::new_index( const std::string& index,
+                                                   cv::Vec4b          value );
+lua:
+    oVectorOfVec4b:__newindex( index, value ) -> None
+```
+
+### VectorOfVec4b.table
+
+```cpp
+void VectorOfVec4b::table();
+lua:
+    oVectorOfVec4b:table() -> None
 ```
 
 ## VectorOfVec4d
@@ -6894,24 +10890,70 @@ lua:
 ### VectorOfVec4d.new
 
 ```cpp
-std::vector<cv::Vec4d> VectorOfVec4d::new();
+std::vector<cv::Vec4d>();
 lua:
-    VectorOfVec4d.new() -> retval
-    VectorOfVec4d() -> retval
+    VectorOfVec4d.new() -> <std::vector<cv::Vec4d> object>
+    VectorOfVec4d() -> <std::vector<cv::Vec4d> object>
 ```
 
 ```cpp
-std::vector<cv::Vec4d> VectorOfVec4d::new( size_t size );
+std::vector<cv::Vec4d>( size_t size );
 lua:
-    VectorOfVec4d.new( size ) -> retval
-    VectorOfVec4d( size ) -> retval
+    VectorOfVec4d.new( size ) -> <std::vector<cv::Vec4d> object>
+    VectorOfVec4d( size ) -> <std::vector<cv::Vec4d> object>
 ```
 
 ```cpp
-std::vector<cv::Vec4d> VectorOfVec4d::new( std::vector<cv::Vec4d> other );
+std::vector<cv::Vec4d>( std::vector<cv::Vec4d> other );
 lua:
-    VectorOfVec4d.new( other ) -> retval
-    VectorOfVec4d( other ) -> retval
+    VectorOfVec4d.new( other ) -> <std::vector<cv::Vec4d> object>
+    VectorOfVec4d( other ) -> <std::vector<cv::Vec4d> object>
+```
+
+### VectorOfVec4d.sol::meta\_function::index
+
+```cpp
+cv::Vec4d VectorOfVec4d::at( size_t index );
+lua:
+    oVectorOfVec4d:__index( index ) -> retval
+```
+
+```cpp
+cv::Vec4d VectorOfVec4d::at( const std::string& index );
+lua:
+    oVectorOfVec4d:__index( index ) -> retval
+```
+
+### VectorOfVec4d.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVec4d::size();
+lua:
+    oVectorOfVec4d:__len() -> retval
+```
+
+### VectorOfVec4d.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVec4d::sol::meta_function::new_index( size_t    index,
+                                                   cv::Vec4d value );
+lua:
+    oVectorOfVec4d:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVec4d::sol::meta_function::new_index( const std::string& index,
+                                                   cv::Vec4d          value );
+lua:
+    oVectorOfVec4d:__newindex( index, value ) -> None
+```
+
+### VectorOfVec4d.table
+
+```cpp
+void VectorOfVec4d::table();
+lua:
+    oVectorOfVec4d:table() -> None
 ```
 
 ## VectorOfVec4f
@@ -6919,24 +10961,70 @@ lua:
 ### VectorOfVec4f.new
 
 ```cpp
-std::vector<cv::Vec4f> VectorOfVec4f::new();
+std::vector<cv::Vec4f>();
 lua:
-    VectorOfVec4f.new() -> retval
-    VectorOfVec4f() -> retval
+    VectorOfVec4f.new() -> <std::vector<cv::Vec4f> object>
+    VectorOfVec4f() -> <std::vector<cv::Vec4f> object>
 ```
 
 ```cpp
-std::vector<cv::Vec4f> VectorOfVec4f::new( size_t size );
+std::vector<cv::Vec4f>( size_t size );
 lua:
-    VectorOfVec4f.new( size ) -> retval
-    VectorOfVec4f( size ) -> retval
+    VectorOfVec4f.new( size ) -> <std::vector<cv::Vec4f> object>
+    VectorOfVec4f( size ) -> <std::vector<cv::Vec4f> object>
 ```
 
 ```cpp
-std::vector<cv::Vec4f> VectorOfVec4f::new( std::vector<cv::Vec4f> other );
+std::vector<cv::Vec4f>( std::vector<cv::Vec4f> other );
 lua:
-    VectorOfVec4f.new( other ) -> retval
-    VectorOfVec4f( other ) -> retval
+    VectorOfVec4f.new( other ) -> <std::vector<cv::Vec4f> object>
+    VectorOfVec4f( other ) -> <std::vector<cv::Vec4f> object>
+```
+
+### VectorOfVec4f.sol::meta\_function::index
+
+```cpp
+cv::Vec4f VectorOfVec4f::at( size_t index );
+lua:
+    oVectorOfVec4f:__index( index ) -> retval
+```
+
+```cpp
+cv::Vec4f VectorOfVec4f::at( const std::string& index );
+lua:
+    oVectorOfVec4f:__index( index ) -> retval
+```
+
+### VectorOfVec4f.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVec4f::size();
+lua:
+    oVectorOfVec4f:__len() -> retval
+```
+
+### VectorOfVec4f.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVec4f::sol::meta_function::new_index( size_t    index,
+                                                   cv::Vec4f value );
+lua:
+    oVectorOfVec4f:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVec4f::sol::meta_function::new_index( const std::string& index,
+                                                   cv::Vec4f          value );
+lua:
+    oVectorOfVec4f:__newindex( index, value ) -> None
+```
+
+### VectorOfVec4f.table
+
+```cpp
+void VectorOfVec4f::table();
+lua:
+    oVectorOfVec4f:table() -> None
 ```
 
 ## VectorOfVec4i
@@ -6944,24 +11032,70 @@ lua:
 ### VectorOfVec4i.new
 
 ```cpp
-std::vector<cv::Vec4i> VectorOfVec4i::new();
+std::vector<cv::Vec4i>();
 lua:
-    VectorOfVec4i.new() -> retval
-    VectorOfVec4i() -> retval
+    VectorOfVec4i.new() -> <std::vector<cv::Vec4i> object>
+    VectorOfVec4i() -> <std::vector<cv::Vec4i> object>
 ```
 
 ```cpp
-std::vector<cv::Vec4i> VectorOfVec4i::new( size_t size );
+std::vector<cv::Vec4i>( size_t size );
 lua:
-    VectorOfVec4i.new( size ) -> retval
-    VectorOfVec4i( size ) -> retval
+    VectorOfVec4i.new( size ) -> <std::vector<cv::Vec4i> object>
+    VectorOfVec4i( size ) -> <std::vector<cv::Vec4i> object>
 ```
 
 ```cpp
-std::vector<cv::Vec4i> VectorOfVec4i::new( std::vector<cv::Vec4i> other );
+std::vector<cv::Vec4i>( std::vector<cv::Vec4i> other );
 lua:
-    VectorOfVec4i.new( other ) -> retval
-    VectorOfVec4i( other ) -> retval
+    VectorOfVec4i.new( other ) -> <std::vector<cv::Vec4i> object>
+    VectorOfVec4i( other ) -> <std::vector<cv::Vec4i> object>
+```
+
+### VectorOfVec4i.sol::meta\_function::index
+
+```cpp
+cv::Vec4i VectorOfVec4i::at( size_t index );
+lua:
+    oVectorOfVec4i:__index( index ) -> retval
+```
+
+```cpp
+cv::Vec4i VectorOfVec4i::at( const std::string& index );
+lua:
+    oVectorOfVec4i:__index( index ) -> retval
+```
+
+### VectorOfVec4i.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVec4i::size();
+lua:
+    oVectorOfVec4i:__len() -> retval
+```
+
+### VectorOfVec4i.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVec4i::sol::meta_function::new_index( size_t    index,
+                                                   cv::Vec4i value );
+lua:
+    oVectorOfVec4i:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVec4i::sol::meta_function::new_index( const std::string& index,
+                                                   cv::Vec4i          value );
+lua:
+    oVectorOfVec4i:__newindex( index, value ) -> None
+```
+
+### VectorOfVec4i.table
+
+```cpp
+void VectorOfVec4i::table();
+lua:
+    oVectorOfVec4i:table() -> None
 ```
 
 ## VectorOfVec4s
@@ -6969,24 +11103,70 @@ lua:
 ### VectorOfVec4s.new
 
 ```cpp
-std::vector<cv::Vec4s> VectorOfVec4s::new();
+std::vector<cv::Vec4s>();
 lua:
-    VectorOfVec4s.new() -> retval
-    VectorOfVec4s() -> retval
+    VectorOfVec4s.new() -> <std::vector<cv::Vec4s> object>
+    VectorOfVec4s() -> <std::vector<cv::Vec4s> object>
 ```
 
 ```cpp
-std::vector<cv::Vec4s> VectorOfVec4s::new( size_t size );
+std::vector<cv::Vec4s>( size_t size );
 lua:
-    VectorOfVec4s.new( size ) -> retval
-    VectorOfVec4s( size ) -> retval
+    VectorOfVec4s.new( size ) -> <std::vector<cv::Vec4s> object>
+    VectorOfVec4s( size ) -> <std::vector<cv::Vec4s> object>
 ```
 
 ```cpp
-std::vector<cv::Vec4s> VectorOfVec4s::new( std::vector<cv::Vec4s> other );
+std::vector<cv::Vec4s>( std::vector<cv::Vec4s> other );
 lua:
-    VectorOfVec4s.new( other ) -> retval
-    VectorOfVec4s( other ) -> retval
+    VectorOfVec4s.new( other ) -> <std::vector<cv::Vec4s> object>
+    VectorOfVec4s( other ) -> <std::vector<cv::Vec4s> object>
+```
+
+### VectorOfVec4s.sol::meta\_function::index
+
+```cpp
+cv::Vec4s VectorOfVec4s::at( size_t index );
+lua:
+    oVectorOfVec4s:__index( index ) -> retval
+```
+
+```cpp
+cv::Vec4s VectorOfVec4s::at( const std::string& index );
+lua:
+    oVectorOfVec4s:__index( index ) -> retval
+```
+
+### VectorOfVec4s.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVec4s::size();
+lua:
+    oVectorOfVec4s:__len() -> retval
+```
+
+### VectorOfVec4s.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVec4s::sol::meta_function::new_index( size_t    index,
+                                                   cv::Vec4s value );
+lua:
+    oVectorOfVec4s:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVec4s::sol::meta_function::new_index( const std::string& index,
+                                                   cv::Vec4s          value );
+lua:
+    oVectorOfVec4s:__newindex( index, value ) -> None
+```
+
+### VectorOfVec4s.table
+
+```cpp
+void VectorOfVec4s::table();
+lua:
+    oVectorOfVec4s:table() -> None
 ```
 
 ## VectorOfVec4w
@@ -6994,24 +11174,70 @@ lua:
 ### VectorOfVec4w.new
 
 ```cpp
-std::vector<cv::Vec4w> VectorOfVec4w::new();
+std::vector<cv::Vec4w>();
 lua:
-    VectorOfVec4w.new() -> retval
-    VectorOfVec4w() -> retval
+    VectorOfVec4w.new() -> <std::vector<cv::Vec4w> object>
+    VectorOfVec4w() -> <std::vector<cv::Vec4w> object>
 ```
 
 ```cpp
-std::vector<cv::Vec4w> VectorOfVec4w::new( size_t size );
+std::vector<cv::Vec4w>( size_t size );
 lua:
-    VectorOfVec4w.new( size ) -> retval
-    VectorOfVec4w( size ) -> retval
+    VectorOfVec4w.new( size ) -> <std::vector<cv::Vec4w> object>
+    VectorOfVec4w( size ) -> <std::vector<cv::Vec4w> object>
 ```
 
 ```cpp
-std::vector<cv::Vec4w> VectorOfVec4w::new( std::vector<cv::Vec4w> other );
+std::vector<cv::Vec4w>( std::vector<cv::Vec4w> other );
 lua:
-    VectorOfVec4w.new( other ) -> retval
-    VectorOfVec4w( other ) -> retval
+    VectorOfVec4w.new( other ) -> <std::vector<cv::Vec4w> object>
+    VectorOfVec4w( other ) -> <std::vector<cv::Vec4w> object>
+```
+
+### VectorOfVec4w.sol::meta\_function::index
+
+```cpp
+cv::Vec4w VectorOfVec4w::at( size_t index );
+lua:
+    oVectorOfVec4w:__index( index ) -> retval
+```
+
+```cpp
+cv::Vec4w VectorOfVec4w::at( const std::string& index );
+lua:
+    oVectorOfVec4w:__index( index ) -> retval
+```
+
+### VectorOfVec4w.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVec4w::size();
+lua:
+    oVectorOfVec4w:__len() -> retval
+```
+
+### VectorOfVec4w.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVec4w::sol::meta_function::new_index( size_t    index,
+                                                   cv::Vec4w value );
+lua:
+    oVectorOfVec4w:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVec4w::sol::meta_function::new_index( const std::string& index,
+                                                   cv::Vec4w          value );
+lua:
+    oVectorOfVec4w:__newindex( index, value ) -> None
+```
+
+### VectorOfVec4w.table
+
+```cpp
+void VectorOfVec4w::table();
+lua:
+    oVectorOfVec4w:table() -> None
 ```
 
 ## VectorOfVec6d
@@ -7019,24 +11245,70 @@ lua:
 ### VectorOfVec6d.new
 
 ```cpp
-std::vector<cv::Vec6d> VectorOfVec6d::new();
+std::vector<cv::Vec6d>();
 lua:
-    VectorOfVec6d.new() -> retval
-    VectorOfVec6d() -> retval
+    VectorOfVec6d.new() -> <std::vector<cv::Vec6d> object>
+    VectorOfVec6d() -> <std::vector<cv::Vec6d> object>
 ```
 
 ```cpp
-std::vector<cv::Vec6d> VectorOfVec6d::new( size_t size );
+std::vector<cv::Vec6d>( size_t size );
 lua:
-    VectorOfVec6d.new( size ) -> retval
-    VectorOfVec6d( size ) -> retval
+    VectorOfVec6d.new( size ) -> <std::vector<cv::Vec6d> object>
+    VectorOfVec6d( size ) -> <std::vector<cv::Vec6d> object>
 ```
 
 ```cpp
-std::vector<cv::Vec6d> VectorOfVec6d::new( std::vector<cv::Vec6d> other );
+std::vector<cv::Vec6d>( std::vector<cv::Vec6d> other );
 lua:
-    VectorOfVec6d.new( other ) -> retval
-    VectorOfVec6d( other ) -> retval
+    VectorOfVec6d.new( other ) -> <std::vector<cv::Vec6d> object>
+    VectorOfVec6d( other ) -> <std::vector<cv::Vec6d> object>
+```
+
+### VectorOfVec6d.sol::meta\_function::index
+
+```cpp
+cv::Vec6d VectorOfVec6d::at( size_t index );
+lua:
+    oVectorOfVec6d:__index( index ) -> retval
+```
+
+```cpp
+cv::Vec6d VectorOfVec6d::at( const std::string& index );
+lua:
+    oVectorOfVec6d:__index( index ) -> retval
+```
+
+### VectorOfVec6d.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVec6d::size();
+lua:
+    oVectorOfVec6d:__len() -> retval
+```
+
+### VectorOfVec6d.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVec6d::sol::meta_function::new_index( size_t    index,
+                                                   cv::Vec6d value );
+lua:
+    oVectorOfVec6d:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVec6d::sol::meta_function::new_index( const std::string& index,
+                                                   cv::Vec6d          value );
+lua:
+    oVectorOfVec6d:__newindex( index, value ) -> None
+```
+
+### VectorOfVec6d.table
+
+```cpp
+void VectorOfVec6d::table();
+lua:
+    oVectorOfVec6d:table() -> None
 ```
 
 ## VectorOfVec6f
@@ -7044,24 +11316,70 @@ lua:
 ### VectorOfVec6f.new
 
 ```cpp
-std::vector<cv::Vec6f> VectorOfVec6f::new();
+std::vector<cv::Vec6f>();
 lua:
-    VectorOfVec6f.new() -> retval
-    VectorOfVec6f() -> retval
+    VectorOfVec6f.new() -> <std::vector<cv::Vec6f> object>
+    VectorOfVec6f() -> <std::vector<cv::Vec6f> object>
 ```
 
 ```cpp
-std::vector<cv::Vec6f> VectorOfVec6f::new( size_t size );
+std::vector<cv::Vec6f>( size_t size );
 lua:
-    VectorOfVec6f.new( size ) -> retval
-    VectorOfVec6f( size ) -> retval
+    VectorOfVec6f.new( size ) -> <std::vector<cv::Vec6f> object>
+    VectorOfVec6f( size ) -> <std::vector<cv::Vec6f> object>
 ```
 
 ```cpp
-std::vector<cv::Vec6f> VectorOfVec6f::new( std::vector<cv::Vec6f> other );
+std::vector<cv::Vec6f>( std::vector<cv::Vec6f> other );
 lua:
-    VectorOfVec6f.new( other ) -> retval
-    VectorOfVec6f( other ) -> retval
+    VectorOfVec6f.new( other ) -> <std::vector<cv::Vec6f> object>
+    VectorOfVec6f( other ) -> <std::vector<cv::Vec6f> object>
+```
+
+### VectorOfVec6f.sol::meta\_function::index
+
+```cpp
+cv::Vec6f VectorOfVec6f::at( size_t index );
+lua:
+    oVectorOfVec6f:__index( index ) -> retval
+```
+
+```cpp
+cv::Vec6f VectorOfVec6f::at( const std::string& index );
+lua:
+    oVectorOfVec6f:__index( index ) -> retval
+```
+
+### VectorOfVec6f.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVec6f::size();
+lua:
+    oVectorOfVec6f:__len() -> retval
+```
+
+### VectorOfVec6f.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVec6f::sol::meta_function::new_index( size_t    index,
+                                                   cv::Vec6f value );
+lua:
+    oVectorOfVec6f:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVec6f::sol::meta_function::new_index( const std::string& index,
+                                                   cv::Vec6f          value );
+lua:
+    oVectorOfVec6f:__newindex( index, value ) -> None
+```
+
+### VectorOfVec6f.table
+
+```cpp
+void VectorOfVec6f::table();
+lua:
+    oVectorOfVec6f:table() -> None
 ```
 
 ## VectorOfVec6i
@@ -7069,24 +11387,70 @@ lua:
 ### VectorOfVec6i.new
 
 ```cpp
-std::vector<cv::Vec6i> VectorOfVec6i::new();
+std::vector<cv::Vec6i>();
 lua:
-    VectorOfVec6i.new() -> retval
-    VectorOfVec6i() -> retval
+    VectorOfVec6i.new() -> <std::vector<cv::Vec6i> object>
+    VectorOfVec6i() -> <std::vector<cv::Vec6i> object>
 ```
 
 ```cpp
-std::vector<cv::Vec6i> VectorOfVec6i::new( size_t size );
+std::vector<cv::Vec6i>( size_t size );
 lua:
-    VectorOfVec6i.new( size ) -> retval
-    VectorOfVec6i( size ) -> retval
+    VectorOfVec6i.new( size ) -> <std::vector<cv::Vec6i> object>
+    VectorOfVec6i( size ) -> <std::vector<cv::Vec6i> object>
 ```
 
 ```cpp
-std::vector<cv::Vec6i> VectorOfVec6i::new( std::vector<cv::Vec6i> other );
+std::vector<cv::Vec6i>( std::vector<cv::Vec6i> other );
 lua:
-    VectorOfVec6i.new( other ) -> retval
-    VectorOfVec6i( other ) -> retval
+    VectorOfVec6i.new( other ) -> <std::vector<cv::Vec6i> object>
+    VectorOfVec6i( other ) -> <std::vector<cv::Vec6i> object>
+```
+
+### VectorOfVec6i.sol::meta\_function::index
+
+```cpp
+cv::Vec6i VectorOfVec6i::at( size_t index );
+lua:
+    oVectorOfVec6i:__index( index ) -> retval
+```
+
+```cpp
+cv::Vec6i VectorOfVec6i::at( const std::string& index );
+lua:
+    oVectorOfVec6i:__index( index ) -> retval
+```
+
+### VectorOfVec6i.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVec6i::size();
+lua:
+    oVectorOfVec6i:__len() -> retval
+```
+
+### VectorOfVec6i.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVec6i::sol::meta_function::new_index( size_t    index,
+                                                   cv::Vec6i value );
+lua:
+    oVectorOfVec6i:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVec6i::sol::meta_function::new_index( const std::string& index,
+                                                   cv::Vec6i          value );
+lua:
+    oVectorOfVec6i:__newindex( index, value ) -> None
+```
+
+### VectorOfVec6i.table
+
+```cpp
+void VectorOfVec6i::table();
+lua:
+    oVectorOfVec6i:table() -> None
 ```
 
 ## VectorOfVec8i
@@ -7094,24 +11458,141 @@ lua:
 ### VectorOfVec8i.new
 
 ```cpp
-std::vector<cv::Vec8i> VectorOfVec8i::new();
+std::vector<cv::Vec8i>();
 lua:
-    VectorOfVec8i.new() -> retval
-    VectorOfVec8i() -> retval
+    VectorOfVec8i.new() -> <std::vector<cv::Vec8i> object>
+    VectorOfVec8i() -> <std::vector<cv::Vec8i> object>
 ```
 
 ```cpp
-std::vector<cv::Vec8i> VectorOfVec8i::new( size_t size );
+std::vector<cv::Vec8i>( size_t size );
 lua:
-    VectorOfVec8i.new( size ) -> retval
-    VectorOfVec8i( size ) -> retval
+    VectorOfVec8i.new( size ) -> <std::vector<cv::Vec8i> object>
+    VectorOfVec8i( size ) -> <std::vector<cv::Vec8i> object>
 ```
 
 ```cpp
-std::vector<cv::Vec8i> VectorOfVec8i::new( std::vector<cv::Vec8i> other );
+std::vector<cv::Vec8i>( std::vector<cv::Vec8i> other );
 lua:
-    VectorOfVec8i.new( other ) -> retval
-    VectorOfVec8i( other ) -> retval
+    VectorOfVec8i.new( other ) -> <std::vector<cv::Vec8i> object>
+    VectorOfVec8i( other ) -> <std::vector<cv::Vec8i> object>
+```
+
+### VectorOfVec8i.sol::meta\_function::index
+
+```cpp
+cv::Vec8i VectorOfVec8i::at( size_t index );
+lua:
+    oVectorOfVec8i:__index( index ) -> retval
+```
+
+```cpp
+cv::Vec8i VectorOfVec8i::at( const std::string& index );
+lua:
+    oVectorOfVec8i:__index( index ) -> retval
+```
+
+### VectorOfVec8i.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVec8i::size();
+lua:
+    oVectorOfVec8i:__len() -> retval
+```
+
+### VectorOfVec8i.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVec8i::sol::meta_function::new_index( size_t    index,
+                                                   cv::Vec8i value );
+lua:
+    oVectorOfVec8i:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVec8i::sol::meta_function::new_index( const std::string& index,
+                                                   cv::Vec8i          value );
+lua:
+    oVectorOfVec8i:__newindex( index, value ) -> None
+```
+
+### VectorOfVec8i.table
+
+```cpp
+void VectorOfVec8i::table();
+lua:
+    oVectorOfVec8i:table() -> None
+```
+
+## VectorOfVectorOfBool
+
+### VectorOfVectorOfBool.new
+
+```cpp
+std::vector<std::vector<bool>>();
+lua:
+    VectorOfVectorOfBool.new() -> <std::vector<std::vector<bool>> object>
+    VectorOfVectorOfBool() -> <std::vector<std::vector<bool>> object>
+```
+
+```cpp
+std::vector<std::vector<bool>>( size_t size );
+lua:
+    VectorOfVectorOfBool.new( size ) -> <std::vector<std::vector<bool>> object>
+    VectorOfVectorOfBool( size ) -> <std::vector<std::vector<bool>> object>
+```
+
+```cpp
+std::vector<std::vector<bool>>( std::vector<std::vector<bool>> other );
+lua:
+    VectorOfVectorOfBool.new( other ) -> <std::vector<std::vector<bool>> object>
+    VectorOfVectorOfBool( other ) -> <std::vector<std::vector<bool>> object>
+```
+
+### VectorOfVectorOfBool.sol::meta\_function::index
+
+```cpp
+std::vector<bool> VectorOfVectorOfBool::at( size_t index );
+lua:
+    oVectorOfVectorOfBool:__index( index ) -> retval
+```
+
+```cpp
+std::vector<bool> VectorOfVectorOfBool::at( const std::string& index );
+lua:
+    oVectorOfVectorOfBool:__index( index ) -> retval
+```
+
+### VectorOfVectorOfBool.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfBool::size();
+lua:
+    oVectorOfVectorOfBool:__len() -> retval
+```
+
+### VectorOfVectorOfBool.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfBool::sol::meta_function::new_index( size_t            index,
+                                                          std::vector<bool> value );
+lua:
+    oVectorOfVectorOfBool:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfBool::sol::meta_function::new_index( const std::string& index,
+                                                          std::vector<bool>  value );
+lua:
+    oVectorOfVectorOfBool:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfBool.table
+
+```cpp
+void VectorOfVectorOfBool::table();
+lua:
+    oVectorOfVectorOfBool:table() -> None
 ```
 
 ## VectorOfVectorOfChar
@@ -7119,24 +11600,70 @@ lua:
 ### VectorOfVectorOfChar.new
 
 ```cpp
-std::vector<std::vector<char>> VectorOfVectorOfChar::new();
+std::vector<std::vector<char>>();
 lua:
-    VectorOfVectorOfChar.new() -> retval
-    VectorOfVectorOfChar() -> retval
+    VectorOfVectorOfChar.new() -> <std::vector<std::vector<char>> object>
+    VectorOfVectorOfChar() -> <std::vector<std::vector<char>> object>
 ```
 
 ```cpp
-std::vector<std::vector<char>> VectorOfVectorOfChar::new( size_t size );
+std::vector<std::vector<char>>( size_t size );
 lua:
-    VectorOfVectorOfChar.new( size ) -> retval
-    VectorOfVectorOfChar( size ) -> retval
+    VectorOfVectorOfChar.new( size ) -> <std::vector<std::vector<char>> object>
+    VectorOfVectorOfChar( size ) -> <std::vector<std::vector<char>> object>
 ```
 
 ```cpp
-std::vector<std::vector<char>> VectorOfVectorOfChar::new( std::vector<std::vector<char>> other );
+std::vector<std::vector<char>>( std::vector<std::vector<char>> other );
 lua:
-    VectorOfVectorOfChar.new( other ) -> retval
-    VectorOfVectorOfChar( other ) -> retval
+    VectorOfVectorOfChar.new( other ) -> <std::vector<std::vector<char>> object>
+    VectorOfVectorOfChar( other ) -> <std::vector<std::vector<char>> object>
+```
+
+### VectorOfVectorOfChar.sol::meta\_function::index
+
+```cpp
+std::vector<char> VectorOfVectorOfChar::at( size_t index );
+lua:
+    oVectorOfVectorOfChar:__index( index ) -> retval
+```
+
+```cpp
+std::vector<char> VectorOfVectorOfChar::at( const std::string& index );
+lua:
+    oVectorOfVectorOfChar:__index( index ) -> retval
+```
+
+### VectorOfVectorOfChar.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfChar::size();
+lua:
+    oVectorOfVectorOfChar:__len() -> retval
+```
+
+### VectorOfVectorOfChar.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfChar::sol::meta_function::new_index( size_t            index,
+                                                          std::vector<char> value );
+lua:
+    oVectorOfVectorOfChar:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfChar::sol::meta_function::new_index( const std::string& index,
+                                                          std::vector<char>  value );
+lua:
+    oVectorOfVectorOfChar:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfChar.table
+
+```cpp
+void VectorOfVectorOfChar::table();
+lua:
+    oVectorOfVectorOfChar:table() -> None
 ```
 
 ## VectorOfVectorOfDMatch
@@ -7144,24 +11671,212 @@ lua:
 ### VectorOfVectorOfDMatch.new
 
 ```cpp
-std::vector<std::vector<cv::DMatch>> VectorOfVectorOfDMatch::new();
+std::vector<std::vector<cv::DMatch>>();
 lua:
-    VectorOfVectorOfDMatch.new() -> retval
-    VectorOfVectorOfDMatch() -> retval
+    VectorOfVectorOfDMatch.new() -> <std::vector<std::vector<cv::DMatch>> object>
+    VectorOfVectorOfDMatch() -> <std::vector<std::vector<cv::DMatch>> object>
 ```
 
 ```cpp
-std::vector<std::vector<cv::DMatch>> VectorOfVectorOfDMatch::new( size_t size );
+std::vector<std::vector<cv::DMatch>>( size_t size );
 lua:
-    VectorOfVectorOfDMatch.new( size ) -> retval
-    VectorOfVectorOfDMatch( size ) -> retval
+    VectorOfVectorOfDMatch.new( size ) -> <std::vector<std::vector<cv::DMatch>> object>
+    VectorOfVectorOfDMatch( size ) -> <std::vector<std::vector<cv::DMatch>> object>
 ```
 
 ```cpp
-std::vector<std::vector<cv::DMatch>> VectorOfVectorOfDMatch::new( std::vector<std::vector<cv::DMatch>> other );
+std::vector<std::vector<cv::DMatch>>( std::vector<std::vector<cv::DMatch>> other );
 lua:
-    VectorOfVectorOfDMatch.new( other ) -> retval
-    VectorOfVectorOfDMatch( other ) -> retval
+    VectorOfVectorOfDMatch.new( other ) -> <std::vector<std::vector<cv::DMatch>> object>
+    VectorOfVectorOfDMatch( other ) -> <std::vector<std::vector<cv::DMatch>> object>
+```
+
+### VectorOfVectorOfDMatch.sol::meta\_function::index
+
+```cpp
+std::vector<cv::DMatch> VectorOfVectorOfDMatch::at( size_t index );
+lua:
+    oVectorOfVectorOfDMatch:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::DMatch> VectorOfVectorOfDMatch::at( const std::string& index );
+lua:
+    oVectorOfVectorOfDMatch:__index( index ) -> retval
+```
+
+### VectorOfVectorOfDMatch.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfDMatch::size();
+lua:
+    oVectorOfVectorOfDMatch:__len() -> retval
+```
+
+### VectorOfVectorOfDMatch.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfDMatch::sol::meta_function::new_index( size_t                  index,
+                                                            std::vector<cv::DMatch> value );
+lua:
+    oVectorOfVectorOfDMatch:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfDMatch::sol::meta_function::new_index( const std::string&      index,
+                                                            std::vector<cv::DMatch> value );
+lua:
+    oVectorOfVectorOfDMatch:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfDMatch.table
+
+```cpp
+void VectorOfVectorOfDMatch::table();
+lua:
+    oVectorOfVectorOfDMatch:table() -> None
+```
+
+## VectorOfVectorOfDouble
+
+### VectorOfVectorOfDouble.new
+
+```cpp
+std::vector<std::vector<double>>();
+lua:
+    VectorOfVectorOfDouble.new() -> <std::vector<std::vector<double>> object>
+    VectorOfVectorOfDouble() -> <std::vector<std::vector<double>> object>
+```
+
+```cpp
+std::vector<std::vector<double>>( size_t size );
+lua:
+    VectorOfVectorOfDouble.new( size ) -> <std::vector<std::vector<double>> object>
+    VectorOfVectorOfDouble( size ) -> <std::vector<std::vector<double>> object>
+```
+
+```cpp
+std::vector<std::vector<double>>( std::vector<std::vector<double>> other );
+lua:
+    VectorOfVectorOfDouble.new( other ) -> <std::vector<std::vector<double>> object>
+    VectorOfVectorOfDouble( other ) -> <std::vector<std::vector<double>> object>
+```
+
+### VectorOfVectorOfDouble.sol::meta\_function::index
+
+```cpp
+std::vector<double> VectorOfVectorOfDouble::at( size_t index );
+lua:
+    oVectorOfVectorOfDouble:__index( index ) -> retval
+```
+
+```cpp
+std::vector<double> VectorOfVectorOfDouble::at( const std::string& index );
+lua:
+    oVectorOfVectorOfDouble:__index( index ) -> retval
+```
+
+### VectorOfVectorOfDouble.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfDouble::size();
+lua:
+    oVectorOfVectorOfDouble:__len() -> retval
+```
+
+### VectorOfVectorOfDouble.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfDouble::sol::meta_function::new_index( size_t              index,
+                                                            std::vector<double> value );
+lua:
+    oVectorOfVectorOfDouble:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfDouble::sol::meta_function::new_index( const std::string&  index,
+                                                            std::vector<double> value );
+lua:
+    oVectorOfVectorOfDouble:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfDouble.table
+
+```cpp
+void VectorOfVectorOfDouble::table();
+lua:
+    oVectorOfVectorOfDouble:table() -> None
+```
+
+## VectorOfVectorOfFloat
+
+### VectorOfVectorOfFloat.new
+
+```cpp
+std::vector<std::vector<float>>();
+lua:
+    VectorOfVectorOfFloat.new() -> <std::vector<std::vector<float>> object>
+    VectorOfVectorOfFloat() -> <std::vector<std::vector<float>> object>
+```
+
+```cpp
+std::vector<std::vector<float>>( size_t size );
+lua:
+    VectorOfVectorOfFloat.new( size ) -> <std::vector<std::vector<float>> object>
+    VectorOfVectorOfFloat( size ) -> <std::vector<std::vector<float>> object>
+```
+
+```cpp
+std::vector<std::vector<float>>( std::vector<std::vector<float>> other );
+lua:
+    VectorOfVectorOfFloat.new( other ) -> <std::vector<std::vector<float>> object>
+    VectorOfVectorOfFloat( other ) -> <std::vector<std::vector<float>> object>
+```
+
+### VectorOfVectorOfFloat.sol::meta\_function::index
+
+```cpp
+std::vector<float> VectorOfVectorOfFloat::at( size_t index );
+lua:
+    oVectorOfVectorOfFloat:__index( index ) -> retval
+```
+
+```cpp
+std::vector<float> VectorOfVectorOfFloat::at( const std::string& index );
+lua:
+    oVectorOfVectorOfFloat:__index( index ) -> retval
+```
+
+### VectorOfVectorOfFloat.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfFloat::size();
+lua:
+    oVectorOfVectorOfFloat:__len() -> retval
+```
+
+### VectorOfVectorOfFloat.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfFloat::sol::meta_function::new_index( size_t             index,
+                                                           std::vector<float> value );
+lua:
+    oVectorOfVectorOfFloat:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfFloat::sol::meta_function::new_index( const std::string& index,
+                                                           std::vector<float> value );
+lua:
+    oVectorOfVectorOfFloat:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfFloat.table
+
+```cpp
+void VectorOfVectorOfFloat::table();
+lua:
+    oVectorOfVectorOfFloat:table() -> None
 ```
 
 ## VectorOfVectorOfInt
@@ -7169,24 +11884,70 @@ lua:
 ### VectorOfVectorOfInt.new
 
 ```cpp
-std::vector<std::vector<int>> VectorOfVectorOfInt::new();
+std::vector<std::vector<int>>();
 lua:
-    VectorOfVectorOfInt.new() -> retval
-    VectorOfVectorOfInt() -> retval
+    VectorOfVectorOfInt.new() -> <std::vector<std::vector<int>> object>
+    VectorOfVectorOfInt() -> <std::vector<std::vector<int>> object>
 ```
 
 ```cpp
-std::vector<std::vector<int>> VectorOfVectorOfInt::new( size_t size );
+std::vector<std::vector<int>>( size_t size );
 lua:
-    VectorOfVectorOfInt.new( size ) -> retval
-    VectorOfVectorOfInt( size ) -> retval
+    VectorOfVectorOfInt.new( size ) -> <std::vector<std::vector<int>> object>
+    VectorOfVectorOfInt( size ) -> <std::vector<std::vector<int>> object>
 ```
 
 ```cpp
-std::vector<std::vector<int>> VectorOfVectorOfInt::new( std::vector<std::vector<int>> other );
+std::vector<std::vector<int>>( std::vector<std::vector<int>> other );
 lua:
-    VectorOfVectorOfInt.new( other ) -> retval
-    VectorOfVectorOfInt( other ) -> retval
+    VectorOfVectorOfInt.new( other ) -> <std::vector<std::vector<int>> object>
+    VectorOfVectorOfInt( other ) -> <std::vector<std::vector<int>> object>
+```
+
+### VectorOfVectorOfInt.sol::meta\_function::index
+
+```cpp
+std::vector<int> VectorOfVectorOfInt::at( size_t index );
+lua:
+    oVectorOfVectorOfInt:__index( index ) -> retval
+```
+
+```cpp
+std::vector<int> VectorOfVectorOfInt::at( const std::string& index );
+lua:
+    oVectorOfVectorOfInt:__index( index ) -> retval
+```
+
+### VectorOfVectorOfInt.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfInt::size();
+lua:
+    oVectorOfVectorOfInt:__len() -> retval
+```
+
+### VectorOfVectorOfInt.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfInt::sol::meta_function::new_index( size_t           index,
+                                                         std::vector<int> value );
+lua:
+    oVectorOfVectorOfInt:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfInt::sol::meta_function::new_index( const std::string& index,
+                                                         std::vector<int>   value );
+lua:
+    oVectorOfVectorOfInt:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfInt.table
+
+```cpp
+void VectorOfVectorOfInt::table();
+lua:
+    oVectorOfVectorOfInt:table() -> None
 ```
 
 ## VectorOfVectorOfKeyPoint
@@ -7194,24 +11955,70 @@ lua:
 ### VectorOfVectorOfKeyPoint.new
 
 ```cpp
-std::vector<std::vector<cv::KeyPoint>> VectorOfVectorOfKeyPoint::new();
+std::vector<std::vector<cv::KeyPoint>>();
 lua:
-    VectorOfVectorOfKeyPoint.new() -> retval
-    VectorOfVectorOfKeyPoint() -> retval
+    VectorOfVectorOfKeyPoint.new() -> <std::vector<std::vector<cv::KeyPoint>> object>
+    VectorOfVectorOfKeyPoint() -> <std::vector<std::vector<cv::KeyPoint>> object>
 ```
 
 ```cpp
-std::vector<std::vector<cv::KeyPoint>> VectorOfVectorOfKeyPoint::new( size_t size );
+std::vector<std::vector<cv::KeyPoint>>( size_t size );
 lua:
-    VectorOfVectorOfKeyPoint.new( size ) -> retval
-    VectorOfVectorOfKeyPoint( size ) -> retval
+    VectorOfVectorOfKeyPoint.new( size ) -> <std::vector<std::vector<cv::KeyPoint>> object>
+    VectorOfVectorOfKeyPoint( size ) -> <std::vector<std::vector<cv::KeyPoint>> object>
 ```
 
 ```cpp
-std::vector<std::vector<cv::KeyPoint>> VectorOfVectorOfKeyPoint::new( std::vector<std::vector<cv::KeyPoint>> other );
+std::vector<std::vector<cv::KeyPoint>>( std::vector<std::vector<cv::KeyPoint>> other );
 lua:
-    VectorOfVectorOfKeyPoint.new( other ) -> retval
-    VectorOfVectorOfKeyPoint( other ) -> retval
+    VectorOfVectorOfKeyPoint.new( other ) -> <std::vector<std::vector<cv::KeyPoint>> object>
+    VectorOfVectorOfKeyPoint( other ) -> <std::vector<std::vector<cv::KeyPoint>> object>
+```
+
+### VectorOfVectorOfKeyPoint.sol::meta\_function::index
+
+```cpp
+std::vector<cv::KeyPoint> VectorOfVectorOfKeyPoint::at( size_t index );
+lua:
+    oVectorOfVectorOfKeyPoint:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::KeyPoint> VectorOfVectorOfKeyPoint::at( const std::string& index );
+lua:
+    oVectorOfVectorOfKeyPoint:__index( index ) -> retval
+```
+
+### VectorOfVectorOfKeyPoint.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfKeyPoint::size();
+lua:
+    oVectorOfVectorOfKeyPoint:__len() -> retval
+```
+
+### VectorOfVectorOfKeyPoint.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfKeyPoint::sol::meta_function::new_index( size_t                    index,
+                                                              std::vector<cv::KeyPoint> value );
+lua:
+    oVectorOfVectorOfKeyPoint:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfKeyPoint::sol::meta_function::new_index( const std::string&        index,
+                                                              std::vector<cv::KeyPoint> value );
+lua:
+    oVectorOfVectorOfKeyPoint:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfKeyPoint.table
+
+```cpp
+void VectorOfVectorOfKeyPoint::table();
+lua:
+    oVectorOfVectorOfKeyPoint:table() -> None
 ```
 
 ## VectorOfVectorOfMat
@@ -7219,24 +12026,141 @@ lua:
 ### VectorOfVectorOfMat.new
 
 ```cpp
-std::vector<std::vector<cv::Mat>> VectorOfVectorOfMat::new();
+std::vector<std::vector<cv::Mat>>();
 lua:
-    VectorOfVectorOfMat.new() -> retval
-    VectorOfVectorOfMat() -> retval
+    VectorOfVectorOfMat.new() -> <std::vector<std::vector<cv::Mat>> object>
+    VectorOfVectorOfMat() -> <std::vector<std::vector<cv::Mat>> object>
 ```
 
 ```cpp
-std::vector<std::vector<cv::Mat>> VectorOfVectorOfMat::new( size_t size );
+std::vector<std::vector<cv::Mat>>( size_t size );
 lua:
-    VectorOfVectorOfMat.new( size ) -> retval
-    VectorOfVectorOfMat( size ) -> retval
+    VectorOfVectorOfMat.new( size ) -> <std::vector<std::vector<cv::Mat>> object>
+    VectorOfVectorOfMat( size ) -> <std::vector<std::vector<cv::Mat>> object>
 ```
 
 ```cpp
-std::vector<std::vector<cv::Mat>> VectorOfVectorOfMat::new( std::vector<std::vector<cv::Mat>> other );
+std::vector<std::vector<cv::Mat>>( std::vector<std::vector<cv::Mat>> other );
 lua:
-    VectorOfVectorOfMat.new( other ) -> retval
-    VectorOfVectorOfMat( other ) -> retval
+    VectorOfVectorOfMat.new( other ) -> <std::vector<std::vector<cv::Mat>> object>
+    VectorOfVectorOfMat( other ) -> <std::vector<std::vector<cv::Mat>> object>
+```
+
+### VectorOfVectorOfMat.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Mat> VectorOfVectorOfMat::at( size_t index );
+lua:
+    oVectorOfVectorOfMat:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Mat> VectorOfVectorOfMat::at( const std::string& index );
+lua:
+    oVectorOfVectorOfMat:__index( index ) -> retval
+```
+
+### VectorOfVectorOfMat.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfMat::size();
+lua:
+    oVectorOfVectorOfMat:__len() -> retval
+```
+
+### VectorOfVectorOfMat.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfMat::sol::meta_function::new_index( size_t               index,
+                                                         std::vector<cv::Mat> value );
+lua:
+    oVectorOfVectorOfMat:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfMat::sol::meta_function::new_index( const std::string&   index,
+                                                         std::vector<cv::Mat> value );
+lua:
+    oVectorOfVectorOfMat:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfMat.table
+
+```cpp
+void VectorOfVectorOfMat::table();
+lua:
+    oVectorOfVectorOfMat:table() -> None
+```
+
+## VectorOfVectorOfMoments
+
+### VectorOfVectorOfMoments.new
+
+```cpp
+std::vector<std::vector<cv::Moments>>();
+lua:
+    VectorOfVectorOfMoments.new() -> <std::vector<std::vector<cv::Moments>> object>
+    VectorOfVectorOfMoments() -> <std::vector<std::vector<cv::Moments>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Moments>>( size_t size );
+lua:
+    VectorOfVectorOfMoments.new( size ) -> <std::vector<std::vector<cv::Moments>> object>
+    VectorOfVectorOfMoments( size ) -> <std::vector<std::vector<cv::Moments>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Moments>>( std::vector<std::vector<cv::Moments>> other );
+lua:
+    VectorOfVectorOfMoments.new( other ) -> <std::vector<std::vector<cv::Moments>> object>
+    VectorOfVectorOfMoments( other ) -> <std::vector<std::vector<cv::Moments>> object>
+```
+
+### VectorOfVectorOfMoments.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Moments> VectorOfVectorOfMoments::at( size_t index );
+lua:
+    oVectorOfVectorOfMoments:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Moments> VectorOfVectorOfMoments::at( const std::string& index );
+lua:
+    oVectorOfVectorOfMoments:__index( index ) -> retval
+```
+
+### VectorOfVectorOfMoments.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfMoments::size();
+lua:
+    oVectorOfVectorOfMoments:__len() -> retval
+```
+
+### VectorOfVectorOfMoments.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfMoments::sol::meta_function::new_index( size_t                   index,
+                                                             std::vector<cv::Moments> value );
+lua:
+    oVectorOfVectorOfMoments:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfMoments::sol::meta_function::new_index( const std::string&       index,
+                                                             std::vector<cv::Moments> value );
+lua:
+    oVectorOfVectorOfMoments:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfMoments.table
+
+```cpp
+void VectorOfVectorOfMoments::table();
+lua:
+    oVectorOfVectorOfMoments:table() -> None
 ```
 
 ## VectorOfVectorOfPoint
@@ -7244,24 +12168,141 @@ lua:
 ### VectorOfVectorOfPoint.new
 
 ```cpp
-std::vector<std::vector<cv::Point>> VectorOfVectorOfPoint::new();
+std::vector<std::vector<cv::Point>>();
 lua:
-    VectorOfVectorOfPoint.new() -> retval
-    VectorOfVectorOfPoint() -> retval
+    VectorOfVectorOfPoint.new() -> <std::vector<std::vector<cv::Point>> object>
+    VectorOfVectorOfPoint() -> <std::vector<std::vector<cv::Point>> object>
 ```
 
 ```cpp
-std::vector<std::vector<cv::Point>> VectorOfVectorOfPoint::new( size_t size );
+std::vector<std::vector<cv::Point>>( size_t size );
 lua:
-    VectorOfVectorOfPoint.new( size ) -> retval
-    VectorOfVectorOfPoint( size ) -> retval
+    VectorOfVectorOfPoint.new( size ) -> <std::vector<std::vector<cv::Point>> object>
+    VectorOfVectorOfPoint( size ) -> <std::vector<std::vector<cv::Point>> object>
 ```
 
 ```cpp
-std::vector<std::vector<cv::Point>> VectorOfVectorOfPoint::new( std::vector<std::vector<cv::Point>> other );
+std::vector<std::vector<cv::Point>>( std::vector<std::vector<cv::Point>> other );
 lua:
-    VectorOfVectorOfPoint.new( other ) -> retval
-    VectorOfVectorOfPoint( other ) -> retval
+    VectorOfVectorOfPoint.new( other ) -> <std::vector<std::vector<cv::Point>> object>
+    VectorOfVectorOfPoint( other ) -> <std::vector<std::vector<cv::Point>> object>
+```
+
+### VectorOfVectorOfPoint.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Point> VectorOfVectorOfPoint::at( size_t index );
+lua:
+    oVectorOfVectorOfPoint:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Point> VectorOfVectorOfPoint::at( const std::string& index );
+lua:
+    oVectorOfVectorOfPoint:__index( index ) -> retval
+```
+
+### VectorOfVectorOfPoint.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfPoint::size();
+lua:
+    oVectorOfVectorOfPoint:__len() -> retval
+```
+
+### VectorOfVectorOfPoint.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfPoint::sol::meta_function::new_index( size_t                 index,
+                                                           std::vector<cv::Point> value );
+lua:
+    oVectorOfVectorOfPoint:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfPoint::sol::meta_function::new_index( const std::string&     index,
+                                                           std::vector<cv::Point> value );
+lua:
+    oVectorOfVectorOfPoint:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfPoint.table
+
+```cpp
+void VectorOfVectorOfPoint::table();
+lua:
+    oVectorOfVectorOfPoint:table() -> None
+```
+
+## VectorOfVectorOfPoint2d
+
+### VectorOfVectorOfPoint2d.new
+
+```cpp
+std::vector<std::vector<cv::Point2d>>();
+lua:
+    VectorOfVectorOfPoint2d.new() -> <std::vector<std::vector<cv::Point2d>> object>
+    VectorOfVectorOfPoint2d() -> <std::vector<std::vector<cv::Point2d>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Point2d>>( size_t size );
+lua:
+    VectorOfVectorOfPoint2d.new( size ) -> <std::vector<std::vector<cv::Point2d>> object>
+    VectorOfVectorOfPoint2d( size ) -> <std::vector<std::vector<cv::Point2d>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Point2d>>( std::vector<std::vector<cv::Point2d>> other );
+lua:
+    VectorOfVectorOfPoint2d.new( other ) -> <std::vector<std::vector<cv::Point2d>> object>
+    VectorOfVectorOfPoint2d( other ) -> <std::vector<std::vector<cv::Point2d>> object>
+```
+
+### VectorOfVectorOfPoint2d.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Point2d> VectorOfVectorOfPoint2d::at( size_t index );
+lua:
+    oVectorOfVectorOfPoint2d:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Point2d> VectorOfVectorOfPoint2d::at( const std::string& index );
+lua:
+    oVectorOfVectorOfPoint2d:__index( index ) -> retval
+```
+
+### VectorOfVectorOfPoint2d.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfPoint2d::size();
+lua:
+    oVectorOfVectorOfPoint2d:__len() -> retval
+```
+
+### VectorOfVectorOfPoint2d.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfPoint2d::sol::meta_function::new_index( size_t                   index,
+                                                             std::vector<cv::Point2d> value );
+lua:
+    oVectorOfVectorOfPoint2d:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfPoint2d::sol::meta_function::new_index( const std::string&       index,
+                                                             std::vector<cv::Point2d> value );
+lua:
+    oVectorOfVectorOfPoint2d:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfPoint2d.table
+
+```cpp
+void VectorOfVectorOfPoint2d::table();
+lua:
+    oVectorOfVectorOfPoint2d:table() -> None
 ```
 
 ## VectorOfVectorOfPoint2f
@@ -7269,24 +12310,141 @@ lua:
 ### VectorOfVectorOfPoint2f.new
 
 ```cpp
-std::vector<std::vector<cv::Point2f>> VectorOfVectorOfPoint2f::new();
+std::vector<std::vector<cv::Point2f>>();
 lua:
-    VectorOfVectorOfPoint2f.new() -> retval
-    VectorOfVectorOfPoint2f() -> retval
+    VectorOfVectorOfPoint2f.new() -> <std::vector<std::vector<cv::Point2f>> object>
+    VectorOfVectorOfPoint2f() -> <std::vector<std::vector<cv::Point2f>> object>
 ```
 
 ```cpp
-std::vector<std::vector<cv::Point2f>> VectorOfVectorOfPoint2f::new( size_t size );
+std::vector<std::vector<cv::Point2f>>( size_t size );
 lua:
-    VectorOfVectorOfPoint2f.new( size ) -> retval
-    VectorOfVectorOfPoint2f( size ) -> retval
+    VectorOfVectorOfPoint2f.new( size ) -> <std::vector<std::vector<cv::Point2f>> object>
+    VectorOfVectorOfPoint2f( size ) -> <std::vector<std::vector<cv::Point2f>> object>
 ```
 
 ```cpp
-std::vector<std::vector<cv::Point2f>> VectorOfVectorOfPoint2f::new( std::vector<std::vector<cv::Point2f>> other );
+std::vector<std::vector<cv::Point2f>>( std::vector<std::vector<cv::Point2f>> other );
 lua:
-    VectorOfVectorOfPoint2f.new( other ) -> retval
-    VectorOfVectorOfPoint2f( other ) -> retval
+    VectorOfVectorOfPoint2f.new( other ) -> <std::vector<std::vector<cv::Point2f>> object>
+    VectorOfVectorOfPoint2f( other ) -> <std::vector<std::vector<cv::Point2f>> object>
+```
+
+### VectorOfVectorOfPoint2f.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Point2f> VectorOfVectorOfPoint2f::at( size_t index );
+lua:
+    oVectorOfVectorOfPoint2f:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Point2f> VectorOfVectorOfPoint2f::at( const std::string& index );
+lua:
+    oVectorOfVectorOfPoint2f:__index( index ) -> retval
+```
+
+### VectorOfVectorOfPoint2f.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfPoint2f::size();
+lua:
+    oVectorOfVectorOfPoint2f:__len() -> retval
+```
+
+### VectorOfVectorOfPoint2f.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfPoint2f::sol::meta_function::new_index( size_t                   index,
+                                                             std::vector<cv::Point2f> value );
+lua:
+    oVectorOfVectorOfPoint2f:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfPoint2f::sol::meta_function::new_index( const std::string&       index,
+                                                             std::vector<cv::Point2f> value );
+lua:
+    oVectorOfVectorOfPoint2f:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfPoint2f.table
+
+```cpp
+void VectorOfVectorOfPoint2f::table();
+lua:
+    oVectorOfVectorOfPoint2f:table() -> None
+```
+
+## VectorOfVectorOfPoint3d
+
+### VectorOfVectorOfPoint3d.new
+
+```cpp
+std::vector<std::vector<cv::Point3d>>();
+lua:
+    VectorOfVectorOfPoint3d.new() -> <std::vector<std::vector<cv::Point3d>> object>
+    VectorOfVectorOfPoint3d() -> <std::vector<std::vector<cv::Point3d>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Point3d>>( size_t size );
+lua:
+    VectorOfVectorOfPoint3d.new( size ) -> <std::vector<std::vector<cv::Point3d>> object>
+    VectorOfVectorOfPoint3d( size ) -> <std::vector<std::vector<cv::Point3d>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Point3d>>( std::vector<std::vector<cv::Point3d>> other );
+lua:
+    VectorOfVectorOfPoint3d.new( other ) -> <std::vector<std::vector<cv::Point3d>> object>
+    VectorOfVectorOfPoint3d( other ) -> <std::vector<std::vector<cv::Point3d>> object>
+```
+
+### VectorOfVectorOfPoint3d.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Point3d> VectorOfVectorOfPoint3d::at( size_t index );
+lua:
+    oVectorOfVectorOfPoint3d:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Point3d> VectorOfVectorOfPoint3d::at( const std::string& index );
+lua:
+    oVectorOfVectorOfPoint3d:__index( index ) -> retval
+```
+
+### VectorOfVectorOfPoint3d.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfPoint3d::size();
+lua:
+    oVectorOfVectorOfPoint3d:__len() -> retval
+```
+
+### VectorOfVectorOfPoint3d.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfPoint3d::sol::meta_function::new_index( size_t                   index,
+                                                             std::vector<cv::Point3d> value );
+lua:
+    oVectorOfVectorOfPoint3d:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfPoint3d::sol::meta_function::new_index( const std::string&       index,
+                                                             std::vector<cv::Point3d> value );
+lua:
+    oVectorOfVectorOfPoint3d:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfPoint3d.table
+
+```cpp
+void VectorOfVectorOfPoint3d::table();
+lua:
+    oVectorOfVectorOfPoint3d:table() -> None
 ```
 
 ## VectorOfVectorOfPoint3f
@@ -7294,24 +12452,2555 @@ lua:
 ### VectorOfVectorOfPoint3f.new
 
 ```cpp
-std::vector<std::vector<cv::Point3f>> VectorOfVectorOfPoint3f::new();
+std::vector<std::vector<cv::Point3f>>();
 lua:
-    VectorOfVectorOfPoint3f.new() -> retval
-    VectorOfVectorOfPoint3f() -> retval
+    VectorOfVectorOfPoint3f.new() -> <std::vector<std::vector<cv::Point3f>> object>
+    VectorOfVectorOfPoint3f() -> <std::vector<std::vector<cv::Point3f>> object>
 ```
 
 ```cpp
-std::vector<std::vector<cv::Point3f>> VectorOfVectorOfPoint3f::new( size_t size );
+std::vector<std::vector<cv::Point3f>>( size_t size );
 lua:
-    VectorOfVectorOfPoint3f.new( size ) -> retval
-    VectorOfVectorOfPoint3f( size ) -> retval
+    VectorOfVectorOfPoint3f.new( size ) -> <std::vector<std::vector<cv::Point3f>> object>
+    VectorOfVectorOfPoint3f( size ) -> <std::vector<std::vector<cv::Point3f>> object>
 ```
 
 ```cpp
-std::vector<std::vector<cv::Point3f>> VectorOfVectorOfPoint3f::new( std::vector<std::vector<cv::Point3f>> other );
+std::vector<std::vector<cv::Point3f>>( std::vector<std::vector<cv::Point3f>> other );
 lua:
-    VectorOfVectorOfPoint3f.new( other ) -> retval
-    VectorOfVectorOfPoint3f( other ) -> retval
+    VectorOfVectorOfPoint3f.new( other ) -> <std::vector<std::vector<cv::Point3f>> object>
+    VectorOfVectorOfPoint3f( other ) -> <std::vector<std::vector<cv::Point3f>> object>
+```
+
+### VectorOfVectorOfPoint3f.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Point3f> VectorOfVectorOfPoint3f::at( size_t index );
+lua:
+    oVectorOfVectorOfPoint3f:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Point3f> VectorOfVectorOfPoint3f::at( const std::string& index );
+lua:
+    oVectorOfVectorOfPoint3f:__index( index ) -> retval
+```
+
+### VectorOfVectorOfPoint3f.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfPoint3f::size();
+lua:
+    oVectorOfVectorOfPoint3f:__len() -> retval
+```
+
+### VectorOfVectorOfPoint3f.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfPoint3f::sol::meta_function::new_index( size_t                   index,
+                                                             std::vector<cv::Point3f> value );
+lua:
+    oVectorOfVectorOfPoint3f:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfPoint3f::sol::meta_function::new_index( const std::string&       index,
+                                                             std::vector<cv::Point3f> value );
+lua:
+    oVectorOfVectorOfPoint3f:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfPoint3f.table
+
+```cpp
+void VectorOfVectorOfPoint3f::table();
+lua:
+    oVectorOfVectorOfPoint3f:table() -> None
+```
+
+## VectorOfVectorOfPoint3i
+
+### VectorOfVectorOfPoint3i.new
+
+```cpp
+std::vector<std::vector<cv::Point3i>>();
+lua:
+    VectorOfVectorOfPoint3i.new() -> <std::vector<std::vector<cv::Point3i>> object>
+    VectorOfVectorOfPoint3i() -> <std::vector<std::vector<cv::Point3i>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Point3i>>( size_t size );
+lua:
+    VectorOfVectorOfPoint3i.new( size ) -> <std::vector<std::vector<cv::Point3i>> object>
+    VectorOfVectorOfPoint3i( size ) -> <std::vector<std::vector<cv::Point3i>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Point3i>>( std::vector<std::vector<cv::Point3i>> other );
+lua:
+    VectorOfVectorOfPoint3i.new( other ) -> <std::vector<std::vector<cv::Point3i>> object>
+    VectorOfVectorOfPoint3i( other ) -> <std::vector<std::vector<cv::Point3i>> object>
+```
+
+### VectorOfVectorOfPoint3i.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Point3i> VectorOfVectorOfPoint3i::at( size_t index );
+lua:
+    oVectorOfVectorOfPoint3i:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Point3i> VectorOfVectorOfPoint3i::at( const std::string& index );
+lua:
+    oVectorOfVectorOfPoint3i:__index( index ) -> retval
+```
+
+### VectorOfVectorOfPoint3i.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfPoint3i::size();
+lua:
+    oVectorOfVectorOfPoint3i:__len() -> retval
+```
+
+### VectorOfVectorOfPoint3i.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfPoint3i::sol::meta_function::new_index( size_t                   index,
+                                                             std::vector<cv::Point3i> value );
+lua:
+    oVectorOfVectorOfPoint3i:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfPoint3i::sol::meta_function::new_index( const std::string&       index,
+                                                             std::vector<cv::Point3i> value );
+lua:
+    oVectorOfVectorOfPoint3i:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfPoint3i.table
+
+```cpp
+void VectorOfVectorOfPoint3i::table();
+lua:
+    oVectorOfVectorOfPoint3i:table() -> None
+```
+
+## VectorOfVectorOfRange
+
+### VectorOfVectorOfRange.new
+
+```cpp
+std::vector<std::vector<cv::Range>>();
+lua:
+    VectorOfVectorOfRange.new() -> <std::vector<std::vector<cv::Range>> object>
+    VectorOfVectorOfRange() -> <std::vector<std::vector<cv::Range>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Range>>( size_t size );
+lua:
+    VectorOfVectorOfRange.new( size ) -> <std::vector<std::vector<cv::Range>> object>
+    VectorOfVectorOfRange( size ) -> <std::vector<std::vector<cv::Range>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Range>>( std::vector<std::vector<cv::Range>> other );
+lua:
+    VectorOfVectorOfRange.new( other ) -> <std::vector<std::vector<cv::Range>> object>
+    VectorOfVectorOfRange( other ) -> <std::vector<std::vector<cv::Range>> object>
+```
+
+### VectorOfVectorOfRange.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Range> VectorOfVectorOfRange::at( size_t index );
+lua:
+    oVectorOfVectorOfRange:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Range> VectorOfVectorOfRange::at( const std::string& index );
+lua:
+    oVectorOfVectorOfRange:__index( index ) -> retval
+```
+
+### VectorOfVectorOfRange.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfRange::size();
+lua:
+    oVectorOfVectorOfRange:__len() -> retval
+```
+
+### VectorOfVectorOfRange.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfRange::sol::meta_function::new_index( size_t                 index,
+                                                           std::vector<cv::Range> value );
+lua:
+    oVectorOfVectorOfRange:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfRange::sol::meta_function::new_index( const std::string&     index,
+                                                           std::vector<cv::Range> value );
+lua:
+    oVectorOfVectorOfRange:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfRange.table
+
+```cpp
+void VectorOfVectorOfRange::table();
+lua:
+    oVectorOfVectorOfRange:table() -> None
+```
+
+## VectorOfVectorOfRect
+
+### VectorOfVectorOfRect.new
+
+```cpp
+std::vector<std::vector<cv::Rect>>();
+lua:
+    VectorOfVectorOfRect.new() -> <std::vector<std::vector<cv::Rect>> object>
+    VectorOfVectorOfRect() -> <std::vector<std::vector<cv::Rect>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Rect>>( size_t size );
+lua:
+    VectorOfVectorOfRect.new( size ) -> <std::vector<std::vector<cv::Rect>> object>
+    VectorOfVectorOfRect( size ) -> <std::vector<std::vector<cv::Rect>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Rect>>( std::vector<std::vector<cv::Rect>> other );
+lua:
+    VectorOfVectorOfRect.new( other ) -> <std::vector<std::vector<cv::Rect>> object>
+    VectorOfVectorOfRect( other ) -> <std::vector<std::vector<cv::Rect>> object>
+```
+
+### VectorOfVectorOfRect.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Rect> VectorOfVectorOfRect::at( size_t index );
+lua:
+    oVectorOfVectorOfRect:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Rect> VectorOfVectorOfRect::at( const std::string& index );
+lua:
+    oVectorOfVectorOfRect:__index( index ) -> retval
+```
+
+### VectorOfVectorOfRect.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfRect::size();
+lua:
+    oVectorOfVectorOfRect:__len() -> retval
+```
+
+### VectorOfVectorOfRect.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfRect::sol::meta_function::new_index( size_t                index,
+                                                          std::vector<cv::Rect> value );
+lua:
+    oVectorOfVectorOfRect:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfRect::sol::meta_function::new_index( const std::string&    index,
+                                                          std::vector<cv::Rect> value );
+lua:
+    oVectorOfVectorOfRect:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfRect.table
+
+```cpp
+void VectorOfVectorOfRect::table();
+lua:
+    oVectorOfVectorOfRect:table() -> None
+```
+
+## VectorOfVectorOfRect2d
+
+### VectorOfVectorOfRect2d.new
+
+```cpp
+std::vector<std::vector<cv::Rect2d>>();
+lua:
+    VectorOfVectorOfRect2d.new() -> <std::vector<std::vector<cv::Rect2d>> object>
+    VectorOfVectorOfRect2d() -> <std::vector<std::vector<cv::Rect2d>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Rect2d>>( size_t size );
+lua:
+    VectorOfVectorOfRect2d.new( size ) -> <std::vector<std::vector<cv::Rect2d>> object>
+    VectorOfVectorOfRect2d( size ) -> <std::vector<std::vector<cv::Rect2d>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Rect2d>>( std::vector<std::vector<cv::Rect2d>> other );
+lua:
+    VectorOfVectorOfRect2d.new( other ) -> <std::vector<std::vector<cv::Rect2d>> object>
+    VectorOfVectorOfRect2d( other ) -> <std::vector<std::vector<cv::Rect2d>> object>
+```
+
+### VectorOfVectorOfRect2d.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Rect2d> VectorOfVectorOfRect2d::at( size_t index );
+lua:
+    oVectorOfVectorOfRect2d:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Rect2d> VectorOfVectorOfRect2d::at( const std::string& index );
+lua:
+    oVectorOfVectorOfRect2d:__index( index ) -> retval
+```
+
+### VectorOfVectorOfRect2d.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfRect2d::size();
+lua:
+    oVectorOfVectorOfRect2d:__len() -> retval
+```
+
+### VectorOfVectorOfRect2d.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfRect2d::sol::meta_function::new_index( size_t                  index,
+                                                            std::vector<cv::Rect2d> value );
+lua:
+    oVectorOfVectorOfRect2d:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfRect2d::sol::meta_function::new_index( const std::string&      index,
+                                                            std::vector<cv::Rect2d> value );
+lua:
+    oVectorOfVectorOfRect2d:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfRect2d.table
+
+```cpp
+void VectorOfVectorOfRect2d::table();
+lua:
+    oVectorOfVectorOfRect2d:table() -> None
+```
+
+## VectorOfVectorOfRect2f
+
+### VectorOfVectorOfRect2f.new
+
+```cpp
+std::vector<std::vector<cv::Rect2f>>();
+lua:
+    VectorOfVectorOfRect2f.new() -> <std::vector<std::vector<cv::Rect2f>> object>
+    VectorOfVectorOfRect2f() -> <std::vector<std::vector<cv::Rect2f>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Rect2f>>( size_t size );
+lua:
+    VectorOfVectorOfRect2f.new( size ) -> <std::vector<std::vector<cv::Rect2f>> object>
+    VectorOfVectorOfRect2f( size ) -> <std::vector<std::vector<cv::Rect2f>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Rect2f>>( std::vector<std::vector<cv::Rect2f>> other );
+lua:
+    VectorOfVectorOfRect2f.new( other ) -> <std::vector<std::vector<cv::Rect2f>> object>
+    VectorOfVectorOfRect2f( other ) -> <std::vector<std::vector<cv::Rect2f>> object>
+```
+
+### VectorOfVectorOfRect2f.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Rect2f> VectorOfVectorOfRect2f::at( size_t index );
+lua:
+    oVectorOfVectorOfRect2f:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Rect2f> VectorOfVectorOfRect2f::at( const std::string& index );
+lua:
+    oVectorOfVectorOfRect2f:__index( index ) -> retval
+```
+
+### VectorOfVectorOfRect2f.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfRect2f::size();
+lua:
+    oVectorOfVectorOfRect2f:__len() -> retval
+```
+
+### VectorOfVectorOfRect2f.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfRect2f::sol::meta_function::new_index( size_t                  index,
+                                                            std::vector<cv::Rect2f> value );
+lua:
+    oVectorOfVectorOfRect2f:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfRect2f::sol::meta_function::new_index( const std::string&      index,
+                                                            std::vector<cv::Rect2f> value );
+lua:
+    oVectorOfVectorOfRect2f:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfRect2f.table
+
+```cpp
+void VectorOfVectorOfRect2f::table();
+lua:
+    oVectorOfVectorOfRect2f:table() -> None
+```
+
+## VectorOfVectorOfRotatedRect
+
+### VectorOfVectorOfRotatedRect.new
+
+```cpp
+std::vector<std::vector<cv::RotatedRect>>();
+lua:
+    VectorOfVectorOfRotatedRect.new() -> <std::vector<std::vector<cv::RotatedRect>> object>
+    VectorOfVectorOfRotatedRect() -> <std::vector<std::vector<cv::RotatedRect>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::RotatedRect>>( size_t size );
+lua:
+    VectorOfVectorOfRotatedRect.new( size ) -> <std::vector<std::vector<cv::RotatedRect>> object>
+    VectorOfVectorOfRotatedRect( size ) -> <std::vector<std::vector<cv::RotatedRect>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::RotatedRect>>( std::vector<std::vector<cv::RotatedRect>> other );
+lua:
+    VectorOfVectorOfRotatedRect.new( other ) -> <std::vector<std::vector<cv::RotatedRect>> object>
+    VectorOfVectorOfRotatedRect( other ) -> <std::vector<std::vector<cv::RotatedRect>> object>
+```
+
+### VectorOfVectorOfRotatedRect.sol::meta\_function::index
+
+```cpp
+std::vector<cv::RotatedRect> VectorOfVectorOfRotatedRect::at( size_t index );
+lua:
+    oVectorOfVectorOfRotatedRect:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::RotatedRect> VectorOfVectorOfRotatedRect::at( const std::string& index );
+lua:
+    oVectorOfVectorOfRotatedRect:__index( index ) -> retval
+```
+
+### VectorOfVectorOfRotatedRect.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfRotatedRect::size();
+lua:
+    oVectorOfVectorOfRotatedRect:__len() -> retval
+```
+
+### VectorOfVectorOfRotatedRect.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfRotatedRect::sol::meta_function::new_index( size_t                       index,
+                                                                 std::vector<cv::RotatedRect> value );
+lua:
+    oVectorOfVectorOfRotatedRect:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfRotatedRect::sol::meta_function::new_index( const std::string&           index,
+                                                                 std::vector<cv::RotatedRect> value );
+lua:
+    oVectorOfVectorOfRotatedRect:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfRotatedRect.table
+
+```cpp
+void VectorOfVectorOfRotatedRect::table();
+lua:
+    oVectorOfVectorOfRotatedRect:table() -> None
+```
+
+## VectorOfVectorOfSchar
+
+### VectorOfVectorOfSchar.new
+
+```cpp
+std::vector<std::vector<schar>>();
+lua:
+    VectorOfVectorOfSchar.new() -> <std::vector<std::vector<schar>> object>
+    VectorOfVectorOfSchar() -> <std::vector<std::vector<schar>> object>
+```
+
+```cpp
+std::vector<std::vector<schar>>( size_t size );
+lua:
+    VectorOfVectorOfSchar.new( size ) -> <std::vector<std::vector<schar>> object>
+    VectorOfVectorOfSchar( size ) -> <std::vector<std::vector<schar>> object>
+```
+
+```cpp
+std::vector<std::vector<schar>>( std::vector<std::vector<schar>> other );
+lua:
+    VectorOfVectorOfSchar.new( other ) -> <std::vector<std::vector<schar>> object>
+    VectorOfVectorOfSchar( other ) -> <std::vector<std::vector<schar>> object>
+```
+
+### VectorOfVectorOfSchar.sol::meta\_function::index
+
+```cpp
+std::vector<schar> VectorOfVectorOfSchar::at( size_t index );
+lua:
+    oVectorOfVectorOfSchar:__index( index ) -> retval
+```
+
+```cpp
+std::vector<schar> VectorOfVectorOfSchar::at( const std::string& index );
+lua:
+    oVectorOfVectorOfSchar:__index( index ) -> retval
+```
+
+### VectorOfVectorOfSchar.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfSchar::size();
+lua:
+    oVectorOfVectorOfSchar:__len() -> retval
+```
+
+### VectorOfVectorOfSchar.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfSchar::sol::meta_function::new_index( size_t             index,
+                                                           std::vector<schar> value );
+lua:
+    oVectorOfVectorOfSchar:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfSchar::sol::meta_function::new_index( const std::string& index,
+                                                           std::vector<schar> value );
+lua:
+    oVectorOfVectorOfSchar:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfSchar.table
+
+```cpp
+void VectorOfVectorOfSchar::table();
+lua:
+    oVectorOfVectorOfSchar:table() -> None
+```
+
+## VectorOfVectorOfShort
+
+### VectorOfVectorOfShort.new
+
+```cpp
+std::vector<std::vector<short>>();
+lua:
+    VectorOfVectorOfShort.new() -> <std::vector<std::vector<short>> object>
+    VectorOfVectorOfShort() -> <std::vector<std::vector<short>> object>
+```
+
+```cpp
+std::vector<std::vector<short>>( size_t size );
+lua:
+    VectorOfVectorOfShort.new( size ) -> <std::vector<std::vector<short>> object>
+    VectorOfVectorOfShort( size ) -> <std::vector<std::vector<short>> object>
+```
+
+```cpp
+std::vector<std::vector<short>>( std::vector<std::vector<short>> other );
+lua:
+    VectorOfVectorOfShort.new( other ) -> <std::vector<std::vector<short>> object>
+    VectorOfVectorOfShort( other ) -> <std::vector<std::vector<short>> object>
+```
+
+### VectorOfVectorOfShort.sol::meta\_function::index
+
+```cpp
+std::vector<short> VectorOfVectorOfShort::at( size_t index );
+lua:
+    oVectorOfVectorOfShort:__index( index ) -> retval
+```
+
+```cpp
+std::vector<short> VectorOfVectorOfShort::at( const std::string& index );
+lua:
+    oVectorOfVectorOfShort:__index( index ) -> retval
+```
+
+### VectorOfVectorOfShort.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfShort::size();
+lua:
+    oVectorOfVectorOfShort:__len() -> retval
+```
+
+### VectorOfVectorOfShort.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfShort::sol::meta_function::new_index( size_t             index,
+                                                           std::vector<short> value );
+lua:
+    oVectorOfVectorOfShort:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfShort::sol::meta_function::new_index( const std::string& index,
+                                                           std::vector<short> value );
+lua:
+    oVectorOfVectorOfShort:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfShort.table
+
+```cpp
+void VectorOfVectorOfShort::table();
+lua:
+    oVectorOfVectorOfShort:table() -> None
+```
+
+## VectorOfVectorOfSize
+
+### VectorOfVectorOfSize.new
+
+```cpp
+std::vector<std::vector<cv::Size>>();
+lua:
+    VectorOfVectorOfSize.new() -> <std::vector<std::vector<cv::Size>> object>
+    VectorOfVectorOfSize() -> <std::vector<std::vector<cv::Size>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Size>>( size_t size );
+lua:
+    VectorOfVectorOfSize.new( size ) -> <std::vector<std::vector<cv::Size>> object>
+    VectorOfVectorOfSize( size ) -> <std::vector<std::vector<cv::Size>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Size>>( std::vector<std::vector<cv::Size>> other );
+lua:
+    VectorOfVectorOfSize.new( other ) -> <std::vector<std::vector<cv::Size>> object>
+    VectorOfVectorOfSize( other ) -> <std::vector<std::vector<cv::Size>> object>
+```
+
+### VectorOfVectorOfSize.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Size> VectorOfVectorOfSize::at( size_t index );
+lua:
+    oVectorOfVectorOfSize:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Size> VectorOfVectorOfSize::at( const std::string& index );
+lua:
+    oVectorOfVectorOfSize:__index( index ) -> retval
+```
+
+### VectorOfVectorOfSize.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfSize::size();
+lua:
+    oVectorOfVectorOfSize:__len() -> retval
+```
+
+### VectorOfVectorOfSize.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfSize::sol::meta_function::new_index( size_t                index,
+                                                          std::vector<cv::Size> value );
+lua:
+    oVectorOfVectorOfSize:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfSize::sol::meta_function::new_index( const std::string&    index,
+                                                          std::vector<cv::Size> value );
+lua:
+    oVectorOfVectorOfSize:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfSize.table
+
+```cpp
+void VectorOfVectorOfSize::table();
+lua:
+    oVectorOfVectorOfSize:table() -> None
+```
+
+## VectorOfVectorOfSize2d
+
+### VectorOfVectorOfSize2d.new
+
+```cpp
+std::vector<std::vector<cv::Size2d>>();
+lua:
+    VectorOfVectorOfSize2d.new() -> <std::vector<std::vector<cv::Size2d>> object>
+    VectorOfVectorOfSize2d() -> <std::vector<std::vector<cv::Size2d>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Size2d>>( size_t size );
+lua:
+    VectorOfVectorOfSize2d.new( size ) -> <std::vector<std::vector<cv::Size2d>> object>
+    VectorOfVectorOfSize2d( size ) -> <std::vector<std::vector<cv::Size2d>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Size2d>>( std::vector<std::vector<cv::Size2d>> other );
+lua:
+    VectorOfVectorOfSize2d.new( other ) -> <std::vector<std::vector<cv::Size2d>> object>
+    VectorOfVectorOfSize2d( other ) -> <std::vector<std::vector<cv::Size2d>> object>
+```
+
+### VectorOfVectorOfSize2d.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Size2d> VectorOfVectorOfSize2d::at( size_t index );
+lua:
+    oVectorOfVectorOfSize2d:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Size2d> VectorOfVectorOfSize2d::at( const std::string& index );
+lua:
+    oVectorOfVectorOfSize2d:__index( index ) -> retval
+```
+
+### VectorOfVectorOfSize2d.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfSize2d::size();
+lua:
+    oVectorOfVectorOfSize2d:__len() -> retval
+```
+
+### VectorOfVectorOfSize2d.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfSize2d::sol::meta_function::new_index( size_t                  index,
+                                                            std::vector<cv::Size2d> value );
+lua:
+    oVectorOfVectorOfSize2d:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfSize2d::sol::meta_function::new_index( const std::string&      index,
+                                                            std::vector<cv::Size2d> value );
+lua:
+    oVectorOfVectorOfSize2d:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfSize2d.table
+
+```cpp
+void VectorOfVectorOfSize2d::table();
+lua:
+    oVectorOfVectorOfSize2d:table() -> None
+```
+
+## VectorOfVectorOfSize2f
+
+### VectorOfVectorOfSize2f.new
+
+```cpp
+std::vector<std::vector<cv::Size2f>>();
+lua:
+    VectorOfVectorOfSize2f.new() -> <std::vector<std::vector<cv::Size2f>> object>
+    VectorOfVectorOfSize2f() -> <std::vector<std::vector<cv::Size2f>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Size2f>>( size_t size );
+lua:
+    VectorOfVectorOfSize2f.new( size ) -> <std::vector<std::vector<cv::Size2f>> object>
+    VectorOfVectorOfSize2f( size ) -> <std::vector<std::vector<cv::Size2f>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Size2f>>( std::vector<std::vector<cv::Size2f>> other );
+lua:
+    VectorOfVectorOfSize2f.new( other ) -> <std::vector<std::vector<cv::Size2f>> object>
+    VectorOfVectorOfSize2f( other ) -> <std::vector<std::vector<cv::Size2f>> object>
+```
+
+### VectorOfVectorOfSize2f.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Size2f> VectorOfVectorOfSize2f::at( size_t index );
+lua:
+    oVectorOfVectorOfSize2f:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Size2f> VectorOfVectorOfSize2f::at( const std::string& index );
+lua:
+    oVectorOfVectorOfSize2f:__index( index ) -> retval
+```
+
+### VectorOfVectorOfSize2f.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfSize2f::size();
+lua:
+    oVectorOfVectorOfSize2f:__len() -> retval
+```
+
+### VectorOfVectorOfSize2f.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfSize2f::sol::meta_function::new_index( size_t                  index,
+                                                            std::vector<cv::Size2f> value );
+lua:
+    oVectorOfVectorOfSize2f:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfSize2f::sol::meta_function::new_index( const std::string&      index,
+                                                            std::vector<cv::Size2f> value );
+lua:
+    oVectorOfVectorOfSize2f:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfSize2f.table
+
+```cpp
+void VectorOfVectorOfSize2f::table();
+lua:
+    oVectorOfVectorOfSize2f:table() -> None
+```
+
+## VectorOfVectorOfUchar
+
+### VectorOfVectorOfUchar.new
+
+```cpp
+std::vector<std::vector<uchar>>();
+lua:
+    VectorOfVectorOfUchar.new() -> <std::vector<std::vector<uchar>> object>
+    VectorOfVectorOfUchar() -> <std::vector<std::vector<uchar>> object>
+```
+
+```cpp
+std::vector<std::vector<uchar>>( size_t size );
+lua:
+    VectorOfVectorOfUchar.new( size ) -> <std::vector<std::vector<uchar>> object>
+    VectorOfVectorOfUchar( size ) -> <std::vector<std::vector<uchar>> object>
+```
+
+```cpp
+std::vector<std::vector<uchar>>( std::vector<std::vector<uchar>> other );
+lua:
+    VectorOfVectorOfUchar.new( other ) -> <std::vector<std::vector<uchar>> object>
+    VectorOfVectorOfUchar( other ) -> <std::vector<std::vector<uchar>> object>
+```
+
+### VectorOfVectorOfUchar.sol::meta\_function::index
+
+```cpp
+std::vector<uchar> VectorOfVectorOfUchar::at( size_t index );
+lua:
+    oVectorOfVectorOfUchar:__index( index ) -> retval
+```
+
+```cpp
+std::vector<uchar> VectorOfVectorOfUchar::at( const std::string& index );
+lua:
+    oVectorOfVectorOfUchar:__index( index ) -> retval
+```
+
+### VectorOfVectorOfUchar.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfUchar::size();
+lua:
+    oVectorOfVectorOfUchar:__len() -> retval
+```
+
+### VectorOfVectorOfUchar.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfUchar::sol::meta_function::new_index( size_t             index,
+                                                           std::vector<uchar> value );
+lua:
+    oVectorOfVectorOfUchar:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfUchar::sol::meta_function::new_index( const std::string& index,
+                                                           std::vector<uchar> value );
+lua:
+    oVectorOfVectorOfUchar:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfUchar.table
+
+```cpp
+void VectorOfVectorOfUchar::table();
+lua:
+    oVectorOfVectorOfUchar:table() -> None
+```
+
+## VectorOfVectorOfUshort
+
+### VectorOfVectorOfUshort.new
+
+```cpp
+std::vector<std::vector<ushort>>();
+lua:
+    VectorOfVectorOfUshort.new() -> <std::vector<std::vector<ushort>> object>
+    VectorOfVectorOfUshort() -> <std::vector<std::vector<ushort>> object>
+```
+
+```cpp
+std::vector<std::vector<ushort>>( size_t size );
+lua:
+    VectorOfVectorOfUshort.new( size ) -> <std::vector<std::vector<ushort>> object>
+    VectorOfVectorOfUshort( size ) -> <std::vector<std::vector<ushort>> object>
+```
+
+```cpp
+std::vector<std::vector<ushort>>( std::vector<std::vector<ushort>> other );
+lua:
+    VectorOfVectorOfUshort.new( other ) -> <std::vector<std::vector<ushort>> object>
+    VectorOfVectorOfUshort( other ) -> <std::vector<std::vector<ushort>> object>
+```
+
+### VectorOfVectorOfUshort.sol::meta\_function::index
+
+```cpp
+std::vector<ushort> VectorOfVectorOfUshort::at( size_t index );
+lua:
+    oVectorOfVectorOfUshort:__index( index ) -> retval
+```
+
+```cpp
+std::vector<ushort> VectorOfVectorOfUshort::at( const std::string& index );
+lua:
+    oVectorOfVectorOfUshort:__index( index ) -> retval
+```
+
+### VectorOfVectorOfUshort.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfUshort::size();
+lua:
+    oVectorOfVectorOfUshort:__len() -> retval
+```
+
+### VectorOfVectorOfUshort.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfUshort::sol::meta_function::new_index( size_t              index,
+                                                            std::vector<ushort> value );
+lua:
+    oVectorOfVectorOfUshort:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfUshort::sol::meta_function::new_index( const std::string&  index,
+                                                            std::vector<ushort> value );
+lua:
+    oVectorOfVectorOfUshort:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfUshort.table
+
+```cpp
+void VectorOfVectorOfUshort::table();
+lua:
+    oVectorOfVectorOfUshort:table() -> None
+```
+
+## VectorOfVectorOfVec2b
+
+### VectorOfVectorOfVec2b.new
+
+```cpp
+std::vector<std::vector<cv::Vec2b>>();
+lua:
+    VectorOfVectorOfVec2b.new() -> <std::vector<std::vector<cv::Vec2b>> object>
+    VectorOfVectorOfVec2b() -> <std::vector<std::vector<cv::Vec2b>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec2b>>( size_t size );
+lua:
+    VectorOfVectorOfVec2b.new( size ) -> <std::vector<std::vector<cv::Vec2b>> object>
+    VectorOfVectorOfVec2b( size ) -> <std::vector<std::vector<cv::Vec2b>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec2b>>( std::vector<std::vector<cv::Vec2b>> other );
+lua:
+    VectorOfVectorOfVec2b.new( other ) -> <std::vector<std::vector<cv::Vec2b>> object>
+    VectorOfVectorOfVec2b( other ) -> <std::vector<std::vector<cv::Vec2b>> object>
+```
+
+### VectorOfVectorOfVec2b.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Vec2b> VectorOfVectorOfVec2b::at( size_t index );
+lua:
+    oVectorOfVectorOfVec2b:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Vec2b> VectorOfVectorOfVec2b::at( const std::string& index );
+lua:
+    oVectorOfVectorOfVec2b:__index( index ) -> retval
+```
+
+### VectorOfVectorOfVec2b.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfVec2b::size();
+lua:
+    oVectorOfVectorOfVec2b:__len() -> retval
+```
+
+### VectorOfVectorOfVec2b.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfVec2b::sol::meta_function::new_index( size_t                 index,
+                                                           std::vector<cv::Vec2b> value );
+lua:
+    oVectorOfVectorOfVec2b:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec2b::sol::meta_function::new_index( const std::string&     index,
+                                                           std::vector<cv::Vec2b> value );
+lua:
+    oVectorOfVectorOfVec2b:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec2b.table
+
+```cpp
+void VectorOfVectorOfVec2b::table();
+lua:
+    oVectorOfVectorOfVec2b:table() -> None
+```
+
+## VectorOfVectorOfVec2d
+
+### VectorOfVectorOfVec2d.new
+
+```cpp
+std::vector<std::vector<cv::Vec2d>>();
+lua:
+    VectorOfVectorOfVec2d.new() -> <std::vector<std::vector<cv::Vec2d>> object>
+    VectorOfVectorOfVec2d() -> <std::vector<std::vector<cv::Vec2d>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec2d>>( size_t size );
+lua:
+    VectorOfVectorOfVec2d.new( size ) -> <std::vector<std::vector<cv::Vec2d>> object>
+    VectorOfVectorOfVec2d( size ) -> <std::vector<std::vector<cv::Vec2d>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec2d>>( std::vector<std::vector<cv::Vec2d>> other );
+lua:
+    VectorOfVectorOfVec2d.new( other ) -> <std::vector<std::vector<cv::Vec2d>> object>
+    VectorOfVectorOfVec2d( other ) -> <std::vector<std::vector<cv::Vec2d>> object>
+```
+
+### VectorOfVectorOfVec2d.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Vec2d> VectorOfVectorOfVec2d::at( size_t index );
+lua:
+    oVectorOfVectorOfVec2d:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Vec2d> VectorOfVectorOfVec2d::at( const std::string& index );
+lua:
+    oVectorOfVectorOfVec2d:__index( index ) -> retval
+```
+
+### VectorOfVectorOfVec2d.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfVec2d::size();
+lua:
+    oVectorOfVectorOfVec2d:__len() -> retval
+```
+
+### VectorOfVectorOfVec2d.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfVec2d::sol::meta_function::new_index( size_t                 index,
+                                                           std::vector<cv::Vec2d> value );
+lua:
+    oVectorOfVectorOfVec2d:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec2d::sol::meta_function::new_index( const std::string&     index,
+                                                           std::vector<cv::Vec2d> value );
+lua:
+    oVectorOfVectorOfVec2d:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec2d.table
+
+```cpp
+void VectorOfVectorOfVec2d::table();
+lua:
+    oVectorOfVectorOfVec2d:table() -> None
+```
+
+## VectorOfVectorOfVec2f
+
+### VectorOfVectorOfVec2f.new
+
+```cpp
+std::vector<std::vector<cv::Vec2f>>();
+lua:
+    VectorOfVectorOfVec2f.new() -> <std::vector<std::vector<cv::Vec2f>> object>
+    VectorOfVectorOfVec2f() -> <std::vector<std::vector<cv::Vec2f>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec2f>>( size_t size );
+lua:
+    VectorOfVectorOfVec2f.new( size ) -> <std::vector<std::vector<cv::Vec2f>> object>
+    VectorOfVectorOfVec2f( size ) -> <std::vector<std::vector<cv::Vec2f>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec2f>>( std::vector<std::vector<cv::Vec2f>> other );
+lua:
+    VectorOfVectorOfVec2f.new( other ) -> <std::vector<std::vector<cv::Vec2f>> object>
+    VectorOfVectorOfVec2f( other ) -> <std::vector<std::vector<cv::Vec2f>> object>
+```
+
+### VectorOfVectorOfVec2f.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Vec2f> VectorOfVectorOfVec2f::at( size_t index );
+lua:
+    oVectorOfVectorOfVec2f:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Vec2f> VectorOfVectorOfVec2f::at( const std::string& index );
+lua:
+    oVectorOfVectorOfVec2f:__index( index ) -> retval
+```
+
+### VectorOfVectorOfVec2f.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfVec2f::size();
+lua:
+    oVectorOfVectorOfVec2f:__len() -> retval
+```
+
+### VectorOfVectorOfVec2f.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfVec2f::sol::meta_function::new_index( size_t                 index,
+                                                           std::vector<cv::Vec2f> value );
+lua:
+    oVectorOfVectorOfVec2f:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec2f::sol::meta_function::new_index( const std::string&     index,
+                                                           std::vector<cv::Vec2f> value );
+lua:
+    oVectorOfVectorOfVec2f:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec2f.table
+
+```cpp
+void VectorOfVectorOfVec2f::table();
+lua:
+    oVectorOfVectorOfVec2f:table() -> None
+```
+
+## VectorOfVectorOfVec2i
+
+### VectorOfVectorOfVec2i.new
+
+```cpp
+std::vector<std::vector<cv::Vec2i>>();
+lua:
+    VectorOfVectorOfVec2i.new() -> <std::vector<std::vector<cv::Vec2i>> object>
+    VectorOfVectorOfVec2i() -> <std::vector<std::vector<cv::Vec2i>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec2i>>( size_t size );
+lua:
+    VectorOfVectorOfVec2i.new( size ) -> <std::vector<std::vector<cv::Vec2i>> object>
+    VectorOfVectorOfVec2i( size ) -> <std::vector<std::vector<cv::Vec2i>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec2i>>( std::vector<std::vector<cv::Vec2i>> other );
+lua:
+    VectorOfVectorOfVec2i.new( other ) -> <std::vector<std::vector<cv::Vec2i>> object>
+    VectorOfVectorOfVec2i( other ) -> <std::vector<std::vector<cv::Vec2i>> object>
+```
+
+### VectorOfVectorOfVec2i.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Vec2i> VectorOfVectorOfVec2i::at( size_t index );
+lua:
+    oVectorOfVectorOfVec2i:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Vec2i> VectorOfVectorOfVec2i::at( const std::string& index );
+lua:
+    oVectorOfVectorOfVec2i:__index( index ) -> retval
+```
+
+### VectorOfVectorOfVec2i.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfVec2i::size();
+lua:
+    oVectorOfVectorOfVec2i:__len() -> retval
+```
+
+### VectorOfVectorOfVec2i.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfVec2i::sol::meta_function::new_index( size_t                 index,
+                                                           std::vector<cv::Vec2i> value );
+lua:
+    oVectorOfVectorOfVec2i:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec2i::sol::meta_function::new_index( const std::string&     index,
+                                                           std::vector<cv::Vec2i> value );
+lua:
+    oVectorOfVectorOfVec2i:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec2i.table
+
+```cpp
+void VectorOfVectorOfVec2i::table();
+lua:
+    oVectorOfVectorOfVec2i:table() -> None
+```
+
+## VectorOfVectorOfVec2s
+
+### VectorOfVectorOfVec2s.new
+
+```cpp
+std::vector<std::vector<cv::Vec2s>>();
+lua:
+    VectorOfVectorOfVec2s.new() -> <std::vector<std::vector<cv::Vec2s>> object>
+    VectorOfVectorOfVec2s() -> <std::vector<std::vector<cv::Vec2s>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec2s>>( size_t size );
+lua:
+    VectorOfVectorOfVec2s.new( size ) -> <std::vector<std::vector<cv::Vec2s>> object>
+    VectorOfVectorOfVec2s( size ) -> <std::vector<std::vector<cv::Vec2s>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec2s>>( std::vector<std::vector<cv::Vec2s>> other );
+lua:
+    VectorOfVectorOfVec2s.new( other ) -> <std::vector<std::vector<cv::Vec2s>> object>
+    VectorOfVectorOfVec2s( other ) -> <std::vector<std::vector<cv::Vec2s>> object>
+```
+
+### VectorOfVectorOfVec2s.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Vec2s> VectorOfVectorOfVec2s::at( size_t index );
+lua:
+    oVectorOfVectorOfVec2s:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Vec2s> VectorOfVectorOfVec2s::at( const std::string& index );
+lua:
+    oVectorOfVectorOfVec2s:__index( index ) -> retval
+```
+
+### VectorOfVectorOfVec2s.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfVec2s::size();
+lua:
+    oVectorOfVectorOfVec2s:__len() -> retval
+```
+
+### VectorOfVectorOfVec2s.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfVec2s::sol::meta_function::new_index( size_t                 index,
+                                                           std::vector<cv::Vec2s> value );
+lua:
+    oVectorOfVectorOfVec2s:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec2s::sol::meta_function::new_index( const std::string&     index,
+                                                           std::vector<cv::Vec2s> value );
+lua:
+    oVectorOfVectorOfVec2s:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec2s.table
+
+```cpp
+void VectorOfVectorOfVec2s::table();
+lua:
+    oVectorOfVectorOfVec2s:table() -> None
+```
+
+## VectorOfVectorOfVec2w
+
+### VectorOfVectorOfVec2w.new
+
+```cpp
+std::vector<std::vector<cv::Vec2w>>();
+lua:
+    VectorOfVectorOfVec2w.new() -> <std::vector<std::vector<cv::Vec2w>> object>
+    VectorOfVectorOfVec2w() -> <std::vector<std::vector<cv::Vec2w>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec2w>>( size_t size );
+lua:
+    VectorOfVectorOfVec2w.new( size ) -> <std::vector<std::vector<cv::Vec2w>> object>
+    VectorOfVectorOfVec2w( size ) -> <std::vector<std::vector<cv::Vec2w>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec2w>>( std::vector<std::vector<cv::Vec2w>> other );
+lua:
+    VectorOfVectorOfVec2w.new( other ) -> <std::vector<std::vector<cv::Vec2w>> object>
+    VectorOfVectorOfVec2w( other ) -> <std::vector<std::vector<cv::Vec2w>> object>
+```
+
+### VectorOfVectorOfVec2w.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Vec2w> VectorOfVectorOfVec2w::at( size_t index );
+lua:
+    oVectorOfVectorOfVec2w:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Vec2w> VectorOfVectorOfVec2w::at( const std::string& index );
+lua:
+    oVectorOfVectorOfVec2w:__index( index ) -> retval
+```
+
+### VectorOfVectorOfVec2w.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfVec2w::size();
+lua:
+    oVectorOfVectorOfVec2w:__len() -> retval
+```
+
+### VectorOfVectorOfVec2w.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfVec2w::sol::meta_function::new_index( size_t                 index,
+                                                           std::vector<cv::Vec2w> value );
+lua:
+    oVectorOfVectorOfVec2w:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec2w::sol::meta_function::new_index( const std::string&     index,
+                                                           std::vector<cv::Vec2w> value );
+lua:
+    oVectorOfVectorOfVec2w:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec2w.table
+
+```cpp
+void VectorOfVectorOfVec2w::table();
+lua:
+    oVectorOfVectorOfVec2w:table() -> None
+```
+
+## VectorOfVectorOfVec3b
+
+### VectorOfVectorOfVec3b.new
+
+```cpp
+std::vector<std::vector<cv::Vec3b>>();
+lua:
+    VectorOfVectorOfVec3b.new() -> <std::vector<std::vector<cv::Vec3b>> object>
+    VectorOfVectorOfVec3b() -> <std::vector<std::vector<cv::Vec3b>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec3b>>( size_t size );
+lua:
+    VectorOfVectorOfVec3b.new( size ) -> <std::vector<std::vector<cv::Vec3b>> object>
+    VectorOfVectorOfVec3b( size ) -> <std::vector<std::vector<cv::Vec3b>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec3b>>( std::vector<std::vector<cv::Vec3b>> other );
+lua:
+    VectorOfVectorOfVec3b.new( other ) -> <std::vector<std::vector<cv::Vec3b>> object>
+    VectorOfVectorOfVec3b( other ) -> <std::vector<std::vector<cv::Vec3b>> object>
+```
+
+### VectorOfVectorOfVec3b.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Vec3b> VectorOfVectorOfVec3b::at( size_t index );
+lua:
+    oVectorOfVectorOfVec3b:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Vec3b> VectorOfVectorOfVec3b::at( const std::string& index );
+lua:
+    oVectorOfVectorOfVec3b:__index( index ) -> retval
+```
+
+### VectorOfVectorOfVec3b.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfVec3b::size();
+lua:
+    oVectorOfVectorOfVec3b:__len() -> retval
+```
+
+### VectorOfVectorOfVec3b.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfVec3b::sol::meta_function::new_index( size_t                 index,
+                                                           std::vector<cv::Vec3b> value );
+lua:
+    oVectorOfVectorOfVec3b:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec3b::sol::meta_function::new_index( const std::string&     index,
+                                                           std::vector<cv::Vec3b> value );
+lua:
+    oVectorOfVectorOfVec3b:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec3b.table
+
+```cpp
+void VectorOfVectorOfVec3b::table();
+lua:
+    oVectorOfVectorOfVec3b:table() -> None
+```
+
+## VectorOfVectorOfVec3d
+
+### VectorOfVectorOfVec3d.new
+
+```cpp
+std::vector<std::vector<cv::Vec3d>>();
+lua:
+    VectorOfVectorOfVec3d.new() -> <std::vector<std::vector<cv::Vec3d>> object>
+    VectorOfVectorOfVec3d() -> <std::vector<std::vector<cv::Vec3d>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec3d>>( size_t size );
+lua:
+    VectorOfVectorOfVec3d.new( size ) -> <std::vector<std::vector<cv::Vec3d>> object>
+    VectorOfVectorOfVec3d( size ) -> <std::vector<std::vector<cv::Vec3d>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec3d>>( std::vector<std::vector<cv::Vec3d>> other );
+lua:
+    VectorOfVectorOfVec3d.new( other ) -> <std::vector<std::vector<cv::Vec3d>> object>
+    VectorOfVectorOfVec3d( other ) -> <std::vector<std::vector<cv::Vec3d>> object>
+```
+
+### VectorOfVectorOfVec3d.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Vec3d> VectorOfVectorOfVec3d::at( size_t index );
+lua:
+    oVectorOfVectorOfVec3d:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Vec3d> VectorOfVectorOfVec3d::at( const std::string& index );
+lua:
+    oVectorOfVectorOfVec3d:__index( index ) -> retval
+```
+
+### VectorOfVectorOfVec3d.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfVec3d::size();
+lua:
+    oVectorOfVectorOfVec3d:__len() -> retval
+```
+
+### VectorOfVectorOfVec3d.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfVec3d::sol::meta_function::new_index( size_t                 index,
+                                                           std::vector<cv::Vec3d> value );
+lua:
+    oVectorOfVectorOfVec3d:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec3d::sol::meta_function::new_index( const std::string&     index,
+                                                           std::vector<cv::Vec3d> value );
+lua:
+    oVectorOfVectorOfVec3d:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec3d.table
+
+```cpp
+void VectorOfVectorOfVec3d::table();
+lua:
+    oVectorOfVectorOfVec3d:table() -> None
+```
+
+## VectorOfVectorOfVec3f
+
+### VectorOfVectorOfVec3f.new
+
+```cpp
+std::vector<std::vector<cv::Vec3f>>();
+lua:
+    VectorOfVectorOfVec3f.new() -> <std::vector<std::vector<cv::Vec3f>> object>
+    VectorOfVectorOfVec3f() -> <std::vector<std::vector<cv::Vec3f>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec3f>>( size_t size );
+lua:
+    VectorOfVectorOfVec3f.new( size ) -> <std::vector<std::vector<cv::Vec3f>> object>
+    VectorOfVectorOfVec3f( size ) -> <std::vector<std::vector<cv::Vec3f>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec3f>>( std::vector<std::vector<cv::Vec3f>> other );
+lua:
+    VectorOfVectorOfVec3f.new( other ) -> <std::vector<std::vector<cv::Vec3f>> object>
+    VectorOfVectorOfVec3f( other ) -> <std::vector<std::vector<cv::Vec3f>> object>
+```
+
+### VectorOfVectorOfVec3f.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Vec3f> VectorOfVectorOfVec3f::at( size_t index );
+lua:
+    oVectorOfVectorOfVec3f:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Vec3f> VectorOfVectorOfVec3f::at( const std::string& index );
+lua:
+    oVectorOfVectorOfVec3f:__index( index ) -> retval
+```
+
+### VectorOfVectorOfVec3f.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfVec3f::size();
+lua:
+    oVectorOfVectorOfVec3f:__len() -> retval
+```
+
+### VectorOfVectorOfVec3f.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfVec3f::sol::meta_function::new_index( size_t                 index,
+                                                           std::vector<cv::Vec3f> value );
+lua:
+    oVectorOfVectorOfVec3f:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec3f::sol::meta_function::new_index( const std::string&     index,
+                                                           std::vector<cv::Vec3f> value );
+lua:
+    oVectorOfVectorOfVec3f:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec3f.table
+
+```cpp
+void VectorOfVectorOfVec3f::table();
+lua:
+    oVectorOfVectorOfVec3f:table() -> None
+```
+
+## VectorOfVectorOfVec3i
+
+### VectorOfVectorOfVec3i.new
+
+```cpp
+std::vector<std::vector<cv::Vec3i>>();
+lua:
+    VectorOfVectorOfVec3i.new() -> <std::vector<std::vector<cv::Vec3i>> object>
+    VectorOfVectorOfVec3i() -> <std::vector<std::vector<cv::Vec3i>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec3i>>( size_t size );
+lua:
+    VectorOfVectorOfVec3i.new( size ) -> <std::vector<std::vector<cv::Vec3i>> object>
+    VectorOfVectorOfVec3i( size ) -> <std::vector<std::vector<cv::Vec3i>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec3i>>( std::vector<std::vector<cv::Vec3i>> other );
+lua:
+    VectorOfVectorOfVec3i.new( other ) -> <std::vector<std::vector<cv::Vec3i>> object>
+    VectorOfVectorOfVec3i( other ) -> <std::vector<std::vector<cv::Vec3i>> object>
+```
+
+### VectorOfVectorOfVec3i.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Vec3i> VectorOfVectorOfVec3i::at( size_t index );
+lua:
+    oVectorOfVectorOfVec3i:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Vec3i> VectorOfVectorOfVec3i::at( const std::string& index );
+lua:
+    oVectorOfVectorOfVec3i:__index( index ) -> retval
+```
+
+### VectorOfVectorOfVec3i.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfVec3i::size();
+lua:
+    oVectorOfVectorOfVec3i:__len() -> retval
+```
+
+### VectorOfVectorOfVec3i.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfVec3i::sol::meta_function::new_index( size_t                 index,
+                                                           std::vector<cv::Vec3i> value );
+lua:
+    oVectorOfVectorOfVec3i:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec3i::sol::meta_function::new_index( const std::string&     index,
+                                                           std::vector<cv::Vec3i> value );
+lua:
+    oVectorOfVectorOfVec3i:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec3i.table
+
+```cpp
+void VectorOfVectorOfVec3i::table();
+lua:
+    oVectorOfVectorOfVec3i:table() -> None
+```
+
+## VectorOfVectorOfVec3s
+
+### VectorOfVectorOfVec3s.new
+
+```cpp
+std::vector<std::vector<cv::Vec3s>>();
+lua:
+    VectorOfVectorOfVec3s.new() -> <std::vector<std::vector<cv::Vec3s>> object>
+    VectorOfVectorOfVec3s() -> <std::vector<std::vector<cv::Vec3s>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec3s>>( size_t size );
+lua:
+    VectorOfVectorOfVec3s.new( size ) -> <std::vector<std::vector<cv::Vec3s>> object>
+    VectorOfVectorOfVec3s( size ) -> <std::vector<std::vector<cv::Vec3s>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec3s>>( std::vector<std::vector<cv::Vec3s>> other );
+lua:
+    VectorOfVectorOfVec3s.new( other ) -> <std::vector<std::vector<cv::Vec3s>> object>
+    VectorOfVectorOfVec3s( other ) -> <std::vector<std::vector<cv::Vec3s>> object>
+```
+
+### VectorOfVectorOfVec3s.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Vec3s> VectorOfVectorOfVec3s::at( size_t index );
+lua:
+    oVectorOfVectorOfVec3s:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Vec3s> VectorOfVectorOfVec3s::at( const std::string& index );
+lua:
+    oVectorOfVectorOfVec3s:__index( index ) -> retval
+```
+
+### VectorOfVectorOfVec3s.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfVec3s::size();
+lua:
+    oVectorOfVectorOfVec3s:__len() -> retval
+```
+
+### VectorOfVectorOfVec3s.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfVec3s::sol::meta_function::new_index( size_t                 index,
+                                                           std::vector<cv::Vec3s> value );
+lua:
+    oVectorOfVectorOfVec3s:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec3s::sol::meta_function::new_index( const std::string&     index,
+                                                           std::vector<cv::Vec3s> value );
+lua:
+    oVectorOfVectorOfVec3s:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec3s.table
+
+```cpp
+void VectorOfVectorOfVec3s::table();
+lua:
+    oVectorOfVectorOfVec3s:table() -> None
+```
+
+## VectorOfVectorOfVec3w
+
+### VectorOfVectorOfVec3w.new
+
+```cpp
+std::vector<std::vector<cv::Vec3w>>();
+lua:
+    VectorOfVectorOfVec3w.new() -> <std::vector<std::vector<cv::Vec3w>> object>
+    VectorOfVectorOfVec3w() -> <std::vector<std::vector<cv::Vec3w>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec3w>>( size_t size );
+lua:
+    VectorOfVectorOfVec3w.new( size ) -> <std::vector<std::vector<cv::Vec3w>> object>
+    VectorOfVectorOfVec3w( size ) -> <std::vector<std::vector<cv::Vec3w>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec3w>>( std::vector<std::vector<cv::Vec3w>> other );
+lua:
+    VectorOfVectorOfVec3w.new( other ) -> <std::vector<std::vector<cv::Vec3w>> object>
+    VectorOfVectorOfVec3w( other ) -> <std::vector<std::vector<cv::Vec3w>> object>
+```
+
+### VectorOfVectorOfVec3w.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Vec3w> VectorOfVectorOfVec3w::at( size_t index );
+lua:
+    oVectorOfVectorOfVec3w:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Vec3w> VectorOfVectorOfVec3w::at( const std::string& index );
+lua:
+    oVectorOfVectorOfVec3w:__index( index ) -> retval
+```
+
+### VectorOfVectorOfVec3w.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfVec3w::size();
+lua:
+    oVectorOfVectorOfVec3w:__len() -> retval
+```
+
+### VectorOfVectorOfVec3w.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfVec3w::sol::meta_function::new_index( size_t                 index,
+                                                           std::vector<cv::Vec3w> value );
+lua:
+    oVectorOfVectorOfVec3w:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec3w::sol::meta_function::new_index( const std::string&     index,
+                                                           std::vector<cv::Vec3w> value );
+lua:
+    oVectorOfVectorOfVec3w:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec3w.table
+
+```cpp
+void VectorOfVectorOfVec3w::table();
+lua:
+    oVectorOfVectorOfVec3w:table() -> None
+```
+
+## VectorOfVectorOfVec4b
+
+### VectorOfVectorOfVec4b.new
+
+```cpp
+std::vector<std::vector<cv::Vec4b>>();
+lua:
+    VectorOfVectorOfVec4b.new() -> <std::vector<std::vector<cv::Vec4b>> object>
+    VectorOfVectorOfVec4b() -> <std::vector<std::vector<cv::Vec4b>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec4b>>( size_t size );
+lua:
+    VectorOfVectorOfVec4b.new( size ) -> <std::vector<std::vector<cv::Vec4b>> object>
+    VectorOfVectorOfVec4b( size ) -> <std::vector<std::vector<cv::Vec4b>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec4b>>( std::vector<std::vector<cv::Vec4b>> other );
+lua:
+    VectorOfVectorOfVec4b.new( other ) -> <std::vector<std::vector<cv::Vec4b>> object>
+    VectorOfVectorOfVec4b( other ) -> <std::vector<std::vector<cv::Vec4b>> object>
+```
+
+### VectorOfVectorOfVec4b.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Vec4b> VectorOfVectorOfVec4b::at( size_t index );
+lua:
+    oVectorOfVectorOfVec4b:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Vec4b> VectorOfVectorOfVec4b::at( const std::string& index );
+lua:
+    oVectorOfVectorOfVec4b:__index( index ) -> retval
+```
+
+### VectorOfVectorOfVec4b.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfVec4b::size();
+lua:
+    oVectorOfVectorOfVec4b:__len() -> retval
+```
+
+### VectorOfVectorOfVec4b.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfVec4b::sol::meta_function::new_index( size_t                 index,
+                                                           std::vector<cv::Vec4b> value );
+lua:
+    oVectorOfVectorOfVec4b:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec4b::sol::meta_function::new_index( const std::string&     index,
+                                                           std::vector<cv::Vec4b> value );
+lua:
+    oVectorOfVectorOfVec4b:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec4b.table
+
+```cpp
+void VectorOfVectorOfVec4b::table();
+lua:
+    oVectorOfVectorOfVec4b:table() -> None
+```
+
+## VectorOfVectorOfVec4d
+
+### VectorOfVectorOfVec4d.new
+
+```cpp
+std::vector<std::vector<cv::Vec4d>>();
+lua:
+    VectorOfVectorOfVec4d.new() -> <std::vector<std::vector<cv::Vec4d>> object>
+    VectorOfVectorOfVec4d() -> <std::vector<std::vector<cv::Vec4d>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec4d>>( size_t size );
+lua:
+    VectorOfVectorOfVec4d.new( size ) -> <std::vector<std::vector<cv::Vec4d>> object>
+    VectorOfVectorOfVec4d( size ) -> <std::vector<std::vector<cv::Vec4d>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec4d>>( std::vector<std::vector<cv::Vec4d>> other );
+lua:
+    VectorOfVectorOfVec4d.new( other ) -> <std::vector<std::vector<cv::Vec4d>> object>
+    VectorOfVectorOfVec4d( other ) -> <std::vector<std::vector<cv::Vec4d>> object>
+```
+
+### VectorOfVectorOfVec4d.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Vec4d> VectorOfVectorOfVec4d::at( size_t index );
+lua:
+    oVectorOfVectorOfVec4d:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Vec4d> VectorOfVectorOfVec4d::at( const std::string& index );
+lua:
+    oVectorOfVectorOfVec4d:__index( index ) -> retval
+```
+
+### VectorOfVectorOfVec4d.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfVec4d::size();
+lua:
+    oVectorOfVectorOfVec4d:__len() -> retval
+```
+
+### VectorOfVectorOfVec4d.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfVec4d::sol::meta_function::new_index( size_t                 index,
+                                                           std::vector<cv::Vec4d> value );
+lua:
+    oVectorOfVectorOfVec4d:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec4d::sol::meta_function::new_index( const std::string&     index,
+                                                           std::vector<cv::Vec4d> value );
+lua:
+    oVectorOfVectorOfVec4d:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec4d.table
+
+```cpp
+void VectorOfVectorOfVec4d::table();
+lua:
+    oVectorOfVectorOfVec4d:table() -> None
+```
+
+## VectorOfVectorOfVec4f
+
+### VectorOfVectorOfVec4f.new
+
+```cpp
+std::vector<std::vector<cv::Vec4f>>();
+lua:
+    VectorOfVectorOfVec4f.new() -> <std::vector<std::vector<cv::Vec4f>> object>
+    VectorOfVectorOfVec4f() -> <std::vector<std::vector<cv::Vec4f>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec4f>>( size_t size );
+lua:
+    VectorOfVectorOfVec4f.new( size ) -> <std::vector<std::vector<cv::Vec4f>> object>
+    VectorOfVectorOfVec4f( size ) -> <std::vector<std::vector<cv::Vec4f>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec4f>>( std::vector<std::vector<cv::Vec4f>> other );
+lua:
+    VectorOfVectorOfVec4f.new( other ) -> <std::vector<std::vector<cv::Vec4f>> object>
+    VectorOfVectorOfVec4f( other ) -> <std::vector<std::vector<cv::Vec4f>> object>
+```
+
+### VectorOfVectorOfVec4f.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Vec4f> VectorOfVectorOfVec4f::at( size_t index );
+lua:
+    oVectorOfVectorOfVec4f:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Vec4f> VectorOfVectorOfVec4f::at( const std::string& index );
+lua:
+    oVectorOfVectorOfVec4f:__index( index ) -> retval
+```
+
+### VectorOfVectorOfVec4f.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfVec4f::size();
+lua:
+    oVectorOfVectorOfVec4f:__len() -> retval
+```
+
+### VectorOfVectorOfVec4f.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfVec4f::sol::meta_function::new_index( size_t                 index,
+                                                           std::vector<cv::Vec4f> value );
+lua:
+    oVectorOfVectorOfVec4f:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec4f::sol::meta_function::new_index( const std::string&     index,
+                                                           std::vector<cv::Vec4f> value );
+lua:
+    oVectorOfVectorOfVec4f:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec4f.table
+
+```cpp
+void VectorOfVectorOfVec4f::table();
+lua:
+    oVectorOfVectorOfVec4f:table() -> None
+```
+
+## VectorOfVectorOfVec4i
+
+### VectorOfVectorOfVec4i.new
+
+```cpp
+std::vector<std::vector<cv::Vec4i>>();
+lua:
+    VectorOfVectorOfVec4i.new() -> <std::vector<std::vector<cv::Vec4i>> object>
+    VectorOfVectorOfVec4i() -> <std::vector<std::vector<cv::Vec4i>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec4i>>( size_t size );
+lua:
+    VectorOfVectorOfVec4i.new( size ) -> <std::vector<std::vector<cv::Vec4i>> object>
+    VectorOfVectorOfVec4i( size ) -> <std::vector<std::vector<cv::Vec4i>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec4i>>( std::vector<std::vector<cv::Vec4i>> other );
+lua:
+    VectorOfVectorOfVec4i.new( other ) -> <std::vector<std::vector<cv::Vec4i>> object>
+    VectorOfVectorOfVec4i( other ) -> <std::vector<std::vector<cv::Vec4i>> object>
+```
+
+### VectorOfVectorOfVec4i.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Vec4i> VectorOfVectorOfVec4i::at( size_t index );
+lua:
+    oVectorOfVectorOfVec4i:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Vec4i> VectorOfVectorOfVec4i::at( const std::string& index );
+lua:
+    oVectorOfVectorOfVec4i:__index( index ) -> retval
+```
+
+### VectorOfVectorOfVec4i.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfVec4i::size();
+lua:
+    oVectorOfVectorOfVec4i:__len() -> retval
+```
+
+### VectorOfVectorOfVec4i.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfVec4i::sol::meta_function::new_index( size_t                 index,
+                                                           std::vector<cv::Vec4i> value );
+lua:
+    oVectorOfVectorOfVec4i:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec4i::sol::meta_function::new_index( const std::string&     index,
+                                                           std::vector<cv::Vec4i> value );
+lua:
+    oVectorOfVectorOfVec4i:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec4i.table
+
+```cpp
+void VectorOfVectorOfVec4i::table();
+lua:
+    oVectorOfVectorOfVec4i:table() -> None
+```
+
+## VectorOfVectorOfVec4s
+
+### VectorOfVectorOfVec4s.new
+
+```cpp
+std::vector<std::vector<cv::Vec4s>>();
+lua:
+    VectorOfVectorOfVec4s.new() -> <std::vector<std::vector<cv::Vec4s>> object>
+    VectorOfVectorOfVec4s() -> <std::vector<std::vector<cv::Vec4s>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec4s>>( size_t size );
+lua:
+    VectorOfVectorOfVec4s.new( size ) -> <std::vector<std::vector<cv::Vec4s>> object>
+    VectorOfVectorOfVec4s( size ) -> <std::vector<std::vector<cv::Vec4s>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec4s>>( std::vector<std::vector<cv::Vec4s>> other );
+lua:
+    VectorOfVectorOfVec4s.new( other ) -> <std::vector<std::vector<cv::Vec4s>> object>
+    VectorOfVectorOfVec4s( other ) -> <std::vector<std::vector<cv::Vec4s>> object>
+```
+
+### VectorOfVectorOfVec4s.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Vec4s> VectorOfVectorOfVec4s::at( size_t index );
+lua:
+    oVectorOfVectorOfVec4s:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Vec4s> VectorOfVectorOfVec4s::at( const std::string& index );
+lua:
+    oVectorOfVectorOfVec4s:__index( index ) -> retval
+```
+
+### VectorOfVectorOfVec4s.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfVec4s::size();
+lua:
+    oVectorOfVectorOfVec4s:__len() -> retval
+```
+
+### VectorOfVectorOfVec4s.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfVec4s::sol::meta_function::new_index( size_t                 index,
+                                                           std::vector<cv::Vec4s> value );
+lua:
+    oVectorOfVectorOfVec4s:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec4s::sol::meta_function::new_index( const std::string&     index,
+                                                           std::vector<cv::Vec4s> value );
+lua:
+    oVectorOfVectorOfVec4s:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec4s.table
+
+```cpp
+void VectorOfVectorOfVec4s::table();
+lua:
+    oVectorOfVectorOfVec4s:table() -> None
+```
+
+## VectorOfVectorOfVec4w
+
+### VectorOfVectorOfVec4w.new
+
+```cpp
+std::vector<std::vector<cv::Vec4w>>();
+lua:
+    VectorOfVectorOfVec4w.new() -> <std::vector<std::vector<cv::Vec4w>> object>
+    VectorOfVectorOfVec4w() -> <std::vector<std::vector<cv::Vec4w>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec4w>>( size_t size );
+lua:
+    VectorOfVectorOfVec4w.new( size ) -> <std::vector<std::vector<cv::Vec4w>> object>
+    VectorOfVectorOfVec4w( size ) -> <std::vector<std::vector<cv::Vec4w>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec4w>>( std::vector<std::vector<cv::Vec4w>> other );
+lua:
+    VectorOfVectorOfVec4w.new( other ) -> <std::vector<std::vector<cv::Vec4w>> object>
+    VectorOfVectorOfVec4w( other ) -> <std::vector<std::vector<cv::Vec4w>> object>
+```
+
+### VectorOfVectorOfVec4w.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Vec4w> VectorOfVectorOfVec4w::at( size_t index );
+lua:
+    oVectorOfVectorOfVec4w:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Vec4w> VectorOfVectorOfVec4w::at( const std::string& index );
+lua:
+    oVectorOfVectorOfVec4w:__index( index ) -> retval
+```
+
+### VectorOfVectorOfVec4w.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfVec4w::size();
+lua:
+    oVectorOfVectorOfVec4w:__len() -> retval
+```
+
+### VectorOfVectorOfVec4w.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfVec4w::sol::meta_function::new_index( size_t                 index,
+                                                           std::vector<cv::Vec4w> value );
+lua:
+    oVectorOfVectorOfVec4w:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec4w::sol::meta_function::new_index( const std::string&     index,
+                                                           std::vector<cv::Vec4w> value );
+lua:
+    oVectorOfVectorOfVec4w:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec4w.table
+
+```cpp
+void VectorOfVectorOfVec4w::table();
+lua:
+    oVectorOfVectorOfVec4w:table() -> None
+```
+
+## VectorOfVectorOfVec6d
+
+### VectorOfVectorOfVec6d.new
+
+```cpp
+std::vector<std::vector<cv::Vec6d>>();
+lua:
+    VectorOfVectorOfVec6d.new() -> <std::vector<std::vector<cv::Vec6d>> object>
+    VectorOfVectorOfVec6d() -> <std::vector<std::vector<cv::Vec6d>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec6d>>( size_t size );
+lua:
+    VectorOfVectorOfVec6d.new( size ) -> <std::vector<std::vector<cv::Vec6d>> object>
+    VectorOfVectorOfVec6d( size ) -> <std::vector<std::vector<cv::Vec6d>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec6d>>( std::vector<std::vector<cv::Vec6d>> other );
+lua:
+    VectorOfVectorOfVec6d.new( other ) -> <std::vector<std::vector<cv::Vec6d>> object>
+    VectorOfVectorOfVec6d( other ) -> <std::vector<std::vector<cv::Vec6d>> object>
+```
+
+### VectorOfVectorOfVec6d.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Vec6d> VectorOfVectorOfVec6d::at( size_t index );
+lua:
+    oVectorOfVectorOfVec6d:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Vec6d> VectorOfVectorOfVec6d::at( const std::string& index );
+lua:
+    oVectorOfVectorOfVec6d:__index( index ) -> retval
+```
+
+### VectorOfVectorOfVec6d.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfVec6d::size();
+lua:
+    oVectorOfVectorOfVec6d:__len() -> retval
+```
+
+### VectorOfVectorOfVec6d.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfVec6d::sol::meta_function::new_index( size_t                 index,
+                                                           std::vector<cv::Vec6d> value );
+lua:
+    oVectorOfVectorOfVec6d:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec6d::sol::meta_function::new_index( const std::string&     index,
+                                                           std::vector<cv::Vec6d> value );
+lua:
+    oVectorOfVectorOfVec6d:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec6d.table
+
+```cpp
+void VectorOfVectorOfVec6d::table();
+lua:
+    oVectorOfVectorOfVec6d:table() -> None
+```
+
+## VectorOfVectorOfVec6f
+
+### VectorOfVectorOfVec6f.new
+
+```cpp
+std::vector<std::vector<cv::Vec6f>>();
+lua:
+    VectorOfVectorOfVec6f.new() -> <std::vector<std::vector<cv::Vec6f>> object>
+    VectorOfVectorOfVec6f() -> <std::vector<std::vector<cv::Vec6f>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec6f>>( size_t size );
+lua:
+    VectorOfVectorOfVec6f.new( size ) -> <std::vector<std::vector<cv::Vec6f>> object>
+    VectorOfVectorOfVec6f( size ) -> <std::vector<std::vector<cv::Vec6f>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec6f>>( std::vector<std::vector<cv::Vec6f>> other );
+lua:
+    VectorOfVectorOfVec6f.new( other ) -> <std::vector<std::vector<cv::Vec6f>> object>
+    VectorOfVectorOfVec6f( other ) -> <std::vector<std::vector<cv::Vec6f>> object>
+```
+
+### VectorOfVectorOfVec6f.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Vec6f> VectorOfVectorOfVec6f::at( size_t index );
+lua:
+    oVectorOfVectorOfVec6f:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Vec6f> VectorOfVectorOfVec6f::at( const std::string& index );
+lua:
+    oVectorOfVectorOfVec6f:__index( index ) -> retval
+```
+
+### VectorOfVectorOfVec6f.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfVec6f::size();
+lua:
+    oVectorOfVectorOfVec6f:__len() -> retval
+```
+
+### VectorOfVectorOfVec6f.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfVec6f::sol::meta_function::new_index( size_t                 index,
+                                                           std::vector<cv::Vec6f> value );
+lua:
+    oVectorOfVectorOfVec6f:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec6f::sol::meta_function::new_index( const std::string&     index,
+                                                           std::vector<cv::Vec6f> value );
+lua:
+    oVectorOfVectorOfVec6f:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec6f.table
+
+```cpp
+void VectorOfVectorOfVec6f::table();
+lua:
+    oVectorOfVectorOfVec6f:table() -> None
+```
+
+## VectorOfVectorOfVec6i
+
+### VectorOfVectorOfVec6i.new
+
+```cpp
+std::vector<std::vector<cv::Vec6i>>();
+lua:
+    VectorOfVectorOfVec6i.new() -> <std::vector<std::vector<cv::Vec6i>> object>
+    VectorOfVectorOfVec6i() -> <std::vector<std::vector<cv::Vec6i>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec6i>>( size_t size );
+lua:
+    VectorOfVectorOfVec6i.new( size ) -> <std::vector<std::vector<cv::Vec6i>> object>
+    VectorOfVectorOfVec6i( size ) -> <std::vector<std::vector<cv::Vec6i>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec6i>>( std::vector<std::vector<cv::Vec6i>> other );
+lua:
+    VectorOfVectorOfVec6i.new( other ) -> <std::vector<std::vector<cv::Vec6i>> object>
+    VectorOfVectorOfVec6i( other ) -> <std::vector<std::vector<cv::Vec6i>> object>
+```
+
+### VectorOfVectorOfVec6i.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Vec6i> VectorOfVectorOfVec6i::at( size_t index );
+lua:
+    oVectorOfVectorOfVec6i:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Vec6i> VectorOfVectorOfVec6i::at( const std::string& index );
+lua:
+    oVectorOfVectorOfVec6i:__index( index ) -> retval
+```
+
+### VectorOfVectorOfVec6i.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfVec6i::size();
+lua:
+    oVectorOfVectorOfVec6i:__len() -> retval
+```
+
+### VectorOfVectorOfVec6i.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfVec6i::sol::meta_function::new_index( size_t                 index,
+                                                           std::vector<cv::Vec6i> value );
+lua:
+    oVectorOfVectorOfVec6i:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec6i::sol::meta_function::new_index( const std::string&     index,
+                                                           std::vector<cv::Vec6i> value );
+lua:
+    oVectorOfVectorOfVec6i:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec6i.table
+
+```cpp
+void VectorOfVectorOfVec6i::table();
+lua:
+    oVectorOfVectorOfVec6i:table() -> None
+```
+
+## VectorOfVectorOfVec8i
+
+### VectorOfVectorOfVec8i.new
+
+```cpp
+std::vector<std::vector<cv::Vec8i>>();
+lua:
+    VectorOfVectorOfVec8i.new() -> <std::vector<std::vector<cv::Vec8i>> object>
+    VectorOfVectorOfVec8i() -> <std::vector<std::vector<cv::Vec8i>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec8i>>( size_t size );
+lua:
+    VectorOfVectorOfVec8i.new( size ) -> <std::vector<std::vector<cv::Vec8i>> object>
+    VectorOfVectorOfVec8i( size ) -> <std::vector<std::vector<cv::Vec8i>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec8i>>( std::vector<std::vector<cv::Vec8i>> other );
+lua:
+    VectorOfVectorOfVec8i.new( other ) -> <std::vector<std::vector<cv::Vec8i>> object>
+    VectorOfVectorOfVec8i( other ) -> <std::vector<std::vector<cv::Vec8i>> object>
+```
+
+### VectorOfVectorOfVec8i.sol::meta\_function::index
+
+```cpp
+std::vector<cv::Vec8i> VectorOfVectorOfVec8i::at( size_t index );
+lua:
+    oVectorOfVectorOfVec8i:__index( index ) -> retval
+```
+
+```cpp
+std::vector<cv::Vec8i> VectorOfVectorOfVec8i::at( const std::string& index );
+lua:
+    oVectorOfVectorOfVec8i:__index( index ) -> retval
+```
+
+### VectorOfVectorOfVec8i.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfVec8i::size();
+lua:
+    oVectorOfVectorOfVec8i:__len() -> retval
+```
+
+### VectorOfVectorOfVec8i.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfVec8i::sol::meta_function::new_index( size_t                 index,
+                                                           std::vector<cv::Vec8i> value );
+lua:
+    oVectorOfVectorOfVec8i:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec8i::sol::meta_function::new_index( const std::string&     index,
+                                                           std::vector<cv::Vec8i> value );
+lua:
+    oVectorOfVectorOfVec8i:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec8i.table
+
+```cpp
+void VectorOfVectorOfVec8i::table();
+lua:
+    oVectorOfVectorOfVec8i:table() -> None
 ```
 
 ## VectorOfVectorOfVectorOfInt
@@ -7319,24 +15008,70 @@ lua:
 ### VectorOfVectorOfVectorOfInt.new
 
 ```cpp
-std::vector<std::vector<std::vector<int>>> VectorOfVectorOfVectorOfInt::new();
+std::vector<std::vector<std::vector<int>>>();
 lua:
-    VectorOfVectorOfVectorOfInt.new() -> retval
-    VectorOfVectorOfVectorOfInt() -> retval
+    VectorOfVectorOfVectorOfInt.new() -> <std::vector<std::vector<std::vector<int>>> object>
+    VectorOfVectorOfVectorOfInt() -> <std::vector<std::vector<std::vector<int>>> object>
 ```
 
 ```cpp
-std::vector<std::vector<std::vector<int>>> VectorOfVectorOfVectorOfInt::new( size_t size );
+std::vector<std::vector<std::vector<int>>>( size_t size );
 lua:
-    VectorOfVectorOfVectorOfInt.new( size ) -> retval
-    VectorOfVectorOfVectorOfInt( size ) -> retval
+    VectorOfVectorOfVectorOfInt.new( size ) -> <std::vector<std::vector<std::vector<int>>> object>
+    VectorOfVectorOfVectorOfInt( size ) -> <std::vector<std::vector<std::vector<int>>> object>
 ```
 
 ```cpp
-std::vector<std::vector<std::vector<int>>> VectorOfVectorOfVectorOfInt::new( std::vector<std::vector<std::vector<int>>> other );
+std::vector<std::vector<std::vector<int>>>( std::vector<std::vector<std::vector<int>>> other );
 lua:
-    VectorOfVectorOfVectorOfInt.new( other ) -> retval
-    VectorOfVectorOfVectorOfInt( other ) -> retval
+    VectorOfVectorOfVectorOfInt.new( other ) -> <std::vector<std::vector<std::vector<int>>> object>
+    VectorOfVectorOfVectorOfInt( other ) -> <std::vector<std::vector<std::vector<int>>> object>
+```
+
+### VectorOfVectorOfVectorOfInt.sol::meta\_function::index
+
+```cpp
+std::vector<std::vector<int>> VectorOfVectorOfVectorOfInt::at( size_t index );
+lua:
+    oVectorOfVectorOfVectorOfInt:__index( index ) -> retval
+```
+
+```cpp
+std::vector<std::vector<int>> VectorOfVectorOfVectorOfInt::at( const std::string& index );
+lua:
+    oVectorOfVectorOfVectorOfInt:__index( index ) -> retval
+```
+
+### VectorOfVectorOfVectorOfInt.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVectorOfVectorOfInt::size();
+lua:
+    oVectorOfVectorOfVectorOfInt:__len() -> retval
+```
+
+### VectorOfVectorOfVectorOfInt.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVectorOfVectorOfInt::sol::meta_function::new_index( size_t                        index,
+                                                                 std::vector<std::vector<int>> value );
+lua:
+    oVectorOfVectorOfVectorOfInt:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVectorOfInt::sol::meta_function::new_index( const std::string&            index,
+                                                                 std::vector<std::vector<int>> value );
+lua:
+    oVectorOfVectorOfVectorOfInt:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVectorOfInt.table
+
+```cpp
+void VectorOfVectorOfVectorOfInt::table();
+lua:
+    oVectorOfVectorOfVectorOfInt:table() -> None
 ```
 
 ## VectorOfVideoCapture
@@ -7344,24 +15079,70 @@ lua:
 ### VectorOfVideoCapture.new
 
 ```cpp
-std::vector<cv::VideoCapture> VectorOfVideoCapture::new();
+std::vector<cv::VideoCapture>();
 lua:
-    VectorOfVideoCapture.new() -> retval
-    VectorOfVideoCapture() -> retval
+    VectorOfVideoCapture.new() -> <std::vector<cv::VideoCapture> object>
+    VectorOfVideoCapture() -> <std::vector<cv::VideoCapture> object>
 ```
 
 ```cpp
-std::vector<cv::VideoCapture> VectorOfVideoCapture::new( size_t size );
+std::vector<cv::VideoCapture>( size_t size );
 lua:
-    VectorOfVideoCapture.new( size ) -> retval
-    VectorOfVideoCapture( size ) -> retval
+    VectorOfVideoCapture.new( size ) -> <std::vector<cv::VideoCapture> object>
+    VectorOfVideoCapture( size ) -> <std::vector<cv::VideoCapture> object>
 ```
 
 ```cpp
-std::vector<cv::VideoCapture> VectorOfVideoCapture::new( std::vector<cv::VideoCapture> other );
+std::vector<cv::VideoCapture>( std::vector<cv::VideoCapture> other );
 lua:
-    VectorOfVideoCapture.new( other ) -> retval
-    VectorOfVideoCapture( other ) -> retval
+    VectorOfVideoCapture.new( other ) -> <std::vector<cv::VideoCapture> object>
+    VectorOfVideoCapture( other ) -> <std::vector<cv::VideoCapture> object>
+```
+
+### VectorOfVideoCapture.sol::meta\_function::index
+
+```cpp
+cv::VideoCapture VectorOfVideoCapture::at( size_t index );
+lua:
+    oVectorOfVideoCapture:__index( index ) -> retval
+```
+
+```cpp
+cv::VideoCapture VectorOfVideoCapture::at( const std::string& index );
+lua:
+    oVectorOfVideoCapture:__index( index ) -> retval
+```
+
+### VectorOfVideoCapture.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVideoCapture::size();
+lua:
+    oVectorOfVideoCapture:__len() -> retval
+```
+
+### VectorOfVideoCapture.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVideoCapture::sol::meta_function::new_index( size_t           index,
+                                                          cv::VideoCapture value );
+lua:
+    oVectorOfVideoCapture:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVideoCapture::sol::meta_function::new_index( const std::string& index,
+                                                          cv::VideoCapture   value );
+lua:
+    oVectorOfVideoCapture:__newindex( index, value ) -> None
+```
+
+### VectorOfVideoCapture.table
+
+```cpp
+void VectorOfVideoCapture::table();
+lua:
+    oVectorOfVideoCapture:table() -> None
 ```
 
 ## VectorOfVideoCaptureAPIs
@@ -7369,24 +15150,70 @@ lua:
 ### VectorOfVideoCaptureAPIs.new
 
 ```cpp
-std::vector<cv::VideoCaptureAPIs> VectorOfVideoCaptureAPIs::new();
+std::vector<cv::VideoCaptureAPIs>();
 lua:
-    VectorOfVideoCaptureAPIs.new() -> retval
-    VectorOfVideoCaptureAPIs() -> retval
+    VectorOfVideoCaptureAPIs.new() -> <std::vector<cv::VideoCaptureAPIs> object>
+    VectorOfVideoCaptureAPIs() -> <std::vector<cv::VideoCaptureAPIs> object>
 ```
 
 ```cpp
-std::vector<cv::VideoCaptureAPIs> VectorOfVideoCaptureAPIs::new( size_t size );
+std::vector<cv::VideoCaptureAPIs>( size_t size );
 lua:
-    VectorOfVideoCaptureAPIs.new( size ) -> retval
-    VectorOfVideoCaptureAPIs( size ) -> retval
+    VectorOfVideoCaptureAPIs.new( size ) -> <std::vector<cv::VideoCaptureAPIs> object>
+    VectorOfVideoCaptureAPIs( size ) -> <std::vector<cv::VideoCaptureAPIs> object>
 ```
 
 ```cpp
-std::vector<cv::VideoCaptureAPIs> VectorOfVideoCaptureAPIs::new( std::vector<cv::VideoCaptureAPIs> other );
+std::vector<cv::VideoCaptureAPIs>( std::vector<cv::VideoCaptureAPIs> other );
 lua:
-    VectorOfVideoCaptureAPIs.new( other ) -> retval
-    VectorOfVideoCaptureAPIs( other ) -> retval
+    VectorOfVideoCaptureAPIs.new( other ) -> <std::vector<cv::VideoCaptureAPIs> object>
+    VectorOfVideoCaptureAPIs( other ) -> <std::vector<cv::VideoCaptureAPIs> object>
+```
+
+### VectorOfVideoCaptureAPIs.sol::meta\_function::index
+
+```cpp
+cv::VideoCaptureAPIs VectorOfVideoCaptureAPIs::at( size_t index );
+lua:
+    oVectorOfVideoCaptureAPIs:__index( index ) -> retval
+```
+
+```cpp
+cv::VideoCaptureAPIs VectorOfVideoCaptureAPIs::at( const std::string& index );
+lua:
+    oVectorOfVideoCaptureAPIs:__index( index ) -> retval
+```
+
+### VectorOfVideoCaptureAPIs.sol::meta\_function::length
+
+```cpp
+size_t VectorOfVideoCaptureAPIs::size();
+lua:
+    oVectorOfVideoCaptureAPIs:__len() -> retval
+```
+
+### VectorOfVideoCaptureAPIs.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfVideoCaptureAPIs::sol::meta_function::new_index( size_t               index,
+                                                              cv::VideoCaptureAPIs value );
+lua:
+    oVectorOfVideoCaptureAPIs:__newindex( index, value ) -> None
+```
+
+```cpp
+void VectorOfVideoCaptureAPIs::sol::meta_function::new_index( const std::string&   index,
+                                                              cv::VideoCaptureAPIs value );
+lua:
+    oVectorOfVideoCaptureAPIs:__newindex( index, value ) -> None
+```
+
+### VectorOfVideoCaptureAPIs.table
+
+```cpp
+void VectorOfVideoCaptureAPIs::table();
+lua:
+    oVectorOfVideoCaptureAPIs:table() -> None
 ```
 
 ## cv
@@ -16914,7 +24741,7 @@ void cv::PCACompute( InputArray       data,
                      OutputArray      eigenvectors,
                      int              maxComponents = 0 );
 lua:
-    cv.PCACompute( data, mean[, eigenvectors[, maxComponents]] ) -> mean, eigenvectors
+    cv.PCACompute( data[, mean[, eigenvectors[, maxComponents]]] ) -> mean, eigenvectors
 ```
 
 ```cpp
@@ -16923,7 +24750,7 @@ void cv::PCACompute( InputArray       data,
                      OutputArray      eigenvectors,
                      double           retainedVariance );
 lua:
-    cv.PCACompute( data, mean, retainedVariance[, eigenvectors] ) -> mean, eigenvectors
+    cv.PCACompute( data[, mean[, retainedVariance[, eigenvectors]]] ) -> mean, eigenvectors
 ```
 
 ### cv.PCACompute2
@@ -16935,7 +24762,7 @@ void cv::PCACompute( InputArray       data,
                      OutputArray      eigenvalues,
                      int              maxComponents = 0 );
 lua:
-    cv.PCACompute2( data, mean[, eigenvectors[, eigenvalues[, maxComponents]]] ) -> mean, eigenvectors, eigenvalues
+    cv.PCACompute2( data[, mean[, eigenvectors[, eigenvalues[, maxComponents]]]] ) -> mean, eigenvectors, eigenvalues
 ```
 
 ```cpp
@@ -16945,7 +24772,7 @@ void cv::PCACompute( InputArray       data,
                      OutputArray      eigenvalues,
                      double           retainedVariance );
 lua:
-    cv.PCACompute2( data, mean, retainedVariance[, eigenvectors[, eigenvalues]] ) -> mean, eigenvectors, eigenvalues
+    cv.PCACompute2( data[, mean[, retainedVariance[, eigenvectors[, eigenvalues]]]] ) -> mean, eigenvectors, eigenvalues
 ```
 
 ### cv.PCAProject
@@ -17064,7 +24891,7 @@ void cv::accumulate( InputArray       src,
                      InputOutputArray dst,
                      InputArray       mask = noArray() );
 lua:
-    cv.accumulate( src, dst[, mask] ) -> dst
+    cv.accumulate( src[, dst[, mask]] ) -> dst
 ```
 
 ### cv.accumulateProduct
@@ -17075,7 +24902,7 @@ void cv::accumulateProduct( InputArray       src1,
                             InputOutputArray dst,
                             InputArray       mask = noArray() );
 lua:
-    cv.accumulateProduct( src1, src2, dst[, mask] ) -> dst
+    cv.accumulateProduct( src1, src2[, dst[, mask]] ) -> dst
 ```
 
 ### cv.accumulateSquare
@@ -17085,7 +24912,7 @@ void cv::accumulateSquare( InputArray       src,
                            InputOutputArray dst,
                            InputArray       mask = noArray() );
 lua:
-    cv.accumulateSquare( src, dst[, mask] ) -> dst
+    cv.accumulateSquare( src[, dst[, mask]] ) -> dst
 ```
 
 ### cv.accumulateWeighted
@@ -17096,7 +24923,7 @@ void cv::accumulateWeighted( InputArray       src,
                              double           alpha,
                              InputArray       mask = noArray() );
 lua:
-    cv.accumulateWeighted( src, dst, alpha[, mask] ) -> dst
+    cv.accumulateWeighted( src[, dst[, alpha[, mask]]] ) -> dst
 ```
 
 ### cv.adaptiveThreshold
@@ -17222,7 +25049,7 @@ void cv::arrowedLine( InputOutputArray  img,
                       int               shift = 0,
                       double            tipLength = 0.1 );
 lua:
-    cv.arrowedLine( img, pt1, pt2, color[, thickness[, line_type[, shift[, tipLength]]]] ) -> img
+    cv.arrowedLine( [img[, pt1[, pt2[, color[, thickness[, line_type[, shift[, tipLength]]]]]]]] ) -> img
 ```
 
 ### cv.batchDistance
@@ -17421,7 +25248,7 @@ void cv::calcCovarMatrix( InputArray       samples,
                           int              flags,
                           int              ctype = CV_64F );
 lua:
-    cv.calcCovarMatrix( samples, mean, flags[, covar[, ctype]] ) -> covar, mean
+    cv.calcCovarMatrix( samples[, mean[, flags[, covar[, ctype]]]] ) -> covar, mean
 ```
 
 ### cv.calcHist
@@ -17452,7 +25279,7 @@ void cv::calcOpticalFlowFarneback( InputArray       prev,
                                    double           poly_sigma,
                                    int              flags );
 lua:
-    cv.calcOpticalFlowFarneback( prev, next, flow, pyr_scale, levels, winsize, iterations, poly_n, poly_sigma, flags ) -> flow
+    cv.calcOpticalFlowFarneback( prev, next[, flow[, pyr_scale[, levels[, winsize[, iterations[, poly_n[, poly_sigma[, flags]]]]]]]] ) -> flow
 ```
 
 ### cv.calcOpticalFlowPyrLK
@@ -17470,7 +25297,7 @@ void cv::calcOpticalFlowPyrLK( InputArray       prevImg,
                                int              flags = 0,
                                double           minEigThreshold = 1e-4 );
 lua:
-    cv.calcOpticalFlowPyrLK( prevImg, nextImg, prevPts, nextPts[, status[, err[, winSize[, maxLevel[, criteria[, flags[, minEigThreshold]]]]]]] ) -> nextPts, status, err
+    cv.calcOpticalFlowPyrLK( prevImg, nextImg, prevPts[, nextPts[, status[, err[, winSize[, maxLevel[, criteria[, flags[, minEigThreshold]]]]]]]] ) -> nextPts, status, err
 ```
 
 ### cv.calibrateCamera
@@ -17486,7 +25313,7 @@ double cv::calibrateCamera( InputArrayOfArrays  objectPoints,
                             int                 flags = 0,
                             cv::TermCriteria    criteria = TermCriteria( TermCriteria::COUNT + TermCriteria::EPS, 30, DBL_EPSILON) );
 lua:
-    cv.calibrateCamera( objectPoints, imagePoints, imageSize, cameraMatrix, distCoeffs[, rvecs[, tvecs[, flags[, criteria]]]] ) -> retval, cameraMatrix, distCoeffs, rvecs, tvecs
+    cv.calibrateCamera( objectPoints, imagePoints, imageSize[, cameraMatrix[, distCoeffs[, rvecs[, tvecs[, flags[, criteria]]]]]] ) -> retval, cameraMatrix, distCoeffs, rvecs, tvecs
 ```
 
 ### cv.calibrateCameraExtended
@@ -17505,7 +25332,7 @@ double cv::calibrateCamera( InputArrayOfArrays  objectPoints,
                             int                 flags = 0,
                             cv::TermCriteria    criteria = TermCriteria( TermCriteria::COUNT + TermCriteria::EPS, 30, DBL_EPSILON) );
 lua:
-    cv.calibrateCameraExtended( objectPoints, imagePoints, imageSize, cameraMatrix, distCoeffs[, rvecs[, tvecs[, stdDeviationsIntrinsics[, stdDeviationsExtrinsics[, perViewErrors[, flags[, criteria]]]]]]] ) -> retval, cameraMatrix, distCoeffs, rvecs, tvecs, stdDeviationsIntrinsics, stdDeviationsExtrinsics, perViewErrors
+    cv.calibrateCameraExtended( objectPoints, imagePoints, imageSize[, cameraMatrix[, distCoeffs[, rvecs[, tvecs[, stdDeviationsIntrinsics[, stdDeviationsExtrinsics[, perViewErrors[, flags[, criteria]]]]]]]]] ) -> retval, cameraMatrix, distCoeffs, rvecs, tvecs, stdDeviationsIntrinsics, stdDeviationsExtrinsics, perViewErrors
 ```
 
 ### cv.calibrateCameraRO
@@ -17523,7 +25350,7 @@ double cv::calibrateCameraRO( InputArrayOfArrays  objectPoints,
                               int                 flags = 0,
                               cv::TermCriteria    criteria = TermCriteria( TermCriteria::COUNT + TermCriteria::EPS, 30, DBL_EPSILON) );
 lua:
-    cv.calibrateCameraRO( objectPoints, imagePoints, imageSize, iFixedPoint, cameraMatrix, distCoeffs[, rvecs[, tvecs[, newObjPoints[, flags[, criteria]]]]] ) -> retval, cameraMatrix, distCoeffs, rvecs, tvecs, newObjPoints
+    cv.calibrateCameraRO( objectPoints, imagePoints, imageSize, iFixedPoint[, cameraMatrix[, distCoeffs[, rvecs[, tvecs[, newObjPoints[, flags[, criteria]]]]]]] ) -> retval, cameraMatrix, distCoeffs, rvecs, tvecs, newObjPoints
 ```
 
 ### cv.calibrateCameraROExtended
@@ -17545,7 +25372,7 @@ double cv::calibrateCameraRO( InputArrayOfArrays  objectPoints,
                               int                 flags = 0,
                               cv::TermCriteria    criteria = TermCriteria( TermCriteria::COUNT + TermCriteria::EPS, 30, DBL_EPSILON) );
 lua:
-    cv.calibrateCameraROExtended( objectPoints, imagePoints, imageSize, iFixedPoint, cameraMatrix, distCoeffs[, rvecs[, tvecs[, newObjPoints[, stdDeviationsIntrinsics[, stdDeviationsExtrinsics[, stdDeviationsObjPoints[, perViewErrors[, flags[, criteria]]]]]]]]] ) -> retval, cameraMatrix, distCoeffs, rvecs, tvecs, newObjPoints, stdDeviationsIntrinsics, stdDeviationsExtrinsics, stdDeviationsObjPoints, perViewErrors
+    cv.calibrateCameraROExtended( objectPoints, imagePoints, imageSize, iFixedPoint[, cameraMatrix[, distCoeffs[, rvecs[, tvecs[, newObjPoints[, stdDeviationsIntrinsics[, stdDeviationsExtrinsics[, stdDeviationsObjPoints[, perViewErrors[, flags[, criteria]]]]]]]]]]] ) -> retval, cameraMatrix, distCoeffs, rvecs, tvecs, newObjPoints, stdDeviationsIntrinsics, stdDeviationsExtrinsics, stdDeviationsObjPoints, perViewErrors
 ```
 
 ### cv.calibrateHandEye
@@ -17646,7 +25473,7 @@ void cv::circle( InputOutputArray  img,
                  int               lineType = LINE_8,
                  int               shift = 0 );
 lua:
-    cv.circle( img, center, radius, color[, thickness[, lineType[, shift]]] ) -> img
+    cv.circle( [img[, center[, radius[, color[, thickness[, lineType[, shift]]]]]]] ) -> img
 ```
 
 ### cv.clipLine
@@ -17699,7 +25526,7 @@ lua:
 void cv::completeSymm( InputOutputArray m,
                        bool             lowerToUpper = false );
 lua:
-    cv.completeSymm( m[, lowerToUpper] ) -> m
+    cv.completeSymm( [m[, lowerToUpper]] ) -> m
 ```
 
 ### cv.composeRT
@@ -17946,7 +25773,7 @@ void cv::cornerSubPix( InputArray       image,
                        cv::Size         zeroZone,
                        cv::TermCriteria criteria );
 lua:
-    cv.cornerSubPix( image, corners, winSize, zeroZone, criteria ) -> corners
+    cv.cornerSubPix( image[, corners[, winSize[, zeroZone[, criteria]]]] ) -> corners
 ```
 
 ### cv.correctMatches
@@ -18003,8 +25830,8 @@ lua:
 
 ```cpp
 int cv::createButton( const std::string& bar_name,
-                      sol::function      onChange,
-                      sol::object        userdata = sol::lua_nil,
+                      const Function&    onChange,
+                      const Object&      userdata = lua_nil,
                       int                type = QT_PUSH_BUTTON,
                       bool               initial_button_state = false );
 lua:
@@ -18152,8 +25979,8 @@ int cv::createTrackbar( const std::string& trackbarname,
                         const std::string& winname,
                         int                value,
                         int                count,
-                        sol::function      onChange,
-                        sol::object        userdata = sol::lua_nil );
+                        const Function&    onChange,
+                        const Object&      userdata = lua_nil );
 lua:
     cv.createTrackbar( trackbarname, winname, value, count, onChange[, userdata] ) -> retval
 ```
@@ -18433,7 +26260,7 @@ void cv::drawChessboardCorners( InputOutputArray image,
                                 InputArray       corners,
                                 bool             patternWasFound );
 lua:
-    cv.drawChessboardCorners( image, patternSize, corners, patternWasFound ) -> image
+    cv.drawChessboardCorners( [image[, patternSize[, corners[, patternWasFound]]]] ) -> image
 ```
 
 ### cv.drawContours
@@ -18449,7 +26276,7 @@ void cv::drawContours( InputOutputArray   image,
                        int                maxLevel = INT_MAX,
                        cv::Point          offset = Point() );
 lua:
-    cv.drawContours( image, contours, contourIdx, color[, thickness[, lineType[, hierarchy[, maxLevel[, offset]]]]] ) -> image
+    cv.drawContours( [image[, contours[, contourIdx[, color[, thickness[, lineType[, hierarchy[, maxLevel[, offset]]]]]]]]] ) -> image
 ```
 
 ### cv.drawFrameAxes
@@ -18463,7 +26290,7 @@ void cv::drawFrameAxes( InputOutputArray image,
                         float            length,
                         int              thickness = 3 );
 lua:
-    cv.drawFrameAxes( image, cameraMatrix, distCoeffs, rvec, tvec, length[, thickness] ) -> image
+    cv.drawFrameAxes( [image[, cameraMatrix[, distCoeffs[, rvec[, tvec[, length[, thickness]]]]]]] ) -> image
 ```
 
 ### cv.drawKeypoints
@@ -18475,7 +26302,7 @@ void cv::drawKeypoints( InputArray                       image,
                         const cv::Scalar&                color = Scalar::all(-1),
                         cv::DrawMatchesFlags             flags = DrawMatchesFlags::DEFAULT );
 lua:
-    cv.drawKeypoints( image, keypoints, outImage[, color[, flags]] ) -> outImage
+    cv.drawKeypoints( image, keypoints[, outImage[, color[, flags]]] ) -> outImage
 ```
 
 ### cv.drawMarker
@@ -18489,7 +26316,7 @@ void cv::drawMarker( InputOutputArray  img,
                      int               thickness = 1,
                      int               line_type = 8 );
 lua:
-    cv.drawMarker( img, position, color[, markerType[, markerSize[, thickness[, line_type]]]] ) -> img
+    cv.drawMarker( [img[, position[, color[, markerType[, markerSize[, thickness[, line_type]]]]]]] ) -> img
 ```
 
 ### cv.drawMatches
@@ -18506,7 +26333,7 @@ void cv::drawMatches( InputArray                       img1,
                       const std::vector<char>&         matchesMask = std::vector<char>(),
                       cv::DrawMatchesFlags             flags = DrawMatchesFlags::DEFAULT );
 lua:
-    cv.drawMatches( img1, keypoints1, img2, keypoints2, matches1to2, outImg[, matchColor[, singlePointColor[, matchesMask[, flags]]]] ) -> outImg
+    cv.drawMatches( img1, keypoints1, img2, keypoints2, matches1to2[, outImg[, matchColor[, singlePointColor[, matchesMask[, flags]]]]] ) -> outImg
 ```
 
 ```cpp
@@ -18522,7 +26349,7 @@ void cv::drawMatches( InputArray                       img1,
                       const std::vector<char>&         matchesMask = std::vector<char>(),
                       cv::DrawMatchesFlags             flags = DrawMatchesFlags::DEFAULT );
 lua:
-    cv.drawMatches( img1, keypoints1, img2, keypoints2, matches1to2, outImg, matchesThickness[, matchColor[, singlePointColor[, matchesMask[, flags]]]] ) -> outImg
+    cv.drawMatches( img1, keypoints1, img2, keypoints2, matches1to2[, outImg[, matchesThickness[, matchColor[, singlePointColor[, matchesMask[, flags]]]]]] ) -> outImg
 ```
 
 ### cv.drawMatchesKnn
@@ -18539,7 +26366,7 @@ void cv::drawMatches( InputArray                                  img1,
                       const std::vector<std::vector<char>>&       matchesMask = std::vector<std::vector<char> >(),
                       cv::DrawMatchesFlags                        flags = DrawMatchesFlags::DEFAULT );
 lua:
-    cv.drawMatchesKnn( img1, keypoints1, img2, keypoints2, matches1to2, outImg[, matchColor[, singlePointColor[, matchesMask[, flags]]]] ) -> outImg
+    cv.drawMatchesKnn( img1, keypoints1, img2, keypoints2, matches1to2[, outImg[, matchColor[, singlePointColor[, matchesMask[, flags]]]]] ) -> outImg
 ```
 
 ### cv.edgePreservingFilter
@@ -18588,7 +26415,7 @@ void cv::ellipse( InputOutputArray  img,
                   int               lineType = LINE_8,
                   int               shift = 0 );
 lua:
-    cv.ellipse( img, center, axes, angle, startAngle, endAngle, color[, thickness[, lineType[, shift]]] ) -> img
+    cv.ellipse( [img[, center[, axes[, angle[, startAngle[, endAngle[, color[, thickness[, lineType[, shift]]]]]]]]]] ) -> img
 ```
 
 ```cpp
@@ -18598,7 +26425,7 @@ void cv::ellipse( InputOutputArray       img,
                   int                    thickness = 1,
                   int                    lineType = LINE_8 );
 lua:
-    cv.ellipse( img, box, color[, thickness[, lineType]] ) -> img
+    cv.ellipse( [img[, box[, color[, thickness[, lineType]]]]] ) -> img
 ```
 
 ### cv.ellipse2Poly
@@ -18864,7 +26691,7 @@ void cv::fillConvexPoly( InputOutputArray  img,
                          int               lineType = LINE_8,
                          int               shift = 0 );
 lua:
-    cv.fillConvexPoly( img, points, color[, lineType[, shift]] ) -> img
+    cv.fillConvexPoly( [img[, points[, color[, lineType[, shift]]]]] ) -> img
 ```
 
 ### cv.fillPoly
@@ -18877,7 +26704,7 @@ void cv::fillPoly( InputOutputArray   img,
                    int                shift = 0,
                    cv::Point          offset = Point() );
 lua:
-    cv.fillPoly( img, pts, color[, lineType[, shift[, offset]]] ) -> img
+    cv.fillPoly( [img[, pts[, color[, lineType[, shift[, offset]]]]]] ) -> img
 ```
 
 ### cv.filter2D
@@ -18916,7 +26743,7 @@ void cv::filterSpeckles( InputOutputArray img,
                          double           maxDiff,
                          InputOutputArray buf = noArray() );
 lua:
-    cv.filterSpeckles( img, newVal, maxSpeckleSize, maxDiff[, buf] ) -> img, buf
+    cv.filterSpeckles( [img[, newVal[, maxSpeckleSize[, maxDiff[, buf]]]]] ) -> img, buf
 ```
 
 ### cv.find4QuadCornerSubpix
@@ -18926,7 +26753,7 @@ bool cv::find4QuadCornerSubpix( InputArray       img,
                                 InputOutputArray corners,
                                 cv::Size         region_size );
 lua:
-    cv.find4QuadCornerSubpix( img, corners, region_size ) -> retval, corners
+    cv.find4QuadCornerSubpix( img[, corners[, region_size]] ) -> retval, corners
 ```
 
 ### cv.findChessboardCorners
@@ -19155,7 +26982,7 @@ double cv::findTransformECC( InputArray       templateImage,
                              InputArray       inputMask,
                              int              gaussFiltSize );
 lua:
-    cv.findTransformECC( templateImage, inputImage, warpMatrix, motionType, criteria, inputMask, gaussFiltSize ) -> retval, warpMatrix
+    cv.findTransformECC( templateImage, inputImage[, warpMatrix[, motionType[, criteria[, inputMask[, gaussFiltSize]]]]] ) -> retval, warpMatrix
 ```
 
 ```cpp
@@ -19166,7 +26993,7 @@ double cv::findTransformECC( InputArray       templateImage,
                              cv::TermCriteria criteria = TermCriteria(TermCriteria::COUNT+TermCriteria::EPS, 50, 0.001),
                              InputArray       inputMask = noArray() );
 lua:
-    cv.findTransformECC( templateImage, inputImage, warpMatrix[, motionType[, criteria[, inputMask]]] ) -> retval, warpMatrix
+    cv.findTransformECC( templateImage, inputImage[, warpMatrix[, motionType[, criteria[, inputMask]]]] ) -> retval, warpMatrix
 ```
 
 ### cv.fitEllipse
@@ -19238,7 +27065,7 @@ int cv::floodFill( InputOutputArray image,
                    cv::Scalar       upDiff = Scalar(),
                    int              flags = 4 );
 lua:
-    cv.floodFill( image, mask, seedPoint, newVal[, loDiff[, upDiff[, flags[, rect]]]] ) -> retval, image, mask, rect
+    cv.floodFill( [image[, mask[, seedPoint[, newVal[, loDiff[, upDiff[, flags[, rect]]]]]]]] ) -> retval, image, mask, rect
 ```
 
 ### cv.gemm
@@ -19608,7 +27435,7 @@ void cv::grabCut( InputArray       img,
                   int              iterCount,
                   int              mode = GC_EVAL );
 lua:
-    cv.grabCut( img, mask, rect, bgdModel, fgdModel, iterCount[, mode] ) -> mask, bgdModel, fgdModel
+    cv.grabCut( img[, mask[, rect[, bgdModel[, fgdModel[, iterCount[, mode]]]]]] ) -> mask, bgdModel, fgdModel
 ```
 
 ### cv.groupRectangles
@@ -19865,7 +27692,7 @@ void cv::insertChannel( InputArray       src,
                         InputOutputArray dst,
                         int              coi );
 lua:
-    cv.insertChannel( src, dst, coi ) -> dst
+    cv.insertChannel( src[, dst[, coi]] ) -> dst
 ```
 
 ### cv.integral
@@ -19952,7 +27779,7 @@ double cv::kmeans( InputArray       data,
                    int              flags,
                    OutputArray      centers = noArray() );
 lua:
-    cv.kmeans( data, K, bestLabels, criteria, attempts, flags[, centers] ) -> retval, bestLabels, centers
+    cv.kmeans( data, K[, bestLabels[, criteria[, attempts[, flags[, centers]]]]] ) -> retval, bestLabels, centers
 ```
 
 ### cv.line
@@ -19966,7 +27793,7 @@ void cv::line( InputOutputArray  img,
                int               lineType = LINE_8,
                int               shift = 0 );
 lua:
-    cv.line( img, pt1, pt2, color[, thickness[, lineType[, shift]]] ) -> img
+    cv.line( [img[, pt1[, pt2[, color[, thickness[, lineType[, shift]]]]]]] ) -> img
 ```
 
 ### cv.linearPolar
@@ -20174,7 +28001,7 @@ void cv::mixChannels( InputArrayOfArrays       src,
                       InputOutputArrayOfArrays dst,
                       const std::vector<int>&  fromTo );
 lua:
-    cv.mixChannels( src, dst, fromTo ) -> dst
+    cv.mixChannels( src[, dst[, fromTo]] ) -> dst
 ```
 
 ### cv.moments
@@ -20287,7 +28114,7 @@ void cv::normalize( InputArray       src,
                     int              dtype = -1,
                     InputArray       mask = noArray() );
 lua:
-    cv.normalize( src, dst[, alpha[, beta[, norm_type[, dtype[, mask]]]]] ) -> dst
+    cv.normalize( src[, dst[, alpha[, beta[, norm_type[, dtype[, mask]]]]]] ) -> dst
 ```
 
 ### cv.patchNaNs
@@ -20296,7 +28123,7 @@ lua:
 void cv::patchNaNs( InputOutputArray a,
                     double           val = 0 );
 lua:
-    cv.patchNaNs( a[, val] ) -> a
+    cv.patchNaNs( [a[, val]] ) -> a
 ```
 
 ### cv.pencilSketch
@@ -20385,7 +28212,7 @@ void cv::polylines( InputOutputArray   img,
                     int                lineType = LINE_8,
                     int                shift = 0 );
 lua:
-    cv.polylines( img, pts, isClosed, color[, thickness[, lineType[, shift]]] ) -> img
+    cv.polylines( [img[, pts[, isClosed[, color[, thickness[, lineType[, shift]]]]]]] ) -> img
 ```
 
 ### cv.pow
@@ -20437,7 +28264,7 @@ void cv::putText( InputOutputArray   img,
                   int                lineType = LINE_8,
                   bool               bottomLeftOrigin = false );
 lua:
-    cv.putText( img, text, org, fontFace, fontScale, color[, thickness[, lineType[, bottomLeftOrigin]]] ) -> img
+    cv.putText( [img[, text[, org[, fontFace[, fontScale[, color[, thickness[, lineType[, bottomLeftOrigin]]]]]]]]] ) -> img
 ```
 
 ### cv.pyrDown
@@ -20482,7 +28309,7 @@ void cv::randShuffle( InputOutputArray dst,
                       double           iterFactor = 1.,
                       cv::RNG*         rng = 0 );
 lua:
-    cv.randShuffle( dst[, iterFactor[, rng]] ) -> dst
+    cv.randShuffle( [dst[, iterFactor[, rng]]] ) -> dst
 ```
 
 ### cv.randn
@@ -20492,7 +28319,7 @@ void cv::randn( InputOutputArray dst,
                 InputArray       mean,
                 InputArray       stddev );
 lua:
-    cv.randn( dst, mean, stddev ) -> dst
+    cv.randn( [dst[, mean[, stddev]]] ) -> dst
 ```
 
 ```cpp
@@ -20533,7 +28360,7 @@ void cv::randu( InputOutputArray dst,
                 InputArray       low,
                 InputArray       high );
 lua:
-    cv.randu( dst, low, high ) -> dst
+    cv.randu( [dst[, low[, high]]] ) -> dst
 ```
 
 ```cpp
@@ -20565,6 +28392,15 @@ void cv::randu( const std::vector<int>& sizes,
                 int                     type = CV_32F );
 lua:
     cv.randu( sizes[, dst[, type]] ) -> dst
+```
+
+### cv.ravel
+
+```cpp
+void cv::ravel( const cv::Mat& src,
+                cv::Mat&       out );
+lua:
+    cv.ravel( src[, out] ) -> out
 ```
 
 ### cv.readDMatch
@@ -20715,7 +28551,7 @@ void cv::rectangle( InputOutputArray  img,
                     int               lineType = LINE_8,
                     int               shift = 0 );
 lua:
-    cv.rectangle( img, pt1, pt2, color[, thickness[, lineType[, shift]]] ) -> img
+    cv.rectangle( [img[, pt1[, pt2[, color[, thickness[, lineType[, shift]]]]]]] ) -> img
 ```
 
 ```cpp
@@ -20726,7 +28562,7 @@ void cv::rectangle( InputOutputArray  img,
                     int               lineType = LINE_8,
                     int               shift = 0 );
 lua:
-    cv.rectangle( img, rec, color[, thickness[, lineType[, shift]]] ) -> img
+    cv.rectangle( [img[, rec[, color[, thickness[, lineType[, shift]]]]]] ) -> img
 ```
 
 ### cv.rectangleIntersectionArea
@@ -20773,8 +28609,8 @@ lua:
 ### cv.redirectError
 
 ```cpp
-void cv::redirectError( sol::function errCallback,
-                        sol::object   userdata = sol::lua_nil );
+void cv::redirectError( const Function& errCallback,
+                        const Object&   userdata = lua_nil );
 lua:
     cv.redirectError( errCallback[, userdata] ) -> None
 ```
@@ -21003,7 +28839,7 @@ lua:
 void cv::setIdentity( InputOutputArray  mtx,
                       const cv::Scalar& s = Scalar(1) );
 lua:
-    cv.setIdentity( mtx[, s] ) -> mtx
+    cv.setIdentity( [mtx[, s]] ) -> mtx
 ```
 
 ### cv.setLogLevel
@@ -21018,8 +28854,8 @@ lua:
 
 ```cpp
 void cv::setMouseCallback( const std::string& winname,
-                           sol::function      onMouse,
-                           sol::object        userdata = sol::lua_nil );
+                           const Function&    onMouse,
+                           const Object&      userdata = lua_nil );
 lua:
     cv.setMouseCallback( winname, onMouse[, userdata] ) -> None
 ```
@@ -21220,7 +29056,7 @@ bool cv::solvePnPRansac( InputArray            objectPoints,
                          OutputArray           inliers,
                          const cv::UsacParams& params = UsacParams() );
 lua:
-    cv.solvePnPRansac( objectPoints, imagePoints, cameraMatrix, distCoeffs[, rvec[, tvec[, inliers[, params]]]] ) -> retval, cameraMatrix, rvec, tvec, inliers
+    cv.solvePnPRansac( objectPoints, imagePoints[, cameraMatrix[, distCoeffs[, rvec[, tvec[, inliers[, params]]]]]] ) -> retval, cameraMatrix, rvec, tvec, inliers
 ```
 
 ### cv.solvePnPRefineLM
@@ -21234,7 +29070,7 @@ void cv::solvePnPRefineLM( InputArray       objectPoints,
                            InputOutputArray tvec,
                            cv::TermCriteria criteria = TermCriteria(TermCriteria::EPS + TermCriteria::COUNT, 20, FLT_EPSILON) );
 lua:
-    cv.solvePnPRefineLM( objectPoints, imagePoints, cameraMatrix, distCoeffs, rvec, tvec[, criteria] ) -> rvec, tvec
+    cv.solvePnPRefineLM( objectPoints, imagePoints, cameraMatrix, distCoeffs[, rvec[, tvec[, criteria]]] ) -> rvec, tvec
 ```
 
 ### cv.solvePnPRefineVVS
@@ -21249,7 +29085,7 @@ void cv::solvePnPRefineVVS( InputArray       objectPoints,
                             cv::TermCriteria criteria = TermCriteria(TermCriteria::EPS + TermCriteria::COUNT, 20, FLT_EPSILON),
                             double           VVSlambda = 1 );
 lua:
-    cv.solvePnPRefineVVS( objectPoints, imagePoints, cameraMatrix, distCoeffs, rvec, tvec[, criteria[, VVSlambda]] ) -> rvec, tvec
+    cv.solvePnPRefineVVS( objectPoints, imagePoints, cameraMatrix, distCoeffs[, rvec[, tvec[, criteria[, VVSlambda]]]] ) -> rvec, tvec
 ```
 
 ### cv.solvePoly
@@ -21362,7 +29198,7 @@ double cv::stereoCalibrate( InputArrayOfArrays objectPoints,
                             int                flags = CALIB_FIX_INTRINSIC,
                             cv::TermCriteria   criteria = TermCriteria(TermCriteria::COUNT+TermCriteria::EPS, 30, 1e-6) );
 lua:
-    cv.stereoCalibrate( objectPoints, imagePoints1, imagePoints2, cameraMatrix1, distCoeffs1, cameraMatrix2, distCoeffs2, imageSize[, R[, T[, E[, F[, flags[, criteria]]]]]] ) -> retval, cameraMatrix1, distCoeffs1, cameraMatrix2, distCoeffs2, R, T, E, F
+    cv.stereoCalibrate( objectPoints, imagePoints1, imagePoints2[, cameraMatrix1[, distCoeffs1[, cameraMatrix2[, distCoeffs2[, imageSize[, R[, T[, E[, F[, flags[, criteria]]]]]]]]]]] ) -> retval, cameraMatrix1, distCoeffs1, cameraMatrix2, distCoeffs2, R, T, E, F
 ```
 
 ```cpp
@@ -21382,7 +29218,7 @@ double cv::stereoCalibrate( InputArrayOfArrays objectPoints,
                             int                flags = CALIB_FIX_INTRINSIC,
                             cv::TermCriteria   criteria = TermCriteria(TermCriteria::COUNT+TermCriteria::EPS, 30, 1e-6) );
 lua:
-    cv.stereoCalibrate( objectPoints, imagePoints1, imagePoints2, cameraMatrix1, distCoeffs1, cameraMatrix2, distCoeffs2, imageSize, R, T[, E[, F[, perViewErrors[, flags[, criteria]]]]] ) -> retval, cameraMatrix1, distCoeffs1, cameraMatrix2, distCoeffs2, R, T, E, F, perViewErrors
+    cv.stereoCalibrate( objectPoints, imagePoints1, imagePoints2[, cameraMatrix1[, distCoeffs1[, cameraMatrix2[, distCoeffs2[, imageSize[, R[, T[, E[, F[, perViewErrors[, flags[, criteria]]]]]]]]]]]] ) -> retval, cameraMatrix1, distCoeffs1, cameraMatrix2, distCoeffs2, R, T, E, F, perViewErrors
 ```
 
 ### cv.stereoCalibrateExtended
@@ -21406,7 +29242,7 @@ double cv::stereoCalibrate( InputArrayOfArrays  objectPoints,
                             int                 flags = CALIB_FIX_INTRINSIC,
                             cv::TermCriteria    criteria = TermCriteria(TermCriteria::COUNT+TermCriteria::EPS, 30, 1e-6) );
 lua:
-    cv.stereoCalibrateExtended( objectPoints, imagePoints1, imagePoints2, cameraMatrix1, distCoeffs1, cameraMatrix2, distCoeffs2, imageSize, R, T[, E[, F[, rvecs[, tvecs[, perViewErrors[, flags[, criteria]]]]]]] ) -> retval, cameraMatrix1, distCoeffs1, cameraMatrix2, distCoeffs2, R, T, E, F, rvecs, tvecs, perViewErrors
+    cv.stereoCalibrateExtended( objectPoints, imagePoints1, imagePoints2[, cameraMatrix1[, distCoeffs1[, cameraMatrix2[, distCoeffs2[, imageSize[, R[, T[, E[, F[, rvecs[, tvecs[, perViewErrors[, flags[, criteria]]]]]]]]]]]]]] ) -> retval, cameraMatrix1, distCoeffs1, cameraMatrix2, distCoeffs2, R, T, E, F, rvecs, tvecs, perViewErrors
 ```
 
 ### cv.stereoRectify
@@ -21636,7 +29472,7 @@ void cv::validateDisparity( InputOutputArray disparity,
                             int              numberOfDisparities,
                             int              disp12MaxDisp = 1 );
 lua:
-    cv.validateDisparity( disparity, cost, minDisparity, numberOfDisparities[, disp12MaxDisp] ) -> disparity
+    cv.validateDisparity( [disparity[, cost[, minDisparity[, numberOfDisparities[, disp12MaxDisp]]]]] ) -> disparity
 ```
 
 ### cv.vconcat
@@ -21711,7 +29547,7 @@ lua:
 void cv::watershed( InputArray       image,
                     InputOutputArray markers );
 lua:
-    cv.watershed( image, markers ) -> markers
+    cv.watershed( image[, markers] ) -> markers
 ```
 
 ### cv.writeOpticalFlow
@@ -22236,10 +30072,10 @@ lua:
 ### cv.AsyncArray.new
 
 ```cpp
-static cv::AsyncArray cv::AsyncArray();
+cv::AsyncArray();
 lua:
-    cv.AsyncArray.new() -> <cv.AsyncArray object>
-    cv.AsyncArray() -> <cv.AsyncArray object>
+    cv.AsyncArray.new() -> <cv::AsyncArray object>
+    cv.AsyncArray() -> <cv::AsyncArray object>
 ```
 
 ### cv.AsyncArray.get
@@ -22286,11 +30122,11 @@ lua:
 ### cv.BFMatcher.new
 
 ```cpp
-static cv::BFMatcher cv::BFMatcher( int  normType = NORM_L2,
-                                    bool crossCheck = false );
+cv::BFMatcher( int  normType = NORM_L2,
+               bool crossCheck = false );
 lua:
-    cv.BFMatcher.new( [normType[, crossCheck]] ) -> <cv.BFMatcher object>
-    cv.BFMatcher( [normType[, crossCheck]] ) -> <cv.BFMatcher object>
+    cv.BFMatcher.new( [normType[, crossCheck]] ) -> <cv::BFMatcher object>
+    cv.BFMatcher( [normType[, crossCheck]] ) -> <cv::BFMatcher object>
 ```
 
 ### cv.BFMatcher.create
@@ -22307,11 +30143,11 @@ lua:
 ### cv.BOWImgDescriptorExtractor.new
 
 ```cpp
-static cv::BOWImgDescriptorExtractor cv::BOWImgDescriptorExtractor( const cv::Ptr<cv::Feature2D>&         dextractor,
-                                                                    const cv::Ptr<cv::DescriptorMatcher>& dmatcher );
+cv::BOWImgDescriptorExtractor( const cv::Ptr<cv::Feature2D>&         dextractor,
+                               const cv::Ptr<cv::DescriptorMatcher>& dmatcher );
 lua:
-    cv.BOWImgDescriptorExtractor.new( dextractor, dmatcher ) -> <cv.BOWImgDescriptorExtractor object>
-    cv.BOWImgDescriptorExtractor( dextractor, dmatcher ) -> <cv.BOWImgDescriptorExtractor object>
+    cv.BOWImgDescriptorExtractor.new( dextractor, dmatcher ) -> <cv::BOWImgDescriptorExtractor object>
+    cv.BOWImgDescriptorExtractor( dextractor, dmatcher ) -> <cv::BOWImgDescriptorExtractor object>
 ```
 
 ### cv.BOWImgDescriptorExtractor.compute
@@ -22361,13 +30197,13 @@ lua:
 ### cv.BOWKMeansTrainer.new
 
 ```cpp
-static cv::BOWKMeansTrainer cv::BOWKMeansTrainer( int                     clusterCount,
-                                                  const cv::TermCriteria& termcrit = TermCriteria(),
-                                                  int                     attempts = 3,
-                                                  int                     flags = KMEANS_PP_CENTERS );
+cv::BOWKMeansTrainer( int                     clusterCount,
+                      const cv::TermCriteria& termcrit = TermCriteria(),
+                      int                     attempts = 3,
+                      int                     flags = KMEANS_PP_CENTERS );
 lua:
-    cv.BOWKMeansTrainer.new( clusterCount[, termcrit[, attempts[, flags]]] ) -> <cv.BOWKMeansTrainer object>
-    cv.BOWKMeansTrainer( clusterCount[, termcrit[, attempts[, flags]]] ) -> <cv.BOWKMeansTrainer object>
+    cv.BOWKMeansTrainer.new( clusterCount[, termcrit[, attempts[, flags]]] ) -> <cv::BOWKMeansTrainer object>
+    cv.BOWKMeansTrainer( clusterCount[, termcrit[, attempts[, flags]]] ) -> <cv::BOWKMeansTrainer object>
 ```
 
 ### cv.BOWKMeansTrainer.cluster
@@ -23022,17 +30858,17 @@ lua:
 ### cv.CascadeClassifier.new
 
 ```cpp
-static cv::CascadeClassifier cv::CascadeClassifier();
+cv::CascadeClassifier();
 lua:
-    cv.CascadeClassifier.new() -> <cv.CascadeClassifier object>
-    cv.CascadeClassifier() -> <cv.CascadeClassifier object>
+    cv.CascadeClassifier.new() -> <cv::CascadeClassifier object>
+    cv.CascadeClassifier() -> <cv::CascadeClassifier object>
 ```
 
 ```cpp
-static cv::CascadeClassifier cv::CascadeClassifier( const std::string& filename );
+cv::CascadeClassifier( const std::string& filename );
 lua:
-    cv.CascadeClassifier.new( filename ) -> <cv.CascadeClassifier object>
-    cv.CascadeClassifier( filename ) -> <cv.CascadeClassifier object>
+    cv.CascadeClassifier.new( filename ) -> <cv::CascadeClassifier object>
+    cv.CascadeClassifier( filename ) -> <cv::CascadeClassifier object>
 ```
 
 ### cv.CascadeClassifier.convert
@@ -23279,10 +31115,10 @@ lua:
 ### cv.CirclesGridFinderParameters.new
 
 ```cpp
-static cv::CirclesGridFinderParameters cv::CirclesGridFinderParameters();
+cv::CirclesGridFinderParameters();
 lua:
-    cv.CirclesGridFinderParameters.new() -> <cv.CirclesGridFinderParameters object>
-    cv.CirclesGridFinderParameters() -> <cv.CirclesGridFinderParameters object>
+    cv.CirclesGridFinderParameters.new() -> <cv::CirclesGridFinderParameters object>
+    cv.CirclesGridFinderParameters() -> <cv::CirclesGridFinderParameters object>
 ```
 
 ## cv::DISOpticalFlow
@@ -23516,29 +31352,29 @@ lua:
 ### cv.DMatch.new
 
 ```cpp
-static cv::DMatch cv::DMatch();
+cv::DMatch();
 lua:
-    cv.DMatch.new() -> <cv.DMatch object>
-    cv.DMatch() -> <cv.DMatch object>
+    cv.DMatch.new() -> <cv::DMatch object>
+    cv.DMatch() -> <cv::DMatch object>
 ```
 
 ```cpp
-static cv::DMatch cv::DMatch( int   _queryIdx,
-                              int   _trainIdx,
-                              float _distance );
+cv::DMatch( int   _queryIdx,
+            int   _trainIdx,
+            float _distance );
 lua:
-    cv.DMatch.new( _queryIdx, _trainIdx, _distance ) -> <cv.DMatch object>
-    cv.DMatch( _queryIdx, _trainIdx, _distance ) -> <cv.DMatch object>
+    cv.DMatch.new( _queryIdx, _trainIdx, _distance ) -> <cv::DMatch object>
+    cv.DMatch( _queryIdx, _trainIdx, _distance ) -> <cv::DMatch object>
 ```
 
 ```cpp
-static cv::DMatch cv::DMatch( int   _queryIdx,
-                              int   _trainIdx,
-                              int   _imgIdx,
-                              float _distance );
+cv::DMatch( int   _queryIdx,
+            int   _trainIdx,
+            int   _imgIdx,
+            float _distance );
 lua:
-    cv.DMatch.new( _queryIdx, _trainIdx, _imgIdx, _distance ) -> <cv.DMatch object>
-    cv.DMatch( _queryIdx, _trainIdx, _imgIdx, _distance ) -> <cv.DMatch object>
+    cv.DMatch.new( _queryIdx, _trainIdx, _imgIdx, _distance ) -> <cv::DMatch object>
+    cv.DMatch( _queryIdx, _trainIdx, _imgIdx, _distance ) -> <cv::DMatch object>
 ```
 
 ## cv::DenseOpticalFlow
@@ -23550,7 +31386,7 @@ void cv::DenseOpticalFlow::calc( InputArray       I0,
                                  InputArray       I1,
                                  InputOutputArray flow );
 lua:
-    oDenseOpticalFlow:calc( I0, I1, flow ) -> flow
+    oDenseOpticalFlow:calc( I0, I1[, flow] ) -> flow
 ```
 
 ### cv.DenseOpticalFlow.collectGarbage
@@ -24902,10 +32738,10 @@ lua:
 ### cv.FileNode.new
 
 ```cpp
-static cv::FileNode cv::FileNode();
+cv::FileNode();
 lua:
-    cv.FileNode.new() -> <cv.FileNode object>
-    cv.FileNode() -> <cv.FileNode object>
+    cv.FileNode.new() -> <cv::FileNode object>
+    cv.FileNode() -> <cv::FileNode object>
 ```
 
 ### cv.FileNode.at
@@ -25177,19 +33013,19 @@ lua:
 ### cv.FileStorage.new
 
 ```cpp
-static cv::FileStorage cv::FileStorage();
+cv::FileStorage();
 lua:
-    cv.FileStorage.new() -> <cv.FileStorage object>
-    cv.FileStorage() -> <cv.FileStorage object>
+    cv.FileStorage.new() -> <cv::FileStorage object>
+    cv.FileStorage() -> <cv::FileStorage object>
 ```
 
 ```cpp
-static cv::FileStorage cv::FileStorage( const std::string& filename,
-                                        int                flags,
-                                        const std::string& encoding = String() );
+cv::FileStorage( const std::string& filename,
+                 int                flags,
+                 const std::string& encoding = String() );
 lua:
-    cv.FileStorage.new( filename, flags[, encoding] ) -> <cv.FileStorage object>
-    cv.FileStorage( filename, flags[, encoding] ) -> <cv.FileStorage object>
+    cv.FileStorage.new( filename, flags[, encoding] ) -> <cv::FileStorage object>
+    cv.FileStorage( filename, flags[, encoding] ) -> <cv::FileStorage object>
 ```
 
 ### cv.FileStorage.endWriteStruct
@@ -25327,11 +33163,11 @@ lua:
 ### cv.FlannBasedMatcher.new
 
 ```cpp
-static cv::FlannBasedMatcher cv::FlannBasedMatcher( const cv::Ptr<cv::flann::IndexParams>&  indexParams = makePtr<flann::KDTreeIndexParams>(),
-                                                    const cv::Ptr<cv::flann::SearchParams>& searchParams = makePtr<flann::SearchParams>() );
+cv::FlannBasedMatcher( const cv::Ptr<cv::flann::IndexParams>&  indexParams = makePtr<flann::KDTreeIndexParams>(),
+                       const cv::Ptr<cv::flann::SearchParams>& searchParams = makePtr<flann::SearchParams>() );
 lua:
-    cv.FlannBasedMatcher.new( [indexParams[, searchParams]] ) -> <cv.FlannBasedMatcher object>
-    cv.FlannBasedMatcher( [indexParams[, searchParams]] ) -> <cv.FlannBasedMatcher object>
+    cv.FlannBasedMatcher.new( [indexParams[, searchParams]] ) -> <cv::FlannBasedMatcher object>
+    cv.FlannBasedMatcher( [indexParams[, searchParams]] ) -> <cv::FlannBasedMatcher object>
 ```
 
 ### cv.FlannBasedMatcher.create
@@ -25397,10 +33233,10 @@ lua:
 ### cv.GArrayDesc.new
 
 ```cpp
-static cv::GArrayDesc cv::GArrayDesc();
+cv::GArrayDesc();
 lua:
-    cv.GArrayDesc.new() -> <cv.GArrayDesc object>
-    cv.GArrayDesc() -> <cv.GArrayDesc object>
+    cv.GArrayDesc.new() -> <cv::GArrayDesc object>
+    cv.GArrayDesc() -> <cv::GArrayDesc object>
 ```
 
 ## cv::GCompileArg
@@ -25408,10 +33244,10 @@ lua:
 ### cv.GCompileArg.new
 
 ```cpp
-static cv::GCompileArg cv::GCompileArg();
+cv::GCompileArg();
 lua:
-    cv.GCompileArg.new() -> <cv.GCompileArg object>
-    cv.GCompileArg() -> <cv.GCompileArg object>
+    cv.GCompileArg.new() -> <cv::GCompileArg object>
+    cv.GCompileArg() -> <cv::GCompileArg object>
 ```
 
 ## cv::GComputation
@@ -25419,36 +33255,36 @@ lua:
 ### cv.GComputation.new
 
 ```cpp
-static cv::GComputation cv::GComputation( cv::GProtoInputArgs&&  ins,
-                                          cv::GProtoOutputArgs&& outs );
+cv::GComputation( cv::GProtoInputArgs&&  ins,
+                  cv::GProtoOutputArgs&& outs );
 lua:
-    cv.GComputation.new( ins, outs ) -> <cv.GComputation object>
-    cv.GComputation( ins, outs ) -> <cv.GComputation object>
+    cv.GComputation.new( ins, outs ) -> <cv::GComputation object>
+    cv.GComputation( ins, outs ) -> <cv::GComputation object>
 ```
 
 ```cpp
-static cv::GComputation cv::GComputation( cv::GMat in,
-                                          cv::GMat out );
+cv::GComputation( cv::GMat in,
+                  cv::GMat out );
 lua:
-    cv.GComputation.new( in, out ) -> <cv.GComputation object>
-    cv.GComputation( in, out ) -> <cv.GComputation object>
+    cv.GComputation.new( in, out ) -> <cv::GComputation object>
+    cv.GComputation( in, out ) -> <cv::GComputation object>
 ```
 
 ```cpp
-static cv::GComputation cv::GComputation( cv::GMat    in,
-                                          cv::GScalar out );
+cv::GComputation( cv::GMat    in,
+                  cv::GScalar out );
 lua:
-    cv.GComputation.new( in, out ) -> <cv.GComputation object>
-    cv.GComputation( in, out ) -> <cv.GComputation object>
+    cv.GComputation.new( in, out ) -> <cv::GComputation object>
+    cv.GComputation( in, out ) -> <cv::GComputation object>
 ```
 
 ```cpp
-static cv::GComputation cv::GComputation( cv::GMat in1,
-                                          cv::GMat in2,
-                                          cv::GMat out );
+cv::GComputation( cv::GMat in1,
+                  cv::GMat in2,
+                  cv::GMat out );
 lua:
-    cv.GComputation.new( in1, in2, out ) -> <cv.GComputation object>
-    cv.GComputation( in1, in2, out ) -> <cv.GComputation object>
+    cv.GComputation.new( in1, in2, out ) -> <cv::GComputation object>
+    cv.GComputation( in1, in2, out ) -> <cv::GComputation object>
 ```
 
 ### cv.GComputation.apply
@@ -25634,10 +33470,10 @@ lua:
 ### cv.GFrame.new
 
 ```cpp
-static cv::GFrame cv::GFrame();
+cv::GFrame();
 lua:
-    cv.GFrame.new() -> <cv.GFrame object>
-    cv.GFrame() -> <cv.GFrame object>
+    cv.GFrame.new() -> <cv::GFrame object>
+    cv.GFrame() -> <cv::GFrame object>
 ```
 
 ## cv::GKernelPackage
@@ -25655,10 +33491,10 @@ lua:
 ### cv.GMat.new
 
 ```cpp
-static cv::GMat cv::GMat();
+cv::GMat();
 lua:
-    cv.GMat.new() -> <cv.GMat object>
-    cv.GMat() -> <cv.GMat object>
+    cv.GMat.new() -> <cv::GMat object>
+    cv.GMat() -> <cv::GMat object>
 ```
 
 ## cv::GMatDesc
@@ -25706,36 +33542,36 @@ lua:
 ### cv.GMatDesc.new
 
 ```cpp
-static cv::GMatDesc cv::GMatDesc( int      d,
-                                  int      c,
-                                  cv::Size s,
-                                  bool     p = false );
+cv::GMatDesc( int      d,
+              int      c,
+              cv::Size s,
+              bool     p = false );
 lua:
-    cv.GMatDesc.new( d, c, s[, p] ) -> <cv.GMatDesc object>
-    cv.GMatDesc( d, c, s[, p] ) -> <cv.GMatDesc object>
+    cv.GMatDesc.new( d, c, s[, p] ) -> <cv::GMatDesc object>
+    cv.GMatDesc( d, c, s[, p] ) -> <cv::GMatDesc object>
 ```
 
 ```cpp
-static cv::GMatDesc cv::GMatDesc( int                     d,
-                                  const std::vector<int>& dd );
+cv::GMatDesc( int                     d,
+              const std::vector<int>& dd );
 lua:
-    cv.GMatDesc.new( d, dd ) -> <cv.GMatDesc object>
-    cv.GMatDesc( d, dd ) -> <cv.GMatDesc object>
+    cv.GMatDesc.new( d, dd ) -> <cv::GMatDesc object>
+    cv.GMatDesc( d, dd ) -> <cv::GMatDesc object>
 ```
 
 ```cpp
-static cv::GMatDesc cv::GMatDesc( int                d,
-                                  std::vector<int>&& dd );
+cv::GMatDesc( int                d,
+              std::vector<int>&& dd );
 lua:
-    cv.GMatDesc.new( d, dd ) -> <cv.GMatDesc object>
-    cv.GMatDesc( d, dd ) -> <cv.GMatDesc object>
+    cv.GMatDesc.new( d, dd ) -> <cv::GMatDesc object>
+    cv.GMatDesc( d, dd ) -> <cv::GMatDesc object>
 ```
 
 ```cpp
-static cv::GMatDesc cv::GMatDesc();
+cv::GMatDesc();
 lua:
-    cv.GMatDesc.new() -> <cv.GMatDesc object>
-    cv.GMatDesc() -> <cv.GMatDesc object>
+    cv.GMatDesc.new() -> <cv::GMatDesc object>
+    cv.GMatDesc() -> <cv::GMatDesc object>
 ```
 
 ### cv.GMatDesc.asInterleaved
@@ -25805,10 +33641,10 @@ lua:
 ### cv.GOpaqueDesc.new
 
 ```cpp
-static cv::GOpaqueDesc cv::GOpaqueDesc();
+cv::GOpaqueDesc();
 lua:
-    cv.GOpaqueDesc.new() -> <cv.GOpaqueDesc object>
-    cv.GOpaqueDesc() -> <cv.GOpaqueDesc object>
+    cv.GOpaqueDesc.new() -> <cv::GOpaqueDesc object>
+    cv.GOpaqueDesc() -> <cv::GOpaqueDesc object>
 ```
 
 ## cv::GProtoInputArgs
@@ -25820,10 +33656,10 @@ lua:
 ### cv.GRunArg.new
 
 ```cpp
-static cv::GRunArg cv::GRunArg();
+cv::GRunArg();
 lua:
-    cv.GRunArg.new() -> <cv.GRunArg object>
-    cv.GRunArg() -> <cv.GRunArg object>
+    cv.GRunArg.new() -> <cv::GRunArg object>
+    cv.GRunArg() -> <cv::GRunArg object>
 ```
 
 ## cv::GScalar
@@ -25831,17 +33667,17 @@ lua:
 ### cv.GScalar.new
 
 ```cpp
-static cv::GScalar cv::GScalar();
+cv::GScalar();
 lua:
-    cv.GScalar.new() -> <cv.GScalar object>
-    cv.GScalar() -> <cv.GScalar object>
+    cv.GScalar.new() -> <cv::GScalar object>
+    cv.GScalar() -> <cv::GScalar object>
 ```
 
 ```cpp
-static cv::GScalar cv::GScalar( const cv::Scalar& s );
+cv::GScalar( const cv::Scalar& s );
 lua:
-    cv.GScalar.new( s ) -> <cv.GScalar object>
-    cv.GScalar( s ) -> <cv.GScalar object>
+    cv.GScalar.new( s ) -> <cv::GScalar object>
+    cv.GScalar( s ) -> <cv::GScalar object>
 ```
 
 ## cv::GScalarDesc
@@ -25849,10 +33685,10 @@ lua:
 ### cv.GScalarDesc.new
 
 ```cpp
-static cv::GScalarDesc cv::GScalarDesc();
+cv::GScalarDesc();
 lua:
-    cv.GScalarDesc.new() -> <cv.GScalarDesc object>
-    cv.GScalarDesc() -> <cv.GScalarDesc object>
+    cv.GScalarDesc.new() -> <cv::GScalarDesc object>
+    cv.GScalarDesc() -> <cv::GScalarDesc object>
 ```
 
 ## cv::GStreamingCompiled
@@ -25860,10 +33696,10 @@ lua:
 ### cv.GStreamingCompiled.new
 
 ```cpp
-static cv::GStreamingCompiled cv::GStreamingCompiled();
+cv::GStreamingCompiled();
 lua:
-    cv.GStreamingCompiled.new() -> <cv.GStreamingCompiled object>
-    cv.GStreamingCompiled() -> <cv.GStreamingCompiled object>
+    cv.GStreamingCompiled.new() -> <cv::GStreamingCompiled object>
+    cv.GStreamingCompiled() -> <cv::GStreamingCompiled object>
 ```
 
 ### cv.GStreamingCompiled.pull
@@ -26457,35 +34293,35 @@ lua:
 ### cv.HOGDescriptor.new
 
 ```cpp
-static cv::HOGDescriptor cv::HOGDescriptor();
+cv::HOGDescriptor();
 lua:
-    cv.HOGDescriptor.new() -> <cv.HOGDescriptor object>
-    cv.HOGDescriptor() -> <cv.HOGDescriptor object>
+    cv.HOGDescriptor.new() -> <cv::HOGDescriptor object>
+    cv.HOGDescriptor() -> <cv::HOGDescriptor object>
 ```
 
 ```cpp
-static cv::HOGDescriptor cv::HOGDescriptor( cv::Size                             _winSize,
-                                            cv::Size                             _blockSize,
-                                            cv::Size                             _blockStride,
-                                            cv::Size                             _cellSize,
-                                            int                                  _nbins,
-                                            int                                  _derivAperture = 1,
-                                            double                               _winSigma = -1,
-                                            cv::HOGDescriptor::HistogramNormType _histogramNormType = HOGDescriptor::L2Hys,
-                                            double                               _L2HysThreshold = 0.2,
-                                            bool                                 _gammaCorrection = false,
-                                            int                                  _nlevels = HOGDescriptor::DEFAULT_NLEVELS,
-                                            bool                                 _signedGradient = false );
+cv::HOGDescriptor( cv::Size                             _winSize,
+                   cv::Size                             _blockSize,
+                   cv::Size                             _blockStride,
+                   cv::Size                             _cellSize,
+                   int                                  _nbins,
+                   int                                  _derivAperture = 1,
+                   double                               _winSigma = -1,
+                   cv::HOGDescriptor::HistogramNormType _histogramNormType = HOGDescriptor::L2Hys,
+                   double                               _L2HysThreshold = 0.2,
+                   bool                                 _gammaCorrection = false,
+                   int                                  _nlevels = HOGDescriptor::DEFAULT_NLEVELS,
+                   bool                                 _signedGradient = false );
 lua:
-    cv.HOGDescriptor.new( _winSize, _blockSize, _blockStride, _cellSize, _nbins[, _derivAperture[, _winSigma[, _histogramNormType[, _L2HysThreshold[, _gammaCorrection[, _nlevels[, _signedGradient]]]]]]] ) -> <cv.HOGDescriptor object>
-    cv.HOGDescriptor( _winSize, _blockSize, _blockStride, _cellSize, _nbins[, _derivAperture[, _winSigma[, _histogramNormType[, _L2HysThreshold[, _gammaCorrection[, _nlevels[, _signedGradient]]]]]]] ) -> <cv.HOGDescriptor object>
+    cv.HOGDescriptor.new( _winSize, _blockSize, _blockStride, _cellSize, _nbins[, _derivAperture[, _winSigma[, _histogramNormType[, _L2HysThreshold[, _gammaCorrection[, _nlevels[, _signedGradient]]]]]]] ) -> <cv::HOGDescriptor object>
+    cv.HOGDescriptor( _winSize, _blockSize, _blockStride, _cellSize, _nbins[, _derivAperture[, _winSigma[, _histogramNormType[, _L2HysThreshold[, _gammaCorrection[, _nlevels[, _signedGradient]]]]]]] ) -> <cv::HOGDescriptor object>
 ```
 
 ```cpp
-static cv::HOGDescriptor cv::HOGDescriptor( const std::string& filename );
+cv::HOGDescriptor( const std::string& filename );
 lua:
-    cv.HOGDescriptor.new( filename ) -> <cv.HOGDescriptor object>
-    cv.HOGDescriptor( filename ) -> <cv.HOGDescriptor object>
+    cv.HOGDescriptor.new( filename ) -> <cv::HOGDescriptor object>
+    cv.HOGDescriptor( filename ) -> <cv::HOGDescriptor object>
 ```
 
 ### cv.HOGDescriptor.checkDetectorSize
@@ -26517,7 +34353,7 @@ void cv::HOGDescriptor::computeGradient( InputArray       img,
                                          cv::Size         paddingTL = Size(),
                                          cv::Size         paddingBR = Size() ) const;
 lua:
-    oHOGDescriptor:computeGradient( img, grad, angleOfs[, paddingTL[, paddingBR]] ) -> grad, angleOfs
+    oHOGDescriptor:computeGradient( img[, grad[, angleOfs[, paddingTL[, paddingBR]]]] ) -> grad, angleOfs
 ```
 
 ### cv.HOGDescriptor.detect
@@ -26844,20 +34680,20 @@ lua:
 ### cv.KalmanFilter.new
 
 ```cpp
-static cv::KalmanFilter cv::KalmanFilter();
+cv::KalmanFilter();
 lua:
-    cv.KalmanFilter.new() -> <cv.KalmanFilter object>
-    cv.KalmanFilter() -> <cv.KalmanFilter object>
+    cv.KalmanFilter.new() -> <cv::KalmanFilter object>
+    cv.KalmanFilter() -> <cv::KalmanFilter object>
 ```
 
 ```cpp
-static cv::KalmanFilter cv::KalmanFilter( int dynamParams,
-                                          int measureParams,
-                                          int controlParams = 0,
-                                          int type = CV_32F );
+cv::KalmanFilter( int dynamParams,
+                  int measureParams,
+                  int controlParams = 0,
+                  int type = CV_32F );
 lua:
-    cv.KalmanFilter.new( dynamParams, measureParams[, controlParams[, type]] ) -> <cv.KalmanFilter object>
-    cv.KalmanFilter( dynamParams, measureParams[, controlParams[, type]] ) -> <cv.KalmanFilter object>
+    cv.KalmanFilter.new( dynamParams, measureParams[, controlParams[, type]] ) -> <cv::KalmanFilter object>
+    cv.KalmanFilter( dynamParams, measureParams[, controlParams[, type]] ) -> <cv::KalmanFilter object>
 ```
 
 ### cv.KalmanFilter.correct
@@ -26929,23 +34765,23 @@ lua:
 ### cv.KeyPoint.new
 
 ```cpp
-static cv::KeyPoint cv::KeyPoint();
+cv::KeyPoint();
 lua:
-    cv.KeyPoint.new() -> <cv.KeyPoint object>
-    cv.KeyPoint() -> <cv.KeyPoint object>
+    cv.KeyPoint.new() -> <cv::KeyPoint object>
+    cv.KeyPoint() -> <cv::KeyPoint object>
 ```
 
 ```cpp
-static cv::KeyPoint cv::KeyPoint( float x,
-                                  float y,
-                                  float size,
-                                  float angle = -1,
-                                  float response = 0,
-                                  int   octave = 0,
-                                  int   class_id = -1 );
+cv::KeyPoint( float x,
+              float y,
+              float size,
+              float angle = -1,
+              float response = 0,
+              int   octave = 0,
+              int   class_id = -1 );
 lua:
-    cv.KeyPoint.new( x, y, size[, angle[, response[, octave[, class_id]]]] ) -> <cv.KeyPoint object>
-    cv.KeyPoint( x, y, size[, angle[, response[, octave[, class_id]]]] ) -> <cv.KeyPoint object>
+    cv.KeyPoint.new( x, y, size[, angle[, response[, octave[, class_id]]]] ) -> <cv::KeyPoint object>
+    cv.KeyPoint( x, y, size[, angle[, response[, octave[, class_id]]]] ) -> <cv::KeyPoint object>
 ```
 
 ### cv.KeyPoint.convert
@@ -27009,7 +34845,7 @@ lua:
 void cv::LineSegmentDetector::drawSegments( InputOutputArray image,
                                             InputArray       lines );
 lua:
-    oLineSegmentDetector:drawSegments( image, lines ) -> image
+    oLineSegmentDetector:drawSegments( [image[, lines]] ) -> image
 ```
 
 ## cv::MSER
@@ -27357,154 +35193,154 @@ lua:
 ### cv.Mat.new
 
 ```cpp
-static cv::Mat cv::Mat();
+cv::Mat();
 lua:
-    cv.Mat.new() -> <cv.Mat object>
-    cv.Mat() -> <cv.Mat object>
+    cv.Mat.new() -> <cv::Mat object>
+    cv.Mat() -> <cv::Mat object>
 ```
 
 ```cpp
-static cv::Mat cv::Mat( int rows,
-                        int cols,
-                        int type );
+cv::Mat( int rows,
+         int cols,
+         int type );
 lua:
-    cv.Mat.new( rows, cols, type ) -> <cv.Mat object>
-    cv.Mat( rows, cols, type ) -> <cv.Mat object>
+    cv.Mat.new( rows, cols, type ) -> <cv::Mat object>
+    cv.Mat( rows, cols, type ) -> <cv::Mat object>
 ```
 
 ```cpp
-static cv::Mat cv::Mat( cv::Size size,
-                        int      type );
+cv::Mat( cv::Size size,
+         int      type );
 lua:
-    cv.Mat.new( size, type ) -> <cv.Mat object>
-    cv.Mat( size, type ) -> <cv.Mat object>
+    cv.Mat.new( size, type ) -> <cv::Mat object>
+    cv.Mat( size, type ) -> <cv::Mat object>
 ```
 
 ```cpp
-static cv::Mat cv::Mat( int        rows,
-                        int        cols,
-                        int        type,
-                        cv::Scalar s );
+cv::Mat( int        rows,
+         int        cols,
+         int        type,
+         cv::Scalar s );
 lua:
-    cv.Mat.new( rows, cols, type, s ) -> <cv.Mat object>
-    cv.Mat( rows, cols, type, s ) -> <cv.Mat object>
+    cv.Mat.new( rows, cols, type, s ) -> <cv::Mat object>
+    cv.Mat( rows, cols, type, s ) -> <cv::Mat object>
 ```
 
 ```cpp
-static cv::Mat cv::Mat( cv::Size   size,
-                        int        type,
-                        cv::Scalar s );
+cv::Mat( cv::Size   size,
+         int        type,
+         cv::Scalar s );
 lua:
-    cv.Mat.new( size, type, s ) -> <cv.Mat object>
-    cv.Mat( size, type, s ) -> <cv.Mat object>
+    cv.Mat.new( size, type, s ) -> <cv::Mat object>
+    cv.Mat( size, type, s ) -> <cv::Mat object>
 ```
 
 ```cpp
-static cv::Mat cv::Mat( const std::vector<int>& sizes,
-                        int                     type );
+cv::Mat( const std::vector<int>& sizes,
+         int                     type );
 lua:
-    cv.Mat.new( sizes, type ) -> <cv.Mat object>
-    cv.Mat( sizes, type ) -> <cv.Mat object>
+    cv.Mat.new( sizes, type ) -> <cv::Mat object>
+    cv.Mat( sizes, type ) -> <cv::Mat object>
 ```
 
 ```cpp
-static cv::Mat cv::Mat( const std::vector<int>& sizes,
-                        int                     type,
-                        cv::Scalar              s );
+cv::Mat( const std::vector<int>& sizes,
+         int                     type,
+         cv::Scalar              s );
 lua:
-    cv.Mat.new( sizes, type, s ) -> <cv.Mat object>
-    cv.Mat( sizes, type, s ) -> <cv.Mat object>
+    cv.Mat.new( sizes, type, s ) -> <cv::Mat object>
+    cv.Mat( sizes, type, s ) -> <cv::Mat object>
 ```
 
 ```cpp
-static cv::Mat cv::Mat( const cv::Mat& m );
+cv::Mat( const cv::Mat& m );
 lua:
-    cv.Mat.new( m ) -> <cv.Mat object>
-    cv.Mat( m ) -> <cv.Mat object>
+    cv.Mat.new( m ) -> <cv::Mat object>
+    cv.Mat( m ) -> <cv::Mat object>
 ```
 
 ```cpp
-static cv::Mat cv::Mat( int    rows,
-                        int    cols,
-                        int    type,
-                        void*  data,
-                        size_t step = Mat::AUTO_STEP );
+cv::Mat( int    rows,
+         int    cols,
+         int    type,
+         void*  data,
+         size_t step = Mat::AUTO_STEP );
 lua:
-    cv.Mat.new( rows, cols, type, data[, step] ) -> <cv.Mat object>
-    cv.Mat( rows, cols, type, data[, step] ) -> <cv.Mat object>
+    cv.Mat.new( rows, cols, type, data[, step] ) -> <cv::Mat object>
+    cv.Mat( rows, cols, type, data[, step] ) -> <cv::Mat object>
 ```
 
 ```cpp
-static cv::Mat cv::Mat( cv::Size size,
-                        int      type,
-                        void*    data,
-                        size_t   step = Mat::AUTO_STEP );
+cv::Mat( cv::Size size,
+         int      type,
+         void*    data,
+         size_t   step = Mat::AUTO_STEP );
 lua:
-    cv.Mat.new( size, type, data[, step] ) -> <cv.Mat object>
-    cv.Mat( size, type, data[, step] ) -> <cv.Mat object>
+    cv.Mat.new( size, type, data[, step] ) -> <cv::Mat object>
+    cv.Mat( size, type, data[, step] ) -> <cv::Mat object>
 ```
 
 ```cpp
-static cv::Mat cv::Mat( const std::vector<int>&    sizes,
-                        int                        type,
-                        void*                      data,
-                        const std::vector<size_t>& steps = std::vector<size_t>() );
+cv::Mat( const std::vector<int>&    sizes,
+         int                        type,
+         void*                      data,
+         const std::vector<size_t>& steps = std::vector<size_t>() );
 lua:
-    cv.Mat.new( sizes, type, data[, steps] ) -> <cv.Mat object>
-    cv.Mat( sizes, type, data[, steps] ) -> <cv.Mat object>
+    cv.Mat.new( sizes, type, data[, steps] ) -> <cv::Mat object>
+    cv.Mat( sizes, type, data[, steps] ) -> <cv::Mat object>
 ```
 
 ```cpp
-static cv::Mat cv::Mat( const cv::Mat&   m,
-                        const cv::Range& rowRange,
-                        const cv::Range& colRange = Range::all() );
+cv::Mat( const cv::Mat&   m,
+         const cv::Range& rowRange,
+         const cv::Range& colRange = Range::all() );
 lua:
-    cv.Mat.new( m, rowRange[, colRange] ) -> <cv.Mat object>
-    cv.Mat( m, rowRange[, colRange] ) -> <cv.Mat object>
+    cv.Mat.new( m, rowRange[, colRange] ) -> <cv::Mat object>
+    cv.Mat( m, rowRange[, colRange] ) -> <cv::Mat object>
 ```
 
 ```cpp
-static cv::Mat cv::Mat( const cv::Mat&  m,
-                        const cv::Rect& roi );
+cv::Mat( const cv::Mat&  m,
+         const cv::Rect& roi );
 lua:
-    cv.Mat.new( m, roi ) -> <cv.Mat object>
-    cv.Mat( m, roi ) -> <cv.Mat object>
+    cv.Mat.new( m, roi ) -> <cv::Mat object>
+    cv.Mat( m, roi ) -> <cv::Mat object>
 ```
 
 ```cpp
-static cv::Mat cv::Mat( const cv::Mat&                m,
-                        const std::vector<cv::Range>& ranges );
+cv::Mat( const cv::Mat&                m,
+         const std::vector<cv::Range>& ranges );
 lua:
-    cv.Mat.new( m, ranges ) -> <cv.Mat object>
-    cv.Mat( m, ranges ) -> <cv.Mat object>
+    cv.Mat.new( m, ranges ) -> <cv::Mat object>
+    cv.Mat( m, ranges ) -> <cv::Mat object>
 ```
 
 ```cpp
-static cv::Mat cv::Mat( const std::vector<double>& vec );
+cv::Mat( const std::vector<double>& vec );
 lua:
-    cv.Mat.new( vec ) -> <cv.Mat object>
-    cv.Mat( vec ) -> <cv.Mat object>
+    cv.Mat.new( vec ) -> <cv::Mat object>
+    cv.Mat( vec ) -> <cv::Mat object>
 ```
 
 ```cpp
-static cv::Mat cv::Mat( const std::vector<int>& vec );
+cv::Mat( const std::vector<int>& vec );
 lua:
-    cv.Mat.new( vec ) -> <cv.Mat object>
-    cv.Mat( vec ) -> <cv.Mat object>
+    cv.Mat.new( vec ) -> <cv::Mat object>
+    cv.Mat( vec ) -> <cv::Mat object>
 ```
 
 ```cpp
-static cv::Mat cv::Mat( const cv::cuda::GpuMat& m );
+cv::Mat( const cv::cuda::GpuMat& m );
 lua:
-    cv.Mat.new( m ) -> <cv.Mat object>
-    cv.Mat( m ) -> <cv.Mat object>
+    cv.Mat.new( m ) -> <cv::Mat object>
+    cv.Mat( m ) -> <cv::Mat object>
 ```
 
 ```cpp
-static cv::Mat cv::Mat( std::vector<cv::Mat> vec );
+cv::Mat( const std::vector<cv::Mat>& vec );
 lua:
-    cv.Mat.new( vec ) -> <cv.Mat object>
-    cv.Mat( vec ) -> <cv.Mat object>
+    cv.Mat.new( vec ) -> <cv::Mat object>
+    cv.Mat( vec ) -> <cv::Mat object>
 ```
 
 ### cv.Mat.Point\_at
@@ -29206,8 +37042,8 @@ lua:
 ### cv.Mat.assignTo
 
 ```cpp
-void cv::Mat::assignTo( const cv::Mat& m,
-                        int            type = -1 );
+void cv::Mat::assignTo( cv::Mat& m,
+                        int      type = -1 );
 lua:
     oMat:assignTo( m[, type] ) -> None
 ```
@@ -29341,8 +37177,8 @@ lua:
 ### cv.Mat.createFromArray
 
 ```cpp
-static cv::Mat cv::Mat::createFromArray( sol::table array,
-                                         int        type = CV_64F );
+static cv::Mat cv::Mat::createFromArray( const Table& array,
+                                         int          type = CV_64F );
 lua:
     cv.Mat.createFromArray( array[, type] ) -> retval
 ```
@@ -30393,6 +38229,14 @@ lua:
     oMat:push_back( m ) -> None
 ```
 
+### cv.Mat.ravel
+
+```cpp
+void cv::Mat::ravel( cv::Mat& out );
+lua:
+    oMat:ravel( [out] ) -> out
+```
+
 ### cv.Mat.reserve
 
 ```cpp
@@ -30547,9 +38391,9 @@ lua:
 ### cv.Mat.table
 
 ```cpp
-sol::table cv::Mat::table( bool nested = true );
+void cv::Mat::table( bool nested = true );
 lua:
-    oMat:table( [nested] ) -> retval
+    oMat:table( [nested] ) -> None
 ```
 
 ### cv.Mat.total
@@ -30565,6 +38409,14 @@ size_t cv::Mat::total( int startDim,
                        int endDim = INT_MAX );
 lua:
     oMat:total( startDim[, endDim] ) -> retval
+```
+
+### cv.Mat.transpose
+
+```cpp
+cv::Mat cv::Mat::t();
+lua:
+    oMat:transpose() -> retval
 ```
 
 ### cv.Mat.type
@@ -30658,10 +38510,10 @@ lua:
 ### cv.Matx12d.new
 
 ```cpp
-static cv::Matx12d cv::Matx12d();
+cv::Matx12d();
 lua:
-    cv.Matx12d.new() -> <cv.Matx12d object>
-    cv.Matx12d() -> <cv.Matx12d object>
+    cv.Matx12d.new() -> <cv::Matx12d object>
+    cv.Matx12d() -> <cv::Matx12d object>
 ```
 
 ### cv.Matx12d.all
@@ -30830,10 +38682,10 @@ lua:
 ### cv.Matx12f.new
 
 ```cpp
-static cv::Matx12f cv::Matx12f();
+cv::Matx12f();
 lua:
-    cv.Matx12f.new() -> <cv.Matx12f object>
-    cv.Matx12f() -> <cv.Matx12f object>
+    cv.Matx12f.new() -> <cv::Matx12f object>
+    cv.Matx12f() -> <cv::Matx12f object>
 ```
 
 ### cv.Matx12f.all
@@ -31002,10 +38854,10 @@ lua:
 ### cv.Matx13d.new
 
 ```cpp
-static cv::Matx13d cv::Matx13d();
+cv::Matx13d();
 lua:
-    cv.Matx13d.new() -> <cv.Matx13d object>
-    cv.Matx13d() -> <cv.Matx13d object>
+    cv.Matx13d.new() -> <cv::Matx13d object>
+    cv.Matx13d() -> <cv::Matx13d object>
 ```
 
 ### cv.Matx13d.all
@@ -31174,10 +39026,10 @@ lua:
 ### cv.Matx13f.new
 
 ```cpp
-static cv::Matx13f cv::Matx13f();
+cv::Matx13f();
 lua:
-    cv.Matx13f.new() -> <cv.Matx13f object>
-    cv.Matx13f() -> <cv.Matx13f object>
+    cv.Matx13f.new() -> <cv::Matx13f object>
+    cv.Matx13f() -> <cv::Matx13f object>
 ```
 
 ### cv.Matx13f.all
@@ -31346,10 +39198,10 @@ lua:
 ### cv.Matx14d.new
 
 ```cpp
-static cv::Matx14d cv::Matx14d();
+cv::Matx14d();
 lua:
-    cv.Matx14d.new() -> <cv.Matx14d object>
-    cv.Matx14d() -> <cv.Matx14d object>
+    cv.Matx14d.new() -> <cv::Matx14d object>
+    cv.Matx14d() -> <cv::Matx14d object>
 ```
 
 ### cv.Matx14d.all
@@ -31518,10 +39370,10 @@ lua:
 ### cv.Matx14f.new
 
 ```cpp
-static cv::Matx14f cv::Matx14f();
+cv::Matx14f();
 lua:
-    cv.Matx14f.new() -> <cv.Matx14f object>
-    cv.Matx14f() -> <cv.Matx14f object>
+    cv.Matx14f.new() -> <cv::Matx14f object>
+    cv.Matx14f() -> <cv::Matx14f object>
 ```
 
 ### cv.Matx14f.all
@@ -31690,10 +39542,10 @@ lua:
 ### cv.Matx16d.new
 
 ```cpp
-static cv::Matx16d cv::Matx16d();
+cv::Matx16d();
 lua:
-    cv.Matx16d.new() -> <cv.Matx16d object>
-    cv.Matx16d() -> <cv.Matx16d object>
+    cv.Matx16d.new() -> <cv::Matx16d object>
+    cv.Matx16d() -> <cv::Matx16d object>
 ```
 
 ### cv.Matx16d.all
@@ -31862,10 +39714,10 @@ lua:
 ### cv.Matx16f.new
 
 ```cpp
-static cv::Matx16f cv::Matx16f();
+cv::Matx16f();
 lua:
-    cv.Matx16f.new() -> <cv.Matx16f object>
-    cv.Matx16f() -> <cv.Matx16f object>
+    cv.Matx16f.new() -> <cv::Matx16f object>
+    cv.Matx16f() -> <cv::Matx16f object>
 ```
 
 ### cv.Matx16f.all
@@ -32034,10 +39886,10 @@ lua:
 ### cv.Matx21d.new
 
 ```cpp
-static cv::Matx21d cv::Matx21d();
+cv::Matx21d();
 lua:
-    cv.Matx21d.new() -> <cv.Matx21d object>
-    cv.Matx21d() -> <cv.Matx21d object>
+    cv.Matx21d.new() -> <cv::Matx21d object>
+    cv.Matx21d() -> <cv::Matx21d object>
 ```
 
 ### cv.Matx21d.all
@@ -32206,10 +40058,10 @@ lua:
 ### cv.Matx21f.new
 
 ```cpp
-static cv::Matx21f cv::Matx21f();
+cv::Matx21f();
 lua:
-    cv.Matx21f.new() -> <cv.Matx21f object>
-    cv.Matx21f() -> <cv.Matx21f object>
+    cv.Matx21f.new() -> <cv::Matx21f object>
+    cv.Matx21f() -> <cv::Matx21f object>
 ```
 
 ### cv.Matx21f.all
@@ -32378,10 +40230,10 @@ lua:
 ### cv.Matx22d.new
 
 ```cpp
-static cv::Matx22d cv::Matx22d();
+cv::Matx22d();
 lua:
-    cv.Matx22d.new() -> <cv.Matx22d object>
-    cv.Matx22d() -> <cv.Matx22d object>
+    cv.Matx22d.new() -> <cv::Matx22d object>
+    cv.Matx22d() -> <cv::Matx22d object>
 ```
 
 ### cv.Matx22d.all
@@ -32531,10 +40383,10 @@ lua:
 ### cv.Matx22f.new
 
 ```cpp
-static cv::Matx22f cv::Matx22f();
+cv::Matx22f();
 lua:
-    cv.Matx22f.new() -> <cv.Matx22f object>
-    cv.Matx22f() -> <cv.Matx22f object>
+    cv.Matx22f.new() -> <cv::Matx22f object>
+    cv.Matx22f() -> <cv::Matx22f object>
 ```
 
 ### cv.Matx22f.all
@@ -32684,10 +40536,10 @@ lua:
 ### cv.Matx23d.new
 
 ```cpp
-static cv::Matx23d cv::Matx23d();
+cv::Matx23d();
 lua:
-    cv.Matx23d.new() -> <cv.Matx23d object>
-    cv.Matx23d() -> <cv.Matx23d object>
+    cv.Matx23d.new() -> <cv::Matx23d object>
+    cv.Matx23d() -> <cv::Matx23d object>
 ```
 
 ### cv.Matx23d.all
@@ -32837,10 +40689,10 @@ lua:
 ### cv.Matx23f.new
 
 ```cpp
-static cv::Matx23f cv::Matx23f();
+cv::Matx23f();
 lua:
-    cv.Matx23f.new() -> <cv.Matx23f object>
-    cv.Matx23f() -> <cv.Matx23f object>
+    cv.Matx23f.new() -> <cv::Matx23f object>
+    cv.Matx23f() -> <cv::Matx23f object>
 ```
 
 ### cv.Matx23f.all
@@ -32990,10 +40842,10 @@ lua:
 ### cv.Matx31d.new
 
 ```cpp
-static cv::Matx31d cv::Matx31d();
+cv::Matx31d();
 lua:
-    cv.Matx31d.new() -> <cv.Matx31d object>
-    cv.Matx31d() -> <cv.Matx31d object>
+    cv.Matx31d.new() -> <cv::Matx31d object>
+    cv.Matx31d() -> <cv::Matx31d object>
 ```
 
 ### cv.Matx31d.all
@@ -33162,10 +41014,10 @@ lua:
 ### cv.Matx31f.new
 
 ```cpp
-static cv::Matx31f cv::Matx31f();
+cv::Matx31f();
 lua:
-    cv.Matx31f.new() -> <cv.Matx31f object>
-    cv.Matx31f() -> <cv.Matx31f object>
+    cv.Matx31f.new() -> <cv::Matx31f object>
+    cv.Matx31f() -> <cv::Matx31f object>
 ```
 
 ### cv.Matx31f.all
@@ -33334,10 +41186,10 @@ lua:
 ### cv.Matx32d.new
 
 ```cpp
-static cv::Matx32d cv::Matx32d();
+cv::Matx32d();
 lua:
-    cv.Matx32d.new() -> <cv.Matx32d object>
-    cv.Matx32d() -> <cv.Matx32d object>
+    cv.Matx32d.new() -> <cv::Matx32d object>
+    cv.Matx32d() -> <cv::Matx32d object>
 ```
 
 ### cv.Matx32d.all
@@ -33487,10 +41339,10 @@ lua:
 ### cv.Matx32f.new
 
 ```cpp
-static cv::Matx32f cv::Matx32f();
+cv::Matx32f();
 lua:
-    cv.Matx32f.new() -> <cv.Matx32f object>
-    cv.Matx32f() -> <cv.Matx32f object>
+    cv.Matx32f.new() -> <cv::Matx32f object>
+    cv.Matx32f() -> <cv::Matx32f object>
 ```
 
 ### cv.Matx32f.all
@@ -33640,10 +41492,10 @@ lua:
 ### cv.Matx33d.new
 
 ```cpp
-static cv::Matx33d cv::Matx33d();
+cv::Matx33d();
 lua:
-    cv.Matx33d.new() -> <cv.Matx33d object>
-    cv.Matx33d() -> <cv.Matx33d object>
+    cv.Matx33d.new() -> <cv::Matx33d object>
+    cv.Matx33d() -> <cv::Matx33d object>
 ```
 
 ### cv.Matx33d.all
@@ -33793,10 +41645,10 @@ lua:
 ### cv.Matx33f.new
 
 ```cpp
-static cv::Matx33f cv::Matx33f();
+cv::Matx33f();
 lua:
-    cv.Matx33f.new() -> <cv.Matx33f object>
-    cv.Matx33f() -> <cv.Matx33f object>
+    cv.Matx33f.new() -> <cv::Matx33f object>
+    cv.Matx33f() -> <cv::Matx33f object>
 ```
 
 ### cv.Matx33f.all
@@ -33946,10 +41798,10 @@ lua:
 ### cv.Matx34d.new
 
 ```cpp
-static cv::Matx34d cv::Matx34d();
+cv::Matx34d();
 lua:
-    cv.Matx34d.new() -> <cv.Matx34d object>
-    cv.Matx34d() -> <cv.Matx34d object>
+    cv.Matx34d.new() -> <cv::Matx34d object>
+    cv.Matx34d() -> <cv::Matx34d object>
 ```
 
 ### cv.Matx34d.all
@@ -34099,10 +41951,10 @@ lua:
 ### cv.Matx34f.new
 
 ```cpp
-static cv::Matx34f cv::Matx34f();
+cv::Matx34f();
 lua:
-    cv.Matx34f.new() -> <cv.Matx34f object>
-    cv.Matx34f() -> <cv.Matx34f object>
+    cv.Matx34f.new() -> <cv::Matx34f object>
+    cv.Matx34f() -> <cv::Matx34f object>
 ```
 
 ### cv.Matx34f.all
@@ -34252,10 +42104,10 @@ lua:
 ### cv.Matx41d.new
 
 ```cpp
-static cv::Matx41d cv::Matx41d();
+cv::Matx41d();
 lua:
-    cv.Matx41d.new() -> <cv.Matx41d object>
-    cv.Matx41d() -> <cv.Matx41d object>
+    cv.Matx41d.new() -> <cv::Matx41d object>
+    cv.Matx41d() -> <cv::Matx41d object>
 ```
 
 ### cv.Matx41d.all
@@ -34424,10 +42276,10 @@ lua:
 ### cv.Matx41f.new
 
 ```cpp
-static cv::Matx41f cv::Matx41f();
+cv::Matx41f();
 lua:
-    cv.Matx41f.new() -> <cv.Matx41f object>
-    cv.Matx41f() -> <cv.Matx41f object>
+    cv.Matx41f.new() -> <cv::Matx41f object>
+    cv.Matx41f() -> <cv::Matx41f object>
 ```
 
 ### cv.Matx41f.all
@@ -34596,10 +42448,10 @@ lua:
 ### cv.Matx43d.new
 
 ```cpp
-static cv::Matx43d cv::Matx43d();
+cv::Matx43d();
 lua:
-    cv.Matx43d.new() -> <cv.Matx43d object>
-    cv.Matx43d() -> <cv.Matx43d object>
+    cv.Matx43d.new() -> <cv::Matx43d object>
+    cv.Matx43d() -> <cv::Matx43d object>
 ```
 
 ### cv.Matx43d.all
@@ -34749,10 +42601,10 @@ lua:
 ### cv.Matx43f.new
 
 ```cpp
-static cv::Matx43f cv::Matx43f();
+cv::Matx43f();
 lua:
-    cv.Matx43f.new() -> <cv.Matx43f object>
-    cv.Matx43f() -> <cv.Matx43f object>
+    cv.Matx43f.new() -> <cv::Matx43f object>
+    cv.Matx43f() -> <cv::Matx43f object>
 ```
 
 ### cv.Matx43f.all
@@ -34902,10 +42754,10 @@ lua:
 ### cv.Matx44d.new
 
 ```cpp
-static cv::Matx44d cv::Matx44d();
+cv::Matx44d();
 lua:
-    cv.Matx44d.new() -> <cv.Matx44d object>
-    cv.Matx44d() -> <cv.Matx44d object>
+    cv.Matx44d.new() -> <cv::Matx44d object>
+    cv.Matx44d() -> <cv::Matx44d object>
 ```
 
 ### cv.Matx44d.all
@@ -35055,10 +42907,10 @@ lua:
 ### cv.Matx44f.new
 
 ```cpp
-static cv::Matx44f cv::Matx44f();
+cv::Matx44f();
 lua:
-    cv.Matx44f.new() -> <cv.Matx44f object>
-    cv.Matx44f() -> <cv.Matx44f object>
+    cv.Matx44f.new() -> <cv::Matx44f object>
+    cv.Matx44f() -> <cv::Matx44f object>
 ```
 
 ### cv.Matx44f.all
@@ -35208,10 +43060,10 @@ lua:
 ### cv.Matx61d.new
 
 ```cpp
-static cv::Matx61d cv::Matx61d();
+cv::Matx61d();
 lua:
-    cv.Matx61d.new() -> <cv.Matx61d object>
-    cv.Matx61d() -> <cv.Matx61d object>
+    cv.Matx61d.new() -> <cv::Matx61d object>
+    cv.Matx61d() -> <cv::Matx61d object>
 ```
 
 ### cv.Matx61d.all
@@ -35380,10 +43232,10 @@ lua:
 ### cv.Matx61f.new
 
 ```cpp
-static cv::Matx61f cv::Matx61f();
+cv::Matx61f();
 lua:
-    cv.Matx61f.new() -> <cv.Matx61f object>
-    cv.Matx61f() -> <cv.Matx61f object>
+    cv.Matx61f.new() -> <cv::Matx61f object>
+    cv.Matx61f() -> <cv::Matx61f object>
 ```
 
 ### cv.Matx61f.all
@@ -35552,10 +43404,10 @@ lua:
 ### cv.Matx66d.new
 
 ```cpp
-static cv::Matx66d cv::Matx66d();
+cv::Matx66d();
 lua:
-    cv.Matx66d.new() -> <cv.Matx66d object>
-    cv.Matx66d() -> <cv.Matx66d object>
+    cv.Matx66d.new() -> <cv::Matx66d object>
+    cv.Matx66d() -> <cv::Matx66d object>
 ```
 
 ### cv.Matx66d.all
@@ -35705,10 +43557,10 @@ lua:
 ### cv.Matx66f.new
 
 ```cpp
-static cv::Matx66f cv::Matx66f();
+cv::Matx66f();
 lua:
-    cv.Matx66f.new() -> <cv.Matx66f object>
-    cv.Matx66f() -> <cv.Matx66f object>
+    cv.Matx66f.new() -> <cv::Matx66f object>
+    cv.Matx66f() -> <cv::Matx66f object>
 ```
 
 ### cv.Matx66f.all
@@ -36141,10 +43993,10 @@ lua:
 ### cv.Moments.new
 
 ```cpp
-static cv::Moments cv::Moments();
+cv::Moments();
 lua:
-    cv.Moments.new() -> <cv.Moments object>
-    cv.Moments() -> <cv.Moments object>
+    cv.Moments.new() -> <cv::Moments object>
+    cv.Moments() -> <cv::Moments object>
 ```
 
 ## cv::ORB
@@ -36457,653 +44309,23 @@ lua:
     [propget] Param.SCALAR
 ```
 
-## cv::Point
-
-### Point.x
-
-```cpp
-int cv::Point::x
-lua:
-    [propget, propput] oPoint.x
-```
-
-### Point.y
-
-```cpp
-int cv::Point::y
-lua:
-    [propget, propput] oPoint.y
-```
-
-### Point.1
-
-```cpp
-int cv::Point::x
-lua:
-    [propget, propput] oPoint.1
-```
-
-### Point.2
-
-```cpp
-int cv::Point::y
-lua:
-    [propget, propput] oPoint.2
-```
-
-### cv.Point.new
-
-```cpp
-static cv::Point cv::Point();
-lua:
-    cv.Point.new() -> <cv.Point object>
-    cv.Point() -> <cv.Point object>
-```
-
-```cpp
-static cv::Point cv::Point( int x,
-                            int y );
-lua:
-    cv.Point.new( x, y ) -> <cv.Point object>
-    cv.Point( x, y ) -> <cv.Point object>
-```
-
-```cpp
-static cv::Point cv::Point( const cv::Point& pt );
-lua:
-    cv.Point.new( pt ) -> <cv.Point object>
-    cv.Point( pt ) -> <cv.Point object>
-```
-
-```cpp
-static cv::Point cv::Point( const cv::Size& sz );
-lua:
-    cv.Point.new( sz ) -> <cv.Point object>
-    cv.Point( sz ) -> <cv.Point object>
-```
-
-```cpp
-static cv::Point cv::Point( const cv::Vec2i& v );
-lua:
-    cv.Point.new( v ) -> <cv.Point object>
-    cv.Point( v ) -> <cv.Point object>
-```
-
-### cv.Point.cross
-
-```cpp
-double cv::Point::cross( const cv::Point& pt );
-lua:
-    oPoint:cross( pt ) -> retval
-```
-
-### cv.Point.ddot
-
-```cpp
-double cv::Point::ddot( const cv::Point& pt );
-lua:
-    oPoint:ddot( pt ) -> retval
-```
-
-### cv.Point.dot
-
-```cpp
-int cv::Point::dot( const cv::Point& pt );
-lua:
-    oPoint:dot( pt ) -> retval
-```
-
-### cv.Point.inside
-
-```cpp
-bool cv::Point::inside( const cv::Rect& r );
-lua:
-    oPoint:inside( r ) -> retval
-```
-
-## cv::Point2d
-
-### Point2d.x
-
-```cpp
-double cv::Point2d::x
-lua:
-    [propget, propput] oPoint2d.x
-```
-
-### Point2d.y
-
-```cpp
-double cv::Point2d::y
-lua:
-    [propget, propput] oPoint2d.y
-```
-
-### Point2d.1
-
-```cpp
-double cv::Point2d::x
-lua:
-    [propget, propput] oPoint2d.1
-```
-
-### Point2d.2
-
-```cpp
-double cv::Point2d::y
-lua:
-    [propget, propput] oPoint2d.2
-```
-
-### cv.Point2d.new
-
-```cpp
-static cv::Point2d cv::Point2d();
-lua:
-    cv.Point2d.new() -> <cv.Point2d object>
-    cv.Point2d() -> <cv.Point2d object>
-```
-
-```cpp
-static cv::Point2d cv::Point2d( double x,
-                                double y );
-lua:
-    cv.Point2d.new( x, y ) -> <cv.Point2d object>
-    cv.Point2d( x, y ) -> <cv.Point2d object>
-```
-
-```cpp
-static cv::Point2d cv::Point2d( const cv::Point2d& pt );
-lua:
-    cv.Point2d.new( pt ) -> <cv.Point2d object>
-    cv.Point2d( pt ) -> <cv.Point2d object>
-```
-
-```cpp
-static cv::Point2d cv::Point2d( const cv::Size2d& sz );
-lua:
-    cv.Point2d.new( sz ) -> <cv.Point2d object>
-    cv.Point2d( sz ) -> <cv.Point2d object>
-```
-
-```cpp
-static cv::Point2d cv::Point2d( const cv::Vec2d& v );
-lua:
-    cv.Point2d.new( v ) -> <cv.Point2d object>
-    cv.Point2d( v ) -> <cv.Point2d object>
-```
-
-### cv.Point2d.cross
-
-```cpp
-double cv::Point2d::cross( const cv::Point2d& pt );
-lua:
-    oPoint2d:cross( pt ) -> retval
-```
-
-### cv.Point2d.ddot
-
-```cpp
-double cv::Point2d::ddot( const cv::Point2d& pt );
-lua:
-    oPoint2d:ddot( pt ) -> retval
-```
-
-### cv.Point2d.dot
-
-```cpp
-double cv::Point2d::dot( const cv::Point2d& pt );
-lua:
-    oPoint2d:dot( pt ) -> retval
-```
-
-### cv.Point2d.inside
-
-```cpp
-bool cv::Point2d::inside( const cv::Rect2d& r );
-lua:
-    oPoint2d:inside( r ) -> retval
-```
-
-## cv::Point2f
-
-### Point2f.x
-
-```cpp
-float cv::Point2f::x
-lua:
-    [propget, propput] oPoint2f.x
-```
-
-### Point2f.y
-
-```cpp
-float cv::Point2f::y
-lua:
-    [propget, propput] oPoint2f.y
-```
-
-### Point2f.1
-
-```cpp
-float cv::Point2f::x
-lua:
-    [propget, propput] oPoint2f.1
-```
-
-### Point2f.2
-
-```cpp
-float cv::Point2f::y
-lua:
-    [propget, propput] oPoint2f.2
-```
-
-### cv.Point2f.new
-
-```cpp
-static cv::Point2f cv::Point2f();
-lua:
-    cv.Point2f.new() -> <cv.Point2f object>
-    cv.Point2f() -> <cv.Point2f object>
-```
-
-```cpp
-static cv::Point2f cv::Point2f( float x,
-                                float y );
-lua:
-    cv.Point2f.new( x, y ) -> <cv.Point2f object>
-    cv.Point2f( x, y ) -> <cv.Point2f object>
-```
-
-```cpp
-static cv::Point2f cv::Point2f( const cv::Point2f& pt );
-lua:
-    cv.Point2f.new( pt ) -> <cv.Point2f object>
-    cv.Point2f( pt ) -> <cv.Point2f object>
-```
-
-```cpp
-static cv::Point2f cv::Point2f( const cv::Size2f& sz );
-lua:
-    cv.Point2f.new( sz ) -> <cv.Point2f object>
-    cv.Point2f( sz ) -> <cv.Point2f object>
-```
-
-```cpp
-static cv::Point2f cv::Point2f( const cv::Vec2f& v );
-lua:
-    cv.Point2f.new( v ) -> <cv.Point2f object>
-    cv.Point2f( v ) -> <cv.Point2f object>
-```
-
-### cv.Point2f.cross
-
-```cpp
-double cv::Point2f::cross( const cv::Point2f& pt );
-lua:
-    oPoint2f:cross( pt ) -> retval
-```
-
-### cv.Point2f.ddot
-
-```cpp
-double cv::Point2f::ddot( const cv::Point2f& pt );
-lua:
-    oPoint2f:ddot( pt ) -> retval
-```
-
-### cv.Point2f.dot
-
-```cpp
-float cv::Point2f::dot( const cv::Point2f& pt );
-lua:
-    oPoint2f:dot( pt ) -> retval
-```
-
-### cv.Point2f.inside
-
-```cpp
-bool cv::Point2f::inside( const cv::Rect2f& r );
-lua:
-    oPoint2f:inside( r ) -> retval
-```
-
-## cv::Point3d
-
-### Point3d.x
-
-```cpp
-double cv::Point3d::x
-lua:
-    [propget, propput] oPoint3d.x
-```
-
-### Point3d.y
-
-```cpp
-double cv::Point3d::y
-lua:
-    [propget, propput] oPoint3d.y
-```
-
-### Point3d.z
-
-```cpp
-double cv::Point3d::z
-lua:
-    [propget, propput] oPoint3d.z
-```
-
-### Point3d.1
-
-```cpp
-double cv::Point3d::x
-lua:
-    [propget, propput] oPoint3d.1
-```
-
-### Point3d.2
-
-```cpp
-double cv::Point3d::y
-lua:
-    [propget, propput] oPoint3d.2
-```
-
-### Point3d.3
-
-```cpp
-double cv::Point3d::z
-lua:
-    [propget, propput] oPoint3d.3
-```
-
-### cv.Point3d.new
-
-```cpp
-static cv::Point3d cv::Point3d();
-lua:
-    cv.Point3d.new() -> <cv.Point3d object>
-    cv.Point3d() -> <cv.Point3d object>
-```
-
-```cpp
-static cv::Point3d cv::Point3d( double x,
-                                double y,
-                                double z );
-lua:
-    cv.Point3d.new( x, y, z ) -> <cv.Point3d object>
-    cv.Point3d( x, y, z ) -> <cv.Point3d object>
-```
-
-```cpp
-static cv::Point3d cv::Point3d( const cv::Point3d& pt );
-lua:
-    cv.Point3d.new( pt ) -> <cv.Point3d object>
-    cv.Point3d( pt ) -> <cv.Point3d object>
-```
-
-```cpp
-static cv::Point3d cv::Point3d( const cv::Vec3d& v );
-lua:
-    cv.Point3d.new( v ) -> <cv.Point3d object>
-    cv.Point3d( v ) -> <cv.Point3d object>
-```
-
-### cv.Point3d.cross
-
-```cpp
-cv::Point3d cv::Point3d::cross( const cv::Point3d& pt );
-lua:
-    oPoint3d:cross( pt ) -> retval
-```
-
-### cv.Point3d.ddot
-
-```cpp
-double cv::Point3d::ddot( const cv::Point3d& pt );
-lua:
-    oPoint3d:ddot( pt ) -> retval
-```
-
-### cv.Point3d.dot
-
-```cpp
-double cv::Point3d::dot( const cv::Point3d& pt );
-lua:
-    oPoint3d:dot( pt ) -> retval
-```
-
-## cv::Point3f
-
-### Point3f.x
-
-```cpp
-float cv::Point3f::x
-lua:
-    [propget, propput] oPoint3f.x
-```
-
-### Point3f.y
-
-```cpp
-float cv::Point3f::y
-lua:
-    [propget, propput] oPoint3f.y
-```
-
-### Point3f.z
-
-```cpp
-float cv::Point3f::z
-lua:
-    [propget, propput] oPoint3f.z
-```
-
-### Point3f.1
-
-```cpp
-float cv::Point3f::x
-lua:
-    [propget, propput] oPoint3f.1
-```
-
-### Point3f.2
-
-```cpp
-float cv::Point3f::y
-lua:
-    [propget, propput] oPoint3f.2
-```
-
-### Point3f.3
-
-```cpp
-float cv::Point3f::z
-lua:
-    [propget, propput] oPoint3f.3
-```
-
-### cv.Point3f.new
-
-```cpp
-static cv::Point3f cv::Point3f();
-lua:
-    cv.Point3f.new() -> <cv.Point3f object>
-    cv.Point3f() -> <cv.Point3f object>
-```
-
-```cpp
-static cv::Point3f cv::Point3f( float x,
-                                float y,
-                                float z );
-lua:
-    cv.Point3f.new( x, y, z ) -> <cv.Point3f object>
-    cv.Point3f( x, y, z ) -> <cv.Point3f object>
-```
-
-```cpp
-static cv::Point3f cv::Point3f( const cv::Point3f& pt );
-lua:
-    cv.Point3f.new( pt ) -> <cv.Point3f object>
-    cv.Point3f( pt ) -> <cv.Point3f object>
-```
-
-```cpp
-static cv::Point3f cv::Point3f( const cv::Vec3f& v );
-lua:
-    cv.Point3f.new( v ) -> <cv.Point3f object>
-    cv.Point3f( v ) -> <cv.Point3f object>
-```
-
-### cv.Point3f.cross
-
-```cpp
-cv::Point3f cv::Point3f::cross( const cv::Point3f& pt );
-lua:
-    oPoint3f:cross( pt ) -> retval
-```
-
-### cv.Point3f.ddot
-
-```cpp
-double cv::Point3f::ddot( const cv::Point3f& pt );
-lua:
-    oPoint3f:ddot( pt ) -> retval
-```
-
-### cv.Point3f.dot
-
-```cpp
-float cv::Point3f::dot( const cv::Point3f& pt );
-lua:
-    oPoint3f:dot( pt ) -> retval
-```
-
-## cv::Point3i
-
-### Point3i.x
-
-```cpp
-int cv::Point3i::x
-lua:
-    [propget, propput] oPoint3i.x
-```
-
-### Point3i.y
-
-```cpp
-int cv::Point3i::y
-lua:
-    [propget, propput] oPoint3i.y
-```
-
-### Point3i.z
-
-```cpp
-int cv::Point3i::z
-lua:
-    [propget, propput] oPoint3i.z
-```
-
-### Point3i.1
-
-```cpp
-int cv::Point3i::x
-lua:
-    [propget, propput] oPoint3i.1
-```
-
-### Point3i.2
-
-```cpp
-int cv::Point3i::y
-lua:
-    [propget, propput] oPoint3i.2
-```
-
-### Point3i.3
-
-```cpp
-int cv::Point3i::z
-lua:
-    [propget, propput] oPoint3i.3
-```
-
-### cv.Point3i.new
-
-```cpp
-static cv::Point3i cv::Point3i();
-lua:
-    cv.Point3i.new() -> <cv.Point3i object>
-    cv.Point3i() -> <cv.Point3i object>
-```
-
-```cpp
-static cv::Point3i cv::Point3i( int x,
-                                int y,
-                                int z );
-lua:
-    cv.Point3i.new( x, y, z ) -> <cv.Point3i object>
-    cv.Point3i( x, y, z ) -> <cv.Point3i object>
-```
-
-```cpp
-static cv::Point3i cv::Point3i( const cv::Point3i& pt );
-lua:
-    cv.Point3i.new( pt ) -> <cv.Point3i object>
-    cv.Point3i( pt ) -> <cv.Point3i object>
-```
-
-```cpp
-static cv::Point3i cv::Point3i( const cv::Vec3i& v );
-lua:
-    cv.Point3i.new( v ) -> <cv.Point3i object>
-    cv.Point3i( v ) -> <cv.Point3i object>
-```
-
-### cv.Point3i.cross
-
-```cpp
-cv::Point3i cv::Point3i::cross( const cv::Point3i& pt );
-lua:
-    oPoint3i:cross( pt ) -> retval
-```
-
-### cv.Point3i.ddot
-
-```cpp
-double cv::Point3i::ddot( const cv::Point3i& pt );
-lua:
-    oPoint3i:ddot( pt ) -> retval
-```
-
-### cv.Point3i.dot
-
-```cpp
-int cv::Point3i::dot( const cv::Point3i& pt );
-lua:
-    oPoint3i:dot( pt ) -> retval
-```
-
 ## cv::PyRotationWarper
 
 ### cv.PyRotationWarper.new
 
 ```cpp
-static cv::PyRotationWarper cv::PyRotationWarper( std::string type,
-                                                  float       scale );
+cv::PyRotationWarper( std::string type,
+                      float       scale );
 lua:
-    cv.PyRotationWarper.new( type, scale ) -> <cv.PyRotationWarper object>
-    cv.PyRotationWarper( type, scale ) -> <cv.PyRotationWarper object>
+    cv.PyRotationWarper.new( type, scale ) -> <cv::PyRotationWarper object>
+    cv.PyRotationWarper( type, scale ) -> <cv::PyRotationWarper object>
 ```
 
 ```cpp
-static cv::PyRotationWarper cv::PyRotationWarper();
+cv::PyRotationWarper();
 lua:
-    cv.PyRotationWarper.new() -> <cv.PyRotationWarper object>
-    cv.PyRotationWarper() -> <cv.PyRotationWarper object>
+    cv.PyRotationWarper.new() -> <cv::PyRotationWarper object>
+    cv.PyRotationWarper() -> <cv::PyRotationWarper object>
 ```
 
 ### cv.PyRotationWarper.buildMaps
@@ -37204,10 +44426,10 @@ lua:
 ### cv.QRCodeDetector.new
 
 ```cpp
-static cv::QRCodeDetector cv::QRCodeDetector();
+cv::QRCodeDetector();
 lua:
-    cv.QRCodeDetector.new() -> <cv.QRCodeDetector object>
-    cv.QRCodeDetector() -> <cv.QRCodeDetector object>
+    cv.QRCodeDetector.new() -> <cv::QRCodeDetector object>
+    cv.QRCodeDetector() -> <cv::QRCodeDetector object>
 ```
 
 ### cv.QRCodeDetector.decodeCurved
@@ -37259,17 +44481,17 @@ lua:
 ### cv.QRCodeDetectorAruco.new
 
 ```cpp
-static cv::QRCodeDetectorAruco cv::QRCodeDetectorAruco();
+cv::QRCodeDetectorAruco();
 lua:
-    cv.QRCodeDetectorAruco.new() -> <cv.QRCodeDetectorAruco object>
-    cv.QRCodeDetectorAruco() -> <cv.QRCodeDetectorAruco object>
+    cv.QRCodeDetectorAruco.new() -> <cv::QRCodeDetectorAruco object>
+    cv.QRCodeDetectorAruco() -> <cv::QRCodeDetectorAruco object>
 ```
 
 ```cpp
-static cv::QRCodeDetectorAruco cv::QRCodeDetectorAruco( const cv::QRCodeDetectorAruco::Params& params );
+cv::QRCodeDetectorAruco( const cv::QRCodeDetectorAruco::Params& params );
 lua:
-    cv.QRCodeDetectorAruco.new( params ) -> <cv.QRCodeDetectorAruco object>
-    cv.QRCodeDetectorAruco( params ) -> <cv.QRCodeDetectorAruco object>
+    cv.QRCodeDetectorAruco.new( params ) -> <cv::QRCodeDetectorAruco object>
+    cv.QRCodeDetectorAruco( params ) -> <cv::QRCodeDetectorAruco object>
 ```
 
 ### cv.QRCodeDetectorAruco.getArucoParameters
@@ -37365,10 +44587,10 @@ lua:
 ### cv.QRCodeDetectorAruco.Params.new
 
 ```cpp
-static cv::QRCodeDetectorAruco::Params cv::QRCodeDetectorAruco::Params();
+cv::QRCodeDetectorAruco::Params();
 lua:
-    cv.QRCodeDetectorAruco.Params.new() -> <cv.QRCodeDetectorAruco.Params object>
-    cv.QRCodeDetectorAruco.Params() -> <cv.QRCodeDetectorAruco.Params object>
+    cv.QRCodeDetectorAruco.Params.new() -> <cv::QRCodeDetectorAruco::Params object>
+    cv.QRCodeDetectorAruco.Params() -> <cv::QRCodeDetectorAruco::Params object>
 ```
 
 ## cv::QRCodeEncoder
@@ -37532,10 +44754,10 @@ lua:
 ### cv.QRCodeEncoder.Params.new
 
 ```cpp
-static cv::QRCodeEncoder::Params cv::QRCodeEncoder::Params();
+cv::QRCodeEncoder::Params();
 lua:
-    cv.QRCodeEncoder.Params.new() -> <cv.QRCodeEncoder.Params object>
-    cv.QRCodeEncoder.Params() -> <cv.QRCodeEncoder.Params object>
+    cv.QRCodeEncoder.Params.new() -> <cv::QRCodeEncoder::Params object>
+    cv.QRCodeEncoder.Params() -> <cv::QRCodeEncoder::Params object>
 ```
 
 ## cv::QuatEnum
@@ -37769,17 +44991,17 @@ lua:
 ### cv.RNG.new
 
 ```cpp
-static cv::RNG cv::RNG();
+cv::RNG();
 lua:
-    cv.RNG.new() -> <cv.RNG object>
-    cv.RNG() -> <cv.RNG object>
+    cv.RNG.new() -> <cv::RNG object>
+    cv.RNG() -> <cv::RNG object>
 ```
 
 ```cpp
-static cv::RNG cv::RNG( uint64 state );
+cv::RNG( uint64 state );
 lua:
-    cv.RNG.new( state ) -> <cv.RNG object>
-    cv.RNG( state ) -> <cv.RNG object>
+    cv.RNG.new( state ) -> <cv::RNG object>
+    cv.RNG( state ) -> <cv::RNG object>
 ```
 
 ### cv.RNG.fill
@@ -37791,7 +45013,7 @@ void cv::RNG::fill( InputOutputArray mat,
                     InputArray       b,
                     bool             saturateRange = false );
 lua:
-    oRNG:fill( mat, distType, a, b[, saturateRange] ) -> mat
+    oRNG:fill( [mat[, distType[, a[, b[, saturateRange]]]]] ) -> mat
 ```
 
 ### cv.RNG.gaussian
@@ -37855,21 +45077,29 @@ lua:
     [propget, propput] oRange.end
 ```
 
+### Range.Ellipsis
+
+```cpp
+static cv::Range cv::Range::Ellipsis
+lua:
+    [propget] Range.Ellipsis
+```
+
 ### cv.Range.new
 
 ```cpp
-static cv::Range cv::Range();
+cv::Range();
 lua:
-    cv.Range.new() -> <cv.Range object>
-    cv.Range() -> <cv.Range object>
+    cv.Range.new() -> <cv::Range object>
+    cv.Range() -> <cv::Range object>
 ```
 
 ```cpp
-static cv::Range cv::Range( int start,
-                            int end );
+cv::Range( int start,
+           int end );
 lua:
-    cv.Range.new( start, end ) -> <cv.Range object>
-    cv.Range( start, end ) -> <cv.Range object>
+    cv.Range.new( start, end ) -> <cv::Range object>
+    cv.Range( start, end ) -> <cv::Range object>
 ```
 
 ### cv.Range.all
@@ -37894,474 +45124,6 @@ lua:
 int cv::Range::size();
 lua:
     oRange:size() -> retval
-```
-
-## cv::Rect
-
-### Rect.x
-
-```cpp
-int cv::Rect::x
-lua:
-    [propget, propput] oRect.x
-```
-
-### Rect.y
-
-```cpp
-int cv::Rect::y
-lua:
-    [propget, propput] oRect.y
-```
-
-### Rect.width
-
-```cpp
-int cv::Rect::width
-lua:
-    [propget, propput] oRect.width
-```
-
-### Rect.height
-
-```cpp
-int cv::Rect::height
-lua:
-    [propget, propput] oRect.height
-```
-
-### Rect.1
-
-```cpp
-int cv::Rect::x
-lua:
-    [propget, propput] oRect.1
-```
-
-### Rect.2
-
-```cpp
-int cv::Rect::y
-lua:
-    [propget, propput] oRect.2
-```
-
-### Rect.3
-
-```cpp
-int cv::Rect::width
-lua:
-    [propget, propput] oRect.3
-```
-
-### Rect.4
-
-```cpp
-int cv::Rect::height
-lua:
-    [propget, propput] oRect.4
-```
-
-### cv.Rect.new
-
-```cpp
-static cv::Rect cv::Rect();
-lua:
-    cv.Rect.new() -> <cv.Rect object>
-    cv.Rect() -> <cv.Rect object>
-```
-
-```cpp
-static cv::Rect cv::Rect( int x,
-                          int y,
-                          int width,
-                          int height );
-lua:
-    cv.Rect.new( x, y, width, height ) -> <cv.Rect object>
-    cv.Rect( x, y, width, height ) -> <cv.Rect object>
-```
-
-```cpp
-static cv::Rect cv::Rect( const cv::Rect& r );
-lua:
-    cv.Rect.new( r ) -> <cv.Rect object>
-    cv.Rect( r ) -> <cv.Rect object>
-```
-
-```cpp
-static cv::Rect cv::Rect( const cv::Point& org,
-                          const cv::Size&  sz );
-lua:
-    cv.Rect.new( org, sz ) -> <cv.Rect object>
-    cv.Rect( org, sz ) -> <cv.Rect object>
-```
-
-```cpp
-static cv::Rect cv::Rect( const cv::Point& pt1,
-                          const cv::Point& pt2 );
-lua:
-    cv.Rect.new( pt1, pt2 ) -> <cv.Rect object>
-    cv.Rect( pt1, pt2 ) -> <cv.Rect object>
-```
-
-### cv.Rect.area
-
-```cpp
-int cv::Rect::area();
-lua:
-    oRect:area() -> retval
-```
-
-### cv.Rect.br
-
-```cpp
-cv::Point cv::Rect::br();
-lua:
-    oRect:br() -> retval
-```
-
-### cv.Rect.contains
-
-```cpp
-bool cv::Rect::contains( const cv::Point& pt );
-lua:
-    oRect:contains( pt ) -> retval
-```
-
-### cv.Rect.empty
-
-```cpp
-bool cv::Rect::empty();
-lua:
-    oRect:empty() -> retval
-```
-
-### cv.Rect.size
-
-```cpp
-cv::Size cv::Rect::size();
-lua:
-    oRect:size() -> retval
-```
-
-### cv.Rect.tl
-
-```cpp
-cv::Point cv::Rect::tl();
-lua:
-    oRect:tl() -> retval
-```
-
-## cv::Rect2d
-
-### Rect2d.x
-
-```cpp
-double cv::Rect2d::x
-lua:
-    [propget, propput] oRect2d.x
-```
-
-### Rect2d.y
-
-```cpp
-double cv::Rect2d::y
-lua:
-    [propget, propput] oRect2d.y
-```
-
-### Rect2d.width
-
-```cpp
-double cv::Rect2d::width
-lua:
-    [propget, propput] oRect2d.width
-```
-
-### Rect2d.height
-
-```cpp
-double cv::Rect2d::height
-lua:
-    [propget, propput] oRect2d.height
-```
-
-### Rect2d.1
-
-```cpp
-double cv::Rect2d::x
-lua:
-    [propget, propput] oRect2d.1
-```
-
-### Rect2d.2
-
-```cpp
-double cv::Rect2d::y
-lua:
-    [propget, propput] oRect2d.2
-```
-
-### Rect2d.3
-
-```cpp
-double cv::Rect2d::width
-lua:
-    [propget, propput] oRect2d.3
-```
-
-### Rect2d.4
-
-```cpp
-double cv::Rect2d::height
-lua:
-    [propget, propput] oRect2d.4
-```
-
-### cv.Rect2d.new
-
-```cpp
-static cv::Rect2d cv::Rect2d();
-lua:
-    cv.Rect2d.new() -> <cv.Rect2d object>
-    cv.Rect2d() -> <cv.Rect2d object>
-```
-
-```cpp
-static cv::Rect2d cv::Rect2d( double x,
-                              double y,
-                              double width,
-                              double height );
-lua:
-    cv.Rect2d.new( x, y, width, height ) -> <cv.Rect2d object>
-    cv.Rect2d( x, y, width, height ) -> <cv.Rect2d object>
-```
-
-```cpp
-static cv::Rect2d cv::Rect2d( const cv::Rect2d& r );
-lua:
-    cv.Rect2d.new( r ) -> <cv.Rect2d object>
-    cv.Rect2d( r ) -> <cv.Rect2d object>
-```
-
-```cpp
-static cv::Rect2d cv::Rect2d( const cv::Point2d& org,
-                              const cv::Size2d&  sz );
-lua:
-    cv.Rect2d.new( org, sz ) -> <cv.Rect2d object>
-    cv.Rect2d( org, sz ) -> <cv.Rect2d object>
-```
-
-```cpp
-static cv::Rect2d cv::Rect2d( const cv::Point2d& pt1,
-                              const cv::Point2d& pt2 );
-lua:
-    cv.Rect2d.new( pt1, pt2 ) -> <cv.Rect2d object>
-    cv.Rect2d( pt1, pt2 ) -> <cv.Rect2d object>
-```
-
-### cv.Rect2d.area
-
-```cpp
-double cv::Rect2d::area();
-lua:
-    oRect2d:area() -> retval
-```
-
-### cv.Rect2d.br
-
-```cpp
-cv::Point2d cv::Rect2d::br();
-lua:
-    oRect2d:br() -> retval
-```
-
-### cv.Rect2d.contains
-
-```cpp
-bool cv::Rect2d::contains( const cv::Point2d& pt );
-lua:
-    oRect2d:contains( pt ) -> retval
-```
-
-### cv.Rect2d.empty
-
-```cpp
-bool cv::Rect2d::empty();
-lua:
-    oRect2d:empty() -> retval
-```
-
-### cv.Rect2d.size
-
-```cpp
-cv::Size2d cv::Rect2d::size();
-lua:
-    oRect2d:size() -> retval
-```
-
-### cv.Rect2d.tl
-
-```cpp
-cv::Point2d cv::Rect2d::tl();
-lua:
-    oRect2d:tl() -> retval
-```
-
-## cv::Rect2f
-
-### Rect2f.x
-
-```cpp
-float cv::Rect2f::x
-lua:
-    [propget, propput] oRect2f.x
-```
-
-### Rect2f.y
-
-```cpp
-float cv::Rect2f::y
-lua:
-    [propget, propput] oRect2f.y
-```
-
-### Rect2f.width
-
-```cpp
-float cv::Rect2f::width
-lua:
-    [propget, propput] oRect2f.width
-```
-
-### Rect2f.height
-
-```cpp
-float cv::Rect2f::height
-lua:
-    [propget, propput] oRect2f.height
-```
-
-### Rect2f.1
-
-```cpp
-float cv::Rect2f::x
-lua:
-    [propget, propput] oRect2f.1
-```
-
-### Rect2f.2
-
-```cpp
-float cv::Rect2f::y
-lua:
-    [propget, propput] oRect2f.2
-```
-
-### Rect2f.3
-
-```cpp
-float cv::Rect2f::width
-lua:
-    [propget, propput] oRect2f.3
-```
-
-### Rect2f.4
-
-```cpp
-float cv::Rect2f::height
-lua:
-    [propget, propput] oRect2f.4
-```
-
-### cv.Rect2f.new
-
-```cpp
-static cv::Rect2f cv::Rect2f();
-lua:
-    cv.Rect2f.new() -> <cv.Rect2f object>
-    cv.Rect2f() -> <cv.Rect2f object>
-```
-
-```cpp
-static cv::Rect2f cv::Rect2f( float x,
-                              float y,
-                              float width,
-                              float height );
-lua:
-    cv.Rect2f.new( x, y, width, height ) -> <cv.Rect2f object>
-    cv.Rect2f( x, y, width, height ) -> <cv.Rect2f object>
-```
-
-```cpp
-static cv::Rect2f cv::Rect2f( const cv::Rect2f& r );
-lua:
-    cv.Rect2f.new( r ) -> <cv.Rect2f object>
-    cv.Rect2f( r ) -> <cv.Rect2f object>
-```
-
-```cpp
-static cv::Rect2f cv::Rect2f( const cv::Point2f& org,
-                              const cv::Size2f&  sz );
-lua:
-    cv.Rect2f.new( org, sz ) -> <cv.Rect2f object>
-    cv.Rect2f( org, sz ) -> <cv.Rect2f object>
-```
-
-```cpp
-static cv::Rect2f cv::Rect2f( const cv::Point2f& pt1,
-                              const cv::Point2f& pt2 );
-lua:
-    cv.Rect2f.new( pt1, pt2 ) -> <cv.Rect2f object>
-    cv.Rect2f( pt1, pt2 ) -> <cv.Rect2f object>
-```
-
-### cv.Rect2f.area
-
-```cpp
-float cv::Rect2f::area();
-lua:
-    oRect2f:area() -> retval
-```
-
-### cv.Rect2f.br
-
-```cpp
-cv::Point2f cv::Rect2f::br();
-lua:
-    oRect2f:br() -> retval
-```
-
-### cv.Rect2f.contains
-
-```cpp
-bool cv::Rect2f::contains( const cv::Point2f& pt );
-lua:
-    oRect2f:contains( pt ) -> retval
-```
-
-### cv.Rect2f.empty
-
-```cpp
-bool cv::Rect2f::empty();
-lua:
-    oRect2f:empty() -> retval
-```
-
-### cv.Rect2f.size
-
-```cpp
-cv::Size2f cv::Rect2f::size();
-lua:
-    oRect2f:size() -> retval
-```
-
-### cv.Rect2f.tl
-
-```cpp
-cv::Point2f cv::Rect2f::tl();
-lua:
-    oRect2f:tl() -> retval
 ```
 
 ## cv::RotatedRect
@@ -38393,53 +45155,53 @@ lua:
 ### cv.RotatedRect.new
 
 ```cpp
-static cv::RotatedRect cv::RotatedRect();
+cv::RotatedRect();
 lua:
-    cv.RotatedRect.new() -> <cv.RotatedRect object>
-    cv.RotatedRect() -> <cv.RotatedRect object>
+    cv.RotatedRect.new() -> <cv::RotatedRect object>
+    cv.RotatedRect() -> <cv::RotatedRect object>
 ```
 
 ```cpp
-static cv::RotatedRect cv::RotatedRect( const cv::Point2f& center,
-                                        const cv::Size2f&  size,
-                                        float              angle );
+cv::RotatedRect( const cv::Point2f& center,
+                 const cv::Size2f&  size,
+                 float              angle );
 lua:
-    cv.RotatedRect.new( center, size, angle ) -> <cv.RotatedRect object>
-    cv.RotatedRect( center, size, angle ) -> <cv.RotatedRect object>
+    cv.RotatedRect.new( center, size, angle ) -> <cv::RotatedRect object>
+    cv.RotatedRect( center, size, angle ) -> <cv::RotatedRect object>
 ```
 
 ```cpp
-static cv::RotatedRect cv::RotatedRect( const cv::Point2f& point1,
-                                        const cv::Point2f& point2,
-                                        const cv::Point2f& point3 );
+cv::RotatedRect( const cv::Point2f& point1,
+                 const cv::Point2f& point2,
+                 const cv::Point2f& point3 );
 lua:
-    cv.RotatedRect.new( point1, point2, point3 ) -> <cv.RotatedRect object>
-    cv.RotatedRect( point1, point2, point3 ) -> <cv.RotatedRect object>
+    cv.RotatedRect.new( point1, point2, point3 ) -> <cv::RotatedRect object>
+    cv.RotatedRect( point1, point2, point3 ) -> <cv::RotatedRect object>
 ```
 
 ```cpp
-static cv::RotatedRect cv::RotatedRect();
+cv::RotatedRect();
 lua:
-    cv.RotatedRect.new() -> <cv.RotatedRect object>
-    cv.RotatedRect() -> <cv.RotatedRect object>
+    cv.RotatedRect.new() -> <cv::RotatedRect object>
+    cv.RotatedRect() -> <cv::RotatedRect object>
 ```
 
 ```cpp
-static cv::RotatedRect cv::RotatedRect( cv::Point2f center,
-                                        cv::Size2f  size,
-                                        float       angle );
+cv::RotatedRect( cv::Point2f center,
+                 cv::Size2f  size,
+                 float       angle );
 lua:
-    cv.RotatedRect.new( center, size, angle ) -> <cv.RotatedRect object>
-    cv.RotatedRect( center, size, angle ) -> <cv.RotatedRect object>
+    cv.RotatedRect.new( center, size, angle ) -> <cv::RotatedRect object>
+    cv.RotatedRect( center, size, angle ) -> <cv::RotatedRect object>
 ```
 
 ```cpp
-static cv::RotatedRect cv::RotatedRect( cv::Point2f point1,
-                                        cv::Point2f point2,
-                                        cv::Point2f point3 );
+cv::RotatedRect( cv::Point2f point1,
+                 cv::Point2f point2,
+                 cv::Point2f point3 );
 lua:
-    cv.RotatedRect.new( point1, point2, point3 ) -> <cv.RotatedRect object>
-    cv.RotatedRect( point1, point2, point3 ) -> <cv.RotatedRect object>
+    cv.RotatedRect.new( point1, point2, point3 ) -> <cv::RotatedRect object>
+    cv.RotatedRect( point1, point2, point3 ) -> <cv::RotatedRect object>
 ```
 
 ### cv.RotatedRect.boundingRect
@@ -38603,85 +45365,6 @@ lua:
 int cv::SVD::FULL_UV
 lua:
     [propget] SVD.FULL_UV
-```
-
-## cv::Scalar
-
-### Scalar.1
-
-```cpp
-double cv::Scalar::operator[](0)
-lua:
-    [propget, propput] oScalar.1
-```
-
-### Scalar.2
-
-```cpp
-double cv::Scalar::operator[](1)
-lua:
-    [propget, propput] oScalar.2
-```
-
-### Scalar.3
-
-```cpp
-double cv::Scalar::operator[](2)
-lua:
-    [propget, propput] oScalar.3
-```
-
-### Scalar.4
-
-```cpp
-double cv::Scalar::operator[](3)
-lua:
-    [propget, propput] oScalar.4
-```
-
-### cv.Scalar.new
-
-```cpp
-static cv::Scalar cv::Scalar( double v0 = 0,
-                              double v1 = 0,
-                              double v2 = 0,
-                              double v3 = 0 );
-lua:
-    cv.Scalar.new( [v0[, v1[, v2[, v3]]]] ) -> <cv.Scalar object>
-    cv.Scalar( [v0[, v1[, v2[, v3]]]] ) -> <cv.Scalar object>
-```
-
-### cv.Scalar.all
-
-```cpp
-static cv::Scalar cv::Scalar::all( double v0 );
-lua:
-    cv.Scalar.all( v0 ) -> retval
-```
-
-### cv.Scalar.conj
-
-```cpp
-cv::Scalar cv::Scalar::conj();
-lua:
-    oScalar:conj() -> retval
-```
-
-### cv.Scalar.isReal
-
-```cpp
-bool cv::Scalar::isReal();
-lua:
-    oScalar:isReal() -> retval
-```
-
-### cv.Scalar.mul
-
-```cpp
-cv::Scalar cv::Scalar::mul( cv::Scalar a,
-                            double     scale = 1 );
-lua:
-    oScalar:mul( a[, scale] ) -> retval
 ```
 
 ## cv::SimpleBlobDetector
@@ -38891,256 +45574,10 @@ lua:
 ### cv.SimpleBlobDetector.Params.new
 
 ```cpp
-static cv::SimpleBlobDetector::Params cv::SimpleBlobDetector::Params();
+cv::SimpleBlobDetector::Params();
 lua:
-    cv.SimpleBlobDetector.Params.new() -> <cv.SimpleBlobDetector.Params object>
-    cv.SimpleBlobDetector.Params() -> <cv.SimpleBlobDetector.Params object>
-```
-
-## cv::Size
-
-### Size.width
-
-```cpp
-int cv::Size::width
-lua:
-    [propget, propput] oSize.width
-```
-
-### Size.height
-
-```cpp
-int cv::Size::height
-lua:
-    [propget, propput] oSize.height
-```
-
-### Size.1
-
-```cpp
-int cv::Size::width
-lua:
-    [propget, propput] oSize.1
-```
-
-### Size.2
-
-```cpp
-int cv::Size::height
-lua:
-    [propget, propput] oSize.2
-```
-
-### cv.Size.new
-
-```cpp
-static cv::Size cv::Size();
-lua:
-    cv.Size.new() -> <cv.Size object>
-    cv.Size() -> <cv.Size object>
-```
-
-```cpp
-static cv::Size cv::Size( int width,
-                          int height );
-lua:
-    cv.Size.new( width, height ) -> <cv.Size object>
-    cv.Size( width, height ) -> <cv.Size object>
-```
-
-```cpp
-static cv::Size cv::Size( const cv::Size& sz );
-lua:
-    cv.Size.new( sz ) -> <cv.Size object>
-    cv.Size( sz ) -> <cv.Size object>
-```
-
-### cv.Size.area
-
-```cpp
-int cv::Size::area();
-lua:
-    oSize:area() -> retval
-```
-
-### cv.Size.aspectRatio
-
-```cpp
-double cv::Size::aspectRatio();
-lua:
-    oSize:aspectRatio() -> retval
-```
-
-### cv.Size.empty
-
-```cpp
-bool cv::Size::empty();
-lua:
-    oSize:empty() -> retval
-```
-
-## cv::Size2d
-
-### Size2d.width
-
-```cpp
-double cv::Size2d::width
-lua:
-    [propget, propput] oSize2d.width
-```
-
-### Size2d.height
-
-```cpp
-double cv::Size2d::height
-lua:
-    [propget, propput] oSize2d.height
-```
-
-### Size2d.1
-
-```cpp
-double cv::Size2d::width
-lua:
-    [propget, propput] oSize2d.1
-```
-
-### Size2d.2
-
-```cpp
-double cv::Size2d::height
-lua:
-    [propget, propput] oSize2d.2
-```
-
-### cv.Size2d.new
-
-```cpp
-static cv::Size2d cv::Size2d();
-lua:
-    cv.Size2d.new() -> <cv.Size2d object>
-    cv.Size2d() -> <cv.Size2d object>
-```
-
-```cpp
-static cv::Size2d cv::Size2d( double width,
-                              double height );
-lua:
-    cv.Size2d.new( width, height ) -> <cv.Size2d object>
-    cv.Size2d( width, height ) -> <cv.Size2d object>
-```
-
-```cpp
-static cv::Size2d cv::Size2d( const cv::Size2d& sz );
-lua:
-    cv.Size2d.new( sz ) -> <cv.Size2d object>
-    cv.Size2d( sz ) -> <cv.Size2d object>
-```
-
-### cv.Size2d.area
-
-```cpp
-double cv::Size2d::area();
-lua:
-    oSize2d:area() -> retval
-```
-
-### cv.Size2d.aspectRatio
-
-```cpp
-double cv::Size2d::aspectRatio();
-lua:
-    oSize2d:aspectRatio() -> retval
-```
-
-### cv.Size2d.empty
-
-```cpp
-bool cv::Size2d::empty();
-lua:
-    oSize2d:empty() -> retval
-```
-
-## cv::Size2f
-
-### Size2f.width
-
-```cpp
-float cv::Size2f::width
-lua:
-    [propget, propput] oSize2f.width
-```
-
-### Size2f.height
-
-```cpp
-float cv::Size2f::height
-lua:
-    [propget, propput] oSize2f.height
-```
-
-### Size2f.1
-
-```cpp
-float cv::Size2f::width
-lua:
-    [propget, propput] oSize2f.1
-```
-
-### Size2f.2
-
-```cpp
-float cv::Size2f::height
-lua:
-    [propget, propput] oSize2f.2
-```
-
-### cv.Size2f.new
-
-```cpp
-static cv::Size2f cv::Size2f();
-lua:
-    cv.Size2f.new() -> <cv.Size2f object>
-    cv.Size2f() -> <cv.Size2f object>
-```
-
-```cpp
-static cv::Size2f cv::Size2f( float width,
-                              float height );
-lua:
-    cv.Size2f.new( width, height ) -> <cv.Size2f object>
-    cv.Size2f( width, height ) -> <cv.Size2f object>
-```
-
-```cpp
-static cv::Size2f cv::Size2f( const cv::Size2f& sz );
-lua:
-    cv.Size2f.new( sz ) -> <cv.Size2f object>
-    cv.Size2f( sz ) -> <cv.Size2f object>
-```
-
-### cv.Size2f.area
-
-```cpp
-float cv::Size2f::area();
-lua:
-    oSize2f:area() -> retval
-```
-
-### cv.Size2f.aspectRatio
-
-```cpp
-double cv::Size2f::aspectRatio();
-lua:
-    oSize2f:aspectRatio() -> retval
-```
-
-### cv.Size2f.empty
-
-```cpp
-bool cv::Size2f::empty();
-lua:
-    oSize2f:empty() -> retval
+    cv.SimpleBlobDetector.Params.new() -> <cv::SimpleBlobDetector::Params object>
+    cv.SimpleBlobDetector.Params() -> <cv::SimpleBlobDetector::Params object>
 ```
 
 ## cv::SparseMat
@@ -39189,7 +45626,7 @@ void cv::SparseOpticalFlow::calc( InputArray       prevImg,
                                   OutputArray      status,
                                   OutputArray      err = cv::noArray() );
 lua:
-    oSparseOpticalFlow:calc( prevImg, nextImg, prevPts, nextPts[, status[, err]] ) -> nextPts, status, err
+    oSparseOpticalFlow:calc( prevImg, nextImg, prevPts[, nextPts[, status[, err]]] ) -> nextPts, status, err
 ```
 
 ## cv::SparsePyrLKOpticalFlow
@@ -40009,17 +46446,17 @@ lua:
 ### cv.Subdiv2D.new
 
 ```cpp
-static cv::Subdiv2D cv::Subdiv2D();
+cv::Subdiv2D();
 lua:
-    cv.Subdiv2D.new() -> <cv.Subdiv2D object>
-    cv.Subdiv2D() -> <cv.Subdiv2D object>
+    cv.Subdiv2D.new() -> <cv::Subdiv2D object>
+    cv.Subdiv2D() -> <cv::Subdiv2D object>
 ```
 
 ```cpp
-static cv::Subdiv2D cv::Subdiv2D( cv::Rect rect );
+cv::Subdiv2D( cv::Rect rect );
 lua:
-    cv.Subdiv2D.new( rect ) -> <cv.Subdiv2D object>
-    cv.Subdiv2D( rect ) -> <cv.Subdiv2D object>
+    cv.Subdiv2D.new( rect ) -> <cv::Subdiv2D object>
+    cv.Subdiv2D( rect ) -> <cv::Subdiv2D object>
 ```
 
 ### cv.Subdiv2D.edgeDst
@@ -40211,19 +46648,19 @@ lua:
 ### cv.TermCriteria.new
 
 ```cpp
-static cv::TermCriteria cv::TermCriteria();
+cv::TermCriteria();
 lua:
-    cv.TermCriteria.new() -> <cv.TermCriteria object>
-    cv.TermCriteria() -> <cv.TermCriteria object>
+    cv.TermCriteria.new() -> <cv::TermCriteria object>
+    cv.TermCriteria() -> <cv::TermCriteria object>
 ```
 
 ```cpp
-static cv::TermCriteria cv::TermCriteria( int    type,
-                                          int    maxCount,
-                                          double epsilon );
+cv::TermCriteria( int    type,
+                  int    maxCount,
+                  double epsilon );
 lua:
-    cv.TermCriteria.new( type, maxCount, epsilon ) -> <cv.TermCriteria object>
-    cv.TermCriteria( type, maxCount, epsilon ) -> <cv.TermCriteria object>
+    cv.TermCriteria.new( type, maxCount, epsilon ) -> <cv::TermCriteria object>
+    cv.TermCriteria( type, maxCount, epsilon ) -> <cv::TermCriteria object>
 ```
 
 ## cv::TickMeter
@@ -40231,10 +46668,10 @@ lua:
 ### cv.TickMeter.new
 
 ```cpp
-static cv::TickMeter cv::TickMeter();
+cv::TickMeter();
 lua:
-    cv.TickMeter.new() -> <cv.TickMeter object>
-    cv.TickMeter() -> <cv.TickMeter object>
+    cv.TickMeter.new() -> <cv::TickMeter object>
+    cv.TickMeter() -> <cv::TickMeter object>
 ```
 
 ### cv.TickMeter.getAvgTimeMilli
@@ -40553,10 +46990,10 @@ lua:
 ### cv.TrackerDaSiamRPN.Params.new
 
 ```cpp
-static cv::TrackerDaSiamRPN::Params cv::TrackerDaSiamRPN::Params();
+cv::TrackerDaSiamRPN::Params();
 lua:
-    cv.TrackerDaSiamRPN.Params.new() -> <cv.TrackerDaSiamRPN.Params object>
-    cv.TrackerDaSiamRPN.Params() -> <cv.TrackerDaSiamRPN.Params object>
+    cv.TrackerDaSiamRPN.Params.new() -> <cv::TrackerDaSiamRPN::Params object>
+    cv.TrackerDaSiamRPN.Params() -> <cv::TrackerDaSiamRPN::Params object>
 ```
 
 ## cv::TrackerGOTURN
@@ -40590,10 +47027,10 @@ lua:
 ### cv.TrackerGOTURN.Params.new
 
 ```cpp
-static cv::TrackerGOTURN::Params cv::TrackerGOTURN::Params();
+cv::TrackerGOTURN::Params();
 lua:
-    cv.TrackerGOTURN.Params.new() -> <cv.TrackerGOTURN.Params object>
-    cv.TrackerGOTURN.Params() -> <cv.TrackerGOTURN.Params object>
+    cv.TrackerGOTURN.Params.new() -> <cv::TrackerGOTURN::Params object>
+    cv.TrackerGOTURN.Params() -> <cv::TrackerGOTURN::Params object>
 ```
 
 ## cv::TrackerMIL
@@ -40667,10 +47104,10 @@ lua:
 ### cv.TrackerMIL.Params.new
 
 ```cpp
-static cv::TrackerMIL::Params cv::TrackerMIL::Params();
+cv::TrackerMIL::Params();
 lua:
-    cv.TrackerMIL.Params.new() -> <cv.TrackerMIL.Params object>
-    cv.TrackerMIL.Params() -> <cv.TrackerMIL.Params object>
+    cv.TrackerMIL.Params.new() -> <cv::TrackerMIL::Params object>
+    cv.TrackerMIL.Params() -> <cv::TrackerMIL::Params object>
 ```
 
 ## cv::TrackerNano
@@ -40728,10 +47165,10 @@ lua:
 ### cv.TrackerNano.Params.new
 
 ```cpp
-static cv::TrackerNano::Params cv::TrackerNano::Params();
+cv::TrackerNano::Params();
 lua:
-    cv.TrackerNano.Params.new() -> <cv.TrackerNano.Params object>
-    cv.TrackerNano.Params() -> <cv.TrackerNano.Params object>
+    cv.TrackerNano.Params.new() -> <cv::TrackerNano::Params object>
+    cv.TrackerNano.Params() -> <cv::TrackerNano::Params object>
 ```
 
 ## cv::TrackerVit
@@ -40797,10 +47234,10 @@ lua:
 ### cv.TrackerVit.Params.new
 
 ```cpp
-static cv::TrackerVit::Params cv::TrackerVit::Params();
+cv::TrackerVit::Params();
 lua:
-    cv.TrackerVit.Params.new() -> <cv.TrackerVit.Params object>
-    cv.TrackerVit.Params() -> <cv.TrackerVit.Params object>
+    cv.TrackerVit.Params.new() -> <cv::TrackerVit::Params object>
+    cv.TrackerVit.Params() -> <cv::TrackerVit::Params object>
 ```
 
 ## cv::UMat
@@ -40944,115 +47381,115 @@ lua:
 ### cv.UMat.new
 
 ```cpp
-static cv::UMat cv::UMat( cv::UMatUsageFlags usageFlags = USAGE_DEFAULT );
+cv::UMat( cv::UMatUsageFlags usageFlags = USAGE_DEFAULT );
 lua:
-    cv.UMat.new( [usageFlags] ) -> <cv.UMat object>
-    cv.UMat( [usageFlags] ) -> <cv.UMat object>
+    cv.UMat.new( [usageFlags] ) -> <cv::UMat object>
+    cv.UMat( [usageFlags] ) -> <cv::UMat object>
 ```
 
 ```cpp
-static cv::UMat cv::UMat( int                rows,
-                          int                cols,
-                          int                type,
-                          cv::UMatUsageFlags usageFlags = USAGE_DEFAULT );
+cv::UMat( int                rows,
+          int                cols,
+          int                type,
+          cv::UMatUsageFlags usageFlags = USAGE_DEFAULT );
 lua:
-    cv.UMat.new( rows, cols, type[, usageFlags] ) -> <cv.UMat object>
-    cv.UMat( rows, cols, type[, usageFlags] ) -> <cv.UMat object>
+    cv.UMat.new( rows, cols, type[, usageFlags] ) -> <cv::UMat object>
+    cv.UMat( rows, cols, type[, usageFlags] ) -> <cv::UMat object>
 ```
 
 ```cpp
-static cv::UMat cv::UMat( cv::Size           size,
-                          int                type,
-                          cv::UMatUsageFlags usageFlags = USAGE_DEFAULT );
+cv::UMat( cv::Size           size,
+          int                type,
+          cv::UMatUsageFlags usageFlags = USAGE_DEFAULT );
 lua:
-    cv.UMat.new( size, type[, usageFlags] ) -> <cv.UMat object>
-    cv.UMat( size, type[, usageFlags] ) -> <cv.UMat object>
+    cv.UMat.new( size, type[, usageFlags] ) -> <cv::UMat object>
+    cv.UMat( size, type[, usageFlags] ) -> <cv::UMat object>
 ```
 
 ```cpp
-static cv::UMat cv::UMat( int                rows,
-                          int                cols,
-                          int                type,
-                          const cv::Scalar&  s,
-                          cv::UMatUsageFlags usageFlags = USAGE_DEFAULT );
+cv::UMat( int                rows,
+          int                cols,
+          int                type,
+          const cv::Scalar&  s,
+          cv::UMatUsageFlags usageFlags = USAGE_DEFAULT );
 lua:
-    cv.UMat.new( rows, cols, type, s[, usageFlags] ) -> <cv.UMat object>
-    cv.UMat( rows, cols, type, s[, usageFlags] ) -> <cv.UMat object>
+    cv.UMat.new( rows, cols, type, s[, usageFlags] ) -> <cv::UMat object>
+    cv.UMat( rows, cols, type, s[, usageFlags] ) -> <cv::UMat object>
 ```
 
 ```cpp
-static cv::UMat cv::UMat( cv::Size           size,
-                          int                type,
-                          const cv::Scalar&  s,
-                          cv::UMatUsageFlags usageFlags = USAGE_DEFAULT );
+cv::UMat( cv::Size           size,
+          int                type,
+          const cv::Scalar&  s,
+          cv::UMatUsageFlags usageFlags = USAGE_DEFAULT );
 lua:
-    cv.UMat.new( size, type, s[, usageFlags] ) -> <cv.UMat object>
-    cv.UMat( size, type, s[, usageFlags] ) -> <cv.UMat object>
+    cv.UMat.new( size, type, s[, usageFlags] ) -> <cv::UMat object>
+    cv.UMat( size, type, s[, usageFlags] ) -> <cv::UMat object>
 ```
 
 ```cpp
-static cv::UMat cv::UMat( const std::vector<int>& sizes,
-                          int                     type,
-                          cv::UMatUsageFlags      usageFlags = USAGE_DEFAULT );
+cv::UMat( const std::vector<int>& sizes,
+          int                     type,
+          cv::UMatUsageFlags      usageFlags = USAGE_DEFAULT );
 lua:
-    cv.UMat.new( sizes, type[, usageFlags] ) -> <cv.UMat object>
-    cv.UMat( sizes, type[, usageFlags] ) -> <cv.UMat object>
+    cv.UMat.new( sizes, type[, usageFlags] ) -> <cv::UMat object>
+    cv.UMat( sizes, type[, usageFlags] ) -> <cv::UMat object>
 ```
 
 ```cpp
-static cv::UMat cv::UMat( const std::vector<int>& sizes,
-                          int                     type,
-                          const cv::Scalar&       s,
-                          cv::UMatUsageFlags      usageFlags = USAGE_DEFAULT );
+cv::UMat( const std::vector<int>& sizes,
+          int                     type,
+          const cv::Scalar&       s,
+          cv::UMatUsageFlags      usageFlags = USAGE_DEFAULT );
 lua:
-    cv.UMat.new( sizes, type, s[, usageFlags] ) -> <cv.UMat object>
-    cv.UMat( sizes, type, s[, usageFlags] ) -> <cv.UMat object>
+    cv.UMat.new( sizes, type, s[, usageFlags] ) -> <cv::UMat object>
+    cv.UMat( sizes, type, s[, usageFlags] ) -> <cv::UMat object>
 ```
 
 ```cpp
-static cv::UMat cv::UMat( const cv::UMat& m );
+cv::UMat( const cv::UMat& m );
 lua:
-    cv.UMat.new( m ) -> <cv.UMat object>
-    cv.UMat( m ) -> <cv.UMat object>
+    cv.UMat.new( m ) -> <cv::UMat object>
+    cv.UMat( m ) -> <cv::UMat object>
 ```
 
 ```cpp
-static cv::UMat cv::UMat( const cv::UMat&  m,
-                          const cv::Range& rowRange,
-                          const cv::Range& colRange = Range::all() );
+cv::UMat( const cv::UMat&  m,
+          const cv::Range& rowRange,
+          const cv::Range& colRange = Range::all() );
 lua:
-    cv.UMat.new( m, rowRange[, colRange] ) -> <cv.UMat object>
-    cv.UMat( m, rowRange[, colRange] ) -> <cv.UMat object>
+    cv.UMat.new( m, rowRange[, colRange] ) -> <cv::UMat object>
+    cv.UMat( m, rowRange[, colRange] ) -> <cv::UMat object>
 ```
 
 ```cpp
-static cv::UMat cv::UMat( const cv::UMat& m,
-                          const cv::Rect& roi );
+cv::UMat( const cv::UMat& m,
+          const cv::Rect& roi );
 lua:
-    cv.UMat.new( m, roi ) -> <cv.UMat object>
-    cv.UMat( m, roi ) -> <cv.UMat object>
+    cv.UMat.new( m, roi ) -> <cv::UMat object>
+    cv.UMat( m, roi ) -> <cv::UMat object>
 ```
 
 ```cpp
-static cv::UMat cv::UMat( const cv::UMat&               m,
-                          const std::vector<cv::Range>& ranges );
+cv::UMat( const cv::UMat&               m,
+          const std::vector<cv::Range>& ranges );
 lua:
-    cv.UMat.new( m, ranges ) -> <cv.UMat object>
-    cv.UMat( m, ranges ) -> <cv.UMat object>
+    cv.UMat.new( m, ranges ) -> <cv::UMat object>
+    cv.UMat( m, ranges ) -> <cv::UMat object>
 ```
 
 ```cpp
-static cv::UMat cv::UMat( const std::vector<double>& vec );
+cv::UMat( const std::vector<double>& vec );
 lua:
-    cv.UMat.new( vec ) -> <cv.UMat object>
-    cv.UMat( vec ) -> <cv.UMat object>
+    cv.UMat.new( vec ) -> <cv::UMat object>
+    cv.UMat( vec ) -> <cv::UMat object>
 ```
 
 ```cpp
-static cv::UMat cv::UMat( const std::vector<int>& vec );
+cv::UMat( const std::vector<int>& vec );
 lua:
-    cv.UMat.new( vec ) -> <cv.UMat object>
-    cv.UMat( vec ) -> <cv.UMat object>
+    cv.UMat.new( vec ) -> <cv::UMat object>
+    cv.UMat( vec ) -> <cv::UMat object>
 ```
 
 ### cv.UMat.adjustROI
@@ -41069,8 +47506,8 @@ lua:
 ### cv.UMat.assignTo
 
 ```cpp
-void cv::UMat::assignTo( const cv::UMat& m,
-                         int             type = -1 );
+void cv::UMat::assignTo( cv::UMat& m,
+                         int       type = -1 );
 lua:
     oUMat:assignTo( m[, type] ) -> None
 ```
@@ -41178,7 +47615,7 @@ lua:
 ### cv.UMat.createFromArray
 
 ```cpp
-static cv::UMat cv::UMat::createFromArray( sol::table         array,
+static cv::UMat cv::UMat::createFromArray( const Table&       array,
                                            int                type = CV_64F,
                                            cv::UMatUsageFlags usageFlags = USAGE_DEFAULT );
 lua:
@@ -41604,9 +48041,9 @@ lua:
 ### cv.UMat.table
 
 ```cpp
-sol::table cv::UMat::table( bool nested = false );
+void cv::UMat::table( bool nested = false );
 lua:
-    oUMat:table( [nested] ) -> retval
+    oUMat:table( [nested] ) -> None
 ```
 
 ### cv.UMat.total
@@ -41887,10 +48324,10 @@ lua:
 ### cv.UsacParams.new
 
 ```cpp
-static cv::UsacParams cv::UsacParams();
+cv::UsacParams();
 lua:
-    cv.UsacParams.new() -> <cv.UsacParams object>
-    cv.UsacParams() -> <cv.UsacParams object>
+    cv.UsacParams.new() -> <cv::UsacParams object>
+    cv.UsacParams() -> <cv::UsacParams object>
 ```
 
 ## cv::VariationalRefinement
@@ -41903,7 +48340,7 @@ void cv::VariationalRefinement::calcUV( InputArray       I0,
                                         InputOutputArray flow_u,
                                         InputOutputArray flow_v );
 lua:
-    oVariationalRefinement:calcUV( I0, I1, flow_u, flow_v ) -> flow_u, flow_v
+    oVariationalRefinement:calcUV( I0, I1[, flow_u[, flow_v]] ) -> flow_u, flow_v
 ```
 
 ### cv.VariationalRefinement.create
@@ -42010,2233 +48447,49 @@ lua:
     oVariationalRefinement:setSorIterations( val ) -> None
 ```
 
-## cv::Vec2b
-
-### Vec2b.1
-
-```cpp
-uchar cv::Vec2b::operator[](0)
-lua:
-    [propget, propput] oVec2b.1
-```
-
-### Vec2b.2
-
-```cpp
-uchar cv::Vec2b::operator[](1)
-lua:
-    [propget, propput] oVec2b.2
-```
-
-### cv.Vec2b.new
-
-```cpp
-static cv::Vec2b cv::Vec2b();
-lua:
-    cv.Vec2b.new() -> <cv.Vec2b object>
-    cv.Vec2b() -> <cv.Vec2b object>
-```
-
-```cpp
-static cv::Vec2b cv::Vec2b( const std::vector<uchar>& values );
-lua:
-    cv.Vec2b.new( values ) -> <cv.Vec2b object>
-    cv.Vec2b( values ) -> <cv.Vec2b object>
-```
-
-### cv.Vec2b.all
-
-```cpp
-static cv::Vec2b cv::Vec2b::all( uchar alpha );
-lua:
-    cv.Vec2b.all( alpha ) -> retval
-```
-
-### cv.Vec2b.mul
-
-```cpp
-cv::Vec2b cv::Vec2b::mul( const cv::Vec2b& v );
-lua:
-    oVec2b:mul( v ) -> retval
-```
-
-### cv.Vec2b.ones
-
-```cpp
-static cv::Vec2b cv::Vec2b::ones();
-lua:
-    cv.Vec2b.ones() -> retval
-```
-
-### cv.Vec2b.randn
-
-```cpp
-static cv::Vec2b cv::Vec2b::randn( uchar a,
-                                   uchar b );
-lua:
-    cv.Vec2b.randn( a, b ) -> retval
-```
-
-### cv.Vec2b.randu
-
-```cpp
-static cv::Vec2b cv::Vec2b::randu( uchar a,
-                                   uchar b );
-lua:
-    cv.Vec2b.randu( a, b ) -> retval
-```
-
-### cv.Vec2b.zeros
-
-```cpp
-static cv::Vec2b cv::Vec2b::zeros();
-lua:
-    cv.Vec2b.zeros() -> retval
-```
-
-## cv::Vec2d
-
-### Vec2d.1
-
-```cpp
-double cv::Vec2d::operator[](0)
-lua:
-    [propget, propput] oVec2d.1
-```
-
-### Vec2d.2
-
-```cpp
-double cv::Vec2d::operator[](1)
-lua:
-    [propget, propput] oVec2d.2
-```
-
-### cv.Vec2d.new
-
-```cpp
-static cv::Vec2d cv::Vec2d();
-lua:
-    cv.Vec2d.new() -> <cv.Vec2d object>
-    cv.Vec2d() -> <cv.Vec2d object>
-```
-
-```cpp
-static cv::Vec2d cv::Vec2d( const std::vector<double>& values );
-lua:
-    cv.Vec2d.new( values ) -> <cv.Vec2d object>
-    cv.Vec2d( values ) -> <cv.Vec2d object>
-```
-
-### cv.Vec2d.all
-
-```cpp
-static cv::Vec2d cv::Vec2d::all( double alpha );
-lua:
-    cv.Vec2d.all( alpha ) -> retval
-```
-
-### cv.Vec2d.mul
-
-```cpp
-cv::Vec2d cv::Vec2d::mul( const cv::Vec2d& v );
-lua:
-    oVec2d:mul( v ) -> retval
-```
-
-### cv.Vec2d.ones
-
-```cpp
-static cv::Vec2d cv::Vec2d::ones();
-lua:
-    cv.Vec2d.ones() -> retval
-```
-
-### cv.Vec2d.randn
-
-```cpp
-static cv::Vec2d cv::Vec2d::randn( double a,
-                                   double b );
-lua:
-    cv.Vec2d.randn( a, b ) -> retval
-```
-
-### cv.Vec2d.randu
-
-```cpp
-static cv::Vec2d cv::Vec2d::randu( double a,
-                                   double b );
-lua:
-    cv.Vec2d.randu( a, b ) -> retval
-```
-
-### cv.Vec2d.zeros
-
-```cpp
-static cv::Vec2d cv::Vec2d::zeros();
-lua:
-    cv.Vec2d.zeros() -> retval
-```
-
-## cv::Vec2f
-
-### Vec2f.1
-
-```cpp
-float cv::Vec2f::operator[](0)
-lua:
-    [propget, propput] oVec2f.1
-```
-
-### Vec2f.2
-
-```cpp
-float cv::Vec2f::operator[](1)
-lua:
-    [propget, propput] oVec2f.2
-```
-
-### cv.Vec2f.new
-
-```cpp
-static cv::Vec2f cv::Vec2f();
-lua:
-    cv.Vec2f.new() -> <cv.Vec2f object>
-    cv.Vec2f() -> <cv.Vec2f object>
-```
-
-```cpp
-static cv::Vec2f cv::Vec2f( const std::vector<float>& values );
-lua:
-    cv.Vec2f.new( values ) -> <cv.Vec2f object>
-    cv.Vec2f( values ) -> <cv.Vec2f object>
-```
-
-### cv.Vec2f.all
-
-```cpp
-static cv::Vec2f cv::Vec2f::all( float alpha );
-lua:
-    cv.Vec2f.all( alpha ) -> retval
-```
-
-### cv.Vec2f.mul
-
-```cpp
-cv::Vec2f cv::Vec2f::mul( const cv::Vec2f& v );
-lua:
-    oVec2f:mul( v ) -> retval
-```
-
-### cv.Vec2f.ones
-
-```cpp
-static cv::Vec2f cv::Vec2f::ones();
-lua:
-    cv.Vec2f.ones() -> retval
-```
-
-### cv.Vec2f.randn
-
-```cpp
-static cv::Vec2f cv::Vec2f::randn( float a,
-                                   float b );
-lua:
-    cv.Vec2f.randn( a, b ) -> retval
-```
-
-### cv.Vec2f.randu
-
-```cpp
-static cv::Vec2f cv::Vec2f::randu( float a,
-                                   float b );
-lua:
-    cv.Vec2f.randu( a, b ) -> retval
-```
-
-### cv.Vec2f.zeros
-
-```cpp
-static cv::Vec2f cv::Vec2f::zeros();
-lua:
-    cv.Vec2f.zeros() -> retval
-```
-
-## cv::Vec2i
-
-### Vec2i.1
-
-```cpp
-int cv::Vec2i::operator[](0)
-lua:
-    [propget, propput] oVec2i.1
-```
-
-### Vec2i.2
-
-```cpp
-int cv::Vec2i::operator[](1)
-lua:
-    [propget, propput] oVec2i.2
-```
-
-### cv.Vec2i.new
-
-```cpp
-static cv::Vec2i cv::Vec2i();
-lua:
-    cv.Vec2i.new() -> <cv.Vec2i object>
-    cv.Vec2i() -> <cv.Vec2i object>
-```
-
-```cpp
-static cv::Vec2i cv::Vec2i( const std::vector<int>& values );
-lua:
-    cv.Vec2i.new( values ) -> <cv.Vec2i object>
-    cv.Vec2i( values ) -> <cv.Vec2i object>
-```
-
-### cv.Vec2i.all
-
-```cpp
-static cv::Vec2i cv::Vec2i::all( int alpha );
-lua:
-    cv.Vec2i.all( alpha ) -> retval
-```
-
-### cv.Vec2i.mul
-
-```cpp
-cv::Vec2i cv::Vec2i::mul( const cv::Vec2i& v );
-lua:
-    oVec2i:mul( v ) -> retval
-```
-
-### cv.Vec2i.ones
-
-```cpp
-static cv::Vec2i cv::Vec2i::ones();
-lua:
-    cv.Vec2i.ones() -> retval
-```
-
-### cv.Vec2i.randn
-
-```cpp
-static cv::Vec2i cv::Vec2i::randn( int a,
-                                   int b );
-lua:
-    cv.Vec2i.randn( a, b ) -> retval
-```
-
-### cv.Vec2i.randu
-
-```cpp
-static cv::Vec2i cv::Vec2i::randu( int a,
-                                   int b );
-lua:
-    cv.Vec2i.randu( a, b ) -> retval
-```
-
-### cv.Vec2i.zeros
-
-```cpp
-static cv::Vec2i cv::Vec2i::zeros();
-lua:
-    cv.Vec2i.zeros() -> retval
-```
-
-## cv::Vec2s
-
-### Vec2s.1
-
-```cpp
-short cv::Vec2s::operator[](0)
-lua:
-    [propget, propput] oVec2s.1
-```
-
-### Vec2s.2
-
-```cpp
-short cv::Vec2s::operator[](1)
-lua:
-    [propget, propput] oVec2s.2
-```
-
-### cv.Vec2s.new
-
-```cpp
-static cv::Vec2s cv::Vec2s();
-lua:
-    cv.Vec2s.new() -> <cv.Vec2s object>
-    cv.Vec2s() -> <cv.Vec2s object>
-```
-
-```cpp
-static cv::Vec2s cv::Vec2s( const std::vector<short>& values );
-lua:
-    cv.Vec2s.new( values ) -> <cv.Vec2s object>
-    cv.Vec2s( values ) -> <cv.Vec2s object>
-```
-
-### cv.Vec2s.all
-
-```cpp
-static cv::Vec2s cv::Vec2s::all( short alpha );
-lua:
-    cv.Vec2s.all( alpha ) -> retval
-```
-
-### cv.Vec2s.mul
-
-```cpp
-cv::Vec2s cv::Vec2s::mul( const cv::Vec2s& v );
-lua:
-    oVec2s:mul( v ) -> retval
-```
-
-### cv.Vec2s.ones
-
-```cpp
-static cv::Vec2s cv::Vec2s::ones();
-lua:
-    cv.Vec2s.ones() -> retval
-```
-
-### cv.Vec2s.randn
-
-```cpp
-static cv::Vec2s cv::Vec2s::randn( short a,
-                                   short b );
-lua:
-    cv.Vec2s.randn( a, b ) -> retval
-```
-
-### cv.Vec2s.randu
-
-```cpp
-static cv::Vec2s cv::Vec2s::randu( short a,
-                                   short b );
-lua:
-    cv.Vec2s.randu( a, b ) -> retval
-```
-
-### cv.Vec2s.zeros
-
-```cpp
-static cv::Vec2s cv::Vec2s::zeros();
-lua:
-    cv.Vec2s.zeros() -> retval
-```
-
-## cv::Vec2w
-
-### Vec2w.1
-
-```cpp
-ushort cv::Vec2w::operator[](0)
-lua:
-    [propget, propput] oVec2w.1
-```
-
-### Vec2w.2
-
-```cpp
-ushort cv::Vec2w::operator[](1)
-lua:
-    [propget, propput] oVec2w.2
-```
-
-### cv.Vec2w.new
-
-```cpp
-static cv::Vec2w cv::Vec2w();
-lua:
-    cv.Vec2w.new() -> <cv.Vec2w object>
-    cv.Vec2w() -> <cv.Vec2w object>
-```
-
-```cpp
-static cv::Vec2w cv::Vec2w( const std::vector<ushort>& values );
-lua:
-    cv.Vec2w.new( values ) -> <cv.Vec2w object>
-    cv.Vec2w( values ) -> <cv.Vec2w object>
-```
-
-### cv.Vec2w.all
-
-```cpp
-static cv::Vec2w cv::Vec2w::all( ushort alpha );
-lua:
-    cv.Vec2w.all( alpha ) -> retval
-```
-
-### cv.Vec2w.mul
-
-```cpp
-cv::Vec2w cv::Vec2w::mul( const cv::Vec2w& v );
-lua:
-    oVec2w:mul( v ) -> retval
-```
-
-### cv.Vec2w.ones
-
-```cpp
-static cv::Vec2w cv::Vec2w::ones();
-lua:
-    cv.Vec2w.ones() -> retval
-```
-
-### cv.Vec2w.randn
-
-```cpp
-static cv::Vec2w cv::Vec2w::randn( ushort a,
-                                   ushort b );
-lua:
-    cv.Vec2w.randn( a, b ) -> retval
-```
-
-### cv.Vec2w.randu
-
-```cpp
-static cv::Vec2w cv::Vec2w::randu( ushort a,
-                                   ushort b );
-lua:
-    cv.Vec2w.randu( a, b ) -> retval
-```
-
-### cv.Vec2w.zeros
-
-```cpp
-static cv::Vec2w cv::Vec2w::zeros();
-lua:
-    cv.Vec2w.zeros() -> retval
-```
-
-## cv::Vec3b
-
-### Vec3b.1
-
-```cpp
-uchar cv::Vec3b::operator[](0)
-lua:
-    [propget, propput] oVec3b.1
-```
-
-### Vec3b.2
-
-```cpp
-uchar cv::Vec3b::operator[](1)
-lua:
-    [propget, propput] oVec3b.2
-```
-
-### Vec3b.3
-
-```cpp
-uchar cv::Vec3b::operator[](2)
-lua:
-    [propget, propput] oVec3b.3
-```
-
-### cv.Vec3b.new
-
-```cpp
-static cv::Vec3b cv::Vec3b();
-lua:
-    cv.Vec3b.new() -> <cv.Vec3b object>
-    cv.Vec3b() -> <cv.Vec3b object>
-```
-
-```cpp
-static cv::Vec3b cv::Vec3b( const std::vector<uchar>& values );
-lua:
-    cv.Vec3b.new( values ) -> <cv.Vec3b object>
-    cv.Vec3b( values ) -> <cv.Vec3b object>
-```
-
-### cv.Vec3b.all
-
-```cpp
-static cv::Vec3b cv::Vec3b::all( uchar alpha );
-lua:
-    cv.Vec3b.all( alpha ) -> retval
-```
-
-### cv.Vec3b.cross
-
-```cpp
-cv::Vec3b cv::Vec3b::cross( const cv::Vec3b& v );
-lua:
-    oVec3b:cross( v ) -> retval
-```
-
-### cv.Vec3b.mul
-
-```cpp
-cv::Vec3b cv::Vec3b::mul( const cv::Vec3b& v );
-lua:
-    oVec3b:mul( v ) -> retval
-```
-
-### cv.Vec3b.ones
-
-```cpp
-static cv::Vec3b cv::Vec3b::ones();
-lua:
-    cv.Vec3b.ones() -> retval
-```
-
-### cv.Vec3b.randn
-
-```cpp
-static cv::Vec3b cv::Vec3b::randn( uchar a,
-                                   uchar b );
-lua:
-    cv.Vec3b.randn( a, b ) -> retval
-```
-
-### cv.Vec3b.randu
-
-```cpp
-static cv::Vec3b cv::Vec3b::randu( uchar a,
-                                   uchar b );
-lua:
-    cv.Vec3b.randu( a, b ) -> retval
-```
-
-### cv.Vec3b.zeros
-
-```cpp
-static cv::Vec3b cv::Vec3b::zeros();
-lua:
-    cv.Vec3b.zeros() -> retval
-```
-
-## cv::Vec3d
-
-### Vec3d.1
-
-```cpp
-double cv::Vec3d::operator[](0)
-lua:
-    [propget, propput] oVec3d.1
-```
-
-### Vec3d.2
-
-```cpp
-double cv::Vec3d::operator[](1)
-lua:
-    [propget, propput] oVec3d.2
-```
-
-### Vec3d.3
-
-```cpp
-double cv::Vec3d::operator[](2)
-lua:
-    [propget, propput] oVec3d.3
-```
-
-### cv.Vec3d.new
-
-```cpp
-static cv::Vec3d cv::Vec3d();
-lua:
-    cv.Vec3d.new() -> <cv.Vec3d object>
-    cv.Vec3d() -> <cv.Vec3d object>
-```
-
-```cpp
-static cv::Vec3d cv::Vec3d( const std::vector<double>& values );
-lua:
-    cv.Vec3d.new( values ) -> <cv.Vec3d object>
-    cv.Vec3d( values ) -> <cv.Vec3d object>
-```
-
-### cv.Vec3d.all
-
-```cpp
-static cv::Vec3d cv::Vec3d::all( double alpha );
-lua:
-    cv.Vec3d.all( alpha ) -> retval
-```
-
-### cv.Vec3d.cross
-
-```cpp
-cv::Vec3d cv::Vec3d::cross( const cv::Vec3d& v );
-lua:
-    oVec3d:cross( v ) -> retval
-```
-
-### cv.Vec3d.mul
-
-```cpp
-cv::Vec3d cv::Vec3d::mul( const cv::Vec3d& v );
-lua:
-    oVec3d:mul( v ) -> retval
-```
-
-### cv.Vec3d.ones
-
-```cpp
-static cv::Vec3d cv::Vec3d::ones();
-lua:
-    cv.Vec3d.ones() -> retval
-```
-
-### cv.Vec3d.randn
-
-```cpp
-static cv::Vec3d cv::Vec3d::randn( double a,
-                                   double b );
-lua:
-    cv.Vec3d.randn( a, b ) -> retval
-```
-
-### cv.Vec3d.randu
-
-```cpp
-static cv::Vec3d cv::Vec3d::randu( double a,
-                                   double b );
-lua:
-    cv.Vec3d.randu( a, b ) -> retval
-```
-
-### cv.Vec3d.zeros
-
-```cpp
-static cv::Vec3d cv::Vec3d::zeros();
-lua:
-    cv.Vec3d.zeros() -> retval
-```
-
-## cv::Vec3f
-
-### Vec3f.1
-
-```cpp
-float cv::Vec3f::operator[](0)
-lua:
-    [propget, propput] oVec3f.1
-```
-
-### Vec3f.2
-
-```cpp
-float cv::Vec3f::operator[](1)
-lua:
-    [propget, propput] oVec3f.2
-```
-
-### Vec3f.3
-
-```cpp
-float cv::Vec3f::operator[](2)
-lua:
-    [propget, propput] oVec3f.3
-```
-
-### cv.Vec3f.new
-
-```cpp
-static cv::Vec3f cv::Vec3f();
-lua:
-    cv.Vec3f.new() -> <cv.Vec3f object>
-    cv.Vec3f() -> <cv.Vec3f object>
-```
-
-```cpp
-static cv::Vec3f cv::Vec3f( const std::vector<float>& values );
-lua:
-    cv.Vec3f.new( values ) -> <cv.Vec3f object>
-    cv.Vec3f( values ) -> <cv.Vec3f object>
-```
-
-### cv.Vec3f.all
-
-```cpp
-static cv::Vec3f cv::Vec3f::all( float alpha );
-lua:
-    cv.Vec3f.all( alpha ) -> retval
-```
-
-### cv.Vec3f.cross
-
-```cpp
-cv::Vec3f cv::Vec3f::cross( const cv::Vec3f& v );
-lua:
-    oVec3f:cross( v ) -> retval
-```
-
-### cv.Vec3f.mul
-
-```cpp
-cv::Vec3f cv::Vec3f::mul( const cv::Vec3f& v );
-lua:
-    oVec3f:mul( v ) -> retval
-```
-
-### cv.Vec3f.ones
-
-```cpp
-static cv::Vec3f cv::Vec3f::ones();
-lua:
-    cv.Vec3f.ones() -> retval
-```
-
-### cv.Vec3f.randn
-
-```cpp
-static cv::Vec3f cv::Vec3f::randn( float a,
-                                   float b );
-lua:
-    cv.Vec3f.randn( a, b ) -> retval
-```
-
-### cv.Vec3f.randu
-
-```cpp
-static cv::Vec3f cv::Vec3f::randu( float a,
-                                   float b );
-lua:
-    cv.Vec3f.randu( a, b ) -> retval
-```
-
-### cv.Vec3f.zeros
-
-```cpp
-static cv::Vec3f cv::Vec3f::zeros();
-lua:
-    cv.Vec3f.zeros() -> retval
-```
-
-## cv::Vec3i
-
-### Vec3i.1
-
-```cpp
-int cv::Vec3i::operator[](0)
-lua:
-    [propget, propput] oVec3i.1
-```
-
-### Vec3i.2
-
-```cpp
-int cv::Vec3i::operator[](1)
-lua:
-    [propget, propput] oVec3i.2
-```
-
-### Vec3i.3
-
-```cpp
-int cv::Vec3i::operator[](2)
-lua:
-    [propget, propput] oVec3i.3
-```
-
-### cv.Vec3i.new
-
-```cpp
-static cv::Vec3i cv::Vec3i();
-lua:
-    cv.Vec3i.new() -> <cv.Vec3i object>
-    cv.Vec3i() -> <cv.Vec3i object>
-```
-
-```cpp
-static cv::Vec3i cv::Vec3i( const std::vector<int>& values );
-lua:
-    cv.Vec3i.new( values ) -> <cv.Vec3i object>
-    cv.Vec3i( values ) -> <cv.Vec3i object>
-```
-
-### cv.Vec3i.all
-
-```cpp
-static cv::Vec3i cv::Vec3i::all( int alpha );
-lua:
-    cv.Vec3i.all( alpha ) -> retval
-```
-
-### cv.Vec3i.cross
-
-```cpp
-cv::Vec3i cv::Vec3i::cross( const cv::Vec3i& v );
-lua:
-    oVec3i:cross( v ) -> retval
-```
-
-### cv.Vec3i.mul
-
-```cpp
-cv::Vec3i cv::Vec3i::mul( const cv::Vec3i& v );
-lua:
-    oVec3i:mul( v ) -> retval
-```
-
-### cv.Vec3i.ones
-
-```cpp
-static cv::Vec3i cv::Vec3i::ones();
-lua:
-    cv.Vec3i.ones() -> retval
-```
-
-### cv.Vec3i.randn
-
-```cpp
-static cv::Vec3i cv::Vec3i::randn( int a,
-                                   int b );
-lua:
-    cv.Vec3i.randn( a, b ) -> retval
-```
-
-### cv.Vec3i.randu
-
-```cpp
-static cv::Vec3i cv::Vec3i::randu( int a,
-                                   int b );
-lua:
-    cv.Vec3i.randu( a, b ) -> retval
-```
-
-### cv.Vec3i.zeros
-
-```cpp
-static cv::Vec3i cv::Vec3i::zeros();
-lua:
-    cv.Vec3i.zeros() -> retval
-```
-
-## cv::Vec3s
-
-### Vec3s.1
-
-```cpp
-short cv::Vec3s::operator[](0)
-lua:
-    [propget, propput] oVec3s.1
-```
-
-### Vec3s.2
-
-```cpp
-short cv::Vec3s::operator[](1)
-lua:
-    [propget, propput] oVec3s.2
-```
-
-### Vec3s.3
-
-```cpp
-short cv::Vec3s::operator[](2)
-lua:
-    [propget, propput] oVec3s.3
-```
-
-### cv.Vec3s.new
-
-```cpp
-static cv::Vec3s cv::Vec3s();
-lua:
-    cv.Vec3s.new() -> <cv.Vec3s object>
-    cv.Vec3s() -> <cv.Vec3s object>
-```
-
-```cpp
-static cv::Vec3s cv::Vec3s( const std::vector<short>& values );
-lua:
-    cv.Vec3s.new( values ) -> <cv.Vec3s object>
-    cv.Vec3s( values ) -> <cv.Vec3s object>
-```
-
-### cv.Vec3s.all
-
-```cpp
-static cv::Vec3s cv::Vec3s::all( short alpha );
-lua:
-    cv.Vec3s.all( alpha ) -> retval
-```
-
-### cv.Vec3s.cross
-
-```cpp
-cv::Vec3s cv::Vec3s::cross( const cv::Vec3s& v );
-lua:
-    oVec3s:cross( v ) -> retval
-```
-
-### cv.Vec3s.mul
-
-```cpp
-cv::Vec3s cv::Vec3s::mul( const cv::Vec3s& v );
-lua:
-    oVec3s:mul( v ) -> retval
-```
-
-### cv.Vec3s.ones
-
-```cpp
-static cv::Vec3s cv::Vec3s::ones();
-lua:
-    cv.Vec3s.ones() -> retval
-```
-
-### cv.Vec3s.randn
-
-```cpp
-static cv::Vec3s cv::Vec3s::randn( short a,
-                                   short b );
-lua:
-    cv.Vec3s.randn( a, b ) -> retval
-```
-
-### cv.Vec3s.randu
-
-```cpp
-static cv::Vec3s cv::Vec3s::randu( short a,
-                                   short b );
-lua:
-    cv.Vec3s.randu( a, b ) -> retval
-```
-
-### cv.Vec3s.zeros
-
-```cpp
-static cv::Vec3s cv::Vec3s::zeros();
-lua:
-    cv.Vec3s.zeros() -> retval
-```
-
-## cv::Vec3w
-
-### Vec3w.1
-
-```cpp
-ushort cv::Vec3w::operator[](0)
-lua:
-    [propget, propput] oVec3w.1
-```
-
-### Vec3w.2
-
-```cpp
-ushort cv::Vec3w::operator[](1)
-lua:
-    [propget, propput] oVec3w.2
-```
-
-### Vec3w.3
-
-```cpp
-ushort cv::Vec3w::operator[](2)
-lua:
-    [propget, propput] oVec3w.3
-```
-
-### cv.Vec3w.new
-
-```cpp
-static cv::Vec3w cv::Vec3w();
-lua:
-    cv.Vec3w.new() -> <cv.Vec3w object>
-    cv.Vec3w() -> <cv.Vec3w object>
-```
-
-```cpp
-static cv::Vec3w cv::Vec3w( const std::vector<ushort>& values );
-lua:
-    cv.Vec3w.new( values ) -> <cv.Vec3w object>
-    cv.Vec3w( values ) -> <cv.Vec3w object>
-```
-
-### cv.Vec3w.all
-
-```cpp
-static cv::Vec3w cv::Vec3w::all( ushort alpha );
-lua:
-    cv.Vec3w.all( alpha ) -> retval
-```
-
-### cv.Vec3w.cross
-
-```cpp
-cv::Vec3w cv::Vec3w::cross( const cv::Vec3w& v );
-lua:
-    oVec3w:cross( v ) -> retval
-```
-
-### cv.Vec3w.mul
-
-```cpp
-cv::Vec3w cv::Vec3w::mul( const cv::Vec3w& v );
-lua:
-    oVec3w:mul( v ) -> retval
-```
-
-### cv.Vec3w.ones
-
-```cpp
-static cv::Vec3w cv::Vec3w::ones();
-lua:
-    cv.Vec3w.ones() -> retval
-```
-
-### cv.Vec3w.randn
-
-```cpp
-static cv::Vec3w cv::Vec3w::randn( ushort a,
-                                   ushort b );
-lua:
-    cv.Vec3w.randn( a, b ) -> retval
-```
-
-### cv.Vec3w.randu
-
-```cpp
-static cv::Vec3w cv::Vec3w::randu( ushort a,
-                                   ushort b );
-lua:
-    cv.Vec3w.randu( a, b ) -> retval
-```
-
-### cv.Vec3w.zeros
-
-```cpp
-static cv::Vec3w cv::Vec3w::zeros();
-lua:
-    cv.Vec3w.zeros() -> retval
-```
-
-## cv::Vec4b
-
-### Vec4b.1
-
-```cpp
-uchar cv::Vec4b::operator[](0)
-lua:
-    [propget, propput] oVec4b.1
-```
-
-### Vec4b.2
-
-```cpp
-uchar cv::Vec4b::operator[](1)
-lua:
-    [propget, propput] oVec4b.2
-```
-
-### Vec4b.3
-
-```cpp
-uchar cv::Vec4b::operator[](2)
-lua:
-    [propget, propput] oVec4b.3
-```
-
-### Vec4b.4
-
-```cpp
-uchar cv::Vec4b::operator[](3)
-lua:
-    [propget, propput] oVec4b.4
-```
-
-### cv.Vec4b.new
-
-```cpp
-static cv::Vec4b cv::Vec4b();
-lua:
-    cv.Vec4b.new() -> <cv.Vec4b object>
-    cv.Vec4b() -> <cv.Vec4b object>
-```
-
-```cpp
-static cv::Vec4b cv::Vec4b( const std::vector<uchar>& values );
-lua:
-    cv.Vec4b.new( values ) -> <cv.Vec4b object>
-    cv.Vec4b( values ) -> <cv.Vec4b object>
-```
-
-### cv.Vec4b.all
-
-```cpp
-static cv::Vec4b cv::Vec4b::all( uchar alpha );
-lua:
-    cv.Vec4b.all( alpha ) -> retval
-```
-
-### cv.Vec4b.mul
-
-```cpp
-cv::Vec4b cv::Vec4b::mul( const cv::Vec4b& v );
-lua:
-    oVec4b:mul( v ) -> retval
-```
-
-### cv.Vec4b.ones
-
-```cpp
-static cv::Vec4b cv::Vec4b::ones();
-lua:
-    cv.Vec4b.ones() -> retval
-```
-
-### cv.Vec4b.randn
-
-```cpp
-static cv::Vec4b cv::Vec4b::randn( uchar a,
-                                   uchar b );
-lua:
-    cv.Vec4b.randn( a, b ) -> retval
-```
-
-### cv.Vec4b.randu
-
-```cpp
-static cv::Vec4b cv::Vec4b::randu( uchar a,
-                                   uchar b );
-lua:
-    cv.Vec4b.randu( a, b ) -> retval
-```
-
-### cv.Vec4b.zeros
-
-```cpp
-static cv::Vec4b cv::Vec4b::zeros();
-lua:
-    cv.Vec4b.zeros() -> retval
-```
-
-## cv::Vec4d
-
-### Vec4d.1
-
-```cpp
-double cv::Vec4d::operator[](0)
-lua:
-    [propget, propput] oVec4d.1
-```
-
-### Vec4d.2
-
-```cpp
-double cv::Vec4d::operator[](1)
-lua:
-    [propget, propput] oVec4d.2
-```
-
-### Vec4d.3
-
-```cpp
-double cv::Vec4d::operator[](2)
-lua:
-    [propget, propput] oVec4d.3
-```
-
-### Vec4d.4
-
-```cpp
-double cv::Vec4d::operator[](3)
-lua:
-    [propget, propput] oVec4d.4
-```
-
-### cv.Vec4d.new
-
-```cpp
-static cv::Vec4d cv::Vec4d();
-lua:
-    cv.Vec4d.new() -> <cv.Vec4d object>
-    cv.Vec4d() -> <cv.Vec4d object>
-```
-
-```cpp
-static cv::Vec4d cv::Vec4d( const std::vector<double>& values );
-lua:
-    cv.Vec4d.new( values ) -> <cv.Vec4d object>
-    cv.Vec4d( values ) -> <cv.Vec4d object>
-```
-
-### cv.Vec4d.all
-
-```cpp
-static cv::Vec4d cv::Vec4d::all( double alpha );
-lua:
-    cv.Vec4d.all( alpha ) -> retval
-```
-
-### cv.Vec4d.mul
-
-```cpp
-cv::Vec4d cv::Vec4d::mul( const cv::Vec4d& v );
-lua:
-    oVec4d:mul( v ) -> retval
-```
-
-### cv.Vec4d.ones
-
-```cpp
-static cv::Vec4d cv::Vec4d::ones();
-lua:
-    cv.Vec4d.ones() -> retval
-```
-
-### cv.Vec4d.randn
-
-```cpp
-static cv::Vec4d cv::Vec4d::randn( double a,
-                                   double b );
-lua:
-    cv.Vec4d.randn( a, b ) -> retval
-```
-
-### cv.Vec4d.randu
-
-```cpp
-static cv::Vec4d cv::Vec4d::randu( double a,
-                                   double b );
-lua:
-    cv.Vec4d.randu( a, b ) -> retval
-```
-
-### cv.Vec4d.zeros
-
-```cpp
-static cv::Vec4d cv::Vec4d::zeros();
-lua:
-    cv.Vec4d.zeros() -> retval
-```
-
-## cv::Vec4f
-
-### Vec4f.1
-
-```cpp
-float cv::Vec4f::operator[](0)
-lua:
-    [propget, propput] oVec4f.1
-```
-
-### Vec4f.2
-
-```cpp
-float cv::Vec4f::operator[](1)
-lua:
-    [propget, propput] oVec4f.2
-```
-
-### Vec4f.3
-
-```cpp
-float cv::Vec4f::operator[](2)
-lua:
-    [propget, propput] oVec4f.3
-```
-
-### Vec4f.4
-
-```cpp
-float cv::Vec4f::operator[](3)
-lua:
-    [propget, propput] oVec4f.4
-```
-
-### cv.Vec4f.new
-
-```cpp
-static cv::Vec4f cv::Vec4f();
-lua:
-    cv.Vec4f.new() -> <cv.Vec4f object>
-    cv.Vec4f() -> <cv.Vec4f object>
-```
-
-```cpp
-static cv::Vec4f cv::Vec4f( const std::vector<float>& values );
-lua:
-    cv.Vec4f.new( values ) -> <cv.Vec4f object>
-    cv.Vec4f( values ) -> <cv.Vec4f object>
-```
-
-### cv.Vec4f.all
-
-```cpp
-static cv::Vec4f cv::Vec4f::all( float alpha );
-lua:
-    cv.Vec4f.all( alpha ) -> retval
-```
-
-### cv.Vec4f.mul
-
-```cpp
-cv::Vec4f cv::Vec4f::mul( const cv::Vec4f& v );
-lua:
-    oVec4f:mul( v ) -> retval
-```
-
-### cv.Vec4f.ones
-
-```cpp
-static cv::Vec4f cv::Vec4f::ones();
-lua:
-    cv.Vec4f.ones() -> retval
-```
-
-### cv.Vec4f.randn
-
-```cpp
-static cv::Vec4f cv::Vec4f::randn( float a,
-                                   float b );
-lua:
-    cv.Vec4f.randn( a, b ) -> retval
-```
-
-### cv.Vec4f.randu
-
-```cpp
-static cv::Vec4f cv::Vec4f::randu( float a,
-                                   float b );
-lua:
-    cv.Vec4f.randu( a, b ) -> retval
-```
-
-### cv.Vec4f.zeros
-
-```cpp
-static cv::Vec4f cv::Vec4f::zeros();
-lua:
-    cv.Vec4f.zeros() -> retval
-```
-
-## cv::Vec4i
-
-### Vec4i.1
-
-```cpp
-int cv::Vec4i::operator[](0)
-lua:
-    [propget, propput] oVec4i.1
-```
-
-### Vec4i.2
-
-```cpp
-int cv::Vec4i::operator[](1)
-lua:
-    [propget, propput] oVec4i.2
-```
-
-### Vec4i.3
-
-```cpp
-int cv::Vec4i::operator[](2)
-lua:
-    [propget, propput] oVec4i.3
-```
-
-### Vec4i.4
-
-```cpp
-int cv::Vec4i::operator[](3)
-lua:
-    [propget, propput] oVec4i.4
-```
-
-### cv.Vec4i.new
-
-```cpp
-static cv::Vec4i cv::Vec4i();
-lua:
-    cv.Vec4i.new() -> <cv.Vec4i object>
-    cv.Vec4i() -> <cv.Vec4i object>
-```
-
-```cpp
-static cv::Vec4i cv::Vec4i( const std::vector<int>& values );
-lua:
-    cv.Vec4i.new( values ) -> <cv.Vec4i object>
-    cv.Vec4i( values ) -> <cv.Vec4i object>
-```
-
-### cv.Vec4i.all
-
-```cpp
-static cv::Vec4i cv::Vec4i::all( int alpha );
-lua:
-    cv.Vec4i.all( alpha ) -> retval
-```
-
-### cv.Vec4i.mul
-
-```cpp
-cv::Vec4i cv::Vec4i::mul( const cv::Vec4i& v );
-lua:
-    oVec4i:mul( v ) -> retval
-```
-
-### cv.Vec4i.ones
-
-```cpp
-static cv::Vec4i cv::Vec4i::ones();
-lua:
-    cv.Vec4i.ones() -> retval
-```
-
-### cv.Vec4i.randn
-
-```cpp
-static cv::Vec4i cv::Vec4i::randn( int a,
-                                   int b );
-lua:
-    cv.Vec4i.randn( a, b ) -> retval
-```
-
-### cv.Vec4i.randu
-
-```cpp
-static cv::Vec4i cv::Vec4i::randu( int a,
-                                   int b );
-lua:
-    cv.Vec4i.randu( a, b ) -> retval
-```
-
-### cv.Vec4i.zeros
-
-```cpp
-static cv::Vec4i cv::Vec4i::zeros();
-lua:
-    cv.Vec4i.zeros() -> retval
-```
-
-## cv::Vec4s
-
-### Vec4s.1
-
-```cpp
-short cv::Vec4s::operator[](0)
-lua:
-    [propget, propput] oVec4s.1
-```
-
-### Vec4s.2
-
-```cpp
-short cv::Vec4s::operator[](1)
-lua:
-    [propget, propput] oVec4s.2
-```
-
-### Vec4s.3
-
-```cpp
-short cv::Vec4s::operator[](2)
-lua:
-    [propget, propput] oVec4s.3
-```
-
-### Vec4s.4
-
-```cpp
-short cv::Vec4s::operator[](3)
-lua:
-    [propget, propput] oVec4s.4
-```
-
-### cv.Vec4s.new
-
-```cpp
-static cv::Vec4s cv::Vec4s();
-lua:
-    cv.Vec4s.new() -> <cv.Vec4s object>
-    cv.Vec4s() -> <cv.Vec4s object>
-```
-
-```cpp
-static cv::Vec4s cv::Vec4s( const std::vector<short>& values );
-lua:
-    cv.Vec4s.new( values ) -> <cv.Vec4s object>
-    cv.Vec4s( values ) -> <cv.Vec4s object>
-```
-
-### cv.Vec4s.all
-
-```cpp
-static cv::Vec4s cv::Vec4s::all( short alpha );
-lua:
-    cv.Vec4s.all( alpha ) -> retval
-```
-
-### cv.Vec4s.mul
-
-```cpp
-cv::Vec4s cv::Vec4s::mul( const cv::Vec4s& v );
-lua:
-    oVec4s:mul( v ) -> retval
-```
-
-### cv.Vec4s.ones
-
-```cpp
-static cv::Vec4s cv::Vec4s::ones();
-lua:
-    cv.Vec4s.ones() -> retval
-```
-
-### cv.Vec4s.randn
-
-```cpp
-static cv::Vec4s cv::Vec4s::randn( short a,
-                                   short b );
-lua:
-    cv.Vec4s.randn( a, b ) -> retval
-```
-
-### cv.Vec4s.randu
-
-```cpp
-static cv::Vec4s cv::Vec4s::randu( short a,
-                                   short b );
-lua:
-    cv.Vec4s.randu( a, b ) -> retval
-```
-
-### cv.Vec4s.zeros
-
-```cpp
-static cv::Vec4s cv::Vec4s::zeros();
-lua:
-    cv.Vec4s.zeros() -> retval
-```
-
-## cv::Vec4w
-
-### Vec4w.1
-
-```cpp
-ushort cv::Vec4w::operator[](0)
-lua:
-    [propget, propput] oVec4w.1
-```
-
-### Vec4w.2
-
-```cpp
-ushort cv::Vec4w::operator[](1)
-lua:
-    [propget, propput] oVec4w.2
-```
-
-### Vec4w.3
-
-```cpp
-ushort cv::Vec4w::operator[](2)
-lua:
-    [propget, propput] oVec4w.3
-```
-
-### Vec4w.4
-
-```cpp
-ushort cv::Vec4w::operator[](3)
-lua:
-    [propget, propput] oVec4w.4
-```
-
-### cv.Vec4w.new
-
-```cpp
-static cv::Vec4w cv::Vec4w();
-lua:
-    cv.Vec4w.new() -> <cv.Vec4w object>
-    cv.Vec4w() -> <cv.Vec4w object>
-```
-
-```cpp
-static cv::Vec4w cv::Vec4w( const std::vector<ushort>& values );
-lua:
-    cv.Vec4w.new( values ) -> <cv.Vec4w object>
-    cv.Vec4w( values ) -> <cv.Vec4w object>
-```
-
-### cv.Vec4w.all
-
-```cpp
-static cv::Vec4w cv::Vec4w::all( ushort alpha );
-lua:
-    cv.Vec4w.all( alpha ) -> retval
-```
-
-### cv.Vec4w.mul
-
-```cpp
-cv::Vec4w cv::Vec4w::mul( const cv::Vec4w& v );
-lua:
-    oVec4w:mul( v ) -> retval
-```
-
-### cv.Vec4w.ones
-
-```cpp
-static cv::Vec4w cv::Vec4w::ones();
-lua:
-    cv.Vec4w.ones() -> retval
-```
-
-### cv.Vec4w.randn
-
-```cpp
-static cv::Vec4w cv::Vec4w::randn( ushort a,
-                                   ushort b );
-lua:
-    cv.Vec4w.randn( a, b ) -> retval
-```
-
-### cv.Vec4w.randu
-
-```cpp
-static cv::Vec4w cv::Vec4w::randu( ushort a,
-                                   ushort b );
-lua:
-    cv.Vec4w.randu( a, b ) -> retval
-```
-
-### cv.Vec4w.zeros
-
-```cpp
-static cv::Vec4w cv::Vec4w::zeros();
-lua:
-    cv.Vec4w.zeros() -> retval
-```
-
-## cv::Vec6d
-
-### Vec6d.1
-
-```cpp
-double cv::Vec6d::operator[](0)
-lua:
-    [propget, propput] oVec6d.1
-```
-
-### Vec6d.2
-
-```cpp
-double cv::Vec6d::operator[](1)
-lua:
-    [propget, propput] oVec6d.2
-```
-
-### Vec6d.3
-
-```cpp
-double cv::Vec6d::operator[](2)
-lua:
-    [propget, propput] oVec6d.3
-```
-
-### Vec6d.4
-
-```cpp
-double cv::Vec6d::operator[](3)
-lua:
-    [propget, propput] oVec6d.4
-```
-
-### Vec6d.5
-
-```cpp
-double cv::Vec6d::operator[](4)
-lua:
-    [propget, propput] oVec6d.5
-```
-
-### Vec6d.6
-
-```cpp
-double cv::Vec6d::operator[](5)
-lua:
-    [propget, propput] oVec6d.6
-```
-
-### cv.Vec6d.new
-
-```cpp
-static cv::Vec6d cv::Vec6d();
-lua:
-    cv.Vec6d.new() -> <cv.Vec6d object>
-    cv.Vec6d() -> <cv.Vec6d object>
-```
-
-```cpp
-static cv::Vec6d cv::Vec6d( const std::vector<double>& values );
-lua:
-    cv.Vec6d.new( values ) -> <cv.Vec6d object>
-    cv.Vec6d( values ) -> <cv.Vec6d object>
-```
-
-### cv.Vec6d.all
-
-```cpp
-static cv::Vec6d cv::Vec6d::all( double alpha );
-lua:
-    cv.Vec6d.all( alpha ) -> retval
-```
-
-### cv.Vec6d.mul
-
-```cpp
-cv::Vec6d cv::Vec6d::mul( const cv::Vec6d& v );
-lua:
-    oVec6d:mul( v ) -> retval
-```
-
-### cv.Vec6d.ones
-
-```cpp
-static cv::Vec6d cv::Vec6d::ones();
-lua:
-    cv.Vec6d.ones() -> retval
-```
-
-### cv.Vec6d.randn
-
-```cpp
-static cv::Vec6d cv::Vec6d::randn( double a,
-                                   double b );
-lua:
-    cv.Vec6d.randn( a, b ) -> retval
-```
-
-### cv.Vec6d.randu
-
-```cpp
-static cv::Vec6d cv::Vec6d::randu( double a,
-                                   double b );
-lua:
-    cv.Vec6d.randu( a, b ) -> retval
-```
-
-### cv.Vec6d.zeros
-
-```cpp
-static cv::Vec6d cv::Vec6d::zeros();
-lua:
-    cv.Vec6d.zeros() -> retval
-```
-
-## cv::Vec6f
-
-### Vec6f.1
-
-```cpp
-float cv::Vec6f::operator[](0)
-lua:
-    [propget, propput] oVec6f.1
-```
-
-### Vec6f.2
-
-```cpp
-float cv::Vec6f::operator[](1)
-lua:
-    [propget, propput] oVec6f.2
-```
-
-### Vec6f.3
-
-```cpp
-float cv::Vec6f::operator[](2)
-lua:
-    [propget, propput] oVec6f.3
-```
-
-### Vec6f.4
-
-```cpp
-float cv::Vec6f::operator[](3)
-lua:
-    [propget, propput] oVec6f.4
-```
-
-### Vec6f.5
-
-```cpp
-float cv::Vec6f::operator[](4)
-lua:
-    [propget, propput] oVec6f.5
-```
-
-### Vec6f.6
-
-```cpp
-float cv::Vec6f::operator[](5)
-lua:
-    [propget, propput] oVec6f.6
-```
-
-### cv.Vec6f.new
-
-```cpp
-static cv::Vec6f cv::Vec6f();
-lua:
-    cv.Vec6f.new() -> <cv.Vec6f object>
-    cv.Vec6f() -> <cv.Vec6f object>
-```
-
-```cpp
-static cv::Vec6f cv::Vec6f( const std::vector<float>& values );
-lua:
-    cv.Vec6f.new( values ) -> <cv.Vec6f object>
-    cv.Vec6f( values ) -> <cv.Vec6f object>
-```
-
-### cv.Vec6f.all
-
-```cpp
-static cv::Vec6f cv::Vec6f::all( float alpha );
-lua:
-    cv.Vec6f.all( alpha ) -> retval
-```
-
-### cv.Vec6f.mul
-
-```cpp
-cv::Vec6f cv::Vec6f::mul( const cv::Vec6f& v );
-lua:
-    oVec6f:mul( v ) -> retval
-```
-
-### cv.Vec6f.ones
-
-```cpp
-static cv::Vec6f cv::Vec6f::ones();
-lua:
-    cv.Vec6f.ones() -> retval
-```
-
-### cv.Vec6f.randn
-
-```cpp
-static cv::Vec6f cv::Vec6f::randn( float a,
-                                   float b );
-lua:
-    cv.Vec6f.randn( a, b ) -> retval
-```
-
-### cv.Vec6f.randu
-
-```cpp
-static cv::Vec6f cv::Vec6f::randu( float a,
-                                   float b );
-lua:
-    cv.Vec6f.randu( a, b ) -> retval
-```
-
-### cv.Vec6f.zeros
-
-```cpp
-static cv::Vec6f cv::Vec6f::zeros();
-lua:
-    cv.Vec6f.zeros() -> retval
-```
-
-## cv::Vec6i
-
-### Vec6i.1
-
-```cpp
-int cv::Vec6i::operator[](0)
-lua:
-    [propget, propput] oVec6i.1
-```
-
-### Vec6i.2
-
-```cpp
-int cv::Vec6i::operator[](1)
-lua:
-    [propget, propput] oVec6i.2
-```
-
-### Vec6i.3
-
-```cpp
-int cv::Vec6i::operator[](2)
-lua:
-    [propget, propput] oVec6i.3
-```
-
-### Vec6i.4
-
-```cpp
-int cv::Vec6i::operator[](3)
-lua:
-    [propget, propput] oVec6i.4
-```
-
-### Vec6i.5
-
-```cpp
-int cv::Vec6i::operator[](4)
-lua:
-    [propget, propput] oVec6i.5
-```
-
-### Vec6i.6
-
-```cpp
-int cv::Vec6i::operator[](5)
-lua:
-    [propget, propput] oVec6i.6
-```
-
-### cv.Vec6i.new
-
-```cpp
-static cv::Vec6i cv::Vec6i();
-lua:
-    cv.Vec6i.new() -> <cv.Vec6i object>
-    cv.Vec6i() -> <cv.Vec6i object>
-```
-
-```cpp
-static cv::Vec6i cv::Vec6i( const std::vector<int>& values );
-lua:
-    cv.Vec6i.new( values ) -> <cv.Vec6i object>
-    cv.Vec6i( values ) -> <cv.Vec6i object>
-```
-
-### cv.Vec6i.all
-
-```cpp
-static cv::Vec6i cv::Vec6i::all( int alpha );
-lua:
-    cv.Vec6i.all( alpha ) -> retval
-```
-
-### cv.Vec6i.mul
-
-```cpp
-cv::Vec6i cv::Vec6i::mul( const cv::Vec6i& v );
-lua:
-    oVec6i:mul( v ) -> retval
-```
-
-### cv.Vec6i.ones
-
-```cpp
-static cv::Vec6i cv::Vec6i::ones();
-lua:
-    cv.Vec6i.ones() -> retval
-```
-
-### cv.Vec6i.randn
-
-```cpp
-static cv::Vec6i cv::Vec6i::randn( int a,
-                                   int b );
-lua:
-    cv.Vec6i.randn( a, b ) -> retval
-```
-
-### cv.Vec6i.randu
-
-```cpp
-static cv::Vec6i cv::Vec6i::randu( int a,
-                                   int b );
-lua:
-    cv.Vec6i.randu( a, b ) -> retval
-```
-
-### cv.Vec6i.zeros
-
-```cpp
-static cv::Vec6i cv::Vec6i::zeros();
-lua:
-    cv.Vec6i.zeros() -> retval
-```
-
-## cv::Vec8i
-
-### Vec8i.1
-
-```cpp
-int cv::Vec8i::operator[](0)
-lua:
-    [propget, propput] oVec8i.1
-```
-
-### Vec8i.2
-
-```cpp
-int cv::Vec8i::operator[](1)
-lua:
-    [propget, propput] oVec8i.2
-```
-
-### Vec8i.3
-
-```cpp
-int cv::Vec8i::operator[](2)
-lua:
-    [propget, propput] oVec8i.3
-```
-
-### Vec8i.4
-
-```cpp
-int cv::Vec8i::operator[](3)
-lua:
-    [propget, propput] oVec8i.4
-```
-
-### Vec8i.5
-
-```cpp
-int cv::Vec8i::operator[](4)
-lua:
-    [propget, propput] oVec8i.5
-```
-
-### Vec8i.6
-
-```cpp
-int cv::Vec8i::operator[](5)
-lua:
-    [propget, propput] oVec8i.6
-```
-
-### Vec8i.7
-
-```cpp
-int cv::Vec8i::operator[](6)
-lua:
-    [propget, propput] oVec8i.7
-```
-
-### Vec8i.8
-
-```cpp
-int cv::Vec8i::operator[](7)
-lua:
-    [propget, propput] oVec8i.8
-```
-
-### cv.Vec8i.new
-
-```cpp
-static cv::Vec8i cv::Vec8i();
-lua:
-    cv.Vec8i.new() -> <cv.Vec8i object>
-    cv.Vec8i() -> <cv.Vec8i object>
-```
-
-```cpp
-static cv::Vec8i cv::Vec8i( const std::vector<int>& values );
-lua:
-    cv.Vec8i.new( values ) -> <cv.Vec8i object>
-    cv.Vec8i( values ) -> <cv.Vec8i object>
-```
-
-### cv.Vec8i.all
-
-```cpp
-static cv::Vec8i cv::Vec8i::all( int alpha );
-lua:
-    cv.Vec8i.all( alpha ) -> retval
-```
-
-### cv.Vec8i.mul
-
-```cpp
-cv::Vec8i cv::Vec8i::mul( const cv::Vec8i& v );
-lua:
-    oVec8i:mul( v ) -> retval
-```
-
-### cv.Vec8i.ones
-
-```cpp
-static cv::Vec8i cv::Vec8i::ones();
-lua:
-    cv.Vec8i.ones() -> retval
-```
-
-### cv.Vec8i.randn
-
-```cpp
-static cv::Vec8i cv::Vec8i::randn( int a,
-                                   int b );
-lua:
-    cv.Vec8i.randn( a, b ) -> retval
-```
-
-### cv.Vec8i.randu
-
-```cpp
-static cv::Vec8i cv::Vec8i::randu( int a,
-                                   int b );
-lua:
-    cv.Vec8i.randu( a, b ) -> retval
-```
-
-### cv.Vec8i.zeros
-
-```cpp
-static cv::Vec8i cv::Vec8i::zeros();
-lua:
-    cv.Vec8i.zeros() -> retval
-```
-
 ## cv::VideoCapture
 
 ### cv.VideoCapture.new
 
 ```cpp
-static cv::VideoCapture cv::VideoCapture();
+cv::VideoCapture();
 lua:
-    cv.VideoCapture.new() -> <cv.VideoCapture object>
-    cv.VideoCapture() -> <cv.VideoCapture object>
+    cv.VideoCapture.new() -> <cv::VideoCapture object>
+    cv.VideoCapture() -> <cv::VideoCapture object>
 ```
 
 ```cpp
-static cv::VideoCapture cv::VideoCapture( const std::string& filename,
-                                          int                apiPreference = CAP_ANY );
+cv::VideoCapture( const std::string& filename,
+                  int                apiPreference = CAP_ANY );
 lua:
-    cv.VideoCapture.new( filename[, apiPreference] ) -> <cv.VideoCapture object>
-    cv.VideoCapture( filename[, apiPreference] ) -> <cv.VideoCapture object>
+    cv.VideoCapture.new( filename[, apiPreference] ) -> <cv::VideoCapture object>
+    cv.VideoCapture( filename[, apiPreference] ) -> <cv::VideoCapture object>
 ```
 
 ```cpp
-static cv::VideoCapture cv::VideoCapture( const std::string&      filename,
-                                          int                     apiPreference,
-                                          const std::vector<int>& params );
+cv::VideoCapture( const std::string&      filename,
+                  int                     apiPreference,
+                  const std::vector<int>& params );
 lua:
-    cv.VideoCapture.new( filename, apiPreference, params ) -> <cv.VideoCapture object>
-    cv.VideoCapture( filename, apiPreference, params ) -> <cv.VideoCapture object>
+    cv.VideoCapture.new( filename, apiPreference, params ) -> <cv::VideoCapture object>
+    cv.VideoCapture( filename, apiPreference, params ) -> <cv::VideoCapture object>
 ```
 
 ```cpp
-static cv::VideoCapture cv::VideoCapture( int index,
-                                          int apiPreference = CAP_ANY );
+cv::VideoCapture( int index,
+                  int apiPreference = CAP_ANY );
 lua:
-    cv.VideoCapture.new( index[, apiPreference] ) -> <cv.VideoCapture object>
-    cv.VideoCapture( index[, apiPreference] ) -> <cv.VideoCapture object>
+    cv.VideoCapture.new( index[, apiPreference] ) -> <cv::VideoCapture object>
+    cv.VideoCapture( index[, apiPreference] ) -> <cv::VideoCapture object>
 ```
 
 ```cpp
-static cv::VideoCapture cv::VideoCapture( int                     index,
-                                          int                     apiPreference,
-                                          const std::vector<int>& params );
+cv::VideoCapture( int                     index,
+                  int                     apiPreference,
+                  const std::vector<int>& params );
 lua:
-    cv.VideoCapture.new( index, apiPreference, params ) -> <cv.VideoCapture object>
-    cv.VideoCapture( index, apiPreference, params ) -> <cv.VideoCapture object>
+    cv.VideoCapture.new( index, apiPreference, params ) -> <cv::VideoCapture object>
+    cv.VideoCapture( index, apiPreference, params ) -> <cv::VideoCapture object>
 ```
 
 ### cv.VideoCapture.get
@@ -44368,56 +48621,56 @@ lua:
 ### cv.VideoWriter.new
 
 ```cpp
-static cv::VideoWriter cv::VideoWriter();
+cv::VideoWriter();
 lua:
-    cv.VideoWriter.new() -> <cv.VideoWriter object>
-    cv.VideoWriter() -> <cv.VideoWriter object>
+    cv.VideoWriter.new() -> <cv::VideoWriter object>
+    cv.VideoWriter() -> <cv::VideoWriter object>
 ```
 
 ```cpp
-static cv::VideoWriter cv::VideoWriter( const std::string& filename,
-                                        int                fourcc,
-                                        double             fps,
-                                        cv::Size           frameSize,
-                                        bool               isColor = true );
+cv::VideoWriter( const std::string& filename,
+                 int                fourcc,
+                 double             fps,
+                 cv::Size           frameSize,
+                 bool               isColor = true );
 lua:
-    cv.VideoWriter.new( filename, fourcc, fps, frameSize[, isColor] ) -> <cv.VideoWriter object>
-    cv.VideoWriter( filename, fourcc, fps, frameSize[, isColor] ) -> <cv.VideoWriter object>
+    cv.VideoWriter.new( filename, fourcc, fps, frameSize[, isColor] ) -> <cv::VideoWriter object>
+    cv.VideoWriter( filename, fourcc, fps, frameSize[, isColor] ) -> <cv::VideoWriter object>
 ```
 
 ```cpp
-static cv::VideoWriter cv::VideoWriter( const std::string& filename,
-                                        int                apiPreference,
-                                        int                fourcc,
-                                        double             fps,
-                                        cv::Size           frameSize,
-                                        bool               isColor = true );
+cv::VideoWriter( const std::string& filename,
+                 int                apiPreference,
+                 int                fourcc,
+                 double             fps,
+                 cv::Size           frameSize,
+                 bool               isColor = true );
 lua:
-    cv.VideoWriter.new( filename, apiPreference, fourcc, fps, frameSize[, isColor] ) -> <cv.VideoWriter object>
-    cv.VideoWriter( filename, apiPreference, fourcc, fps, frameSize[, isColor] ) -> <cv.VideoWriter object>
+    cv.VideoWriter.new( filename, apiPreference, fourcc, fps, frameSize[, isColor] ) -> <cv::VideoWriter object>
+    cv.VideoWriter( filename, apiPreference, fourcc, fps, frameSize[, isColor] ) -> <cv::VideoWriter object>
 ```
 
 ```cpp
-static cv::VideoWriter cv::VideoWriter( const std::string&      filename,
-                                        int                     fourcc,
-                                        double                  fps,
-                                        const cv::Size&         frameSize,
-                                        const std::vector<int>& params );
+cv::VideoWriter( const std::string&      filename,
+                 int                     fourcc,
+                 double                  fps,
+                 const cv::Size&         frameSize,
+                 const std::vector<int>& params );
 lua:
-    cv.VideoWriter.new( filename, fourcc, fps, frameSize, params ) -> <cv.VideoWriter object>
-    cv.VideoWriter( filename, fourcc, fps, frameSize, params ) -> <cv.VideoWriter object>
+    cv.VideoWriter.new( filename, fourcc, fps, frameSize, params ) -> <cv::VideoWriter object>
+    cv.VideoWriter( filename, fourcc, fps, frameSize, params ) -> <cv::VideoWriter object>
 ```
 
 ```cpp
-static cv::VideoWriter cv::VideoWriter( const std::string&      filename,
-                                        int                     apiPreference,
-                                        int                     fourcc,
-                                        double                  fps,
-                                        const cv::Size&         frameSize,
-                                        const std::vector<int>& params );
+cv::VideoWriter( const std::string&      filename,
+                 int                     apiPreference,
+                 int                     fourcc,
+                 double                  fps,
+                 const cv::Size&         frameSize,
+                 const std::vector<int>& params );
 lua:
-    cv.VideoWriter.new( filename, apiPreference, fourcc, fps, frameSize, params ) -> <cv.VideoWriter object>
-    cv.VideoWriter( filename, apiPreference, fourcc, fps, frameSize, params ) -> <cv.VideoWriter object>
+    cv.VideoWriter.new( filename, apiPreference, fourcc, fps, frameSize, params ) -> <cv::VideoWriter object>
+    cv.VideoWriter( filename, apiPreference, fourcc, fps, frameSize, params ) -> <cv::VideoWriter object>
 ```
 
 ### cv.VideoWriter.fourcc
@@ -45006,7 +49259,7 @@ void cv::aruco::drawDetectedCornersCharuco( InputOutputArray image,
                                             InputArray       charucoIds = noArray(),
                                             cv::Scalar       cornerColor = Scalar(255, 0, 0) );
 lua:
-    cv.aruco.drawDetectedCornersCharuco( image, charucoCorners[, charucoIds[, cornerColor]] ) -> image
+    cv.aruco.drawDetectedCornersCharuco( [image[, charucoCorners[, charucoIds[, cornerColor]]]] ) -> image
 ```
 
 ### cv.aruco.drawDetectedDiamonds
@@ -45017,7 +49270,7 @@ void cv::aruco::drawDetectedDiamonds( InputOutputArray   image,
                                       InputArray         diamondIds = noArray(),
                                       cv::Scalar         borderColor = Scalar(0, 0, 255) );
 lua:
-    cv.aruco.drawDetectedDiamonds( image, diamondCorners[, diamondIds[, borderColor]] ) -> image
+    cv.aruco.drawDetectedDiamonds( [image[, diamondCorners[, diamondIds[, borderColor]]]] ) -> image
 ```
 
 ### cv.aruco.drawDetectedMarkers
@@ -45028,7 +49281,7 @@ void cv::aruco::drawDetectedMarkers( InputOutputArray   image,
                                      InputArray         ids = noArray(),
                                      cv::Scalar         borderColor = Scalar(0, 255, 0) );
 lua:
-    cv.aruco.drawDetectedMarkers( image, corners[, ids[, borderColor]] ) -> image
+    cv.aruco.drawDetectedMarkers( [image[, corners[, ids[, borderColor]]]] ) -> image
 ```
 
 ### cv.aruco.extendDictionary
@@ -45067,12 +49320,12 @@ lua:
 ### cv.aruco.ArucoDetector.new
 
 ```cpp
-static cv::aruco::ArucoDetector cv::aruco::ArucoDetector( const cv::aruco::Dictionary&         dictionary = getPredefinedDictionary(cv::aruco::DICT_4X4_50),
-                                                          const cv::aruco::DetectorParameters& detectorParams = DetectorParameters(),
-                                                          const cv::aruco::RefineParameters&   refineParams = RefineParameters() );
+cv::aruco::ArucoDetector( const cv::aruco::Dictionary&         dictionary = getPredefinedDictionary(cv::aruco::DICT_4X4_50),
+                          const cv::aruco::DetectorParameters& detectorParams = DetectorParameters(),
+                          const cv::aruco::RefineParameters&   refineParams = RefineParameters() );
 lua:
-    cv.aruco.ArucoDetector.new( [dictionary[, detectorParams[, refineParams]]] ) -> <cv.aruco.ArucoDetector object>
-    cv.aruco.ArucoDetector( [dictionary[, detectorParams[, refineParams]]] ) -> <cv.aruco.ArucoDetector object>
+    cv.aruco.ArucoDetector.new( [dictionary[, detectorParams[, refineParams]]] ) -> <cv::aruco::ArucoDetector object>
+    cv.aruco.ArucoDetector( [dictionary[, detectorParams[, refineParams]]] ) -> <cv::aruco::ArucoDetector object>
 ```
 
 ### cv.aruco.ArucoDetector.detectMarkers
@@ -45130,7 +49383,7 @@ void cv::aruco::ArucoDetector::refineDetectedMarkers( InputArray               i
                                                       InputArray               distCoeffs = noArray(),
                                                       OutputArray              recoveredIdxs = noArray() ) const;
 lua:
-    oArucoDetector:refineDetectedMarkers( image, board, detectedCorners, detectedIds, rejectedCorners[, cameraMatrix[, distCoeffs[, recoveredIdxs]]] ) -> detectedCorners, detectedIds, rejectedCorners, recoveredIdxs
+    oArucoDetector:refineDetectedMarkers( image, board[, detectedCorners[, detectedIds[, rejectedCorners[, cameraMatrix[, distCoeffs[, recoveredIdxs]]]]]] ) -> detectedCorners, detectedIds, rejectedCorners, recoveredIdxs
 ```
 
 ### cv.aruco.ArucoDetector.setDetectorParameters
@@ -45171,12 +49424,12 @@ lua:
 ### cv.aruco.Board.new
 
 ```cpp
-static cv::aruco::Board cv::aruco::Board( InputArrayOfArrays           objPoints,
-                                          const cv::aruco::Dictionary& dictionary,
-                                          InputArray                   ids );
+cv::aruco::Board( InputArrayOfArrays           objPoints,
+                  const cv::aruco::Dictionary& dictionary,
+                  InputArray                   ids );
 lua:
-    cv.aruco.Board.new( objPoints, dictionary, ids ) -> <cv.aruco.Board object>
-    cv.aruco.Board( objPoints, dictionary, ids ) -> <cv.aruco.Board object>
+    cv.aruco.Board.new( objPoints, dictionary, ids ) -> <cv::aruco::Board object>
+    cv.aruco.Board( objPoints, dictionary, ids ) -> <cv::aruco::Board object>
 ```
 
 ### cv.aruco.Board.generateImage
@@ -45238,14 +49491,14 @@ lua:
 ### cv.aruco.CharucoBoard.new
 
 ```cpp
-static cv::aruco::CharucoBoard cv::aruco::CharucoBoard( const cv::Size&              size,
-                                                        float                        squareLength,
-                                                        float                        markerLength,
-                                                        const cv::aruco::Dictionary& dictionary,
-                                                        InputArray                   ids = noArray() );
+cv::aruco::CharucoBoard( const cv::Size&              size,
+                         float                        squareLength,
+                         float                        markerLength,
+                         const cv::aruco::Dictionary& dictionary,
+                         InputArray                   ids = noArray() );
 lua:
-    cv.aruco.CharucoBoard.new( size, squareLength, markerLength, dictionary[, ids] ) -> <cv.aruco.CharucoBoard object>
-    cv.aruco.CharucoBoard( size, squareLength, markerLength, dictionary[, ids] ) -> <cv.aruco.CharucoBoard object>
+    cv.aruco.CharucoBoard.new( size, squareLength, markerLength, dictionary[, ids] ) -> <cv::aruco::CharucoBoard object>
+    cv.aruco.CharucoBoard( size, squareLength, markerLength, dictionary[, ids] ) -> <cv::aruco::CharucoBoard object>
 ```
 
 ### cv.aruco.CharucoBoard.checkCharucoCornersCollinear
@@ -45309,13 +49562,13 @@ lua:
 ### cv.aruco.CharucoDetector.new
 
 ```cpp
-static cv::aruco::CharucoDetector cv::aruco::CharucoDetector( const cv::aruco::CharucoBoard&       board,
-                                                              const cv::aruco::CharucoParameters&  charucoParams = CharucoParameters(),
-                                                              const cv::aruco::DetectorParameters& detectorParams = DetectorParameters(),
-                                                              const cv::aruco::RefineParameters&   refineParams = RefineParameters() );
+cv::aruco::CharucoDetector( const cv::aruco::CharucoBoard&       board,
+                            const cv::aruco::CharucoParameters&  charucoParams = CharucoParameters(),
+                            const cv::aruco::DetectorParameters& detectorParams = DetectorParameters(),
+                            const cv::aruco::RefineParameters&   refineParams = RefineParameters() );
 lua:
-    cv.aruco.CharucoDetector.new( board[, charucoParams[, detectorParams[, refineParams]]] ) -> <cv.aruco.CharucoDetector object>
-    cv.aruco.CharucoDetector( board[, charucoParams[, detectorParams[, refineParams]]] ) -> <cv.aruco.CharucoDetector object>
+    cv.aruco.CharucoDetector.new( board[, charucoParams[, detectorParams[, refineParams]]] ) -> <cv::aruco::CharucoDetector object>
+    cv.aruco.CharucoDetector( board[, charucoParams[, detectorParams[, refineParams]]] ) -> <cv::aruco::CharucoDetector object>
 ```
 
 ### cv.aruco.CharucoDetector.detectBoard
@@ -45443,10 +49696,10 @@ lua:
 ### cv.aruco.CharucoParameters.new
 
 ```cpp
-static cv::aruco::CharucoParameters cv::aruco::CharucoParameters();
+cv::aruco::CharucoParameters();
 lua:
-    cv.aruco.CharucoParameters.new() -> <cv.aruco.CharucoParameters object>
-    cv.aruco.CharucoParameters() -> <cv.aruco.CharucoParameters object>
+    cv.aruco.CharucoParameters.new() -> <cv::aruco::CharucoParameters object>
+    cv.aruco.CharucoParameters() -> <cv::aruco::CharucoParameters object>
 ```
 
 ## cv::aruco::DetectorParameters
@@ -45726,10 +49979,10 @@ lua:
 ### cv.aruco.DetectorParameters.new
 
 ```cpp
-static cv::aruco::DetectorParameters cv::aruco::DetectorParameters();
+cv::aruco::DetectorParameters();
 lua:
-    cv.aruco.DetectorParameters.new() -> <cv.aruco.DetectorParameters object>
-    cv.aruco.DetectorParameters() -> <cv.aruco.DetectorParameters object>
+    cv.aruco.DetectorParameters.new() -> <cv::aruco::DetectorParameters object>
+    cv.aruco.DetectorParameters() -> <cv::aruco::DetectorParameters object>
 ```
 
 ### cv.aruco.DetectorParameters.readDetectorParameters
@@ -45778,19 +50031,19 @@ lua:
 ### cv.aruco.Dictionary.new
 
 ```cpp
-static cv::aruco::Dictionary cv::aruco::Dictionary();
+cv::aruco::Dictionary();
 lua:
-    cv.aruco.Dictionary.new() -> <cv.aruco.Dictionary object>
-    cv.aruco.Dictionary() -> <cv.aruco.Dictionary object>
+    cv.aruco.Dictionary.new() -> <cv::aruco::Dictionary object>
+    cv.aruco.Dictionary() -> <cv::aruco::Dictionary object>
 ```
 
 ```cpp
-static cv::aruco::Dictionary cv::aruco::Dictionary( const cv::Mat& bytesList,
-                                                    int            _markerSize,
-                                                    int            maxcorr = 0 );
+cv::aruco::Dictionary( const cv::Mat& bytesList,
+                       int            _markerSize,
+                       int            maxcorr = 0 );
 lua:
-    cv.aruco.Dictionary.new( bytesList, _markerSize[, maxcorr] ) -> <cv.aruco.Dictionary object>
-    cv.aruco.Dictionary( bytesList, _markerSize[, maxcorr] ) -> <cv.aruco.Dictionary object>
+    cv.aruco.Dictionary.new( bytesList, _markerSize[, maxcorr] ) -> <cv::aruco::Dictionary object>
+    cv.aruco.Dictionary( bytesList, _markerSize[, maxcorr] ) -> <cv::aruco::Dictionary object>
 ```
 
 ### cv.aruco.Dictionary.generateImageMarker
@@ -45864,14 +50117,14 @@ lua:
 ### cv.aruco.GridBoard.new
 
 ```cpp
-static cv::aruco::GridBoard cv::aruco::GridBoard( const cv::Size&              size,
-                                                  float                        markerLength,
-                                                  float                        markerSeparation,
-                                                  const cv::aruco::Dictionary& dictionary,
-                                                  InputArray                   ids = noArray() );
+cv::aruco::GridBoard( const cv::Size&              size,
+                      float                        markerLength,
+                      float                        markerSeparation,
+                      const cv::aruco::Dictionary& dictionary,
+                      InputArray                   ids = noArray() );
 lua:
-    cv.aruco.GridBoard.new( size, markerLength, markerSeparation, dictionary[, ids] ) -> <cv.aruco.GridBoard object>
-    cv.aruco.GridBoard( size, markerLength, markerSeparation, dictionary[, ids] ) -> <cv.aruco.GridBoard object>
+    cv.aruco.GridBoard.new( size, markerLength, markerSeparation, dictionary[, ids] ) -> <cv::aruco::GridBoard object>
+    cv.aruco.GridBoard( size, markerLength, markerSeparation, dictionary[, ids] ) -> <cv::aruco::GridBoard object>
 ```
 
 ### cv.aruco.GridBoard.getGridSize
@@ -45927,12 +50180,12 @@ lua:
 ### cv.aruco.RefineParameters.new
 
 ```cpp
-static cv::aruco::RefineParameters cv::aruco::RefineParameters( float minRepDistance = 10.f,
-                                                                float errorCorrectionRate = 3.f,
-                                                                bool  checkAllOrders = true );
+cv::aruco::RefineParameters( float minRepDistance = 10.f,
+                             float errorCorrectionRate = 3.f,
+                             bool  checkAllOrders = true );
 lua:
-    cv.aruco.RefineParameters.new( [minRepDistance[, errorCorrectionRate[, checkAllOrders]]] ) -> <cv.aruco.RefineParameters object>
-    cv.aruco.RefineParameters( [minRepDistance[, errorCorrectionRate[, checkAllOrders]]] ) -> <cv.aruco.RefineParameters object>
+    cv.aruco.RefineParameters.new( [minRepDistance[, errorCorrectionRate[, checkAllOrders]]] ) -> <cv::aruco::RefineParameters object>
+    cv.aruco.RefineParameters( [minRepDistance[, errorCorrectionRate[, checkAllOrders]]] ) -> <cv::aruco::RefineParameters object>
 ```
 
 ### cv.aruco.RefineParameters.readRefineParameters
@@ -45957,18 +50210,18 @@ lua:
 ### cv.barcode.BarcodeDetector.new
 
 ```cpp
-static cv::barcode::BarcodeDetector cv::barcode::BarcodeDetector();
+cv::barcode::BarcodeDetector();
 lua:
-    cv.barcode.BarcodeDetector.new() -> <cv.barcode.BarcodeDetector object>
-    cv.barcode.BarcodeDetector() -> <cv.barcode.BarcodeDetector object>
+    cv.barcode.BarcodeDetector.new() -> <cv::barcode::BarcodeDetector object>
+    cv.barcode.BarcodeDetector() -> <cv::barcode::BarcodeDetector object>
 ```
 
 ```cpp
-static cv::barcode::BarcodeDetector cv::barcode::BarcodeDetector( const std::string& prototxt_path,
-                                                                  const std::string& model_path );
+cv::barcode::BarcodeDetector( const std::string& prototxt_path,
+                              const std::string& model_path );
 lua:
-    cv.barcode.BarcodeDetector.new( prototxt_path, model_path ) -> <cv.barcode.BarcodeDetector object>
-    cv.barcode.BarcodeDetector( prototxt_path, model_path ) -> <cv.barcode.BarcodeDetector object>
+    cv.barcode.BarcodeDetector.new( prototxt_path, model_path ) -> <cv::barcode::BarcodeDetector object>
+    cv.barcode.BarcodeDetector( prototxt_path, model_path ) -> <cv::barcode::BarcodeDetector object>
 ```
 
 ### cv.barcode.BarcodeDetector.decodeWithType
@@ -46294,10 +50547,10 @@ lua:
 ### cv.cuda.BufferPool.new
 
 ```cpp
-static cv::cuda::BufferPool cv::cuda::BufferPool( cv::cuda::Stream& stream );
+cv::cuda::BufferPool( cv::cuda::Stream& stream );
 lua:
-    cv.cuda.BufferPool.new( stream ) -> <cv.cuda.BufferPool object>
-    cv.cuda.BufferPool( stream ) -> <cv.cuda.BufferPool object>
+    cv.cuda.BufferPool.new( stream ) -> <cv::cuda::BufferPool object>
+    cv.cuda.BufferPool( stream ) -> <cv::cuda::BufferPool object>
 ```
 
 ### cv.cuda.BufferPool.getAllocator
@@ -46362,17 +50615,17 @@ lua:
 ### cv.cuda.DeviceInfo.new
 
 ```cpp
-static cv::cuda::DeviceInfo cv::cuda::DeviceInfo();
+cv::cuda::DeviceInfo();
 lua:
-    cv.cuda.DeviceInfo.new() -> <cv.cuda.DeviceInfo object>
-    cv.cuda.DeviceInfo() -> <cv.cuda.DeviceInfo object>
+    cv.cuda.DeviceInfo.new() -> <cv::cuda::DeviceInfo object>
+    cv.cuda.DeviceInfo() -> <cv::cuda::DeviceInfo object>
 ```
 
 ```cpp
-static cv::cuda::DeviceInfo cv::cuda::DeviceInfo( int device_id );
+cv::cuda::DeviceInfo( int device_id );
 lua:
-    cv.cuda.DeviceInfo.new( device_id ) -> <cv.cuda.DeviceInfo object>
-    cv.cuda.DeviceInfo( device_id ) -> <cv.cuda.DeviceInfo object>
+    cv.cuda.DeviceInfo.new( device_id ) -> <cv::cuda::DeviceInfo object>
+    cv.cuda.DeviceInfo( device_id ) -> <cv::cuda::DeviceInfo object>
 ```
 
 ### cv.cuda.DeviceInfo.ECCEnabled
@@ -46861,10 +51114,10 @@ lua:
 ### cv.cuda.Event.new
 
 ```cpp
-static cv::cuda::Event cv::cuda::Event( const cv::cuda::Event::CreateFlags flags = Event::CreateFlags::DEFAULT );
+cv::cuda::Event( const cv::cuda::Event::CreateFlags flags = Event::CreateFlags::DEFAULT );
 lua:
-    cv.cuda.Event.new( [flags] ) -> <cv.cuda.Event object>
-    cv.cuda.Event( [flags] ) -> <cv.cuda.Event object>
+    cv.cuda.Event.new( [flags] ) -> <cv::cuda::Event object>
+    cv.cuda.Event( [flags] ) -> <cv::cuda::Event object>
 ```
 
 ### cv.cuda.Event.elapsedTime
@@ -46915,82 +51168,82 @@ lua:
 ### cv.cuda.GpuMat.new
 
 ```cpp
-static cv::cuda::GpuMat cv::cuda::GpuMat( cv::cuda::GpuMat::Allocator* allocator = GpuMat::defaultAllocator() );
+cv::cuda::GpuMat( cv::cuda::GpuMat::Allocator* allocator = GpuMat::defaultAllocator() );
 lua:
-    cv.cuda.GpuMat.new( [allocator] ) -> <cv.cuda.GpuMat object>
-    cv.cuda.GpuMat( [allocator] ) -> <cv.cuda.GpuMat object>
+    cv.cuda.GpuMat.new( [allocator] ) -> <cv::cuda::GpuMat object>
+    cv.cuda.GpuMat( [allocator] ) -> <cv::cuda::GpuMat object>
 ```
 
 ```cpp
-static cv::cuda::GpuMat cv::cuda::GpuMat( int                          rows,
-                                          int                          cols,
-                                          int                          type,
-                                          cv::cuda::GpuMat::Allocator* allocator = GpuMat::defaultAllocator() );
+cv::cuda::GpuMat( int                          rows,
+                  int                          cols,
+                  int                          type,
+                  cv::cuda::GpuMat::Allocator* allocator = GpuMat::defaultAllocator() );
 lua:
-    cv.cuda.GpuMat.new( rows, cols, type[, allocator] ) -> <cv.cuda.GpuMat object>
-    cv.cuda.GpuMat( rows, cols, type[, allocator] ) -> <cv.cuda.GpuMat object>
+    cv.cuda.GpuMat.new( rows, cols, type[, allocator] ) -> <cv::cuda::GpuMat object>
+    cv.cuda.GpuMat( rows, cols, type[, allocator] ) -> <cv::cuda::GpuMat object>
 ```
 
 ```cpp
-static cv::cuda::GpuMat cv::cuda::GpuMat( cv::Size                     size,
-                                          int                          type,
-                                          cv::cuda::GpuMat::Allocator* allocator = GpuMat::defaultAllocator() );
+cv::cuda::GpuMat( cv::Size                     size,
+                  int                          type,
+                  cv::cuda::GpuMat::Allocator* allocator = GpuMat::defaultAllocator() );
 lua:
-    cv.cuda.GpuMat.new( size, type[, allocator] ) -> <cv.cuda.GpuMat object>
-    cv.cuda.GpuMat( size, type[, allocator] ) -> <cv.cuda.GpuMat object>
+    cv.cuda.GpuMat.new( size, type[, allocator] ) -> <cv::cuda::GpuMat object>
+    cv.cuda.GpuMat( size, type[, allocator] ) -> <cv::cuda::GpuMat object>
 ```
 
 ```cpp
-static cv::cuda::GpuMat cv::cuda::GpuMat( int                          rows,
-                                          int                          cols,
-                                          int                          type,
-                                          cv::Scalar                   s,
-                                          cv::cuda::GpuMat::Allocator* allocator = GpuMat::defaultAllocator() );
+cv::cuda::GpuMat( int                          rows,
+                  int                          cols,
+                  int                          type,
+                  cv::Scalar                   s,
+                  cv::cuda::GpuMat::Allocator* allocator = GpuMat::defaultAllocator() );
 lua:
-    cv.cuda.GpuMat.new( rows, cols, type, s[, allocator] ) -> <cv.cuda.GpuMat object>
-    cv.cuda.GpuMat( rows, cols, type, s[, allocator] ) -> <cv.cuda.GpuMat object>
+    cv.cuda.GpuMat.new( rows, cols, type, s[, allocator] ) -> <cv::cuda::GpuMat object>
+    cv.cuda.GpuMat( rows, cols, type, s[, allocator] ) -> <cv::cuda::GpuMat object>
 ```
 
 ```cpp
-static cv::cuda::GpuMat cv::cuda::GpuMat( cv::Size                     size,
-                                          int                          type,
-                                          cv::Scalar                   s,
-                                          cv::cuda::GpuMat::Allocator* allocator = GpuMat::defaultAllocator() );
+cv::cuda::GpuMat( cv::Size                     size,
+                  int                          type,
+                  cv::Scalar                   s,
+                  cv::cuda::GpuMat::Allocator* allocator = GpuMat::defaultAllocator() );
 lua:
-    cv.cuda.GpuMat.new( size, type, s[, allocator] ) -> <cv.cuda.GpuMat object>
-    cv.cuda.GpuMat( size, type, s[, allocator] ) -> <cv.cuda.GpuMat object>
+    cv.cuda.GpuMat.new( size, type, s[, allocator] ) -> <cv::cuda::GpuMat object>
+    cv.cuda.GpuMat( size, type, s[, allocator] ) -> <cv::cuda::GpuMat object>
 ```
 
 ```cpp
-static cv::cuda::GpuMat cv::cuda::GpuMat( const cv::cuda::GpuMat& m );
+cv::cuda::GpuMat( const cv::cuda::GpuMat& m );
 lua:
-    cv.cuda.GpuMat.new( m ) -> <cv.cuda.GpuMat object>
-    cv.cuda.GpuMat( m ) -> <cv.cuda.GpuMat object>
+    cv.cuda.GpuMat.new( m ) -> <cv::cuda::GpuMat object>
+    cv.cuda.GpuMat( m ) -> <cv::cuda::GpuMat object>
 ```
 
 ```cpp
-static cv::cuda::GpuMat cv::cuda::GpuMat( const cv::cuda::GpuMat& m,
-                                          cv::Range               rowRange,
-                                          cv::Range               colRange );
+cv::cuda::GpuMat( const cv::cuda::GpuMat& m,
+                  cv::Range               rowRange,
+                  cv::Range               colRange );
 lua:
-    cv.cuda.GpuMat.new( m, rowRange, colRange ) -> <cv.cuda.GpuMat object>
-    cv.cuda.GpuMat( m, rowRange, colRange ) -> <cv.cuda.GpuMat object>
+    cv.cuda.GpuMat.new( m, rowRange, colRange ) -> <cv::cuda::GpuMat object>
+    cv.cuda.GpuMat( m, rowRange, colRange ) -> <cv::cuda::GpuMat object>
 ```
 
 ```cpp
-static cv::cuda::GpuMat cv::cuda::GpuMat( const cv::cuda::GpuMat& m,
-                                          cv::Rect                roi );
+cv::cuda::GpuMat( const cv::cuda::GpuMat& m,
+                  cv::Rect                roi );
 lua:
-    cv.cuda.GpuMat.new( m, roi ) -> <cv.cuda.GpuMat object>
-    cv.cuda.GpuMat( m, roi ) -> <cv.cuda.GpuMat object>
+    cv.cuda.GpuMat.new( m, roi ) -> <cv::cuda::GpuMat object>
+    cv.cuda.GpuMat( m, roi ) -> <cv::cuda::GpuMat object>
 ```
 
 ```cpp
-static cv::cuda::GpuMat cv::cuda::GpuMat( InputArray                   arr,
-                                          cv::cuda::GpuMat::Allocator* allocator = GpuMat::defaultAllocator() );
+cv::cuda::GpuMat( InputArray                   arr,
+                  cv::cuda::GpuMat::Allocator* allocator = GpuMat::defaultAllocator() );
 lua:
-    cv.cuda.GpuMat.new( arr[, allocator] ) -> <cv.cuda.GpuMat object>
-    cv.cuda.GpuMat( arr[, allocator] ) -> <cv.cuda.GpuMat object>
+    cv.cuda.GpuMat.new( arr[, allocator] ) -> <cv::cuda::GpuMat object>
+    cv.cuda.GpuMat( arr[, allocator] ) -> <cv::cuda::GpuMat object>
 ```
 
 ### cv.cuda.GpuMat.adjustROI
@@ -47382,37 +51635,37 @@ lua:
 ### cv.cuda.HostMem.new
 
 ```cpp
-static cv::cuda::HostMem cv::cuda::HostMem( cv::cuda::HostMem::AllocType alloc_type = HostMem::AllocType::PAGE_LOCKED );
+cv::cuda::HostMem( cv::cuda::HostMem::AllocType alloc_type = HostMem::AllocType::PAGE_LOCKED );
 lua:
-    cv.cuda.HostMem.new( [alloc_type] ) -> <cv.cuda.HostMem object>
-    cv.cuda.HostMem( [alloc_type] ) -> <cv.cuda.HostMem object>
+    cv.cuda.HostMem.new( [alloc_type] ) -> <cv::cuda::HostMem object>
+    cv.cuda.HostMem( [alloc_type] ) -> <cv::cuda::HostMem object>
 ```
 
 ```cpp
-static cv::cuda::HostMem cv::cuda::HostMem( int                          rows,
-                                            int                          cols,
-                                            int                          type,
-                                            cv::cuda::HostMem::AllocType alloc_type = HostMem::AllocType::PAGE_LOCKED );
+cv::cuda::HostMem( int                          rows,
+                   int                          cols,
+                   int                          type,
+                   cv::cuda::HostMem::AllocType alloc_type = HostMem::AllocType::PAGE_LOCKED );
 lua:
-    cv.cuda.HostMem.new( rows, cols, type[, alloc_type] ) -> <cv.cuda.HostMem object>
-    cv.cuda.HostMem( rows, cols, type[, alloc_type] ) -> <cv.cuda.HostMem object>
+    cv.cuda.HostMem.new( rows, cols, type[, alloc_type] ) -> <cv::cuda::HostMem object>
+    cv.cuda.HostMem( rows, cols, type[, alloc_type] ) -> <cv::cuda::HostMem object>
 ```
 
 ```cpp
-static cv::cuda::HostMem cv::cuda::HostMem( cv::Size                     size,
-                                            int                          type,
-                                            cv::cuda::HostMem::AllocType alloc_type = HostMem::AllocType::PAGE_LOCKED );
+cv::cuda::HostMem( cv::Size                     size,
+                   int                          type,
+                   cv::cuda::HostMem::AllocType alloc_type = HostMem::AllocType::PAGE_LOCKED );
 lua:
-    cv.cuda.HostMem.new( size, type[, alloc_type] ) -> <cv.cuda.HostMem object>
-    cv.cuda.HostMem( size, type[, alloc_type] ) -> <cv.cuda.HostMem object>
+    cv.cuda.HostMem.new( size, type[, alloc_type] ) -> <cv::cuda::HostMem object>
+    cv.cuda.HostMem( size, type[, alloc_type] ) -> <cv::cuda::HostMem object>
 ```
 
 ```cpp
-static cv::cuda::HostMem cv::cuda::HostMem( InputArray                   arr,
-                                            cv::cuda::HostMem::AllocType alloc_type = HostMem::AllocType::PAGE_LOCKED );
+cv::cuda::HostMem( InputArray                   arr,
+                   cv::cuda::HostMem::AllocType alloc_type = HostMem::AllocType::PAGE_LOCKED );
 lua:
-    cv.cuda.HostMem.new( arr[, alloc_type] ) -> <cv.cuda.HostMem object>
-    cv.cuda.HostMem( arr[, alloc_type] ) -> <cv.cuda.HostMem object>
+    cv.cuda.HostMem.new( arr[, alloc_type] ) -> <cv::cuda::HostMem object>
+    cv.cuda.HostMem( arr[, alloc_type] ) -> <cv::cuda::HostMem object>
 ```
 
 ### cv.cuda.HostMem.channels
@@ -47535,24 +51788,24 @@ lua:
 ### cv.cuda.Stream.new
 
 ```cpp
-static cv::cuda::Stream cv::cuda::Stream();
+cv::cuda::Stream();
 lua:
-    cv.cuda.Stream.new() -> <cv.cuda.Stream object>
-    cv.cuda.Stream() -> <cv.cuda.Stream object>
+    cv.cuda.Stream.new() -> <cv::cuda::Stream object>
+    cv.cuda.Stream() -> <cv::cuda::Stream object>
 ```
 
 ```cpp
-static cv::cuda::Stream cv::cuda::Stream( const cv::Ptr<cv::cuda::GpuMat::Allocator>& allocator );
+cv::cuda::Stream( const cv::Ptr<cv::cuda::GpuMat::Allocator>& allocator );
 lua:
-    cv.cuda.Stream.new( allocator ) -> <cv.cuda.Stream object>
-    cv.cuda.Stream( allocator ) -> <cv.cuda.Stream object>
+    cv.cuda.Stream.new( allocator ) -> <cv::cuda::Stream object>
+    cv.cuda.Stream( allocator ) -> <cv::cuda::Stream object>
 ```
 
 ```cpp
-static cv::cuda::Stream cv::cuda::Stream( const size_t cudaFlags );
+cv::cuda::Stream( const size_t cudaFlags );
 lua:
-    cv.cuda.Stream.new( cudaFlags ) -> <cv.cuda.Stream object>
-    cv.cuda.Stream( cudaFlags ) -> <cv.cuda.Stream object>
+    cv.cuda.Stream.new( cudaFlags ) -> <cv::cuda::Stream object>
+    cv.cuda.Stream( cudaFlags ) -> <cv::cuda::Stream object>
 ```
 
 ### cv.cuda.Stream.Null
@@ -47800,7 +52053,7 @@ void cv::detail::createWeightMap( InputArray       mask,
                                   float            sharpness,
                                   InputOutputArray weight );
 lua:
-    cv.detail.createWeightMap( mask, sharpness, weight ) -> weight
+    cv.detail.createWeightMap( mask, sharpness[, weight] ) -> weight
 ```
 
 ### cv.detail.focalsFromHomography
@@ -47841,7 +52094,7 @@ lua:
 void cv::detail::normalizeUsingWeightMap( InputArray       weight,
                                           InputOutputArray src );
 lua:
-    cv.detail.normalizeUsingWeightMap( weight, src ) -> src
+    cv.detail.normalizeUsingWeightMap( weight[, src] ) -> src
 ```
 
 ### cv.detail.overlapRoi
@@ -47937,10 +52190,10 @@ lua:
 ### cv.detail.AffineBasedEstimator.new
 
 ```cpp
-static cv::detail::AffineBasedEstimator cv::detail::AffineBasedEstimator();
+cv::detail::AffineBasedEstimator();
 lua:
-    cv.detail.AffineBasedEstimator.new() -> <cv.detail.AffineBasedEstimator object>
-    cv.detail.AffineBasedEstimator() -> <cv.detail.AffineBasedEstimator object>
+    cv.detail.AffineBasedEstimator.new() -> <cv::detail::AffineBasedEstimator object>
+    cv.detail.AffineBasedEstimator() -> <cv::detail::AffineBasedEstimator object>
 ```
 
 ## cv::detail::AffineBestOf2NearestMatcher
@@ -47948,13 +52201,13 @@ lua:
 ### cv.detail.AffineBestOf2NearestMatcher.new
 
 ```cpp
-static cv::detail::AffineBestOf2NearestMatcher cv::detail::AffineBestOf2NearestMatcher( bool  full_affine = false,
-                                                                                        bool  try_use_gpu = false,
-                                                                                        float match_conf = 0.3f,
-                                                                                        int   num_matches_thresh1 = 6 );
+cv::detail::AffineBestOf2NearestMatcher( bool  full_affine = false,
+                                         bool  try_use_gpu = false,
+                                         float match_conf = 0.3f,
+                                         int   num_matches_thresh1 = 6 );
 lua:
-    cv.detail.AffineBestOf2NearestMatcher.new( [full_affine[, try_use_gpu[, match_conf[, num_matches_thresh1]]]] ) -> <cv.detail.AffineBestOf2NearestMatcher object>
-    cv.detail.AffineBestOf2NearestMatcher( [full_affine[, try_use_gpu[, match_conf[, num_matches_thresh1]]]] ) -> <cv.detail.AffineBestOf2NearestMatcher object>
+    cv.detail.AffineBestOf2NearestMatcher.new( [full_affine[, try_use_gpu[, match_conf[, num_matches_thresh1]]]] ) -> <cv::detail::AffineBestOf2NearestMatcher object>
+    cv.detail.AffineBestOf2NearestMatcher( [full_affine[, try_use_gpu[, match_conf[, num_matches_thresh1]]]] ) -> <cv::detail::AffineBestOf2NearestMatcher object>
 ```
 
 ## cv::detail::BestOf2NearestMatcher
@@ -47962,14 +52215,14 @@ lua:
 ### cv.detail.BestOf2NearestMatcher.new
 
 ```cpp
-static cv::detail::BestOf2NearestMatcher cv::detail::BestOf2NearestMatcher( bool   try_use_gpu = false,
-                                                                            float  match_conf = 0.3f,
-                                                                            int    num_matches_thresh1 = 6,
-                                                                            int    num_matches_thresh2 = 6,
-                                                                            double matches_confindece_thresh = 3. );
+cv::detail::BestOf2NearestMatcher( bool   try_use_gpu = false,
+                                   float  match_conf = 0.3f,
+                                   int    num_matches_thresh1 = 6,
+                                   int    num_matches_thresh2 = 6,
+                                   double matches_confindece_thresh = 3. );
 lua:
-    cv.detail.BestOf2NearestMatcher.new( [try_use_gpu[, match_conf[, num_matches_thresh1[, num_matches_thresh2[, matches_confindece_thresh]]]]] ) -> <cv.detail.BestOf2NearestMatcher object>
-    cv.detail.BestOf2NearestMatcher( [try_use_gpu[, match_conf[, num_matches_thresh1[, num_matches_thresh2[, matches_confindece_thresh]]]]] ) -> <cv.detail.BestOf2NearestMatcher object>
+    cv.detail.BestOf2NearestMatcher.new( [try_use_gpu[, match_conf[, num_matches_thresh1[, num_matches_thresh2[, matches_confindece_thresh]]]]] ) -> <cv::detail::BestOf2NearestMatcher object>
+    cv.detail.BestOf2NearestMatcher( [try_use_gpu[, match_conf[, num_matches_thresh1[, num_matches_thresh2[, matches_confindece_thresh]]]]] ) -> <cv::detail::BestOf2NearestMatcher object>
 ```
 
 ### cv.detail.BestOf2NearestMatcher.collectGarbage
@@ -47997,14 +52250,14 @@ lua:
 ### cv.detail.BestOf2NearestRangeMatcher.new
 
 ```cpp
-static cv::detail::BestOf2NearestRangeMatcher cv::detail::BestOf2NearestRangeMatcher( int   range_width = 5,
-                                                                                      bool  try_use_gpu = false,
-                                                                                      float match_conf = 0.3f,
-                                                                                      int   num_matches_thresh1 = 6,
-                                                                                      int   num_matches_thresh2 = 6 );
+cv::detail::BestOf2NearestRangeMatcher( int   range_width = 5,
+                                        bool  try_use_gpu = false,
+                                        float match_conf = 0.3f,
+                                        int   num_matches_thresh1 = 6,
+                                        int   num_matches_thresh2 = 6 );
 lua:
-    cv.detail.BestOf2NearestRangeMatcher.new( [range_width[, try_use_gpu[, match_conf[, num_matches_thresh1[, num_matches_thresh2]]]]] ) -> <cv.detail.BestOf2NearestRangeMatcher object>
-    cv.detail.BestOf2NearestRangeMatcher( [range_width[, try_use_gpu[, match_conf[, num_matches_thresh1[, num_matches_thresh2]]]]] ) -> <cv.detail.BestOf2NearestRangeMatcher object>
+    cv.detail.BestOf2NearestRangeMatcher.new( [range_width[, try_use_gpu[, match_conf[, num_matches_thresh1[, num_matches_thresh2]]]]] ) -> <cv::detail::BestOf2NearestRangeMatcher object>
+    cv.detail.BestOf2NearestRangeMatcher( [range_width[, try_use_gpu[, match_conf[, num_matches_thresh1[, num_matches_thresh2]]]]] ) -> <cv::detail::BestOf2NearestRangeMatcher object>
 ```
 
 ## cv::detail::Blender
@@ -48039,7 +52292,7 @@ lua:
 void cv::detail::Blender::blend( InputOutputArray dst,
                                  InputOutputArray dst_mask );
 lua:
-    oBlender:blend( dst, dst_mask ) -> dst, dst_mask
+    oBlender:blend( [dst[, dst_mask]] ) -> dst, dst_mask
 ```
 
 ### cv.detail.Blender.createDefault
@@ -48081,12 +52334,12 @@ lua:
 ### cv.detail.BlocksChannelsCompensator.new
 
 ```cpp
-static cv::detail::BlocksChannelsCompensator cv::detail::BlocksChannelsCompensator( int bl_width = 32,
-                                                                                    int bl_height = 32,
-                                                                                    int nr_feeds = 1 );
+cv::detail::BlocksChannelsCompensator( int bl_width = 32,
+                                       int bl_height = 32,
+                                       int nr_feeds = 1 );
 lua:
-    cv.detail.BlocksChannelsCompensator.new( [bl_width[, bl_height[, nr_feeds]]] ) -> <cv.detail.BlocksChannelsCompensator object>
-    cv.detail.BlocksChannelsCompensator( [bl_width[, bl_height[, nr_feeds]]] ) -> <cv.detail.BlocksChannelsCompensator object>
+    cv.detail.BlocksChannelsCompensator.new( [bl_width[, bl_height[, nr_feeds]]] ) -> <cv::detail::BlocksChannelsCompensator object>
+    cv.detail.BlocksChannelsCompensator( [bl_width[, bl_height[, nr_feeds]]] ) -> <cv::detail::BlocksChannelsCompensator object>
 ```
 
 ## cv::detail::BlocksCompensator
@@ -48099,7 +52352,7 @@ void cv::detail::BlocksCompensator::apply( int              index,
                                            InputOutputArray image,
                                            InputArray       mask );
 lua:
-    oBlocksCompensator:apply( index, corner, image, mask ) -> image
+    oBlocksCompensator:apply( index, corner[, image[, mask]] ) -> image
 ```
 
 ### cv.detail.BlocksCompensator.getBlockSize
@@ -48194,20 +52447,20 @@ lua:
 ### cv.detail.BlocksGainCompensator.new
 
 ```cpp
-static cv::detail::BlocksGainCompensator cv::detail::BlocksGainCompensator( int bl_width = 32,
-                                                                            int bl_height = 32 );
+cv::detail::BlocksGainCompensator( int bl_width = 32,
+                                   int bl_height = 32 );
 lua:
-    cv.detail.BlocksGainCompensator.new( [bl_width[, bl_height]] ) -> <cv.detail.BlocksGainCompensator object>
-    cv.detail.BlocksGainCompensator( [bl_width[, bl_height]] ) -> <cv.detail.BlocksGainCompensator object>
+    cv.detail.BlocksGainCompensator.new( [bl_width[, bl_height]] ) -> <cv::detail::BlocksGainCompensator object>
+    cv.detail.BlocksGainCompensator( [bl_width[, bl_height]] ) -> <cv::detail::BlocksGainCompensator object>
 ```
 
 ```cpp
-static cv::detail::BlocksGainCompensator cv::detail::BlocksGainCompensator( int bl_width,
-                                                                            int bl_height,
-                                                                            int nr_feeds );
+cv::detail::BlocksGainCompensator( int bl_width,
+                                   int bl_height,
+                                   int nr_feeds );
 lua:
-    cv.detail.BlocksGainCompensator.new( bl_width, bl_height, nr_feeds ) -> <cv.detail.BlocksGainCompensator object>
-    cv.detail.BlocksGainCompensator( bl_width, bl_height, nr_feeds ) -> <cv.detail.BlocksGainCompensator object>
+    cv.detail.BlocksGainCompensator.new( bl_width, bl_height, nr_feeds ) -> <cv::detail::BlocksGainCompensator object>
+    cv.detail.BlocksGainCompensator( bl_width, bl_height, nr_feeds ) -> <cv::detail::BlocksGainCompensator object>
 ```
 
 ### cv.detail.BlocksGainCompensator.apply
@@ -48218,7 +52471,7 @@ void cv::detail::BlocksGainCompensator::apply( int              index,
                                                InputOutputArray image,
                                                InputArray       mask );
 lua:
-    oBlocksGainCompensator:apply( index, corner, image, mask ) -> image
+    oBlocksGainCompensator:apply( index, corner[, image[, mask]] ) -> image
 ```
 
 ### cv.detail.BlocksGainCompensator.getMatGains
@@ -48242,10 +52495,10 @@ lua:
 ### cv.detail.BundleAdjusterAffine.new
 
 ```cpp
-static cv::detail::BundleAdjusterAffine cv::detail::BundleAdjusterAffine();
+cv::detail::BundleAdjusterAffine();
 lua:
-    cv.detail.BundleAdjusterAffine.new() -> <cv.detail.BundleAdjusterAffine object>
-    cv.detail.BundleAdjusterAffine() -> <cv.detail.BundleAdjusterAffine object>
+    cv.detail.BundleAdjusterAffine.new() -> <cv::detail::BundleAdjusterAffine object>
+    cv.detail.BundleAdjusterAffine() -> <cv::detail::BundleAdjusterAffine object>
 ```
 
 ## cv::detail::BundleAdjusterAffinePartial
@@ -48253,10 +52506,10 @@ lua:
 ### cv.detail.BundleAdjusterAffinePartial.new
 
 ```cpp
-static cv::detail::BundleAdjusterAffinePartial cv::detail::BundleAdjusterAffinePartial();
+cv::detail::BundleAdjusterAffinePartial();
 lua:
-    cv.detail.BundleAdjusterAffinePartial.new() -> <cv.detail.BundleAdjusterAffinePartial object>
-    cv.detail.BundleAdjusterAffinePartial() -> <cv.detail.BundleAdjusterAffinePartial object>
+    cv.detail.BundleAdjusterAffinePartial.new() -> <cv::detail::BundleAdjusterAffinePartial object>
+    cv.detail.BundleAdjusterAffinePartial() -> <cv::detail::BundleAdjusterAffinePartial object>
 ```
 
 ## cv::detail::BundleAdjusterBase
@@ -48314,10 +52567,10 @@ lua:
 ### cv.detail.BundleAdjusterRay.new
 
 ```cpp
-static cv::detail::BundleAdjusterRay cv::detail::BundleAdjusterRay();
+cv::detail::BundleAdjusterRay();
 lua:
-    cv.detail.BundleAdjusterRay.new() -> <cv.detail.BundleAdjusterRay object>
-    cv.detail.BundleAdjusterRay() -> <cv.detail.BundleAdjusterRay object>
+    cv.detail.BundleAdjusterRay.new() -> <cv::detail::BundleAdjusterRay object>
+    cv.detail.BundleAdjusterRay() -> <cv::detail::BundleAdjusterRay object>
 ```
 
 ## cv::detail::BundleAdjusterReproj
@@ -48325,10 +52578,10 @@ lua:
 ### cv.detail.BundleAdjusterReproj.new
 
 ```cpp
-static cv::detail::BundleAdjusterReproj cv::detail::BundleAdjusterReproj();
+cv::detail::BundleAdjusterReproj();
 lua:
-    cv.detail.BundleAdjusterReproj.new() -> <cv.detail.BundleAdjusterReproj object>
-    cv.detail.BundleAdjusterReproj() -> <cv.detail.BundleAdjusterReproj object>
+    cv.detail.BundleAdjusterReproj.new() -> <cv::detail::BundleAdjusterReproj object>
+    cv.detail.BundleAdjusterReproj() -> <cv::detail::BundleAdjusterReproj object>
 ```
 
 ## cv::detail::CameraParams
@@ -48384,10 +52637,10 @@ lua:
 ### cv.detail.CameraParams.new
 
 ```cpp
-static cv::detail::CameraParams cv::detail::CameraParams();
+cv::detail::CameraParams();
 lua:
-    cv.detail.CameraParams.new() -> <cv.detail.CameraParams object>
-    cv.detail.CameraParams() -> <cv.detail.CameraParams object>
+    cv.detail.CameraParams.new() -> <cv::detail::CameraParams object>
+    cv.detail.CameraParams() -> <cv::detail::CameraParams object>
 ```
 
 ### cv.detail.CameraParams.K
@@ -48403,10 +52656,10 @@ lua:
 ### cv.detail.ChannelsCompensator.new
 
 ```cpp
-static cv::detail::ChannelsCompensator cv::detail::ChannelsCompensator( int nr_feeds = 1 );
+cv::detail::ChannelsCompensator( int nr_feeds = 1 );
 lua:
-    cv.detail.ChannelsCompensator.new( [nr_feeds] ) -> <cv.detail.ChannelsCompensator object>
-    cv.detail.ChannelsCompensator( [nr_feeds] ) -> <cv.detail.ChannelsCompensator object>
+    cv.detail.ChannelsCompensator.new( [nr_feeds] ) -> <cv::detail::ChannelsCompensator object>
+    cv.detail.ChannelsCompensator( [nr_feeds] ) -> <cv::detail::ChannelsCompensator object>
 ```
 
 ### cv.detail.ChannelsCompensator.apply
@@ -48417,7 +52670,7 @@ void cv::detail::ChannelsCompensator::apply( int              index,
                                              InputOutputArray image,
                                              InputArray       mask );
 lua:
-    oChannelsCompensator:apply( index, corner, image, mask ) -> image
+    oChannelsCompensator:apply( index, corner[, image[, mask]] ) -> image
 ```
 
 ### cv.detail.ChannelsCompensator.getMatGains
@@ -48489,10 +52742,10 @@ lua:
 ### cv.detail.DpSeamFinder.new
 
 ```cpp
-static cv::detail::DpSeamFinder cv::detail::DpSeamFinder( std::string costFunc );
+cv::detail::DpSeamFinder( std::string costFunc );
 lua:
-    cv.detail.DpSeamFinder.new( costFunc ) -> <cv.detail.DpSeamFinder object>
-    cv.detail.DpSeamFinder( costFunc ) -> <cv.detail.DpSeamFinder object>
+    cv.detail.DpSeamFinder.new( costFunc ) -> <cv::detail::DpSeamFinder object>
+    cv.detail.DpSeamFinder( costFunc ) -> <cv::detail::DpSeamFinder object>
 ```
 
 ### cv.detail.DpSeamFinder.setCostFunction
@@ -48565,7 +52818,7 @@ void cv::detail::ExposureCompensator::apply( int              index,
                                              InputOutputArray image,
                                              InputArray       mask );
 lua:
-    oExposureCompensator:apply( index, corner, image, mask ) -> image
+    oExposureCompensator:apply( index, corner[, image[, mask]] ) -> image
 ```
 
 ### cv.detail.ExposureCompensator.createDefault
@@ -48627,10 +52880,10 @@ lua:
 ### cv.detail.FeatherBlender.new
 
 ```cpp
-static cv::detail::FeatherBlender cv::detail::FeatherBlender( float sharpness = 0.02f );
+cv::detail::FeatherBlender( float sharpness = 0.02f );
 lua:
-    cv.detail.FeatherBlender.new( [sharpness] ) -> <cv.detail.FeatherBlender object>
-    cv.detail.FeatherBlender( [sharpness] ) -> <cv.detail.FeatherBlender object>
+    cv.detail.FeatherBlender.new( [sharpness] ) -> <cv::detail::FeatherBlender object>
+    cv.detail.FeatherBlender( [sharpness] ) -> <cv::detail::FeatherBlender object>
 ```
 
 ### cv.detail.FeatherBlender.blend
@@ -48639,7 +52892,7 @@ lua:
 void cv::detail::FeatherBlender::blend( InputOutputArray dst,
                                         InputOutputArray dst_mask );
 lua:
-    oFeatherBlender:blend( dst, dst_mask ) -> dst, dst_mask
+    oFeatherBlender:blend( [dst[, dst_mask]] ) -> dst, dst_mask
 ```
 
 ### cv.detail.FeatherBlender.createWeightMaps
@@ -48729,17 +52982,17 @@ lua:
 ### cv.detail.GainCompensator.new
 
 ```cpp
-static cv::detail::GainCompensator cv::detail::GainCompensator();
+cv::detail::GainCompensator();
 lua:
-    cv.detail.GainCompensator.new() -> <cv.detail.GainCompensator object>
-    cv.detail.GainCompensator() -> <cv.detail.GainCompensator object>
+    cv.detail.GainCompensator.new() -> <cv::detail::GainCompensator object>
+    cv.detail.GainCompensator() -> <cv::detail::GainCompensator object>
 ```
 
 ```cpp
-static cv::detail::GainCompensator cv::detail::GainCompensator( int nr_feeds );
+cv::detail::GainCompensator( int nr_feeds );
 lua:
-    cv.detail.GainCompensator.new( nr_feeds ) -> <cv.detail.GainCompensator object>
-    cv.detail.GainCompensator( nr_feeds ) -> <cv.detail.GainCompensator object>
+    cv.detail.GainCompensator.new( nr_feeds ) -> <cv::detail::GainCompensator object>
+    cv.detail.GainCompensator( nr_feeds ) -> <cv::detail::GainCompensator object>
 ```
 
 ### cv.detail.GainCompensator.apply
@@ -48750,7 +53003,7 @@ void cv::detail::GainCompensator::apply( int              index,
                                          InputOutputArray image,
                                          InputArray       mask );
 lua:
-    oGainCompensator:apply( index, corner, image, mask ) -> image
+    oGainCompensator:apply( index, corner[, image[, mask]] ) -> image
 ```
 
 ### cv.detail.GainCompensator.getMatGains
@@ -48806,12 +53059,12 @@ lua:
 ### cv.detail.GraphCutSeamFinder.new
 
 ```cpp
-static cv::detail::GraphCutSeamFinder cv::detail::GraphCutSeamFinder( std::string cost_type,
-                                                                      float       terminal_cost = 10000.f,
-                                                                      float       bad_region_penalty = 1000.f );
+cv::detail::GraphCutSeamFinder( std::string cost_type,
+                                float       terminal_cost = 10000.f,
+                                float       bad_region_penalty = 1000.f );
 lua:
-    cv.detail.GraphCutSeamFinder.new( cost_type[, terminal_cost[, bad_region_penalty]] ) -> <cv.detail.GraphCutSeamFinder object>
-    cv.detail.GraphCutSeamFinder( cost_type[, terminal_cost[, bad_region_penalty]] ) -> <cv.detail.GraphCutSeamFinder object>
+    cv.detail.GraphCutSeamFinder.new( cost_type[, terminal_cost[, bad_region_penalty]] ) -> <cv::detail::GraphCutSeamFinder object>
+    cv.detail.GraphCutSeamFinder( cost_type[, terminal_cost[, bad_region_penalty]] ) -> <cv::detail::GraphCutSeamFinder object>
 ```
 
 ### cv.detail.GraphCutSeamFinder.find
@@ -48847,10 +53100,10 @@ lua:
 ### cv.detail.HomographyBasedEstimator.new
 
 ```cpp
-static cv::detail::HomographyBasedEstimator cv::detail::HomographyBasedEstimator( bool is_focals_estimated = false );
+cv::detail::HomographyBasedEstimator( bool is_focals_estimated = false );
 lua:
-    cv.detail.HomographyBasedEstimator.new( [is_focals_estimated] ) -> <cv.detail.HomographyBasedEstimator object>
-    cv.detail.HomographyBasedEstimator( [is_focals_estimated] ) -> <cv.detail.HomographyBasedEstimator object>
+    cv.detail.HomographyBasedEstimator.new( [is_focals_estimated] ) -> <cv::detail::HomographyBasedEstimator object>
+    cv.detail.HomographyBasedEstimator( [is_focals_estimated] ) -> <cv::detail::HomographyBasedEstimator object>
 ```
 
 ## cv::detail::ImageFeatures
@@ -48890,10 +53143,10 @@ lua:
 ### cv.detail.ImageFeatures.new
 
 ```cpp
-static cv::detail::ImageFeatures cv::detail::ImageFeatures();
+cv::detail::ImageFeatures();
 lua:
-    cv.detail.ImageFeatures.new() -> <cv.detail.ImageFeatures object>
-    cv.detail.ImageFeatures() -> <cv.detail.ImageFeatures object>
+    cv.detail.ImageFeatures.new() -> <cv::detail::ImageFeatures object>
+    cv.detail.ImageFeatures() -> <cv::detail::ImageFeatures object>
 ```
 
 ### cv.detail.ImageFeatures.getKeypoints
@@ -48965,10 +53218,10 @@ lua:
 ### cv.detail.MatchesInfo.new
 
 ```cpp
-static cv::detail::MatchesInfo cv::detail::MatchesInfo();
+cv::detail::MatchesInfo();
 lua:
-    cv.detail.MatchesInfo.new() -> <cv.detail.MatchesInfo object>
-    cv.detail.MatchesInfo() -> <cv.detail.MatchesInfo object>
+    cv.detail.MatchesInfo.new() -> <cv::detail::MatchesInfo object>
+    cv.detail.MatchesInfo() -> <cv::detail::MatchesInfo object>
 ```
 
 ### cv.detail.MatchesInfo.getInliers
@@ -48992,12 +53245,12 @@ lua:
 ### cv.detail.MultiBandBlender.new
 
 ```cpp
-static cv::detail::MultiBandBlender cv::detail::MultiBandBlender( int try_gpu = false,
-                                                                  int num_bands = 5,
-                                                                  int weight_type = CV_32F );
+cv::detail::MultiBandBlender( int try_gpu = false,
+                              int num_bands = 5,
+                              int weight_type = CV_32F );
 lua:
-    cv.detail.MultiBandBlender.new( [try_gpu[, num_bands[, weight_type]]] ) -> <cv.detail.MultiBandBlender object>
-    cv.detail.MultiBandBlender( [try_gpu[, num_bands[, weight_type]]] ) -> <cv.detail.MultiBandBlender object>
+    cv.detail.MultiBandBlender.new( [try_gpu[, num_bands[, weight_type]]] ) -> <cv::detail::MultiBandBlender object>
+    cv.detail.MultiBandBlender( [try_gpu[, num_bands[, weight_type]]] ) -> <cv::detail::MultiBandBlender object>
 ```
 
 ### cv.detail.MultiBandBlender.blend
@@ -49006,7 +53259,7 @@ lua:
 void cv::detail::MultiBandBlender::blend( InputOutputArray dst,
                                           InputOutputArray dst_mask );
 lua:
-    oMultiBandBlender:blend( dst, dst_mask ) -> dst, dst_mask
+    oMultiBandBlender:blend( [dst[, dst_mask]] ) -> dst, dst_mask
 ```
 
 ### cv.detail.MultiBandBlender.feed
@@ -49048,10 +53301,10 @@ lua:
 ### cv.detail.NoBundleAdjuster.new
 
 ```cpp
-static cv::detail::NoBundleAdjuster cv::detail::NoBundleAdjuster();
+cv::detail::NoBundleAdjuster();
 lua:
-    cv.detail.NoBundleAdjuster.new() -> <cv.detail.NoBundleAdjuster object>
-    cv.detail.NoBundleAdjuster() -> <cv.detail.NoBundleAdjuster object>
+    cv.detail.NoBundleAdjuster.new() -> <cv::detail::NoBundleAdjuster object>
+    cv.detail.NoBundleAdjuster() -> <cv::detail::NoBundleAdjuster object>
 ```
 
 ## cv::detail::NoExposureCompensator
@@ -49064,7 +53317,7 @@ void cv::detail::NoExposureCompensator::apply( int              arg1,
                                                InputOutputArray arg3,
                                                InputArray       arg4 );
 lua:
-    oNoExposureCompensator:apply( arg1, arg2, arg3, arg4 ) -> arg3
+    oNoExposureCompensator:apply( arg1, arg2[, arg3[, arg4]] ) -> arg3
 ```
 
 ### cv.detail.NoExposureCompensator.getMatGains
@@ -49112,10 +53365,10 @@ lua:
 ### cv.detail.ProjectorBase.new
 
 ```cpp
-static cv::detail::ProjectorBase cv::detail::ProjectorBase();
+cv::detail::ProjectorBase();
 lua:
-    cv.detail.ProjectorBase.new() -> <cv.detail.ProjectorBase object>
-    cv.detail.ProjectorBase() -> <cv.detail.ProjectorBase object>
+    cv.detail.ProjectorBase.new() -> <cv::detail::ProjectorBase object>
+    cv.detail.ProjectorBase() -> <cv::detail::ProjectorBase object>
 ```
 
 ## cv::detail::SeamFinder
@@ -49167,10 +53420,10 @@ lua:
 ### cv.detail.SphericalProjector.new
 
 ```cpp
-static cv::detail::SphericalProjector cv::detail::SphericalProjector();
+cv::detail::SphericalProjector();
 lua:
-    cv.detail.SphericalProjector.new() -> <cv.detail.SphericalProjector object>
-    cv.detail.SphericalProjector() -> <cv.detail.SphericalProjector object>
+    cv.detail.SphericalProjector.new() -> <cv::detail::SphericalProjector object>
+    cv.detail.SphericalProjector() -> <cv::detail::SphericalProjector object>
 ```
 
 ### cv.detail.SphericalProjector.mapBackward
@@ -49845,18 +54098,18 @@ lua:
 ### cv.dnn.ClassificationModel.new
 
 ```cpp
-static cv::dnn::ClassificationModel cv::dnn::ClassificationModel( const std::string& model,
-                                                                  const std::string& config = "" );
+cv::dnn::ClassificationModel( const std::string& model,
+                              const std::string& config = "" );
 lua:
-    cv.dnn.ClassificationModel.new( model[, config] ) -> <cv.dnn.ClassificationModel object>
-    cv.dnn.ClassificationModel( model[, config] ) -> <cv.dnn.ClassificationModel object>
+    cv.dnn.ClassificationModel.new( model[, config] ) -> <cv::dnn::ClassificationModel object>
+    cv.dnn.ClassificationModel( model[, config] ) -> <cv::dnn::ClassificationModel object>
 ```
 
 ```cpp
-static cv::dnn::ClassificationModel cv::dnn::ClassificationModel( const cv::dnn::Net& network );
+cv::dnn::ClassificationModel( const cv::dnn::Net& network );
 lua:
-    cv.dnn.ClassificationModel.new( network ) -> <cv.dnn.ClassificationModel object>
-    cv.dnn.ClassificationModel( network ) -> <cv.dnn.ClassificationModel object>
+    cv.dnn.ClassificationModel.new( network ) -> <cv::dnn::ClassificationModel object>
+    cv.dnn.ClassificationModel( network ) -> <cv::dnn::ClassificationModel object>
 ```
 
 ### cv.dnn.ClassificationModel.classify
@@ -49890,18 +54143,18 @@ lua:
 ### cv.dnn.DetectionModel.new
 
 ```cpp
-static cv::dnn::DetectionModel cv::dnn::DetectionModel( const std::string& model,
-                                                        const std::string& config = "" );
+cv::dnn::DetectionModel( const std::string& model,
+                         const std::string& config = "" );
 lua:
-    cv.dnn.DetectionModel.new( model[, config] ) -> <cv.dnn.DetectionModel object>
-    cv.dnn.DetectionModel( model[, config] ) -> <cv.dnn.DetectionModel object>
+    cv.dnn.DetectionModel.new( model[, config] ) -> <cv::dnn::DetectionModel object>
+    cv.dnn.DetectionModel( model[, config] ) -> <cv::dnn::DetectionModel object>
 ```
 
 ```cpp
-static cv::dnn::DetectionModel cv::dnn::DetectionModel( const cv::dnn::Net& network );
+cv::dnn::DetectionModel( const cv::dnn::Net& network );
 lua:
-    cv.dnn.DetectionModel.new( network ) -> <cv.dnn.DetectionModel object>
-    cv.dnn.DetectionModel( network ) -> <cv.dnn.DetectionModel object>
+    cv.dnn.DetectionModel.new( network ) -> <cv::dnn::DetectionModel object>
+    cv.dnn.DetectionModel( network ) -> <cv::dnn::DetectionModel object>
 ```
 
 ### cv.dnn.DetectionModel.detect
@@ -49938,24 +54191,24 @@ lua:
 ### cv.dnn.DictValue.new
 
 ```cpp
-static cv::dnn::DictValue cv::dnn::DictValue( int i );
+cv::dnn::DictValue( int i );
 lua:
-    cv.dnn.DictValue.new( i ) -> <cv.dnn.DictValue object>
-    cv.dnn.DictValue( i ) -> <cv.dnn.DictValue object>
+    cv.dnn.DictValue.new( i ) -> <cv::dnn::DictValue object>
+    cv.dnn.DictValue( i ) -> <cv::dnn::DictValue object>
 ```
 
 ```cpp
-static cv::dnn::DictValue cv::dnn::DictValue( double p );
+cv::dnn::DictValue( double p );
 lua:
-    cv.dnn.DictValue.new( p ) -> <cv.dnn.DictValue object>
-    cv.dnn.DictValue( p ) -> <cv.dnn.DictValue object>
+    cv.dnn.DictValue.new( p ) -> <cv::dnn::DictValue object>
+    cv.dnn.DictValue( p ) -> <cv::dnn::DictValue object>
 ```
 
 ```cpp
-static cv::dnn::DictValue cv::dnn::DictValue( const std::string& s );
+cv::dnn::DictValue( const std::string& s );
 lua:
-    cv.dnn.DictValue.new( s ) -> <cv.dnn.DictValue object>
-    cv.dnn.DictValue( s ) -> <cv.dnn.DictValue object>
+    cv.dnn.DictValue.new( s ) -> <cv::dnn::DictValue object>
+    cv.dnn.DictValue( s ) -> <cv::dnn::DictValue object>
 ```
 
 ### cv.dnn.DictValue.getIntValue
@@ -50075,24 +54328,24 @@ lua:
 ### cv.dnn.Image2BlobParams.new
 
 ```cpp
-static cv::dnn::Image2BlobParams cv::dnn::Image2BlobParams();
+cv::dnn::Image2BlobParams();
 lua:
-    cv.dnn.Image2BlobParams.new() -> <cv.dnn.Image2BlobParams object>
-    cv.dnn.Image2BlobParams() -> <cv.dnn.Image2BlobParams object>
+    cv.dnn.Image2BlobParams.new() -> <cv::dnn::Image2BlobParams object>
+    cv.dnn.Image2BlobParams() -> <cv::dnn::Image2BlobParams object>
 ```
 
 ```cpp
-static cv::dnn::Image2BlobParams cv::dnn::Image2BlobParams( const cv::Scalar&         scalefactor,
-                                                            const cv::Size&           size = Size(),
-                                                            const cv::Scalar&         mean = Scalar(),
-                                                            bool                      swapRB = false,
-                                                            int                       ddepth = CV_32F,
-                                                            cv::dnn::DataLayout       datalayout = DNN_LAYOUT_NCHW,
-                                                            cv::dnn::ImagePaddingMode mode = DNN_PMODE_NULL,
-                                                            cv::Scalar                borderValue = 0.0 );
+cv::dnn::Image2BlobParams( const cv::Scalar&         scalefactor,
+                           const cv::Size&           size = Size(),
+                           const cv::Scalar&         mean = Scalar(),
+                           bool                      swapRB = false,
+                           int                       ddepth = CV_32F,
+                           cv::dnn::DataLayout       datalayout = DNN_LAYOUT_NCHW,
+                           cv::dnn::ImagePaddingMode mode = DNN_PMODE_NULL,
+                           cv::Scalar                borderValue = 0.0 );
 lua:
-    cv.dnn.Image2BlobParams.new( scalefactor[, size[, mean[, swapRB[, ddepth[, datalayout[, mode[, borderValue]]]]]]] ) -> <cv.dnn.Image2BlobParams object>
-    cv.dnn.Image2BlobParams( scalefactor[, size[, mean[, swapRB[, ddepth[, datalayout[, mode[, borderValue]]]]]]] ) -> <cv.dnn.Image2BlobParams object>
+    cv.dnn.Image2BlobParams.new( scalefactor[, size[, mean[, swapRB[, ddepth[, datalayout[, mode[, borderValue]]]]]]] ) -> <cv::dnn::Image2BlobParams object>
+    cv.dnn.Image2BlobParams( scalefactor[, size[, mean[, swapRB[, ddepth[, datalayout[, mode[, borderValue]]]]]]] ) -> <cv::dnn::Image2BlobParams object>
 ```
 
 ### cv.dnn.Image2BlobParams.blobRectToImageRect
@@ -50119,18 +54372,18 @@ lua:
 ### cv.dnn.KeypointsModel.new
 
 ```cpp
-static cv::dnn::KeypointsModel cv::dnn::KeypointsModel( const std::string& model,
-                                                        const std::string& config = "" );
+cv::dnn::KeypointsModel( const std::string& model,
+                         const std::string& config = "" );
 lua:
-    cv.dnn.KeypointsModel.new( model[, config] ) -> <cv.dnn.KeypointsModel object>
-    cv.dnn.KeypointsModel( model[, config] ) -> <cv.dnn.KeypointsModel object>
+    cv.dnn.KeypointsModel.new( model[, config] ) -> <cv::dnn::KeypointsModel object>
+    cv.dnn.KeypointsModel( model[, config] ) -> <cv::dnn::KeypointsModel object>
 ```
 
 ```cpp
-static cv::dnn::KeypointsModel cv::dnn::KeypointsModel( const cv::dnn::Net& network );
+cv::dnn::KeypointsModel( const cv::dnn::Net& network );
 lua:
-    cv.dnn.KeypointsModel.new( network ) -> <cv.dnn.KeypointsModel object>
-    cv.dnn.KeypointsModel( network ) -> <cv.dnn.KeypointsModel object>
+    cv.dnn.KeypointsModel.new( network ) -> <cv::dnn::KeypointsModel object>
+    cv.dnn.KeypointsModel( network ) -> <cv::dnn::KeypointsModel object>
 ```
 
 ### cv.dnn.KeypointsModel.estimate
@@ -50208,18 +54461,18 @@ lua:
 ### cv.dnn.Model.new
 
 ```cpp
-static cv::dnn::Model cv::dnn::Model( const std::string& model,
-                                      const std::string& config = "" );
+cv::dnn::Model( const std::string& model,
+                const std::string& config = "" );
 lua:
-    cv.dnn.Model.new( model[, config] ) -> <cv.dnn.Model object>
-    cv.dnn.Model( model[, config] ) -> <cv.dnn.Model object>
+    cv.dnn.Model.new( model[, config] ) -> <cv::dnn::Model object>
+    cv.dnn.Model( model[, config] ) -> <cv::dnn::Model object>
 ```
 
 ```cpp
-static cv::dnn::Model cv::dnn::Model( const cv::dnn::Net& network );
+cv::dnn::Model( const cv::dnn::Net& network );
 lua:
-    cv.dnn.Model.new( network ) -> <cv.dnn.Model object>
-    cv.dnn.Model( network ) -> <cv.dnn.Model object>
+    cv.dnn.Model.new( network ) -> <cv::dnn::Model object>
+    cv.dnn.Model( network ) -> <cv::dnn::Model object>
 ```
 
 ### cv.dnn.Model.enableWinograd
@@ -50319,10 +54572,10 @@ lua:
 ### cv.dnn.Net.new
 
 ```cpp
-static cv::dnn::Net cv::dnn::Net();
+cv::dnn::Net();
 lua:
-    cv.dnn.Net.new() -> <cv.dnn.Net object>
-    cv.dnn.Net() -> <cv.dnn.Net object>
+    cv.dnn.Net.new() -> <cv::dnn::Net object>
+    cv.dnn.Net() -> <cv::dnn::Net object>
 ```
 
 ### cv.dnn.Net.connect
@@ -50701,18 +54954,18 @@ lua:
 ### cv.dnn.SegmentationModel.new
 
 ```cpp
-static cv::dnn::SegmentationModel cv::dnn::SegmentationModel( const std::string& model,
-                                                              const std::string& config = "" );
+cv::dnn::SegmentationModel( const std::string& model,
+                            const std::string& config = "" );
 lua:
-    cv.dnn.SegmentationModel.new( model[, config] ) -> <cv.dnn.SegmentationModel object>
-    cv.dnn.SegmentationModel( model[, config] ) -> <cv.dnn.SegmentationModel object>
+    cv.dnn.SegmentationModel.new( model[, config] ) -> <cv::dnn::SegmentationModel object>
+    cv.dnn.SegmentationModel( model[, config] ) -> <cv::dnn::SegmentationModel object>
 ```
 
 ```cpp
-static cv::dnn::SegmentationModel cv::dnn::SegmentationModel( const cv::dnn::Net& network );
+cv::dnn::SegmentationModel( const cv::dnn::Net& network );
 lua:
-    cv.dnn.SegmentationModel.new( network ) -> <cv.dnn.SegmentationModel object>
-    cv.dnn.SegmentationModel( network ) -> <cv.dnn.SegmentationModel object>
+    cv.dnn.SegmentationModel.new( network ) -> <cv::dnn::SegmentationModel object>
+    cv.dnn.SegmentationModel( network ) -> <cv::dnn::SegmentationModel object>
 ```
 
 ### cv.dnn.SegmentationModel.segment
@@ -50765,18 +55018,18 @@ lua:
 ### cv.dnn.TextDetectionModel\_DB.new
 
 ```cpp
-static cv::dnn::TextDetectionModel_DB cv::dnn::TextDetectionModel_DB( const cv::dnn::Net& network );
+cv::dnn::TextDetectionModel_DB( const cv::dnn::Net& network );
 lua:
-    cv.dnn.TextDetectionModel_DB.new( network ) -> <cv.dnn.TextDetectionModel_DB object>
-    cv.dnn.TextDetectionModel_DB( network ) -> <cv.dnn.TextDetectionModel_DB object>
+    cv.dnn.TextDetectionModel_DB.new( network ) -> <cv::dnn::TextDetectionModel_DB object>
+    cv.dnn.TextDetectionModel_DB( network ) -> <cv::dnn::TextDetectionModel_DB object>
 ```
 
 ```cpp
-static cv::dnn::TextDetectionModel_DB cv::dnn::TextDetectionModel_DB( const std::string& model,
-                                                                      const std::string& config = "" );
+cv::dnn::TextDetectionModel_DB( const std::string& model,
+                                const std::string& config = "" );
 lua:
-    cv.dnn.TextDetectionModel_DB.new( model[, config] ) -> <cv.dnn.TextDetectionModel_DB object>
-    cv.dnn.TextDetectionModel_DB( model[, config] ) -> <cv.dnn.TextDetectionModel_DB object>
+    cv.dnn.TextDetectionModel_DB.new( model[, config] ) -> <cv::dnn::TextDetectionModel_DB object>
+    cv.dnn.TextDetectionModel_DB( model[, config] ) -> <cv::dnn::TextDetectionModel_DB object>
 ```
 
 ### cv.dnn.TextDetectionModel\_DB.getBinaryThreshold
@@ -50848,18 +55101,18 @@ lua:
 ### cv.dnn.TextDetectionModel\_EAST.new
 
 ```cpp
-static cv::dnn::TextDetectionModel_EAST cv::dnn::TextDetectionModel_EAST( const cv::dnn::Net& network );
+cv::dnn::TextDetectionModel_EAST( const cv::dnn::Net& network );
 lua:
-    cv.dnn.TextDetectionModel_EAST.new( network ) -> <cv.dnn.TextDetectionModel_EAST object>
-    cv.dnn.TextDetectionModel_EAST( network ) -> <cv.dnn.TextDetectionModel_EAST object>
+    cv.dnn.TextDetectionModel_EAST.new( network ) -> <cv::dnn::TextDetectionModel_EAST object>
+    cv.dnn.TextDetectionModel_EAST( network ) -> <cv::dnn::TextDetectionModel_EAST object>
 ```
 
 ```cpp
-static cv::dnn::TextDetectionModel_EAST cv::dnn::TextDetectionModel_EAST( const std::string& model,
-                                                                          const std::string& config = "" );
+cv::dnn::TextDetectionModel_EAST( const std::string& model,
+                                  const std::string& config = "" );
 lua:
-    cv.dnn.TextDetectionModel_EAST.new( model[, config] ) -> <cv.dnn.TextDetectionModel_EAST object>
-    cv.dnn.TextDetectionModel_EAST( model[, config] ) -> <cv.dnn.TextDetectionModel_EAST object>
+    cv.dnn.TextDetectionModel_EAST.new( model[, config] ) -> <cv::dnn::TextDetectionModel_EAST object>
+    cv.dnn.TextDetectionModel_EAST( model[, config] ) -> <cv::dnn::TextDetectionModel_EAST object>
 ```
 
 ### cv.dnn.TextDetectionModel\_EAST.getConfidenceThreshold
@@ -50899,18 +55152,18 @@ lua:
 ### cv.dnn.TextRecognitionModel.new
 
 ```cpp
-static cv::dnn::TextRecognitionModel cv::dnn::TextRecognitionModel( const cv::dnn::Net& network );
+cv::dnn::TextRecognitionModel( const cv::dnn::Net& network );
 lua:
-    cv.dnn.TextRecognitionModel.new( network ) -> <cv.dnn.TextRecognitionModel object>
-    cv.dnn.TextRecognitionModel( network ) -> <cv.dnn.TextRecognitionModel object>
+    cv.dnn.TextRecognitionModel.new( network ) -> <cv::dnn::TextRecognitionModel object>
+    cv.dnn.TextRecognitionModel( network ) -> <cv::dnn::TextRecognitionModel object>
 ```
 
 ```cpp
-static cv::dnn::TextRecognitionModel cv::dnn::TextRecognitionModel( const std::string& model,
-                                                                    const std::string& config = "" );
+cv::dnn::TextRecognitionModel( const std::string& model,
+                               const std::string& config = "" );
 lua:
-    cv.dnn.TextRecognitionModel.new( model[, config] ) -> <cv.dnn.TextRecognitionModel object>
-    cv.dnn.TextRecognitionModel( model[, config] ) -> <cv.dnn.TextRecognitionModel object>
+    cv.dnn.TextRecognitionModel.new( model[, config] ) -> <cv::dnn::TextRecognitionModel object>
+    cv.dnn.TextRecognitionModel( model[, config] ) -> <cv::dnn::TextRecognitionModel object>
 ```
 
 ### cv.dnn.TextRecognitionModel.getDecodeType
@@ -51081,7 +55334,7 @@ double cv::fisheye::calibrate( InputArrayOfArrays  objectPoints,
                                int                 flags = 0,
                                cv::TermCriteria    criteria = TermCriteria(TermCriteria::COUNT + TermCriteria::EPS, 100, DBL_EPSILON) );
 lua:
-    cv.fisheye.calibrate( objectPoints, imagePoints, image_size, K, D[, rvecs[, tvecs[, flags[, criteria]]]] ) -> retval, K, D, rvecs, tvecs
+    cv.fisheye.calibrate( objectPoints, imagePoints, image_size[, K[, D[, rvecs[, tvecs[, flags[, criteria]]]]]] ) -> retval, K, D, rvecs, tvecs
 ```
 
 ### cv.fisheye.distortPoints
@@ -51159,7 +55412,7 @@ double cv::fisheye::stereoCalibrate( InputArrayOfArrays  objectPoints,
                                      int                 flags = fisheye::CALIB_FIX_INTRINSIC,
                                      cv::TermCriteria    criteria = TermCriteria(TermCriteria::COUNT + TermCriteria::EPS, 100, DBL_EPSILON) );
 lua:
-    cv.fisheye.stereoCalibrate( objectPoints, imagePoints1, imagePoints2, K1, D1, K2, D2, imageSize[, R[, T[, rvecs[, tvecs[, flags[, criteria]]]]]] ) -> retval, K1, D1, K2, D2, R, T, rvecs, tvecs
+    cv.fisheye.stereoCalibrate( objectPoints, imagePoints1, imagePoints2[, K1[, D1[, K2[, D2[, imageSize[, R[, T[, rvecs[, tvecs[, flags[, criteria]]]]]]]]]]] ) -> retval, K1, D1, K2, D2, R, T, rvecs, tvecs
 ```
 
 ```cpp
@@ -51176,7 +55429,7 @@ double cv::fisheye::stereoCalibrate( InputArrayOfArrays objectPoints,
                                      int                flags = fisheye::CALIB_FIX_INTRINSIC,
                                      cv::TermCriteria   criteria = TermCriteria(TermCriteria::COUNT + TermCriteria::EPS, 100, DBL_EPSILON) );
 lua:
-    cv.fisheye.stereoCalibrate( objectPoints, imagePoints1, imagePoints2, K1, D1, K2, D2, imageSize[, R[, T[, flags[, criteria]]]] ) -> retval, K1, D1, K2, D2, R, T
+    cv.fisheye.stereoCalibrate( objectPoints, imagePoints1, imagePoints2[, K1[, D1[, K2[, D2[, imageSize[, R[, T[, flags[, criteria]]]]]]]]] ) -> retval, K1, D1, K2, D2, R, T
 ```
 
 ### cv.fisheye.stereoRectify
@@ -51324,19 +55577,19 @@ lua:
 ### cv.flann.Index.new
 
 ```cpp
-static cv::flann::Index cv::flann::Index();
+cv::flann::Index();
 lua:
-    cv.flann.Index.new() -> <cv.flann.Index object>
-    cv.flann.Index() -> <cv.flann.Index object>
+    cv.flann.Index.new() -> <cv::flann::Index object>
+    cv.flann.Index() -> <cv::flann::Index object>
 ```
 
 ```cpp
-static cv::flann::Index cv::flann::Index( InputArray                    features,
-                                          const cv::flann::IndexParams& params,
-                                          cvflann::flann_distance_t     distType = cvflann::FLANN_DIST_L2 );
+cv::flann::Index( InputArray                    features,
+                  const cv::flann::IndexParams& params,
+                  cvflann::flann_distance_t     distType = cvflann::FLANN_DIST_L2 );
 lua:
-    cv.flann.Index.new( features, params[, distType] ) -> <cv.flann.Index object>
-    cv.flann.Index( features, params[, distType] ) -> <cv.flann.Index object>
+    cv.flann.Index.new( features, params[, distType] ) -> <cv::flann::Index object>
+    cv.flann.Index( features, params[, distType] ) -> <cv::flann::Index object>
 ```
 
 ### cv.flann.Index.build
@@ -52592,17 +56845,17 @@ lua:
 ### cv.gapi.GNetPackage.new
 
 ```cpp
-static cv::gapi::GNetPackage cv::gapi::GNetPackage();
+cv::gapi::GNetPackage();
 lua:
-    cv.gapi.GNetPackage.new() -> <cv.gapi.GNetPackage object>
-    cv.gapi.GNetPackage() -> <cv.gapi.GNetPackage object>
+    cv.gapi.GNetPackage.new() -> <cv::gapi::GNetPackage object>
+    cv.gapi.GNetPackage() -> <cv::gapi::GNetPackage object>
 ```
 
 ```cpp
-static cv::gapi::GNetPackage cv::gapi::GNetPackage( std::vector<cv::gapi::GNetParam> nets );
+cv::gapi::GNetPackage( std::vector<cv::gapi::GNetParam> nets );
 lua:
-    cv.gapi.GNetPackage.new( nets ) -> <cv.gapi.GNetPackage object>
-    cv.gapi.GNetPackage( nets ) -> <cv.gapi.GNetPackage object>
+    cv.gapi.GNetPackage.new( nets ) -> <cv::gapi::GNetPackage object>
+    cv.gapi.GNetPackage( nets ) -> <cv::gapi::GNetPackage object>
 ```
 
 ## cv::gapi::GNetParam
@@ -52610,10 +56863,10 @@ lua:
 ### cv.gapi.GNetParam.new
 
 ```cpp
-static cv::gapi::GNetParam cv::gapi::GNetParam();
+cv::gapi::GNetParam();
 lua:
-    cv.gapi.GNetParam.new() -> <cv.gapi.GNetParam object>
-    cv.gapi.GNetParam() -> <cv.gapi.GNetParam object>
+    cv.gapi.GNetParam.new() -> <cv::gapi::GNetParam object>
+    cv.gapi.GNetParam() -> <cv::gapi::GNetParam object>
 ```
 
 ## cv::gapi::core::cpu
@@ -52688,29 +56941,29 @@ lua:
 ### cv.gapi.ie.PyParams.new
 
 ```cpp
-static cv::gapi::ie::PyParams cv::gapi::ie::PyParams();
+cv::gapi::ie::PyParams();
 lua:
-    cv.gapi.ie.PyParams.new() -> <cv.gapi.ie.PyParams object>
-    cv.gapi.ie.PyParams() -> <cv.gapi.ie.PyParams object>
+    cv.gapi.ie.PyParams.new() -> <cv::gapi::ie::PyParams object>
+    cv.gapi.ie.PyParams() -> <cv::gapi::ie::PyParams object>
 ```
 
 ```cpp
-static cv::gapi::ie::PyParams cv::gapi::ie::PyParams( const std::string& tag,
-                                                      const std::string& model,
-                                                      const std::string& weights,
-                                                      const std::string& device );
+cv::gapi::ie::PyParams( const std::string& tag,
+                        const std::string& model,
+                        const std::string& weights,
+                        const std::string& device );
 lua:
-    cv.gapi.ie.PyParams.new( tag, model, weights, device ) -> <cv.gapi.ie.PyParams object>
-    cv.gapi.ie.PyParams( tag, model, weights, device ) -> <cv.gapi.ie.PyParams object>
+    cv.gapi.ie.PyParams.new( tag, model, weights, device ) -> <cv::gapi::ie::PyParams object>
+    cv.gapi.ie.PyParams( tag, model, weights, device ) -> <cv::gapi::ie::PyParams object>
 ```
 
 ```cpp
-static cv::gapi::ie::PyParams cv::gapi::ie::PyParams( const std::string& tag,
-                                                      const std::string& model,
-                                                      const std::string& device );
+cv::gapi::ie::PyParams( const std::string& tag,
+                        const std::string& model,
+                        const std::string& device );
 lua:
-    cv.gapi.ie.PyParams.new( tag, model, device ) -> <cv.gapi.ie.PyParams object>
-    cv.gapi.ie.PyParams( tag, model, device ) -> <cv.gapi.ie.PyParams object>
+    cv.gapi.ie.PyParams.new( tag, model, device ) -> <cv::gapi::ie::PyParams object>
+    cv.gapi.ie.PyParams( tag, model, device ) -> <cv::gapi::ie::PyParams object>
 ```
 
 ### cv.gapi.ie.PyParams.cfgBatchSize
@@ -52765,18 +57018,18 @@ lua:
 ### cv.gapi.onnx.PyParams.new
 
 ```cpp
-static cv::gapi::onnx::PyParams cv::gapi::onnx::PyParams();
+cv::gapi::onnx::PyParams();
 lua:
-    cv.gapi.onnx.PyParams.new() -> <cv.gapi.onnx.PyParams object>
-    cv.gapi.onnx.PyParams() -> <cv.gapi.onnx.PyParams object>
+    cv.gapi.onnx.PyParams.new() -> <cv::gapi::onnx::PyParams object>
+    cv.gapi.onnx.PyParams() -> <cv::gapi::onnx::PyParams object>
 ```
 
 ```cpp
-static cv::gapi::onnx::PyParams cv::gapi::onnx::PyParams( const std::string& tag,
-                                                          const std::string& model_path );
+cv::gapi::onnx::PyParams( const std::string& tag,
+                          const std::string& model_path );
 lua:
-    cv.gapi.onnx.PyParams.new( tag, model_path ) -> <cv.gapi.onnx.PyParams object>
-    cv.gapi.onnx.PyParams( tag, model_path ) -> <cv.gapi.onnx.PyParams object>
+    cv.gapi.onnx.PyParams.new( tag, model_path ) -> <cv::gapi::onnx::PyParams object>
+    cv.gapi.onnx.PyParams( tag, model_path ) -> <cv::gapi::onnx::PyParams object>
 ```
 
 ### cv.gapi.onnx.PyParams.cfgAddExecutionProvider
@@ -52843,17 +57096,17 @@ lua:
 ### cv.gapi.onnx.ep.CUDA.new
 
 ```cpp
-static cv::gapi::onnx::ep::CUDA cv::gapi::onnx::ep::CUDA();
+cv::gapi::onnx::ep::CUDA();
 lua:
-    cv.gapi.onnx.ep.CUDA.new() -> <cv.gapi.onnx.ep.CUDA object>
-    cv.gapi.onnx.ep.CUDA() -> <cv.gapi.onnx.ep.CUDA object>
+    cv.gapi.onnx.ep.CUDA.new() -> <cv::gapi::onnx::ep::CUDA object>
+    cv.gapi.onnx.ep.CUDA() -> <cv::gapi::onnx::ep::CUDA object>
 ```
 
 ```cpp
-static cv::gapi::onnx::ep::CUDA cv::gapi::onnx::ep::CUDA( const int dev_id );
+cv::gapi::onnx::ep::CUDA( const int dev_id );
 lua:
-    cv.gapi.onnx.ep.CUDA.new( dev_id ) -> <cv.gapi.onnx.ep.CUDA object>
-    cv.gapi.onnx.ep.CUDA( dev_id ) -> <cv.gapi.onnx.ep.CUDA object>
+    cv.gapi.onnx.ep.CUDA.new( dev_id ) -> <cv::gapi::onnx::ep::CUDA object>
+    cv.gapi.onnx.ep.CUDA( dev_id ) -> <cv::gapi::onnx::ep::CUDA object>
 ```
 
 ## cv::gapi::onnx::ep::CoreML
@@ -52861,10 +57114,10 @@ lua:
 ### cv.gapi.onnx.ep.CoreML.new
 
 ```cpp
-static cv::gapi::onnx::ep::CoreML cv::gapi::onnx::ep::CoreML();
+cv::gapi::onnx::ep::CoreML();
 lua:
-    cv.gapi.onnx.ep.CoreML.new() -> <cv.gapi.onnx.ep.CoreML object>
-    cv.gapi.onnx.ep.CoreML() -> <cv.gapi.onnx.ep.CoreML object>
+    cv.gapi.onnx.ep.CoreML.new() -> <cv::gapi::onnx::ep::CoreML object>
+    cv.gapi.onnx.ep.CoreML() -> <cv::gapi::onnx::ep::CoreML object>
 ```
 
 ### cv.gapi.onnx.ep.CoreML.cfgEnableOnSubgraph
@@ -52896,24 +57149,24 @@ lua:
 ### cv.gapi.onnx.ep.DirectML.new
 
 ```cpp
-static cv::gapi::onnx::ep::DirectML cv::gapi::onnx::ep::DirectML();
+cv::gapi::onnx::ep::DirectML();
 lua:
-    cv.gapi.onnx.ep.DirectML.new() -> <cv.gapi.onnx.ep.DirectML object>
-    cv.gapi.onnx.ep.DirectML() -> <cv.gapi.onnx.ep.DirectML object>
+    cv.gapi.onnx.ep.DirectML.new() -> <cv::gapi::onnx::ep::DirectML object>
+    cv.gapi.onnx.ep.DirectML() -> <cv::gapi::onnx::ep::DirectML object>
 ```
 
 ```cpp
-static cv::gapi::onnx::ep::DirectML cv::gapi::onnx::ep::DirectML( const int device_id );
+cv::gapi::onnx::ep::DirectML( const int device_id );
 lua:
-    cv.gapi.onnx.ep.DirectML.new( device_id ) -> <cv.gapi.onnx.ep.DirectML object>
-    cv.gapi.onnx.ep.DirectML( device_id ) -> <cv.gapi.onnx.ep.DirectML object>
+    cv.gapi.onnx.ep.DirectML.new( device_id ) -> <cv::gapi::onnx::ep::DirectML object>
+    cv.gapi.onnx.ep.DirectML( device_id ) -> <cv::gapi::onnx::ep::DirectML object>
 ```
 
 ```cpp
-static cv::gapi::onnx::ep::DirectML cv::gapi::onnx::ep::DirectML( const std::string& adapter_name );
+cv::gapi::onnx::ep::DirectML( const std::string& adapter_name );
 lua:
-    cv.gapi.onnx.ep.DirectML.new( adapter_name ) -> <cv.gapi.onnx.ep.DirectML object>
-    cv.gapi.onnx.ep.DirectML( adapter_name ) -> <cv.gapi.onnx.ep.DirectML object>
+    cv.gapi.onnx.ep.DirectML.new( adapter_name ) -> <cv::gapi::onnx::ep::DirectML object>
+    cv.gapi.onnx.ep.DirectML( adapter_name ) -> <cv::gapi::onnx::ep::DirectML object>
 ```
 
 ## cv::gapi::onnx::ep::OpenVINO
@@ -52921,17 +57174,17 @@ lua:
 ### cv.gapi.onnx.ep.OpenVINO.new
 
 ```cpp
-static cv::gapi::onnx::ep::OpenVINO cv::gapi::onnx::ep::OpenVINO();
+cv::gapi::onnx::ep::OpenVINO();
 lua:
-    cv.gapi.onnx.ep.OpenVINO.new() -> <cv.gapi.onnx.ep.OpenVINO object>
-    cv.gapi.onnx.ep.OpenVINO() -> <cv.gapi.onnx.ep.OpenVINO object>
+    cv.gapi.onnx.ep.OpenVINO.new() -> <cv::gapi::onnx::ep::OpenVINO object>
+    cv.gapi.onnx.ep.OpenVINO() -> <cv::gapi::onnx::ep::OpenVINO object>
 ```
 
 ```cpp
-static cv::gapi::onnx::ep::OpenVINO cv::gapi::onnx::ep::OpenVINO( const std::string& dev_type );
+cv::gapi::onnx::ep::OpenVINO( const std::string& dev_type );
 lua:
-    cv.gapi.onnx.ep.OpenVINO.new( dev_type ) -> <cv.gapi.onnx.ep.OpenVINO object>
-    cv.gapi.onnx.ep.OpenVINO( dev_type ) -> <cv.gapi.onnx.ep.OpenVINO object>
+    cv.gapi.onnx.ep.OpenVINO.new( dev_type ) -> <cv::gapi::onnx::ep::OpenVINO object>
+    cv.gapi.onnx.ep.OpenVINO( dev_type ) -> <cv::gapi::onnx::ep::OpenVINO object>
 ```
 
 ### cv.gapi.onnx.ep.OpenVINO.cfgCacheDir
@@ -52971,17 +57224,17 @@ lua:
 ### cv.gapi.onnx.ep.TensorRT.new
 
 ```cpp
-static cv::gapi::onnx::ep::TensorRT cv::gapi::onnx::ep::TensorRT();
+cv::gapi::onnx::ep::TensorRT();
 lua:
-    cv.gapi.onnx.ep.TensorRT.new() -> <cv.gapi.onnx.ep.TensorRT object>
-    cv.gapi.onnx.ep.TensorRT() -> <cv.gapi.onnx.ep.TensorRT object>
+    cv.gapi.onnx.ep.TensorRT.new() -> <cv::gapi::onnx::ep::TensorRT object>
+    cv.gapi.onnx.ep.TensorRT() -> <cv::gapi::onnx::ep::TensorRT object>
 ```
 
 ```cpp
-static cv::gapi::onnx::ep::TensorRT cv::gapi::onnx::ep::TensorRT( const int dev_id );
+cv::gapi::onnx::ep::TensorRT( const int dev_id );
 lua:
-    cv.gapi.onnx.ep.TensorRT.new( dev_id ) -> <cv.gapi.onnx.ep.TensorRT object>
-    cv.gapi.onnx.ep.TensorRT( dev_id ) -> <cv.gapi.onnx.ep.TensorRT object>
+    cv.gapi.onnx.ep.TensorRT.new( dev_id ) -> <cv::gapi::onnx::ep::TensorRT object>
+    cv.gapi.onnx.ep.TensorRT( dev_id ) -> <cv::gapi::onnx::ep::TensorRT object>
 ```
 
 ## cv::gapi::ot
@@ -53059,10 +57312,10 @@ lua:
 ### cv.gapi.ot.ObjectTrackerParams.new
 
 ```cpp
-static cv::gapi::ot::ObjectTrackerParams cv::gapi::ot::ObjectTrackerParams();
+cv::gapi::ot::ObjectTrackerParams();
 lua:
-    cv.gapi.ot.ObjectTrackerParams.new() -> <cv.gapi.ot.ObjectTrackerParams object>
-    cv.gapi.ot.ObjectTrackerParams() -> <cv.gapi.ot.ObjectTrackerParams object>
+    cv.gapi.ot.ObjectTrackerParams.new() -> <cv::gapi::ot::ObjectTrackerParams object>
+    cv.gapi.ot.ObjectTrackerParams() -> <cv::gapi::ot::ObjectTrackerParams object>
 ```
 
 ## cv::gapi::ot::cpu
@@ -53101,29 +57354,29 @@ lua:
 ### cv.gapi.ov.PyParams.new
 
 ```cpp
-static cv::gapi::ov::PyParams cv::gapi::ov::PyParams();
+cv::gapi::ov::PyParams();
 lua:
-    cv.gapi.ov.PyParams.new() -> <cv.gapi.ov.PyParams object>
-    cv.gapi.ov.PyParams() -> <cv.gapi.ov.PyParams object>
+    cv.gapi.ov.PyParams.new() -> <cv::gapi::ov::PyParams object>
+    cv.gapi.ov.PyParams() -> <cv::gapi::ov::PyParams object>
 ```
 
 ```cpp
-static cv::gapi::ov::PyParams cv::gapi::ov::PyParams( const std::string& tag,
-                                                      const std::string& model_path,
-                                                      const std::string& bin_path,
-                                                      const std::string& device );
+cv::gapi::ov::PyParams( const std::string& tag,
+                        const std::string& model_path,
+                        const std::string& bin_path,
+                        const std::string& device );
 lua:
-    cv.gapi.ov.PyParams.new( tag, model_path, bin_path, device ) -> <cv.gapi.ov.PyParams object>
-    cv.gapi.ov.PyParams( tag, model_path, bin_path, device ) -> <cv.gapi.ov.PyParams object>
+    cv.gapi.ov.PyParams.new( tag, model_path, bin_path, device ) -> <cv::gapi::ov::PyParams object>
+    cv.gapi.ov.PyParams( tag, model_path, bin_path, device ) -> <cv::gapi::ov::PyParams object>
 ```
 
 ```cpp
-static cv::gapi::ov::PyParams cv::gapi::ov::PyParams( const std::string& tag,
-                                                      const std::string& blob_path,
-                                                      const std::string& device );
+cv::gapi::ov::PyParams( const std::string& tag,
+                        const std::string& blob_path,
+                        const std::string& device );
 lua:
-    cv.gapi.ov.PyParams.new( tag, blob_path, device ) -> <cv.gapi.ov.PyParams object>
-    cv.gapi.ov.PyParams( tag, blob_path, device ) -> <cv.gapi.ov.PyParams object>
+    cv.gapi.ov.PyParams.new( tag, blob_path, device ) -> <cv::gapi::ov::PyParams object>
+    cv.gapi.ov.PyParams( tag, blob_path, device ) -> <cv::gapi::ov::PyParams object>
 ```
 
 ### cv.gapi.ov.PyParams.cfgInputModelLayout
@@ -53331,10 +57584,10 @@ lua:
 ### cv.gapi.streaming.queue\_capacity.new
 
 ```cpp
-static cv::gapi::streaming::queue_capacity cv::gapi::streaming::queue_capacity( size_t cap = 1 );
+cv::gapi::streaming::queue_capacity( size_t cap = 1 );
 lua:
-    cv.gapi.streaming.queue_capacity.new( [cap] ) -> <cv.gapi.streaming.queue_capacity object>
-    cv.gapi.streaming.queue_capacity( [cap] ) -> <cv.gapi.streaming.queue_capacity object>
+    cv.gapi.streaming.queue_capacity.new( [cap] ) -> <cv::gapi::streaming::queue_capacity object>
+    cv.gapi.streaming.queue_capacity( [cap] ) -> <cv::gapi::streaming::queue_capacity object>
 ```
 
 ## cv::gapi::video
@@ -53487,22 +57740,22 @@ lua:
 ### cv.gapi.wip.draw.Circle.new
 
 ```cpp
-static cv::gapi::wip::draw::Circle cv::gapi::wip::draw::Circle( const cv::Point&  center_,
-                                                                int               radius_,
-                                                                const cv::Scalar& color_,
-                                                                int               thick_ = 1,
-                                                                int               lt_ = 8,
-                                                                int               shift_ = 0 );
+cv::gapi::wip::draw::Circle( const cv::Point&  center_,
+                             int               radius_,
+                             const cv::Scalar& color_,
+                             int               thick_ = 1,
+                             int               lt_ = 8,
+                             int               shift_ = 0 );
 lua:
-    cv.gapi.wip.draw.Circle.new( center_, radius_, color_[, thick_[, lt_[, shift_]]] ) -> <cv.gapi.wip.draw.Circle object>
-    cv.gapi.wip.draw.Circle( center_, radius_, color_[, thick_[, lt_[, shift_]]] ) -> <cv.gapi.wip.draw.Circle object>
+    cv.gapi.wip.draw.Circle.new( center_, radius_, color_[, thick_[, lt_[, shift_]]] ) -> <cv::gapi::wip::draw::Circle object>
+    cv.gapi.wip.draw.Circle( center_, radius_, color_[, thick_[, lt_[, shift_]]] ) -> <cv::gapi::wip::draw::Circle object>
 ```
 
 ```cpp
-static cv::gapi::wip::draw::Circle cv::gapi::wip::draw::Circle();
+cv::gapi::wip::draw::Circle();
 lua:
-    cv.gapi.wip.draw.Circle.new() -> <cv.gapi.wip.draw.Circle object>
-    cv.gapi.wip.draw.Circle() -> <cv.gapi.wip.draw.Circle object>
+    cv.gapi.wip.draw.Circle.new() -> <cv::gapi::wip::draw::Circle object>
+    cv.gapi.wip.draw.Circle() -> <cv::gapi::wip::draw::Circle object>
 ```
 
 ## cv::gapi::wip::draw::Image
@@ -53534,19 +57787,19 @@ lua:
 ### cv.gapi.wip.draw.Image.new
 
 ```cpp
-static cv::gapi::wip::draw::Image cv::gapi::wip::draw::Image( const cv::Point& org_,
-                                                              const cv::Mat&   img_,
-                                                              const cv::Mat&   alpha_ );
+cv::gapi::wip::draw::Image( const cv::Point& org_,
+                            const cv::Mat&   img_,
+                            const cv::Mat&   alpha_ );
 lua:
-    cv.gapi.wip.draw.Image.new( org_, img_, alpha_ ) -> <cv.gapi.wip.draw.Image object>
-    cv.gapi.wip.draw.Image( org_, img_, alpha_ ) -> <cv.gapi.wip.draw.Image object>
+    cv.gapi.wip.draw.Image.new( org_, img_, alpha_ ) -> <cv::gapi::wip::draw::Image object>
+    cv.gapi.wip.draw.Image( org_, img_, alpha_ ) -> <cv::gapi::wip::draw::Image object>
 ```
 
 ```cpp
-static cv::gapi::wip::draw::Image cv::gapi::wip::draw::Image();
+cv::gapi::wip::draw::Image();
 lua:
-    cv.gapi.wip.draw.Image.new() -> <cv.gapi.wip.draw.Image object>
-    cv.gapi.wip.draw.Image() -> <cv.gapi.wip.draw.Image object>
+    cv.gapi.wip.draw.Image.new() -> <cv::gapi::wip::draw::Image object>
+    cv.gapi.wip.draw.Image() -> <cv::gapi::wip::draw::Image object>
 ```
 
 ## cv::gapi::wip::draw::Line
@@ -53602,22 +57855,22 @@ lua:
 ### cv.gapi.wip.draw.Line.new
 
 ```cpp
-static cv::gapi::wip::draw::Line cv::gapi::wip::draw::Line( const cv::Point&  pt1_,
-                                                            const cv::Point&  pt2_,
-                                                            const cv::Scalar& color_,
-                                                            int               thick_ = 1,
-                                                            int               lt_ = 8,
-                                                            int               shift_ = 0 );
+cv::gapi::wip::draw::Line( const cv::Point&  pt1_,
+                           const cv::Point&  pt2_,
+                           const cv::Scalar& color_,
+                           int               thick_ = 1,
+                           int               lt_ = 8,
+                           int               shift_ = 0 );
 lua:
-    cv.gapi.wip.draw.Line.new( pt1_, pt2_, color_[, thick_[, lt_[, shift_]]] ) -> <cv.gapi.wip.draw.Line object>
-    cv.gapi.wip.draw.Line( pt1_, pt2_, color_[, thick_[, lt_[, shift_]]] ) -> <cv.gapi.wip.draw.Line object>
+    cv.gapi.wip.draw.Line.new( pt1_, pt2_, color_[, thick_[, lt_[, shift_]]] ) -> <cv::gapi::wip::draw::Line object>
+    cv.gapi.wip.draw.Line( pt1_, pt2_, color_[, thick_[, lt_[, shift_]]] ) -> <cv::gapi::wip::draw::Line object>
 ```
 
 ```cpp
-static cv::gapi::wip::draw::Line cv::gapi::wip::draw::Line();
+cv::gapi::wip::draw::Line();
 lua:
-    cv.gapi.wip.draw.Line.new() -> <cv.gapi.wip.draw.Line object>
-    cv.gapi.wip.draw.Line() -> <cv.gapi.wip.draw.Line object>
+    cv.gapi.wip.draw.Line.new() -> <cv::gapi::wip::draw::Line object>
+    cv.gapi.wip.draw.Line() -> <cv::gapi::wip::draw::Line object>
 ```
 
 ## cv::gapi::wip::draw::Mosaic
@@ -53649,10 +57902,10 @@ lua:
 ### cv.gapi.wip.draw.Mosaic.new
 
 ```cpp
-static cv::gapi::wip::draw::Mosaic cv::gapi::wip::draw::Mosaic();
+cv::gapi::wip::draw::Mosaic();
 lua:
-    cv.gapi.wip.draw.Mosaic.new() -> <cv.gapi.wip.draw.Mosaic object>
-    cv.gapi.wip.draw.Mosaic() -> <cv.gapi.wip.draw.Mosaic object>
+    cv.gapi.wip.draw.Mosaic.new() -> <cv::gapi::wip::draw::Mosaic object>
+    cv.gapi.wip.draw.Mosaic() -> <cv::gapi::wip::draw::Mosaic object>
 ```
 
 ## cv::gapi::wip::draw::Poly
@@ -53700,32 +57953,21 @@ lua:
 ### cv.gapi.wip.draw.Poly.new
 
 ```cpp
-static cv::gapi::wip::draw::Poly cv::gapi::wip::draw::Poly( const std::vector<cv::Point>& points_,
-                                                            const cv::Scalar&             color_,
-                                                            int                           thick_ = 1,
-                                                            int                           lt_ = 8,
-                                                            int                           shift_ = 0 );
+cv::gapi::wip::draw::Poly( const std::vector<cv::Point>& points_,
+                           const cv::Scalar&             color_,
+                           int                           thick_ = 1,
+                           int                           lt_ = 8,
+                           int                           shift_ = 0 );
 lua:
-    cv.gapi.wip.draw.Poly.new( points_, color_[, thick_[, lt_[, shift_]]] ) -> <cv.gapi.wip.draw.Poly object>
-    cv.gapi.wip.draw.Poly( points_, color_[, thick_[, lt_[, shift_]]] ) -> <cv.gapi.wip.draw.Poly object>
+    cv.gapi.wip.draw.Poly.new( points_, color_[, thick_[, lt_[, shift_]]] ) -> <cv::gapi::wip::draw::Poly object>
+    cv.gapi.wip.draw.Poly( points_, color_[, thick_[, lt_[, shift_]]] ) -> <cv::gapi::wip::draw::Poly object>
 ```
 
 ```cpp
-static cv::gapi::wip::draw::Poly cv::gapi::wip::draw::Poly();
+cv::gapi::wip::draw::Poly();
 lua:
-    cv.gapi.wip.draw.Poly.new() -> <cv.gapi.wip.draw.Poly object>
-    cv.gapi.wip.draw.Poly() -> <cv.gapi.wip.draw.Poly object>
-```
-
-## cv::gapi::wip::draw::Prim
-
-### cv.gapi.wip.draw.Prim.new
-
-```cpp
-static cv::gapi::wip::draw::Prim cv::gapi::wip::draw::Prim();
-lua:
-    cv.gapi.wip.draw.Prim.new() -> <cv.gapi.wip.draw.Prim object>
-    cv.gapi.wip.draw.Prim() -> <cv.gapi.wip.draw.Prim object>
+    cv.gapi.wip.draw.Poly.new() -> <cv::gapi::wip::draw::Poly object>
+    cv.gapi.wip.draw.Poly() -> <cv::gapi::wip::draw::Poly object>
 ```
 
 ## cv::gapi::wip::draw::Rect
@@ -53773,10 +58015,10 @@ lua:
 ### cv.gapi.wip.draw.Rect.new
 
 ```cpp
-static cv::gapi::wip::draw::Rect cv::gapi::wip::draw::Rect();
+cv::gapi::wip::draw::Rect();
 lua:
-    cv.gapi.wip.draw.Rect.new() -> <cv.gapi.wip.draw.Rect object>
-    cv.gapi.wip.draw.Rect() -> <cv.gapi.wip.draw.Rect object>
+    cv.gapi.wip.draw.Rect.new() -> <cv::gapi::wip::draw::Rect object>
+    cv.gapi.wip.draw.Rect() -> <cv::gapi::wip::draw::Rect object>
 ```
 
 ## cv::gapi::wip::draw::Text
@@ -53848,24 +58090,24 @@ lua:
 ### cv.gapi.wip.draw.Text.new
 
 ```cpp
-static cv::gapi::wip::draw::Text cv::gapi::wip::draw::Text( const std::string& text_,
-                                                            const cv::Point&   org_,
-                                                            int                ff_,
-                                                            double             fs_,
-                                                            const cv::Scalar&  color_,
-                                                            int                thick_ = 1,
-                                                            int                lt_ = 8,
-                                                            bool               bottom_left_origin_ = false );
+cv::gapi::wip::draw::Text( const std::string& text_,
+                           const cv::Point&   org_,
+                           int                ff_,
+                           double             fs_,
+                           const cv::Scalar&  color_,
+                           int                thick_ = 1,
+                           int                lt_ = 8,
+                           bool               bottom_left_origin_ = false );
 lua:
-    cv.gapi.wip.draw.Text.new( text_, org_, ff_, fs_, color_[, thick_[, lt_[, bottom_left_origin_]]] ) -> <cv.gapi.wip.draw.Text object>
-    cv.gapi.wip.draw.Text( text_, org_, ff_, fs_, color_[, thick_[, lt_[, bottom_left_origin_]]] ) -> <cv.gapi.wip.draw.Text object>
+    cv.gapi.wip.draw.Text.new( text_, org_, ff_, fs_, color_[, thick_[, lt_[, bottom_left_origin_]]] ) -> <cv::gapi::wip::draw::Text object>
+    cv.gapi.wip.draw.Text( text_, org_, ff_, fs_, color_[, thick_[, lt_[, bottom_left_origin_]]] ) -> <cv::gapi::wip::draw::Text object>
 ```
 
 ```cpp
-static cv::gapi::wip::draw::Text cv::gapi::wip::draw::Text();
+cv::gapi::wip::draw::Text();
 lua:
-    cv.gapi.wip.draw.Text.new() -> <cv.gapi.wip.draw.Text object>
-    cv.gapi.wip.draw.Text() -> <cv.gapi.wip.draw.Text object>
+    cv.gapi.wip.draw.Text.new() -> <cv::gapi::wip::draw::Text object>
+    cv.gapi.wip.draw.Text() -> <cv::gapi::wip::draw::Text object>
 ```
 
 ## cv::gapi::wip::gst::GStreamerPipeline
@@ -53873,10 +58115,10 @@ lua:
 ### cv.gapi.wip.gst.GStreamerPipeline.new
 
 ```cpp
-static cv::gapi::wip::gst::GStreamerPipeline cv::gapi::wip::gst::GStreamerPipeline( const std::string& pipeline );
+cv::gapi::wip::gst::GStreamerPipeline( const std::string& pipeline );
 lua:
-    cv.gapi.wip.gst.GStreamerPipeline.new( pipeline ) -> <cv.gapi.wip.gst.GStreamerPipeline object>
-    cv.gapi.wip.gst.GStreamerPipeline( pipeline ) -> <cv.gapi.wip.gst.GStreamerPipeline object>
+    cv.gapi.wip.gst.GStreamerPipeline.new( pipeline ) -> <cv::gapi::wip::gst::GStreamerPipeline object>
+    cv.gapi.wip.gst.GStreamerPipeline( pipeline ) -> <cv::gapi::wip::gst::GStreamerPipeline object>
 ```
 
 ## cv::ipp
@@ -56559,10 +60801,10 @@ lua:
 ### cv.ocl.Device.new
 
 ```cpp
-static cv::ocl::Device cv::ocl::Device();
+cv::ocl::Device();
 lua:
-    cv.ocl.Device.new() -> <cv.ocl.Device object>
-    cv.ocl.Device() -> <cv.ocl.Device object>
+    cv.ocl.Device.new() -> <cv::ocl::Device object>
+    cv.ocl.Device() -> <cv::ocl::Device object>
 ```
 
 ### cv.ocl.Device.OpenCLVersion
@@ -57420,10 +61662,10 @@ lua:
 ### cv.segmentation.IntelligentScissorsMB.new
 
 ```cpp
-static cv::segmentation::IntelligentScissorsMB cv::segmentation::IntelligentScissorsMB();
+cv::segmentation::IntelligentScissorsMB();
 lua:
-    cv.segmentation.IntelligentScissorsMB.new() -> <cv.segmentation.IntelligentScissorsMB object>
-    cv.segmentation.IntelligentScissorsMB() -> <cv.segmentation.IntelligentScissorsMB object>
+    cv.segmentation.IntelligentScissorsMB.new() -> <cv::segmentation::IntelligentScissorsMB object>
+    cv.segmentation.IntelligentScissorsMB() -> <cv::segmentation::IntelligentScissorsMB object>
 ```
 
 ### cv.segmentation.IntelligentScissorsMB.applyImage
@@ -57565,7 +61807,7 @@ lua:
 ```cpp
 std::string cv::utils::dumpInputOutputArray( InputOutputArray argument );
 lua:
-    cv.utils.dumpInputOutputArray( argument ) -> retval, argument
+    cv.utils.dumpInputOutputArray( [argument] ) -> retval, argument
 ```
 
 ### cv.utils.dumpInputOutputArrayOfArrays
@@ -57573,7 +61815,7 @@ lua:
 ```cpp
 std::string cv::utils::dumpInputOutputArrayOfArrays( InputOutputArrayOfArrays argument );
 lua:
-    cv.utils.dumpInputOutputArrayOfArrays( argument ) -> retval, argument
+    cv.utils.dumpInputOutputArrayOfArrays( [argument] ) -> retval, argument
 ```
 
 ### cv.utils.dumpInt
@@ -57804,11 +62046,11 @@ lua:
 ### cv.utils.ClassWithKeywordProperties.new
 
 ```cpp
-static cv::utils::ClassWithKeywordProperties cv::utils::ClassWithKeywordProperties( int lambda_arg = 24,
-                                                                                    int except_arg = 42 );
+cv::utils::ClassWithKeywordProperties( int lambda_arg = 24,
+                                       int except_arg = 42 );
 lua:
-    cv.utils.ClassWithKeywordProperties.new( [lambda_arg[, except_arg]] ) -> <cv.utils.ClassWithKeywordProperties object>
-    cv.utils.ClassWithKeywordProperties( [lambda_arg[, except_arg]] ) -> <cv.utils.ClassWithKeywordProperties object>
+    cv.utils.ClassWithKeywordProperties.new( [lambda_arg[, except_arg]] ) -> <cv::utils::ClassWithKeywordProperties object>
+    cv.utils.ClassWithKeywordProperties( [lambda_arg[, except_arg]] ) -> <cv::utils::ClassWithKeywordProperties object>
 ```
 
 ## cv::utils::FunctionParams
@@ -57832,10 +62074,10 @@ lua:
 ### cv.utils.FunctionParams.new
 
 ```cpp
-static cv::utils::FunctionParams cv::utils::FunctionParams();
+cv::utils::FunctionParams();
 lua:
-    cv.utils.FunctionParams.new() -> <cv.utils.FunctionParams object>
-    cv.utils.FunctionParams() -> <cv.utils.FunctionParams object>
+    cv.utils.FunctionParams.new() -> <cv::utils::FunctionParams object>
+    cv.utils.FunctionParams() -> <cv::utils::FunctionParams object>
 ```
 
 ## cv::utils::fs
@@ -57913,11 +62155,11 @@ lua:
 ### cv.utils.nested.OriginalClassName.Params.new
 
 ```cpp
-static cv::utils::nested::OriginalClassName::Params cv::utils::nested::OriginalClassName::Params( int   int_param = 123,
-                                                                                                  float float_param = 3.5f );
+cv::utils::nested::OriginalClassName::Params( int   int_param = 123,
+                                              float float_param = 3.5f );
 lua:
-    cv.utils.nested.OriginalClassName.Params.new( [int_param[, float_param]] ) -> <cv.utils.nested.OriginalClassName.Params object>
-    cv.utils.nested.OriginalClassName.Params( [int_param[, float_param]] ) -> <cv.utils.nested.OriginalClassName.Params object>
+    cv.utils.nested.OriginalClassName.Params.new( [int_param[, float_param]] ) -> <cv::utils::nested::OriginalClassName::Params object>
+    cv.utils.nested.OriginalClassName.Params( [int_param[, float_param]] ) -> <cv::utils::nested::OriginalClassName::Params object>
 ```
 
 ## cv::videoio\_registry

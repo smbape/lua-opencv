@@ -81,6 +81,40 @@ if (VIRTUAL_ENV_created)
   )
 endif()
 
+set(EIGEN_VERSION 3.4.0 CACHE STRING "Choose the eigen version.")
+set_property(CACHE EIGEN_VERSION PROPERTY STRINGS "3.4.0" "3.3.9")
+option(EIGEN_ENABLE_INSTALL "Enable installation of Eigen3" OFF)
+option(EIGEN_BUILD_DOC "Enable creation of Eigen documentation" OFF)
+option(BUILD_TESTING "Enable creation of Eigen tests." OFF)
+
+if(NOT WIN32)
+  # On Linux, we want Eigen to be embeded in the library, be it shared or static
+  # Therefore, enforce BUILD_SHARED_LIBS OFF when building Eigen
+  # Hack to ensure that Eigen is built with BUILD_SHARED_LIBS OFF
+  set(BUILD_SHARED_LIBS_BACKUP ${BUILD_SHARED_LIBS})
+  set(BUILD_SHARED_LIBS OFF)
+endif()
+# Tell cmake that we will need eigen. These command will pull in eigen.
+include(FetchContent)
+FetchContent_Declare(eigen
+  GIT_REPOSITORY  https://gitlab.com/libeigen/eigen.git
+  GIT_TAG         ${EIGEN_VERSION}
+  GIT_SHALLOW     TRUE
+
+  # PATCH_COMMAND is run once for each BUILD_TYPE
+  # however, source download is only done once when it is a git repository
+  # use a custom patch command to perform patch only once
+  PATCH_COMMAND "${CMAKE_COMMAND}"
+                  "-DSOURCE_DIR=<SOURCE_DIR>"
+                  "-DGIT_EXECUTABLE=${GIT_EXECUTABLE}"
+                  "-DPATCH_FILE=${CMAKE_CURRENT_SOURCE_DIR}/patches/001-eigen-src.patch"
+                  -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/git_patch_once.cmake"
+)
+FetchContent_MakeAvailable(eigen)
+if(NOT WIN32)
+  set(BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS_BACKUP})
+endif()
+
 # find OpenCV
 if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
   if (WIN32)
@@ -89,7 +123,7 @@ if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
   else()
     # On Linux, we want OpenCV to be embeded in the library, be it shared or static
     # Therefore, enforce BUILD_SHARED_LIBS OFF when building OpenCV
-    # Hack to ensure that OpenCV is built with BUILD_SHARED_LIBS ON
+    # Hack to ensure that OpenCV is built with BUILD_SHARED_LIBS OFF
     set(BUILD_SHARED_LIBS_BACKUP ${BUILD_SHARED_LIBS})
     set(BUILD_SHARED_LIBS OFF)
     add_subdirectory(opencv)
@@ -99,18 +133,7 @@ else()
   find_package(OpenCV REQUIRED)
 endif()
 
-set(SOL2_VERSION 3.3.0 CACHE STRING "Choose the sol2 version.")
-set_property(CACHE SOL2_VERSION PROPERTY STRINGS "3.3.0" "3.2.2")
-option(SOL2_ENABLE_INSTALL "Enable installation of Sol2" OFF)
-
-# Tell cmake that we will need sol2. These command will pull in sol2.
-include(FetchContent)
-FetchContent_Declare(sol2
-  GIT_REPOSITORY https://github.com/ThePhD/sol2.git
-  GIT_TAG        v${SOL2_VERSION}
-)
-FetchContent_MakeAvailable(sol2)
-
+include(GNUInstallDirs)
 include(cmake/version.cmake)
 
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin" CACHE PATH "Output directory for applications")
@@ -174,8 +197,6 @@ add_library(${PROJECT_NAME} SHARED ${SRC_FILES})
 install(TARGETS ${PROJECT_NAME}
   LIBRARY
     DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-    # PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
-    #                 GROUP_EXECUTE GROUP_READ
   RUNTIME
     DESTINATION "${CMAKE_INSTALL_LIBDIR}"
 )
@@ -198,7 +219,7 @@ target_precompile_headers(${PROJECT_NAME} PRIVATE
   "$<$<COMPILE_LANGUAGE:CXX>:lua_generated_pch.hpp>"
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE sol2::sol2 ${LUA_LIBRARIES} ${OpenCV_LIBS})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${LUA_LIBRARIES} ${OpenCV_LIBS} Eigen3::Eigen)
 target_include_directories(${PROJECT_NAME} PRIVATE ${LUA_INCLUDE_DIR})
 if (DEFINED OpenCV_INCLUDE_DIRS)
   target_include_directories(${PROJECT_NAME} PRIVATE ${OpenCV_INCLUDE_DIRS})
@@ -209,11 +230,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
   COMPILE_PDB_OUTPUT_DIRECTORY "${LIBRARY_OUTPUT_PATH}"
   LIBRARY_OUTPUT_DIRECTORY "${LIBRARY_OUTPUT_PATH}"
   RUNTIME_OUTPUT_DIRECTORY "${EXECUTABLE_OUTPUT_PATH}"
-
-  # opencv is in ${CMAKE_INSTALL_LIBDIR}/
-  # opencv is in ${CMAKE_INSTALL_LIBDIR}/
-  # use rpath $ORIGIN to allow finding opencv
-  INSTALL_RPATH "$ORIGIN"
 )
 
 # Always generate debug files

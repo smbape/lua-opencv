@@ -1,17 +1,33 @@
 #pragma once
-#include <lua_generated_include.hpp>
-#include <luadef.hpp>
+#include <lua_bridge.hpp>
 
 // CV_EXPORTS_W : include this file in lua_generated_include
 
 namespace cvextra {
 	std::vector<int> mat_shape(const cv::Mat& self);
 	std::vector<int> umat_shape(const cv::UMat& self);
-	cv::Mat createMatFromVectorOfMat(const std::vector<cv::Mat>& vec, sol::state_view& lua);
-	cv::Mat createMatFromArray(sol::table array, int type, sol::state_view& lua);
-	sol::table tableMat(const cv::Mat& self, bool nested, sol::state_view& lua);
-	cv::UMat createUMatFromArray(sol::table array, int type, cv::UMatUsageFlags usageFlags, sol::state_view& lua);
-	sol::table tableUMat(const cv::UMat& self, bool nested, sol::state_view& lua);
+
+	using MatIndexType = std::variant<cv::Mat, uchar, char, ushort, short, int, float, double>;
+
+	MatIndexType Mat_index_at(lua_State* L, cv::Mat& self, int idx);
+	MatIndexType Mat_index_at(lua_State* L, cv::Mat& self, const cv::Range& range);
+	MatIndexType Mat_index_at(lua_State* L, cv::Mat& self, const std::vector<int>& idx);
+	MatIndexType Mat_index_at(lua_State* L, cv::Mat& self, const std::vector<cv::Range>& ranges);
+	MatIndexType Mat_index_at(lua_State* L, cv::Mat& self, const std::vector<std::variant<int, cv::Range>>& idx);
+
+	void Mat_newindex_at(lua_State* L, cv::Mat& self, int idx, const MatIndexType& value);
+	void Mat_newindex_at(lua_State* L, cv::Mat& self, const cv::Range& range, const MatIndexType& value);
+	void Mat_newindex_at(lua_State* L, cv::Mat& self, const std::vector<int>& idx, const MatIndexType& value);
+	void Mat_newindex_at(lua_State* L, cv::Mat& self, const std::vector<cv::Range>& ranges, const MatIndexType& value);
+	void Mat_newindex_at(lua_State* L, cv::Mat& self, const std::vector<std::variant<int, cv::Range>>& idx, const MatIndexType& value);
+
+	cv::Mat createMatFromVectorOfMat(lua_State* L, const std::vector<cv::Mat>& vec);
+	cv::Mat createMatFromArray(lua_State* L, const LUA_MODULE_NAME::Table& array, int type);
+	cv::UMat createUMatFromArray(lua_State* L, const LUA_MODULE_NAME::Table& array, int type, cv::UMatUsageFlags usageFlags);
+	int pushtable_Mat(lua_State* L, const cv::Mat& self, bool nested);
+	int pushtable_UMat(lua_State* L, const cv::UMat& self, bool nested);
+
+	extern cv::Range Ellipsis;
 
 	template<typename... Args>
 	inline double mat_at(const cv::Mat& m, Args&&... args) {

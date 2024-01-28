@@ -2,9 +2,6 @@
 
 // CV_EXPORTS_W : include this file in lua_generated_include
 
-#define SOL_ALL_SAFETIES_ON 1
-#include <sol/sol.hpp>
-
 #if defined _WIN32
 #  define LUA_CDECL __cdecl
 #  define LUA_STDCALL __stdcall
@@ -89,48 +86,69 @@
 
 #ifndef LUA_MODULE_INFO
 #define LUA_MODULE_INFO( _message ) do { \
-    std::ostringstream _out; _out << _message;  \
-    fflush(stdout); fflush(stderr);         \
-    fprintf(stderr, LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_NAME) "(%s) Info: %s (%s) in %s, file %s, line %d\n", LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_VERSION), _out.str().c_str(), "", Lua_Module_Func, __FILE__, __LINE__); \
-    fflush(stdout); fflush(stderr);         \
+	std::ostringstream _out; _out << _message;  \
+	fflush(stdout); fflush(stderr);         \
+	fprintf(stderr, LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_NAME) "(%s) Info: %s (%s) in %s, file %s, line %d\n", LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_VERSION), _out.str().c_str(), "", Lua_Module_Func, __FILE__, __LINE__); \
+	fflush(stdout); fflush(stderr);         \
 } while(0)
 #endif
 
 #ifndef LUA_MODULE_WARN
 #define LUA_MODULE_WARN( _message ) do { \
-    std::ostringstream _out; _out << _message;  \
-    fflush(stdout); fflush(stderr);         \
-    fprintf(stderr, LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_NAME) "(%s) Warning: %s (%s) in %s, file %s, line %d\n", LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_VERSION), _out.str().c_str(), "", Lua_Module_Func, __FILE__, __LINE__); \
-    fflush(stdout); fflush(stderr);         \
+	std::ostringstream _out; _out << _message;  \
+	fflush(stdout); fflush(stderr);         \
+	fprintf(stderr, LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_NAME) "(%s) Warning: %s (%s) in %s, file %s, line %d\n", LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_VERSION), _out.str().c_str(), "", Lua_Module_Func, __FILE__, __LINE__); \
+	fflush(stdout); fflush(stderr);         \
 } while(0)
 #endif
 
 #ifndef LUA_MODULE_ERROR
 #define LUA_MODULE_ERROR( _message ) do { \
-    std::ostringstream _out; _out << _message;  \
-    fflush(stdout); fflush(stderr);         \
-    fprintf(stderr, LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_NAME) "(%s) Error: %s (%s) in %s, file %s, line %d\n", LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_VERSION), _out.str().c_str(), "", Lua_Module_Func, __FILE__, __LINE__); \
-    fflush(stdout); fflush(stderr);         \
+	std::ostringstream _out; _out << _message;  \
+	fflush(stdout); fflush(stderr);         \
+	fprintf(stderr, LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_NAME) "(%s) Error: %s (%s) in %s, file %s, line %d\n", LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_VERSION), _out.str().c_str(), "", Lua_Module_Func, __FILE__, __LINE__); \
+	fflush(stdout); fflush(stderr);         \
+} while(0)
+#endif
+
+#ifndef LUAL_MODULE_ERROR
+#define LUAL_MODULE_ERROR( L, _message ) do { \
+	std::ostringstream _out; _out << _message;  \
+	luaL_error(L, LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_NAME) "(%s) Error: %s (%s) in %s, file %s, line %d\n", LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_VERSION), _out.str().c_str(), "", Lua_Module_Func, __FILE__, __LINE__); \
+} while(0)
+#endif
+
+#ifndef LUAL_MODULE_ERROR_RETURN
+#define LUAL_MODULE_ERROR_RETURN( L, _message ) do { \
+	std::ostringstream _out; _out << _message;  \
+	return luaL_error(L, LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_NAME) "(%s) Error: %s (%s) in %s, file %s, line %d\n", LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_VERSION), _out.str().c_str(), "", Lua_Module_Func, __FILE__, __LINE__); \
 } while(0)
 #endif
 
 #ifndef LUA_MODULE_THROW
 #define LUA_MODULE_THROW( _message ) do { \
-    std::ostringstream _out; _out << _message;  \
-    fflush(stdout); fflush(stderr);         \
-    fprintf(stderr, LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_NAME) "(%s) Error: %s (%s) in %s, file %s, line %d\n", LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_VERSION), _out.str().c_str(), "", Lua_Module_Func, __FILE__, __LINE__); \
-    fflush(stdout); fflush(stderr);           \
-    throw std::runtime_error(_out.str().c_str()); \
+	std::ostringstream _out; _out << _message;  \
+	fflush(stdout); fflush(stderr);         \
+	fprintf(stderr, LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_NAME) "(%s) Error: %s (%s) in %s, file %s, line %d\n", LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_VERSION), _out.str().c_str(), "", Lua_Module_Func, __FILE__, __LINE__); \
+	fflush(stdout); fflush(stderr);           \
+	throw std::runtime_error(_out.str().c_str()); \
 } while(0)
 #endif
 
 #ifndef LUA_MODULE_ASSERT_THROW
 #define LUA_MODULE_ASSERT_THROW( expr, _message ) do { if(!!(expr)) ; else { \
-    std::ostringstream _out; _out << _message;  \
-    fflush(stdout); fflush(stderr);         \
-    fprintf(stderr, LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_NAME) "(%s) Error: %s (%s) in %s, file %s, line %d\n", LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_VERSION), _out.str().c_str(), #expr, Lua_Module_Func, __FILE__, __LINE__); \
-    fflush(stdout); fflush(stderr);         \
-    throw std::runtime_error(_out.str().c_str());    \
+	std::ostringstream _out; _out << _message;  \
+	fflush(stdout); fflush(stderr);         \
+	fprintf(stderr, LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_NAME) "(%s) Error: %s (%s) in %s, file %s, line %d\n", LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_VERSION), _out.str().c_str(), #expr, Lua_Module_Func, __FILE__, __LINE__); \
+	fflush(stdout); fflush(stderr);         \
+	throw std::runtime_error(_out.str().c_str());    \
+}} while(0)
+#endif
+
+#ifndef LUAL_MODULE_ASSERT
+#define LUAL_MODULE_ASSERT( L, expr, _message ) do { if(!!(expr)) ; else { \
+	std::ostringstream _out; _out << _message;  \
+	luaL_error(L, LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_NAME) "(%s) Error: %s (%s) in %s, file %s, line %d\n", LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_VERSION), _out.str().c_str(), #expr, Lua_Module_Func, __FILE__, __LINE__); \
 }} while(0)
 #endif
 
@@ -149,3 +167,156 @@ fflush(stdout); fflush(stderr); \
 return E_FAIL; } \
 } while(0)
 #endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+#include <lua.h>
+#include <lauxlib.h>
+#ifdef __cplusplus
+}
+#endif
+
+#include <algorithm>
+#include <array>
+#include <concepts>
+#include <functional>
+#include <initializer_list>
+#include <iostream>
+#include <map>
+#include <memory>
+#include <optional>
+#include <string>
+#include <tuple>
+#include <type_traits>
+#include <utility>
+#include <variant>
+#include <vector>
+
+#if (LUA_VERSION_NUM == 501) && !(defined lua_rawlen)
+#define lua_rawlen lua_objlen
+#endif
+
+#if LUA_VERSION_NUM < 502
+#define lua_pushfuncs(L, funcs) luaL_register(L, NULL, funcs)
+#else
+#define lua_pushfuncs(L, funcs) luaL_setfuncs(L, funcs, 0)
+#endif
+
+#if LUA_VERSION_NUM < 504
+extern int luaL_typeerror(lua_State* L, int arg, const char* tname);
+#endif
+
+namespace LUA_MODULE_NAME {
+	// ================================
+	// is_usertype generics
+	// ================================
+
+	template<typename T>
+	struct is_usertype : std::integral_constant<bool, false> {};
+
+	template<typename T>
+	constexpr inline bool is_usertype_v = is_usertype<T>::value;
+
+	template<typename T>
+	struct usertype_info;
+
+	template<typename T>
+	struct is_basetype : std::integral_constant<bool, false> {};
+
+	template<typename T>
+	constexpr inline bool is_basetype_v = is_basetype<T>::value;
+
+	template<typename T>
+	struct basetype_info;
+
+	template<int Kind>
+	struct _Object {
+		_Object() = default;
+		~_Object() {
+			reset();
+		}
+
+		_Object(lua_State* L_, int index) : L(L_) {
+			if (L != nullptr) {
+				lua_pushvalue(L, index);
+				ref = luaL_ref(L, LUA_REGISTRYINDEX);
+			}
+		}
+
+		_Object(const _Object& other) {
+			*this = other;
+		}
+
+		_Object& operator=(const _Object& other) {
+			// Guard self assignment
+			if (this == &other) {
+				return *this;
+			}
+
+			reset();
+
+			if (other.L != nullptr) {
+				L = other.L;
+				lua_rawgeti(other.L, LUA_REGISTRYINDEX, other.ref);
+				ref = luaL_ref(other.L, LUA_REGISTRYINDEX);
+			}
+
+			return *this;
+		}
+
+		_Object(_Object&& other) noexcept {
+			*this = std::move(other);
+		}
+
+		_Object& operator=(_Object&& other) noexcept {
+			// Guard self assignment
+			if (this == &other) {
+				return *this;
+			}
+
+			reset();
+
+			L = std::exchange(other.L, nullptr); // leave other in valid state
+			ref = std::exchange(other.ref, LUA_REFNIL);
+			return *this;
+		}
+
+		void reset() {
+			if (ref != LUA_REFNIL) {
+				luaL_unref(L, LUA_REGISTRYINDEX, ref);
+				free();
+			}
+		}
+
+		void free() {
+			L = nullptr;
+			ref = LUA_REFNIL;
+		}
+
+		void assign(lua_State* L, const _Object& other) {
+			reset();
+
+			if (L != nullptr) {
+				this->L = L;
+				lua_push(L, other);
+				ref = luaL_ref(L, LUA_REGISTRYINDEX);
+			}
+		}
+
+		inline bool operator==(const _Object& rhs) const {
+			return L == rhs.L && ref == rhs.ref;
+		}
+
+		inline bool operator!=(const _Object& rhs) { return !(*this == rhs); }
+
+		lua_State* L = nullptr;
+		int ref = LUA_REFNIL;
+	};
+
+	using Object = _Object<0>;
+	using Table = _Object<1>;
+	using Function = _Object<2>;
+
+	const Object lua_nil;
+}

@@ -5,8 +5,10 @@ const { spawn, spawnSync } = require("node:child_process");
 const sysPath = require("node:path");
 const waterfall = require("async/waterfall");
 const { explore } = require("fs-explorer");
+const {findFile} = require("../generator/FileUtils");
 
 const batchSuffix = os.platform() === "win32" ? ".bat" : "";
+const exeSuffix = os.platform() === "win32" ? ".exe" : "";
 const WORKSPACE_ROOT = process.env.WORKSPACE_ROOT ? sysPath.resolve(process.env.WORKSPACE_ROOT) : sysPath.resolve(__dirname, "..");
 const LUAROCKS_BINDIR = process.env.LUAROCKS_BINDIR ? sysPath.resolve(process.env.LUAROCKS_BINDIR) : sysPath.join(WORKSPACE_ROOT, "luarocks");
 const luarcoks = sysPath.join(LUAROCKS_BINDIR, `luarocks${ batchSuffix }`);
@@ -16,12 +18,39 @@ const LUA_BINDIR = spawnSync(luarcoks, ["config", "variables.LUA_BINDIR"]).stdou
 const LUAROCKS_SYSCONFDIR = spawnSync(luarcoks, ["config", "sysconfdir"]).stdout.toString().trim();
 const LUA_BINDIR_DEBUG = LUA_BINDIR.replace("Release", "Debug");
 
+const PROJECT_DIR = WORKSPACE_ROOT;
+const opencv_SOURCE_DIR = (() => {
+    const platform = os.platform() === "win32" ? (/cygwin/.test(process.env.HOME) ? "Cygwin" : "x64") : "*-GCC";
+    for (const buildDir of [
+        process.env.CMAKE_CURRENT_BINARY_DIR,
+        `out/build/${ platform }-*`,
+        "build.luarocks",
+
+    ]) {
+        if (!buildDir) {
+            continue;
+        }
+
+        const file = findFile(`${ buildDir }/opencv/opencv-src`, PROJECT_DIR);
+        if (file) {
+            return file;
+        }
+    }
+
+    return null;
+})();
+
+const PYTHONPATH = sysPath.join(opencv_SOURCE_DIR, "samples", "dnn");
+const OPENCV_SAMPLES_DATA_PATH = sysPath.join(opencv_SOURCE_DIR, "samples", "data");
+
 const config = {
     Debug: {
         exe: sysPath.join(LUA_BINDIR_DEBUG, lua_interpreter),
         env: {
             LUAROCKS_BINDIR,
             WORKSPACE_ROOT,
+            PYTHONPATH,
+            OPENCV_SAMPLES_DATA_PATH,
         },
         argv: [],
     },
@@ -30,6 +59,8 @@ const config = {
         env: {
             LUAROCKS_BINDIR,
             WORKSPACE_ROOT,
+            PYTHONPATH,
+            OPENCV_SAMPLES_DATA_PATH,
         },
         argv: [],
     },
@@ -88,6 +119,12 @@ const run = (file, options, env, next) => {
             argv.push("ssd_tf", "--input", "vtest.avi");
         }
         args.push(config[env.BUILD_TYPE].exe, argv);
+    } else if (extname === ".py") {
+        const argv = [file];
+        if (sysPath.basename(file) === "object_detection.py" && options.argv.length === 0) {
+            argv.push("ssd_tf", "--input", "vtest.avi");
+        }
+        args.push(`python${ exeSuffix }`, argv);
     } else {
         throw new Error(`Unsupported extenstion ${ extname }`);
     }
@@ -95,85 +132,102 @@ const run = (file, options, env, next) => {
     console.log(args.flat().map(arg => (arg.includes(" ") ? `"${ arg }"` : arg)).join(" "));
 
     args.push({
-        stdio: "inherit",
+        stdio: options.stdio,
         env: Object.assign({}, config[env.BUILD_TYPE].env, process.env, env),
         cwd: options.cwd,
     });
 
     const child = spawn(...args);
-
     child.on("error", next);
     child.on("close", next);
+
+    if (typeof options.run === "function") {
+        options.run(child);
+    }
 };
 
-const options = {
-    cwd: WORKSPACE_ROOT,
-    includes: [],
-    argv: [],
-    "--": 0,
-};
+const main = (options, next) => {
+    options = Object.assign({
+        cwd: WORKSPACE_ROOT,
+        includes: [],
+        argv: [],
+        stdio: "inherit",
+        INCLUDED_EXT: [".lua", ".py"],
+        EXCLUDED_FILES: ["init.lua", "common.lua", "download_model.py"],
+    }, options);
 
-for (const arg of process.argv.slice(2)) {
-    if (arg === "--") {
-        options[arg]++;
-    } else if (options["--"] === 1 && arg[0] !== "-") {
-        options.includes.push(arg);
-    } else if (options["--"] > 1 || options["--"] !== 0 && arg[0] === "-") {
-        options.argv.push(arg);
-    } else if (arg === "--Debug" || arg === "--Release") {
-        process.env.BUILD_TYPE = arg.slice(2);
-    } else {
-        options.cwd = sysPath.resolve(arg);
-        options["--"] = 1;
-    }
-}
+    const { cwd, includes, INCLUDED_EXT, EXCLUDED_FILES } = options;
 
-const INCLUDED_EXT = [".lua"];
-const EXCLUDED_FILES = ["init.lua", "common.lua"];
-const { cwd, includes } = options;
+    explore(sysPath.join(cwd, "samples"), (path, stats, next) => {
+        const file = sysPath.relative(cwd, path);
+        const basename = sysPath.basename(file);
+        const extname = sysPath.extname(file);
 
-explore(sysPath.join(cwd, "samples"), (path, stats, next) => {
-    const file = sysPath.relative(cwd, path);
-    const basename = sysPath.basename(file);
-    const extname = sysPath.extname(file);
-
-    if (
-        !INCLUDED_EXT.includes(extname) ||
-        EXCLUDED_FILES.includes(basename) ||
-        includes.length !== 0 && !includes.some(include => basename.startsWith(include))
-    ) {
-        next();
-        return;
-    }
-
-    waterfall([
-        next => {
-            run(file, options, {
-                BUILD_TYPE: "Release",
-                OPENCV_BUILD_TYPE: "Release",
-            }, next);
-        },
-
-        (signal, next) => {
-            run(file, options, {
-                BUILD_TYPE: "Debug",
-                OPENCV_BUILD_TYPE: "Debug",
-            }, next);
-        },
-    ], (code, signal) => {
-        next(code);
-    });
-}, (path, stats, files, state, next) => {
-    const basename = sysPath.basename(path);
-    const skip = state === "begin" && (basename[0] === "." || basename === "BackUp");
-    next(null, skip);
-}, err => {
-    if (err) {
-        if (!Array.isArray(err)) {
-            throw err;
+        if (
+            !INCLUDED_EXT.includes(extname) ||
+            EXCLUDED_FILES.includes(basename) ||
+            includes.length !== 0 && !includes.some(include => basename.startsWith(include))
+        ) {
+            next();
+            return;
         }
 
-        const code = err.flat(Infinity)[0];
-        process.exitCode = code;
+        waterfall([
+            next => {
+                run(file, options, {
+                    BUILD_TYPE: "Release",
+                    OPENCV_BUILD_TYPE: "Release",
+                }, next);
+            },
+
+            (signal, next) => {
+                run(file, options, {
+                    BUILD_TYPE: "Debug",
+                    OPENCV_BUILD_TYPE: "Debug",
+                }, next);
+            },
+        ], (code, signal) => {
+            next(code);
+        });
+    }, (path, stats, files, state, next) => {
+        const basename = sysPath.basename(path);
+        const skip = state === "begin" && (basename[0] === "." || basename === "BackUp");
+        next(null, skip);
+    }, next);
+};
+
+exports.main = main;
+
+if (typeof require !== "undefined" && require.main === module) {
+    const options = {
+        includes: [],
+        argv: [],
+        "--": 0,
+    };
+
+    for (const arg of process.argv.slice(2)) {
+        if (arg === "--") {
+            options[arg]++;
+        } else if (options["--"] === 1 && arg[0] !== "-") {
+            options.includes.push(arg);
+        } else if (options["--"] > 1 || options["--"] !== 0 && arg[0] === "-") {
+            options.argv.push(arg);
+        } else if (arg === "--Debug" || arg === "--Release") {
+            process.env.BUILD_TYPE = arg.slice(2);
+        } else {
+            options.cwd = sysPath.resolve(arg);
+            options["--"] = 1;
+        }
     }
-});
+
+    main(options, err => {
+        if (err) {
+            if (!Array.isArray(err)) {
+                throw err;
+            }
+
+            const code = err.flat(Infinity)[0];
+            process.exitCode = code;
+        }
+    });
+}

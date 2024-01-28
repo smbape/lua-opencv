@@ -96,8 +96,8 @@ class CoClass {
             "tuple",
             "variant",
             "vector",
-            ... new Set(["shared_ptr", shared_ptr]),
-            ... TEMPLATED_TYPES,
+            ...new Set(["shared_ptr", shared_ptr]),
+            ...TEMPLATED_TYPES,
         ];
 
         const templates = new RegExp(`\\b(?:${ [
@@ -107,7 +107,7 @@ class CoClass {
             "std::tuple",
             "std::variant",
             "std::vector",
-            ... new Set(["std::shared_ptr", options.shared_ptr]),
+            ...new Set(["std::shared_ptr", options.shared_ptr]),
         ].join("|") })<`, "g");
 
         type = type

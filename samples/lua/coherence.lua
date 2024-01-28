@@ -22,7 +22,7 @@ inspired by
 
 local function coherence_filter(...)
     local args = { ... }
-    local has_kwarg = opencv_lua.kwargs.is_instance(args[#args])
+    local has_kwarg = opencv_lua.kwargs.isinstance(args[#args])
     local kwargs = has_kwarg and args[#args] or opencv_lua.kwargs()
     local usedkw = 0
 

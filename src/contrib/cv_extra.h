@@ -20,4 +20,5 @@ namespace cv {
 	CV_EXPORTS_W std::variant<std::shared_ptr<Mat>, int> argmax(InputArray src, int axis, bool lastIndex = false);
 
 	CV_EXPORTS_W void bincount(InputArray x, OutputArray out, InputArray weights = noArray(), int minlength = 0);
+	CV_EXPORTS_W void ravel(const cv::Mat& src, CV_OUT cv::Mat& out);
 }

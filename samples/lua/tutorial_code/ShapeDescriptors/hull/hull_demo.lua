@@ -28,7 +28,7 @@ local function thresh_callback(val)
 
     -- Find the convex hull object for each contour
     local hull_list = {}
-    for i, c in contours:pairs() do
+    for i, c in ipairs(contours) do
         local hull = cv.convexHull(c)
         hull_list[i] = hull
     end

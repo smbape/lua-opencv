@@ -81,7 +81,7 @@ module.exports = ({ self, self_get, shared_ptr }) => {
             ["std::vector<int>", "sizes", "", ["/Ref", "/C"]],
             ["int", "type", "", []],
             ["void*", "data", "", []],
-            ["std::vector<size_t>", "steps", "std::vector<size_t>()", ["/Ref", "/C", "/Expr=static_cast<size_t*>(steps.empty() ? 0 : steps.data())"]]
+            ["std::vector<size_t>", "steps", "std::vector<size_t>()", ["/Ref", "/C", "/Expr=steps.empty() ? static_cast<size_t*>(nullptr) : steps.data()"]]
         ], "", ""],
 
         ["cv.Mat.Mat", "", [], [
@@ -122,7 +122,7 @@ module.exports = ({ self, self_get, shared_ptr }) => {
         ], "", ""],
 
         ["cv.Mat.assignTo", "void", [], [
-            ["Mat", "m", "", ["/Ref", "/C"]],
+            ["Mat", "m", "", ["/Ref"]],
             ["int", "type", "-1", []],
         ], "", ""],
 
@@ -192,7 +192,7 @@ module.exports = ({ self, self_get, shared_ptr }) => {
             ["UMatUsageFlags", "usageFlags", "USAGE_DEFAULT", []],
         ], "", ""],
 
-        ["cv.Mat.inv", "Mat", [""], [
+        ["cv.Mat.inv", "Mat", ["/WrapAs=static_cast<cv::Mat>"], [
             ["int", "method", "DECOMP_LU", []],
         ], "", ""],
 
@@ -204,7 +204,7 @@ module.exports = ({ self, self_get, shared_ptr }) => {
             ["Point", "ofs", "", ["/O", "/Ref"]],
         ], "", ""],
 
-        ["cv.Mat.mul", "Mat", [], [
+        ["cv.Mat.mul", "Mat", ["/WrapAs=static_cast<cv::Mat>"], [
             ["InputArray", "m", "", []],
             ["double", "scale", "1", []],
         ], "", ""],
@@ -284,7 +284,8 @@ module.exports = ({ self, self_get, shared_ptr }) => {
             ["int", "i", "0", []]
         ], "", ""],
 
-        ["cv.Mat.t", "Mat", [], [], "", ""],
+        ["cv.Mat.t", "Mat", ["/WrapAs=static_cast<cv::Mat>"], [], "", ""],
+        ["cv.Mat.t", "Mat", ["/WrapAs=static_cast<cv::Mat>", "=transpose"], [], "", ""],
 
         ["cv.Mat.total", "size_t", [], [], "", ""],
         ["cv.Mat.total", "size_t", [], [
@@ -302,75 +303,75 @@ module.exports = ({ self, self_get, shared_ptr }) => {
             ["Mat", "d", "", ["/Ref", "/C"]],
         ], "", ""],
 
-        ["cv.Mat.eye", "Mat", ["/S"], [
+        ["cv.Mat.eye", "Mat", ["/S", "/WrapAs=static_cast<cv::Mat>"], [
             ["int", "rows", "", []],
             ["int", "cols", "", []],
             ["int", "type", "", []],
         ], "", ""],
 
-        ["cv.Mat.eye", "Mat", ["/S"], [
+        ["cv.Mat.eye", "Mat", ["/S", "/WrapAs=static_cast<cv::Mat>"], [
             ["int", "rows", "", ["/Expr=rows, rows"]],
             ["int", "type", "", []],
         ], "", ""],
 
-        ["cv.Mat.eye", "Mat", ["/S"], [
+        ["cv.Mat.eye", "Mat", ["/S", "/WrapAs=static_cast<cv::Mat>"], [
             ["int", "cols", "", ["/Expr=cols, cols"]],
             ["int", "type", "", []],
         ], "", ""],
 
-        ["cv.Mat.eye", "Mat", ["/S"], [
+        ["cv.Mat.eye", "Mat", ["/S", "/WrapAs=static_cast<cv::Mat>"], [
             ["Size", "size", "", []],
             ["int", "type", "", []],
         ], "", ""],
 
-        ["cv.Mat.ones", "Mat", ["/S"], [
+        ["cv.Mat.ones", "Mat", ["/S", "/WrapAs=static_cast<cv::Mat>"], [
             ["int", "rows", "", []],
             ["int", "cols", "", []],
             ["int", "type", "", []],
         ], "", ""],
 
-        ["cv.Mat.ones", "Mat", ["/S"], [
+        ["cv.Mat.ones", "Mat", ["/S", "/WrapAs=static_cast<cv::Mat>"], [
             ["int", "cols", "", ["/Expr=1, cols"]],
             ["int", "type", "", []],
         ], "", ""],
 
-        ["cv.Mat.ones", "Mat", ["/S"], [
+        ["cv.Mat.ones", "Mat", ["/S", "/WrapAs=static_cast<cv::Mat>"], [
             ["int", "rows", "", ["/Expr=rows, 1"]],
             ["int", "type", "", []],
         ], "", ""],
 
-        ["cv.Mat.ones", "Mat", ["/S"], [
+        ["cv.Mat.ones", "Mat", ["/S", "/WrapAs=static_cast<cv::Mat>"], [
             ["Size", "size", "", []],
             ["int", "type", "", []],
         ], "", ""],
 
-        ["cv.Mat.ones", "Mat", ["/S"], [
+        ["cv.Mat.ones", "Mat", ["/S", "/WrapAs=static_cast<cv::Mat>"], [
             ["std::vector<int>", "sizes", "", ["/Expr=sizes.size(), sizes.data()"]],
             ["int", "type", "", []],
         ], "", ""],
 
-        ["cv.Mat.zeros", "Mat", ["/S"], [
+        ["cv.Mat.zeros", "Mat", ["/S", "/WrapAs=static_cast<cv::Mat>"], [
             ["int", "rows", "", []],
             ["int", "cols", "", []],
             ["int", "type", "", []],
         ], "", ""],
 
-        ["cv.Mat.zeros", "Mat", ["/S"], [
+        ["cv.Mat.zeros", "Mat", ["/S", "/WrapAs=static_cast<cv::Mat>"], [
             ["int", "cols", "", ["/Expr=1, cols"]],
             ["int", "type", "", []],
         ], "", ""],
 
-        ["cv.Mat.zeros", "Mat", ["/S"], [
+        ["cv.Mat.zeros", "Mat", ["/S", "/WrapAs=static_cast<cv::Mat>"], [
             ["int", "rows", "", ["/Expr=rows, 1"]],
             ["int", "type", "", []],
         ], "", ""],
 
-        ["cv.Mat.zeros", "Mat", ["/S"], [
+        ["cv.Mat.zeros", "Mat", ["/S", "/WrapAs=static_cast<cv::Mat>"], [
             ["Size", "size", "", []],
             ["int", "type", "", []],
         ], "", ""],
 
-        ["cv.Mat.zeros", "Mat", ["/S"], [
+        ["cv.Mat.zeros", "Mat", ["/S", "/WrapAs=static_cast<cv::Mat>"], [
             ["std::vector<int>", "sizes", "", ["/Expr=sizes.size(), sizes.data()"]],
             ["int", "type", "", []],
         ], "", ""],
@@ -389,7 +390,7 @@ module.exports = ({ self, self_get, shared_ptr }) => {
             ["OutputArray", "dst", "", []],
         ], "", ""],
 
-        ["cv.Mat.operator+", "void", ["/Call=cv::add", `/Expr=${ self }, $0`, "/S"], [
+        ["cv.Mat.operator+", "void", ["/Call=cv::add", "/S"], [
             ["cv::Scalar", "s", "", []],
             ["cv::Mat", "m", "", []],
             ["OutputArray", "dst", "", []],
@@ -405,7 +406,7 @@ module.exports = ({ self, self_get, shared_ptr }) => {
             ["OutputArray", "dst", "", []],
         ], "", ""],
 
-        ["cv.Mat.operator-", "void", ["/Call=cv::subtract", `/Expr=${ self }, $0`, "/S"], [
+        ["cv.Mat.operator-", "void", ["/Call=cv::subtract", "/S"], [
             ["cv::Scalar", "s", "", []],
             ["cv::Mat", "m", "", []],
             ["OutputArray", "dst", "", []],
@@ -461,58 +462,62 @@ module.exports = ({ self, self_get, shared_ptr }) => {
             ["OutputArray", "dst", "", []],
         ], "", ""],
 
-        ["cv.Mat.operator~", "cv::Mat", [], [], "", ""],
+        ["cv.Mat.operator~", "cv::Mat", ["/WrapAs=static_cast<cv::Mat>"], [], "", ""],
 
-        ["cv.Mat.operator&", "cv::Mat", [], [
+        ["cv.Mat.operator&", "cv::Mat", ["/WrapAs=static_cast<cv::Mat>"], [
             ["cv::Mat", "m", "", []],
         ], "", ""],
 
-        ["cv.Mat.operator&", "cv::Mat", [], [
+        ["cv.Mat.operator&", "cv::Mat", ["/WrapAs=static_cast<cv::Mat>"], [
             ["cv::Scalar", "s", "", []],
         ], "", ""],
 
-        ["cv.Mat.operator&", "cv::Mat", ["/S", "/Output=s & m"], [
-            ["cv::Scalar", "s", "", []],
-            ["cv::Mat", "m", "", []],
-        ], "", ""],
-
-        ["cv.Mat.operator|", "cv::Mat", [], [
-            ["cv::Mat", "m", "", []],
-        ], "", ""],
-
-        ["cv.Mat.operator|", "cv::Mat", [], [
-            ["cv::Scalar", "s", "", []],
-        ], "", ""],
-
-        ["cv.Mat.operator|", "cv::Mat", ["/S", "/Output=s | m"], [
+        ["cv.Mat.operator&", "cv::Mat", ["/S", "/Output=static_cast<cv::Mat>(s & m)"], [
             ["cv::Scalar", "s", "", []],
             ["cv::Mat", "m", "", []],
         ], "", ""],
 
-        ["cv.Mat.operator^", "cv::Mat", [], [
+        ["cv.Mat.operator|", "cv::Mat", ["/WrapAs=static_cast<cv::Mat>"], [
             ["cv::Mat", "m", "", []],
         ], "", ""],
 
-        ["cv.Mat.operator^", "cv::Mat", [], [
+        ["cv.Mat.operator|", "cv::Mat", ["/WrapAs=static_cast<cv::Mat>"], [
             ["cv::Scalar", "s", "", []],
         ], "", ""],
 
-        ["cv.Mat.operator^", "cv::Mat", ["/S", "/Output=s ^ m"], [
+        ["cv.Mat.operator|", "cv::Mat", ["/S", "/Output=static_cast<cv::Mat>(s | m)"], [
             ["cv::Scalar", "s", "", []],
             ["cv::Mat", "m", "", []],
         ], "", ""],
 
-        ["cv.Mat.Mat", "", ["/Call=::cvextra::createMatFromVectorOfMat", "/Expr=$0, lua", "/WrapAs=std::make_shared<cv::Mat>"], [
-            ["std::vector<cv::Mat>", "vec", "", []],
+        ["cv.Mat.operator^", "cv::Mat", ["/WrapAs=static_cast<cv::Mat>"], [
+            ["cv::Mat", "m", "", []],
         ], "", ""],
 
-        ["cv.Mat.createFromArray", "Mat", ["/S", "/Call=::cvextra::createMatFromArray", "/Expr=$0, lua"], [
-            ["sol::table", "array", "", []],
+        ["cv.Mat.operator^", "cv::Mat", ["/WrapAs=static_cast<cv::Mat>"], [
+            ["cv::Scalar", "s", "", []],
+        ], "", ""],
+
+        ["cv.Mat.operator^", "cv::Mat", ["/S", "/Output=static_cast<cv::Mat>(s ^ m)"], [
+            ["cv::Scalar", "s", "", []],
+            ["cv::Mat", "m", "", []],
+        ], "", ""],
+
+        ["cv.Mat.Mat", "", ["/Call=::cvextra::createMatFromVectorOfMat", "/Expr=L, $0", "/WrapAs=std::make_shared<cv::Mat>"], [
+            ["std::vector<cv::Mat>", "vec", "", ["/Ref", "/C"]],
+        ], "", ""],
+
+        ["cv.Mat.createFromArray", "Mat", ["/S", "/Call=::cvextra::createMatFromArray", "/Expr=L, $0"], [
+            ["Table", "array", "", ["/Ref", "/C"]],
             ["int", "type", "CV_64F", []],
         ], "", ""],
 
-        ["cv.Mat.table", "sol::table", ["/Call=::cvextra::tableMat", `/Expr=${ self }, nested, lua`], [
+        ["cv.Mat.table", "void", ["/Call=::cvextra::pushtable_Mat", `/Expr=L, ${ self }, $0`], [
             ["bool", "nested", "true", []],
+        ], "", ""],
+
+        ["cv.Mat.ravel", "void", ["/Call=::cv::ravel", `/Expr=${ self }, $0`], [
+            ["cv::Mat", "out", "", ["/O", "/Ref"]],
         ], "", ""],
     ];
 

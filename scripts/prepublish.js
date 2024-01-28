@@ -8,6 +8,7 @@ const prepublish = sysPath.resolve(__dirname, "..", "out", "prepublish");
 const wrapperSuffix = os.platform() === "win32" ? ".bat" : "";
 const shellSuffix = os.platform() === "win32" ? ".bat" : ".sh";
 const pack = process.argv.includes("--pack");
+const GIT_BRANCH = process.env.GIT_BRANCH || "main";
 
 const spawnExec = (cmd, args, options, next) => {
     const {stdio} = options;
@@ -89,14 +90,16 @@ eachOfLimit([
                     ["git", ["remote", "set-url", "origin", sysPath.resolve(__dirname, "..")]],
                     ["git", ["reset", "--hard", "HEAD"]],
                     ["git", ["clean", "-fd"]],
-                    ["git", ["pull"]],
+                    ["git", ["fetch", "origin", GIT_BRANCH]],
+                    ["git", ["checkout", GIT_BRANCH]],
+                    ["git", ["pull", "origin", GIT_BRANCH]],
                 ]);
             } else {
                 cmds.push(...[
-                    ["git", ["init", "-b", "main"]],
+                    ["git", ["init", "-b", GIT_BRANCH]],
                     ["git", ["remote", "add", "origin", sysPath.resolve(__dirname, "..")]],
-                    ["git", ["pull", "origin", "main"]],
-                    ["git", ["branch", "--set-upstream-to=origin/main", "main"]],
+                    ["git", ["pull", "origin", GIT_BRANCH]],
+                    ["git", ["branch", "--set-upstream-to=origin/main", GIT_BRANCH]],
                 ]);
             }
 

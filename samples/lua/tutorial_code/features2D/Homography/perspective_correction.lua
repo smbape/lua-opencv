@@ -48,7 +48,7 @@ local function perspectiveCorrection(img1Path, img2Path, patternSize)
     for i = 0, #corners1 - 1 do
         local pt1 = cv.Mat.createFromArray({ corners1[i][0], corners1[i][1], 1 })
         pt1 = pt1:reshape(1, 3)
-        local pt2 = H * pt1
+        local pt2 = cv.dot(H, pt1)
         pt2 = pt2 / pt2[2]
         local start = { int(corners1[i][0]), int(corners1[i][1]) }
         local end_ = { int(img1.width + pt2[0]), int(pt2[1]) }

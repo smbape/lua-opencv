@@ -51,42 +51,40 @@ module.exports = [
         ["OutputArray", "dst", "", []],
     ], "", ""],
 
-    ["cv.redirectError", "void", ["/Call=::cvextra::redirectError", "/Expr=lua, $0"], [
-        ["sol::function", "errCallback", "", []],
-        ["sol::object", "userdata", "sol::lua_nil", []],
+    ["cv.redirectError", "void", ["/Call=::cvextra::redirectError", "/Expr=L, $0"], [
+        ["Function", "errCallback", "", ["/Ref", "/C"]],
+        ["Object", "userdata", "lua_nil", ["/Ref", "/C"]],
     ], "", ""],
 
-    ["cv.setMouseCallback", "void", ["/Call=::cvextra::setMouseCallback", "/Expr=lua, $0"], [
+    ["cv.setMouseCallback", "void", ["/Call=::cvextra::setMouseCallback", "/Expr=L, $0"], [
         ["std::string", "winname", "", ["/Ref", "/C"]],
-        ["sol::function", "onMouse", "", []],
-        ["sol::object", "userdata", "sol::lua_nil", []],
+        ["Function", "onMouse", "", ["/Ref", "/C"]],
+        ["Object", "userdata", "lua_nil", ["/Ref", "/C"]],
     ], "", ""],
 
-    ["cv.createButton", "int", ["/Call=::cvextra::createButton", "/Expr=lua, $0"], [
+    ["cv.createButton", "int", ["/Call=::cvextra::createButton", "/Expr=L, $0"], [
         ["std::string", "bar_name", "", ["/Ref", "/C"]],
-        ["sol::function", "onChange", "", []],
-        ["sol::object", "userdata", "sol::lua_nil", []],
+        ["Function", "onChange", "", ["/Ref", "/C"]],
+        ["Object", "userdata", "lua_nil", ["/Ref", "/C"]],
         ["int", "type", "QT_PUSH_BUTTON", []],
         ["bool", "initial_button_state", "false", []],
     ], "", ""],
 
-    ["cv.createTrackbar", "int", ["/Call=::cvextra::createTrackbar", "/Expr=lua, $0"], [
+    ["cv.createTrackbar", "int", ["/Call=::cvextra::createTrackbar", "/Expr=L, $0"], [
         ["std::string", "trackbarname", "", ["/Ref", "/C"]],
         ["std::string", "winname", "", ["/Ref", "/C"]],
         ["int", "value", "", []],
         ["int", "count", "", []],
-        ["sol::function", "onChange", "", []],
-        ["sol::object", "userdata", "sol::lua_nil", []],
+        ["Function", "onChange", "", ["/Ref", "/C"]],
+        ["Object", "userdata", "lua_nil", ["/Ref", "/C"]],
     ], "", ""],
 
-    ["cv.createTrackbar", "int", ["/Call=::cvextra::createTrackbar", "/Expr=lua, $0"], [
+    ["cv.createTrackbar", "int", ["/Call=::cvextra::createTrackbar", "/Expr=L, $0"], [
         ["std::string", "trackbarname", "", ["/Ref", "/C"]],
         ["std::string", "winname", "", ["/Ref", "/C"]],
         ["int", "value", "", []],
         ["int", "count", "", []],
     ], "", ""],
-
-    // ["cv.FileNode.asVariant", "_variant_t", ["/Call=::autoit::fileNodeAsVariant", "/Expr=*__self->get()"], [], "", ""],
 
     ["cv.", "", ["/Properties"], [
         ["int", "CV_8U", "", ["/RExpr=CV_8U"]],

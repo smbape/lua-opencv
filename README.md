@@ -33,12 +33,13 @@ Therefore the [OpenCV documentation](https://docs.opencv.org/4.x/index.html) sho
 - [Keyword arguments](#keyword-arguments)
 - [How to translate python/c++ code](#how-to-translate-pythonc-code)
   - [Python translation example](#python-translation-example)
-- [Python Gotchas](#python-gotchas)
+- [Lua Gotchas](#lua-gotchas)
   - [1-indexed](#1-indexed)
   - [Instance method calls](#instance-method-calls)
   - [Strict compliance with the documentation](#strict-compliance-with-the-documentation)
   - [Memory](#memory)
   - [Matrix manipulation](#matrix-manipulation)
+- [Switching from sol2 to plain-c](#switching-from-sol2-to-plain-c)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -407,7 +408,7 @@ cv.waitKey()
 cv.destroyAllWindows()
 ```
 
-## Python Gotchas
+## Lua Gotchas
 
 ### 1-indexed
 
@@ -484,7 +485,7 @@ For maximum speed performance, when you need to manipulate matrices in lua, conv
 
 ```lua
 -- transform into an lua table for faster processing in lua
-local rows, cols, type = res.rows, res.cols, res:type()
+local rows, cols, type_ = res.rows, res.cols, res:type()
 res = res:table()
 
 for j = 1, rows do
@@ -497,5 +498,51 @@ for j = 1, rows do
     end
 end
 
-res = cv.Mat.createFromArray(res, type)
+res = cv.Mat.createFromArray(res, type_)
 ```
+
+If you are using [LuaJIT](https://luajit.org/), there is even a way to get close to the c performance with the usage of the [FFI Library](https://luajit.org/ext_ffi.html);
+
+```lua
+local ffi = require("ffi")
+
+local rows = 512
+local cols = 512
+local channels = 3
+local mat = cv.Mat({ rows, cols, channels }, cv.CV_8U, 255.0)
+local bytes = ffi.cast("unsigned char*", mat.data)
+
+local sum = 0
+for i = 0, rows - 1 do
+    for j = 0, cols - 1 do
+        for k = 0, channels - 1 do
+            sum = sum + bytes[i * cols * channels + j * channels + k]
+        end
+    end
+end
+```
+
+## Switching from sol2 to plain-c
+
+My aim was to create a binding that was at least as fast as the python alternative.
+
+The first implementation using [sol2] was functional but slower than python in some cases.
+
+Those cases included class instance recognition, functions with multiple overloads (cv::Mat has 20 overloads), returning maps and vectors as userdata.
+
+A small test with plain c/c++ bindings of those cases was much faster (5x).
+
+The key performance points were as follows:
+  - comparing the hash of the instance's metatable to determine whether it is an instance of a specific class. Inspired by [luaarray](https://www.nongnu.org/techne/lua/luaarray/)
+  - checking argument type directly in stack without the sol::variadic_args intermediary
+  - returning map/vector as plain tables, which are handled more quickly in lua
+
+In addition, some side effects were a smaller binary (30% less) and a faster compilation time (an average gain of 5mn for 30mn).
+
+I may have used [sol2] in an inefficient way. Nevertheless, I now have a more efficient implementation using plain c/c++.
+
+It is possible to outperform python, however, I haven't found a way that comes close to python's sweet syntaxic sugars.
+
+![benchmark.png](benchmark/benchmark.png)
+
+[sol2]: https://github.com/ThePhD/sol2

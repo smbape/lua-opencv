@@ -29,7 +29,7 @@ local function thresh_callback(val)
 
     -- Get the moments
     local mu = {}
-    for i, c in contours:pairs() do
+    for i, c in ipairs(contours) do
         mu[i] = cv.moments(c)
     end
 
@@ -58,7 +58,7 @@ local function thresh_callback(val)
     -- [showDrawings]
 
     -- Calculate the area with the moments 00 and compare with the result of the OpenCV function
-    for i, c in contours:pairs() do
+    for i, c in ipairs(contours) do
         print(string.format(' * Contour[%d] - Area (M_00) = %.2f - Area OpenCV: %.2f - Length: %.2f', i, mu[i]['m00'],
             cv.contourArea(c), cv.arcLength(c, true)))
     end

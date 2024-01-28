@@ -33,7 +33,7 @@ local function thresh_callback(val)
     -- Find the rotated rectangles and ellipses for each contour
     local minRect = {}
     local minEllipse = {}
-    for i, c in contours:pairs() do
+    for i, c in ipairs(contours) do
         minRect[i] = cv.minAreaRect(c)
         if #c > 5 then
             minEllipse[i] = cv.fitEllipse(c)
@@ -46,7 +46,7 @@ local function thresh_callback(val)
     -- [zeroMat]
 
     -- [forContour]
-    for i, c in contours:pairs() do
+    for i, c in ipairs(contours) do
         local color = { rng:uniform(0, 256), rng:uniform(0, 256), rng:uniform(0, 256) }
         -- contour
         cv.drawContours(drawing, contours, i - INDEX_BASE, color)

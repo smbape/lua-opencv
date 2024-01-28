@@ -15,9 +15,45 @@ function module.clock()
     return cv.getTickCount() / cv.getTickFrequency()
 end
 
+-- Function to read a file
+function module.read_file(file_path)
+    local file = assert(io.open(file_path, "r"))
+    local content = file:read("*all")
+    file:close()
+    return content
+end
+
+-- http://lua-users.org/wiki/ObjectOrientationTutorial
+function module.class(cls, base)
+    -- failed table lookups on the instances should fallback to the class table
+    cls.__index = cls
+
+    cls.new = function(...)
+        local self = setmetatable({}, cls)
+        cls.__init__(self, ...)
+        return self
+    end
+
+    local metatable = {
+        __call = function(cls, ...)
+            return cls.new(...)
+        end,
+    }
+
+    -- this is what makes the inheritance work
+    if base then
+        cls.__super__ = base
+        metatable.__index = base
+    end
+
+    setmetatable(cls, metatable)
+
+    return cls
+end
+
 function module.mosaic(...)
     local args = { ... }
-    local has_kwarg = opencv_lua.kwargs.is_instance(args[#args])
+    local has_kwarg = opencv_lua.kwargs.isinstance(args[#args])
     local kwargs = has_kwarg and args[#args] or opencv_lua.kwargs()
     local usedkw = 0
 
@@ -97,34 +133,6 @@ function module.mosaic(...)
     print(string.format("mosaic(%d, %d) took %.3f seconds", w, #imgs, os.clock() - t))
 
     return grid
-end
-
--- http://lua-users.org/wiki/ObjectOrientationTutorial
-function module.class(cls, base)
-    -- failed table lookups on the instances should fallback to the class table
-    cls.__index = cls
-
-    cls.new = function(...)
-        local self = setmetatable({}, cls)
-        cls.__init__(self, ...)
-        return self
-    end
-
-    local metatable = {
-        __call = function(cls, ...)
-            return cls.new(...)
-        end,
-    }
-
-    -- this is what makes the inheritance work
-    if base then
-        cls.__super__ = base
-        metatable.__index = base
-    end
-
-    setmetatable(cls, metatable)
-
-    return cls
 end
 
 return module

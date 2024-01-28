@@ -10,6 +10,8 @@ Sources:
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local int = opencv_lua.math.int
+local unpack = table.unpack or unpack ---@diagnostic disable-line: deprecated
+local INDEX_BASE = 1 -- lua is 1-based indexed
 
 local function main(args)
     -- [load]
@@ -43,8 +45,8 @@ local function main(args)
     -- [draw_lines]
     -- Draw the lines
     if not lines:empty() then
-        for i, line in lines:__pairs() do
-            local rho, theta = line:__unpack()
+        for i, line in ipairs(lines:table()) do
+            local rho, theta = unpack(line)
             local a = math.cos(theta)
             local b = math.sin(theta)
             local x0 = a * rho
@@ -64,8 +66,8 @@ local function main(args)
     -- [draw_lines_p]
     -- Draw the lines
     if not linesP:empty() then
-        for i, l in linesP:__pairs() do
-            cv.line(cdstP, { l[0], l[1] }, { l[2], l[3] }, { 0, 0, 255 }, 3, cv.LINE_AA)
+        for i, l in ipairs(linesP:table()) do
+            cv.line(cdstP, { l[0 + INDEX_BASE], l[1 + INDEX_BASE] }, { l[2 + INDEX_BASE], l[3 + INDEX_BASE] }, { 0, 0, 255 }, 3, cv.LINE_AA)
         end
     end
     -- [draw_lines_p]

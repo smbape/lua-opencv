@@ -28,7 +28,7 @@ end
 
 local function add_argument(...)
     local args = { ... }
-    local has_kwarg = opencv_lua.kwargs.is_instance(args[#args])
+    local has_kwarg = opencv_lua.kwargs.isinstance(args[#args])
     local kwargs = has_kwarg and args[#args] or opencv_lua.kwargs()
     local usedkw = 0
 
@@ -293,7 +293,7 @@ local function add_preproc_args(zoo, parser, sample)
     if sysPath.isfile(zoo) then
         local fs = cv.FileStorage(zoo, cv.FileStorage.READ)
         local root = fs:root()
-        for i, name in root:keys():pairs() do
+        for i, name in ipairs(root:keys()) do
             local model = root:getNode(name)
             if model:getNode("sample"):string() == sample then
                 aliases[#aliases + 1] = name
