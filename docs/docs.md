@@ -3994,13 +3994,10 @@
   - [cv.RNG.uniform\_float](#cvrnguniform%5C_float)
   - [cv.RNG.uniform\_int](#cvrnguniform%5C_int)
 - [cv::Range](#cvrange)
-  - [Range.start](#rangestart)
-  - [Range.end](#rangeend)
+  - [Range.MIN](#rangemin)
+  - [Range.MAX](#rangemax)
   - [Range.Ellipsis](#rangeellipsis)
-  - [cv.Range.new](#cvrangenew)
   - [cv.Range.all](#cvrangeall)
-  - [cv.Range.empty](#cvrangeempty)
-  - [cv.Range.size](#cvrangesize)
 - [cv::RotatedRect](#cvrotatedrect)
   - [RotatedRect.center](#rotatedrectcenter)
   - [RotatedRect.size](#rotatedrectsize)
@@ -45061,69 +45058,36 @@ lua:
 
 ## cv::Range
 
-### Range.start
+### Range.MIN
 
 ```cpp
-int cv::Range::start
+int cv::Range::MIN
 lua:
-    [propget, propput] oRange.start
+    [propget] Range.MIN
 ```
 
-### Range.end
+### Range.MAX
 
 ```cpp
-int cv::Range::end
+int cv::Range::MAX
 lua:
-    [propget, propput] oRange.end
+    [propget] Range.MAX
 ```
 
 ### Range.Ellipsis
 
 ```cpp
-static cv::Range cv::Range::Ellipsis
+cv::Range cv::Range::Ellipsis
 lua:
     [propget] Range.Ellipsis
-```
-
-### cv.Range.new
-
-```cpp
-cv::Range();
-lua:
-    cv.Range.new() -> <cv::Range object>
-    cv.Range() -> <cv::Range object>
-```
-
-```cpp
-cv::Range( int start,
-           int end );
-lua:
-    cv.Range.new( start, end ) -> <cv::Range object>
-    cv.Range( start, end ) -> <cv::Range object>
 ```
 
 ### cv.Range.all
 
 ```cpp
-static cv::Range cv::Range::all();
+cv::Range cv::Range::all();
 lua:
     cv.Range.all() -> retval
-```
-
-### cv.Range.empty
-
-```cpp
-bool cv::Range::empty();
-lua:
-    oRange:empty() -> retval
-```
-
-### cv.Range.size
-
-```cpp
-int cv::Range::size();
-lua:
-    oRange:size() -> retval
 ```
 
 ## cv::RotatedRect

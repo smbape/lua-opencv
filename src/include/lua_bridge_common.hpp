@@ -44,7 +44,7 @@ namespace LUA_MODULE_NAME {
 
 	template<typename T, typename V>
 	inline decltype(auto) extract_holder(T& holder, V*) {
-		if constexpr (std::is_same_v<T, V>) {
+		if constexpr (std::is_same_v<std::remove_cvref_t<T>, std::remove_cvref_t<V>>) {
 			return holder;
 		}
 		else if constexpr (std::is_enum_v<V>) {
@@ -97,7 +97,9 @@ namespace LUA_MODULE_NAME {
 		const auto v = lua_tointeger(L, index);
 #else
 		const lua_Number v = lua_tonumber(L, index);
-		if (static_cast<lua_Number>(llround(v)) != v) {
+		// https://stackoverflow.com/questions/1521607/check-double-variable-if-it-contains-an-integer-and-not-floating-point/1521682#1521682
+		static double intpart;
+		if (std::modf(v, &intpart) != 0.0) {
 			return false;
 		}
 #endif
@@ -111,7 +113,7 @@ namespace LUA_MODULE_NAME {
 		return static_cast<std::remove_cvref_t<decltype(*ptr)>>(lua_tointeger(L, index));
 #else
 		const lua_Number v = lua_tonumber(L, index);
-		return static_cast<std::remove_cvref_t<decltype(*ptr)>>(llround(v));
+		return static_cast<std::remove_cvref_t<decltype(*ptr)>>(v);
 #endif
 	}
 
@@ -157,31 +159,38 @@ namespace LUA_MODULE_NAME {
 	}
 
 	inline bool lua_is(lua_State* L, int index, unsigned char**) {
-		return lua_is(L, index, static_cast<std::uintptr_t*>(nullptr));
+		return lua_islightuserdata(L, index);
 	}
 
 	inline unsigned char* lua_to(lua_State* L, int index, unsigned char**) {
-		return reinterpret_cast<unsigned char*>(lua_to(L, index, static_cast<std::uintptr_t*>(nullptr)));
+		return reinterpret_cast<unsigned char*>(lua_touserdata(L, index));
 	}
 
 	inline int lua_push(lua_State* L, unsigned char* ptr) {
-		return lua_push(L, reinterpret_cast<std::uintptr_t>(ptr));
+		lua_pushlightuserdata(L, ptr);
+		return 1;
 	}
 
 	inline bool lua_is(lua_State* L, int index, void**) {
-		return lua_is(L, index, static_cast<std::uintptr_t*>(nullptr));
+		return lua_islightuserdata(L, index);
 	}
 
 	inline void* lua_to(lua_State* L, int index, void**) {
-		return reinterpret_cast<void*>(lua_to(L, index, static_cast<std::uintptr_t*>(nullptr)));
+		return reinterpret_cast<void*>(lua_touserdata(L, index));
 	}
 
 	inline int lua_push(lua_State* L, void* ptr) {
-		return lua_push(L, reinterpret_cast<std::uintptr_t>(ptr));
+		lua_pushlightuserdata(L, ptr);
+		return 1;
 	}
 
 	inline bool lua_is(lua_State* L, int index, Keywords* ptr) {
 		return lua_istable(L, index) && lua_userdata_is(L, index, ptr);
+	}
+
+	inline int lua_push(lua_State* L, const char* s) {
+		lua_pushstring(L, s);
+		return 1;
 	}
 
 	template<typename T>
@@ -198,10 +207,17 @@ namespace LUA_MODULE_NAME {
 		if (!lua_getmetatable(L, index)) {
 			return false;
 		}
-
 		auto signature = lua_topointer(L, -1);
-		auto result = signature == usertype_info<T>::signature || usertype_info<T>::derives.find(signature) != usertype_info<T>::derives.end();
 		lua_pop(L, 1);
+
+		auto result = signature == usertype_info<T>::signature;
+
+		if constexpr (requires(const void* signature) { usertype_info<T>::derives.find(signature); }) {
+			if (!result && usertype_info<T>::derives.find(signature) != usertype_info<T>::derives.end()) {
+				result = true;
+			}
+		}
+
 		return result;
 	}
 
@@ -341,7 +357,8 @@ namespace LUA_MODULE_NAME {
 			index += lua_gettop(L) + 1;
 		}
 
-		std::shared_ptr<std::map<K, V>> res(new std::map<K, V>());
+		static std::map<K, V> res;
+		res.clear();
 
 		// Push another reference to the table on top of the stack (so we know
 		// where it is, and this function can work for negative, positive and
@@ -358,10 +375,10 @@ namespace LUA_MODULE_NAME {
 			const auto value = lua_to(L, -1, static_cast<V*>(nullptr));
 
 			if constexpr (std::is_same_v<V, std::remove_cvref_t<decltype(value)>>) {
-				res->insert_or_assign(key, value);
+				res.insert_or_assign(key, value);
 			}
 			else {
-				res->insert_or_assign(key, *value);
+				res.insert_or_assign(key, *value);
 			}
 
 			// pop value
@@ -375,7 +392,7 @@ namespace LUA_MODULE_NAME {
 		lua_pop(L, 1);
 		// Stack is now the same as it was on entry to this function
 
-		return res;
+		return std::make_shared<std::map<K, V>>(res);
 	}
 
 	template<typename K, typename V>
@@ -445,7 +462,7 @@ namespace LUA_MODULE_NAME {
 
 		for (auto i = 1; i <= size; ++i) {
 			lua_pushnumber(L, i);
-			lua_gettable(L, index);
+			lua_rawget(L, index);
 			auto is_valid = i == 1 ? lua_is(L, -1, static_cast<T1*>(nullptr)) : lua_is(L, -1, static_cast<T2*>(nullptr));
 			lua_pop(L, 1);
 			if (!is_valid) {
@@ -463,33 +480,33 @@ namespace LUA_MODULE_NAME {
 		}
 
 		auto size = lua_rawlen(L, index);
-		std::shared_ptr<std::pair<T1, T2>> res(new std::pair<T1, T2>());
+		static std::pair<T1, T2> res;
 
 		for (auto i = 1; i <= size; ++i) {
 			lua_pushnumber(L, i);
-			lua_gettable(L, index);
+			lua_rawget(L, index);
 			if (i == 1) {
 				auto value = lua_to(L, -1, static_cast<T1*>(nullptr));
 				if constexpr (std::is_same_v<T1, std::remove_cvref_t<decltype(value)>>) {
-					res->first = value;
+					res.first = value;
 				}
 				else {
-					res->first = *value;
+					res.first = *value;
 				}
 			}
 			else {
 				auto value = lua_to(L, -1, static_cast<T2*>(nullptr));
 				if constexpr (std::is_same_v<T2, std::remove_cvref_t<decltype(value)>>) {
-					res->second = value;
+					res.second = value;
 				}
 				else {
-					res->second = *value;
+					res.second = *value;
 				}
 			}
 			lua_pop(L, 1);
 		}
 
-		return res;
+		return std::make_shared<std::pair<T1, T2>>(res.first, res.second);
 	}
 
 	template<typename T1, typename T2>
@@ -516,7 +533,7 @@ namespace LUA_MODULE_NAME {
 		using T = typename std::tuple_element<I, _Tuple>::type;
 
 		lua_pushnumber(L, I);
-		lua_gettable(L, index);
+		lua_rawget(L, index);
 		auto is_valid = lua_is(L, -1, static_cast<T*>(nullptr));
 		lua_pop(L, 1);
 
@@ -550,7 +567,7 @@ namespace LUA_MODULE_NAME {
 		using T = typename std::tuple_element<I, _Tuple>::type;
 
 		lua_pushnumber(L, I + 1);
-		lua_gettable(L, index);
+		lua_rawget(L, index);
 
 		auto value = lua_to(L, -1, static_cast<T*>(nullptr));
 
@@ -574,9 +591,9 @@ namespace LUA_MODULE_NAME {
 			index += lua_gettop(L) + 1;
 		}
 
-		std::shared_ptr<std::tuple<_Ts...>> res(new std::tuple<_Ts...>());
-		_lua_to(L, index, *res);
-		return res;
+		static std::tuple<_Ts...> res;
+		_lua_to(L, index, res);
+		return std::make_shared<std::tuple<_Ts...>>(res);
 	}
 
 	template<std::size_t I = 0, typename... _Ts>
@@ -703,7 +720,7 @@ namespace LUA_MODULE_NAME {
 
 		for (auto i = 1; i <= size; ++i) {
 			lua_pushnumber(L, i);
-			lua_gettable(L, index);
+			lua_rawget(L, index);
 			auto is_valid = lua_is(L, -1, static_cast<T*>(nullptr));
 			lua_pop(L, 1);
 			if (!is_valid) {
@@ -730,7 +747,7 @@ namespace LUA_MODULE_NAME {
 
 		for (auto i = 1; i <= size; ++i) {
 			lua_pushnumber(L, i);
-			lua_gettable(L, index);
+			lua_rawget(L, index);
 			auto value = lua_to(L, -1, static_cast<T*>(nullptr));
 			out[i - 1] = extract_holder(value, static_cast<T*>(nullptr));
 			lua_pop(L, 1);
@@ -743,9 +760,9 @@ namespace LUA_MODULE_NAME {
 			return lua_userdata_to(L, index, ptr);
 		}
 
-		std::shared_ptr<std::vector<T>> res(new std::vector<T>());
-		lua_to(L, index, *res);
-		return res;
+		static std::vector<T> res;
+		lua_to(L, index, res);
+		return std::make_shared<std::vector<T>>(res);
 	}
 
 	template<typename T>
@@ -786,6 +803,17 @@ namespace LUA_MODULE_NAME {
 		using T = typename std::tuple_element<I, _Tuple>::type;
 
 		if constexpr (is_usertype_v<T>) {
+			usertype_push_metatable<T>(L); // push the metatable
+			lua_pushvalue(L, 2); // push the key
+			lua_rawget(L, -2);
+			lua_remove(L, -2); // remove metatable
+
+			if (!lua_isnil(L, -1)) {
+				return 1; // return metatable[key]
+			}
+
+			lua_pop(L, 1); // pop nil
+
 			if (lua_is(L, 2, static_cast<std::string*>(nullptr))) {
 				const std::string k = lua_to(L, 2, static_cast<std::string*>(nullptr));
 				if (usertype_info<T>::getters.count(k)) {
@@ -793,33 +821,29 @@ namespace LUA_MODULE_NAME {
 				}
 			}
 
-			if (lua_is(L, 2, static_cast<int*>(nullptr))) {
-				const int k = lua_to(L, 2, static_cast<int*>(nullptr));
-				if (usertype_info<T>::getters.count(k)) {
-					return usertype_info<T>::getters.at(k)(L);
-				}
+			if constexpr (I == sizeof...(_Ts) - 1) {
+				lua_pushnil(L);
 			}
-
-			usertype_push_metatable<T>(L); // push the metatable
-			lua_pushvalue(L, 2); // push the key
-			lua_rawget(L, -2);
 		}
 		else {
 			basetype_info<T>::push(L); // push the metatable
 			lua_pushvalue(L, 2); // push the key
 			lua_gettable(L, -2); // pop the key, push metatable[key]
-		}
+			lua_remove(L, -2); // remove metatable
 
-		lua_remove(L, -2); // remove metatable
-		if (!lua_isnil(L, -1)) {
-			return 1; // return metatable[key]
+			if (!lua_isnil(L, -1)) {
+				return 1; // return metatable[key]
+			}
+
+			if constexpr (I != sizeof...(_Ts) - 1) {
+				lua_pop(L, 1); // pop nil
+			}
 		}
 
 		if constexpr (I == sizeof...(_Ts) - 1) {
 			return 1;
 		}
 		else {
-			lua_pop(L, 1); // pop nil
 			// lookup in the parent metatable
 			return lua_class__index<I + 1, _Ts...>(L);
 		}
@@ -833,13 +857,6 @@ namespace LUA_MODULE_NAME {
 		if constexpr (is_usertype_v<T>) {
 			if (lua_is(L, 2, static_cast<std::string*>(nullptr))) {
 				const std::string k = lua_to(L, 2, static_cast<std::string*>(nullptr));
-				if (usertype_info<T>::setters.count(k)) {
-					return usertype_info<T>::setters.at(k)(L);
-				}
-			}
-
-			if (lua_is(L, 2, static_cast<int*>(nullptr))) {
-				const int k = lua_to(L, 2, static_cast<int*>(nullptr));
 				if (usertype_info<T>::setters.count(k)) {
 					return usertype_info<T>::setters.at(k)(L);
 				}

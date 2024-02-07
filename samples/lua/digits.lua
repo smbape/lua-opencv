@@ -255,12 +255,7 @@ local function evaluate_model(model, digits, samples, labels)
         local img = digits[i]
         img = cv.cvtColor(img, cv.COLOR_GRAY2BGR)
         if resp[i] ~= labels[i] then
-            -- img[...,:2] = 0
-            img:reshape(1, img.shape):new({
-                cv.Range.all(),
-                cv.Range.all(),
-                cv.Range(0, 2),
-            }):setTo(0)
+            img[{ cv.Range.Ellipsis, { 0, 2 } }] = 0 -- img[...,:2] = 0
         end
         vis[#vis + 1] = img
     end

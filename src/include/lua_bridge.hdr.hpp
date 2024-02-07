@@ -4,6 +4,8 @@
 #include <opencv2/core.hpp>
 
 namespace LUA_MODULE_NAME {
+	inline bool lua_is(lua_State* L, int index, cv::Range*);
+
 	template<typename T>
 	inline bool lua_is(lua_State* L, int index, cv::Ptr<T>*);
 
@@ -29,30 +31,39 @@ namespace LUA_MODULE_NAME {
 	inline bool lua_is(lua_State* L, int index, cv::util::variant<_Ts...>* ptr);
 
 
+	inline void lua_to(lua_State* L, int index, cv::Range& range);
+
+	inline cv::Range lua_to(lua_State* L, int index, cv::Range*);
+
+	template<>
+	inline void lua_to<cv::Range>(lua_State* L, int index, std::vector<cv::Range>& out);
+
 	template<typename T>
 	inline cv::Ptr<T> lua_to(lua_State* L, int index, cv::Ptr<T>*);
 
 	template<typename _Tp>
-	inline std::shared_ptr<cv::Point_<_Tp>> lua_to(lua_State* L, int index, cv::Point_<_Tp>*);
+	inline cv::Point_<_Tp> lua_to(lua_State* L, int index, cv::Point_<_Tp>*);
 
 	template<typename _Tp>
-	inline std::shared_ptr<cv::Point3_<_Tp>> lua_to(lua_State* L, int index, cv::Point3_<_Tp>*);
+	inline cv::Point3_<_Tp> lua_to(lua_State* L, int index, cv::Point3_<_Tp>*);
 
 	template<typename _Tp>
-	inline std::shared_ptr<cv::Rect_<_Tp>> lua_to(lua_State* L, int index, cv::Rect_<_Tp>*);
+	inline cv::Rect_<_Tp> lua_to(lua_State* L, int index, cv::Rect_<_Tp>*);
 
 	template<typename _Tp>
-	inline std::shared_ptr<cv::Scalar_<_Tp>> lua_to(lua_State* L, int index, cv::Scalar_<_Tp>*);
+	inline cv::Scalar_<_Tp> lua_to(lua_State* L, int index, cv::Scalar_<_Tp>*);
 
 	template<typename _Tp>
-	inline std::shared_ptr<cv::Size_<_Tp>> lua_to(lua_State* L, int index, cv::Size_<_Tp>*);
+	inline cv::Size_<_Tp> lua_to(lua_State* L, int index, cv::Size_<_Tp>*);
 
 	template<typename _Tp, int cn>
-	inline std::shared_ptr<cv::Vec<_Tp, cn>>  lua_to(lua_State* L, int index, cv::Vec<_Tp, cn>*);
+	inline cv::Vec<_Tp, cn> lua_to(lua_State* L, int index, cv::Vec<_Tp, cn>*);
 
 	template<typename... _Ts>
 	inline cv::util::variant<_Ts...> lua_to(lua_State* L, int index, cv::util::variant<_Ts...>* ptr);
 
+
+	inline int lua_push(lua_State* L, const cv::Range& range);
 
 	template<typename T>
 	inline int lua_push(lua_State* L, cv::Ptr<T>& ptr);

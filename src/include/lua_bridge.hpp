@@ -9,6 +9,67 @@
 
 namespace LUA_MODULE_NAME {
 	// ================================
+	// cv::Range
+	// ================================
+	
+	inline bool lua_is(lua_State* L, int index, cv::Range*) {
+		return lua_is(L, index, static_cast<std::vector<int>*>(nullptr), 2);
+	}
+
+	inline void lua_to(lua_State* L, int index, cv::Range& range) {
+		static std::vector<int> vec;
+		lua_to(L, index, vec);
+		range.start = vec.at(0);
+		range.end = vec.at(1);
+	}
+
+	inline cv::Range lua_to(lua_State* L, int index, cv::Range*) {
+		static std::vector<int> vec;
+		lua_to(L, index, vec);
+		return cv::Range(vec.at(0), vec.at(1));
+	}
+
+	template<>
+	inline void lua_to<cv::Range>(lua_State* L, int index, std::vector<cv::Range>& out) {
+		if (lua_isuserdata(L, index)) {
+			out = *lua_userdata_to(L, index, static_cast<std::vector<cv::Range>*>(nullptr));
+			return;
+		}
+
+		if (index < 0) {
+			index += lua_gettop(L) + 1;
+		}
+
+		auto size = lua_rawlen(L, index);
+		out.resize(size);
+
+		for (auto i = 1; i <= size; ++i) {
+			lua_pushnumber(L, i);
+			lua_rawget(L, index); // push range table
+
+			lua_pushnumber(L, 1);
+			lua_rawget(L, -2); // push start
+			out[i - 1].start = lua_to(L, -1, static_cast<int*>(nullptr));
+			lua_pop(L, 1); // pop start
+
+			lua_pushnumber(L, 2);
+			lua_rawget(L, -2); // push end
+			out[i - 1].end = lua_to(L, -1, static_cast<int*>(nullptr));
+			lua_pop(L, 1); // pop end
+
+			lua_pop(L, 1); // pop range table
+		}
+	}
+
+	inline int lua_push(lua_State* L, const cv::Range& range) {
+		lua_newtable(L);
+		int i = 0;
+		lua_push(L, range.start); lua_rawseti(L, -2, ++i);
+		lua_push(L, range.end); lua_rawseti(L, -2, ++i);
+		return 1;
+	}
+
+	// ================================
 	// cv::Ptr
 	// ================================
 
@@ -36,15 +97,10 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp>
-	inline std::shared_ptr<cv::Point_<_Tp>> lua_to(lua_State* L, int index, cv::Point_<_Tp>*) {
-		auto vec = lua_to(L, index, static_cast<std::vector<_Tp>*>(nullptr));
-		std::shared_ptr<cv::Point_<_Tp>> res(new cv::Point_<_Tp>());
-
-		int i = 0;
-		(*res).x = (*vec).at(i++);
-		(*res).y = (*vec).at(i++);
-
-		return res;
+	inline cv::Point_<_Tp> lua_to(lua_State* L, int index, cv::Point_<_Tp>*) {
+		static std::vector<_Tp> vec;
+		lua_to(L, index, vec);
+		return cv::Point_<_Tp>(vec.at(0), vec.at(1));
 	}
 
 	template<typename _Tp>
@@ -65,16 +121,10 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp>
-	inline std::shared_ptr<cv::Point3_<_Tp>> lua_to(lua_State* L, int index, cv::Point3_<_Tp>*) {
-		auto vec = lua_to(L, index, static_cast<std::vector<_Tp>*>(nullptr));
-		std::shared_ptr<cv::Point3_<_Tp>> res(new cv::Point3_<_Tp>());
-
-		int i = 0;
-		(*res).x = (*vec).at(i++);
-		(*res).y = (*vec).at(i++);
-		(*res).z = (*vec).at(i++);
-
-		return res;
+	inline cv::Point3_<_Tp> lua_to(lua_State* L, int index, cv::Point3_<_Tp>*) {
+		static std::vector<_Tp> vec;
+		lua_to(L, index, vec);
+		return cv::Point3_<_Tp>(vec.at(0), vec.at(1), vec.at(2));
 	}
 
 	template<typename _Tp>
@@ -96,17 +146,10 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp>
-	inline std::shared_ptr<cv::Rect_<_Tp>> lua_to(lua_State* L, int index, cv::Rect_<_Tp>*) {
-		auto vec = lua_to(L, index, static_cast<std::vector<_Tp>*>(nullptr));
-		std::shared_ptr<cv::Rect_<_Tp>> res(new cv::Rect_<_Tp>());
-
-		int i = 0;
-		(*res).x = (*vec).at(i++);
-		(*res).y = (*vec).at(i++);
-		(*res).width = (*vec).at(i++);
-		(*res).height = (*vec).at(i++);
-
-		return res;
+	inline cv::Rect_<_Tp> lua_to(lua_State* L, int index, cv::Rect_<_Tp>*) {
+		static std::vector<_Tp> vec;
+		lua_to(L, index, vec);
+		return cv::Rect_<_Tp>(vec.at(0), vec.at(1), vec.at(2), vec.at(3));
 	}
 
 	template<typename _Tp>
@@ -129,20 +172,26 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp>
-	inline std::shared_ptr<cv::Scalar_<_Tp>> lua_to(lua_State* L, int index, cv::Scalar_<_Tp>*) {
+	inline cv::Scalar_<_Tp> lua_to(lua_State* L, int index, cv::Scalar_<_Tp>*) {
 		if (lua_is(L, index, static_cast<_Tp*>(nullptr))) {
-			return std::make_shared<cv::Scalar_<_Tp>>(lua_to(L, index, static_cast<_Tp*>(nullptr)));
+			return cv::Scalar_<_Tp>(lua_to(L, index, static_cast<_Tp*>(nullptr)));
 		}
 
-		auto vec = lua_to(L, index, static_cast<std::vector<_Tp>*>(nullptr));
-		std::shared_ptr<cv::Scalar_<_Tp>> res(new cv::Scalar_<_Tp>());
+		static std::vector<_Tp> vec;
+		lua_to(L, index, vec);
 
-		const auto size = vec->size();
-		for (int i = 0; i < size; i++) {
-			(*res)[i] = (*vec).at(i);
+		switch (vec.size()) {
+		case 1:
+			return cv::Scalar_<_Tp>(vec.at(0));
+		case 2:
+			return cv::Scalar_<_Tp>(vec.at(0), vec.at(1));
+		case 3:
+			return cv::Scalar_<_Tp>(vec.at(0), vec.at(1), vec.at(2));
+		case 4:
+			return cv::Scalar_<_Tp>(vec.at(0), vec.at(1), vec.at(2), vec.at(3));
+		default:
+			return cv::Scalar_<_Tp>();
 		}
-
-		return res;
 	}
 
 	template<typename _Tp>
@@ -164,19 +213,13 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp>
-	inline std::shared_ptr<cv::Size_<_Tp>> lua_to(lua_State* L, int index, cv::Size_<_Tp>*) {
+	inline cv::Size_<_Tp> lua_to(lua_State* L, int index, cv::Size_<_Tp>*) {
 		if (lua_isnil(L, index)) {
-			return std::make_shared<cv::Size_<_Tp>>();
+			return cv::Size_<_Tp>();
 		}
-
-		auto vec = lua_to(L, index, static_cast<std::vector<_Tp>*>(nullptr));
-		std::shared_ptr<cv::Size_<_Tp>> res(new cv::Size_<_Tp>());
-
-		int i = 0;
-		(*res).width = (*vec).at(i++);
-		(*res).height = (*vec).at(i++);
-
-		return res;
+		static std::vector<_Tp> vec;
+		lua_to(L, index, vec);
+		return cv::Size_<_Tp>(vec.at(0), vec.at(1));
 	}
 
 	template<typename _Tp>
@@ -197,13 +240,20 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp, int cn>
-	inline std::shared_ptr<cv::Vec<_Tp, cn>>  lua_to(lua_State* L, int index, cv::Vec<_Tp, cn>*) {
-		auto vec = lua_to(L, index, static_cast<std::vector<_Tp>*>(nullptr));
-		std::shared_ptr<cv::Vec<_Tp, cn>> res(new cv::Vec<_Tp, cn>());
+	inline cv::Vec<_Tp, cn>  lua_to(lua_State* L, int index, cv::Vec<_Tp, cn>*) {
+		static std::vector<_Tp> vec;
+		lua_to(L, index, vec);
 
-		const auto size = vec->size();
+		static cv::Vec<_Tp, cn> res;
+
+		const auto size = vec.size();
+
 		for (int i = 0; i < size; i++) {
-			(*res)[i] = (*vec).at(i);
+			res[i] = vec.at(i);
+		}
+
+		for (int i = size; i < cn; i++) {
+			res[i] = _Tp(0);
 		}
 
 		return res;

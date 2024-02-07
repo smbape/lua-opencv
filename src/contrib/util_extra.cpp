@@ -70,18 +70,14 @@ namespace {
 			}
 		}
 
-		static void call(void* userdata) {
-			auto worker = reinterpret_cast<ErrWorker*>(userdata);
-		}
-
 		lua_State* L;
 		Function callback;
 		Object userdata;
 		bool has_data = false;
 		int status;
-		std::string func_name;
-		std::string err_msg;
-		std::string file_name;
+		const char* func_name;
+		const char* err_msg;
+		const char* file_name;
 		int line;
 	};
 

@@ -33,8 +33,8 @@ local function basicPanoramaStitching(img1Path, img2Path)
     -- [camera-intrinsics-from-Blender]
 
     -- [extract-rotation]
-    local R1 = c1Mo:new({ cv.Range(0, 3), cv.Range(0, 3) })
-    local R2 = c2Mo:new({ cv.Range(0, 3), cv.Range(0, 3) })
+    local R1 = c1Mo:new({ { 0, 3 }, { 0, 3 } })
+    local R2 = c2Mo:new({ { 0, 3 }, { 0, 3 } })
     --[extract-rotation]
 
     -- [compute-rotation-displacement]

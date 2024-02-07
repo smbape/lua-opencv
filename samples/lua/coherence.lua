@@ -140,19 +140,19 @@ local function coherence_filter(...)
         -- Reshaping of n-dimensional non-continuous matrices is not supported yet
         -- copy() will create a continuous n-dimensional matrix
         local x = eigen:new({
-            cv.Range(0, h),
-            cv.Range(0, w),
-            cv.Range(1, 2),
-            cv.Range(0, 1),
+            { 0, h },
+            { 0, w },
+            { 1, 2 },
+            { 0, 1 },
         }):copy():reshape(1, { h, w })
 
         -- Reshaping of n-dimensional non-continuous matrices is not supported yet
         -- copy() will create a continuous n-dimensional matrix
         local y = eigen:new({
-            cv.Range(0, h),
-            cv.Range(0, w),
-            cv.Range(1, 2),
-            cv.Range(1, 2),
+            { 0, h },
+            { 0, w },
+            { 1, 2 },
+            { 1, 2 },
         }):copy():reshape(1, { h, w })
 
         local gxx = cv.Sobel(gray, cv.CV_32F, 2, 0, opencv_lua.kwargs({ ksize = sigma }))

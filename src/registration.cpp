@@ -4,6 +4,12 @@
 namespace {
 	using namespace LUA_MODULE_NAME;
 
+	void register_version(lua_State* L) {
+		lua_pushliteral(L, "version");
+		lua_pushliteral(L, "Lua bindings " LUA_MODULE_QUOTE_STRING(LUA_MODULE_VERSION) " for OpenCV " LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_VERSION));
+		lua_rawset(L, -3);
+	}
+
 	void register_bit(lua_State* L) {
 		lua_newtable(L);
 		lua_pushvalue(L, -1);
@@ -165,6 +171,7 @@ int LUA_MODULE_LUAOPEN(lua_State* L) {
 
 	using namespace LUA_MODULE_NAME;
 
+	register_version(L);
 	register_Keywords(L);
 	register_bit(L);
 	register_math(L);

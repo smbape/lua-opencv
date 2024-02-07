@@ -64,9 +64,9 @@ Private Function AddSeriesByColName(oCompareWorksheet As Worksheet, oSeriesColle
         Exit Function
     End If
 
-    ' oWorksheet.Columns(sColId).AutoFit
+    oWorksheet.Columns(sColId).AutoFit
 
-    iSerieRow = 5
+    iSerieRow = 3
     Do While oCompareWorksheet.Range("A" & iSerieRow).Value <> "" And oCompareWorksheet.Range("A" & iSerieRow).Value <> sSerieName
         iSerieRow = iSerieRow + 1
     Loop
@@ -82,7 +82,7 @@ Private Function AddSeriesByColName(oCompareWorksheet As Worksheet, oSeriesColle
 
     If iRowIndex > 2 Then
         iRowIndex = iRowIndex - 1
-        UpdateSeries oSeriesCollection, Index, "='compare'!$A$" & iSerieRow, oWorksheet.Range(sColId & "2:" & sColId & iRowIndex)
+        UpdateSeries oSeriesCollection, Index, "='" & oCompareWorksheet.Name & "'!$A$" & iSerieRow, oWorksheet.Range(sColId & "2:" & sColId & iRowIndex)
     End If
 End Function
 
@@ -176,6 +176,9 @@ Private Function AddPyCharts(oCompareWorksheet As Worksheet, iChartIndex As Inte
     Dim oPythonWorksheet As Worksheet
     Dim oChartObjects As ChartObjects
     Dim oChart As Chart
+    Dim I as Integer
+
+    iChartIndex = iChartIndex - 1
 
     Set oPlainWorksheet = Worksheets("plain-c")
     Set oSol2Worksheet = Worksheets("sol2")
@@ -183,45 +186,54 @@ Private Function AddPyCharts(oCompareWorksheet As Worksheet, iChartIndex As Inte
 
     Set oChartObjects = oCompareWorksheet.ChartObjects
 
-    Set oChart = AddChart(oChartObjects, iChartIndex, "calling new 40000 times on a 20x20 matrix")
-    AddSeriesByColName oCompareWorksheet, oChart.SeriesCollection, 1, oPlainWorksheet, "calling new 40000 times on a 20x20 matrix", "plain-c"
-    AddSeriesByColName oCompareWorksheet, oChart.SeriesCollection, 2, oSol2Worksheet, "calling new 40000 times on a 20x20 matrix", "sol2"
-    AddSeriesByColName oCompareWorksheet, oChart.SeriesCollection, 3, oPythonWorksheet, "calling new 40000 times on a 20x20 matrix", "python"
+    iChartIndex = iChartIndex + 1
+    Set oChart = AddChart(oChartObjects, iChartIndex, "calling new 400000 times on a 20x20 matrix")
+    AddSeriesByColName oCompareWorksheet, oChart.SeriesCollection, 1, oPlainWorksheet, "calling new 400000 times on a 20x20 matrix", "plain-c"
+    AddSeriesByColName oCompareWorksheet, oChart.SeriesCollection, 2, oSol2Worksheet, "calling new 400000 times on a 20x20 matrix", "sol2"
+    AddSeriesByColName oCompareWorksheet, oChart.SeriesCollection, 3, oPythonWorksheet, "calling new 400000 times on a 20x20 matrix", "python"
+    For I = oChart.SeriesCollection.Count To 4 Step -1
+        oChart.SeriesCollection(I).Delete
+    Next
 
-    Set oChart = AddChart(oChartObjects, iChartIndex + 1, "mat[i, j, k] 3932160 times")
+    iChartIndex = iChartIndex + 1
+    Set oChart = AddChart(oChartObjects, iChartIndex, "mat[i, j, k] 3932160 times")
     AddSeriesByColName oCompareWorksheet, oChart.SeriesCollection, 1, oPlainWorksheet, "mat(i, j, k) 3932160 times", "plain-c (i, j, k)"
     AddSeriesByColName oCompareWorksheet, oChart.SeriesCollection, 2, oSol2Worksheet, "mat(i, j, k) 3932160 times", "sol2 (i, j, k)"
     AddSeriesByColName oCompareWorksheet, oChart.SeriesCollection, 3, oPlainWorksheet, "mat[{i, j, k}] 3932160 times", "plain-c [{i, j, k}]"
     AddSeriesByColName oCompareWorksheet, oChart.SeriesCollection, 4, oSol2Worksheet, "mat[{i, j, k}] 3932160 times", "sol2 [{i, j, k}]"
     AddSeriesByColName oCompareWorksheet, oChart.SeriesCollection, 5, oPythonWorksheet, "mat[i, j, k] 3932160 times", "python [i, j, k]"
     AddSeriesByColName oCompareWorksheet, oChart.SeriesCollection, 6, oPlainWorksheet, "bytes[i * cols * channels + j * channels + k] 3932160 times", "ffi uchar*"
+    For I = oChart.SeriesCollection.Count To 7 Step -1
+        oChart.SeriesCollection(I).Delete
+    Next
 
-    AddPyCharts = iChartIndex + 1
+    iChartIndex = iChartIndex + 1
+    Set oChart = AddChart(oChartObjects, iChartIndex, "View a Region Of Interest")
+    AddSeriesByColName oCompareWorksheet, oChart.SeriesCollection, 1, oPlainWorksheet, "calling new 400000 times on a 20x20 matrix", "plain-c :new(roi)"
+    AddSeriesByColName oCompareWorksheet, oChart.SeriesCollection, 2, oPlainWorksheet, "slicing 400000 times on a 20x20 matrix", "plain-c [roi]"
+    AddSeriesByColName oCompareWorksheet, oChart.SeriesCollection, 3, oPythonWorksheet, "calling new 400000 times on a 20x20 matrix", "python [roi]"
+    For I = oChart.SeriesCollection.Count To 4 Step -1
+        oChart.SeriesCollection(I).Delete
+    Next
+
+    AddPyCharts = iChartIndex
 End Function
 
-Private Function AddLuaChart(oPlainWorksheet As Worksheet, oSol2Worksheet As Worksheet, oCompareWorksheet As Worksheet, sColId As String, iChartIndex As Integer)
+Private Function AddImplChart(oPlainWorksheet As Worksheet, oSol2Worksheet As Worksheet, oCompareWorksheet As Worksheet, sColId As String, iChartIndex As Integer)
     Dim sChartName As String
     Dim oChartObjects As ChartObjects
     Dim oChart As Chart
-    Dim iRowIndex As Integer
 
     sChartName = oPlainWorksheet.Range(sColId & "1").Value
-    oPlainWorksheet.Columns(sColId).AutoFit
-    oSol2Worksheet.Columns(sColId).AutoFit
+    If sChartName = "slicing 400000 times on a 20x20 matrix" Then
+        Exit Function
+    End If
 
     Set oChartObjects = oCompareWorksheet.ChartObjects
     Set oChart = AddChart(oChartObjects, iChartIndex, sChartName)
 
-    iRowIndex = 2
-    Do While oPlainWorksheet.Range(sColId & iRowIndex).Value <> ""
-        iRowIndex = iRowIndex + 1
-    Loop
-
-    If iRowIndex > 2 Then
-        iRowIndex = iRowIndex - 1
-        UpdateSeries oChart.SeriesCollection, 1, "='compare'!$A$1", oPlainWorksheet.Range(sColId & "2:" & sColId & iRowIndex)
-        UpdateSeries oChart.SeriesCollection, 2, "='compare'!$B$1", oSol2Worksheet.Range(sColId & "2:" & sColId & iRowIndex)
-    End If
+    AddSeriesByColName oCompareWorksheet, oChart.SeriesCollection, 1, oPlainWorksheet, sChartName, "plain-c"
+    AddSeriesByColName oCompareWorksheet, oChart.SeriesCollection, 2, oSol2Worksheet, sChartName, "sol2"
 End Function
 
 Private Sub GenBtn_Click()
@@ -236,15 +248,12 @@ Private Sub GenBtn_Click()
     Set oSol2Worksheet = Worksheets("sol2")
     Set oCompareWorksheet = Worksheets("compare")
 
-    oCompareWorksheet.Range("A1").Value = "plain-c"
-    oCompareWorksheet.Range("B1").Value = "sol2"
-
     iChartIndex = AddPyCharts(oCompareWorksheet, 1)
 
     iColIndex = 1
     Do While oPlainWorksheet.Range(Chr(Asc("A") + iColIndex) & "1").Value <> ""
         sColId = Chr(Asc("A") + iColIndex)
-        AddLuaChart oPlainWorksheet, oSol2Worksheet, oCompareWorksheet, sColId, iColIndex + iChartIndex
+        AddImplChart oPlainWorksheet, oSol2Worksheet, oCompareWorksheet, sColId, iColIndex + iChartIndex
         iColIndex = iColIndex + 1
     Loop
 End Sub

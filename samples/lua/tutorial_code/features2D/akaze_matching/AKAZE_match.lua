@@ -63,11 +63,8 @@ local nn_match_ratio = 0.8 -- Nearest neighbor matching ratio
 for i, v in ipairs(nn_matches) do
     local m, n = v[0 + INDEX_BASE], v[1 + INDEX_BASE]
     if m.distance < nn_match_ratio * n.distance then
-        -- lua use 1-based index array
-        -- and since kpts1 and kpts2 are arrays
-        -- use +1 to match 1-based index array
-        matched1[#matched1 + 1] = kpts1[m.queryIdx + 1]
-        matched2[#matched2 + 1] = kpts2[m.trainIdx + 1]
+        matched1[#matched1 + 1] = kpts1[m.queryIdx + INDEX_BASE]
+        matched2[#matched2 + 1] = kpts2[m.trainIdx + INDEX_BASE]
     end
 end
 print(string.format("ratio test filtering: %.3f s", os.clock() - t))
@@ -81,11 +78,11 @@ local good_matches = {}
 local inlier_threshold = 2.5 -- Distance threshold to identify inliers with homography check
 for i, m in ipairs(matched1) do
     local col = cv.Mat.ones(3, 1, cv.CV_64F)
-    col[0] = m.pt[0 + INDEX_BASE]
-    col[1] = m.pt[1 + INDEX_BASE]
+    col[{ { 0, 2 }, 0 }] = m.pt -- col[0:2,0] = m.pt
 
-    col = cv.gemm(homography, col, 1.0, nil, 0.0)
-    col = col:convertTo(-1, kwargs({ alpha = 1 / col[2] }))
+    col = cv.dot(homography, col)
+    col = col / col[{ 2, 0 }]
+
     local dist = math.sqrt(((col[0] - matched2[i].pt[0 + INDEX_BASE]) ^ 2) +
         ((col[1] - matched2[i].pt[1 + INDEX_BASE]) ^ 2))
 

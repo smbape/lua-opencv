@@ -68,7 +68,7 @@ local function pickPoint(event, x, y, flags, param)
     local mask2 = cv.Mat.zeros(src.rows + 2, src.cols + 2, cv.CV_8U)
     print('low:', low, 'up:', up)
     cv.floodFill(src, mask2, seed, newVal, { low, low, low }, { up, up, up }, flags)
-    local mask = mask2:new(cv.Range(1, mask2.rows - 1), cv.Range(1, mask2.cols - 1))
+    local mask = mask2:new({ 1, mask2.rows - 1 }, { 1, mask2.cols - 1 })
 
     cv.imshow('Mask', mask)
     Hist_and_Backproj(mask)

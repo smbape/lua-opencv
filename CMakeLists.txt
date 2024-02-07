@@ -87,6 +87,7 @@ option(EIGEN_ENABLE_INSTALL "Enable installation of Eigen3" OFF)
 option(EIGEN_BUILD_DOC "Enable creation of Eigen documentation" OFF)
 option(BUILD_TESTING "Enable creation of Eigen tests." OFF)
 
+set(CMAKE_EXPORT_NO_PACKAGE_REGISTRY ON)
 if(NOT WIN32)
   # On Linux, we want Eigen to be embeded in the library, be it shared or static
   # Therefore, enforce BUILD_SHARED_LIBS OFF when building Eigen
@@ -114,6 +115,8 @@ FetchContent_MakeAvailable(eigen)
 if(NOT WIN32)
   set(BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS_BACKUP})
 endif()
+unset(CMAKE_EXPORT_NO_PACKAGE_REGISTRY)
+set(ENV{Eigen3_DIR} "${eigen_BINARY_DIR}")
 
 # find OpenCV
 if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
@@ -211,7 +214,7 @@ endif()
 target_compile_definitions(${PROJECT_NAME}
   PUBLIC
     LUA_MODULE_NAME=${PROJECT_NAME}
-    LUA_MODULE_VERSION=${PROJECT_VERSION}
+    LUA_MODULE_VERSION=${LUA_MODULE_VERSION}
     LUA_MODULE_LIB_NAME=OpenCV
     LUA_MODULE_LIB_VERSION=${OpenCV_VERSION}
   PRIVATE LUAAPI_EXPORTS)
@@ -280,7 +283,7 @@ endif()
 # Pack
 include(CPack)
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
+set(CPACK_PROJECT_VERSION ${LUA_MODULE_VERSION})
 
 include(cmake/vcpkg_regex_replace_string.cmake)
 

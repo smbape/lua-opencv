@@ -32,8 +32,8 @@ for version in luajit-2.1 5.{4,3,2,1}; do
     wsl -e bash -li -c 'source scripts/wsl_init.sh; cd out/prepublish/'${version}'/lua-opencv && git stash push --include-untracked --all -- samples'
 done
 
-time DIST_VERSION=1 node scripts/prepublish.js --pack 2>&1 | tee prepublish_win.log && \
-time DIST_VERSION=1 WSLENV=DIST_VERSION/u wsl -e bash -li -c './scripts/wsl_prepublish.sh --pack' 2>&1 | tee prepublish_linux.log
+time DIST_VERSION=2 node scripts/prepublish.js --pack 2>&1 | tee prepublish_win.log && \
+time DIST_VERSION=2 WSLENV=DIST_VERSION/u wsl -e bash -li -c './scripts/wsl_prepublish.sh --pack' 2>&1 | tee prepublish_linux.log
 
 for version in luajit-2.1 5.{4,3,2,1}; do
     bash -c "cd out/prepublish/${version}/lua-opencv && git reset --hard HEAD && git stash pop"
@@ -52,7 +52,9 @@ cd out/prepublish/'${version}'/lua-opencv && ./luarocks/luarocks.bat install --d
     WORKSPACE_ROOT="out/prepublish/${version}/lua-opencv" node scripts/test.js --Release
 done
 
+# ================================
 # Windows README.md samples check
+# ================================
 for version in luajit-2.1 5.{4,3,2,1}; do
     bash -c '
 version='${version}'
@@ -68,13 +70,15 @@ test -d out/test/${version} || mkdir out/test/${version} || exit $?
 if [ -d out/test/${version}/lua-opencv ]; then
     PWD_BCK="$PWD" && \
     cd out/test/${version}/lua-opencv && \
-    git remote set-url origin "file://${projectDir}" && \
+    rm -rf .git && \
+    git init && \
+    git remote add origin "file://${projectDir}" && \
+    git fetch origin && \
+    git switch main --force && \
     git reset --hard HEAD && \
-    git clean -fd && \
-    git pull && \
     cd "${PWD_BCK}" || exit $?
 else
-    git clone "${projectDir}" out/test/${version}/lua-opencv || exit $?
+    git clone "file://${projectDir}" out/test/${version}/lua-opencv || exit $?
 fi
 
 source scripts/vcvars_restore_start.sh || exit $?
@@ -83,7 +87,7 @@ cd out/test/${version}/lua-opencv || exit $?
 
 ./build.bat --target ${target} "-DLua_VERSION=${version}" --install && \
 ./build.bat --target luarocks && \
-./luarocks/luarocks.bat install "--server=${projectDir}/out/prepublish/server" opencv_lua ${binary} && \
+time ./luarocks/luarocks.bat install "--server=${projectDir}/out/prepublish/server" opencv_lua ${binary} && \
 ./luarocks/luarocks.bat install --deps-only samples/samples-scm-1.rockspec || exit $?
 
 source "${projectDir}/scripts/vcvars_restore_end.sh" || exit $?
@@ -125,12 +129,17 @@ cd out/test/${version}/lua-opencv && \
 ./build.bat --target luarocks && \
 cd "${PWD_BCK}" || exit $?
 
-luarocks="'`cygpath -u "$(sed -nre 's/^.*["'"'"']([^"'"'"']+)["'"'"'] --project-tree .+$/\1/p' out/test/${version}/lua-opencv/luarocks/luarocks.bat)"`'"
-source scripts/vcvars_restore_start.sh || exit $?
+cd "${PWD_BCK}" || exit $?
+QUOTE="'"'"'"
+DOUBLE_QUOTE='"'"'"'"'"'
+luarocks="$(sed -nre "s/^.*[${DOUBLE_QUOTE}${QUOTE}]([^${DOUBLE_QUOTE}${QUOTE}]+)[${DOUBLE_QUOTE}${QUOTE}] --project-tree .+$/\1/p" out/test/${version}/lua-opencv/luarocks/luarocks.bat)"
 cd out/test/${version}/lua-project && \
 "$luarocks" init --lua-versions "5.1,5.2,5.3,5.4" && \
-./luarocks.bat install "--server=${projectDir}/out/prepublish/server" opencv_lua 4.9.0 && \
-./luarocks.bat install --deps-only ../lua-opencv/samples/samples-scm-1.rockspec
+time ./luarocks.bat install "--server=${projectDir}/out/prepublish/server" opencv_lua 4.9.0 && \
+source "${PWD_BCK}/scripts/vcvars_restore_start.sh" && \
+./luarocks.bat install --deps-only ../lua-opencv/samples/samples-scm-1.rockspec && \
+source "${PWD_BCK}/scripts/vcvars_restore_end.sh" && \
+LUAROCKS_BINDIR="$PWD" node ../lua-opencv/scripts/test.js --Release
 '
 done
 
@@ -151,7 +160,7 @@ done
 # ================================
 # WSL README.md samples check
 # ================================
-for version in 5.{4,3,2,1}; do
+for version in luajit-2.1 5.{4,3,2,1}; do
     version=${version} WSLENV=version/u wsl -e bash -li -c '
 source scripts/wsl_init.sh || exit $?
 
@@ -165,10 +174,12 @@ test -d out/test/${version} || mkdir out/test/${version} || exit $?
 if [ -d out/test/${version}/lua-opencv ]; then
     PWD_BCK="$PWD" && \
     cd out/test/${version}/lua-opencv && \
-    git remote set-url origin "file://${projectDir}" && \
+    rm -rf .git && \
+    git init && \
+    git remote add origin "file://${projectDir}" && \
+    git fetch origin && \
+    git switch main --force && \
     git reset --hard HEAD && \
-    git clean -fd && \
-    git pull && \
     cd "${PWD_BCK}" || exit $?
 else
     git clone "${projectDir}" out/test/${version}/lua-opencv || exit $?
@@ -178,7 +189,7 @@ cd out/test/${version}/lua-opencv || exit $?
 
 ./build.sh --target ${target} "-DLua_VERSION=${version}" --install && \
 ./build.sh --target luarocks && \
-./luarocks/luarocks install "--server=${projectDir}/out/prepublish/server" opencv_lua ${binary} && \
+time ./luarocks/luarocks install "--server=${projectDir}/out/prepublish/server" opencv_lua ${binary} && \
 ./luarocks/luarocks install --deps-only samples/samples-scm-1.rockspec || exit $?
 
 npm ci && \
@@ -216,14 +227,16 @@ cd out/test/${version}/lua-opencv && \
 ./build.sh --target ${target} "-DLua_VERSION=${version}" --install && \
 ./build.sh --target luarocks && \
 cd "${PWD_BCK}" || exit $?
-
-luarocks="'$(sed -nre 's/^.*["'"'"']([^"'"'"']+)["'"'"'] --project-tree .+$/\1/p' out/test/${version}/lua-opencv/luarocks/luarocks)'"
+QUOTE="'"'"'"
+DOUBLE_QUOTE='"'"'"'"'"'
+luarocks="$(sed -nre "s/^.*[${DOUBLE_QUOTE}${QUOTE}]([^${DOUBLE_QUOTE}${QUOTE}]+)[${DOUBLE_QUOTE}${QUOTE}] --project-tree .+$/\1/p" out/test/${version}/lua-opencv/luarocks/luarocks)"
 cd out/test/${version}/lua-project && \
 "$luarocks" init --lua-versions "5.1,5.2,5.3,5.4" && \
 ./luarocks config --scope project cmake_generator Ninja && \
 ./luarocks config --scope project cmake_build_args -- -j$(( $(nproc) - 2 )) && \
-./luarocks install "--server=${projectDir}/out/prepublish/server" opencv_lua 4.9.0 && \
-./luarocks install --deps-only ../lua-opencv/samples/samples-scm-1.rockspec
+time ./luarocks install "--server=${projectDir}/out/prepublish/server" opencv_lua 4.9.0 && \
+./luarocks install --deps-only ../lua-opencv/samples/samples-scm-1.rockspec && \
+LUAROCKS_BINDIR="$PWD" node ../lua-opencv/scripts/test.js --Release
 '
 done
 
@@ -231,7 +244,7 @@ done
 # ================================
 # publish
 # ================================
-bash -c 'DIST_VERSION=1; ./luarocks/luarocks.bat upload out/prepublish/server/opencv_lua-4.9.0-${DIST_VERSION}.rockspec --api-key=${LUA_ROCKS_API_KEY}'
+bash -c 'DIST_VERSION=2; ./luarocks/luarocks.bat upload out/prepublish/server/opencv_lua-4.9.0-${DIST_VERSION}.rockspec --api-key=${LUA_ROCKS_API_KEY}'
 
 
 # ================================

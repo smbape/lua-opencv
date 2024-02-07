@@ -338,7 +338,6 @@ class LuaGenerator {
             let getter, setter;
             let has_propget = is_static || is_enum || modifiers.includes("/R") || modifiers.includes("/RW");
             let has_propput = modifiers.includes("/W") || modifiers.includes("/RW");
-            let is_key = false;
 
             for (const modifier of modifiers) {
                 if (modifier[0] === "=") {
@@ -355,8 +354,6 @@ class LuaGenerator {
                     has_propput = true;
                 } else if (modifier.startsWith("/WExpr=")) {
                     has_propput = true;
-                } else if (modifier === "/Key") {
-                    is_key = true;
                 }
             }
 
@@ -376,7 +373,7 @@ class LuaGenerator {
                     }
                 }
 
-                if (is_enum) {
+                if (is_enum || is_static && modifiers.includes("/C")) {
                     if (registeri === contentRegister.length) {
                         contentRegister.push(""); // new line
                     }
@@ -386,15 +383,21 @@ class LuaGenerator {
                 }
 
                 if (rexpr.endsWith("::this")) {
-                    rexpr = `lua_rawget_create_if_nil(L, { ${ rexpr.split("::").map(part => JSON.stringify(part)).join(", ") } })`;
-                } else {
-                    for (const modifier of modifiers) {
-                        if (modifier.startsWith("/Cast=")) {
-                            rexpr = `${ modifier.slice("/Cast=".length) }(${ rexpr })`;
-                        }
+                    if (registeri === contentRegister.length) {
+                        contentRegister.push(""); // new line
                     }
-                    rexpr = `lua_push(L, ${ rexpr });`;
+                    contentRegister.push(`lua_pushliteral(L, "${ name }"); lua_rawget_create_if_nil(L, { ${ rexpr.split("::").map(part => JSON.stringify(part)).join(", ") } }); lua_rawset(L, -3);`);
+                    generatePropertyDoc(processor, coclass, name, propname, modifiers, cpptype, has_propget, has_propput);
+                    continue;
                 }
+
+                for (const modifier of modifiers) {
+                    if (modifier.startsWith("/Cast=")) {
+                        rexpr = `${ modifier.slice("/Cast=".length) }(${ rexpr })`;
+                    }
+                }
+
+                rexpr = `lua_push(L, ${ rexpr });`;
             }
 
             let in_val;
@@ -433,7 +436,7 @@ class LuaGenerator {
                 `.replace(/^ {20}/mg, "").trim();
             }
 
-            const key_name = is_key ? name : `"${ name }"`;
+            const key_name = JSON.stringify(name);
             const obj_decl = [];
 
             if (!is_static) {
@@ -468,13 +471,13 @@ class LuaGenerator {
 
         if (!coclass.isStatic()) {
             contentRegisterPrivate.push("", `
-                std::map<std::variant<std::string, int>, std::function<int(lua_State*)>> getters({
+                std::map<std::string, std::function<int(lua_State*)>> getters({
                     ${ dynamic_get.join(",\n").split("\n").join(`\n${ " ".repeat(20) }`) }
                 });
             `.replace(/^ {16}/mg, "").trim().replace(/\{\s+\}/mg, "{}"));
         } else if (dynamic_get.length !== 0) {
             contentRegisterPrivate.push("", `
-                const std::map<std::variant<std::string, int>, std::function<int(lua_State*)>> getters({
+                const std::map<std::string, std::function<int(lua_State*)>> getters({
                     ${ dynamic_get.join(",\n").split("\n").join(`\n${ " ".repeat(20) }`) }
                 });
 
@@ -485,14 +488,6 @@ class LuaGenerator {
                             return getters.at(k)(L);
                         }
                     }
-
-                    if (lua_is(L, 2, static_cast<int*>(nullptr))) {
-                        const int k = lua_to(L, 2, static_cast<int*>(nullptr));
-                        if (getters.count(k)) {
-                            return getters.at(k)(L);
-                        }
-                    }
-
                     return 0;
                 }
             `.replace(/^ {16}/mg, "").trim());
@@ -500,26 +495,19 @@ class LuaGenerator {
 
         if (!coclass.isStatic()) {
             contentRegisterPrivate.push("", `
-                std::map<std::variant<std::string, int>, std::function<int(lua_State*)>> setters({
+                std::map<std::string, std::function<int(lua_State*)>> setters({
                     ${ dynamic_set.join(",\n").split("\n").join(`\n${ " ".repeat(20) }`) }
                 });
             `.replace(/^ {16}/mg, "").trim().replace(/\{\s+\}/mg, "{}"));
         } else if (dynamic_set.length !== 0) {
             contentRegisterPrivate.push("", `
-                const std::map<std::variant<std::string, int>, std::function<int(lua_State*)>> setters({
+                const std::map<std::string, std::function<int(lua_State*)>> setters({
                     ${ dynamic_set.join(",\n").split("\n").join(`\n${ " ".repeat(20) }`) }
                 });
 
                 void dynamic_set(lua_State* L) {
                     if (lua_is(L, 2, static_cast<std::string*>(nullptr))) {
                         const std::string k = lua_to(L, 2, static_cast<std::string*>(nullptr));
-                        if (setters.count(k)) {
-                            return setters.at(k)(L);
-                        }
-                    }
-
-                    if (lua_is(L, 2, static_cast<int*>(nullptr))) {
-                        const int k = lua_to(L, 2, static_cast<int*>(nullptr));
                         if (setters.count(k)) {
                             return setters.at(k)(L);
                         }
@@ -666,6 +654,7 @@ class LuaGenerator {
                 const callargs = [];
                 const retval = [];
                 const overload = [];
+                const extractors = [];
                 const precondition = [];
 
                 if (!is_static) {
@@ -813,7 +802,7 @@ class LuaGenerator {
 
                     overload.push("", `
                         // =========================
-                        // get argument ${ argname }
+                        // check argument ${ argname }
                         // =========================
                         bool ${ argname }_positional = false;
                         bool ${ argname }_kwarg = false;
@@ -850,16 +839,20 @@ class LuaGenerator {
                         `.replace(/^ {28}/mg, "").trim());
                     }
 
-                    overload.push(""); // new line
+                    extractors.push("", `
+                        // =========================
+                        // get argument ${ argname }
+                        // =========================
+                    `.replace(/^ {24}/mg, "").trim());
 
                     if (is_optional) {
                         const ref = defval !== "" && is_by_ref && !defval.includes("(") && !defval.includes("'") && !defval.includes("\"") && !/^(?:\.|\d+\.)\d+$/.test(defval) ? "&" : "";
                         const copy = ref || is_out_arg || defval === "" || defval.includes("(");
-                        overload.push(`${ copy ? "" : "static " }${ cpptype }${ ref } ${ argname }_default${ defval !== "" ? ` = ${ defval }` : "" };`);
+                        extractors.push(`${ copy ? "" : "static " }${ cpptype }${ ref } ${ argname }_default${ defval !== "" ? ` = ${ defval }` : "" };`);
                     }
 
                     if (is_array) {
-                        overload.push(`
+                        extractors.push(`
                             Optional${ arg_suffix[0].toUpperCase() + arg_suffix.slice(1) }<${ var_type }> ${ argname }_${ arrtype };
                             ${ conditional(...[
                                 `${ argname }_positional`,
@@ -877,7 +870,7 @@ class LuaGenerator {
                             decltype(auto) ${ argname } = *${ argname }_${ arrtype };
                         `.replace(/^ {28}/mg, "").trim());
                     } else if (is_shared_ptr) {
-                        overload.push(`
+                        extractors.push(`
                             ${ cpptype } ${ argname };
                             ${ conditional(...[
                                 `${ argname }_positional`,
@@ -893,7 +886,7 @@ class LuaGenerator {
                             ]).split("\n").join(`\n${ " ".repeat(28) }`) }
                         `.replace(/^ {28}/mg, "").trim());
                     } else {
-                        overload.push(`
+                        extractors.push(`
                             if (${ argname }_kwarg) {
                                 Keywords::push(L, vargc, "${ argname }");
                             }
@@ -927,7 +920,7 @@ class LuaGenerator {
                     }
                 }
 
-                overload.push("", `
+                overload.push(...extractors, "", `
                     // =========================
                     // call ${ name.replaceAll(".", "::") }
                     // =========================
@@ -986,7 +979,8 @@ class LuaGenerator {
                 }
 
                 if (is_constructor && !has_call) {
-                    callee = `std::shared_ptr<${ fqn }>(new ${ callee })`;
+                    const pos = callee.indexOf("(");
+                    callee = `std::make_shared<${ callee.slice(0, pos) }>${ callee.slice(pos) }`;
                 } else if (func_modifiers.includes("/Ref")) {
                     callee = `reference_internal(${ callee })`;
                 }
@@ -1269,22 +1263,22 @@ class LuaGenerator {
                     struct usertype_info<::${ fqn }> {
                         static int metatable;
                         static const void* signature;
-                        static std::set<const void*> derives;
                         static const struct luaL_Reg* methods;
                         static const struct luaL_Reg* meta_methods;
-                        static const std::map<std::variant<std::string, int>, std::function<int(lua_State*)>> getters;
-                        static const std::map<std::variant<std::string, int>, std::function<int(lua_State*)>> setters;
+                        static const std::map<std::string, std::function<int(lua_State*)>> getters;
+                        static const std::map<std::string, std::function<int(lua_State*)>> setters;
+                        ${ processor.derives.has(fqn) ? `static std::unordered_set<const void*> derives;` : "" }
                     };
                 `.replace(/^ {20}/mg, "").trim());
 
                 contentDecl.push(`
                     int usertype_info<::${ fqn }>::metatable = LUA_REFNIL;
                     const void* usertype_info<::${ fqn }>::signature;
-                    std::set<const void*> usertype_info<::${ fqn }>::derives;
                     const struct luaL_Reg* usertype_info<::${ fqn }>::methods = ::methods;
                     const struct luaL_Reg* usertype_info<::${ fqn }>::meta_methods = ::meta_methods;
-                    const std::map<std::variant<std::string, int>, std::function<int(lua_State*)>> usertype_info<::${ fqn }>::getters(std::move(::getters));
-                    const std::map<std::variant<std::string, int>, std::function<int(lua_State*)>> usertype_info<::${ fqn }>::setters(std::move(::setters));
+                    const std::map<std::string, std::function<int(lua_State*)>> usertype_info<::${ fqn }>::getters(std::move(::getters));
+                    const std::map<std::string, std::function<int(lua_State*)>> usertype_info<::${ fqn }>::setters(std::move(::setters));
+                    ${ processor.derives.has(fqn) ? `std::unordered_set<const void*> usertype_info<::${ fqn }>::derives;` : "" }
                 `.replace(/^ {20}/mg, "").trim());
             } else if (processor.derives.has(fqn)) {
                 registers.push("", `

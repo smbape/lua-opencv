@@ -32,6 +32,7 @@ if type(jit) == 'table' then
         end
     end
     elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
+    collectgarbage()
     print(string.format("bit %i times took %.6f seconds", total, elapsed))
 end
 
@@ -47,12 +48,13 @@ for i = 0, rows - 1 do
     end
 end
 elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
+collectgarbage()
 print(string.format("opencv_lua.bit %i times took %.6f seconds", total, elapsed))
 
 t = cv.getTickCount()
 local bin = cv.Mat.zeros({ 20, 20 }, cv.CV_32S)
 local mag = cv.Mat.zeros({ 20, 20 }, cv.CV_32S)
-for i = 1, 5000 do
+for i = 1, 50000 do
     local bin_cells = {
         bin:new({ 0, 0, 10, 10 }),
         bin:new({ 10, 0, 10, 10 }),
@@ -68,7 +70,32 @@ for i = 1, 5000 do
     }
 end
 elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
-print(string.format("calling new %d times on a %ix%i matrix took %.6f seconds", 5000 * 4 * 2, bin.rows, bin.cols, elapsed))
+collectgarbage()
+print(string.format("calling new %d times on a %ix%i matrix took %.6f seconds", 50000 * 4 * 2, bin.rows, bin.cols, elapsed))
+
+if cv.Range.MAX then
+    t = cv.getTickCount()
+    local bin = cv.Mat.zeros({ 20, 20 }, cv.CV_32S)
+    local mag = cv.Mat.zeros({ 20, 20 }, cv.CV_32S)
+    for i = 1, 50000 do
+        local bin_cells = {
+            bin[{ { 0, 10 }, { 0, 10 } }],
+            bin[{ { 10, cv.Range.MAX }, { 0, 10 } }],
+            bin[{ { 0, 10 }, { 10, cv.Range.MAX } }],
+            bin[{ { 10, cv.Range.MAX }, { 10, cv.Range.MAX } }]
+        }
+
+        local mag_cells = {
+            mag[{ { 0, 10 }, { 0, 10 } }],
+            mag[{ { 10, cv.Range.MAX }, { 0, 10 } }],
+            mag[{ { 0, 10 }, { 10, cv.Range.MAX } }],
+            mag[{ { 10, cv.Range.MAX }, { 10, cv.Range.MAX } }]
+        }
+    end
+    elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
+    collectgarbage()
+    print(string.format("slicing %d times on a %ix%i matrix took %.6f seconds", 50000 * 4 * 2, bin.rows, bin.cols, elapsed))
+end
 
 t = cv.getTickCount()
 sum = {}
@@ -88,8 +115,8 @@ for i = 1, 512 do
     end
 end
 elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
-print(string.format("lua nested matrix of %i elements took %.6f seconds", #sum * #sum[1] * #sum[1][1] * #sum[1][1][1],
-    elapsed))
+collectgarbage()
+print(string.format("lua nested matrix of %i elements took %.6f seconds", #sum * #sum[1] * #sum[1][1] * #sum[1][1][1], elapsed))
 
 t = cv.getTickCount()
 sum = {}
@@ -103,18 +130,21 @@ for i = 1, 512 do
     end
 end
 elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
+collectgarbage()
 print(string.format("lua flat matrix of %i elements took %.6f seconds", #sum, elapsed))
 
 t = cv.getTickCount()
 sum = cv.Mat({ rows, cols, channels, 2 }, cv.CV_32F, 1.0)
 sum:table()
 elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
+collectgarbage()
 print(string.format("c++ -> lua nested matrix of %d elements took %.6f seconds", sum:total(), elapsed))
 
 t = cv.getTickCount()
 sum = cv.Mat({ rows, cols, channels, 2 }, cv.CV_32F, 1.0)
 sum:table(false)
 elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
+collectgarbage()
 print(string.format("c++ -> lua flat matrix of %d elements took %.6f seconds", sum:total(), elapsed))
 
 t = cv.getTickCount()
@@ -129,6 +159,7 @@ for i = 0, rows - 1 do
     end
 end
 elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
+collectgarbage()
 print(string.format("mat(i, j, k) %i times took %.6f seconds. Sum = %i", total, elapsed, sum))
 
 t = cv.getTickCount()
@@ -143,6 +174,7 @@ for i = 0, rows - 1 do
     end
 end
 elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
+collectgarbage()
 print(string.format("mat[{i, j, k}] %i times took %.6f seconds. Sum = %i", total, elapsed, sum))
 
 t = cv.getTickCount()
@@ -157,6 +189,7 @@ for i = 0, rows - 1 do
     end
 end
 elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
+collectgarbage()
 print(string.format("mat:get(i, j, k) %i times took %.6f seconds. Sum = %i", total, elapsed, sum))
 
 local get = cv.Mat.get
@@ -172,11 +205,13 @@ for i = 0, rows - 1 do
     end
 end
 elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
+collectgarbage()
 print(string.format("get(mat, i, j, k) %i times took %.6f seconds. Sum = %i", total, elapsed, sum))
 
 t = cv.getTickCount()
 local data = mat:table()
 elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
+collectgarbage()
 print(string.format("table %s took %.6f seconds", inspect(mat.shape), elapsed))
 
 t = cv.getTickCount()
@@ -191,13 +226,14 @@ for i = 1, rows do
     end
 end
 elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
+collectgarbage()
 print(string.format("data[i][j][k] %i times took %.6f seconds. Sum = %i", total, elapsed, sum))
 
 t = cv.getTickCount()
 local result = cv.Mat.createFromArray(data, mat:type())
 elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
-print(string.format("createFromArray %s took %.6f seconds. Sum = %d", inspect(mat.shape), elapsed,
-    cv.sumElems(result)[1] * times))
+collectgarbage()
+print(string.format("createFromArray %s took %.6f seconds. Sum = %d", inspect(mat.shape), elapsed, cv.sumElems(result)[1] * times))
 
 -- https://luajit.org/ext_ffi.html
 -- Do the check to see if JIT is enabled. If so use the optimized FFI structs.
@@ -271,6 +307,7 @@ if type(jit) == 'table' then
             end
         end
         elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
+        collectgarbage()
         print(string.format("ffi_data(i, j, k) %i times took %.6f seconds. Sum = %i", total, elapsed, sum))
 
         t = cv.getTickCount()
@@ -285,6 +322,7 @@ if type(jit) == 'table' then
             end
         end
         elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
+        collectgarbage()
         print(string.format("ffi_data[{i, j, k}] %i times took %.6f seconds. Sum = %i", total, elapsed, sum))
 
 
@@ -364,6 +402,7 @@ if type(jit) == 'table' then
             end
         end
         elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
+        collectgarbage()
         print(string.format("ffi_mat(i, j, k) %i times took %.6f seconds. Sum = %i", total, elapsed, sum))
 
 
@@ -379,6 +418,7 @@ if type(jit) == 'table' then
             end
         end
         elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
+        collectgarbage()
         print(string.format("ffi_mat[{i, j, k}] %i times took %.6f seconds. Sum = %i", total, elapsed, sum))
 
         t = cv.getTickCount()
@@ -394,7 +434,7 @@ if type(jit) == 'table' then
             end
         end
         elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
-        print(string.format("bytes[i * cols * channels + j * channels + k] %i times took %.6f seconds. Sum = %i", total,
-            elapsed, sum))
+        collectgarbage()
+        print(string.format("bytes[i * cols * channels + j * channels + k] %i times took %.6f seconds. Sum = %i", total, elapsed, sum))
     end
 end

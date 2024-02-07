@@ -15,13 +15,13 @@ while true do
     local read, frame = cap:read()
 
     if not read then
-        io.stderr:write("!>Error: cannot read the camera.\n")
+        io.stderr:write("!>Error: cannot read the video file.\n")
     end
 
     -- Flip the image horizontally to give the mirror impression
     local frame = cv.flip(frame, 1)
 
-    cv.imshow("capture camera", frame)
+    cv.imshow("capture video file", frame)
 
     local key = cv.waitKey(30)
     if key == 0x1b or key == string.byte("q") or key == string.byte("Q") then break end

@@ -56,7 +56,7 @@ local hsv_test2 = cv.cvtColor(src_test2, cv.COLOR_BGR2HSV)
 -- [Convert to HSV]
 
 -- [Convert to HSV half]
-local hsv_half_down = hsv_base:new(cv.Range(int(hsv_base.rows / 2), hsv_base.rows), cv.Range(0, hsv_base.cols))
+local hsv_half_down = hsv_base:new({ int(hsv_base.rows / 2), hsv_base.rows }, { 0, hsv_base.cols })
 -- [Convert to HSV half]
 
 -- [Using 50 bins for hue and 60 for saturation]

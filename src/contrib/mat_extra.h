@@ -7,19 +7,19 @@ namespace cvextra {
 	std::vector<int> mat_shape(const cv::Mat& self);
 	std::vector<int> umat_shape(const cv::UMat& self);
 
-	using MatIndexType = std::variant<cv::Mat, uchar, char, ushort, short, int, float, double>;
+	int Mat_index_at(lua_State* L, cv::Mat& self, int idx);
+	int Mat_index_at(lua_State* L, cv::Mat& self, const std::vector<int>& idx);
+	int Mat_index_at(lua_State* L, cv::Mat& self, const std::vector<cv::Range>& ranges);
+	int Mat_index_at(lua_State* L, cv::Mat& self, const std::vector<std::variant<int, cv::Range>>& idx);
 
-	MatIndexType Mat_index_at(lua_State* L, cv::Mat& self, int idx);
-	MatIndexType Mat_index_at(lua_State* L, cv::Mat& self, const cv::Range& range);
-	MatIndexType Mat_index_at(lua_State* L, cv::Mat& self, const std::vector<int>& idx);
-	MatIndexType Mat_index_at(lua_State* L, cv::Mat& self, const std::vector<cv::Range>& ranges);
-	MatIndexType Mat_index_at(lua_State* L, cv::Mat& self, const std::vector<std::variant<int, cv::Range>>& idx);
-
-	void Mat_newindex_at(lua_State* L, cv::Mat& self, int idx, const MatIndexType& value);
-	void Mat_newindex_at(lua_State* L, cv::Mat& self, const cv::Range& range, const MatIndexType& value);
-	void Mat_newindex_at(lua_State* L, cv::Mat& self, const std::vector<int>& idx, const MatIndexType& value);
-	void Mat_newindex_at(lua_State* L, cv::Mat& self, const std::vector<cv::Range>& ranges, const MatIndexType& value);
-	void Mat_newindex_at(lua_State* L, cv::Mat& self, const std::vector<std::variant<int, cv::Range>>& idx, const MatIndexType& value);
+	void Mat_newindex_at(lua_State* L, cv::Mat& self, int idx, const cv::Mat& value);
+	void Mat_newindex_at(lua_State* L, cv::Mat& self, int idx, const double value);
+	void Mat_newindex_at(lua_State* L, cv::Mat& self, const std::vector<int>& idx, const cv::Mat& value);
+	void Mat_newindex_at(lua_State* L, cv::Mat& self, const std::vector<int>& idx, const double value);
+	void Mat_newindex_at(lua_State* L, cv::Mat& self, const std::vector<cv::Range>& ranges, const cv::Mat& value);
+	void Mat_newindex_at(lua_State* L, cv::Mat& self, const std::vector<cv::Range>& ranges, const double value);
+	void Mat_newindex_at(lua_State* L, cv::Mat& self, const std::vector<std::variant<int, cv::Range>>& idx, const cv::Mat& value);
+	void Mat_newindex_at(lua_State* L, cv::Mat& self, const std::vector<std::variant<int, cv::Range>>& idx, const double value);
 
 	cv::Mat createMatFromVectorOfMat(lua_State* L, const std::vector<cv::Mat>& vec);
 	cv::Mat createMatFromArray(lua_State* L, const LUA_MODULE_NAME::Table& array, int type);

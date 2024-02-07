@@ -1,19 +1,8 @@
 module.exports = [
-    ["class cv.Range", "", ["/Simple"], [
-        ["int", "start", "", ["/RW"]],
-        ["int", "end", "", ["/RW"]],
-        ["cv::Range", "Ellipsis", "", ["/R", "/S", "/RExpr=cvextra::Ellipsis"]],
-    ], "", ""],
-
-    ["cv.Range.Range", "", [], [], "", ""],
-
-    ["cv.Range.Range", "", [], [
-        ["int", "start", "", []],
-        ["int", "end", "", []],
-    ], "", ""],
-
-    ["cv.Range.size", "int", [], [], "", ""],
-    ["cv.Range.empty", "bool", [], [], "", ""],
-
+    ["cv.Range.", "", ["/Properties"], [
+        ["int", "MIN", "", ["/R", "/S", "/RExpr=INT_MIN", "/C"]],
+        ["int", "MAX", "", ["/R", "/S", "/RExpr=INT_MAX", "/C"]],
+        ["cv::Range", "Ellipsis", "", ["/R", "/S", "/RExpr=cvextra::Ellipsis", "/C"]],
+    ]],
     ["cv.Range.all", "Range", ["/S"], [], "", ""],
 ];

@@ -73,7 +73,7 @@ const run = (data, child) => {
     });
 };
 
-const writeFile = async (name, data) => {
+const writeFile = async (name, data, timestamp) => {
     const entries = Array.from(data.entries());
 
     const workbook = new ExcelJS.Workbook();
@@ -93,11 +93,12 @@ const writeFile = async (name, data) => {
 
     worksheet.columns.forEach(autoFitColumn);
 
-    await workbook.xlsx.writeFile(sysPath.join(__dirname, `benchmark-${ name }.xlsx`));
+    await workbook.xlsx.writeFile(sysPath.join(__dirname, `benchmark-${ name }-${ timestamp }.xlsx`));
 }
 
 const lua = new Map();
 const python = new Map();
+const now = Date.now();
 
 eachOfLimit(Array.from(new Array(100).keys()), 1, (v, k, next) => {
     console.log("test", v);
@@ -122,6 +123,6 @@ eachOfLimit(Array.from(new Array(100).keys()), 1, (v, k, next) => {
     if (err) {
         throw err;
     }
-    await writeFile("lua", lua);
-    await writeFile("python", python);
+    await writeFile("lua", lua, now);
+    await writeFile("python", python, now);
 });
