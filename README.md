@@ -69,23 +69,23 @@ Prebuilt binaries are available for [LuaJIT 2.1](https://luajit.org/) and [Lua 5
 I recommend you to try installing the prebuilt binary with
 
 ```sh
-luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.3 opencv_lua
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua
 ```
 
 Or to specify the target lua version
 
 ```sh
-luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.3 opencv_lua 4.9.0luajit2.1
-luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.3 opencv_lua 4.9.0lua5.4
-luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.3 opencv_lua 4.9.0lua5.3
-luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.3 opencv_lua 4.9.0lua5.2
-luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.3 opencv_lua 4.9.0lua5.1
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.9.0luajit2.1
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.9.0lua5.4
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.9.0lua5.3
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.9.0lua5.2
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.9.0lua5.1
 ```
 
 If none of the above works for you, then install the source rock
 
 ```sh
-luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.3 opencv_lua 4.9.0
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.9.0
 ```
 
 ## Examples
@@ -262,13 +262,13 @@ cv.destroyAllWindows()
 
 ```cmd
 git clone --depth 1 --branch 4.9.0 https://github.com/opencv/opencv.git
-git clone --depth 1 --branch v0.0.3 https://github.com/smbape/lua-opencv.git
+git clone --depth 1 --branch v0.0.4 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
 @REM build.bat --target luajit "-DLua_VERSION=luajit-2.1"
 @REM available versions are 5.1, 5.2, 5.3, 5.4
 build.bat --target lua "-DLua_VERSION=5.4" --install
 build.bat --target luarocks
-luarocks\luarocks.bat install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.3 opencv_lua
+luarocks\luarocks.bat install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua
 luarocks\luarocks.bat install --deps-only samples\samples-scm-1.rockspec
 npm ci
 node scripts\test.js --Release
@@ -278,13 +278,13 @@ node scripts\test.js --Release
 
 ```sh
 git clone --depth 1 --branch 4.9.0 https://github.com/opencv/opencv.git
-git clone --depth 1 --branch v0.0.3 https://github.com/smbape/lua-opencv.git
+git clone --depth 1 --branch v0.0.4 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
 # ./build.sh --target luajit "-DLua_VERSION=luajit-2.1"
 # available versions are 5.1, 5.2, 5.3, 5.4
 ./build.sh --target lua "-DLua_VERSION=5.4" --install
 ./build.sh --target luarocks
-./luarocks/luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.3 opencv_lua
+./luarocks/luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua
 ./luarocks/luarocks install --deps-only samples/samples-scm-1.rockspec
 npm ci
 node scripts/test.js --Release
@@ -298,7 +298,7 @@ Therefore, it is not practical to repeat that process again.
 To avoid that long install time, you can host your own prebuilt binary rocks.
 
 ```sh
-git clone --depth 1 --branch v0.0.3 https://github.com/smbape/lua-opencv.git
+git clone --depth 1 --branch v0.0.4 https://github.com/smbape/lua-opencv.git
 cd lua-opencv/luarocks
 luarocks --lua-version "<Which Lua version to use>" --lua-dir "<Which Lua installation to use>" init --lua-versions "5.1,5.2,5.3,5.4"
 luarocks --lua-version "<Which Lua version to use>" config --scope project cmake_generator Ninja
