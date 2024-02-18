@@ -7,6 +7,7 @@ Sources:
     https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/imgProc/threshold/threshold.py
 --]]
 
+local argparse = require("argparse")
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 
@@ -32,22 +33,9 @@ local function Threshold_Demo(val)
 end
 -- [Threshold_Demo]
 
--- parser = argparse.ArgumentParser(description='Code for Basic Thresholding Operations tutorial.')
--- parser.add_argument('--input', help='Path to input image.', default='stuff.jpg')
--- args = parser.parse_args()
-
-local args = {
-    input = "stuff.jpg",
-}
-
-for i = 1, #arg, 2 do
-    local name = arg[i]
-    if name:sub(1, 2) == "--" then name = name:sub(3) end
-    if args[name] == nil or i == #arg then
-        error('unexpected argument ' .. name)
-    end
-    args[name] = arg[i + 1]
-end
+local parser = argparse() {description='Code for Basic Thresholding Operations tutorial.'}
+parser:option('--input'):description('Path to input image.'):default('stuff.jpg')
+local args = parser:parse()
 
 -- [load]
 -- Load an image

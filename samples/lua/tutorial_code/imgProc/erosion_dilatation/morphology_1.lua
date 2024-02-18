@@ -7,6 +7,7 @@ Sources:
     https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/imgProc/erosion_dilatation/morphology_1.py
 --]]
 
+local argparse = require("argparse")
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 
@@ -90,21 +91,8 @@ end
 -- [main]
 
 
--- parser = argparse.ArgumentParser(description='Code for Eroding and Dilating tutorial.')
--- parser.add_argument('--input', help='Path to input image.', default='LinuxLogo.jpg')
--- args = parser.parse_args()
-
-local args = {
-    input = "LinuxLogo.jpg",
-}
-
-for i = 1, #arg, 2 do
-    local name = arg[i]
-    if name:sub(1, 2) == "--" then name = name:sub(3) end
-    if args[name] == nil or i == #arg then
-        error('unexpected argument ' .. name)
-    end
-    args[name] = arg[i + 1]
-end
+local parser = argparse() {description='Code for Eroding and Dilating tutorial.'}
+parser:option('--input'):description('Path to input image.'):default('LinuxLogo.jpg')
+local args = parser:parse()
 
 main(args.input)

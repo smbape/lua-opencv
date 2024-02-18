@@ -7,6 +7,7 @@ Sources:
     https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/highgui/trackbar/AddingImagesTrackbar.py
 --]]
 
+local argparse = require("argparse")
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 
@@ -23,24 +24,10 @@ local function on_trackbar(val)
 end
 -- [on_trackbar]
 
--- parser = argparse.ArgumentParser(description='Code for Adding a Trackbar to our applications tutorial.')
--- parser.add_argument('--input1', help='Path to the first input image.', default='LinuxLogo.jpg')
--- parser.add_argument('--input2', help='Path to the second input image.', default='WindowsLogo.jpg')
--- args = parser.parse_args()
-
-local args = {
-    input1 = "LinuxLogo.jpg",
-    input2 = "WindowsLogo.jpg",
-}
-
-for i = 1, #arg, 2 do
-    local name = arg[i]
-    if name:sub(1, 2) == "--" then name = name:sub(3) end
-    if args[name] == nil or i == #arg then
-        error('unexpected argument ' .. name)
-    end
-    args[name] = arg[i + 1]
-end
+local parser = argparse() {description='Code for Adding a Trackbar to our applications tutorial.'}
+parser:option('--input1'):description('Path to the first input image.'):default('LinuxLogo.jpg')
+parser:option('--input2'):description('Path to the second input image.'):default('WindowsLogo.jpg')
+local args = parser:parse()
 
 -- [load]
 -- Read images ( both have to be of the same size and type )

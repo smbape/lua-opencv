@@ -7,28 +7,16 @@ Sources:
     https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/video/meanshift/meanshift.py
 --]]
 
+local argparse = require("argparse")
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local bit = bit or opencv_lua.bit ---@diagnostic disable-line: undefined-global
 
--- parser = argparse.ArgumentParser(description='This sample demonstrates the meanshift algorithm. \
---                                               The example file can be downloaded from: \
---                                               https://www.bogotobogo.com/python/OpenCV_Python/images/mean_shift_tracking/slow_traffic_small.mp4')
--- parser.add_argument('image', type=str, help='path to image file')
--- args = parser.parse_args()
-
-local args = {
-    image = 'slow_traffic_small.mp4',
-}
-
-for i = 1, #arg, 2 do
-    local name = arg[i]
-    if name:sub(1, 2) == "--" then name = name:sub(3) end
-    if args[name] == nil or i == #arg then
-        error('unexpected argument ' .. name)
-    end
-    args[name] = arg[i + 1]
-end
+local parser = argparse() {description='This sample demonstrates the meanshift algorithm. \
+                                              The example file can be downloaded from: \
+                                              https://www.bogotobogo.com/python/OpenCV_Python/images/mean_shift_tracking/slow_traffic_small.mp4'}
+parser:argument('image'):description('path to image file'):default('slow_traffic_small.mp4')
+local args = parser:parse()
 
 local cap = cv.VideoCapture(cv.samples.findFile(args.image))
 

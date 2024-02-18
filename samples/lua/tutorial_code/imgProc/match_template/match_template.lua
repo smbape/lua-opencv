@@ -7,6 +7,7 @@ Sources:
     https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/imgProc/match_template/match_template.py
 --]]
 
+local argparse = require("argparse")
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local INDEX_BASE = 1 -- lua is 1-based indexed
@@ -113,19 +114,10 @@ local function main(args)
     -- [wait_key]
 end
 
-local args = {
-    img = "lena_tmpl.jpg",
-    templ = "tmpl.png",
-    mask = "mask.png",
-}
-
-for i = 1, #arg, 2 do
-    local name = arg[i]
-    if name:sub(1, 2) == "--" then name = name:sub(3) end
-    if args[name] == nil or i == #arg then
-        error('unexpected argument ' .. name)
-    end
-    args[name] = arg[i + 1]
-end
+local parser = argparse() {}
+parser:argument('img'):description('Path to input image.'):default('lena_tmpl.jpg')
+parser:argument('templ'):description('Path to template image.'):default('tmpl.png')
+parser:argument('mask'):description('Path to mask image.'):default('mask.png')
+local args = parser:parse()
 
 main(args)

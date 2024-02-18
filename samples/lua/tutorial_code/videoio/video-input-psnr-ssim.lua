@@ -7,11 +7,13 @@ Sources:
     https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/videoio/video-input-psnr-ssim.py
 --]]
 
+local argparse = require("argparse")
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local int = opencv_lua.math.int
 local round = opencv_lua.math.round
 local INDEX_BASE = 1 -- lua is 1-based indexed
+local int_converter = function(val) return opencv_lua.math.int(tonumber(val)) end
 
 if not math.log10 then
     ---@diagnostic disable-next-line: duplicate-set-field
@@ -89,40 +91,12 @@ end
 
 
 local function main()
-    -- parser = argparse.ArgumentParser()
-    -- parser.add_argument("-d", "--delay", type=int, default=30, help=" Time delay")
-    -- parser.add_argument("-v", "--psnrtriggervalue", type=int, default=30, help="PSNR Trigger Value")
-    -- parser.add_argument("-r", "--ref", type=str, default="Megamind.avi", help="Path to reference video")
-    -- parser.add_argument("-t", "--undertest", type=str, default="Megamind_bugy.avi",
-    --                     help="Path to the video to be tested")
-    -- args = parser.parse_args()
-
-    local args = {
-        delay = 30,
-        psnrtriggervalue = 30,
-        ref = "Megamind.avi",
-        undertest = "Megamind_bugy.avi",
-    }
-
-    local aliases = {}
-    aliases["-d"] = "delay"
-    aliases["-v"] = "psnrtriggervalue"
-    aliases["-r"] = "ref"
-    aliases["-t"] = "undertest"
-
-    for i = 1, #arg, 2 do
-        local name = arg[i]
-        if name:sub(1, 2) == "--" then name = name:sub(3) end
-        if aliases[name] ~= nil then name = aliases[name] end
-        if args[name] == nil or i == #arg then
-            error('unexpected argument ' .. name)
-        end
-        if type(args[name]) == 'number' then
-            args[name] = tonumber(arg[i + 1])
-        else
-            args[name] = arg[i + 1]
-        end
-    end
+    local parser = argparse() {}
+    parser:option("-d --delay"):convert(int_converter):default(30):description("Time delay")
+    parser:option("-v --psnrtriggervalue"):convert(int_converter):default(30):description("PSNR Trigger Value")
+    parser:option("-r --ref"):default("Megamind.avi"):description("Path to reference video")
+    parser:option("-t --undertest"):default("Megamind_bugy.avi"):description("Path to the video to be tested")
+    local args = parser:parse()
 
     local sourceReference = args.ref
     local sourceCompareWith = args.undertest

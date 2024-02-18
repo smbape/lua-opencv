@@ -7,32 +7,18 @@ Sources:
     https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/Histograms_Matching/histogram_comparison/compareHist_Demo.py
 --]]
 
+local argparse = require("argparse")
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local kwargs = opencv_lua.kwargs
 local int = opencv_lua.math.int
 
 -- [Load three images with different environment settings]
--- parser = argparse.ArgumentParser(description='Code for Histogram Comparison tutorial.')
--- parser.add_argument('--input1', help='Path to input image 1.')
--- parser.add_argument('--input2', help='Path to input image 2.')
--- parser.add_argument('--input3', help='Path to input image 3.')
--- args = parser.parse_args()
-
-local args = {
-    input1 = "Histogram_Comparison_Source_0.jpg",
-    input2 = "Histogram_Comparison_Source_1.jpg",
-    input3 = "Histogram_Comparison_Source_2.jpg",
-}
-
-for i = 1, #arg, 2 do
-    local name = arg[i]
-    if name:sub(1, 2) == "--" then name = name:sub(3) end
-    if args[name] == nil or i == #arg then
-        error('unexpected argument ' .. name)
-    end
-    args[name] = arg[i + 1]
-end
+local parser = argparse() {description='Code for Histogram Comparison tutorial.'}
+parser:option('--input1'):description('Path to input image 1.'):default('Histogram_Comparison_Source_0.jpg')
+parser:option('--input2'):description('Path to input image 2.'):default('Histogram_Comparison_Source_1.jpg')
+parser:option('--input3'):description('Path to input image 3.'):default('Histogram_Comparison_Source_2.jpg')
+local args = parser:parse()
 
 local function concat(a, b)
     local c = {}

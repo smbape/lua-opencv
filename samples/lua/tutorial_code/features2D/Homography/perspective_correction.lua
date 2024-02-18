@@ -10,6 +10,7 @@ Sources:
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local int = opencv_lua.math.int
+local int_converter = function(val) return opencv_lua.math.int(tonumber(val)) end
 
 -- Make the starting point unpredictable
 local rng = cv.RNG(cv.getTickCount())
@@ -61,36 +62,13 @@ local function perspectiveCorrection(img1Path, img2Path, patternSize)
 end
 
 local function main()
-    -- import argparse
-    -- parser = argparse.ArgumentParser()
-    -- parser.add_argument('-I1', "--image1", help="Path to the first image", default="left02.jpg")
-    -- parser.add_argument('-I2', "--image2", help="Path to the second image", default="left01.jpg")
-    -- parser.add_argument('-H', "--height", help="Height of pattern size", default=6)
-    -- parser.add_argument('-W', "--width", help="Width of pattern size", default=9)
-    -- args = parser.parse_args()
-
-    local args = {
-        image1 = "left02.jpg",
-        image2 = "left01.jpg",
-        height = 6,
-        width = 9,
-    }
-
-    local aliases = {}
-    aliases["-I1"] = "image1"
-    aliases["-I2"] = "image2"
-    aliases["-H"] = "height"
-    aliases["-W"] = "width"
-
-    for i = 1, #arg, 2 do
-        local name = arg[i]
-        if name:sub(1, 2) == "--" then name = name:sub(3) end
-        if aliases[name] ~= nil then name = aliases[name] end
-        if args[name] == nil or i == #arg then
-            error('unexpected argument ' .. name)
-        end
-        args[name] = arg[i + 1]
-    end
+    local argparse = require("argparse")
+    local parser = argparse() {}
+    parser:option('-I1 --image1'):description("Path to the first image"):default("left02.jpg")
+    parser:option('-I2 --image2'):description("Path to the second image"):default("left01.jpg")
+    parser:option('-H --height'):description("Height of pattern size"):default(6):convert(int_converter)
+    parser:option('-W --width'):description("Width of pattern size"):default(9):convert(int_converter)
+    local args = parser:parse()
 
     local img1Path = args.image1
     local img2Path = args.image2

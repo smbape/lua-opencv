@@ -7,6 +7,7 @@ Sources:
     https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/imgProc/opening_closing_hats/morphology_2.py
 --]]
 
+local argparse = require("argparse")
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 
@@ -43,22 +44,9 @@ local function morphology_operations(val)
     cv.imshow(title_window, dst)
 end
 
--- parser = argparse.ArgumentParser(description='Code for More Morphology Transformations tutorial.')
--- parser.add_argument('--input', help='Path to input image.', default='LinuxLogo.jpg')
--- args = parser.parse_args()
-
-local args = {
-    input = "LinuxLogo.jpg",
-}
-
-for i = 1, #arg, 2 do
-    local name = arg[i]
-    if name:sub(1, 2) == "--" then name = name:sub(3) end
-    if args[name] == nil or i == #arg then
-        error('unexpected argument ' .. name)
-    end
-    args[name] = arg[i + 1]
-end
+local parser = argparse() {description='Code for More Morphology Transformations tutorial.'}
+parser:option('--input'):description('Path to input image.'):default('LinuxLogo.jpg')
+local args = parser:parse()
 
 src = cv.imread(cv.samples.findFile(args.input))
 if src:empty() then

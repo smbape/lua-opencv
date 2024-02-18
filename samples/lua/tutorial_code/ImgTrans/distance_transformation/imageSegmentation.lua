@@ -7,6 +7,7 @@ Sources:
     https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/ImgTrans/distance_transformation/imageSegmentation.py
 --]]
 
+local argparse = require("argparse")
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local bit = bit or opencv_lua.bit ---@diagnostic disable-line: undefined-global
@@ -17,24 +18,11 @@ local rng = cv.RNG(12345)
 
 -- [load_image]
 -- Load the image
--- parser = argparse.ArgumentParser(description='Code for Image Segmentation with Distance Transform and Watershed Algorithm.\
---     Sample code showing how to segment overlapping objects using Laplacian filtering, \
---     in addition to Watershed and Distance Transformation')
--- parser.add_argument('--input', help='Path to input image.', default='cards.png')
--- args = parser.parse_args()
-
-local args = {
-    input = 'cards.png',
-}
-
-for i = 1, #arg, 2 do
-    local name = arg[i]
-    if name:sub(1, 2) == "--" then name = name:sub(3) end
-    if args[name] == nil or i == #arg then
-        error('unexpected argument ' .. name)
-    end
-    args[name] = arg[i + 1]
-end
+local parser = argparse() {description='Code for Image Segmentation with Distance Transform and Watershed Algorithm.\
+    Sample code showing how to segment overlapping objects using Laplacian filtering, \
+    in addition to Watershed and Distance Transformation'}
+parser:option('--input'):description('Path to input image.'):default('cards.png')
+local args = parser:parse()
 
 local t = os.clock()
 local src = cv.imread(cv.samples.findFile(args.input))

@@ -7,6 +7,7 @@ Sources:
     https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/ImgTrans/LaPlace/laplace_demo.py
 --]]
 
+local argparse = require("argparse")
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local kwargs = opencv_lua.kwargs
@@ -64,17 +65,8 @@ local function main(args)
 end
 
 
-local args = {
-    input = 'lena.jpg',
-}
-
-for i = 1, #arg, 2 do
-    local name = arg[i]
-    if name:sub(1, 2) == "--" then name = name:sub(3) end
-    if args[name] == nil or i == #arg then
-        error('unexpected argument ' .. name)
-    end
-    args[name] = arg[i + 1]
-end
+local parser = argparse() {description='Sample code showing how to detect edges using the Laplace operator'}
+parser:argument('input'):description('Path to input image.'):default('lena.jpg')
+local args = parser:parse()
 
 main(args)

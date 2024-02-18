@@ -7,6 +7,7 @@ Sources:
     https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/imgProc/Smoothing/smoothing.py
 --]]
 
+local argparse = require("argparse")
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local int = opencv_lua.math.int
@@ -50,7 +51,7 @@ local function main(args)
     src = cv.imread(cv.samples.findFile(imageName))
     if src:empty() then
         print('Error opening image')
-        print('Usage: smoothing.py [image_name -- default ../data/lena.jpg] \n')
+        print('Usage: smoothing.lua [image_name -- default ../data/lena.jpg] \n')
         return -1
     end
 
@@ -127,17 +128,8 @@ local function main(args)
 end
 
 
-local args = {
-    input = "lena.jpg",
-}
-
-for i = 1, #arg, 2 do
-    local name = arg[i]
-    if name:sub(1, 2) == "--" then name = name:sub(3) end
-    if args[name] == nil or i == #arg then
-        error('unexpected argument ' .. name)
-    end
-    args[name] = arg[i + 1]
-end
+local parser = argparse() {}
+parser:argument('input'):description('Path to input image.'):default('lena.jpg')
+local args = parser:parse()
 
 main(args)

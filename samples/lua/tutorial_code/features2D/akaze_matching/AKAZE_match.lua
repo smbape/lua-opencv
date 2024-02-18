@@ -7,32 +7,20 @@ Sources:
     https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/features2D/akaze_matching/AKAZE_match.py
 --]]
 
+local argparse = require("argparse")
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local kwargs = opencv_lua.kwargs
 local INDEX_BASE = 1 -- lua is 1-based indexed
 
 -- [load]
--- parser = argparse.ArgumentParser(description='Code for AKAZE local features matching tutorial.')
--- parser.add_argument('--input1', help='Path to input image 1.', default='graf1.png')
--- parser.add_argument('--input2', help='Path to input image 2.', default='graf3.png')
--- parser.add_argument('--homography', help='Path to the homography matrix.', default='H1to3p.xml')
--- args = parser.parse_args()
-
-local args = {
-    input1 = "graf1.png",
-    input2 = "graf3.png",
-    homography = "H1to3p.xml",
+local parser = argparse() {
+    description = 'Code for AKAZE local features matching tutorial.'
 }
-
-for i = 1, #arg, 2 do
-    local name = arg[i]
-    if name:sub(1, 2) == "--" then name = name:sub(3) end
-    if args[name] == nil or i == #arg then
-        error('unexpected argument ' .. name)
-    end
-    args[name] = arg[i + 1]
-end
+parser:option('--input1'):description('Path to input image 1.'):default('graf1.png')
+parser:option('--input2'):description('Path to input image 2.'):default('graf3.png')
+parser:option('--homography'):description('Path to the homography matrix.'):default('H1to3p.xml')
+local args = parser:parse()
 
 local img1 = cv.imread(cv.samples.findFile(args.input1), cv.IMREAD_GRAYSCALE)
 local img2 = cv.imread(cv.samples.findFile(args.input2), cv.IMREAD_GRAYSCALE)

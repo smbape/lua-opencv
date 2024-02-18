@@ -7,6 +7,7 @@ Sources:
     https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/ImgTrans/remap/Remap_Demo.py
 --]]
 
+local argparse = require("argparse")
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local INDEX_BASE = 1 -- lua is 1-based indexed
@@ -38,22 +39,9 @@ local function update_map(ind, map_x, map_y, rows, cols)
 end
 -- [Update]
 
--- parser = argparse.ArgumentParser(description='Code for Remapping tutorial.')
--- parser.add_argument('--input', help='Path to input image.', default='chicky_512.png')
--- args = parser.parse_args()
-
-local args = {
-    input = 'chicky_512.png',
-}
-
-for i = 1, #arg, 2 do
-    local name = arg[i]
-    if name:sub(1, 2) == "--" then name = name:sub(3) end
-    if args[name] == nil or i == #arg then
-        error('unexpected argument ' .. name)
-    end
-    args[name] = arg[i + 1]
-end
+local parser = argparse() {description='Code for Remapping tutorial.'}
+parser:option('--input'):description('Path to input image.'):default('chicky_512.png')
+local args = parser:parse()
 
 -- [Load]
 local src = cv.imread(cv.samples.findFile(args.input), cv.IMREAD_COLOR)

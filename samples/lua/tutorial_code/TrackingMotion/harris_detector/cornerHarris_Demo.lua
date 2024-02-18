@@ -7,6 +7,7 @@ Sources:
     https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/TrackingMotion/harris_detector/cornerHarris_Demo.py
 --]]
 
+local argparse = require("argparse")
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local kwargs = opencv_lua.kwargs
@@ -53,22 +54,9 @@ local function cornerHarris_demo(val)
 end
 
 -- Load source image and convert it to gray
--- parser = argparse.ArgumentParser(description='Code for Harris corner detector tutorial.')
--- parser.add_argument('--input', help='Path to input image.', default='building.jpg')
--- args = parser.parse_args()
-
-local args = {
-    input = 'building.jpg',
-}
-
-for i = 1, #arg, 2 do
-    local name = arg[i]
-    if name:sub(1, 2) == "--" then name = name:sub(3) end
-    if args[name] == nil or i == #arg then
-        error('unexpected argument ' .. name)
-    end
-    args[name] = arg[i + 1]
-end
+local parser = argparse() {description='Code for Harris corner detector tutorial.'}
+parser:option('--input'):description('Path to input image.'):default('building.jpg')
+local args = parser:parse()
 
 local src = cv.imread(cv.samples.findFile(args.input))
 if src:empty() then

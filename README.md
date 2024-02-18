@@ -51,6 +51,7 @@ Prebuilt binaries are available for [LuaJIT 2.1](https://luajit.org/) and [Lua 5
 
 #### Windows
 
+  - Install [LuaRocks](https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Windows)
   - Install [CMake >= 3.25](https://cmake.org/download/)
   - Install [Git](https://git-scm.com/)
   - Install [NodeJS](https://nodejs.org/en/download/current)
@@ -60,6 +61,7 @@ Prebuilt binaries are available for [LuaJIT 2.1](https://luajit.org/) and [Lua 5
 
 #### Linux
 
+  - Install [LuaRocks](https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Unix)
   - Install [NodeJS](https://nodejs.org/en/download/current)
   - Install needed packages `sudo snap install cmake --classic && sudo apt -y install build-essential git python3-pip python3-venv python-is-python3 ninja-build unzip zip libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-dev libreadline-dev`
   - For faster build time, you can use [Ninja](https://ninja-build.org/) `luarocks config --scope project cmake_generator Ninja`
@@ -310,7 +312,7 @@ LUAROCKS_SERVER="<Where to install the prebuilt binary>" DIST_VERSION=1 node scr
 Now you can install the prebuilt binary with
 
 ```sh
-luarocks install --server="$LUAROCKS_SERVER"
+luarocks install --server="$LUAROCKS_SERVER" opencv_lua
 ```
 
 Alternatively, If you want an installation over http, upload the contents of `LUAROCKS_SERVER` into an HTTP/S server

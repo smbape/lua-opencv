@@ -9,6 +9,7 @@ Sources:
     https://github.com/opencv/opencv/blob/4.9.0/samples/cpp/tutorial_code/ImgProc/anisotropic_image_segmentation/anisotropic_image_segmentation.cpp
 --]]
 
+local argparse = require("argparse")
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local kwargs = opencv_lua.kwargs
@@ -86,22 +87,9 @@ local function calcGST(inputIMG, w)
 end
 -- [calcGST]
 
--- parser = argparse.ArgumentParser(description='Code for Anisotropic image segmentation tutorial.')
--- parser.add_argument('-i', '--input', help='Path to input image.', required=True)
--- args = parser.parse_args()
-
-local args = {
-    input = "gst_input.jpg",
-}
-
-for i = 1, #arg, 2 do
-    local name = arg[i]
-    if name:sub(1, 2) == "--" then name = name:sub(3) end
-    if args[name] == nil or i == #arg then
-        error('unexpected argument ' .. name)
-    end
-    args[name] = arg[i + 1]
-end
+local parser = argparse() {description='Code for Anisotropic image segmentation tutorial.'}
+parser:option('-i --input'):description('Path to input image.'):default('gst_input.jpg')
+local args = parser:parse()
 
 local imgIn = cv.imread(cv.samples.findFile(args.input), cv.IMREAD_GRAYSCALE)
 if imgIn:empty() then

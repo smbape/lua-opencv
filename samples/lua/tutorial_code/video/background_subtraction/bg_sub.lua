@@ -7,28 +7,15 @@ Sources:
     https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/video/background_subtraction/bg_sub.py
 --]]
 
+local argparse = require("argparse")
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 
--- parser = argparse.ArgumentParser(description='This program shows how to use background subtraction methods provided by \
---                                               OpenCV. You can process both videos and images.')
--- parser.add_argument('--input', type=str, help='Path to a video or a sequence of image.', default='vtest.avi')
--- parser.add_argument('--algo', type=str, help='Background subtraction method (KNN, MOG2).', default='MOG2')
--- args = parser.parse_args()
-
-local args = {
-    input = 'vtest.avi',
-    algo = 'MOG2',
-}
-
-for i = 1, #arg, 2 do
-    local name = arg[i]
-    if name:sub(1, 2) == "--" then name = name:sub(3) end
-    if args[name] == nil or i == #arg then
-        error('unexpected argument ' .. name)
-    end
-    args[name] = arg[i + 1]
-end
+local parser = argparse() {description='This program shows how to use background subtraction methods provided by \
+                                              OpenCV. You can process both videos and images.'}
+parser:option('--input'):description('Path to a video or a sequence of image.'):default('vtest.avi')
+parser:option('--algo'):description('Background subtraction method (KNN, MOG2).'):default('MOG2')
+local args = parser:parse()
 
 -- [create]
 local backSub

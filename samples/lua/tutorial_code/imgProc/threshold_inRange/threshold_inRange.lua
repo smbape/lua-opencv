@@ -7,8 +7,10 @@ Sources:
     https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/imgProc/threshold_inRange/threshold_inRange.py
 --]]
 
+local argparse = require("argparse")
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
+local int = function(val) return opencv_lua.math.int(tonumber(val)) end
 
 local max_value = 255
 local max_value_H = math.floor(360 / 2)
@@ -67,26 +69,9 @@ local function on_high_V_thresh_trackbar(val)
     cv.setTrackbarPos(high_V_name, window_detection_name, high_V)
 end
 
--- parser = argparse.ArgumentParser(description='Code for Thresholding Operations using inRange tutorial.')
--- parser.add_argument('--camera', help='Camera divide number.', default=0, type=int)
--- args = parser.parse_args()
-
-local args = {
-    camera = 0,
-}
-
-for i = 1, #arg, 2 do
-    local name = arg[i]
-    if name:sub(1, 2) == "--" then name = name:sub(3) end
-    if args[name] == nil or i == #arg then
-        error('unexpected argument ' .. name)
-    end
-    if type(args[name]) == 'number' then
-        args[name] = tonumber(arg[i + 1])
-    else
-        args[name] = arg[i + 1]
-    end
-end
+local parser = argparse() {description='Code for Thresholding Operations using inRange tutorial.'}
+parser:option('--camera'):description('Camera divide number.'):default(0):convert(int)
+local args = parser:parse()
 
 -- [cap]
 local cap = cv.VideoCapture(args.camera)

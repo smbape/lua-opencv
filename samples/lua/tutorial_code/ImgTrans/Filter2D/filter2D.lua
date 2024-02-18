@@ -7,6 +7,7 @@ Sources:
     https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/ImgTrans/Filter2D/filter2D.py
 --]]
 
+local argparse = require("argparse")
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 
@@ -22,7 +23,7 @@ local function main(args)
     -- Check if image is loaded fine
     if src:empty() then
         print('Error opening image!')
-        print('Usage: filter2D.py [image_name -- default lena.jpg] \n')
+        print('Usage: filter2D.lua [image_name -- default lena.jpg] \n')
         return -1
     end
     -- [load]
@@ -56,17 +57,8 @@ local function main(args)
     return 0
 end
 
-local args = {
-    input = 'lena.jpg',
-}
-
-for i = 1, #arg, 2 do
-    local name = arg[i]
-    if name:sub(1, 2) == "--" then name = name:sub(3) end
-    if args[name] == nil or i == #arg then
-        error('unexpected argument ' .. name)
-    end
-    args[name] = arg[i + 1]
-end
+local parser = argparse() {description='Sample code that shows how to implement your own linear filters by using filter2D function'}
+parser:argument('input'):description('Path to input image.'):default('lena.jpg')
+local args = parser:parse()
 
 main(args)

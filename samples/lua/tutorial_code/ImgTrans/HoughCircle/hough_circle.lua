@@ -7,6 +7,7 @@ Sources:
     https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/ImgTrans/HoughCircle/hough_circle.py
 --]]
 
+local argparse = require("argparse")
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local kwargs = opencv_lua.kwargs
@@ -23,7 +24,7 @@ local function main(args)
     -- Check if image is loaded fine
     if src:empty() then
         print('Error opening image!')
-        print('Usage: hough_circle.py [image_name -- default ' + default_file + '] \n')
+        print('Usage: hough_circle.lua [image_name -- default ' + default_file + '] \n')
         return -1
     end
     -- [load]
@@ -72,17 +73,8 @@ local function main(args)
 end
 
 
-local args = {
-    input = 'smarties.png',
-}
-
-for i = 1, #arg, 2 do
-    local name = arg[i]
-    if name:sub(1, 2) == "--" then name = name:sub(3) end
-    if args[name] == nil or i == #arg then
-        error('unexpected argument ' .. name)
-    end
-    args[name] = arg[i + 1]
-end
+local parser = argparse() {}
+parser:argument('input'):description('Path to input image.'):default('smarties.png')
+local args = parser:parse()
 
 main(args)

@@ -7,6 +7,7 @@ Sources:
     https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/objectDetection/cascade_classifier/objectDetection.py
 --]]
 
+local argparse = require("argparse")
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local int = opencv_lua.math.int
@@ -15,6 +16,7 @@ local dirname = opencv_lua.path.dirname
 local findFile = opencv_lua.fs_utils.findFile
 local kwargs = opencv_lua.kwargs
 local unpack = table.unpack or unpack ---@diagnostic disable-line: deprecated
+local convert_to_int = function(val) return opencv_lua.math.int(tonumber(val)) end
 
 cv.samples.addSamplesDataSearchPath(dirname(dirname(dirname(findFile(
     "data/haarcascades/haarcascade_frontalface_alt.xml", kwargs({
@@ -59,30 +61,11 @@ local function detectAndDisplay(frame)
     cv.imshow('Capture - Face detection', frame)
 end
 
--- parser = argparse.ArgumentParser(description='Code for Cascade Classifier tutorial.')
--- parser.add_argument('--face_cascade', help='Path to face cascade.', default='data/haarcascades/haarcascade_frontalface_alt.xml')
--- parser.add_argument('--eyes_cascade', help='Path to eyes cascade.', default='data/haarcascades/haarcascade_eye_tree_eyeglasses.xml')
--- parser.add_argument('--camera', help='Camera divide number.', type=int, default=0)
--- args = parser.parse_args()
-
-local args = {
-    face_cascade = 'data/haarcascades/haarcascade_frontalface_alt.xml',
-    eyes_cascade = 'data/haarcascades/haarcascade_eye_tree_eyeglasses.xml',
-    camera = 0,
-}
-
-for i = 1, #arg, 2 do
-    local name = arg[i]
-    if name:sub(1, 2) == "--" then name = name:sub(3) end
-    if args[name] == nil or i == #arg then
-        error('unexpected argument ' .. name)
-    end
-    if type(args[name]) == 'number' then
-        args[name] = tonumber(arg[i + 1])
-    else
-        args[name] = arg[i + 1]
-    end
-end
+local parser = argparse() {description='Code for Cascade Classifier tutorial.'}
+parser:option('--face_cascade'):description('Path to face cascade.'):default('data/haarcascades/haarcascade_frontalface_alt.xml')
+parser:option('--eyes_cascade'):description('Path to eyes cascade.'):default('data/haarcascades/haarcascade_eye_tree_eyeglasses.xml')
+parser:option('--camera'):description('Camera divide number.'):convert(convert_to_int):default(0)
+local args = parser:parse()
 
 local face_cascade_name = args.face_cascade
 local eyes_cascade_name = args.eyes_cascade

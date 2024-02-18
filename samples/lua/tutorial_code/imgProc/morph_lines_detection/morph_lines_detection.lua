@@ -8,6 +8,7 @@ Sources:
     https://github.com/opencv/opencv/blob/4.9.0/samples/cpp/tutorial_code/ImgProc/morph_lines_detection/Morphology_3.cpp
 --]]
 
+local argparse = require("argparse")
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 
@@ -141,17 +142,8 @@ local function main(args)
     return 0
 end
 
-local args = {
-    input = "notes.png",
-}
-
-for i = 1, #arg, 2 do
-    local name = arg[i]
-    if name:sub(1, 2) == "--" then name = name:sub(3) end
-    if args[name] == nil or i == #arg then
-        error('unexpected argument ' .. name)
-    end
-    args[name] = arg[i + 1]
-end
+local parser = argparse() {description='Use morphology transformations for extracting horizontal and vertical lines sample code'}
+parser:argument('input'):description('Path to input image.'):default('notes.png')
+local args = parser:parse()
 
 main(args)

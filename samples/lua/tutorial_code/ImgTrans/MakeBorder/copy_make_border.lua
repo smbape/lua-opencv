@@ -7,6 +7,7 @@ Sources:
     https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/ImgTrans/MakeBorder/copy_make_border.py
 --]]
 
+local argparse = require("argparse")
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local int = opencv_lua.math.int
@@ -28,14 +29,14 @@ local function main(args)
     -- Check if image is loaded fine
     if src:empty() then
         print('Error opening image!')
-        print('Usage: copy_make_border.py [image_name -- default lena.jpg] \n')
+        print('Usage: copy_make_border.lua [image_name -- default lena.jpg] \n')
         return -1
     end
     -- [load]
     -- Brief how-to for this program
     print('\n' ..
         '\t   copyMakeBorder Demo: \n' ..
-        '     -------------------- \n' ..
+        '\t   -------------------- \n' ..
         ' ** Press \'c\' to set the border to a random constant value \n' ..
         ' ** Press \'r\' to set the border to be replicated \n' ..
         ' ** Press \'ESC\' to exit the program ')
@@ -75,17 +76,8 @@ local function main(args)
 end
 
 
-local args = {
-    input = 'lena.jpg',
-}
-
-for i = 1, #arg, 2 do
-    local name = arg[i]
-    if name:sub(1, 2) == "--" then name = name:sub(3) end
-    if args[name] == nil or i == #arg then
-        error('unexpected argument ' .. name)
-    end
-    args[name] = arg[i + 1]
-end
+local parser = argparse() {description='Sample code that shows the functionality of copyMakeBorder'}
+parser:argument('input'):description('Path to input image.'):default('lena.jpg')
+local args = parser:parse()
 
 main(args)
