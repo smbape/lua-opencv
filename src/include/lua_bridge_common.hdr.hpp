@@ -46,7 +46,7 @@ namespace LUA_MODULE_NAME {
 	inline bool lua_userdata_is(lua_State* L, int index, T*);
 
 	template<typename T>
-	inline auto lua_userdata_to(lua_State* L, int index, T*);
+	inline std::shared_ptr<T>& lua_userdata_to(lua_State* L, int index, T*);
 
 	template<typename T>
 	inline bool lua_is(lua_State* L, int index, T* ptr);

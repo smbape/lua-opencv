@@ -27,24 +27,38 @@ namespace {
 	int Keywords_has(lua_State* L) {
 		auto vargc = lua_gettop(L);
 
-		if (vargc == 2 && lua_istable(L, 1) && lua_isstring(L, 2)) {
-			// copy the key so that lua_tostring does not modify the original
-			lua_pushvalue(L, 2);
-			const char* key = lua_tostring(L, -1);
-			lua_pushboolean(L, Keywords::has(L, 1, key));
-			return 1;
+		if (vargc == 0) {
+			return luaL_error(L, "self is not defined");
 		}
 
-		return luaL_error(L, "Overload resolution failed");
+		if (!lua_istable(L, 1)) {
+			return luaL_typeerror(L, 1, "table");
+		}
+
+		if (vargc != 2) {
+			return luaL_error(L, "expecting one string argument");
+		}
+
+		if (lua_type(L, 2) != LUA_TSTRING) {
+			return luaL_typeerror(L, 2, "string");
+		}
+
+		if (!lua_istable(L, 1)) {
+			return luaL_typeerror(L, 1, "table");
+		}
+
+		size_t len;
+		const char* key = lua_tolstring(L, 2, &len);
+		lua_pushboolean(L, Keywords::has(L, 1, key));
+		return 1;
 	}
 
 	int Keywords_get(lua_State* L) {
 		auto vargc = lua_gettop(L);
 
-		if (vargc == 2 && lua_istable(L, 1) && lua_isstring(L, 2)) {
-			// copy the key so that lua_tostring does not modify the original
-			lua_pushvalue(L, 2);
-			const char* key = lua_tostring(L, -1);
+		if (vargc == 2 && lua_istable(L, 1) && lua_type(L, 2) == LUA_TSTRING) {
+			size_t len;
+			const char* key = lua_tolstring(L, 2, &len);
 			Keywords::push(L, 1, key);
 			return 1;
 		}

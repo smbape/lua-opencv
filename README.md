@@ -266,7 +266,7 @@ cv.destroyAllWindows()
 git clone --depth 1 --branch 4.9.0 https://github.com/opencv/opencv.git
 git clone --depth 1 --branch v0.0.4 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
-@REM build.bat --target luajit "-DLua_VERSION=luajit-2.1"
+@REM build.bat --target luajit "-DLua_VERSION=luajit-2.1" --install
 @REM available versions are 5.1, 5.2, 5.3, 5.4
 build.bat --target lua "-DLua_VERSION=5.4" --install
 build.bat --target luarocks
@@ -282,7 +282,7 @@ node scripts\test.js --Release
 git clone --depth 1 --branch 4.9.0 https://github.com/opencv/opencv.git
 git clone --depth 1 --branch v0.0.4 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
-# ./build.sh --target luajit "-DLua_VERSION=luajit-2.1"
+# ./build.sh --target luajit "-DLua_VERSION=luajit-2.1" --install
 # available versions are 5.1, 5.2, 5.3, 5.4
 ./build.sh --target lua "-DLua_VERSION=5.4" --install
 ./build.sh --target luarocks

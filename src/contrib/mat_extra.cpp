@@ -651,11 +651,6 @@ namespace {
 			LUAL_MODULE_ERROR(L, "matrix " << dims << " dimensions is less than index " << idx.size() << " dimensions");
 		}
 
-		if (dims == 1 && std::holds_alternative<int>(idx[0])) {
-			_Mat_newindex_at(L, self, std::get<int>(idx[0]), value);
-			return;
-		}
-
 		static std::vector<cv::Range> ranges; ranges.resize(idx.size());
 		std::vector<int> newshape;
 		int ellipis_idx = -1;
@@ -909,10 +904,6 @@ namespace cvextra {
 
 		if (idx.size() > dims) {
 			LUAL_MODULE_ERROR(L, "matrix " << dims << " dimensions is less than index " << idx.size() << " dimensions");
-		}
-
-		if (dims == 1 && std::holds_alternative<int>(idx[0])) {
-			return Mat_index_at(L, self, std::get<int>(idx[0]));
 		}
 
 		static std::vector<cv::Range> ranges; ranges.resize(idx.size());

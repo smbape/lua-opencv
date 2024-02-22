@@ -232,7 +232,7 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename T>
-	inline auto lua_userdata_to(lua_State* L, int index, T*) {
+	inline std::shared_ptr<T>& lua_userdata_to(lua_State* L, int index, T*) {
 		return *static_cast<std::shared_ptr<T>*>(lua_touserdata(L, index));
 	}
 
