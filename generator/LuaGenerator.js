@@ -762,6 +762,9 @@ class LuaGenerator {
                     if (cpptype === "char*") {
                         cpptype = "std::string";
                         callarg = `${ callarg }.c_str()`;
+                        if (!arg_modifiers.includes("/C")) {
+                            callarg = `const_cast<char*>(${ callarg })`;
+                        }
                     }
 
                     for (const modifier of arg_modifiers) {

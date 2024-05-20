@@ -35,5 +35,6 @@ rsync -t --delete -v -r \
     --exclude=luarocks/.luarocks \
     --exclude=generated \
     --exclude=node_modules \
+    --exclude=opencv_extra \
     --exclude=out \
     "${projectDir}/" "${sources}" || exit $?

@@ -53,7 +53,7 @@ FetchContent_Populate(opencv
 option(BUILD_contrib "Build with opencv contrib" OFF)
 
 if (BUILD_contrib)
-  # https://github.com/opencv/opencv-python/tree/78
+  # https://github.com/opencv/opencv-python/tree/80
   set(OPENCV_CONTRIB_TAG_490 c7602a8f74205e44389bd6a4e8d727d32e7e27b4)
   set(OPENCV_CONTRIB_TAG_481 f10c84d48b0714f2b408c9e5cccfac1277c8e6cc)
   set(OPENCV_CONTRIB_TAG_480 f10c84d48b0714f2b408c9e5cccfac1277c8e6cc)
@@ -118,6 +118,11 @@ option(BUILD_opencv_java_bindings_generator "The java bindings" OFF)
 option(BUILD_opencv_js_bindings_generator "The JavaScript(JS) bindings" OFF)
 option(BUILD_opencv_objc_bindings_generator "The Objective-C bindings" OFF)
 option(BUILD_opencv_python_bindings_generator "The Python bindings" ON)
+
+if (WITH_FREETYPE)
+  find_package(FREETYPE REQUIRED)
+  find_package(HARFBUZZ REQUIRED)
+endif()
 
 add_subdirectory("${opencv_SOURCE_DIR}" "${opencv_BINARY_DIR}")
 
