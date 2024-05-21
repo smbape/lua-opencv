@@ -127,25 +127,25 @@ waterfall([
         spawnExec(luarocks, ["config", "variables.LUA_BINDIR"], {
             stdio: "tee",
             cwd: workspaceRoot
-        }, (err, _stdout, _stderr) => {
-            next(err, lua_interpreter, _stdout, _stderr);
+        }, (err, __stdout, __stderr) => {
+            next(err, lua_interpreter, __stdout, __stderr);
         });
     },
 
     (lua_interpreter, _stdout, _stderr, next) => {
         const LUA_BINDIR = _stdout.toString().trim();
 
-        spawnExec(lua_interpreter, ["-v"], {
+        spawnExec(sysPath.resolve(LUA_BINDIR, lua_interpreter), ["-v"], {
             stdio: "tee",
-            cwd: LUA_BINDIR
+            cwd: workspaceRoot
         }, next);
     },
 
     (_stdout, _stderr, next) => {
-        const [, target, ver] = _stdout.toString().trim().match(/(\w+) (\S+)/);
-        const abi = target === "LuaJIT" ? "5.1" : ver;
+        const [, target, ver] = (_stdout.length === 0 ? _stderr : _stdout).toString().trim().toLowerCase().match(/(\w+) (\d+\.\d+)/);
+        const abi = target === "luajit" ? "5.1" : ver;
 
-        const binary = `${ OpenCV_VERSION }${ target.toLowerCase() }${ ver }-${ distVersion }`;
+        const binary = `${ OpenCV_VERSION }${ target }${ ver }-${ distVersion }`;
         const binaryRockSpec = `${ pkg.name }-${ binary }.rockspec`;
         const lua_modules = sysPath.join(luarocksDir, "lua_modules");
 

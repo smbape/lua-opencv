@@ -46,8 +46,8 @@ FetchContent_Populate(opencv
   PATCH_COMMAND "${CMAKE_COMMAND}"
                   "-DSOURCE_DIR=<SOURCE_DIR>"
                   "-DGIT_EXECUTABLE=${GIT_EXECUTABLE}"
-                  "-DPATCH_FILE=${CMAKE_CURRENT_SOURCE_DIR}/../patches/001-opencv-src.patch"
-                  -P "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/git_patch_once.cmake"
+                  "-DPATCH_FILE=${CMAKE_SOURCE_DIR}/patches/001-opencv-src.patch"
+                  -P "${CMAKE_SOURCE_DIR}/cmake/git_patch_once.cmake"
 )
 
 option(BUILD_contrib "Build with opencv contrib" OFF)
@@ -78,8 +78,8 @@ if (BUILD_contrib)
     PATCH_COMMAND "${CMAKE_COMMAND}"
                     "-DSOURCE_DIR=<SOURCE_DIR>"
                     "-DGIT_EXECUTABLE=${GIT_EXECUTABLE}"
-                    "-DPATCH_FILE=${CMAKE_CURRENT_SOURCE_DIR}/../patches/001-opencv_contrib-src.patch"
-                    -P "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/git_patch_once.cmake"
+                    "-DPATCH_FILE=${CMAKE_SOURCE_DIR}/patches/001-opencv_contrib-src.patch"
+                    -P "${CMAKE_SOURCE_DIR}/cmake/git_patch_once.cmake"
   )
 
   set(OPENCV_EXTRA_MODULES_PATH "${opencv_contrib_SOURCE_DIR}/modules" CACHE PATH "Where to look for additional OpenCV modules (can be ;-separated list of paths)")

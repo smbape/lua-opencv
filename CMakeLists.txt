@@ -2,9 +2,7 @@ cmake_minimum_required(VERSION 3.25)
 
 # https://www.youtube.com/watch?v=mczb2COlt1g
 
-# Name of the project (will be the name of the plugin)
 project(opencv_lua)
-enable_language(ASM)
 
 set(DEFAULT_BUILD_TYPE "Release")
 
@@ -40,6 +38,9 @@ if(POLICY CMP0091)
   cmake_policy(SET CMP0091 NEW) # CMake 3.15+: leave MSVC runtime selection out of default CMAKE_<LANG>_FLAGS_<CONFIG> flags
 endif()
 
+# ===============
+# Lua
+# ===============
 foreach(env_var BINDIR DIR INCDIR)
   if (DEFINED LUA_${env_var} AND "${LUA_${env_var}} " STREQUAL " ")
     unset(LUA_${env_var} CACHE)
@@ -54,8 +55,12 @@ endforeach()
 set(BUILD_SHARED_LIBS_BACKUP ${BUILD_SHARED_LIBS})
 set(BUILD_SHARED_LIBS ON)
 include(cmake/FindLua.cmake)
-add_subdirectory(luarocks)
 set(BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS_BACKUP})
+
+# ===============
+# Luarocks
+# ===============
+add_subdirectory(luarocks)
 
 set(LUA_ONLY "$ENV{LUA_ONLY}")
 if (LUA_ONLY)
@@ -66,8 +71,10 @@ if (LUA_ONLY)
   return()
 endif()
 
+# ===============
+# Python
+# ===============
 include(cmake/UsePython3Venv.cmake)
-
 if (VIRTUAL_ENV_created)
   execute_process(
     COMMAND "${Python3_EXECUTABLE}" -m pip install --upgrade pip
@@ -81,44 +88,14 @@ if (VIRTUAL_ENV_created)
   )
 endif()
 
-set(EIGEN_VERSION 3.4.0 CACHE STRING "Choose the eigen version.")
-set_property(CACHE EIGEN_VERSION PROPERTY STRINGS "3.4.0" "3.3.9")
-option(EIGEN_ENABLE_INSTALL "Enable installation of Eigen3" OFF)
-option(EIGEN_BUILD_DOC "Enable creation of Eigen documentation" OFF)
-option(BUILD_TESTING "Enable creation of Eigen tests." OFF)
+# ===============
+# Eigen
+# ===============
+include(eigen/eigen.cmake)
 
-set(CMAKE_EXPORT_NO_PACKAGE_REGISTRY ON)
-if(NOT WIN32)
-  # On Linux, we want Eigen to be embeded in the library, be it shared or static
-  # Therefore, enforce BUILD_SHARED_LIBS OFF when building Eigen
-  # Hack to ensure that Eigen is built with BUILD_SHARED_LIBS OFF
-  set(BUILD_SHARED_LIBS_BACKUP ${BUILD_SHARED_LIBS})
-  set(BUILD_SHARED_LIBS OFF)
-endif()
-# Tell cmake that we will need eigen. These command will pull in eigen.
-include(FetchContent)
-FetchContent_Declare(eigen
-  GIT_REPOSITORY  https://gitlab.com/libeigen/eigen.git
-  GIT_TAG         ${EIGEN_VERSION}
-  GIT_SHALLOW     TRUE
-
-  # PATCH_COMMAND is run once for each BUILD_TYPE
-  # however, source download is only done once when it is a git repository
-  # use a custom patch command to perform patch only once
-  PATCH_COMMAND "${CMAKE_COMMAND}"
-                  "-DSOURCE_DIR=<SOURCE_DIR>"
-                  "-DGIT_EXECUTABLE=${GIT_EXECUTABLE}"
-                  "-DPATCH_FILE=${CMAKE_CURRENT_SOURCE_DIR}/patches/001-eigen-src.patch"
-                  -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/git_patch_once.cmake"
-)
-FetchContent_MakeAvailable(eigen)
-if(NOT WIN32)
-  set(BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS_BACKUP})
-endif()
-unset(CMAKE_EXPORT_NO_PACKAGE_REGISTRY)
-set(ENV{Eigen3_DIR} "${eigen_BINARY_DIR}")
-
-# find OpenCV
+# ===============
+# OpenCV
+# ===============
 if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
   if (WIN32)
     # On Windows, BUILD_SHARED_LIBS must be the same in other for the build to be successfull
@@ -136,174 +113,7 @@ else()
   find_package(OpenCV REQUIRED)
 endif()
 
-include(GNUInstallDirs)
-include(cmake/version.cmake)
-
-set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin" CACHE PATH "Output directory for applications")
-set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib" CACHE PATH "Output directory for libraries")
-
-# generate source files
-if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/node_modules")
-  if (WIN32)
-    set(npm npm.cmd)
-  else()
-    set(npm npm)
-  endif()
-  execute_process(
-    COMMAND ${npm} ci
-    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-    COMMAND_ECHO STDERR
-    COMMAND_ERROR_IS_FATAL ANY
-  )
-endif()
-
-set(ENV{CMAKE_CURRENT_BINARY_DIR} "${CMAKE_CURRENT_BINARY_DIR}")
-execute_process(
-  COMMAND node --unhandled-rejections=strict --trace-uncaught --trace-warnings generator/index.js
-  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-  COMMAND_ECHO STDERR
-  COMMAND_ERROR_IS_FATAL ANY
-)
-
-file(GLOB_RECURSE project_source_headers "src/*.h*")
-file(GLOB_RECURSE project_sources_files "src/*.c" "src/*.cpp")
-
-file(GLOB_RECURSE project_generated_headers "generated/*.h*")
-file(GLOB_RECURSE project_generated_files "generated/*.c" "generated/*.cpp")
-
-source_group("Source Headers" FILES ${project_source_headers})
-source_group("Source Files" FILES ${project_sources_files})
-
-source_group("Generated Headers" FILES ${project_generated_headers})
-source_group("Generated Files" FILES ${project_generated_files})
-
-set(SRC_FILES
-  ${project_source_headers}
-  ${project_sources_files}
-
-  ${project_generated_headers}
-  ${project_generated_files}
-)
-
-# Build a shared library named as the project
-if(POLICY CMP0091)
-  cmake_policy(GET CMP0091 MSVC_RUNTIME_SET_BY_ABSTRACTION)
-endif()
-
-if(NOT BUILD_SHARED_LIBS AND BUILD_WITH_STATIC_CRT AND MSVC_RUNTIME_SET_BY_ABSTRACTION STREQUAL "NEW")
-  set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-endif()
-
-set(CMAKE_SHARED_LIBRARY_PREFIX "")
-add_library(${PROJECT_NAME} SHARED ${SRC_FILES})
-
-install(TARGETS ${PROJECT_NAME}
-  LIBRARY
-    DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-  RUNTIME
-    DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-)
-
-if (NOT WITH_LUA_ROCKS)
-  install(TARGETS ${PROJECT_NAME}
-    ARCHIVE
-      DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-  )
-endif()
-
-target_compile_definitions(${PROJECT_NAME}
-  PUBLIC
-    LUA_MODULE_NAME=${PROJECT_NAME}
-    LUA_MODULE_VERSION=${LUA_MODULE_VERSION}
-    LUA_MODULE_LIB_NAME=OpenCV
-    LUA_MODULE_LIB_VERSION=${OpenCV_VERSION}
-  PRIVATE LUAAPI_EXPORTS)
-target_precompile_headers(${PROJECT_NAME} PRIVATE
-  "$<$<COMPILE_LANGUAGE:CXX>:lua_generated_pch.hpp>"
-)
-
-target_link_libraries(${PROJECT_NAME} PRIVATE ${LUA_LIBRARIES} ${OpenCV_LIBS} Eigen3::Eigen)
-target_include_directories(${PROJECT_NAME} PRIVATE ${LUA_INCLUDE_DIR})
-if (DEFINED OpenCV_INCLUDE_DIRS)
-  target_include_directories(${PROJECT_NAME} PRIVATE ${OpenCV_INCLUDE_DIRS})
-endif()
-
-set_target_properties(${PROJECT_NAME} PROPERTIES
-  ARCHIVE_OUTPUT_DIRECTORY "${LIBRARY_OUTPUT_PATH}"
-  COMPILE_PDB_OUTPUT_DIRECTORY "${LIBRARY_OUTPUT_PATH}"
-  LIBRARY_OUTPUT_DIRECTORY "${LIBRARY_OUTPUT_PATH}"
-  RUNTIME_OUTPUT_DIRECTORY "${EXECUTABLE_OUTPUT_PATH}"
-)
-
-# Always generate debug files
-if(MSVC AND NOT "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-  set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/DEBUG")
-endif()
-
-target_include_directories(${PROJECT_NAME} PUBLIC "src/include" "src" "generated")
-
-# /Zc:__cplusplus is required to make __cplusplus accurate
-# /Zc:__cplusplus is available starting with Visual Studio 2017 version 15.7
-# (according to https://docs.microsoft.com/en-us/cpp/build/reference/zc-cplusplus)
-# That version is equivalent to _MSC_VER==1914
-# (according to https://docs.microsoft.com/en-us/cpp/preprocessor/predefined-macros?view=vs-2019)
-# CMake's ${MSVC_VERSION} is equivalent to _MSC_VER
-# (according to https://cmake.org/cmake/help/latest/variable/MSVC_VERSION.html#variable:MSVC_VERSION)
-if (MSVC AND (MSVC_VERSION GREATER_EQUAL 1914))
-  target_compile_options(${PROJECT_NAME} PRIVATE "/Zc:__cplusplus" "/bigobj")
-endif()
-
-IF (WIN32 AND CMAKE_GENERATOR STREQUAL Ninja)
-  target_compile_options(${PROJECT_NAME} PRIVATE "/Zc:__cplusplus" "/bigobj")
-  target_compile_definitions(${PROJECT_NAME} PRIVATE WIN32 _WINDOWS _WINDLL)
-ENDIF()
-
-# Test
-include(CTest)
-enable_testing()
-
-add_test(
-  NAME test_build
-  COMMAND "${LUA_INTERPRETER}" test.lua
-  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/test"
-)
-
-set_tests_properties(test_build PROPERTIES DEPENDS ${PROJECT_NAME})
-
-if(EXISTS "${CMAKE_INSTALL_PREFIX}/bin/lua${LUA_SUFFIX}${CMAKE_EXECUTABLE_SUFFIX}")
-  add_test(
-    NAME test_install
-    COMMAND "${CMAKE_INSTALL_PREFIX}/bin/lua${LUA_SUFFIX}${CMAKE_EXECUTABLE_SUFFIX}" test.lua
-    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/test"
-  )
-
-  set_tests_properties(test_install PROPERTIES DEPENDS ${PROJECT_NAME})
-endif()
-
-# Pack
-include(CPack)
-set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-set(CPACK_PROJECT_VERSION ${LUA_MODULE_VERSION})
-
-include(cmake/vcpkg_regex_replace_string.cmake)
-
-file(GLOB_RECURSE files_to_change
-  README.md
-  generator/index.js
-  luarocks/opencv_lua-scm-1.rockspec
-  samples/*.lua
-  scripts/new_version.lua
-  scripts/pack.js
-)
-
-foreach(item ${files_to_change})
-  vcpkg_regex_replace_string("${item}" "(/lua-opencv/releases/download/v|/lua-opencv/tree/v)[0-9]+\\.[0-9]+\\.[0-9]+" "\\1${PROJECT_VERSION}")
-  vcpkg_regex_replace_string("${item}" "(opencv-|/opencv/opencv/blob/|opencv_lua )[0-9]+\\.[0-9]+\\.[0-9]+" "\\1${OpenCV_VERSION}")
-  vcpkg_regex_replace_string("${item}" "(--branch )[0-9]+\\.[0-9]+\\.[0-9]+( https://github.com/opencv/opencv)" "\\1${OpenCV_VERSION}\\2")
-  vcpkg_regex_replace_string("${item}" "(--branch v)[0-9]+\\.[0-9]+\\.[0-9]+( https://github.com/smbape/lua-opencv)" "\\1${PROJECT_VERSION}\\2")
-  vcpkg_regex_replace_string("${item}" "opencv_videoio_ffmpeg[0-9]+_64\\.dll" "opencv_videoio_ffmpeg${OpenCV_DLLVERSION}_64.dll")
-  vcpkg_regex_replace_string("${item}" "opencv_world[0-9]+\\.dll" "opencv_world${OpenCV_DLLVERSION}.dll")
-
-  # Force LF EOL
-  configure_file(${item} ${item} @ONLY NEWLINE_STYLE LF)
-endforeach()
+# ===============
+# OpenCV Lua
+# ===============
+add_subdirectory(opencv_lua)

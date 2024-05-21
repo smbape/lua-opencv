@@ -760,10 +760,13 @@ class LuaGenerator {
                     cpptype = processor.getCppType(argtype, coclass, options);
 
                     if (cpptype === "char*") {
-                        cpptype = "std::string";
-                        callarg = `${ callarg }.c_str()`;
-                        if (!arg_modifiers.includes("/C")) {
-                            callarg = `const_cast<char*>(${ callarg })`;
+                        if (arg_modifiers.includes("/C")) {
+                            cpptype = "std::string";
+                            callarg = `${ callarg }.c_str()`;
+                        } else {
+                            console.log(`Warning: ${ name } - 'char* ${ argname }' will be treatead as a 'void* ${ argname }' pointer`);
+                            cpptype = "void*";
+                            callarg = `static_cast<char*>(${ callarg })`;
                         }
                     }
 
@@ -1270,7 +1273,7 @@ class LuaGenerator {
                         static const struct luaL_Reg* meta_methods;
                         static const std::map<std::string, std::function<int(lua_State*)>> getters;
                         static const std::map<std::string, std::function<int(lua_State*)>> setters;
-                        ${ processor.derives.has(fqn) ? `static std::unordered_set<const void*> derives;` : "" }
+                        ${ processor.derives.has(fqn) ? "static std::unordered_set<const void*> derives;" : "" }
                     };
                 `.replace(/^ {20}/mg, "").trim());
 

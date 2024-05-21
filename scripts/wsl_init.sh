@@ -16,7 +16,7 @@ else
     git remote add origin "$projectDir"
 fi
 
-git reset --hard HEAD && git clean -fd && git pull || exit $?
+git reset --hard HEAD && git clean -fd && git pull --force || exit $?
 
 rsync -t --delete -v -r \
     --exclude=.git \
@@ -38,3 +38,5 @@ rsync -t --delete -v -r \
     --exclude=opencv_extra \
     --exclude=out \
     "${projectDir}/" "${sources}" || exit $?
+
+export PATH="/snap/bin:$PATH"

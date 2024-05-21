@@ -1,3 +1,16 @@
+diff --git a/cmake/OpenCVDetectCXXCompiler.cmake b/cmake/OpenCVDetectCXXCompiler.cmake
+index 1743aca11..448afd46e 100644
+--- a/cmake/OpenCVDetectCXXCompiler.cmake
++++ b/cmake/OpenCVDetectCXXCompiler.cmake
+@@ -176,7 +176,7 @@ elseif(MSVC)
+     set(OpenCV_RUNTIME vc15)
+   elseif(MSVC_VERSION MATCHES "^192[0-9]$")
+     set(OpenCV_RUNTIME vc16)
+-  elseif(MSVC_VERSION MATCHES "^193[0-9]$")
++  elseif(MSVC_VERSION MATCHES "^19[34][0-9]$")
+     set(OpenCV_RUNTIME vc17)
+   else()
+     message(WARNING "OpenCV does not recognize MSVC_VERSION \"${MSVC_VERSION}\". Cannot set OpenCV_RUNTIME")
 diff --git a/cmake/templates/OpenCVConfig.cmake.in b/cmake/templates/OpenCVConfig.cmake.in
 index 2e9022a35..d4333754b 100644
 --- a/cmake/templates/OpenCVConfig.cmake.in
@@ -11,56 +24,6 @@ index 2e9022a35..d4333754b 100644
    include(${CMAKE_CURRENT_LIST_DIR}/OpenCVModules${OpenCV_MODULES_SUFFIX}.cmake)
  endif()
  
-diff --git a/modules/core/include/opencv2/core/mat.hpp b/modules/core/include/opencv2/core/mat.hpp
-index c4c6ff6d7..b42c3eacb 100644
---- a/modules/core/include/opencv2/core/mat.hpp
-+++ b/modules/core/include/opencv2/core/mat.hpp
-@@ -3602,6 +3602,12 @@ public:
-     MatExpr operator()( const Range& rowRange, const Range& colRange ) const;
-     MatExpr operator()( const Rect& roi ) const;
- 
-+    // it doesn't make sense
-+    // but until I have a workaround
-+    // for exporting std::vector<cv::Mat>
-+    // explicit operator bool() const; is needed
-+    explicit operator bool() const;
-+
-     MatExpr t() const;
-     MatExpr inv(int method = DECOMP_LU) const;
-     MatExpr mul(const MatExpr& e, double scale=1) const;
-diff --git a/modules/core/src/matrix_expressions.cpp b/modules/core/src/matrix_expressions.cpp
-index 44ac8f171..33a40fbd3 100644
---- a/modules/core/src/matrix_expressions.cpp
-+++ b/modules/core/src/matrix_expressions.cpp
-@@ -648,6 +648,11 @@ MatExpr MatExpr::operator()( const Rect& roi ) const
-     return e;
- }
- 
-+MatExpr::operator bool() const
-+{
-+    return countNonZero(*this) == ((Mat)*this).total();
-+}
-+
- Mat MatExpr::cross(const Mat& m) const
- {
-     return ((Mat)*this).cross(m);
-diff --git a/modules/gapi/include/opencv2/gapi/gmat.hpp b/modules/gapi/include/opencv2/gapi/gmat.hpp
-index 7bea97bbc..010840a65 100644
---- a/modules/gapi/include/opencv2/gapi/gmat.hpp
-+++ b/modules/gapi/include/opencv2/gapi/gmat.hpp
-@@ -82,6 +82,12 @@ public:
-     GOrigin& priv();                        // Internal use only
-     /// @private
-     const GOrigin& priv()  const;           // Internal use only
-+    /// @private
-+    // it doesn't make sense
-+    // but until I have a workaround
-+    // for exporting std::vector<cv::GMat>
-+    // explicit operator bool() const; is needed
-+    explicit operator bool() const;         // Internal use only
- 
- private:
-     std::shared_ptr<GOrigin> m_priv;
 diff --git a/modules/gapi/include/opencv2/gapi/util/variant.hpp b/modules/gapi/include/opencv2/gapi/util/variant.hpp
 index f412110de..1fea1b83e 100644
 --- a/modules/gapi/include/opencv2/gapi/util/variant.hpp
@@ -74,22 +37,6 @@ index f412110de..1fea1b83e 100644
              }
          };
  
-diff --git a/modules/gapi/src/api/gmat.cpp b/modules/gapi/src/api/gmat.cpp
-index 03f2e736b..d25f9f1cf 100644
---- a/modules/gapi/src/api/gmat.cpp
-+++ b/modules/gapi/src/api/gmat.cpp
-@@ -36,6 +36,11 @@ const cv::GOrigin& cv::GMat::priv() const
-     return *m_priv;
- }
- 
-+cv::GMat::operator bool() const
-+{
-+    return false;
-+}
-+
- static std::vector<int> checkVectorImpl(const int width, const int height, const int chan,
-                                         const int n)
- {
 diff --git a/modules/python/src2/hdr_parser.py b/modules/python/src2/hdr_parser.py
 index 710c79217..6e0062ece 100755
 --- a/modules/python/src2/hdr_parser.py

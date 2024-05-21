@@ -92,7 +92,7 @@ eachOfLimit([
                     ["git", ["clean", "-fd"]],
                     ["git", ["fetch", "origin", GIT_BRANCH]],
                     ["git", ["checkout", GIT_BRANCH]],
-                    ["git", ["pull", "origin", GIT_BRANCH]],
+                    ["git", ["pull", "origin", GIT_BRANCH, "--force"]],
                 ]);
             } else {
                 cmds.push(...[

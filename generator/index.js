@@ -109,7 +109,7 @@ const SRC_DIR = sysPath.join(PROJECT_DIR, "src");
 const opencv_SOURCE_DIR = (() => {
     const platform = os.platform() === "win32" ? (/cygwin/.test(process.env.HOME) ? "Cygwin" : "x64") : "*-GCC";
     for (const buildDir of [
-        process.env.CMAKE_CURRENT_BINARY_DIR,
+        process.env.CMAKE_BINARY_DIR,
         `out/build/${ platform }-*`,
         "build.luarocks",
 

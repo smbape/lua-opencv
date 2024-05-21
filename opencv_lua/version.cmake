@@ -37,11 +37,11 @@ macro(lua_bindings_git_describe var_name path)
   endif()
 endmacro()
 
-lua_bindings_git_describe(PROJECT_VCSVERSION "${CMAKE_CURRENT_SOURCE_DIR}")
+lua_bindings_git_describe(PROJECT_VCSVERSION "${CMAKE_CURRENT_SOURCE_DIR}/..")
 
 execute_process(
   COMMAND node -pe "require('./package').version"
-  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/.."
   OUTPUT_VARIABLE PROJECT_VERSION
   COMMAND_ECHO STDERR
   OUTPUT_STRIP_TRAILING_WHITESPACE
