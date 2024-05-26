@@ -1,26 +1,37 @@
-diff --git a/modules/datasets/src/tinyxml2/tinyxml2.h b/modules/datasets/src/tinyxml2/tinyxml2.h
-index 95ae3bcc..89a16c65 100644
---- a/modules/datasets/src/tinyxml2/tinyxml2.h
-+++ b/modules/datasets/src/tinyxml2/tinyxml2.h
-@@ -212,7 +212,7 @@ template <class T, int INIT>
- class DynArray
- {
- public:
--    DynArray< T, INIT >() {
-+    DynArray() {
-         _mem = _pool;
-         _allocated = INIT;
-         _size = 0;
-diff --git a/modules/xphoto/src/oilpainting.cpp b/modules/xphoto/src/oilpainting.cpp
-index 21e62414..daeffd38 100644
---- a/modules/xphoto/src/oilpainting.cpp
-+++ b/modules/xphoto/src/oilpainting.cpp
-@@ -58,7 +58,7 @@ private:
-     int dynRatio;
+diff --git a/modules/wechat_qrcode/src/wechat_qrcode.cpp b/modules/wechat_qrcode/src/wechat_qrcode.cpp
+index 64aad73..c6871f2 100644
+--- a/modules/wechat_qrcode/src/wechat_qrcode.cpp
++++ b/modules/wechat_qrcode/src/wechat_qrcode.cpp
+@@ -57,7 +57,7 @@ WeChatQRCode::WeChatQRCode(const String& detector_prototxt_path,
+         p->use_nn_detector_ = true;
+         CV_Assert(utils::fs::exists(detector_prototxt_path));
+         CV_Assert(utils::fs::exists(detector_caffe_model_path));
+-        p->detector_ = make_shared<SSDDetector>();
++        p->detector_ = std::make_shared<SSDDetector>();
+         auto ret = p->detector_->init(detector_prototxt_path, detector_caffe_model_path);
+         CV_Assert(ret == 0);
+     } else {
+@@ -67,7 +67,7 @@ WeChatQRCode::WeChatQRCode(const String& detector_prototxt_path,
+     // initialize super_resolution_model
+     // it could also support non model weights by cubic resizing
+     // so, we initialize it first.
+-    p->super_resolution_model_ = make_shared<SuperScale>();
++    p->super_resolution_model_ = std::make_shared<SuperScale>();
+     if (!super_resolution_prototxt_path.empty() && !super_resolution_caffe_model_path.empty()) {
+         p->use_nn_sr_ = true;
+         // initialize dnn model (caffe format)
+diff --git a/modules/wechat_qrcode/src/zxing/common/bitmatrix.hpp b/modules/wechat_qrcode/src/zxing/common/bitmatrix.hpp
+index 3cf7ec3..8c2569c 100644
+--- a/modules/wechat_qrcode/src/zxing/common/bitmatrix.hpp
++++ b/modules/wechat_qrcode/src/zxing/common/bitmatrix.hpp
+@@ -15,9 +15,9 @@
+ #include "array.hpp"
+ #include "bitarray.hpp"
+ #include "counted.hpp"
+-using namespace std;
  
+ namespace zxing {
++using namespace std;
+ 
+ class BitMatrix : public Counted {
  public:
--    ParallelOilPainting<Type>(Mat& img, Mat &d, Mat &iLuminance, int r,int k) :
-+    ParallelOilPainting(Mat& img, Mat &d, Mat &iLuminance, int r,int k) :
-         imgSrc(img),
-         dst(d),
-         imgLuminance(iLuminance),

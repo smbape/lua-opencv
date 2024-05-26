@@ -19,59 +19,59 @@ rng:fill(mat, cv.RNG.UNIFORM, 0, 256)
 
 print(string.format("Expected Sum = %i", cv.sumElems(mat)[1] * times))
 
-if type(jit) == 'table' then
-    t = cv.getTickCount()
-    for i = 0, rows - 1 do
-        for j = 0, cols - 1 do
-            for k = 0, channels - 1 do
-                for l = 1, times do
-                    bit.band(i, j, k)
-                end
-                bit.band(127, i, j, k)
-            end
-        end
-    end
-    elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
-    collectgarbage()
-    print(string.format("bit %i times took %.6f seconds", total, elapsed))
-end
+-- if type(jit) == 'table' then
+--     t = cv.getTickCount()
+--     for i = 0, rows - 1 do
+--         for j = 0, cols - 1 do
+--             for k = 0, channels - 1 do
+--                 for l = 1, times do
+--                     bit.band(i, j, k)
+--                 end
+--                 bit.band(127, i, j, k)
+--             end
+--         end
+--     end
+--     elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
+--     collectgarbage()
+--     print(string.format("bit %i times took %.6f seconds", total, elapsed))
+-- end
 
-t = cv.getTickCount()
-for i = 0, rows - 1 do
-    for j = 0, cols - 1 do
-        for k = 0, channels - 1 do
-            for l = 1, times do
-                opencv_lua.bit.band(i, j, k)
-            end
-            opencv_lua.bit.band(127, i, j, k)
-        end
-    end
-end
-elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
-collectgarbage()
-print(string.format("opencv_lua.bit %i times took %.6f seconds", total, elapsed))
+-- t = cv.getTickCount()
+-- for i = 0, rows - 1 do
+--     for j = 0, cols - 1 do
+--         for k = 0, channels - 1 do
+--             for l = 1, times do
+--                 opencv_lua.bit.band(i, j, k)
+--             end
+--             opencv_lua.bit.band(127, i, j, k)
+--         end
+--     end
+-- end
+-- elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
+-- collectgarbage()
+-- print(string.format("opencv_lua.bit %i times took %.6f seconds", total, elapsed))
 
-t = cv.getTickCount()
-local bin = cv.Mat.zeros({ 20, 20 }, cv.CV_32S)
-local mag = cv.Mat.zeros({ 20, 20 }, cv.CV_32S)
-for i = 1, 50000 do
-    local bin_cells = {
-        bin:new({ 0, 0, 10, 10 }),
-        bin:new({ 10, 0, 10, 10 }),
-        bin:new({ 0, 10, 10, 10 }),
-        bin:new({ 10, 10, 10, 10 }),
-    }
+-- t = cv.getTickCount()
+-- local bin = cv.Mat.zeros({ 20, 20 }, cv.CV_32S)
+-- local mag = cv.Mat.zeros({ 20, 20 }, cv.CV_32S)
+-- for i = 1, 50000 do
+--     local bin_cells = {
+--         bin:new({ 0, 0, 10, 10 }),
+--         bin:new({ 10, 0, 10, 10 }),
+--         bin:new({ 0, 10, 10, 10 }),
+--         bin:new({ 10, 10, 10, 10 }),
+--     }
 
-    local mag_cells = {
-        mag:new({ 0, 0, 10, 10 }),
-        mag:new({ 10, 0, 10, 10 }),
-        mag:new({ 0, 10, 10, 10 }),
-        mag:new({ 10, 10, 10, 10 }),
-    }
-end
-elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
-collectgarbage()
-print(string.format("calling new %d times on a %ix%i matrix took %.6f seconds", 50000 * 4 * 2, bin.rows, bin.cols, elapsed))
+--     local mag_cells = {
+--         mag:new({ 0, 0, 10, 10 }),
+--         mag:new({ 10, 0, 10, 10 }),
+--         mag:new({ 0, 10, 10, 10 }),
+--         mag:new({ 10, 10, 10, 10 }),
+--     }
+-- end
+-- elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
+-- collectgarbage()
+-- print(string.format("calling new %d times on a %ix%i matrix took %.6f seconds", 50000 * 4 * 2, bin.rows, bin.cols, elapsed))
 
 if cv.Range.MAX then
     t = cv.getTickCount()
@@ -95,6 +95,7 @@ if cv.Range.MAX then
     elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
     collectgarbage()
     print(string.format("slicing %d times on a %ix%i matrix took %.6f seconds", 50000 * 4 * 2, bin.rows, bin.cols, elapsed))
+    return
 end
 
 t = cv.getTickCount()

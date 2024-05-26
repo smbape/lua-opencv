@@ -37,6 +37,7 @@ rsync -t --delete -v -r \
     --exclude=node_modules \
     --exclude=opencv_extra \
     --exclude=out \
+    --exclude=samples/dnn/object_detection/models \
     "${projectDir}/" "${sources}" || exit $?
 
 export PATH="/snap/bin:$PATH"

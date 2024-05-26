@@ -19,9 +19,8 @@ const lua = sysPath.join(luarocksDir, `lua${ batchSuffix }`);
 const new_version = sysPath.join(__dirname, "new_version.lua");
 const LUAROCKS_SERVER = process.env.LUAROCKS_SERVER ? sysPath.resolve(process.env.LUAROCKS_SERVER) : sysPath.join(workspaceRoot, "out", "install", "luarocks");
 
-const scmRockSpec = sysPath.join(luarocksDir, `${ pkg.name }-scm-1.rockspec`);
-const srcRockSpec = `${ pkg.name }-${ OpenCV_VERSION }-${ distVersion }.rockspec`;
-const srcRock = `${ pkg.name }-${ OpenCV_VERSION }-${ distVersion }.src.rock`;
+const scmRockSpec =  process.env.ROCKSPEC ? sysPath.resolve(process.env.ROCKSPEC) : sysPath.join(luarocksDir, `${ pkg.name }-scm-1.rockspec`);
+let srcRockSpec;
 
 const spawnExec = (cmd, args, options, next) => {
     const {stdio} = options;
@@ -81,12 +80,14 @@ waterfall([
 
     (performed, next) => {
         spawnExec(luarocks, ["new_version", "--tag", `v${ version }`, scmRockSpec, `${ OpenCV_VERSION }-${ distVersion }`], {
-            stdio: "inherit",
+            stdio: "tee",
             cwd: workspaceRoot
         }, next);
     },
 
-    next => {
+    (_stdout, _stderr, next) => {
+        srcRockSpec = _stdout.toString().trim().slice("Wrote ".length);
+
         spawnExec(luarocks, ["pack", srcRockSpec], {
             stdio: "inherit",
             cwd: workspaceRoot
@@ -94,7 +95,7 @@ waterfall([
     },
 
     next => {
-        eachOfLimit([srcRockSpec, srcRock], 1, (filename, i, next) => {
+        eachOfLimit([srcRockSpec, srcRockSpec.slice(0, -".rockspec".length) + ".src.rock"], 1, (filename, i, next) => {
             fs.move(sysPath.join(workspaceRoot, filename), sysPath.join(LUAROCKS_SERVER, filename), {
                 overwrite: true,
             }, next);
@@ -115,27 +116,27 @@ waterfall([
     },
 
     next => {
-        spawnExec(luarocks, ["config", "lua_interpreter"], {
+        spawnExec(luarocks, ["config", "variables.LUA"], {
             stdio: "tee",
             cwd: workspaceRoot
         }, next);
     },
 
     (_stdout, _stderr, next) => {
-        const lua_interpreter = _stdout.toString().trim();
+        const LUA = _stdout.toString().trim();
 
         spawnExec(luarocks, ["config", "variables.LUA_BINDIR"], {
             stdio: "tee",
             cwd: workspaceRoot
         }, (err, __stdout, __stderr) => {
-            next(err, lua_interpreter, __stdout, __stderr);
+            next(err, LUA, __stdout, __stderr);
         });
     },
 
-    (lua_interpreter, _stdout, _stderr, next) => {
+    (LUA, _stdout, _stderr, next) => {
         const LUA_BINDIR = _stdout.toString().trim();
 
-        spawnExec(sysPath.resolve(LUA_BINDIR, lua_interpreter), ["-v"], {
+        spawnExec(LUA, ["-v"], {
             stdio: "tee",
             cwd: workspaceRoot
         }, next);
@@ -146,7 +147,7 @@ waterfall([
         const abi = target === "luajit" ? "5.1" : ver;
 
         const binary = `${ OpenCV_VERSION }${ target }${ ver }-${ distVersion }`;
-        const binaryRockSpec = `${ pkg.name }-${ binary }.rockspec`;
+        const binaryRockSpec =  srcRockSpec.slice(0, -`${ OpenCV_VERSION }-${ distVersion }.rockspec`.length) + `${ binary }.rockspec`;
         const lua_modules = sysPath.join(luarocksDir, "lua_modules");
 
         waterfall([

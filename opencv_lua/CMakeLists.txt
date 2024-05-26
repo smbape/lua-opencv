@@ -117,6 +117,12 @@ if (DEFINED OpenCV_INCLUDE_DIRS)
   target_include_directories(${target_name} PRIVATE ${OpenCV_INCLUDE_DIRS})
 endif()
 
+target_include_directories(${target_name} PUBLIC "${CMAKE_SOURCE_DIR}/src/include" "${CMAKE_SOURCE_DIR}/src" "${CMAKE_SOURCE_DIR}/generated")
+
+if (WITH_LUA_ROCKS)
+  include(../cmake/set_startup_project.cmake)
+endif()
+
 set_target_properties(${target_name} PROPERTIES
   ARCHIVE_OUTPUT_DIRECTORY "${LIBRARY_OUTPUT_PATH}"
   COMPILE_PDB_OUTPUT_DIRECTORY "${LIBRARY_OUTPUT_PATH}"
@@ -128,8 +134,6 @@ set_target_properties(${target_name} PROPERTIES
 if(MSVC AND NOT "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
   set_target_properties(${target_name} PROPERTIES LINK_FLAGS "/DEBUG")
 endif()
-
-target_include_directories(${target_name} PUBLIC "${CMAKE_SOURCE_DIR}/src/include" "${CMAKE_SOURCE_DIR}/src" "${CMAKE_SOURCE_DIR}/generated")
 
 # /Zc:__cplusplus is required to make __cplusplus accurate
 # /Zc:__cplusplus is available starting with Visual Studio 2017 version 15.7
@@ -144,20 +148,19 @@ endif()
 
 IF (WIN32 AND CMAKE_GENERATOR STREQUAL Ninja)
   target_compile_options(${target_name} PRIVATE "/Zc:__cplusplus" "/bigobj")
-  target_compile_definitions(${target_name} PRIVATE WIN32 _WINDOWS _WINDLL)
-  target_compile_definitions(${target_name} PRIVATE _UNICODE UNICODE)
+  target_compile_definitions(${target_name} PRIVATE _WINDLL)
 ENDIF()
 
 # ===============
-# OpenCV Lua
+# OpenCV Lua Test
 # ===============
 include(CTest)
 enable_testing()
 
 add_test(
   NAME test_build
-  COMMAND "${LUA_INTERPRETER}" test.lua
-  WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/test"
+  COMMAND "${LUA_INTERPRETER}" "samples/01-show-image.lua"
+  WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
 )
 
 set_tests_properties(test_build PROPERTIES DEPENDS ${target_name})
@@ -165,8 +168,8 @@ set_tests_properties(test_build PROPERTIES DEPENDS ${target_name})
 if(EXISTS "${CMAKE_INSTALL_PREFIX}/bin/lua${LUA_SUFFIX}${CMAKE_EXECUTABLE_SUFFIX}")
   add_test(
     NAME test_install
-    COMMAND "${CMAKE_INSTALL_PREFIX}/bin/lua${LUA_SUFFIX}${CMAKE_EXECUTABLE_SUFFIX}" test.lua
-    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/test"
+    COMMAND "${CMAKE_INSTALL_PREFIX}/bin/lua${LUA_SUFFIX}${CMAKE_EXECUTABLE_SUFFIX}" "samples/01-show-image.lua"
+    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
   )
 
   set_tests_properties(test_install PROPERTIES DEPENDS ${target_name})

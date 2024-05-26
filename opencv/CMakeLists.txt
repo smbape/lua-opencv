@@ -124,6 +124,15 @@ if (WITH_FREETYPE)
   find_package(HARFBUZZ REQUIRED)
 endif()
 
+if (WIN32)
+  option(ENABLE_EXPERIMENTAL_WIDE_CHAR           "Attempt to support UTF-16 (wide character) strings on Windows."           OFF)
+
+  if (ENABLE_EXPERIMENTAL_WIDE_CHAR)
+    add_definitions("-DOPENCV_INCLUDE_PORT_FILE=<enable_wide_char.h>" -DENABLE_WIDE_CHAR)
+    include_directories("${CMAKE_CURRENT_SOURCE_DIR}")
+  endif()
+endif()
+
 add_subdirectory("${opencv_SOURCE_DIR}" "${opencv_BINARY_DIR}")
 
 set(opencv_SOURCE_DIR "${opencv_SOURCE_DIR}" PARENT_SCOPE)
