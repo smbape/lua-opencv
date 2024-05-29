@@ -294,30 +294,9 @@ node scripts/test.js --Release
 
 ## Hosting you own binary rocks
 
-If the provided binray rocks are not suitable for your environnment, you can install the source rock.  
-Installing the source rock takes a long time (01h25mn on my computer).  
-Therefore, it is not practical to repeat that process again.  
-To avoid that long install time, you can host your own prebuilt binary rocks.
+Windows: (Hosting you own binary rocks on Windows)[docs/hosting-you-own-binary-rocks-Windows.md]
 
-```sh
-git clone --depth 1 --branch v0.0.4 https://github.com/smbape/lua-opencv.git
-cd lua-opencv/luarocks
-luarocks --lua-version "<Which Lua version to use>" --lua-dir "<Which Lua installation to use>" init --lua-versions "5.1,5.2,5.3,5.4"
-luarocks --lua-version "<Which Lua version to use>" config --scope project cmake_generator Ninja
-cd ..
-./luarocks/luarocks make luarocks/opencv_lua-scm-1.rockspec
-LUAROCKS_SERVER="<Where to install the prebuilt binary>" DIST_VERSION=1 node scripts/pack.js
-```
-
-Now you can install the prebuilt binary with
-
-```sh
-luarocks install --server="$LUAROCKS_SERVER" opencv_lua
-```
-
-Alternatively, If you want an installation over http, upload the contents of `LUAROCKS_SERVER` into an HTTP/S server
-
-For example, if you uploaded it into http://example.com/binary-rock/, you can install the prebuilt binary with
+Linux: (Hosting you own binary rocks on Linux)[docs/hosting-you-own-binary-rocks-Linux.md]
 
 ```sh
 luarocks install --server=http://example.com/binary-rock opencv_lua

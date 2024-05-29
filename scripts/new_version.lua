@@ -46,7 +46,7 @@ if it already exists.]], util.see_also())
       :args("?")
    cmd:argument("new_version", "New version of the rock.")
       :args("?")
-   cmd:argument("abi", "New URL of the rock.")
+   cmd:argument("abi", "Lua ABI version of the rock.")
       :args("?")
 
    cmd:option("--dir", "Output directory for the new rockspec.")

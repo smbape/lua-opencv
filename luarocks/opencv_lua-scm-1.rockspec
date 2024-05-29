@@ -27,7 +27,7 @@ description = {
       before attempting to install the source rock.
    ]],
    homepage = "https://github.com/smbape/lua-opencv",
-   issues_url = "https://github.com/smbape/lua-opencv/issues",
+   issues_url = "git+https://github.com/smbape/lua-opencv.git",
    license = "MIT",
    labels = { "opencv" },
 }

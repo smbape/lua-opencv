@@ -120,7 +120,11 @@ option(BUILD_opencv_objc_bindings_generator "The Objective-C bindings" OFF)
 option(BUILD_opencv_python_bindings_generator "The Python bindings" ON)
 
 if (WITH_FREETYPE)
-  find_package(FREETYPE REQUIRED)
+  if (WIN32)
+    find_package(FREETYPE REQUIRED)
+  else()
+    find_package(Freetype REQUIRED)
+  endif()
   find_package(HARFBUZZ REQUIRED)
 endif()
 

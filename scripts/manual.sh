@@ -15,7 +15,7 @@ node ../${ESLINT_CONFIG_PROJECT}/node_modules/eslint/bin/eslint.js --config=../$
 # ================================
 # generate doctoc
 # ================================
-node node_modules/doctoc/doctoc.js README.md
+node node_modules/doctoc/doctoc.js *.md docs/*.md
 
 
 # ================================

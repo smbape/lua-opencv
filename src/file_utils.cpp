@@ -1,29 +1,64 @@
 #include <file_utils.hpp>
 
+#ifdef _MSC_VER
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+
+#ifndef STRICT
+#define STRICT
+#endif
+
+#include <windows.h>
+#endif
+
 namespace fs = std::filesystem;
+
+#ifdef _MSC_VER
+#define DOT L"."
+#define DOTDOT L".."
+#define QUESTION_MARK L"?"
+#define STAR L"*"
+#define SLASH L"/"
+#define BACK_SLASH L"\\"
+#else
+#define DOT "."
+#define DOTDOT ".."
+#define QUESTION_MARK "?"
+#define STAR "*"
+#define SLASH "/"
+#define BACK_SLASH "\\"
+#endif
 
 namespace {
 	using namespace fs_utils;
 
-	inline std::vector<std::string> split(const std::string& s, const std::vector<std::string>& delimiters) {
+	template <typename string_type>
+	bool null_or_empty(const string_type* s) {
+		return s == nullptr || *s == 0;
+	}
+
+	template <typename string_type>
+	void split(const string_type& s, const std::vector<string_type>& delimiters, std::vector<string_type>& res) {
+		res.clear();
+
 		size_t pos_start = 0;
 		size_t pos_end, pos;
-		std::string token;
-		std::vector<std::string> res;
+		string_type token;
 
-		std::string delimiter;
+		string_type delimiter;
 		while (true) {
-			pos_end = std::string::npos;
+			pos_end = string_type::npos;
 
 			for (const auto& delim : delimiters) {
 				pos = s.find(delim, pos_start);
-				if (pos != std::string::npos && (pos_end == std::string::npos || pos < pos_end)) {
+				if (pos != string_type::npos && (pos_end == string_type::npos || pos < pos_end)) {
 					pos_end = pos;
 					delimiter = delim;
 				}
 			}
 
-			if (pos_end == std::string::npos) {
+			if (pos_end == string_type::npos) {
 				break;
 			}
 
@@ -33,10 +68,10 @@ namespace {
 		}
 
 		res.push_back(s.substr(pos_start));
-		return res;
 	}
 
-	bool isMatch(const std::string& s, const std::string& p) {
+	template <typename string_type>
+	bool isMatch(const string_type& s, const string_type& p) {
 		const auto slen = s.length();
 		const auto plen = p.length();
 		int scur = 0;
@@ -72,16 +107,16 @@ namespace {
 		return pcur == plen;
 	}
 
-	std::string normalize_path(const std::string& path) {
-		auto parts = split(path, { "/", "\\" });
+	fs::path normalize_path(const fs::path& path) {
+		std::vector<fs::path::string_type> parts; split(path.native(), { SLASH, BACK_SLASH }, parts);
 
 		int end = 0;
 		for (const auto& part : parts) {
-			if (part == "." || part.empty()) {
+			if (part == DOT || part.empty()) {
 				continue;
 			}
 
-			if (part == "..") {
+			if (part == DOTDOT) {
 				end = std::max(0, end - 1);
 			}
 			else {
@@ -98,13 +133,48 @@ namespace {
 			normalized /= parts[i];
 		}
 
-		return normalized.string();
+		return normalized;
 	}
 
+#ifdef _MSC_VER
+	/**
+	 * Maps a UTF-16 (wide character) string to a new character string. The new character string is not necessarily from a multibyte character set.
+	 *
+	 * @param  codePage Code page to use in performing the conversion.
+	 * @param  c_wstr   Pointer to the Unicode string to convert.
+	 * @param  length   Size, in characters, of the string indicated by c_wstr parameter.
+	 * @param  str      Pointer to a buffer that receives the converted string.
+	 * @return          The number of bytes written to the buffer pointed to by c_str.
+	 * @see             https://learn.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-widechartomultibyte
+	 */
+	inline int wcs_to_mbs(UINT codePage, const fs::path::value_type* c_wstr, size_t length, std::string& str) {
+		if (null_or_empty(c_wstr)) {
+			str.clear();
+			return 0;
+		}
+
+		int size = WideCharToMultiByte(codePage, 0, c_wstr, length, nullptr, 0, nullptr, nullptr);
+		str.assign(size, 0);
+		return WideCharToMultiByte(codePage, 0, c_wstr, length, &str[0], size + 1, nullptr, nullptr);
+	}
+
+	inline int wcs_to_utf8(const fs::path::value_type* c_wstr, size_t length, std::string& str) {
+		return wcs_to_mbs(CP_UTF8, c_wstr, length, str);
+	}
+#endif
+
+	inline void _addMatch(std::vector<std::string>& matches, const fs::path::string_type& match) {
+#ifdef _MSC_VER
+		std::string str; wcs_to_utf8(match.c_str(), match.length(), str);
+		matches.push_back(str);
+#else
+		matches.push_back(match);
+#endif
+	}
 
 	void _findFiles(
 		std::vector<std::string>& matches,
-		const std::vector<std::string>& parts,
+		const std::vector<fs::path::string_type>& parts,
 		const fs::path& root_path,
 		FindFilesKind flags,
 		bool relative,
@@ -113,6 +183,8 @@ namespace {
 		if (!static_cast<bool>(flags & FindFilesKind::FLTA_FILESFOLDERS)) {
 			return;
 		}
+
+		using string_type = fs::path::string_type;
 
 		const auto last_part = parts.size() - 1;
 		bool found = false;
@@ -125,7 +197,7 @@ namespace {
 
 			if (
 				(i != last_part || (flags & FindFilesKind::FLTA_FOLDERS) == FindFilesKind::FLTA_FOLDERS) &&
-				part.find("?") == std::string::npos && part.find("*") == std::string::npos
+				part.find(QUESTION_MARK) == string_type::npos && part.find(STAR) == string_type::npos
 				) {
 				dir = dir / part;
 				found = fs::exists(dir);
@@ -136,7 +208,7 @@ namespace {
 			}
 
 			for (auto const& dir_entry : fs::directory_iterator{ dir }) {
-				auto filename = dir_entry.path().filename().string();
+				const auto& filename = dir_entry.path().filename().native();
 				if (!isMatch(filename, part)) {
 					continue;
 				}
@@ -153,7 +225,7 @@ namespace {
 					}
 
 					if (is_valid) {
-						matches.push_back(relative ? relpath.string() : filepath.string());
+						_addMatch(matches, relative ? relpath.native() : filepath.native());
 					}
 
 					continue;
@@ -165,7 +237,7 @@ namespace {
 				for (const auto& match : next_matches) {
 					filepath = fs::path(match);
 					relpath = filepath.lexically_relative(root_path);
-					matches.push_back(relative ? relpath.string() : filepath.string());
+					_addMatch(matches, relative ? relpath.native() : filepath.native());
 				}
 			}
 
@@ -187,18 +259,18 @@ namespace {
 		}
 
 		if (is_valid) {
-			matches.push_back(relative ? relpath.string() : filepath.string());
+			_addMatch(matches, relative ? relpath.native() : filepath.native());
 		}
 	}
 
 	void _findFiles(
 		std::vector<std::string>& matches,
-		const std::string& path,
+		const fs::path& path,
 		const fs::path& root_path,
 		FindFilesKind flags,
 		bool relative
 	) {
-		const auto& parts = split(path, { "/", "\\" });
+		std::vector<fs::path::string_type> parts; split(path.native(), { SLASH, BACK_SLASH }, parts);
 		_findFiles(matches, parts, root_path, flags, relative);
 	}
 }
@@ -252,7 +324,7 @@ namespace fs_utils {
 				}
 				spath /= path;
 
-				_findFiles(matches, normalize_path(spath.string()), root_path, FindFilesKind::FLTA_FILESFOLDERS, false);
+				_findFiles(matches, normalize_path(spath), root_path, FindFilesKind::FLTA_FILESFOLDERS, false);
 				if (!matches.empty()) {
 					return matches[0];
 				}

@@ -1,6 +1,6 @@
 #pragma once
 
-#if defined(ENABLE_WIDE_CHAR) && defined(_WIN32)
+#if defined(ENABLE_WIDE_CHAR) && defined(_MSC_VER)
 
 #ifndef NOMINMAX
 #define NOMINMAX
@@ -39,9 +39,8 @@ namespace anonymous {
 		}
 
 		int size = MultiByteToWideChar(codePage, 0, c_str, length, nullptr, 0);
-		wstr.assign(size + 1, 0);
-		MultiByteToWideChar(codePage, 0, c_str, length, &wstr[0], size + 1);
-		return size;
+		wstr.assign(size, 0);
+		return MultiByteToWideChar(codePage, 0, c_str, length, &wstr[0], size + 1);
 	}
 
 	/**
@@ -65,6 +64,7 @@ namespace anonymous {
 	 * @param  length   Size, in characters, of the string indicated by c_wstr parameter.
 	 * @param  str      Pointer to a buffer that receives the converted string.
 	 * @return          The number of bytes written to the buffer pointed to by c_str.
+	 * @see             https://learn.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-widechartomultibyte
 	 */
 	inline int wcs_to_mbs(UINT codePage, const WCHAR* c_wstr, size_t length, std::string& str) {
 		if (null_or_empty(c_wstr)) {
@@ -73,9 +73,8 @@ namespace anonymous {
 		}
 
 		int size = WideCharToMultiByte(codePage, 0, c_wstr, length, nullptr, 0, nullptr, nullptr);
-		str.assign(size + 1, 0);
-		WideCharToMultiByte(codePage, 0, c_wstr, length, &str[0], size, nullptr, nullptr);
-		return size;
+		str.assign(size, 0);
+		return WideCharToMultiByte(codePage, 0, c_wstr, length, &str[0], size + 1, nullptr, nullptr);
 	}
 
 	/**
@@ -85,6 +84,7 @@ namespace anonymous {
 	 * @param  wstr     Pointer to the Unicode string to convert.
 	 * @param  str      Pointer to a buffer that receives the converted string.
 	 * @return          The number of bytes written to the buffer pointed to by str.
+	 * @see             https://learn.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-widechartomultibyte
 	 */
 	inline int wcs_to_mbs(UINT codePage, const std::wstring& wstr, std::string& str) {
 		return wcs_to_mbs(codePage, wstr.c_str(), wstr.length(), str);

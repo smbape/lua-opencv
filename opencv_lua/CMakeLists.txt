@@ -184,6 +184,7 @@ include(../cmake/vcpkg_regex_replace_string.cmake)
 
 file(GLOB_RECURSE files_to_change
   ${CMAKE_RELATIVE_SOURCE_DIR}README.md
+  ${CMAKE_RELATIVE_SOURCE_DIR}docs/hosting-you-own-binary-rocks-*
   ${CMAKE_RELATIVE_SOURCE_DIR}generator/index.js
   ${CMAKE_RELATIVE_SOURCE_DIR}luarocks/${target_name}-scm-1.rockspec
   ${CMAKE_RELATIVE_SOURCE_DIR}samples/*.lua
