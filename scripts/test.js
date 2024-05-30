@@ -17,6 +17,8 @@ const lua_interpreter = spawnSync(luarcoks, ["config", "lua_interpreter"]).stdou
 const LUA_BINDIR = spawnSync(luarcoks, ["config", "variables.LUA_BINDIR"]).stdout.toString().trim();
 const LUAROCKS_SYSCONFDIR = spawnSync(luarcoks, ["config", "sysconfdir"]).stdout.toString().trim();
 const LUA_BINDIR_DEBUG = LUA_BINDIR.replace("Release", "Debug");
+const ABIVER = spawnSync(luarcoks, ["config", "lua_version"]).stdout.toString().trim();
+const LUA_MODULES = sysPath.join(LUAROCKS_BINDIR, "lua_modules");
 
 const PROJECT_DIR = WORKSPACE_ROOT;
 const opencv_SOURCE_DIR = (() => {
@@ -40,6 +42,9 @@ const opencv_SOURCE_DIR = (() => {
     return null;
 })();
 
+const SAMPLES_PATH = sysPath.join(WORKSPACE_ROOT, "samples");
+const PYTHON_VENV_PATH = sysPath.join(SAMPLES_PATH, ".venv");
+const PYTHON = sysPath.join(PYTHON_VENV_PATH, os.platform() === "win32" ? "Scripts" : "bin", `python${ exeSuffix }`);
 const PYTHONPATH = sysPath.join(opencv_SOURCE_DIR, "samples", "dnn");
 const OPENCV_SAMPLES_DATA_PATH = sysPath.join(opencv_SOURCE_DIR, "samples", "data");
 
@@ -75,9 +80,6 @@ if (os.platform() === "win32") {
     config.Debug.env.PATH = `${ LUA_BINDIR_DEBUG };${ sysPath.join(LUAROCKS_BINDIR, "lua_modules", "bin") };${ sysPath.join(APPDATA, "luarocks", "bin") };${ PATH }`;
     config.Debug.env.LUAROCKS_SYSCONFDIR = LUAROCKS_SYSCONFDIR;
 
-    const ABIVER = spawnSync(luarcoks, ["config", "lua_version"]).stdout.toString().trim();
-    const LUA_MODULES = sysPath.join(LUAROCKS_BINDIR, "lua_modules");
-
     config.Debug.argv = [
         "-e",
         [
@@ -92,13 +94,26 @@ if (os.platform() === "win32") {
                 `${ LUA_BINDIR_DEBUG }/?.dll`,
                 `${ LUA_BINDIR_DEBUG }/loadall.dll`,
                 `${ LUA_MODULES }/lib/lua/${ ABIVER }/?.dll`,
-                `${ APPDATA }/luarocks/lib/lua/${ ABIVER }/?.dll`
+                `${ APPDATA }/luarocks/lib/lua/${ ABIVER }/?.dll`,
             ].join(";").replace(/[\\/]/g, sysPath.sep.repeat(2)) };"..package.cpath`,
         ].join(";"),
     ];
 } else if (fs.existsSync(config.Debug.exe)) {
-    const {env, exe} = config.Debug;
-    env.LUA_CPATH = `${ sysPath.resolve(exe, "../../lib/?.so") };${ spawnSync(exe, ["-e", "print(package.cpath)"]).stdout.toString().trim() }`;
+    config.Debug.argv = [
+        "-e",
+        [
+            `package.path="${ [
+                `${ LUA_MODULES }/share/lua/${ ABIVER }/?.lua`,
+                `${ LUA_MODULES }/share/lua/${ ABIVER }/?/init.lua`,
+            ].join(";").replace(/[\\/]/g, sysPath.sep.repeat(2)) };"..package.path`,
+
+            `package.cpath="${ [
+                `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lib") }/?.so`,
+                `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lib") }/loadall.so`,
+                `${ LUA_MODULES }/lib/lua/${ ABIVER }/?.so`,
+            ].join(";").replace(/[\\/]/g, sysPath.sep.repeat(2)) };"..package.cpath`,
+        ].join(";"),
+    ];
 }
 
 const run = (file, options, env, next) => {
@@ -124,7 +139,7 @@ const run = (file, options, env, next) => {
         if (sysPath.basename(file) === "object_detection.py" && options.argv.length === 0) {
             argv.push("ssd_tf", "--input", "vtest.avi");
         }
-        args.push(`python${ exeSuffix }`, argv);
+        args.push(PYTHON, argv);
     } else {
         throw new Error(`Unsupported extenstion ${ extname }`);
     }
@@ -138,8 +153,19 @@ const run = (file, options, env, next) => {
     });
 
     const child = spawn(...args);
-    child.on("error", next);
-    child.on("close", next);
+    child.on("error", err => {
+        if (next !== null) {
+            next(err);
+            next = null;
+        }
+    });
+
+    child.on("close", (code, signal) => {
+        if (next !== null) {
+            next(code, signal);
+            next = null;
+        }
+    });
 
     if (typeof options.run === "function") {
         options.run(child);
@@ -227,6 +253,10 @@ if (typeof require !== "undefined" && require.main === module) {
             }
 
             const code = err.flat(Infinity)[0];
+            if (typeof code !== "number") {
+                throw code;
+            }
+
             process.exitCode = code;
         }
     });

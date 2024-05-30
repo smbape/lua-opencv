@@ -26,15 +26,10 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-If the provided binray rocks are not suitable for your environnment, you can install the source rock.  
-Installing the source rock takes a long time (01h25mn on my computer old computer, 20mn on the new one).  
-Therefore, it is not practical to repeat that process again.  
-To avoid that long install time, you can host your own prebuilt binary rocks on a private server.
-
-Here we will build a custom opencv with the folling modification:
+Here we will build a custom opencv with the folling modifications:
   - Add the contrib modules
   - Add the freetype module.
-  - Attempt to support UTF-16 (wide character) strings on Windows.
+  - Enable experimental support of UTF-16 (wide character) strings on Windows.
 
 The procedure has been tested on Windows 11.
 
@@ -130,14 +125,14 @@ sed -e 's/package = "opencv_lua"/package = "opencv_lua-contrib-custom"/' -i open
 #### Add our custom build variable
 
 ```sh
-sed -e 's/LUA_INCDIR = "$(LUA_INCDIR)",/LUA_INCDIR = "\$(LUA_INCDIR)",\n      BUILD_contrib = "ON",\n      CMAKE_TOOLCHAIN_FILE = "C:\\\\vcpkg\\\\scripts\\\\buildsystems\\\\vcpkg.cmake",\n      ENABLE_EXPERIMENTAL_WIDE_CHAR = "ON",\n      WITH_FREETYPE = "ON",/' -i opencv_lua-contrib-custom-scm-1.rockspec
+sed -e 's/LUA_INCDIR = "$(LUA_INCDIR)",/LUA_INCDIR = "\$(LUA_INCDIR)",\n      BUILD_contrib = "ON",\n      CMAKE_TOOLCHAIN_FILE = "C:/vcpkg/scripts/buildsystems/vcpkg.cmake",\n      ENABLE_EXPERIMENTAL_WIDE_CHAR = "ON",\n      WITH_FREETYPE = "ON",/' -i opencv_lua-contrib-custom-scm-1.rockspec
 ```
 
 The command above adds the following variables
 
 ```lua
       BUILD_contrib = "ON",
-      CMAKE_TOOLCHAIN_FILE = "C:\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake",
+      CMAKE_TOOLCHAIN_FILE = "C:/vcpkg/scripts/buildsystems/vcpkg.cmake",
       ENABLE_EXPERIMENTAL_WIDE_CHAR = "ON",
       WITH_FREETYPE = "ON",
 ```
@@ -183,7 +178,7 @@ git clone --depth 1 --branch 4.9.0 https://github.com/opencv/opencv_extra.git "D
 mkdir "D:\opencv-lua-custom\test"
 cd /d "D:\opencv-lua-custom\test"
 luarocks --lua-version "5.1" --lua-dir "D:\development\git\lua-opencv\out\install\x64-Release" init --lua-versions "5.1,5.2,5.3,5.4"
-luarocks install "--server=D:\opencv-lua-custom\server" opencv_lua-contrib-custom --force
+luarocks install "--server=D:\opencv-lua-custom\server" opencv_lua-contrib-custom
 ```
 
 Replace the content of lua.bat with the following content

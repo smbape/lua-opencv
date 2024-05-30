@@ -119,6 +119,10 @@ option(BUILD_opencv_js_bindings_generator "The JavaScript(JS) bindings" OFF)
 option(BUILD_opencv_objc_bindings_generator "The Objective-C bindings" OFF)
 option(BUILD_opencv_python_bindings_generator "The Python bindings" ON)
 
+if (UNIX AND (NOT APPLE))
+  set(WITH_QT "5" CACHE STRING "Build with Qt Backend support")
+endif()
+
 if (WITH_FREETYPE)
   if (WIN32)
     find_package(FREETYPE REQUIRED)

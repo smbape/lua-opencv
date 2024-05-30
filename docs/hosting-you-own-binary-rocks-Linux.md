@@ -27,12 +27,7 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-If the provided binray rocks are not suitable for your environnment, you can install the source rock.  
-Installing the source rock takes a long time (01h25mn on my computer old computer, 20mn on the new one).  
-Therefore, it is not practical to repeat that process again.  
-To avoid that long install time, you can host your own prebuilt binary rocks on a private server.
-
-Here we will build a custom opencv with the folling modification:
+Here we will build a custom opencv with the folling modifications:
   - Add the contrib modules
   - Add the freetype module.
 
@@ -42,8 +37,8 @@ The procedure has been tested on [Windows WSL](https://learn.microsoft.com/en-us
 
   - Install [LuaRocks](https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Unix)
   - Install [NodeJS](https://nodejs.org/en/download/current)
-  - Install needed packages `sudo snap install cmake --classic && sudo apt -y install build-essential git python3-pip python3-venv python-is-python3 ninja-build unzip zip libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-dev libreadline-dev`
-  - For faster build time, you can use [Ninja](https://ninja-build.org/) `luarocks config --scope project cmake_generator Ninja`
+  - Install needed packages `sudo snap install cmake --classic && sudo apt -y install build-essential git python3-pip python3-venv python-is-python3 ninja-build unzip zip libgtk2.0-dev qtbase5-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-dev libreadline-dev`
+  - For faster build time, I highly recommend you to use [Ninja](https://ninja-build.org/) `luarocks config --scope project cmake_generator Ninja`
 
 ## Prerequisites
 
@@ -171,7 +166,7 @@ git clone --depth 1 --branch 4.9.0 https://github.com/opencv/opencv_extra.git "$
 mkdir "$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/test" && \
 cd "$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/test" && \
 luarocks --lua-version "5.1" --lua-dir "$(dirname "$(dirname "$(command -v luajit)")")" init --lua-versions "5.1,5.2,5.3,5.4" && \
-luarocks install --server="$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/server" opencv_lua-contrib-custom --force
+luarocks install --server="$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/server" opencv_lua-contrib-custom
 ```
 
 ### Create a file with an UTF-16 name

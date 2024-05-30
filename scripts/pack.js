@@ -19,7 +19,7 @@ const lua = sysPath.join(luarocksDir, `lua${ batchSuffix }`);
 const new_version = sysPath.join(__dirname, "new_version.lua");
 const LUAROCKS_SERVER = process.env.LUAROCKS_SERVER ? sysPath.resolve(process.env.LUAROCKS_SERVER) : sysPath.join(workspaceRoot, "out", "install", "luarocks");
 
-const scmRockSpec =  process.env.ROCKSPEC ? sysPath.resolve(process.env.ROCKSPEC) : sysPath.join(luarocksDir, `${ pkg.name }-scm-1.rockspec`);
+const scmRockSpec = process.env.ROCKSPEC ? sysPath.resolve(process.env.ROCKSPEC) : sysPath.join(luarocksDir, `${ pkg.name }-scm-1.rockspec`);
 let srcRockSpec;
 
 const spawnExec = (cmd, args, options, next) => {
@@ -95,7 +95,7 @@ waterfall([
     },
 
     next => {
-        eachOfLimit([srcRockSpec, srcRockSpec.slice(0, -".rockspec".length) + ".src.rock"], 1, (filename, i, next) => {
+        eachOfLimit([srcRockSpec, `${ srcRockSpec.slice(0, -".rockspec".length) }.src.rock`], 1, (filename, i, next) => {
             fs.move(sysPath.join(workspaceRoot, filename), sysPath.join(LUAROCKS_SERVER, filename), {
                 overwrite: true,
             }, next);
@@ -147,7 +147,7 @@ waterfall([
         const abi = target === "luajit" ? "5.1" : ver;
 
         const binary = `${ OpenCV_VERSION }${ target }${ ver }-${ distVersion }`;
-        const binaryRockSpec =  srcRockSpec.slice(0, -`${ OpenCV_VERSION }-${ distVersion }.rockspec`.length) + `${ binary }.rockspec`;
+        const binaryRockSpec = `${ srcRockSpec.slice(0, -`${ OpenCV_VERSION }-${ distVersion }.rockspec`.length) }${ binary }.rockspec`;
         const lua_modules = sysPath.join(luarocksDir, "lua_modules");
 
         waterfall([

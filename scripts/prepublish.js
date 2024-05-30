@@ -4,7 +4,7 @@ const fs = require("fs-extra");
 const os = require("node:os");
 const eachOfLimit = require("async/eachOfLimit");
 const waterfall = require("async/waterfall");
-const prepublish = sysPath.resolve(__dirname, "..", "out", "prepublish");
+const prepublishRoot = sysPath.resolve(__dirname, "..", "out", "prepublish");
 const wrapperSuffix = os.platform() === "win32" ? ".bat" : "";
 const shellSuffix = os.platform() === "win32" ? ".bat" : ".sh";
 const pack = process.argv.includes("--pack");
@@ -61,15 +61,11 @@ const spawnExec = (cmd, args, options, next) => {
     }
 };
 
-eachOfLimit([
-    ["luajit", "luajit-2.1"],
-    ["lua", "5.4"],
-    ["lua", "5.3"],
-    ["lua", "5.2"],
-    ["lua", "5.1"],
-], 1, ([target, version], i, next) => {
-    const workspaceRoot = sysPath.join(prepublish, version);
-    const projectRoot = sysPath.join(workspaceRoot, "lua-opencv");
+const prepublish = (target, version, contrib, next) => {
+    const workspaceRoot = sysPath.join(prepublishRoot, version);
+    const projectRoot = sysPath.join(workspaceRoot, contrib ? "lua-opencv-contrib" : "lua-opencv");
+    const originalRockSpec = sysPath.join(projectRoot, "luarocks", "opencv_lua-scm-1.rockspec");
+    const scmRockSpec = contrib ? sysPath.join(projectRoot, "opencv_lua-contrib-scm-1.rockspec") : originalRockSpec;
 
     waterfall([
         next => {
@@ -83,10 +79,10 @@ eachOfLimit([
         },
 
         (exists, next) => {
-            const cmds = [];
+            const tasks = [];
 
             if (exists) {
-                cmds.push(...[
+                tasks.push(...[
                     ["git", ["remote", "set-url", "origin", sysPath.resolve(__dirname, "..")]],
                     ["git", ["reset", "--hard", "HEAD"]],
                     ["git", ["clean", "-fd"]],
@@ -95,7 +91,7 @@ eachOfLimit([
                     ["git", ["pull", "origin", GIT_BRANCH, "--force"]],
                 ]);
             } else {
-                cmds.push(...[
+                tasks.push(...[
                     ["git", ["init", "-b", GIT_BRANCH]],
                     ["git", ["remote", "add", "origin", sysPath.resolve(__dirname, "..")]],
                     ["git", ["pull", "origin", GIT_BRANCH]],
@@ -103,7 +99,25 @@ eachOfLimit([
                 ]);
             }
 
-            eachOfLimit(cmds, 1, ([cmd, args], i2, next) => {
+            if (contrib) {
+                tasks.push(async next => {
+                    await fs.copy(originalRockSpec, scmRockSpec);
+                    const buffer = await fs.readFile(scmRockSpec);
+                    await fs.writeFile(scmRockSpec, buffer.toString()
+                        .replaceAll("opencv_lua", "opencv_lua-contrib")
+                        .replace("LUA_INCDIR = \"$(LUA_INCDIR)\",", "LUA_INCDIR = \"$(LUA_INCDIR)\",\n      BUILD_contrib = \"ON\","));
+                    next();
+                });
+            }
+
+            eachOfLimit(tasks, 1, (job, icmd, next) => {
+                if (typeof job === "function") {
+                    job(next);
+                    return;
+                }
+
+                const [cmd, args] = job;
+
                 spawnExec(cmd, args, {
                     stdio: "inherit",
                     cwd: projectRoot,
@@ -113,32 +127,46 @@ eachOfLimit([
 
         next => {
             const luarocks = sysPath.join("luarocks", `luarocks${ wrapperSuffix }`);
-            const cmds = [
+
+            const tasks = [
                 [sysPath.join(projectRoot, `build${ shellSuffix }`), ["--target", target, `-DLua_VERSION=${ version }`, "--install"]],
                 [sysPath.join(projectRoot, `build${ shellSuffix }`), ["--target", "luarocks"]],
-                [luarocks, ["make", sysPath.join("luarocks", "opencv_lua-scm-1.rockspec")]],
+                [luarocks, ["make", scmRockSpec]],
             ];
 
             if (pack) {
-                cmds.push(["node", [sysPath.join("scripts", "pack.js")]]);
+                tasks.push(["node", [sysPath.join("scripts", "pack.js")]]);
             }
 
             if (os.platform() !== "win32") {
-                cmds.splice(2, 0, ...[
+                tasks.splice(2, 0, ...[
                     [luarocks, ["config", "--scope", "project", "cmake_generator", "Ninja"]],
                     [luarocks, ["config", "--scope", "project", "cmake_build_args", "--", `-j${ Math.max(1, os.cpus().length - 2) }`]],
                 ]);
             }
 
-            eachOfLimit(cmds, 1, ([cmd, args], i2, next) => {
+            eachOfLimit(tasks, 1, ([cmd, args], icmd, next) => {
                 spawnExec(cmd, args, {
                     stdio: "inherit",
                     cwd: projectRoot,
                     env: Object.assign({
-                        LUAROCKS_SERVER: sysPath.join(prepublish, "server")
+                        ROCKSPEC: scmRockSpec,
+                        LUAROCKS_SERVER: sysPath.join(prepublishRoot, "server"),
                     }, process.env)
                 }, next);
             }, next);
         },
     ], next);
+};
+
+eachOfLimit([
+    ["luajit", "luajit-2.1"],
+    ["lua", "5.4"],
+    ["lua", "5.3"],
+    ["lua", "5.2"],
+    ["lua", "5.1"],
+], 1, ([target, version], i, next) => {
+    eachOfLimit([false, true], 1, (contrib, icontrib, next) => {
+        prepublish(target, version, contrib, next);
+    }, next);
 });

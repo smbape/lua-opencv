@@ -1,3 +1,16 @@
+diff --git a/modules/cvv/src/stfl/stringutils.cpp b/modules/cvv/src/stfl/stringutils.cpp
+index 71d07d9..f98aa06 100644
+--- a/modules/cvv/src/stfl/stringutils.cpp
++++ b/modules/cvv/src/stfl/stringutils.cpp
+@@ -248,7 +248,7 @@ void unescapeCommas(QString &str)
+ 
+ QString shortenString(QString &str, int maxLength, bool cutEnd, bool fill)
+ {
+-    const auto horizontalEllipsis = u8"\xE2\x80\xA6"; // u8"…"
++    const auto horizontalEllipsis =  reinterpret_cast<const char*>(u8"\xE2\x80\xA6"); // u8"…"
+     if (str.size() > maxLength)
+     {
+         if (cutEnd)
 diff --git a/modules/wechat_qrcode/src/wechat_qrcode.cpp b/modules/wechat_qrcode/src/wechat_qrcode.cpp
 index 64aad73..c6871f2 100644
 --- a/modules/wechat_qrcode/src/wechat_qrcode.cpp

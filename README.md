@@ -63,7 +63,7 @@ Prebuilt binaries are available for [LuaJIT 2.1](https://luajit.org/) and [Lua 5
 
   - Install [LuaRocks](https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Unix)
   - Install [NodeJS](https://nodejs.org/en/download/current)
-  - Install needed packages `sudo snap install cmake --classic && sudo apt -y install build-essential git python3-pip python3-venv python-is-python3 ninja-build unzip zip libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-dev libreadline-dev`
+  - Install needed packages `sudo snap install cmake --classic && sudo apt -y install build-essential git python3-pip python3-venv python-is-python3 ninja-build unzip zip libgtk2.0-dev qtbase5-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-dev libreadline-dev`
   - For faster build time, you can use [Ninja](https://ninja-build.org/) `luarocks config --scope project cmake_generator Ninja`
 
 ### How to install
@@ -293,6 +293,11 @@ node scripts/test.js --Release
 ```
 
 ## Hosting you own binary rocks
+
+If the provided binray rocks are not suitable for your environnment, you can install the source rock.  
+Installing the source rock takes a long time (01h25mn on my old computer, 30mn on the new one).  
+Therefore, it is not practical to repeat that process again.  
+To avoid that long install time, you can host your own prebuilt binary rocks on a private server.
 
 Windows: (Hosting you own binary rocks on Windows)[docs/hosting-you-own-binary-rocks-Windows.md]
 
