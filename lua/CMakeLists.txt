@@ -237,8 +237,6 @@ add_library(liblua::liblua ALIAS liblua)
 target_include_directories(liblua PRIVATE ${LUA_INCLUDE_DIRS})
 
 IF (WIN32 AND (CMAKE_GENERATOR STREQUAL Ninja))
-  target_compile_definitions(liblua PRIVATE WIN32)
-  target_compile_definitions(liblua PRIVATE _WINDOWS)
   target_compile_definitions(liblua PRIVATE _WINDLL)
 ENDIF()
 
@@ -278,7 +276,8 @@ endif()
 
 add_executable(lua "${lua_SRC}/lua.c")
 if (MSVC)
-  target_sources(lua PRIVATE lua.manifest)
+  target_sources(lua PRIVATE lua_exe.rc lua.manifest)
+  target_compile_definitions(lua PRIVATE "-DLua_VERSION=${Lua_VERSION}" "-DMAJVER=${MAJVER}" "-DMINVER=${MINVER}" "-DRELVER=${RELVER}")
 endif()
 
 # Always generate debug files
@@ -312,7 +311,8 @@ endif()
 
 add_executable(luac ${LUAC_SRC} ${LUA_SRC_CORE} ${LUA_SRC_LIB})
 if (MSVC)
-  target_sources(luac PRIVATE luac.manifest)
+  target_sources(luac PRIVATE lua_exe.rc lua.manifest)
+  target_compile_definitions(luac PRIVATE "-DLua_VERSION=${Lua_VERSION}" "-DMAJVER=${MAJVER}" "-DMINVER=${MINVER}" "-DRELVER=${RELVER}")
 endif()
 
 # Always generate debug files

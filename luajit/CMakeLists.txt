@@ -257,8 +257,6 @@ target_include_directories(libluajit PRIVATE ${LUA_INCLUDE_DIRS})
 add_dependencies(libluajit ${gen_lj_targets})
 
 IF (WIN32 AND (CMAKE_GENERATOR STREQUAL Ninja))
-  target_compile_definitions(libluajit PRIVATE WIN32)
-  target_compile_definitions(libluajit PRIVATE _WINDOWS)
   target_compile_definitions(libluajit PRIVATE _WINDLL)
 ENDIF()
 
@@ -327,7 +325,9 @@ add_dependencies(amalg ${gen_lj_targets})
 # ================================
 add_executable(luajit "${luajit_SRC}/luajit.c")
 if (MSVC)
-  target_sources(luajit PRIVATE luajit.manifest)
+  target_compile_definitions(libluajit PRIVATE _WINDLL)
+  target_sources(luajit PRIVATE luajit_exe.rc luajit.manifest)
+  target_compile_definitions(luajit PRIVATE "-DLuajit_VERSION=${Luajit_VERSION}" "-DMAJVER=${MAJVER}" "-DMINVER=${MINVER}" "-DRELVER=${RELVER}")
 endif()
 
 # Always generate debug files

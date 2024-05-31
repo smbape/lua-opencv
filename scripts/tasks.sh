@@ -469,8 +469,8 @@ LUAROCKS_SERVER="${sources}/../opencv-lua-custom/server" DIST_VERSION=1 ROCKSPEC
 
 function build_full() {
     build_windows && \
-    build_debug_windows && \
     build_wsl && \
+    build_debug_windows && \
     build_debug_wsl && \
     build_contrib_custom_windows && \
     build_contrib_custom_wsl
