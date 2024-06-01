@@ -29,8 +29,8 @@ npm version patch && bash -c 'source scripts/tasks.sh && force_push'
 # ================================
 bash -c 'source scripts/tasks.sh && prepublish_stash_push'
 
-bash -c 'source scripts/tasks.sh && SKIP_SET_URL= 1 build_windows' && \
-bash -c 'source scripts/tasks.sh && SKIP_SET_URL= 1 build_wsl'
+bash -c 'source scripts/tasks.sh && SKIP_SET_URL=1 build_windows' && \
+bash -c 'source scripts/tasks.sh && SKIP_SET_URL=1 build_wsl'
 
 bash -c 'source scripts/tasks.sh && prepublish_stash_pop'
 

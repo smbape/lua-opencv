@@ -129,8 +129,8 @@ const prepublish = (target, version, contrib, next) => {
             const luarocks = sysPath.join("luarocks", `luarocks${ wrapperSuffix }`);
 
             const tasks = [
-                [sysPath.join(projectRoot, `build${ shellSuffix }`), ["--target", target, `-DLua_VERSION=${ version }`, "--install"]],
-                [sysPath.join(projectRoot, `build${ shellSuffix }`), ["--target", "luarocks"]],
+                [sysPath.join(projectRoot, `build${ shellSuffix }`), [`-DLua_VERSION=${ version }`, "--target", target, "--install"]],
+                [sysPath.join(projectRoot, `build${ shellSuffix }`), [`-DLua_VERSION=${ version }`, "--target", "luarocks"]],
                 [luarocks, ["make", scmRockSpec]],
             ];
 

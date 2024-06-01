@@ -9,8 +9,6 @@ include(../cmake/FindPatch.cmake)
 
 set(LuaRocks_VERSION 3.11.0)
 
-set(LUA_DIR "$ENV{LUA_DIR}")
-
 get_filename_component(LUA_BINDIR "${LUA_INTERPRETER}" DIRECTORY)
 file(TO_NATIVE_PATH "${LUA_BINDIR}" LUA_BINDIR)
 file(TO_NATIVE_PATH "${LUA_DIR}" LUA_DIR)

@@ -176,13 +176,15 @@ const main = (options, next) => {
     options = Object.assign({
         cwd: WORKSPACE_ROOT,
         includes: [],
+        includes_ext: [".lua", ".py"],
+        excludes: [],
         argv: [],
         stdio: "inherit",
-        INCLUDED_EXT: [".lua", ".py"],
-        EXCLUDED_FILES: ["init.lua", "common.lua", "download_model.py"],
     }, options);
 
-    const { cwd, includes, INCLUDED_EXT, EXCLUDED_FILES } = options;
+    const { cwd, includes, includes_ext, excludes } = options;
+
+    excludes.push(...["init.lua", "common.lua", "download_model.py"]);
 
     explore(sysPath.join(cwd, "samples"), (path, stats, next) => {
         const file = sysPath.relative(cwd, path);
@@ -190,8 +192,8 @@ const main = (options, next) => {
         const extname = sysPath.extname(file);
 
         if (
-            !INCLUDED_EXT.includes(extname) ||
-            EXCLUDED_FILES.includes(basename) ||
+            !includes_ext.includes(extname) ||
+            excludes.some(exclude => basename.startsWith(exclude)) ||
             includes.length !== 0 && !includes.some(include => basename.startsWith(include))
         ) {
             next();
@@ -227,6 +229,7 @@ exports.main = main;
 if (typeof require !== "undefined" && require.main === module) {
     const options = {
         includes: [],
+        excludes: [],
         argv: [],
         "--": 0,
     };
@@ -234,6 +237,8 @@ if (typeof require !== "undefined" && require.main === module) {
     for (const arg of process.argv.slice(2)) {
         if (arg === "--") {
             options[arg]++;
+        } else if (arg[0] === "!") {
+            options.excludes.push(arg.slice(1));
         } else if (options["--"] === 1 && arg[0] !== "-") {
             options.includes.push(arg);
         } else if (options["--"] > 1 || options["--"] !== 0 && arg[0] === "-") {

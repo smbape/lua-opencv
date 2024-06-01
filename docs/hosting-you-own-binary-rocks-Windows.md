@@ -55,8 +55,8 @@ If not, you can install LuaJIT and LuaRocks by executing the following commands
 mkdir D:\development\git
 git clone --depth 1 --branch v0.0.4 https://github.com/smbape/lua-opencv.git D:\development\git\lua-opencv
 cd /d D:\development\git\lua-opencv
-build.bat --target luajit "-DLua_VERSION=luajit-2.1" --install
-build.bat --target luarocks
+build.bat "-DLua_VERSION=luajit-2.1" --target luajit --install
+build.bat "-DLua_VERSION=luajit-2.1" --target luarocks
 ```
 
 ## Build System Environment
@@ -65,7 +65,7 @@ We will name our LuaRocks pakcage **opencv_lua-contrib-custom** in order to avoi
 
 In this example, we will use the following directories: 
   - The **Lua binary directory** is _D:\development\git\lua-opencv\out\install\x64-Release\bin_
-  - The **LuaRocks binary directory** is _D:\development\git\lua-opencv\out\build\x64-Release\luarocks\luarocks-prefix\src\luarocks_
+  - The **LuaRocks binary directory** is _D:\development\git\lua-opencv\out\build.luaonly\x64-Release\luarocks\luarocks-prefix\src\luarocks_
   - The **build directory** is _D:\opencv-lua-custom\build_
   - The **server directory** is _D:\opencv-lua-custom\server_
   - The **test directory** is _D:\opencv-lua-custom\test_
@@ -90,7 +90,7 @@ set PATH=D:\development\git\lua-opencv\out\install\x64-Release\bin;%PATH%
 
 Add your **LuaRocks binary directory** to the PATH environment variable
 ```cmd
-set PATH=D:\development\git\lua-opencv\out\build\x64-Release\luarocks\luarocks-prefix\src\luarocks;%PATH%
+set PATH=D:\development\git\lua-opencv\out\build.luaonly\x64-Release\luarocks\luarocks-prefix\src\luarocks;%PATH%
 ```
 
 ### Open GIT BASH in the **build directory**
@@ -125,7 +125,7 @@ sed -e 's/package = "opencv_lua"/package = "opencv_lua-contrib-custom"/' -i open
 #### Add our custom build variable
 
 ```sh
-sed -e 's/LUA_INCDIR = "$(LUA_INCDIR)",/LUA_INCDIR = "\$(LUA_INCDIR)",\n      BUILD_contrib = "ON",\n      CMAKE_TOOLCHAIN_FILE = "C:/vcpkg/scripts/buildsystems/vcpkg.cmake",\n      ENABLE_EXPERIMENTAL_WIDE_CHAR = "ON",\n      WITH_FREETYPE = "ON",/' -i opencv_lua-contrib-custom-scm-1.rockspec
+sed -e 's@LUA_INCDIR = "\$(LUA_INCDIR)",@LUA_INCDIR = "\$(LUA_INCDIR)",\n      BUILD_contrib = "ON",\n      CMAKE_TOOLCHAIN_FILE = "C:/vcpkg/scripts/buildsystems/vcpkg.cmake",\n      ENABLE_EXPERIMENTAL_WIDE_CHAR = "ON",\n      WITH_FREETYPE = "ON",@' -i opencv_lua-contrib-custom-scm-1.rockspec
 ```
 
 The command above adds the following variables
@@ -168,7 +168,7 @@ set PATH=D:\development\git\lua-opencv\out\install\x64-Release\bin;%PATH%
 
 Add your **LuaRocks binary directory** to the PATH environment variable
 ```cmd
-set PATH=D:\development\git\lua-opencv\out\build\x64-Release\luarocks\luarocks-prefix\src\luarocks;%PATH%
+set PATH=D:\development\git\lua-opencv\out\build.luaonly\x64-Release\luarocks\luarocks-prefix\src\luarocks;%PATH%
 ```
 
 ### Initialize our test project and install our custom prebuilt binary

@@ -17,7 +17,7 @@ function prepublish_stash_push() {
     for version in luajit-2.1 5.{4,3,2,1}; do
         for suffix in '' '-contrib'; do
             bash -c "cd out/prepublish/${version}/lua-opencv${suffix} && git stash push --include-untracked --all -- samples"
-            wsl -c 'source scripts/wsl_init.sh; cd out/prepublish/${version}/lua-opencv${suffix} && git stash push --include-untracked --all -- samples'
+            wsl -c 'source scripts/wsl_init.sh && cd out/prepublish/${version}/lua-opencv${suffix} && git stash push --include-untracked --all -- samples'
         done
     done
 }
@@ -26,7 +26,7 @@ function prepublish_stash_pop() {
     for version in luajit-2.1 5.{4,3,2,1}; do
         for suffix in '' '-contrib'; do
             bash -c "cd out/prepublish/${version}/lua-opencv${suffix} && git reset --hard HEAD && git stash pop"
-            wsl -c 'source scripts/wsl_init.sh; cd out/prepublish/${version}/lua-opencv${suffix} && git reset --hard HEAD && git stash pop'
+            wsl -c 'source scripts/wsl_init.sh && cd out/prepublish/${version}/lua-opencv${suffix} && git reset --hard HEAD && git stash pop'
         done
     done
 }
@@ -55,6 +55,9 @@ WORKSPACE_ROOT="out/prepublish/${version}/lua-opencv${suffix}" node scripts/test
     for arg in "$@"; do
         script="$script '$arg'"
     done
+
+    # ecluded due to camera device missing
+    script="$script '!02-video-capture-camera.lua' '!threshold_inRange.lua' '!objectDetection.lua'"
 
     for version in luajit-2.1 5.{4,3,2,1}; do
         for suffix in '' '-contrib'; do
@@ -96,8 +99,8 @@ source scripts/vcvars_restore_start.sh || exit $?
 
 cd out/test/${version}/lua-opencv${suffix} || exit $?
 
-./build.bat --target ${target} "-DLua_VERSION=${version}" --install && \
-./build.bat --target luarocks && \
+./build.bat "-DLua_VERSION=${version}" --target ${target} --install && \
+./build.bat "-DLua_VERSION=${version}" --target luarocks && \
 time ./luarocks/luarocks.bat install "--server=${projectDir}/out/prepublish/server" opencv_lua${suffix} ${binary} && \
 ./luarocks/luarocks.bat install --deps-only samples/samples-scm-1.rockspec || exit $?
 
@@ -134,13 +137,13 @@ if [ -d out/test/${version}/lua-opencv${suffix} ]; then
     git reset --hard HEAD && \
     cd "${PWD_BCK}" || exit $?
 else
-    git clone "${projectDir}" out/test/${version}/lua-opencv${suffix} || exit $?
+    git clone "file://${projectDir}" out/test/${version}/lua-opencv${suffix} || exit $?
 fi
 
 cd out/test/${version}/lua-opencv${suffix} || exit $?
 
-./build.sh --target ${target} "-DLua_VERSION=${version}" --install && \
-./build.sh --target luarocks && \
+./build.sh "-DLua_VERSION=${version}" --target ${target} --install && \
+./build.sh "-DLua_VERSION=${version}" --target luarocks && \
 time ./luarocks/luarocks install "--server=${projectDir}/out/prepublish/server" opencv_lua${suffix} ${binary} && \
 ./luarocks/luarocks install --deps-only samples/samples-scm-1.rockspec || exit $?
 
@@ -170,16 +173,16 @@ if [ -d out/test/${version}/lua-opencv${suffix} ]; then
     git remote set-url origin "file://${projectDir}" && \
     git reset --hard HEAD && \
     git clean -fd && \
-    git pull && \
+    git pull --force && \
     cd "${PWD_BCK}" || exit $?
 else
-    git clone "${projectDir}" out/test/${version}/lua-opencv${suffix} || exit $?
+    git clone "file://${projectDir}" out/test/${version}/lua-opencv${suffix} || exit $?
 fi
 
 PWD_BCK="$PWD" && \
 cd out/test/${version}/lua-opencv${suffix} && \
-./build.bat --target ${target} "-DLua_VERSION=${version}" --install && \
-./build.bat --target luarocks && \
+./build.bat "-DLua_VERSION=${version}" --target ${target} --install && \
+./build.bat "-DLua_VERSION=${version}" --target luarocks && \
 cd "${PWD_BCK}" || exit $?
 
 cd "${PWD_BCK}" || exit $?
@@ -215,16 +218,16 @@ if [ -d out/test/${version}/lua-opencv${suffix} ]; then
     git remote set-url origin "file://${projectDir}" && \
     git reset --hard HEAD && \
     git clean -fd && \
-    git pull && \
+    git pull --force && \
     cd "${PWD_BCK}" || exit $?
 else
-    git clone "${projectDir}" out/test/${version}/lua-opencv${suffix} || exit $?
+    git clone "file://${projectDir}" out/test/${version}/lua-opencv${suffix} || exit $?
 fi
 
 PWD_BCK="$PWD" && \
 cd out/test/${version}/lua-opencv${suffix} && \
-./build.sh --target ${target} "-DLua_VERSION=${version}" --install && \
-./build.sh --target luarocks && \
+./build.sh "-DLua_VERSION=${version}" --target ${target} --install && \
+./build.sh "-DLua_VERSION=${version}" --target luarocks && \
 cd "${PWD_BCK}" || exit $?
 QUOTE="'"'"'"
 DOUBLE_QUOTE='"'"'"'"'"'
@@ -348,22 +351,22 @@ find out/build/Linux-GCC-Debug/ -type f \( -name CMakeCache.txt -o -name pyopenc
 }
 
 function build_debug_windows() {
-    time ./build.bat -d --target luajit "-DLua_VERSION=luajit-2.1" --install "-DCMAKE_TOOLCHAIN_FILE:FILEPATH=C:/vcpkg/scripts/buildsystems/vcpkg.cmake" && \
-    time ./build.bat -d --install "-DBUILD_contrib:BOOL=ON" "-DWITH_FREETYPE:BOOL=ON" "-DENABLE_EXPERIMENTAL_WIDE_CHAR:BOOL=ON" "-DCMAKE_TOOLCHAIN_FILE:FILEPATH=C:/vcpkg/scripts/buildsystems/vcpkg.cmake"
+    time ./build.bat -d "-DLua_VERSION=luajit-2.1" --install --target luajit "-DCMAKE_TOOLCHAIN_FILE:FILEPATH=C:/vcpkg/scripts/buildsystems/vcpkg.cmake" && \
+    time ./build.bat -d "-DLua_VERSION=luajit-2.1" --install "-DBUILD_contrib:BOOL=ON" "-DWITH_FREETYPE:BOOL=ON" "-DENABLE_EXPERIMENTAL_WIDE_CHAR:BOOL=ON" "-DCMAKE_TOOLCHAIN_FILE:FILEPATH=C:/vcpkg/scripts/buildsystems/vcpkg.cmake"
 }
 
 function build_debug_wsl() {
     wsl -c '
 source scripts/wsl_init.sh || exit $?
-time ./build.sh -d --target luajit "-DLua_VERSION=luajit-2.1" --install && \
-time ./build.sh -d --install "-DBUILD_contrib:BOOL=ON" "-DWITH_FREETYPE:BOOL=ON"
+time ./build.sh -d "-DLua_VERSION=luajit-2.1" --install --target luajit && \
+time ./build.sh -d "-DLua_VERSION=luajit-2.1" --install "-DBUILD_contrib:BOOL=ON" "-DWITH_FREETYPE:BOOL=ON"
 '
 }
 
 function prepublish_windows() {
     time DIST_VERSION=${DIST_VERSION} node scripts/prepublish.js --pack && \
-    time ./build.bat --target luajit "-DLua_VERSION=luajit-2.1" --install && \
-    time ./build.bat --target luarocks
+    time ./build.bat "-DLua_VERSION=luajit-2.1" --target luajit --install && \
+    time ./build.bat "-DLua_VERSION=luajit-2.1" --target luarocks
 }
 
 function prepublish_wsl() {
@@ -371,8 +374,8 @@ function prepublish_wsl() {
 source scripts/wsl_init.sh || exit $?
 
 time LUAROCKS_SERVER="$projectDir/out/prepublish/server" node scripts/prepublish.js --pack && \
-time ./build.sh --target luajit "-DLua_VERSION=luajit-2.1" --install && \
-time ./build.sh --target luarocks
+time ./build.sh "-DLua_VERSION=luajit-2.1" --target luajit --install && \
+time ./build.sh "-DLua_VERSION=luajit-2.1" --target luarocks
 '
 }
 
@@ -409,7 +412,7 @@ function compile_debug_strict_wsl() {
 function build_windows() {
     set_url_windows && \
     new_version && \
-    time prepublish_windows 2>&1 | tee prepublish_win.log && \
+    time prepublish_windows && \
     new_version_rollback && \
     use_luajit_opencv_lua_modules
 }
@@ -417,22 +420,33 @@ function build_windows() {
 function build_wsl() {
     set_url_wsl && \
     new_version && \
-    time prepublish_wsl 2>&1 | tee prepublish_linux.log && \
+    time prepublish_wsl && \
     new_version_rollback
 }
 
 function build_contrib_custom_windows() {
-    local CWD="$PWD"
-    export PATH="/d/development/git/lua-opencv/out/install/x64-Release/bin:$PATH"
-    export PATH="/d/development/git/lua-opencv/out/build/x64-Release/luarocks/luarocks-prefix/src/luarocks:$PATH"
+    local projectDir="$PWD"
+    local BUILD_DIR="/d/opencv-lua-custom/build"
 
-    mkdir -p "/d/opencv-lua-custom/build" && \
-    cd "/d/opencv-lua-custom/build" && \
-    git clone /d/development/git/lua-opencv && \
-    cd lua-opencv && \
-    cp luarocks/opencv_lua-scm-1.rockspec opencv_lua-contrib-custom-scm-1.rockspec && \
+    export PATH="${projectDir}/out/install/x64-Release/bin:$PATH"
+    export PATH="${projectDir}/out/build.luaonly/x64-Release/luarocks/luarocks-prefix/src/luarocks:$PATH"
+
+    mkdir -p "${BUILD_DIR}" && \
+    cd "${BUILD_DIR}" || return $?
+
+    if [ -d lua-opencv ]; then
+        cd lua-opencv && \
+        git remote set-url origin "file://${projectDir}" && \
+        git reset --hard HEAD && \
+        git pull --force || return $?
+    else
+        git clone "file://${projectDir}" lua-opencv && \
+        cd lua-opencv || return $?
+    fi
+
+    cp -f luarocks/opencv_lua-scm-1.rockspec opencv_lua-contrib-custom-scm-1.rockspec && \
     sed -e 's/package = "opencv_lua"/package = "opencv_lua-contrib-custom"/' -i opencv_lua-contrib-custom-scm-1.rockspec && \
-    sed -e 's/LUA_INCDIR = "$(LUA_INCDIR)",/LUA_INCDIR = "\$(LUA_INCDIR)",\n      BUILD_contrib = "ON",\n      CMAKE_TOOLCHAIN_FILE = "C:/vcpkg/scripts/buildsystems/vcpkg.cmake",\n      ENABLE_EXPERIMENTAL_WIDE_CHAR = "ON",\n      WITH_FREETYPE = "ON",/' -i opencv_lua-contrib-custom-scm-1.rockspec && \
+    sed -e 's@LUA_INCDIR = "\$(LUA_INCDIR)",@LUA_INCDIR = "\$(LUA_INCDIR)",\n      BUILD_contrib = "ON",\n      CMAKE_TOOLCHAIN_FILE = "C:/vcpkg/scripts/buildsystems/vcpkg.cmake",\n      ENABLE_EXPERIMENTAL_WIDE_CHAR = "ON",\n      WITH_FREETYPE = "ON",@' -i opencv_lua-contrib-custom-scm-1.rockspec && \
     cd luarocks && \
     luarocks --lua-version "5.1" --lua-dir "$(cygpath -w "$(dirname "$(dirname "$(command -v luajit.exe)")")")" init --lua-versions "5.1,5.2,5.3,5.4" && \
     cd .. && \
@@ -441,22 +455,33 @@ function build_contrib_custom_windows() {
     cmake "-DLUAROCKS_EXE=$(command -v luarocks.exe)" "-DLUA_BINDIR=$(cygpath -w "$(dirname "$(command -v luajit.exe)")")" "-DLUA_INTERPRETER_NAME=luajit.exe" "-DABIVER=5.1" "-DEXTNAME=.bat" -P luarocks-init.cmake && \
     cd .. && \
     LUAROCKS_SERVER="/d/opencv-lua-custom/server" DIST_VERSION=1 ROCKSPEC=opencv_lua-contrib-custom-scm-1.rockspec node --trace-uncaught scripts/pack.js && \
-    cd "$CWD"
+    cd "${projectDir}"
 }
 
 function build_contrib_custom_wsl() {
     wsl -c '
 source scripts/wsl_init.sh || exit $?
+BUILD_DIR="${sources}/../opencv-lua-custom/build"
 
-export PATH="${sources}/out/install/Linux-GCC-Release/bin:$PATH" && \
-export PATH="${sources}/out/build/Linux-GCC-Release/luarocks/luarocks-prefix/src/luarocks-build/bin:$PATH" && \
-mkdir -p "${sources}/../opencv-lua-custom/build" && \
-cd "${sources}/../opencv-lua-custom/build" && \
-git clone "${projectDir}" && \
-cd lua-opencv && \
-cp luarocks/opencv_lua-scm-1.rockspec opencv_lua-contrib-custom-scm-1.rockspec && \
+export PATH="${sources}/out/install/Linux-GCC-Release/bin:$PATH"
+export PATH="${sources}/out/build.luaonly//Linux-GCC-Release/luarocks/luarocks-prefix/src/luarocks-build/bin:$PATH"
+
+mkdir -p "${BUILD_DIR}" && \
+cd "${BUILD_DIR}" || exit $?
+
+if [ -d lua-opencv ]; then
+    cd lua-opencv && \
+    git remote set-url origin "file://${projectDir}" && \
+    git reset --hard HEAD && \
+    git pull --force || exit $?
+else
+    git clone "file://${projectDir}" lua-opencv && \
+    cd lua-opencv || exit $?
+fi
+
+cp -f luarocks/opencv_lua-scm-1.rockspec opencv_lua-contrib-custom-scm-1.rockspec && \
 sed -e '"'"'s/package = "opencv_lua"/package = "opencv_lua-contrib-custom"/'"'"' -i opencv_lua-contrib-custom-scm-1.rockspec && \
-sed -e '"'"'s/LUA_INCDIR = "$(LUA_INCDIR)",/LUA_INCDIR = "\$(LUA_INCDIR)",\n      BUILD_contrib = "ON",\n      WITH_FREETYPE = "ON",/'"'"' -i opencv_lua-contrib-custom-scm-1.rockspec && \
+sed -e '"'"'s/LUA_INCDIR = "\$(LUA_INCDIR)",/LUA_INCDIR = "\$(LUA_INCDIR)",\n      BUILD_contrib = "ON",\n      WITH_FREETYPE = "ON",/'"'"' -i opencv_lua-contrib-custom-scm-1.rockspec && \
 cd luarocks && \
 luarocks --lua-version "5.1" --lua-dir "$(dirname "$(dirname "$(command -v luajit)")")" init --lua-versions "5.1,5.2,5.3,5.4" && \
 luarocks config --scope project cmake_generator Ninja && \
@@ -465,6 +490,28 @@ cd .. && \
 ./luarocks/luarocks make opencv_lua-contrib-custom-scm-1.rockspec && \
 LUAROCKS_SERVER="${sources}/../opencv-lua-custom/server" DIST_VERSION=1 ROCKSPEC=opencv_lua-contrib-custom-scm-1.rockspec node --trace-uncaught scripts/pack.js
 '
+}
+
+function copy_samples_windows() {
+    for version in luajit-2.1 5.{4,3,2,1}; do
+        if [ "${version:0:6}" != luajit ]; then
+            robocopy out/prepublish/{luajit-2.1,${version}}/lua-opencv/samples //MT //E //FFT //R:1 //W:1 //Z //SL //XJD //XJF //XA:HS //FP //NP //NDL //MIR //ETA || return $?
+        fi
+        robocopy out/prepublish/{luajit-2.1/lua-opencv,${version}/lua-opencv-contrib}/samples //MT //E //FFT //R:1 //W:1 //Z //SL //XJD //XJF //XA:HS //FP //NP //NDL //MIR //ETA || return $?
+    done
+}
+
+function copy_samples_wsl() {
+    for version in luajit-2.1 5.{4,3,2,1}; do
+        wsl -c '
+source scripts/wsl_init.sh || exit $?
+
+if [ "${version:0:6}" != luajit ]; then
+    rsync -t --delete -v -r -l out/prepublish/{luajit-2.1,${version}}/lua-opencv/samples/ || exit $?
+fi
+rsync -t --delete -v -r -l out/prepublish/{luajit-2.1/lua-opencv,${version}/lua-opencv-contrib}/samples/ || exit $?
+'
+    done
 }
 
 function build_full() {

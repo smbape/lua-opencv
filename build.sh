@@ -160,25 +160,29 @@ test $is_dry_run -eq 0 || try_run="echo "
 
 CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE:-Release}"
 CONFIG_NAME=${CONFIG_NAME:-Linux-GCC-$CMAKE_BUILD_TYPE}
-BUILD_FOLDER="${BUILD_FOLDER:-$PWD/out/build/$CONFIG_NAME}"
 CMAKE_INSTALL_PREFIX="${PREFIX:-$PWD/out/install/$CONFIG_NAME}"
+
 if [[ "$TARGET" == 'lua' || "$TARGET" == 'luajit' || "$TARGET" == 'luarocks' ]]; then
     export LUA_ONLY=ON
+    BUILD_FOLDER_NAME=build.luaonly
+else
+    BUILD_FOLDER_NAME=build
 fi
 
-if [[ "$TARGET" == 'luarocks' ]]; then
-    export LUA_DIR="${CMAKE_INSTALL_PREFIX}"
+if [[ "$TARGET" != 'lua' && "$TARGET" != 'luajit' ]]; then
+    EXTRA_CMAKE_OPTIONS="$EXTRA_CMAKE_OPTIONS '-DLUA_DIR:PATH=${CMAKE_INSTALL_PREFIX}'"
 fi
 
-${try_run}mkdir -p "$BUILD_FOLDER" && ${try_run}cd "$BUILD_FOLDER" || die "Cannot access build directory $BUILD_FOLDER" $?
+BUILD_FOLDER="${BUILD_FOLDER:-$PWD/out/${BUILD_FOLDER_NAME}/$CONFIG_NAME}"
+${try_run}mkdir -p "$BUILD_FOLDER" || die "Cannot access build directory $BUILD_FOLDER" $?
 
 test ${#PLATFORM} -eq 0 || GENERATOR="$GENERATOR -A $PLATFORM"
 
 eval "set -- $EXTRA_CMAKE_OPTIONS"
 
-test $skip_config -eq 1 || ${try_run}cmake -G $GENERATOR -DCMAKE_BUILD_TYPE:STRING=$CMAKE_BUILD_TYPE "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}" "$SCRIPTPATH" "$@" || exit $?
-test $skip_build -eq 1 || ${try_run}cmake --build . --target $TARGET -j4 || exit $?
-test $has_install -eq 0 || ${try_run}cmake --install . --prefix "$CMAKE_INSTALL_PREFIX" || exit $?
+test $skip_config -eq 1 || ${try_run}cmake -G $GENERATOR -DCMAKE_BUILD_TYPE:STRING=$CMAKE_BUILD_TYPE "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}" -S "$SCRIPTPATH" -B "$BUILD_FOLDER" "$@" || exit $?
+test $skip_build -eq 1 || ${try_run}cmake --build "$BUILD_FOLDER" --target $TARGET -j$(( $(nproc) - 2 )) || exit $?
+test $has_install -eq 0 || ${try_run}cmake --install "$BUILD_FOLDER" --prefix "$CMAKE_INSTALL_PREFIX" || exit $?
 
 if test $has_test -eq 1; then
     LUA_CPATH="$("$BUILD_FOLDER/bin/luajit" -e 'print(package.cpath)');$BUILD_FOLDER/luajit/lib/?.so" \

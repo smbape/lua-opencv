@@ -266,10 +266,10 @@ cv.destroyAllWindows()
 git clone --depth 1 --branch 4.9.0 https://github.com/opencv/opencv.git
 git clone --depth 1 --branch v0.0.4 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
-@REM build.bat --target luajit "-DLua_VERSION=luajit-2.1" --install
+@REM build.bat "-DLua_VERSION=luajit-2.1" --target luajit --install
 @REM available versions are 5.1, 5.2, 5.3, 5.4
-build.bat --target lua "-DLua_VERSION=5.4" --install
-build.bat --target luarocks
+build.bat "-DLua_VERSION=5.4" --target lua --install
+build.bat "-DLua_VERSION=5.4" --target luarocks
 luarocks\luarocks.bat install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua
 luarocks\luarocks.bat install --deps-only samples\samples-scm-1.rockspec
 npm ci
@@ -282,10 +282,10 @@ node scripts\test.js --Release
 git clone --depth 1 --branch 4.9.0 https://github.com/opencv/opencv.git
 git clone --depth 1 --branch v0.0.4 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
-# ./build.sh --target luajit "-DLua_VERSION=luajit-2.1" --install
+# ./build.sh "-DLua_VERSION=luajit-2.1" --target luajit --install
 # available versions are 5.1, 5.2, 5.3, 5.4
-./build.sh --target lua "-DLua_VERSION=5.4" --install
-./build.sh --target luarocks
+./build.sh "-DLua_VERSION=5.4" --target lua --install
+./build.sh "-DLua_VERSION=5.4" --target luarocks
 ./luarocks/luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua
 ./luarocks/luarocks install --deps-only samples/samples-scm-1.rockspec
 npm ci
@@ -302,10 +302,6 @@ To avoid that long install time, you can host your own prebuilt binary rocks on 
 Windows: (Hosting you own binary rocks on Windows)[docs/hosting-you-own-binary-rocks-Windows.md]
 
 Linux: (Hosting you own binary rocks on Linux)[docs/hosting-you-own-binary-rocks-Linux.md]
-
-```sh
-luarocks install --server=http://example.com/binary-rock opencv_lua
-```
 
 ## Keyword arguments
 
