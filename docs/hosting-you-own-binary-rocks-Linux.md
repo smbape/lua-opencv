@@ -1,4 +1,4 @@
-# Hosting you own binary rocks on Windows
+# Hosting you own binary rocks on Linux
 
 ## Table Of Contents
 
@@ -43,7 +43,7 @@ The procedure has been tested on [Windows WSL](https://learn.microsoft.com/en-us
 ## Prerequisites
 
 I assume you already have an [Lua](https://www.lua.org/start.html) or [LuaJIT](https://luajit.org/) installation.
-I assume you have already installed [LuaRocks](https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Windows)
+I assume you have already installed [LuaRocks](https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Unix)
 If not, you can install LuaJIT and LuaRocks by executing the following commands
 
 ```sh
@@ -65,7 +65,7 @@ In this example, we will use the following directories:
   - The **server directory** is _$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/server_
   - The **test directory** is _$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/test_
 
-## Install freetype and harfbuzz with [vcpkg](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started?pivots=shell-cmd)
+## Install freetype and harfbuzz
 
 Freetype and harfbuzz are needed to build the OpenCV freetype contrib module
 
