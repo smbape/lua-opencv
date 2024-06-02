@@ -299,9 +299,9 @@ Installing the source rock takes a long time (01h25mn on my old computer, 30mn o
 Therefore, it is not practical to repeat that process again.  
 To avoid that long install time, you can host your own prebuilt binary rocks on a private server.
 
-Windows: (Hosting you own binary rocks on Windows)[docs/hosting-you-own-binary-rocks-Windows.md]
+Windows: [Hosting you own binary rocks on Windows](docs/hosting-you-own-binary-rocks-Windows.md)
 
-Linux: (Hosting you own binary rocks on Linux)[docs/hosting-you-own-binary-rocks-Linux.md]
+Linux: [Hosting you own binary rocks on Linux](docs/hosting-you-own-binary-rocks-Linux.md)
 
 ## Keyword arguments
 
