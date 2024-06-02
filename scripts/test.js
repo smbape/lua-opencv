@@ -27,15 +27,18 @@ const opencv_SOURCE_DIR = (() => {
         process.env.CMAKE_CURRENT_BINARY_DIR,
         `out/build/${ platform }-*`,
         "build.luarocks",
+        ".",
 
     ]) {
         if (!buildDir) {
             continue;
         }
 
-        const file = findFile(`${ buildDir }/opencv/opencv-src`, PROJECT_DIR);
-        if (file) {
-            return file;
+        for (const hint of [`${ buildDir }/opencv/opencv-src`, `${ buildDir }/opencv`]) {
+            const file = findFile(`${ hint }/modules/calib3d/CMakeLists.txt`, PROJECT_DIR);
+            if (file) {
+                return sysPath.resolve(file).split(sysPath.sep).slice(0, -3).join(sysPath.sep);
+            }
         }
     }
 

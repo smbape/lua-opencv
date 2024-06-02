@@ -2,11 +2,13 @@
 
 set -o pipefail
 
-DIST_VERSION=3
+DIST_VERSION=${DIST_VERSION:-3}
+WSL_DISTNAME=${WSL_DISTNAME:-Ubuntu}
+WSL_EXCLUDED_TESTS="'!02-video-capture-camera.lua' '!threshold_inRange.lua' '!objectDetection.lua'"
 
 WSL="$(command -v wsl)"
 function wsl() {
-    version="${version}" suffix="${suffix}" DIST_VERSION="${DIST_VERSION}" WSLENV=version/u:suffix/u:DIST_VERSION/u "$WSL" -e bash -li "$@"
+    version="${version}" suffix="${suffix}" DIST_VERSION="${DIST_VERSION}" WSLENV=version/u:suffix/u:DIST_VERSION/u "$WSL" -d "$WSL_DISTNAME" -e bash -li "$@"
 }
 
 function stash_push() {
@@ -56,8 +58,8 @@ WORKSPACE_ROOT="out/prepublish/${version}/lua-opencv${suffix}" node scripts/test
         script="$script '$arg'"
     done
 
-    # ecluded due to camera device missing
-    script="$script '!02-video-capture-camera.lua' '!threshold_inRange.lua' '!objectDetection.lua'"
+    # excluded due to camera device missing
+    script="$script $WSL_EXCLUDED_TESTS"
 
     for version in luajit-2.1 5.{4,3,2,1}; do
         for suffix in '' '-contrib'; do
@@ -342,6 +344,9 @@ node scripts/test.js --Debug'
         script="$script '$arg'"
     done
 
+    # excluded due to camera device missing
+    script="$script $WSL_EXCLUDED_TESTS"
+
     wsl -c "$script"
 }
 
@@ -472,6 +477,10 @@ BUILD_DIR="${sources}/../opencv-lua-custom/build"
 export PATH="${sources}/out/install/Linux-GCC-Release/bin:$PATH"
 export PATH="${sources}/out/build.luaonly//Linux-GCC-Release/luarocks/luarocks-prefix/src/luarocks-build/bin:$PATH"
 
+[ command -v luarocks ] || \
+./build.sh "-DLua_VERSION=luajit-2.1" --target luajit --install && \
+./build.sh "-DLua_VERSION=luajit-2.1" --target luarocks
+
 mkdir -p "${BUILD_DIR}" && \
 cd "${BUILD_DIR}" || exit $?
 
@@ -527,4 +536,71 @@ function build_full() {
     build_debug_wsl && \
     build_contrib_custom_windows && \
     build_contrib_custom_wsl
+}
+
+function install_mint() {
+    local latest="$(curl 'https://github.com/sileshn/LinuxmintWSL2/releases/latest' -I 2>/dev/null | sed -rn -e 's@Location: (.+)/tag/(.+)@\1/download/\2/LinuxmintWSL2.zip@p')"
+    local url='https://github.com/sileshn/LinuxmintWSL2/releases/download/20240501/LinuxmintWSL2.zip'
+    local sha256='25c7de96e38f3d049b1c8eab6a8d52b4b27d15dbf243fc708acfc5d5cfb698bd'
+
+    if ! echo "$sha256 out/linux/LinuxmintWSL2.zip" | sha256sum --check --status; then
+        [ -d out/linux ] || mkdir out/linux
+        curl -L "$url" -o out/linux/LinuxmintWSL2.zip
+    fi
+
+    unzip -od out/linux/LinuxmintWSL2 out/linux/LinuxmintWSL2.zip
+    out/linux/LinuxmintWSL2/Mint.exe
+}
+
+function install_build_essentials() {
+    wsl -c '
+    sudo apt -y install build-essential cmake git libavcodec-dev libavformat-dev libdc1394-dev \
+        libjpeg-dev libpng-dev libreadline-dev libswscale-dev libtbb-dev libtbbmalloc2 \
+        ninja-build pkg-config python-is-python3 python3-pip python3-venv qtbase5-dev unzip zip
+'
+}
+
+function install_examples_essentials() {
+    wsl -c 'sudo apt -y install build-essential cmake ffmpeg git libreadline-dev libsm6 libxext6 ninja-build python-is-python3 python3-pip python3-venv qtbase5-dev unzip'
+}
+
+function run_examples_wsl() {
+    local script='
+if ! command -v node &>/dev/null; then
+    export NVS_HOME="$HOME/.nvs"
+    git clone https://github.com/jasongin/nvs "$NVS_HOME" && \
+    . "$NVS_HOME/nvs.sh" install && \
+    nvs add lts && \
+    nvs use lts && \
+    nvs link lts
+fi
+
+workspaceHash=53b58a2f-f3e5-480b-8803-dc266ac326de
+projectDir="$PWD"
+projectDirName=$(basename "$projectDir")
+sources="$HOME/.vs/${projectDirName}/${workspaceHash}/test"
+
+mkdir -p "${sources}"
+cd "${sources}" || exit $?
+
+[ -d opencv ] || git clone --depth 1 --branch 4.9.0 https://github.com/opencv/opencv.git
+[ -d "$projectDirName" ] || git clone --depth 1 "file://$projectDir"
+
+cd "$projectDirName" && \
+./build.sh "-DLua_VERSION=luajit-2.1" --target luajit --install && \
+./build.sh "-DLua_VERSION=luajit-2.1" --target luarocks && \
+./luarocks/luarocks install "--server=${projectDir}/out/prepublish/server" opencv_lua 4.9.0luajit2.1 && \
+./luarocks/luarocks install --deps-only samples/samples-scm-1.rockspec || exit $?
+[ -d node_modules ] || npm ci || exit $?
+
+node scripts/test.js --Release'
+
+    for arg in "$@"; do
+        script="$script '$arg'"
+    done
+
+    # excluded due to camera device missing
+    script="$script $WSL_EXCLUDED_TESTS"
+
+    wsl -c "$script"
 }

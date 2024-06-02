@@ -31,14 +31,15 @@ Here we will build a custom opencv with the folling modifications:
   - Add the contrib modules
   - Add the freetype module.
 
-The procedure has been tested on [Windows WSL](https://learn.microsoft.com/en-us/windows/wsl/install) with [Ubuntu 22.04 (Jammy Jellyfish)](https://releases.ubuntu.com/jammy/)
+The procedure has been tested on :
+  - [Windows WSL](https://learn.microsoft.com/en-us/windows/wsl/install) with [Ubuntu 22.04 (Jammy Jellyfish)](https://releases.ubuntu.com/jammy/)
+  - [Windows WSL](https://learn.microsoft.com/en-us/windows/wsl/install) with [LinuxmintWSL2)](https://github.com/sileshn/LinuxmintWSL2)
 
 ## Prepare
 
   - Install [LuaRocks](https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Unix)
   - Install [NodeJS](https://nodejs.org/en/download/current)
-  - Install needed packages `sudo snap install cmake --classic && sudo apt -y install build-essential git python3-pip python3-venv python-is-python3 ninja-build unzip zip libgtk2.0-dev qtbase5-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-dev libreadline-dev`
-  - For faster build time, I highly recommend you to use [Ninja](https://ninja-build.org/) `luarocks config --scope project cmake_generator Ninja`
+  - Install needed packages `sudo snap install cmake --classic && sudo apt -y install build-essential git python3-pip python3-venv python-is-python3 ninja-build unzip zip qtbase5-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-dev libreadline-dev`
 
 ## Prerequisites
 
@@ -95,7 +96,7 @@ cd "$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/
 ### Download the source code
 
 ```sh
-git clone https://github.com/smbape/lua-opencv.git && \
+git clone --depth 1 --branch v0.0.4 https://github.com/smbape/lua-opencv.git && \
 cd lua-opencv
 ```
 

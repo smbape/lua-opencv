@@ -2,18 +2,26 @@
 
 export PATH="${PATH//\/mnt\/*:/}"
 
+if ! command -v node &>/dev/null; then
+    export NVS_HOME="$HOME/.nvs"
+    git clone https://github.com/jasongin/nvs "$NVS_HOME" && \
+    . "$NVS_HOME/nvs.sh" install && \
+    nvs add lts && \
+    nvs use lts && \
+    nvs link lts
+fi
+
 workspaceHash=53b58a2f-f3e5-480b-8803-dc266ac326de
 projectDir="$PWD"
 projectDirName=$(basename "$projectDir")
 sources="$HOME/.vs/${projectDirName}/${workspaceHash}/src"
 
-cd "${sources}" || exit $?
-
-if [ -d .git ]; then
-    git remote set-url origin "$projectDir"
+if [ -d "${sources}/.git" ]; then
+    cd "${sources}" && \
+    git remote set-url origin "file://$projectDir" || exit $?
 else
-    git init
-    git remote add origin "$projectDir"
+    git clone "file://$projectDir" "${sources}" && \
+    cd "${sources}" || exit $?
 fi
 
 git reset --hard HEAD && git clean -fd && git pull --force || exit $?

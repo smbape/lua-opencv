@@ -104,7 +104,7 @@ cd /d "D:\opencv-lua-custom\build"
 ### Download the source code
 
 ```sh
-git clone https://github.com/smbape/lua-opencv.git && \
+git clone --depth 1 --branch v0.0.4 https://github.com/smbape/lua-opencv.git && \
 cd lua-opencv
 ```
 
