@@ -295,7 +295,13 @@ function set_url() {
     fi
 
     local url="$1"
-    sed -r 's#url = "[^"]+"#url = "'$url'"#' -i luarocks/opencv_lua-scm-1.rockspec && \
+    sed -r 's#url = "[^"]+"#url = "'$url'"#' -i luarocks/opencv_lua-scm-1.rockspec || return $?
+    local diff="$(git diff HEAD luarocks/opencv_lua-scm-1.rockspec)"
+
+    if [ ${#diff} -eq 0 ]; then
+        return 0
+    fi
+
     git add luarocks/opencv_lua-scm-1.rockspec && \
     git commit --amend --no-edit
 }
