@@ -8,7 +8,7 @@
 - [Prepare](#prepare)
 - [Prerequisites](#prerequisites)
 - [Build System Environment](#build-system-environment)
-- [Install freetype and harfbuzz with vcpkg](#install-freetype-and-harfbuzz-with-vcpkg)
+- [Install freetype and harfbuzz](#install-freetype-and-harfbuzz)
 - [Build](#build)
   - [Change directory to the **build directory**](#change-directory-to-the-build-directory)
   - [Download the source code](#download-the-source-code)
