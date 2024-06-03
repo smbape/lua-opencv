@@ -98,6 +98,16 @@ if (NOT WITH_LUA_ROCKS)
     ARCHIVE
       DESTINATION "${CMAKE_INSTALL_LIBDIR}"
   )
+else()
+  if (CMAKE_INSTALL_PREFIX)
+    # Add any variables you need during post install.
+    install(CODE "set(CMAKE_INSTALL_PREFIX \"${CMAKE_INSTALL_PREFIX}\")")
+    install(CODE "set(TARGET_FILE \"$<TARGET_FILE:${target_name}>\")")
+
+    # CMake will execute this last in the build.
+    # Install the script that does the post install work.
+    install(SCRIPT "PostInstall.cmake")
+  endif()
 endif()
 
 target_compile_definitions(${target_name}

@@ -21,7 +21,8 @@ if [ -d "${sources}/.git" ]; then
     git remote set-url origin "file://$projectDir" || exit $?
 else
     git clone "file://$projectDir" "${sources}" && \
-    cd "${sources}" || exit $?
+    cd "${sources}" && \
+    git config pull.rebase true || exit $?
 fi
 
 git reset --hard HEAD && git clean -fd && git pull --force || exit $?

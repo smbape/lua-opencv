@@ -93,6 +93,7 @@ file(TO_NATIVE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/opencv" OPENCV_INSTALL_DATA_DIR
 
 # 3rd party libs
 OCV_OPTION(BUILD_TIFF               "Build libtiff from source"          ON )
+OCV_OPTION(BUILD_JPEG               "Build libjpeg from source"          ON )
 OCV_OPTION(BUILD_WEBP               "Build WebP from source"             ON )
 
 # OpenCV build components

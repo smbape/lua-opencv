@@ -69,13 +69,7 @@ WORKSPACE_ROOT="out/prepublish/${version}/lua-opencv${suffix}" node scripts/test
 }
 
 function prepublish_test_install_windows() {
-    for version in luajit-2.1 5.{4,3,2,1}; do
-        for suffix in '' '-contrib'; do
-            bash -c '
-version='${version}'
-suffix='${suffix}'
-projectDir="$PWD"
-
+    local  script='
 [ "${version:0:6}" == luajit ] && target=luajit || target=lua
 [ "${version:0:6}" == luajit ] && binary=4.9.0luajit2.1
 
@@ -84,22 +78,22 @@ test -d out/test/opencv/.git || git clone --depth 1 --branch 4.9.0 https://githu
 
 test -d out/test/${version} || mkdir out/test/${version} || exit $?
 if [ -d out/test/${version}/lua-opencv${suffix} ]; then
-    PWD_BCK="$PWD" && \
     cd out/test/${version}/lua-opencv${suffix} && \
     rm -rf .git && \
     git init && \
     git remote add origin "file://${projectDir}" && \
     git fetch origin && \
     git switch main --force && \
-    git reset --hard HEAD && \
-    cd "${PWD_BCK}" || exit $?
+    git reset --hard HEAD || exit $?
 else
-    git clone "file://${projectDir}" out/test/${version}/lua-opencv${suffix} || exit $?
+    git clone "file://${projectDir}" out/test/${version}/lua-opencv${suffix} && \
+    cd out/test/${version}/lua-opencv${suffix} && \
+    git config pull.rebase true && \
+    git config user.email "you@example.com" && \
+    git config user.name "Your Name" || exit $?
 fi
 
-source scripts/vcvars_restore_start.sh || exit $?
-
-cd out/test/${version}/lua-opencv${suffix} || exit $?
+source "${projectDir}/scripts/vcvars_restore_start.sh" || exit $?
 
 ./build.bat "-DLua_VERSION=${version}" --target ${target} --install && \
 ./build.bat "-DLua_VERSION=${version}" --target luarocks && \
@@ -109,16 +103,27 @@ time ./luarocks/luarocks.bat install "--server=${projectDir}/out/prepublish/serv
 source "${projectDir}/scripts/vcvars_restore_end.sh" || exit $?
 
 npm ci && \
-node scripts/test.js --Release
-' || return $?
+node scripts/test.js --Release'
+
+    for arg in "$@"; do
+        script="$script '$arg'"
+    done
+
+    for version in luajit-2.1 5.{4,3,2,1}; do
+        for suffix in '' '-contrib'; do
+            bash -c "
+version='${version}'
+suffix='${suffix}'
+projectDir='$PWD'
+
+${script}
+" || return $?
         done
     done
 }
 
 function prepublish_test_install_wsl() {
-    for version in luajit-2.1 5.{4,3,2,1}; do
-        for suffix in '' '-contrib'; do
-            wsl -c '
+    local script='
 source scripts/wsl_init.sh || exit $?
 
 [ "${version:0:6}" == luajit ] && target=luajit || target=lua
@@ -129,20 +134,20 @@ test -d out/test/opencv/.git || git clone --depth 1 --branch 4.9.0 https://githu
 
 test -d out/test/${version} || mkdir out/test/${version} || exit $?
 if [ -d out/test/${version}/lua-opencv${suffix} ]; then
-    PWD_BCK="$PWD" && \
     cd out/test/${version}/lua-opencv${suffix} && \
     rm -rf .git && \
     git init && \
     git remote add origin "file://${projectDir}" && \
     git fetch origin && \
     git switch main --force && \
-    git reset --hard HEAD && \
-    cd "${PWD_BCK}" || exit $?
+    git reset --hard HEAD || exit $?
 else
-    git clone "file://${projectDir}" out/test/${version}/lua-opencv${suffix} || exit $?
+    git clone "file://${projectDir}" out/test/${version}/lua-opencv${suffix} && \
+    cd out/test/${version}/lua-opencv${suffix} && \
+    git config pull.rebase true && \
+    git config user.email "you@example.com" && \
+    git config user.name "Your Name" || exit $?
 fi
-
-cd out/test/${version}/lua-opencv${suffix} || exit $?
 
 ./build.sh "-DLua_VERSION=${version}" --target ${target} --install && \
 ./build.sh "-DLua_VERSION=${version}" --target luarocks && \
@@ -151,97 +156,133 @@ time ./luarocks/luarocks install "--server=${projectDir}/out/prepublish/server" 
 
 npm ci && \
 node scripts/test.js --Release
-' || return $?
+'
+
+    for arg in "$@"; do
+        script="$script '$arg'"
+    done
+
+    # excluded due to camera device missing
+    script="$script $WSL_EXCLUDED_TESTS"
+
+    for version in luajit-2.1 5.{4,3,2,1}; do
+        for suffix in '' '-contrib'; do
+            wsl -c "$script" || return $?
         done
     done
 }
 
 function prepublish_test_source_windows() {
+    local  script='
+[ "${version:0:6}" == luajit ] && target=luajit || target=lua
+
+test -d out/test/${version} || mkdir out/test/${version} || exit $?
+test -d out/test/${version}/lua-project${suffix} || mkdir out/test/${version}/lua-project${suffix} || exit $?
+CWD="$PWD"
+
+test -d out/test/${version} || mkdir out/test/${version} || exit $?
+if [ -d out/test/${version}/lua-opencv${suffix} ]; then
+    cd out/test/${version}/lua-opencv${suffix} && \
+    rm -rf .git && \
+    git init && \
+    git remote add origin "file://${projectDir}" && \
+    git fetch origin && \
+    git switch main --force && \
+    git reset --hard HEAD || exit $?
+else
+    git clone "file://${projectDir}" out/test/${version}/lua-opencv${suffix} && \
+    cd out/test/${version}/lua-opencv${suffix} && \
+    git config pull.rebase true && \
+    git config user.email "you@example.com" && \
+    git config user.name "Your Name" || exit $?
+fi
+
+./build.bat "-DLua_VERSION=${version}" --target ${target} --install && \
+./build.bat "-DLua_VERSION=${version}" --target luarocks && \
+cd "${CWD}" || exit $?
+
+QUOTE="'"'"'"
+DOUBLE_QUOTE='"'"'"'"'"'
+luarocks="$(sed -nre "s/^.*[${DOUBLE_QUOTE}${QUOTE}]([^${DOUBLE_QUOTE}${QUOTE}]+)[${DOUBLE_QUOTE}${QUOTE}] --project-tree .+$/\1/p" out/test/${version}/lua-opencv${suffix}/luarocks/luarocks.bat)"
+cd out/test/${version}/lua-project${suffix} && \
+"$luarocks" init --lua-versions "5.1,5.2,5.3,5.4" && \
+time ./luarocks.bat install "--server=${projectDir}/out/prepublish/server" opencv_lua${suffix} 4.9.0 && \
+source "${CWD}/scripts/vcvars_restore_start.sh" && \
+./luarocks.bat install --deps-only ../lua-opencv${suffix}/samples/samples-scm-1.rockspec && \
+source "${CWD}/scripts/vcvars_restore_end.sh" && \
+LUAROCKS_BINDIR="$PWD" node ../lua-opencv${suffix}/scripts/test.js --Release
+'
+
+    for arg in "$@"; do
+        script="$script '$arg'"
+    done
+
     for version in luajit-2.1; do
         for suffix in '' '-contrib'; do
-            bash -c '
+            bash -c "
 version='${version}'
 suffix='${suffix}'
 projectDir="$PWD"
 
-[ "${version:0:6}" == luajit ] && target=luajit || target=lua
-
-test -d out/test/${version} || mkdir out/test/${version} || exit $?
-test -d out/test/${version}/lua-project || mkdir out/test/${version}/lua-project || exit $?
-
-if [ -d out/test/${version}/lua-opencv${suffix} ]; then
-    PWD_BCK="$PWD" && \
-    cd out/test/${version}/lua-opencv${suffix} && \
-    git remote set-url origin "file://${projectDir}" && \
-    git reset --hard HEAD && \
-    git clean -fd && \
-    git pull --force && \
-    cd "${PWD_BCK}" || exit $?
-else
-    git clone "file://${projectDir}" out/test/${version}/lua-opencv${suffix} || exit $?
-fi
-
-PWD_BCK="$PWD" && \
-cd out/test/${version}/lua-opencv${suffix} && \
-./build.bat "-DLua_VERSION=${version}" --target ${target} --install && \
-./build.bat "-DLua_VERSION=${version}" --target luarocks && \
-cd "${PWD_BCK}" || exit $?
-
-cd "${PWD_BCK}" || exit $?
-QUOTE="'"'"'"
-DOUBLE_QUOTE='"'"'"'"'"'
-luarocks="$(sed -nre "s/^.*[${DOUBLE_QUOTE}${QUOTE}]([^${DOUBLE_QUOTE}${QUOTE}]+)[${DOUBLE_QUOTE}${QUOTE}] --project-tree .+$/\1/p" out/test/${version}/lua-opencv${suffix}/luarocks/luarocks.bat)"
-cd out/test/${version}/lua-project && \
-"$luarocks" init --lua-versions "5.1,5.2,5.3,5.4" && \
-time ./luarocks.bat install "--server=${projectDir}/out/prepublish/server" opencv_lua${suffix} 4.9.0 && \
-source "${PWD_BCK}/scripts/vcvars_restore_start.sh" && \
-./luarocks.bat install --deps-only ../lua-opencv${suffix}/samples/samples-scm-1.rockspec && \
-source "${PWD_BCK}/scripts/vcvars_restore_end.sh" && \
-LUAROCKS_BINDIR="$PWD" node ../lua-opencv${suffix}/scripts/test.js --Release
-' || return $?
+${script}
+" || return $?
         done
     done
 }
 
 function prepublish_test_source_wsl() {
-    for version in luajit-2.1; do
-        for suffix in '' '-contrib'; do
-            wsl -c '
+    local script='
 source scripts/wsl_init.sh || exit $?
 
 [ "${version:0:6}" == luajit ] && target=luajit || target=lua
 
 test -d out/test/${version} || mkdir out/test/${version} || exit $?
-test -d out/test/${version}/lua-project || mkdir out/test/${version}/lua-project || exit $?
+test -d out/test/${version}/lua-project${suffix} || mkdir out/test/${version}/lua-project${suffix} || exit $?
+CWD="$PWD"
 
+test -d out/test/${version} || mkdir out/test/${version} || exit $?
 if [ -d out/test/${version}/lua-opencv${suffix} ]; then
-    PWD_BCK="$PWD" && \
     cd out/test/${version}/lua-opencv${suffix} && \
-    git remote set-url origin "file://${projectDir}" && \
-    git reset --hard HEAD && \
-    git clean -fd && \
-    git pull --force && \
-    cd "${PWD_BCK}" || exit $?
+    rm -rf .git && \
+    git init && \
+    git remote add origin "file://${projectDir}" && \
+    git fetch origin && \
+    git switch main --force && \
+    git reset --hard HEAD || exit $?
 else
-    git clone "file://${projectDir}" out/test/${version}/lua-opencv${suffix} || exit $?
+    git clone "file://${projectDir}" out/test/${version}/lua-opencv${suffix} && \
+    cd out/test/${version}/lua-opencv${suffix} && \
+    git config pull.rebase true && \
+    git config user.email "you@example.com" && \
+    git config user.name "Your Name" || exit $?
 fi
 
-PWD_BCK="$PWD" && \
-cd out/test/${version}/lua-opencv${suffix} && \
 ./build.sh "-DLua_VERSION=${version}" --target ${target} --install && \
 ./build.sh "-DLua_VERSION=${version}" --target luarocks && \
-cd "${PWD_BCK}" || exit $?
+cd "${CWD}" || exit $?
+
 QUOTE="'"'"'"
 DOUBLE_QUOTE='"'"'"'"'"'
 luarocks="$(sed -nre "s/^.*[${DOUBLE_QUOTE}${QUOTE}]([^${DOUBLE_QUOTE}${QUOTE}]+)[${DOUBLE_QUOTE}${QUOTE}] --project-tree .+$/\1/p" out/test/${version}/lua-opencv${suffix}/luarocks/luarocks)"
-cd out/test/${version}/lua-project && \
+cd out/test/${version}/lua-project${suffix} && \
 "$luarocks" init --lua-versions "5.1,5.2,5.3,5.4" && \
 ./luarocks config --scope project cmake_generator Ninja && \
 ./luarocks config --scope project cmake_build_args -- -j$(( $(nproc) - 2 )) && \
 time ./luarocks install "--server=${projectDir}/out/prepublish/server" opencv_lua${suffix} 4.9.0 && \
 ./luarocks install --deps-only ../lua-opencv${suffix}/samples/samples-scm-1.rockspec && \
 LUAROCKS_BINDIR="$PWD" node ../lua-opencv${suffix}/scripts/test.js --Release
-' || return $?
+'
+
+    for arg in "$@"; do
+        script="$script '$arg'"
+    done
+
+    # excluded due to camera device missing
+    script="$script $WSL_EXCLUDED_TESTS"
+
+    for version in luajit-2.1; do
+        for suffix in '' '-contrib'; do
+            wsl -c "$script" || return $?
         done
     done
 }
@@ -452,7 +493,10 @@ function build_contrib_custom_windows() {
         git pull --force || return $?
     else
         git clone "file://${projectDir}" lua-opencv && \
-        cd lua-opencv || return $?
+        cd lua-opencv && \
+        git config pull.rebase true && \
+        git config user.email "you@example.com" && \
+        git config user.name "Your Name" || return $?
     fi
 
     cp -f luarocks/opencv_lua-scm-1.rockspec opencv_lua-contrib-custom-scm-1.rockspec && \
@@ -465,7 +509,7 @@ function build_contrib_custom_windows() {
     cd luarocks && \
     cmake "-DLUAROCKS_EXE=$(command -v luarocks.exe)" "-DLUA_BINDIR=$(cygpath -w "$(dirname "$(command -v luajit.exe)")")" "-DLUA_INTERPRETER_NAME=luajit.exe" "-DABIVER=5.1" "-DEXTNAME=.bat" -P luarocks-init.cmake && \
     cd .. && \
-    LUAROCKS_SERVER="/d/opencv-lua-custom/server" DIST_VERSION=1 ROCKSPEC=opencv_lua-contrib-custom-scm-1.rockspec node --trace-uncaught scripts/pack.js && \
+    LUAROCKS_SERVER="$projectDir/out/prepublish/server-custom" DIST_VERSION=1 ROCKSPEC=opencv_lua-contrib-custom-scm-1.rockspec node --trace-uncaught scripts/pack.js && \
     cd "${projectDir}"
 }
 
@@ -479,7 +523,7 @@ export PATH="${sources}/out/build.luaonly//Linux-GCC-Release/luarocks/luarocks-p
 
 [ command -v luarocks ] || \
 ./build.sh "-DLua_VERSION=luajit-2.1" --target luajit --install && \
-./build.sh "-DLua_VERSION=luajit-2.1" --target luarocks
+./build.sh "-DLua_VERSION=luajit-2.1" --target luarocks || exit $?
 
 mkdir -p "${BUILD_DIR}" && \
 cd "${BUILD_DIR}" || exit $?
@@ -487,11 +531,13 @@ cd "${BUILD_DIR}" || exit $?
 if [ -d lua-opencv ]; then
     cd lua-opencv && \
     git remote set-url origin "file://${projectDir}" && \
-    git reset --hard HEAD && \
-    git pull --force || exit $?
+    git reset --hard HEAD && git clean -fd && git pull --force || exit $?
 else
     git clone "file://${projectDir}" lua-opencv && \
-    cd lua-opencv || exit $?
+    cd lua-opencv && \
+    git config pull.rebase true && \
+    git config user.email "you@example.com" && \
+    git config user.name "Your Name" || exit $?
 fi
 
 cp -f luarocks/opencv_lua-scm-1.rockspec opencv_lua-contrib-custom-scm-1.rockspec && \
@@ -503,7 +549,7 @@ luarocks config --scope project cmake_generator Ninja && \
 luarocks config --scope project cmake_build_args -- -j$(( $(nproc) - 2 )) && \
 cd .. && \
 ./luarocks/luarocks make opencv_lua-contrib-custom-scm-1.rockspec && \
-LUAROCKS_SERVER="${sources}/../opencv-lua-custom/server" DIST_VERSION=1 ROCKSPEC=opencv_lua-contrib-custom-scm-1.rockspec node --trace-uncaught scripts/pack.js
+LUAROCKS_SERVER="$projectDir/out/prepublish/server-custom" DIST_VERSION=1 ROCKSPEC=opencv_lua-contrib-custom-scm-1.rockspec node --trace-uncaught scripts/pack.js
 '
 }
 
@@ -564,6 +610,52 @@ function install_examples_essentials() {
     wsl -c 'sudo apt -y install build-essential cmake ffmpeg git libreadline-dev libsm6 libxext6 ninja-build python-is-python3 python3-pip python3-venv qtbase5-dev unzip'
 }
 
+function run_examples_windows() {
+    local script='
+projectDir="$PWD"
+sources="$PWD/out/test"
+
+mkdir -p "${sources}"
+cd "${sources}" || exit $?
+
+[ -d opencv ] || git clone --depth 1 --branch 4.9.0 https://github.com/opencv/opencv.git
+
+if [ -d "$projectDirName" ]; then
+    cd "$projectDirName" && \
+    rm -rf .git && \
+    git init && \
+    git remote add origin "file://${projectDir}" && \
+    git fetch origin && \
+    git switch main --force && \
+    git reset --hard HEAD || exit $?
+else
+    git clone "file://${projectDir}" "$projectDirName" && \
+    cd "$projectDirName" && \
+    git config pull.rebase true && \
+    git config user.email "you@example.com" && \
+    git config user.name "Your Name" || exit $?
+fi
+
+source "${projectDir}/scripts/vcvars_restore_start.sh" || exit $?
+
+./build.bat "-DLua_VERSION=luajit-2.1" --target luajit --install && \
+./build.bat "-DLua_VERSION=luajit-2.1" --target luarocks && \
+./luarocks/luarocks.bat install "--server=${projectDir}/out/prepublish/server" opencv_lua 4.9.0luajit2.1 && \
+./luarocks/luarocks.bat install --deps-only samples/samples-scm-1.rockspec || exit $?
+[ -d node_modules ] || npm ci || exit $?
+
+source "${projectDir}/scripts/vcvars_restore_end.sh" || exit $?
+
+node scripts/test.js --Release
+'
+
+    for arg in "$@"; do
+        script="$script '$arg'"
+    done
+
+    bash -c "$script"
+}
+
 function run_examples_wsl() {
     local script='
 if ! command -v node &>/dev/null; then
@@ -575,6 +667,8 @@ if ! command -v node &>/dev/null; then
     nvs link lts
 fi
 
+export PATH="/snap/bin:$PATH"
+
 workspaceHash=53b58a2f-f3e5-480b-8803-dc266ac326de
 projectDir="$PWD"
 projectDirName=$(basename "$projectDir")
@@ -584,9 +678,23 @@ mkdir -p "${sources}"
 cd "${sources}" || exit $?
 
 [ -d opencv ] || git clone --depth 1 --branch 4.9.0 https://github.com/opencv/opencv.git
-[ -d "$projectDirName" ] || git clone --depth 1 "file://$projectDir"
 
-cd "$projectDirName" && \
+if [ -d "$projectDirName" ]; then
+    cd "$projectDirName" && \
+    rm -rf .git && \
+    git init && \
+    git remote add origin "file://${projectDir}" && \
+    git fetch origin && \
+    git switch main --force && \
+    git reset --hard HEAD || exit $?
+else
+    git clone "file://${projectDir}" "$projectDirName" && \
+    cd "$projectDirName" && \
+    git config pull.rebase true && \
+    git config user.email "you@example.com" && \
+    git config user.name "Your Name" || exit $?
+fi
+
 ./build.sh "-DLua_VERSION=luajit-2.1" --target luajit --install && \
 ./build.sh "-DLua_VERSION=luajit-2.1" --target luarocks && \
 ./luarocks/luarocks install "--server=${projectDir}/out/prepublish/server" opencv_lua 4.9.0luajit2.1 && \
