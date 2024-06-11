@@ -1,6 +1,6 @@
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.9.0/samples/python/common.py
+    https://github.com/opencv/opencv/blob/4.10.0/samples/python/common.py
 --]]
 
 local module = {}

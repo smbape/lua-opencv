@@ -41,6 +41,7 @@ if(NOT EXISTS "${CMAKE_SOURCE_DIR}/node_modules")
 endif()
 
 set(ENV{CMAKE_BINARY_DIR} "${CMAKE_BINARY_DIR}")
+set(ENV{Python3_EXECUTABLE} "${Python3_EXECUTABLE}")
 execute_process(
   COMMAND node --unhandled-rejections=strict --trace-uncaught --trace-warnings generator/index.js
   WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
@@ -74,40 +75,61 @@ set(SRC_FILES
   ${project_generated_files}
 )
 
-# Build a shared library named as the project
 if(POLICY CMP0091)
   cmake_policy(GET CMP0091 MSVC_RUNTIME_SET_BY_ABSTRACTION)
-endif()
-
-if(NOT BUILD_SHARED_LIBS AND BUILD_WITH_STATIC_CRT AND MSVC_RUNTIME_SET_BY_ABSTRACTION STREQUAL "NEW")
-  set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 endif()
 
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
 add_library(${target_name} SHARED ${SRC_FILES})
 
-install(TARGETS ${target_name}
-  LIBRARY
-    DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-  RUNTIME
-    DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-)
-
-if (NOT WITH_LUA_ROCKS)
-  install(TARGETS ${target_name}
-    ARCHIVE
-      DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+if(NOT BUILD_SHARED_LIBS AND (BUILD_WITH_STATIC_CRT OR NOT OpenCV_SHARED) AND MSVC_RUNTIME_SET_BY_ABSTRACTION STREQUAL "NEW")
+  set_target_properties(${target_name} PROPERTIES
+    MSVC_RUNTIME_LIBRARY  "MultiThreaded$<$<CONFIG:Debug>:Debug>"
   )
-else()
-  if (CMAKE_INSTALL_PREFIX)
+endif()
+
+if (WITH_LUA_ROCKS)
+  install(TARGETS ${target_name}
+    LIBRARY
+      DESTINATION "lib"
+    RUNTIME
+      DESTINATION "lib"
+  )
+
+  if (UNIX AND CMAKE_INSTALL_PREFIX)
+    if(Qt5_DIR)
+      install(DIRECTORY "${Qt5_DIR}/../../../plugins" DESTINATION lib/${target_name}/qt)
+      if (NOT APPLE)
+        install(DIRECTORY /usr/share/fonts DESTINATION lib/${target_name}/qt)
+      endif()
+    endif()
+
     # Add any variables you need during post install.
+    install(CODE "set(Qt5_DIR \"${Qt5_DIR}\")")
+    install(CODE "set(target_name \"${target_name}\")")
+    install(CODE "set(PROJECT_VERSION \"${PROJECT_VERSION}\")")
+    install(CODE "set(Python3_EXECUTABLE \"${Python3_EXECUTABLE}\")")
+    install(CODE "set(CMAKE_SOURCE_DIR \"${CMAKE_SOURCE_DIR}\")")
+    install(CODE "set(CMAKE_CURRENT_SOURCE_DIR \"${CMAKE_CURRENT_SOURCE_DIR}\")")
     install(CODE "set(CMAKE_INSTALL_PREFIX \"${CMAKE_INSTALL_PREFIX}\")")
+    install(CODE "set(CMAKE_BINARY_DIR \"${CMAKE_BINARY_DIR}\")")
+    install(CODE "set(CMAKE_CURRENT_BINARY_DIR \"${CMAKE_CURRENT_BINARY_DIR}\")")
+    install(CODE "set(CMAKE_INSTALL_LIBDIR \"lib\")")
     install(CODE "set(TARGET_FILE \"$<TARGET_FILE:${target_name}>\")")
 
     # CMake will execute this last in the build.
     # Install the script that does the post install work.
-    install(SCRIPT "PostInstall.cmake")
+    install(SCRIPT "audiwheel_repair.cmake")
   endif()
+else()
+  install(TARGETS ${target_name}
+    LIBRARY
+      DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    RUNTIME
+      DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    ARCHIVE
+      DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+  )
 endif()
 
 target_compile_definitions(${target_name}
@@ -121,7 +143,7 @@ target_precompile_headers(${target_name} PRIVATE
   "$<$<COMPILE_LANGUAGE:CXX>:lua_generated_pch.hpp>"
 )
 
-target_link_libraries(${target_name} PRIVATE ${LUA_LIBRARIES} ${OpenCV_LIBS} Eigen3::Eigen)
+target_link_libraries(${target_name} PRIVATE ${LUA_LIBRARIES} ${OpenCV_LIBS})
 target_include_directories(${target_name} PRIVATE ${LUA_INCLUDE_DIR})
 if (DEFINED OpenCV_INCLUDE_DIRS)
   target_include_directories(${target_name} PRIVATE ${OpenCV_INCLUDE_DIRS})

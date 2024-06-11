@@ -28,8 +28,8 @@ else()
 endif()
 
 set(COMMANDS
-  COMMAND     "${luarocks_exe}" --lua-version "${ABIVER}" --lua-dir "${LUA_DIR}" init --lua-versions "5.1,5.2,5.3,5.4"
-  COMMAND     "${luarocks_exe}" --lua-version "${ABIVER}" --lua-dir "${LUA_DIR}" init --lua-versions "5.1,5.2,5.3,5.4"
+  COMMAND "${luarocks_exe}" --lua-version "${ABIVER}" --lua-dir "${LUA_DIR}" init --lua-versions "5.1,5.2,5.3,5.4"
+  COMMAND "${luarocks_exe}" --lua-version "${ABIVER}" --lua-dir "${LUA_DIR}" init --lua-versions "5.1,5.2,5.3,5.4"
   COMMAND ${luarocks} --lua-version "${ABIVER}" config --scope project lua_interpreter "${LUA_INTERPRETER_NAME}"
   COMMAND ${luarocks} --lua-version "${ABIVER}" config --scope project variables.LUA_BINDIR "${LUA_BINDIR}"
   COMMAND ${luarocks} --lua-version "${ABIVER}" config --scope project variables.LUA_DIR "${LUA_DIR}"

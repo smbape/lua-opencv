@@ -399,10 +399,14 @@ end
 local function execute(args)
     if package.config:sub(1, 1) == '\\' then
         -- assume windows
-        os.execute(win32_join(args))
+        return os.execute(win32_join(args))
     else
         -- assume linux
-        os.execute(shell.join(args))
+        local success, status, code = os.execute(shell.join(args))
+        if _ENV == 'Lua 5.1' then return success end
+        if success then return 0 end
+        if status == 'exit' then return code / 0xff end
+        return 1
     end
 end
 

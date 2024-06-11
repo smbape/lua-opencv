@@ -220,9 +220,50 @@ namespace {
 		lua_pop(L, 1);
 	}
 }
+#ifdef __linux__
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+
+#include <stdio.h>
+#include <dlfcn.h>
+#include <cstdlib>
+#include <stdlib.h>
+
+namespace fs = std::filesystem;
+
+#define _stringify(s) #s
+#define stringify(s) _stringify(s)
+
+namespace {
+	void configure_qt_qpa() {
+		Dl_info info;
+		auto res = dladdr((void const*)&LUA_MODULE_LUAOPEN, &info);
+		if (!res) {
+			return;
+		}
+
+		fs::path shared_object = fs::absolute(info.dli_fname);
+		auto rpath = shared_object.parent_path();
+
+		auto plugins = rpath / stringify(LUA_MODULE_NAME) / "qt" / "plugins";
+		if (fs::exists(plugins)) {
+			setenv("QT_QPA_PLATFORM_PLUGIN_PATH", plugins.native().c_str(), 0); // does not overwrite
+		}
+
+		auto fonts = rpath / stringify(LUA_MODULE_NAME) / "qt" / "fonts";
+		if (fs::exists(plugins)) {
+			setenv("QT_QPA_FONTDIR", fonts.native().c_str(), 0); // does not overwrite
+		}
+	}
+}
+#endif
 
 namespace LUA_MODULE_NAME {
 	void register_extensions(lua_State* L) {
+#ifdef __linux__
+		configure_qt_qpa();
+#endif
 		extend_Mat(L);
 	}
 }

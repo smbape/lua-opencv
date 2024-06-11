@@ -61,7 +61,7 @@ We will name our LuaRocks pakcage **opencv_lua-contrib-custom** in order to avoi
 
 In this example, we will use the following directories: 
   - The **Lua binary directory** is _$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/src/out/install/Linux-GCC-Release/bin_
-  - The **LuaRocks binary directory** is _$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/src/out/build.luaonly//Linux-GCC-Release/luarocks/luarocks-prefix/src/luarocks-build/bin_
+  - The **LuaRocks binary directory** is _$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/src/out/build.luaonly/Linux-GCC-Release/luarocks/luarocks-prefix/src/luarocks-build/bin_
   - The **build directory** is _$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/build_
   - The **server directory** is _$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/server_
   - The **test directory** is _$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/test_
@@ -83,7 +83,7 @@ export PATH="$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/src/out/i
 
 Add your **LuaRocks binary directory** to the PATH environment variable
 ```sh
-export PATH="$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/src/out/build.luaonly//Linux-GCC-Release/luarocks/luarocks-prefix/src/luarocks-build/bin:$PATH"
+export PATH="$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/src/out/build.luaonly/Linux-GCC-Release/luarocks/luarocks-prefix/src/luarocks-build/bin:$PATH"
 ```
 
 ### Change directory to the **build directory**
@@ -133,7 +133,7 @@ The command above adds the following variables
 cd luarocks && \
 luarocks --lua-version "5.1" --lua-dir "$(dirname "$(dirname "$(command -v luajit)")")" init --lua-versions "5.1,5.2,5.3,5.4" && \
 luarocks config --scope project cmake_generator Ninja && \
-luarocks config --scope project cmake_build_args -- -j$(( $(nproc) - 2 )) && \
+luarocks config --scope project cmake_build_args -- -j$(( $(nproc) - 2 > 1 ? $(nproc) - 2 : 1 )) && \
 cd .. && \
 ./luarocks/luarocks make opencv_lua-contrib-custom-scm-1.rockspec
 ```
@@ -157,13 +157,13 @@ export PATH="$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/src/out/i
 
 Add your **LuaRocks binary directory** to the PATH environment variable
 ```sh
-export PATH="$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/src/out/build.luaonly//Linux-GCC-Release/luarocks/luarocks-prefix/src/luarocks-build/bin:$PATH"
+export PATH="$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/src/out/build.luaonly/Linux-GCC-Release/luarocks/luarocks-prefix/src/luarocks-build/bin:$PATH"
 ```
 
 ### Initialize our test project and install our custom prebuilt binary
 
 ```sh
-git clone --depth 1 --branch 4.9.0 https://github.com/opencv/opencv_extra.git "$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/opencv_extra" && \
+git clone --depth 1 --branch 4.10.0 https://github.com/opencv/opencv_extra.git "$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/opencv_extra" && \
 mkdir "$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/test" && \
 cd "$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/test" && \
 luarocks --lua-version "5.1" --lua-dir "$(dirname "$(dirname "$(command -v luajit)")")" init --lua-versions "5.1,5.2,5.3,5.4" && \

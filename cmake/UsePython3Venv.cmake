@@ -19,6 +19,6 @@ set(Python3_FIND_VIRTUALENV FIRST)
 unset(Python3_EXECUTABLE)
 
 ## Launch a new search
-find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
+find_package(Python3 COMPONENTS Interpreter REQUIRED)
 
 string(REPLACE / // PYTHON_BIN_PATH "${Python3_EXECUTABLE}")

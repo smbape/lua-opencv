@@ -22,8 +22,8 @@ endif()
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release;MinSizeRel;RelWithDebInfo" CACHE STRING "Configs" FORCE)
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "${CMAKE_CONFIGURATION_TYPES}")
 
-set(OpenCV_VERSION 4.9.0 CACHE STRING "Choose the OpenCV version.")
-set_property(CACHE OpenCV_VERSION PROPERTY STRINGS "4.9.0" "4.8.1" "4.8.0" "4.7.0" "4.6.0" "4.5.5" "4.5.4" "4.5.3" "4.5.2" "4.5.1")
+set(OpenCV_VERSION 4.10.0 CACHE STRING "Choose the OpenCV version.")
+set_property(CACHE OpenCV_VERSION PROPERTY STRINGS "4.10.0" "4.9.0" "4.8.1" "4.8.0" "4.7.0" "4.6.0" "4.5.5" "4.5.4" "4.5.3" "4.5.2" "4.5.1")
 
 string(REPLACE "." ";" OpenCV_VERSION_LIST ${OpenCV_VERSION})
 list(GET OpenCV_VERSION_LIST 0 OpenCV_VERSION_MAJOR)
@@ -53,7 +53,8 @@ FetchContent_Populate(opencv
 option(BUILD_contrib "Build with opencv contrib" OFF)
 
 if (BUILD_contrib)
-  # https://github.com/opencv/opencv-python/tree/80
+  # https://github.com/opencv/opencv-python/tree/82
+  set(OPENCV_CONTRIB_TAG_4100 1ed3dd2c53888e3289afdb22ec4e9ebbff3dba87)
   set(OPENCV_CONTRIB_TAG_490 c7602a8f74205e44389bd6a4e8d727d32e7e27b4)
   set(OPENCV_CONTRIB_TAG_481 f10c84d48b0714f2b408c9e5cccfac1277c8e6cc)
   set(OPENCV_CONTRIB_TAG_480 f10c84d48b0714f2b408c9e5cccfac1277c8e6cc)
@@ -123,10 +124,6 @@ option(BUILD_opencv_java_bindings_generator "The java bindings" OFF)
 option(BUILD_opencv_js_bindings_generator "The JavaScript(JS) bindings" OFF)
 option(BUILD_opencv_objc_bindings_generator "The Objective-C bindings" OFF)
 option(BUILD_opencv_python_bindings_generator "The Python bindings" ON)
-
-if (UNIX AND (NOT APPLE))
-  set(WITH_QT "5" CACHE STRING "Build with Qt Backend support")
-endif()
 
 if (WITH_FREETYPE)
   if (WIN32)

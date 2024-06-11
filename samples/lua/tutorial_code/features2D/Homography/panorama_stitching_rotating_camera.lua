@@ -4,7 +4,7 @@ package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:su
 
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/features2D/Homography/panorama_stitching_rotating_camera.py
+    https://github.com/opencv/opencv/blob/4.10.0/samples/python/tutorial_code/features2D/Homography/panorama_stitching_rotating_camera.py
 --]]
 
 local argparse = require("argparse")

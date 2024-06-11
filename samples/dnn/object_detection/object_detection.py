@@ -81,10 +81,10 @@ parser = argparse.ArgumentParser(parents=[parser],
 args = parser.parse_args()
 
 __dirname__ = os.path.dirname(os.path.abspath(__file__))
-models = os.path.join(__dirname__, 'models')
+MODELS_PATH = os.getenv('MODELS_PATH') or os.path.join(__dirname__, 'models')
 
-if not os.path.exists(models):
-    os.mkdir(models)
+if not os.path.exists(MODELS_PATH):
+    os.mkdir(MODELS_PATH)
 
 if len(sys.argv) > 1:
     subprocess.run([
@@ -93,11 +93,11 @@ if len(sys.argv) > 1:
         sys.argv[1],
         '--zoo',
         args.zoo
-    ], cwd=models)
+    ], cwd=MODELS_PATH)
 
 cv.samples.addSamplesDataSearchPath(os.path.abspath(os.path.join(__dirname__, '../../../opencv-4.9.0-windows/opencv/sources/samples/data')))
 cv.samples.addSamplesDataSearchPath(os.path.abspath(os.path.join(__dirname__, '../../../opencv-4.9.0-windows/opencv/sources/samples/data/dnn')))
-cv.samples.addSamplesDataSearchPath(models)
+cv.samples.addSamplesDataSearchPath(MODELS_PATH)
 cv.samples.addSamplesDataSearchPath(__dirname__)
 
 args.model = findFile(args.model)

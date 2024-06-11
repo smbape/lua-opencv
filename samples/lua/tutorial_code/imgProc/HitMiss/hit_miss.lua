@@ -4,7 +4,7 @@ package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:su
 
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/imgProc/HitMiss/hit_miss.py
+    https://github.com/opencv/opencv/blob/4.10.0/samples/python/tutorial_code/imgProc/HitMiss/hit_miss.py
 --]]
 
 local opencv_lua = require("init")

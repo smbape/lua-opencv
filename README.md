@@ -77,17 +77,17 @@ luarocks install --server=https://github.com/smbape/lua-opencv/releases/download
 Or to specify the target lua version
 
 ```sh
-luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.9.0luajit2.1
-luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.9.0lua5.4
-luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.9.0lua5.3
-luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.9.0lua5.2
-luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.9.0lua5.1
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.10.0luajit2.1
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.10.0lua5.4
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.10.0lua5.3
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.10.0lua5.2
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.10.0lua5.1
 ```
 
 If none of the above works for you, then install the source rock
 
 ```sh
-luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.9.0
+luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.10.0
 ```
 
 ## Examples
@@ -263,7 +263,7 @@ cv.destroyAllWindows()
 #### Windows
 
 ```cmd
-git clone --depth 1 --branch 4.9.0 https://github.com/opencv/opencv.git
+git clone --depth 1 --branch 4.10.0 https://github.com/opencv/opencv.git
 git clone --depth 1 --branch v0.0.4 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
 @REM build.bat "-DLua_VERSION=luajit-2.1" --target luajit --install
@@ -279,14 +279,14 @@ node scripts\test.js --Release
 #### Linux
 
 ```sh
-git clone --depth 1 --branch 4.9.0 https://github.com/opencv/opencv.git
+git clone --depth 1 --branch 4.10.0 https://github.com/opencv/opencv.git
 git clone --depth 1 --branch v0.0.4 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
 # ./build.sh "-DLua_VERSION=luajit-2.1" --target luajit --install
 # available versions are 5.1, 5.2, 5.3, 5.4
 ./build.sh "-DLua_VERSION=5.4" --target lua --install
 ./build.sh "-DLua_VERSION=5.4" --target luarocks
-# ./luarocks/luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.9.0luajit2.1
+# ./luarocks/luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.10.0luajit2.1
 ./luarocks/luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua
 ./luarocks/luarocks install --deps-only samples/samples-scm-1.rockspec
 npm ci

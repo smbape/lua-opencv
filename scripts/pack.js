@@ -7,7 +7,7 @@ const waterfall = require("async/waterfall");
 const pkg = require("../package.json");
 
 const version = process.env.npm_package_version || pkg.version;
-const OpenCV_NAME_VERSION = "opencv-4.9.0";
+const OpenCV_NAME_VERSION = "opencv-4.10.0";
 const OpenCV_VERSION = OpenCV_NAME_VERSION.slice("opencv-".length);
 const distVersion = process.env.DIST_VERSION || "1"; // TODO : find a way to automatically update it
 const workspaceRoot = sysPath.resolve(__dirname, "..");
@@ -152,7 +152,12 @@ waterfall([
 
         waterfall([
             next => {
-                spawnExec(lua, [new_version, scmRockSpec, binary, abi, "--platform", os.platform()], {
+                const args = [new_version, scmRockSpec, binary, abi, "--platform", os.platform()];
+                if (process.argv.includes("--repair")) {
+                    args.push("--repair");
+                }
+
+                spawnExec(lua, args, {
                     stdio: "inherit",
                     cwd: lua_modules
                 }, next);
@@ -171,7 +176,10 @@ waterfall([
                 const binaryRock = stdout.slice(start).trim().slice(lua_modules.length + 1);
 
                 eachOfLimit([binaryRockSpec, binaryRock], 1, (filename, i2, next) => {
-                    fs.move(sysPath.join(lua_modules, filename), sysPath.join(LUAROCKS_SERVER, filename), {
+                    const src = sysPath.join(lua_modules, filename);
+                    const dst = sysPath.join(LUAROCKS_SERVER, filename);
+                    console.log("moving", src, dst);
+                    fs.move(src, dst, {
                         overwrite: true,
                     }, next);
                 }, next);

@@ -8,6 +8,7 @@ const prepublishRoot = sysPath.resolve(__dirname, "..", "out", "prepublish");
 const wrapperSuffix = os.platform() === "win32" ? ".bat" : "";
 const shellSuffix = os.platform() === "win32" ? ".bat" : ".sh";
 const pack = process.argv.includes("--pack");
+const repair = process.argv.includes("--repair");
 const GIT_BRANCH = process.env.GIT_BRANCH || "main";
 
 const spawnExec = (cmd, args, options, next) => {
@@ -61,7 +62,7 @@ const spawnExec = (cmd, args, options, next) => {
     }
 };
 
-const prepublish = (target, version, contrib, next) => {
+const prepublish = (target, version, contrib, cache, next) => {
     const workspaceRoot = sysPath.join(prepublishRoot, version);
     const projectRoot = sysPath.join(workspaceRoot, contrib ? "lua-opencv-contrib" : "lua-opencv");
     const originalRockSpec = sysPath.join(projectRoot, "luarocks", "opencv_lua-scm-1.rockspec");
@@ -96,6 +97,9 @@ const prepublish = (target, version, contrib, next) => {
                     ["git", ["remote", "add", "origin", sysPath.resolve(__dirname, "..")]],
                     ["git", ["pull", "origin", GIT_BRANCH]],
                     ["git", ["branch", "--set-upstream-to=origin/main", GIT_BRANCH]],
+                    ["git", ["config", "pull.rebase", "true"]],
+                    ["git", ["config", "user.email", "you@example.com"]],
+                    ["git", ["config", "user.name", "Your Name"]],
                 ]);
             }
 
@@ -135,24 +139,39 @@ const prepublish = (target, version, contrib, next) => {
             ];
 
             if (pack) {
-                tasks.push(["node", [sysPath.join("scripts", "pack.js")]]);
+                const args = [sysPath.join("scripts", "pack.js")];
+                if (repair) {
+                    args.push("--repair");
+                }
+                tasks.push(["node", args]);
             }
 
             if (os.platform() !== "win32") {
                 tasks.splice(2, 0, ...[
                     [luarocks, ["config", "--scope", "project", "cmake_generator", "Ninja"]],
-                    [luarocks, ["config", "--scope", "project", "cmake_build_args", "--", `-j${ Math.max(1, os.cpus().length - 2) }`]],
+                    [luarocks, ["config", "--scope", "project", "cmake_build_args", "--", `-j${ os.cpus().length }`]],
                 ]);
+            }
+
+            const env = {
+                ROCKSPEC: scmRockSpec,
+                LUAROCKS_SERVER: sysPath.join(prepublishRoot, "server"),
+            };
+
+            const [cachedTarget, cachedVersion] = cache;
+            const enableCache = cachedTarget !== target || cachedVersion !== version;
+            if (enableCache) {
+                const abi = cachedTarget === "luajit" ? "5.1" : cachedVersion;
+                const suffix = contrib ? "-contrib" : "";
+                const OpenCV_DIR = sysPath.resolve(prepublishRoot, cachedVersion, `lua-opencv${ suffix }`, "luarocks", "lua_modules", "lib", "luarocks", `rocks-${ abi }`, `opencv_lua${ suffix }`, "scm-1");
+                env.OpenCV_DIR = OpenCV_DIR;
             }
 
             eachOfLimit(tasks, 1, ([cmd, args], icmd, next) => {
                 spawnExec(cmd, args, {
                     stdio: "inherit",
                     cwd: projectRoot,
-                    env: Object.assign({
-                        ROCKSPEC: scmRockSpec,
-                        LUAROCKS_SERVER: sysPath.join(prepublishRoot, "server"),
-                    }, process.env)
+                    env: Object.assign(env, process.env)
                 }, next);
             }, next);
         },
@@ -167,6 +186,6 @@ eachOfLimit([
     ["lua", "5.1"],
 ], 1, ([target, version], i, next) => {
     eachOfLimit([false, true], 1, (contrib, icontrib, next) => {
-        prepublish(target, version, contrib, next);
+        prepublish(target, version, contrib, ["luajit", "luajit-2.1"], next);
     }, next);
 });

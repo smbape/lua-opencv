@@ -1,4 +1,6 @@
-if (NOT WITH_LUA_ROCKS)
+option(BUILD_LUA "Build Lua from source" ON)
+
+if (BUILD_LUA AND (NOT WITH_LUA_ROCKS))
   set(Lua_VERSION 5.4.6 CACHE STRING "Choose the Lua version.")
   set_property(CACHE Lua_VERSION PROPERTY STRINGS "luajit-2.1" "5.4.6" "5.3.6" "5.2.4" "5.1.5")
 

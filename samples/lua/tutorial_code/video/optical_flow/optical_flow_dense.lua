@@ -4,7 +4,7 @@ package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:su
 
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.9.0/samples/python/tutorial_code/video/optical_flow/optical_flow_dense.py
+    https://github.com/opencv/opencv/blob/4.10.0/samples/python/tutorial_code/video/optical_flow/optical_flow_dense.py
 --]]
 
 local opencv_lua = require("init")

@@ -3,16 +3,19 @@
 const fs = require("node:fs");
 const fsPromises = require("node:fs/promises");
 const sysPath = require("node:path");
-const {spawn} = require("node:child_process");
+const { spawn } = require("node:child_process");
 const os = require("node:os");
 
 const { mkdirp } = require("mkdirp");
+const eachOfLimit = require("async/eachOfLimit");
 const waterfall = require("async/waterfall");
-const {explore} = require("fs-explorer");
+const { explore } = require("fs-explorer");
 
-const OpenCV_VERSION = "opencv-4.9.0";
+const OpenCV_VERSION = "opencv-4.10.0";
 // const OpenCV_DLLVERSION = OpenCV_VERSION.slice("opencv-".length).replaceAll(".", "");
 global.OpenCV_VERSION = OpenCV_VERSION;
+
+const Python3_EXECUTABLE = process.env.Python3_EXECUTABLE ? process.env.Python3_EXECUTABLE : "python";
 
 const getOptions = output => {
     const options = {
@@ -108,17 +111,27 @@ const PROJECT_DIR = sysPath.dirname(__dirname);
 const SRC_DIR = sysPath.join(PROJECT_DIR, "src");
 const opencv_SOURCE_DIR = (() => {
     const platform = os.platform() === "win32" ? (/cygwin/.test(process.env.HOME) ? "Cygwin" : "x64") : "*-GCC";
-    for (const buildDir of [
-        process.env.CMAKE_BINARY_DIR,
+
+    const hints = [
         `out/build/${ platform }-*`,
         "build.luarocks",
+    ];
 
-    ]) {
-        if (!buildDir) {
-            continue;
-        }
+    if (process.env.CMAKE_BINARY_DIR) {
+        hints.unshift(process.env.CMAKE_BINARY_DIR);
+    }
 
-        const file = findFile(`${ buildDir }/opencv/opencv-src`, PROJECT_DIR);
+    if (process.env.OpenCV_DIR) {
+        const { OpenCV_DIR } = process.env;
+        const parts = OpenCV_DIR.split(/[\\/]/);
+        const pos = parts.indexOf("lua_modules");
+        const build = sysPath.resolve(sysPath.dirname(parts.slice(0, pos).join(sysPath.sep)), "build.luarocks");
+        const hint = sysPath.relative(PROJECT_DIR, build);
+        hints.unshift(hint);
+    }
+
+    for (const hint of hints) {
+        const file = findFile(`${ hint }/opencv/opencv-src`, PROJECT_DIR);
         if (file) {
             return file;
         }
@@ -141,17 +154,33 @@ options.proto = LuaGenerator.proto;
 
 waterfall([
     next => {
-        try {
-            fs.accessSync(pyopencv_generated_include, fs.constants.R_OK);
+        const files = [sysPath.join(sysPath.dirname(sysPath.dirname(opencv_SOURCE_DIR)), "CMakeCache.txt"), pyopencv_generated_include];
+        const results = [];
+        eachOfLimit(files, files.length, (file, i, next) => {
+            fs.stat(file, (err, stats) => {
+                if (err && err.code === "ENOENT") {
+                    err = null;
+                    results[i] = null;
+                } else {
+                    results[i] = stats;
+                }
+                next(err);
+            });
+        }, err => {
+            next(err, results);
+        });
+    },
+
+    (results, next) => {
+        const [statsCMakeCache, statsPyOpenCVGeneratedInclude] = results;
+        if (statsCMakeCache && statsPyOpenCVGeneratedInclude && statsCMakeCache.mtimeMs <= statsPyOpenCVGeneratedInclude.mtimeMs) {
             next();
             return;
-        } catch (err) {
-            // Nothing to do
         }
 
         console.log("generating", pyopencv_generated_include);
 
-        const child = spawn("python", [sysPath.join(src2, "gen2.py"), python_bindings_generator, headers], {
+        const child = spawn(Python3_EXECUTABLE, [sysPath.join(src2, "gen2.py"), python_bindings_generator, headers], {
             stdio: [0, "pipe", "pipe"]
         });
 
@@ -207,7 +236,7 @@ waterfall([
 
         const buffers = [];
         let nlen = 0;
-        const child = spawn("python", []);
+        const child = spawn(Python3_EXECUTABLE, []);
 
         child.stderr.on("data", chunk => {
             process.stderr.write(chunk);

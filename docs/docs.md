@@ -914,6 +914,7 @@
   - [cv.INTER\_MAX](#cvinter%5C_max)
   - [cv.WARP\_FILL\_OUTLIERS](#cvwarp%5C_fill%5C_outliers)
   - [cv.WARP\_INVERSE\_MAP](#cvwarp%5C_inverse%5C_map)
+  - [cv.WARP\_RELATIVE\_MAP](#cvwarp%5C_relative%5C_map)
   - [cv.WARP\_POLAR\_LINEAR](#cvwarp%5C_polar%5C_linear)
   - [cv.WARP\_POLAR\_LOG](#cvwarp%5C_polar%5C_log)
   - [cv.INTER\_BITS](#cvinter%5C_bits)
@@ -1356,6 +1357,8 @@
   - [cv.IMWRITE\_TIFF\_XDPI](#cvimwrite%5C_tiff%5C_xdpi)
   - [cv.IMWRITE\_TIFF\_YDPI](#cvimwrite%5C_tiff%5C_ydpi)
   - [cv.IMWRITE\_TIFF\_COMPRESSION](#cvimwrite%5C_tiff%5C_compression)
+  - [cv.IMWRITE\_TIFF\_ROWSPERSTRIP](#cvimwrite%5C_tiff%5C_rowsperstrip)
+  - [cv.IMWRITE\_TIFF\_PREDICTOR](#cvimwrite%5C_tiff%5C_predictor)
   - [cv.IMWRITE\_JPEG2000\_COMPRESSION\_X1000](#cvimwrite%5C_jpeg2000%5C_compression%5C_x1000)
   - [cv.IMWRITE\_AVIF\_QUALITY](#cvimwrite%5C_avif%5C_quality)
   - [cv.IMWRITE\_AVIF\_DEPTH](#cvimwrite%5C_avif%5C_depth)
@@ -1365,6 +1368,42 @@
   - [cv.IMWRITE\_JPEG\_SAMPLING\_FACTOR\_422](#cvimwrite%5C_jpeg%5C_sampling%5C_factor%5C_422)
   - [cv.IMWRITE\_JPEG\_SAMPLING\_FACTOR\_440](#cvimwrite%5C_jpeg%5C_sampling%5C_factor%5C_440)
   - [cv.IMWRITE\_JPEG\_SAMPLING\_FACTOR\_444](#cvimwrite%5C_jpeg%5C_sampling%5C_factor%5C_444)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_NONE](#cvimwrite%5C_tiff%5C_compression%5C_none)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_CCITTRLE](#cvimwrite%5C_tiff%5C_compression%5C_ccittrle)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_CCITTFAX3](#cvimwrite%5C_tiff%5C_compression%5C_ccittfax3)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_CCITT\_T4](#cvimwrite%5C_tiff%5C_compression%5C_ccitt%5C_t4)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_CCITTFAX4](#cvimwrite%5C_tiff%5C_compression%5C_ccittfax4)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_CCITT\_T6](#cvimwrite%5C_tiff%5C_compression%5C_ccitt%5C_t6)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_LZW](#cvimwrite%5C_tiff%5C_compression%5C_lzw)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_OJPEG](#cvimwrite%5C_tiff%5C_compression%5C_ojpeg)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_JPEG](#cvimwrite%5C_tiff%5C_compression%5C_jpeg)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_T85](#cvimwrite%5C_tiff%5C_compression%5C_t85)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_T43](#cvimwrite%5C_tiff%5C_compression%5C_t43)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_NEXT](#cvimwrite%5C_tiff%5C_compression%5C_next)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_CCITTRLEW](#cvimwrite%5C_tiff%5C_compression%5C_ccittrlew)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_PACKBITS](#cvimwrite%5C_tiff%5C_compression%5C_packbits)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_THUNDERSCAN](#cvimwrite%5C_tiff%5C_compression%5C_thunderscan)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_IT8CTPAD](#cvimwrite%5C_tiff%5C_compression%5C_it8ctpad)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_IT8LW](#cvimwrite%5C_tiff%5C_compression%5C_it8lw)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_IT8MP](#cvimwrite%5C_tiff%5C_compression%5C_it8mp)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_IT8BL](#cvimwrite%5C_tiff%5C_compression%5C_it8bl)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_PIXARFILM](#cvimwrite%5C_tiff%5C_compression%5C_pixarfilm)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_PIXARLOG](#cvimwrite%5C_tiff%5C_compression%5C_pixarlog)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_DEFLATE](#cvimwrite%5C_tiff%5C_compression%5C_deflate)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_ADOBE\_DEFLATE](#cvimwrite%5C_tiff%5C_compression%5C_adobe%5C_deflate)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_DCS](#cvimwrite%5C_tiff%5C_compression%5C_dcs)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_JBIG](#cvimwrite%5C_tiff%5C_compression%5C_jbig)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_SGILOG](#cvimwrite%5C_tiff%5C_compression%5C_sgilog)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_SGILOG24](#cvimwrite%5C_tiff%5C_compression%5C_sgilog24)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_JP2000](#cvimwrite%5C_tiff%5C_compression%5C_jp2000)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_LERC](#cvimwrite%5C_tiff%5C_compression%5C_lerc)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_LZMA](#cvimwrite%5C_tiff%5C_compression%5C_lzma)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_ZSTD](#cvimwrite%5C_tiff%5C_compression%5C_zstd)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_WEBP](#cvimwrite%5C_tiff%5C_compression%5C_webp)
+  - [cv.IMWRITE\_TIFF\_COMPRESSION\_JXL](#cvimwrite%5C_tiff%5C_compression%5C_jxl)
+  - [cv.IMWRITE\_TIFF\_PREDICTOR\_NONE](#cvimwrite%5C_tiff%5C_predictor%5C_none)
+  - [cv.IMWRITE\_TIFF\_PREDICTOR\_HORIZONTAL](#cvimwrite%5C_tiff%5C_predictor%5C_horizontal)
+  - [cv.IMWRITE\_TIFF\_PREDICTOR\_FLOATINGPOINT](#cvimwrite%5C_tiff%5C_predictor%5C_floatingpoint)
   - [cv.IMWRITE\_EXR\_TYPE\_HALF](#cvimwrite%5C_exr%5C_type%5C_half)
   - [cv.IMWRITE\_EXR\_TYPE\_FLOAT](#cvimwrite%5C_exr%5C_type%5C_float)
   - [cv.IMWRITE\_EXR\_COMPRESSION\_NO](#cvimwrite%5C_exr%5C_compression%5C_no)
@@ -2096,6 +2135,7 @@
   - [cv.createTonemapReinhard](#cvcreatetonemapreinhard)
   - [cv.createTrackbar](#cvcreatetrackbar)
   - [cv.cubeRoot](#cvcuberoot)
+  - [cv.currentUIFramework](#cvcurrentuiframework)
   - [cv.cvtColor](#cvcvtcolor)
   - [cv.cvtColorTwoPlane](#cvcvtcolortwoplane)
   - [cv.dct](#cvdct)
@@ -2158,6 +2198,7 @@
   - [cv.findChessboardCornersSBWithMeta](#cvfindchessboardcornerssbwithmeta)
   - [cv.findCirclesGrid](#cvfindcirclesgrid)
   - [cv.findContours](#cvfindcontours)
+  - [cv.findContoursLinkRuns](#cvfindcontourslinkruns)
   - [cv.findEssentialMat](#cvfindessentialmat)
   - [cv.findFundamentalMat](#cvfindfundamentalmat)
   - [cv.findHomography](#cvfindhomography)
@@ -2586,6 +2627,7 @@
   - [cv.DISOpticalFlow.getUseSpatialPropagation](#cvdisopticalflowgetusespatialpropagation)
   - [cv.DISOpticalFlow.getVariationalRefinementAlpha](#cvdisopticalflowgetvariationalrefinementalpha)
   - [cv.DISOpticalFlow.getVariationalRefinementDelta](#cvdisopticalflowgetvariationalrefinementdelta)
+  - [cv.DISOpticalFlow.getVariationalRefinementEpsilon](#cvdisopticalflowgetvariationalrefinementepsilon)
   - [cv.DISOpticalFlow.getVariationalRefinementGamma](#cvdisopticalflowgetvariationalrefinementgamma)
   - [cv.DISOpticalFlow.getVariationalRefinementIterations](#cvdisopticalflowgetvariationalrefinementiterations)
   - [cv.DISOpticalFlow.setFinestScale](#cvdisopticalflowsetfinestscale)
@@ -2596,6 +2638,7 @@
   - [cv.DISOpticalFlow.setUseSpatialPropagation](#cvdisopticalflowsetusespatialpropagation)
   - [cv.DISOpticalFlow.setVariationalRefinementAlpha](#cvdisopticalflowsetvariationalrefinementalpha)
   - [cv.DISOpticalFlow.setVariationalRefinementDelta](#cvdisopticalflowsetvariationalrefinementdelta)
+  - [cv.DISOpticalFlow.setVariationalRefinementEpsilon](#cvdisopticalflowsetvariationalrefinementepsilon)
   - [cv.DISOpticalFlow.setVariationalRefinementGamma](#cvdisopticalflowsetvariationalrefinementgamma)
   - [cv.DISOpticalFlow.setVariationalRefinementIterations](#cvdisopticalflowsetvariationalrefinementiterations)
 - [cv::DMatch](#cvdmatch)
@@ -4004,6 +4047,7 @@
   - [RotatedRect.angle](#rotatedrectangle)
   - [cv.RotatedRect.new](#cvrotatedrectnew)
   - [cv.RotatedRect.boundingRect](#cvrotatedrectboundingrect)
+  - [cv.RotatedRect.boundingRect2f](#cvrotatedrectboundingrect2f)
   - [cv.RotatedRect.points](#cvrotatedrectpoints)
 - [cv::SIFT](#cvsift)
   - [cv.SIFT.create](#cvsiftcreate)
@@ -4361,12 +4405,14 @@
   - [cv.VariationalRefinement.create](#cvvariationalrefinementcreate)
   - [cv.VariationalRefinement.getAlpha](#cvvariationalrefinementgetalpha)
   - [cv.VariationalRefinement.getDelta](#cvvariationalrefinementgetdelta)
+  - [cv.VariationalRefinement.getEpsilon](#cvvariationalrefinementgetepsilon)
   - [cv.VariationalRefinement.getFixedPointIterations](#cvvariationalrefinementgetfixedpointiterations)
   - [cv.VariationalRefinement.getGamma](#cvvariationalrefinementgetgamma)
   - [cv.VariationalRefinement.getOmega](#cvvariationalrefinementgetomega)
   - [cv.VariationalRefinement.getSorIterations](#cvvariationalrefinementgetsoriterations)
   - [cv.VariationalRefinement.setAlpha](#cvvariationalrefinementsetalpha)
   - [cv.VariationalRefinement.setDelta](#cvvariationalrefinementsetdelta)
+  - [cv.VariationalRefinement.setEpsilon](#cvvariationalrefinementsetepsilon)
   - [cv.VariationalRefinement.setFixedPointIterations](#cvvariationalrefinementsetfixedpointiterations)
   - [cv.VariationalRefinement.setGamma](#cvvariationalrefinementsetgamma)
   - [cv.VariationalRefinement.setOmega](#cvvariationalrefinementsetomega)
@@ -4577,6 +4623,12 @@
   - [cv.barcode.BarcodeDetector.new](#cvbarcodebarcodedetectornew)
   - [cv.barcode.BarcodeDetector.decodeWithType](#cvbarcodebarcodedetectordecodewithtype)
   - [cv.barcode.BarcodeDetector.detectAndDecodeWithType](#cvbarcodebarcodedetectordetectanddecodewithtype)
+  - [cv.barcode.BarcodeDetector.getDetectorScales](#cvbarcodebarcodedetectorgetdetectorscales)
+  - [cv.barcode.BarcodeDetector.getDownsamplingThreshold](#cvbarcodebarcodedetectorgetdownsamplingthreshold)
+  - [cv.barcode.BarcodeDetector.getGradientThreshold](#cvbarcodebarcodedetectorgetgradientthreshold)
+  - [cv.barcode.BarcodeDetector.setDetectorScales](#cvbarcodebarcodedetectorsetdetectorscales)
+  - [cv.barcode.BarcodeDetector.setDownsamplingThreshold](#cvbarcodebarcodedetectorsetdownsamplingthreshold)
+  - [cv.barcode.BarcodeDetector.setGradientThreshold](#cvbarcodebarcodedetectorsetgradientthreshold)
 - [cv::cuda](#cvcuda)
   - [cuda.FEATURE\_SET\_COMPUTE\_10](#cudafeature%5C_set%5C_compute%5C_10)
   - [cuda.FEATURE\_SET\_COMPUTE\_11](#cudafeature%5C_set%5C_compute%5C_11)
@@ -5076,6 +5128,7 @@
   - [cv.dnn.Model.setInputScale](#cvdnnmodelsetinputscale)
   - [cv.dnn.Model.setInputSize](#cvdnnmodelsetinputsize)
   - [cv.dnn.Model.setInputSwapRB](#cvdnnmodelsetinputswaprb)
+  - [cv.dnn.Model.setOutputNames](#cvdnnmodelsetoutputnames)
   - [cv.dnn.Model.setPreferableBackend](#cvdnnmodelsetpreferablebackend)
   - [cv.dnn.Model.setPreferableTarget](#cvdnnmodelsetpreferabletarget)
 - [cv::dnn::Net](#cvdnnnet)
@@ -5083,6 +5136,7 @@
   - [cv.dnn.Net.connect](#cvdnnnetconnect)
   - [cv.dnn.Net.dump](#cvdnnnetdump)
   - [cv.dnn.Net.dumpToFile](#cvdnnnetdumptofile)
+  - [cv.dnn.Net.dumpToPbtxt](#cvdnnnetdumptopbtxt)
   - [cv.dnn.Net.empty](#cvdnnnetempty)
   - [cv.dnn.Net.enableFusion](#cvdnnnetenablefusion)
   - [cv.dnn.Net.enableWinograd](#cvdnnnetenablewinograd)
@@ -5160,6 +5214,7 @@
   - [cv.fisheye.estimateNewCameraMatrixForUndistortRectify](#cvfisheyeestimatenewcameramatrixforundistortrectify)
   - [cv.fisheye.initUndistortRectifyMap](#cvfisheyeinitundistortrectifymap)
   - [cv.fisheye.projectPoints](#cvfisheyeprojectpoints)
+  - [cv.fisheye.solvePnP](#cvfisheyesolvepnp)
   - [cv.fisheye.stereoCalibrate](#cvfisheyestereocalibrate)
   - [cv.fisheye.stereoRectify](#cvfisheyestereorectify)
   - [cv.fisheye.undistortImage](#cvfisheyeundistortimage)
@@ -5793,6 +5848,8 @@
   - [cv.ocl.Device.globalMemCacheType](#cvocldeviceglobalmemcachetype)
   - [cv.ocl.Device.globalMemSize](#cvocldeviceglobalmemsize)
   - [cv.ocl.Device.halfFPConfig](#cvocldevicehalffpconfig)
+  - [cv.ocl.Device.hasFP16](#cvocldevicehasfp16)
+  - [cv.ocl.Device.hasFP64](#cvocldevicehasfp64)
   - [cv.ocl.Device.hostUnifiedMemory](#cvocldevicehostunifiedmemory)
   - [cv.ocl.Device.image2DMaxHeight](#cvocldeviceimage2dmaxheight)
   - [cv.ocl.Device.image2DMaxWidth](#cvocldeviceimage2dmaxwidth)
@@ -16023,6 +16080,14 @@ lua:
     [propget] cv.WARP_INVERSE_MAP
 ```
 
+### cv.WARP\_RELATIVE\_MAP
+
+```cpp
+int cv::WARP_RELATIVE_MAP
+lua:
+    [propget] cv.WARP_RELATIVE_MAP
+```
+
 ### cv.WARP\_POLAR\_LINEAR
 
 ```cpp
@@ -19559,6 +19624,22 @@ lua:
     [propget] cv.IMWRITE_TIFF_COMPRESSION
 ```
 
+### cv.IMWRITE\_TIFF\_ROWSPERSTRIP
+
+```cpp
+int cv::IMWRITE_TIFF_ROWSPERSTRIP
+lua:
+    [propget] cv.IMWRITE_TIFF_ROWSPERSTRIP
+```
+
+### cv.IMWRITE\_TIFF\_PREDICTOR
+
+```cpp
+int cv::IMWRITE_TIFF_PREDICTOR
+lua:
+    [propget] cv.IMWRITE_TIFF_PREDICTOR
+```
+
 ### cv.IMWRITE\_JPEG2000\_COMPRESSION\_X1000
 
 ```cpp
@@ -19629,6 +19710,294 @@ lua:
 int cv::IMWRITE_JPEG_SAMPLING_FACTOR_444
 lua:
     [propget] cv.IMWRITE_JPEG_SAMPLING_FACTOR_444
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_NONE
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_NONE
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_NONE
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_CCITTRLE
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_CCITTRLE
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_CCITTRLE
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_CCITTFAX3
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_CCITTFAX3
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_CCITTFAX3
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_CCITT\_T4
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_CCITT_T4
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_CCITT_T4
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_CCITTFAX4
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_CCITTFAX4
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_CCITTFAX4
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_CCITT\_T6
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_CCITT_T6
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_CCITT_T6
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_LZW
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_LZW
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_LZW
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_OJPEG
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_OJPEG
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_OJPEG
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_JPEG
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_JPEG
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_JPEG
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_T85
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_T85
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_T85
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_T43
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_T43
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_T43
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_NEXT
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_NEXT
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_NEXT
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_CCITTRLEW
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_CCITTRLEW
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_CCITTRLEW
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_PACKBITS
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_PACKBITS
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_PACKBITS
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_THUNDERSCAN
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_THUNDERSCAN
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_THUNDERSCAN
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_IT8CTPAD
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_IT8CTPAD
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_IT8CTPAD
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_IT8LW
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_IT8LW
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_IT8LW
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_IT8MP
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_IT8MP
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_IT8MP
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_IT8BL
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_IT8BL
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_IT8BL
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_PIXARFILM
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_PIXARFILM
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_PIXARFILM
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_PIXARLOG
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_PIXARLOG
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_PIXARLOG
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_DEFLATE
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_DEFLATE
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_DEFLATE
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_ADOBE\_DEFLATE
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_ADOBE_DEFLATE
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_ADOBE_DEFLATE
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_DCS
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_DCS
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_DCS
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_JBIG
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_JBIG
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_JBIG
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_SGILOG
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_SGILOG
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_SGILOG
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_SGILOG24
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_SGILOG24
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_SGILOG24
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_JP2000
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_JP2000
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_JP2000
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_LERC
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_LERC
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_LERC
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_LZMA
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_LZMA
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_LZMA
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_ZSTD
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_ZSTD
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_ZSTD
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_WEBP
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_WEBP
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_WEBP
+```
+
+### cv.IMWRITE\_TIFF\_COMPRESSION\_JXL
+
+```cpp
+int cv::IMWRITE_TIFF_COMPRESSION_JXL
+lua:
+    [propget] cv.IMWRITE_TIFF_COMPRESSION_JXL
+```
+
+### cv.IMWRITE\_TIFF\_PREDICTOR\_NONE
+
+```cpp
+int cv::IMWRITE_TIFF_PREDICTOR_NONE
+lua:
+    [propget] cv.IMWRITE_TIFF_PREDICTOR_NONE
+```
+
+### cv.IMWRITE\_TIFF\_PREDICTOR\_HORIZONTAL
+
+```cpp
+int cv::IMWRITE_TIFF_PREDICTOR_HORIZONTAL
+lua:
+    [propget] cv.IMWRITE_TIFF_PREDICTOR_HORIZONTAL
+```
+
+### cv.IMWRITE\_TIFF\_PREDICTOR\_FLOATINGPOINT
+
+```cpp
+int cv::IMWRITE_TIFF_PREDICTOR_FLOATINGPOINT
+lua:
+    [propget] cv.IMWRITE_TIFF_PREDICTOR_FLOATINGPOINT
 ```
 
 ### cv.IMWRITE\_EXR\_TYPE\_HALF
@@ -25999,6 +26368,14 @@ lua:
     cv.cubeRoot( val ) -> retval
 ```
 
+### cv.currentUIFramework
+
+```cpp
+std::string cv::currentUIFramework();
+lua:
+    cv.currentUIFramework() -> retval
+```
+
 ### cv.cvtColor
 
 ```cpp
@@ -26823,6 +27200,23 @@ lua:
     cv.findContours( image, mode, method[, contours[, hierarchy[, offset]]] ) -> contours, hierarchy
 ```
 
+### cv.findContoursLinkRuns
+
+```cpp
+void cv::findContoursLinkRuns( InputArray          image,
+                               OutputArrayOfArrays contours,
+                               OutputArray         hierarchy );
+lua:
+    cv.findContoursLinkRuns( image[, contours[, hierarchy]] ) -> contours, hierarchy
+```
+
+```cpp
+void cv::findContoursLinkRuns( InputArray          image,
+                               OutputArrayOfArrays contours );
+lua:
+    cv.findContoursLinkRuns( image[, contours] ) -> contours
+```
+
 ### cv.findEssentialMat
 
 ```cpp
@@ -27567,6 +27961,14 @@ cv::Mat cv::imread( const std::string& filename,
                     int                flags = IMREAD_COLOR );
 lua:
     cv.imread( filename[, flags] ) -> retval
+```
+
+```cpp
+void cv::imread( const std::string& filename,
+                 OutputArray        dst,
+                 int                flags = IMREAD_COLOR );
+lua:
+    cv.imread( filename[, dst[, flags]] ) -> dst
 ```
 
 ### cv.imreadmulti
@@ -31216,6 +31618,14 @@ lua:
     oDISOpticalFlow:getVariationalRefinementDelta() -> retval
 ```
 
+### cv.DISOpticalFlow.getVariationalRefinementEpsilon
+
+```cpp
+float cv::DISOpticalFlow::getVariationalRefinementEpsilon() const;
+lua:
+    oDISOpticalFlow:getVariationalRefinementEpsilon() -> retval
+```
+
 ### cv.DISOpticalFlow.getVariationalRefinementGamma
 
 ```cpp
@@ -31294,6 +31704,14 @@ lua:
 void cv::DISOpticalFlow::setVariationalRefinementDelta( float val );
 lua:
     oDISOpticalFlow:setVariationalRefinementDelta( val ) -> None
+```
+
+### cv.DISOpticalFlow.setVariationalRefinementEpsilon
+
+```cpp
+void cv::DISOpticalFlow::setVariationalRefinementEpsilon( float val );
+lua:
+    oDISOpticalFlow:setVariationalRefinementEpsilon( val ) -> None
 ```
 
 ### cv.DISOpticalFlow.setVariationalRefinementGamma
@@ -33492,6 +33910,13 @@ cv::GMat();
 lua:
     cv.GMat.new() -> <cv::GMat object>
     cv.GMat() -> <cv::GMat object>
+```
+
+```cpp
+cv::GMat( cv::Mat m );
+lua:
+    cv.GMat.new( m ) -> <cv::GMat object>
+    cv.GMat( m ) -> <cv::GMat object>
 ```
 
 ## cv::GMatDesc
@@ -44494,7 +44919,7 @@ lua:
 ### cv.QRCodeDetectorAruco.getArucoParameters
 
 ```cpp
-cv::aruco::DetectorParameters cv::QRCodeDetectorAruco::getArucoParameters();
+cv::aruco::DetectorParameters cv::QRCodeDetectorAruco::getArucoParameters() const;
 lua:
     oQRCodeDetectorAruco:getArucoParameters() -> retval
 ```
@@ -45180,6 +45605,14 @@ lua:
 cv::Rect cv::RotatedRect::boundingRect();
 lua:
     oRotatedRect:boundingRect() -> retval
+```
+
+### cv.RotatedRect.boundingRect2f
+
+```cpp
+cv::Rect2f cv::RotatedRect::boundingRect2f() const;
+lua:
+    oRotatedRect:boundingRect2f() -> retval
 ```
 
 ### cv.RotatedRect.points
@@ -48331,6 +48764,14 @@ lua:
     oVariationalRefinement:getDelta() -> retval
 ```
 
+### cv.VariationalRefinement.getEpsilon
+
+```cpp
+float cv::VariationalRefinement::getEpsilon() const;
+lua:
+    oVariationalRefinement:getEpsilon() -> retval
+```
+
 ### cv.VariationalRefinement.getFixedPointIterations
 
 ```cpp
@@ -48377,6 +48818,14 @@ lua:
 void cv::VariationalRefinement::setDelta( float val );
 lua:
     oVariationalRefinement:setDelta( val ) -> None
+```
+
+### cv.VariationalRefinement.setEpsilon
+
+```cpp
+void cv::VariationalRefinement::setEpsilon( float val );
+lua:
+    oVariationalRefinement:setEpsilon( val ) -> None
 ```
 
 ### cv.VariationalRefinement.setFixedPointIterations
@@ -48475,7 +48924,7 @@ lua:
 ### cv.VideoCapture.getExceptionMode
 
 ```cpp
-bool cv::VideoCapture::getExceptionMode();
+bool cv::VideoCapture::getExceptionMode() const;
 lua:
     oVideoCapture:getExceptionMode() -> retval
 ```
@@ -50208,6 +50657,54 @@ bool cv::barcode::BarcodeDetector::detectAndDecodeWithType( InputArray          
                                                             OutputArray               points = noArray() ) const;
 lua:
     oBarcodeDetector:detectAndDecodeWithType( img[, points[, decoded_info[, decoded_type]]] ) -> retval, decoded_info, decoded_type, points
+```
+
+### cv.barcode.BarcodeDetector.getDetectorScales
+
+```cpp
+void cv::barcode::BarcodeDetector::getDetectorScales( std::vector<float>& sizes ) const;
+lua:
+    oBarcodeDetector:getDetectorScales( [sizes] ) -> sizes
+```
+
+### cv.barcode.BarcodeDetector.getDownsamplingThreshold
+
+```cpp
+double cv::barcode::BarcodeDetector::getDownsamplingThreshold() const;
+lua:
+    oBarcodeDetector:getDownsamplingThreshold() -> retval
+```
+
+### cv.barcode.BarcodeDetector.getGradientThreshold
+
+```cpp
+double cv::barcode::BarcodeDetector::getGradientThreshold() const;
+lua:
+    oBarcodeDetector:getGradientThreshold() -> retval
+```
+
+### cv.barcode.BarcodeDetector.setDetectorScales
+
+```cpp
+cv::barcode::BarcodeDetector cv::barcode::BarcodeDetector::setDetectorScales( const std::vector<float>& sizes );
+lua:
+    oBarcodeDetector:setDetectorScales( sizes ) -> retval
+```
+
+### cv.barcode.BarcodeDetector.setDownsamplingThreshold
+
+```cpp
+cv::barcode::BarcodeDetector cv::barcode::BarcodeDetector::setDownsamplingThreshold( double thresh );
+lua:
+    oBarcodeDetector:setDownsamplingThreshold( thresh ) -> retval
+```
+
+### cv.barcode.BarcodeDetector.setGradientThreshold
+
+```cpp
+cv::barcode::BarcodeDetector cv::barcode::BarcodeDetector::setGradientThreshold( double thresh );
+lua:
+    oBarcodeDetector:setGradientThreshold( thresh ) -> retval
 ```
 
 ## cv::cuda
@@ -54515,6 +55012,14 @@ lua:
     oModel:setInputSwapRB( swapRB ) -> retval
 ```
 
+### cv.dnn.Model.setOutputNames
+
+```cpp
+cv::dnn::Model cv::dnn::Model::setOutputNames( const std::vector<std::string>& outNames );
+lua:
+    oModel:setOutputNames( outNames ) -> retval
+```
+
 ### cv.dnn.Model.setPreferableBackend
 
 ```cpp
@@ -54565,6 +55070,14 @@ lua:
 void cv::dnn::Net::dumpToFile( const std::string& path );
 lua:
     oNet:dumpToFile( path ) -> None
+```
+
+### cv.dnn.Net.dumpToPbtxt
+
+```cpp
+void cv::dnn::Net::dumpToPbtxt( const std::string& path );
+lua:
+    oNet:dumpToPbtxt( path ) -> None
 ```
 
 ### cv.dnn.Net.empty
@@ -55356,6 +55869,22 @@ void cv::fisheye::projectPoints( InputArray  objectPoints,
                                  OutputArray jacobian = noArray() );
 lua:
     cv.fisheye.projectPoints( objectPoints, rvec, tvec, K, D[, imagePoints[, alpha[, jacobian]]] ) -> imagePoints, jacobian
+```
+
+### cv.fisheye.solvePnP
+
+```cpp
+bool cv::fisheye::solvePnP( InputArray       objectPoints,
+                            InputArray       imagePoints,
+                            InputArray       cameraMatrix,
+                            InputArray       distCoeffs,
+                            OutputArray      rvec,
+                            OutputArray      tvec,
+                            bool             useExtrinsicGuess = false,
+                            int              flags = SOLVEPNP_ITERATIVE,
+                            cv::TermCriteria criteria = TermCriteria(TermCriteria::MAX_ITER + TermCriteria::EPS, 10, 1e-8) );
+lua:
+    cv.fisheye.solvePnP( objectPoints, imagePoints, cameraMatrix, distCoeffs[, rvec[, tvec[, useExtrinsicGuess[, flags[, criteria]]]]] ) -> retval, rvec, tvec
 ```
 
 ### cv.fisheye.stereoCalibrate
@@ -57149,6 +57678,13 @@ cv::gapi::onnx::ep::OpenVINO( const std::string& dev_type );
 lua:
     cv.gapi.onnx.ep.OpenVINO.new( dev_type ) -> <cv::gapi::onnx::ep::OpenVINO object>
     cv.gapi.onnx.ep.OpenVINO( dev_type ) -> <cv::gapi::onnx::ep::OpenVINO object>
+```
+
+```cpp
+cv::gapi::onnx::ep::OpenVINO( const std::map<std::string, std::string>& params );
+lua:
+    cv.gapi.onnx.ep.OpenVINO.new( params ) -> <cv::gapi::onnx::ep::OpenVINO object>
+    cv.gapi.onnx.ep.OpenVINO( params ) -> <cv::gapi::onnx::ep::OpenVINO object>
 ```
 
 ### cv.gapi.onnx.ep.OpenVINO.cfgCacheDir
@@ -60921,6 +61457,22 @@ lua:
 int cv::ocl::Device::halfFPConfig() const;
 lua:
     oDevice:halfFPConfig() -> retval
+```
+
+### cv.ocl.Device.hasFP16
+
+```cpp
+bool cv::ocl::Device::hasFP16() const;
+lua:
+    oDevice:hasFP16() -> retval
+```
+
+### cv.ocl.Device.hasFP64
+
+```cpp
+bool cv::ocl::Device::hasFP64() const;
+lua:
+    oDevice:hasFP64() -> retval
 ```
 
 ### cv.ocl.Device.hostUnifiedMemory

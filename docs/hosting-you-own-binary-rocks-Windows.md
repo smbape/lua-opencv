@@ -174,7 +174,7 @@ set PATH=D:\development\git\lua-opencv\out\build.luaonly\x64-Release\luarocks\lu
 ### Initialize our test project and install our custom prebuilt binary
 
 ```cmd
-git clone --depth 1 --branch 4.9.0 https://github.com/opencv/opencv_extra.git "D:\opencv-lua-custom\opencv_extra"
+git clone --depth 1 --branch 4.10.0 https://github.com/opencv/opencv_extra.git "D:\opencv-lua-custom\opencv_extra"
 mkdir "D:\opencv-lua-custom\test"
 cd /d "D:\opencv-lua-custom\test"
 luarocks --lua-version "5.1" --lua-dir "D:\development\git\lua-opencv\out\install\x64-Release" init --lua-versions "5.1,5.2,5.3,5.4"

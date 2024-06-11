@@ -46,7 +46,7 @@ const opencv_SOURCE_DIR = (() => {
 })();
 
 const SAMPLES_PATH = sysPath.join(WORKSPACE_ROOT, "samples");
-const PYTHON_VENV_PATH = sysPath.join(SAMPLES_PATH, ".venv");
+const PYTHON_VENV_PATH = process.env.PYTHON_VENV_PATH ? sysPath.resolve(process.env.PYTHON_VENV_PATH) : sysPath.join(SAMPLES_PATH, ".venv");
 const PYTHON = sysPath.join(PYTHON_VENV_PATH, os.platform() === "win32" ? "Scripts" : "bin", `python${ exeSuffix }`);
 const PYTHONPATH = sysPath.join(opencv_SOURCE_DIR, "samples", "dnn");
 const OPENCV_SAMPLES_DATA_PATH = sysPath.join(opencv_SOURCE_DIR, "samples", "data");

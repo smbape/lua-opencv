@@ -12,7 +12,7 @@ Sources:
     https://learnopencv.com/object-detection-using-yolov5-and-opencv-dnn-in-c-and-python/
     https://github.com/ultralytics/ultralytics/blob/main/examples/YOLOv8-CPP-Inference/inference.cpp
     https://docs.opencv.org/4.x/d4/d2f/tf_det_tutorial_dnn_conversion.html
-    https://github.com/opencv/opencv/blob/4.9.0/samples/dnn/object_detection.py
+    https://github.com/opencv/opencv/blob/4.10.0/samples/dnn/object_detection.py
 --]]
 
 local __file__ = arg[0]
@@ -99,38 +99,40 @@ common.add_preproc_args(known_args.zoo, parser, 'object_detection')
 local args = parser:parse()
 
 local __dirname__ = sysPath.dirname(sysPath.abspath(__file__))
-local models = sysPath.join(__dirname__, 'models')
+local MODELS_PATH = os.getenv('MODELS_PATH') or sysPath.join(__dirname__, 'models')
 
 local OPENCV_SAMPLES_DATA_PATH = opencv_lua.env.OPENCV_SAMPLES_DATA_PATH
 
 local SAMPLES_PATH = opencv_lua.fs_utils.findFile("samples")
-local PYTHON_VENV_PATH = sysPath.join(SAMPLES_PATH, ".venv")
+local PYTHON_VENV_PATH = os.getenv('PYTHON_VENV_PATH') or sysPath.join(SAMPLES_PATH, ".venv")
 local PYTHONPATH = sysPath.join(sysPath.dirname(OPENCV_SAMPLES_DATA_PATH), "dnn")
 
 if package.config:sub(1, 1) == '\\' then
     -- assume windows
-    common.execute({
+    local code = common.execute({
         "powershell.exe", "-ExecutionPolicy", "UnRestricted",
         "-File", sysPath.join(__dirname__, 'download_model.ps1'),
         "-Model", args.alias,
         "-Venv", PYTHON_VENV_PATH,
         "-Zoo", args.zoo,
-        "-Destination", models,
+        "-Destination", MODELS_PATH,
         "-PythonPath", PYTHONPATH,
     })
+    if code ~= 0 then os.exit(code) end
 else
     -- assume linux
-    common.execute({
+    local code = common.execute({
         "bash", sysPath.join(__dirname__, 'download_model.sh'),
         PYTHON_VENV_PATH,
         PYTHONPATH,
         args.alias,
         args.zoo,
-        models, sysPath.join(__dirname__, 'download_model.py'),
+        MODELS_PATH, sysPath.join(__dirname__, 'download_model.py'),
     })
+    if code ~= 0 then os.exit(code) end
 end
 
-cv.samples.addSamplesDataSearchPath(models)
+cv.samples.addSamplesDataSearchPath(MODELS_PATH)
 cv.samples.addSamplesDataSearchPath(__dirname__)
 cv.samples.addSamplesDataSearchPath(sysPath.join(OPENCV_SAMPLES_DATA_PATH, "dnn"))
 
@@ -151,7 +153,7 @@ local classes
 if args.classes then
     local content = common.read_file(args.classes)
     classes = {}
-    for str in content:gmatch("([^\n]+)") do
+    for str in content:gmatch("([^\r\n]+)") do
         classes[#classes + 1] = str
     end
 end

@@ -1,0 +1,12 @@
+from setuptools import setup, Extension, find_packages
+
+ext_module = Extension('@target_name@', sources = [], libraries = [])
+
+setup(
+    name='@target_name@',
+    version = '@PROJECT_VERSION@',
+    packages = ['@target_name@'],
+    package_dir = {'@target_name@': '@INSTALL_LIBDIR@'},
+    package_data = {'@target_name@': @PACKAGE_DATA@},
+    ext_modules = [ext_module],
+)
