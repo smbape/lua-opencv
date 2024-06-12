@@ -311,17 +311,6 @@ export suffix='${suffix}'
 }
 
 WSL="$(command -v wsl)"
-
-function export_wsl_env() {
-    local WSLENV NAME iline
-    for iline in $(export_shared_env /mnt); do
-        eval $iline
-        NAME="${iline//=*/}"
-        WSLENV="${WSLENV}:${NAME}/u"
-    done
-    export WSLENV="${WSLENV:1:$(( ${#WSLENV} - 1 ))}"
-}
-
 function wsl() {
     "$WSL" -d "$WSL_DISTNAME" -e bash -li "$@"
 }
@@ -761,7 +750,7 @@ find out/build/Linux-GCC-Debug/ -type f \( -name CMakeCache.txt -o -name pyopenc
 '
 }
 
-function build_debug_windows() {
+function build_windows_debug() {
     time ./build.bat -d "-DLua_VERSION=luajit-2.1" --install --target luajit \
         "-DCMAKE_TOOLCHAIN_FILE:FILEPATH=C:/vcpkg/scripts/buildsystems/vcpkg.cmake" && \
     time ./build.bat -d "-DLua_VERSION=luajit-2.1" --install \
@@ -771,7 +760,7 @@ function build_debug_windows() {
         "-DCMAKE_TOOLCHAIN_FILE:FILEPATH=C:/vcpkg/scripts/buildsystems/vcpkg.cmake"
 }
 
-function build_debug_wsl() {
+function build_wsl_debug() {
     wsl -c '
 source scripts/wsl_init.sh || exit $?
 time ./build.sh -d "-DLua_VERSION=luajit-2.1" --install --target luajit && \
@@ -924,14 +913,15 @@ rsync -t --delete -v -r -l out/prepublish/{luajit-2.1/lua-opencv,${version}/lua-
 function build_full() {
     build_windows && \
     build_manylinux && \
-    build_debug_windows && \
-    build_debug_wsl
+    build_windows_debug && \
+    build_wsl_debug
 }
 
-function install_build_essentials() {
-    wsl -c '
-    sudo apt -y install build-essential cmake git libavcodec-dev libavformat-dev libdc1394-dev \
+function install_build_essentials_wsl_debian() {
+    "$WSL" -d "$WSL_DISTNAME" -u root apt update && \
+    "$WSL" -d "$WSL_DISTNAME" -u root apt install -y build-essential git libavcodec-dev libavformat-dev libdc1394-dev \
         libjpeg-dev libpng-dev libreadline-dev libswscale-dev libtbb-dev libtbbmalloc2 \
-        ninja-build pkg-config python3-pip python3-venv qtbase5-dev unzip zip
-'
+        ninja-build pkg-config python3-pip python3-venv qtbase5-dev unzip zip && \
+    "$WSL" -d "$WSL_DISTNAME" -u root apt clean all && \
+    "$WSL" -d "$WSL_DISTNAME" -u root -e bash -c "$(docker_init_script)"
 }
