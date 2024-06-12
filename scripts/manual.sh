@@ -19,58 +19,58 @@ bash -c 'source scripts/tasks.sh && doctoc'
 
 
 # ================================
-# git commit
-# ================================
-npm version patch && bash -c 'source scripts/tasks.sh && force_push'
-
-
-# ================================
 # build
 # ================================
 bash -c 'source scripts/tasks.sh && prepublish_stash_push'
 
-bash -c 'source scripts/tasks.sh && build_windows' && \
-bash -c 'source scripts/tasks.sh && build_manylinux'
+bash -c 'source scripts/tasks.sh && new_version_rollback && build_full'
 
 bash -c 'source scripts/tasks.sh && prepublish_stash_pop'
 
-cp -f out/prepublish/luajit-2.1/lua-opencv/docs/docs.md ./docs/
-cp -f out/prepublish/luajit-2.1/lua-opencv/generator/ids.json ./generator/
+cp -f out/prepublish/luajit-2.1/opencv_lua/docs/docs.md ./docs/
+cp -f out/prepublish/luajit-2.1/opencv_lua/generator/ids.json ./generator/
 
 # ================================
 # Windows README.md samples check
 # ================================
-bash -c 'source scripts/tasks.sh && prepublish_test_binary_windows'
+bash -c 'source scripts/tasks.sh && test_prepublished_binary_windows'
 
 # ================================
 # WSL README.md samples check
 # ================================
-bash -c 'source scripts/tasks.sh && prepublish_test_binary_wsl'
+bash -c 'source scripts/tasks.sh && test_prepublished_binary_wsl'
 
 # ================================
 # Docker images README.md samples check
 # ================================
-bash -c 'source scripts/tasks.sh && prepublish_test_binary_debian ubuntu-20.04 ubuntu:20.04 -- object_detection.lua'
-bash -c 'source scripts/tasks.sh && prepublish_test_binary_debian ubuntu-22.04 ubuntu:22.04 -- object_detection.lua'
-bash -c 'source scripts/tasks.sh && prepublish_test_binary_debian ubuntu-24.04 ubuntu:24.04 -- object_detection.lua'
-bash -c 'source scripts/tasks.sh && prepublish_test_binary_debian debian-10 debian:10 -- object_detection.lua'
-bash -c 'source scripts/tasks.sh && prepublish_test_binary_debian debian-11 debian:11 -- object_detection.lua'
-bash -c 'source scripts/tasks.sh && prepublish_test_binary_debian debian-12 debian:12 -- object_detection.lua'
-bash -c 'source scripts/tasks.sh && prepublish_test_binary_fedora almalinux-8 amd64/almalinux:8 -- object_detection.lua'
-bash -c 'source scripts/tasks.sh && prepublish_test_binary_fedora fedora-38 fedora:38 -- object_detection.lua'
-bash -c 'source scripts/tasks.sh && prepublish_test_binary_fedora fedora-39 fedora:39 -- object_detection.lua'
-bash -c 'source scripts/tasks.sh && prepublish_test_binary_fedora fedora-40 fedora:40 -- object_detection.lua'
+bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-binary-ubuntu-22.04 ubuntu:22.04 -- object_detection.lua'
+bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-binary-debian-11 debian:11 -- object_detection.lua'
+bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-fedora-39 fedora:39 -- object_detection.lua'
+bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-almalinux-8 amd64/almalinux:8 -- object_detection.lua'
 
 
 # ================================
 # Windows README.md install source rock
 # ================================
-bash -c 'source scripts/tasks.sh && prepublish_test_source_windows'
+bash -c 'source scripts/tasks.sh && test_prepublished_source_windows'
 
 # ================================
 # WSL README.md install source rock
 # ================================
-bash -c 'source scripts/tasks.sh && prepublish_test_source_wsl'
+bash -c 'source scripts/tasks.sh && test_prepublished_source_wsl'
+
+# ================================
+# Docker images README.md install source rock
+# ================================
+bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-source-ubuntu-22.04 ubuntu:22.04 -- object_detection.lua'
+bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-source-debian-11 debian:11 -- object_detection.lua'
+bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-source-fedora-39 fedora:39 -- object_detection.lua'
+
+
+# ================================
+# prepublish the new version
+# ================================
+bash -c 'source scripts/tasks.sh && new_version_rollback && new_version && push_all && time prepublish_windows && time prepublish_manylinux'
 
 
 # ================================

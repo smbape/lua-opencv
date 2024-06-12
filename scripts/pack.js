@@ -17,12 +17,12 @@ const luarocksDir = sysPath.join(workspaceRoot, "luarocks");
 const luarocks = sysPath.join(luarocksDir, `luarocks${ batchSuffix }`);
 const lua = sysPath.join(luarocksDir, `lua${ batchSuffix }`);
 const new_version = sysPath.join(__dirname, "new_version.lua");
-const LUAROCKS_SERVER = process.env.LUAROCKS_SERVER ? sysPath.resolve(process.env.LUAROCKS_SERVER) : sysPath.join(workspaceRoot, "out", "install", "luarocks");
 
 const scmRockSpec = process.env.ROCKSPEC ? sysPath.resolve(process.env.ROCKSPEC) : sysPath.join(luarocksDir, `${ pkg.name }-scm-1.rockspec`);
 let srcRockSpec;
 
 const spawnExec = (cmd, args, options, next) => {
+    console.log(cmd, `'${ args.join("' '") }'`);
     const {stdio} = options;
 
     if (stdio === "tee") {
@@ -61,6 +61,39 @@ const spawnExec = (cmd, args, options, next) => {
     }
 };
 
+const options = {
+    server: process.env.LUAROCKS_SERVER ? sysPath.resolve(process.env.LUAROCKS_SERVER) : sysPath.join(workspaceRoot, "out", "install", "luarocks"),
+};
+
+for (let i = 2; i < process.argv.length; i++) {
+    const arg = process.argv[i];
+    const eq = arg.indexOf("=");
+
+    let key, value;
+
+    if (eq === -1) {
+        key = arg;
+        value = true;
+    } else {
+        key = arg.slice(0, eq);
+        value = arg.slice(eq + 1);
+    }
+
+    switch (key) {
+        case "--repair":
+            options[key.slice("--".length)] = value;
+            break;
+        case "--server":
+            if (eq === -1) {
+                value = process.argv[++i];
+            }
+            options[key.slice("--".length)] = value;
+            break;
+        default:
+            throw new Error(`Unknown option ${ arg }`);
+    }
+}
+
 waterfall([
     next => {
         fs.symlink("../../docs", sysPath.join(luarocksDir, "lua_modules", "docs"), "junction", err => {
@@ -75,7 +108,7 @@ waterfall([
     },
 
     next => {
-        fs.mkdirs(LUAROCKS_SERVER, next);
+        fs.mkdirs(options.server, next);
     },
 
     (performed, next) => {
@@ -95,8 +128,11 @@ waterfall([
     },
 
     next => {
-        eachOfLimit([srcRockSpec, `${ srcRockSpec.slice(0, -".rockspec".length) }.src.rock`], 1, (filename, i, next) => {
-            fs.move(sysPath.join(workspaceRoot, filename), sysPath.join(LUAROCKS_SERVER, filename), {
+        const srcRock = `${ srcRockSpec.slice(0, -".rockspec".length) }.src.rock`;
+        eachOfLimit([srcRockSpec, srcRock], 1, (filename, i, next) => {
+            const src = sysPath.join(workspaceRoot, filename);
+            const dst = sysPath.join(options.server, filename);
+            fs.move(src, dst, {
                 overwrite: true,
             }, next);
         }, next);
@@ -125,17 +161,6 @@ waterfall([
     (_stdout, _stderr, next) => {
         const LUA = _stdout.toString().trim();
 
-        spawnExec(luarocks, ["config", "variables.LUA_BINDIR"], {
-            stdio: "tee",
-            cwd: workspaceRoot
-        }, (err, __stdout, __stderr) => {
-            next(err, LUA, __stdout, __stderr);
-        });
-    },
-
-    (LUA, _stdout, _stderr, next) => {
-        const LUA_BINDIR = _stdout.toString().trim();
-
         spawnExec(LUA, ["-v"], {
             stdio: "tee",
             cwd: workspaceRoot
@@ -153,7 +178,7 @@ waterfall([
         waterfall([
             next => {
                 const args = [new_version, scmRockSpec, binary, abi, "--platform", os.platform()];
-                if (process.argv.includes("--repair")) {
+                if (options.repair) {
                     args.push("--repair");
                 }
 
@@ -177,8 +202,7 @@ waterfall([
 
                 eachOfLimit([binaryRockSpec, binaryRock], 1, (filename, i2, next) => {
                     const src = sysPath.join(lua_modules, filename);
-                    const dst = sysPath.join(LUAROCKS_SERVER, filename);
-                    console.log("moving", src, dst);
+                    const dst = sysPath.join(options.server, filename);
                     fs.move(src, dst, {
                         overwrite: true,
                     }, next);
@@ -200,7 +224,7 @@ waterfall([
         const start = content.lastIndexOf(quote, end - 1) + quote.length;
         const exe = content.slice(start, end);
 
-        spawnExec(exe.replace(/(?<=^|[/\\])luarocks([^/\\]*)$/, "luarocks-admin$1"), ["make-manifest", LUAROCKS_SERVER], {
+        spawnExec(exe.replace(/(?<=^|[/\\])luarocks([^/\\]*)$/, "luarocks-admin$1"), ["make-manifest", options.server], {
             stdio: "inherit",
             cwd: luarocksDir
         }, next);

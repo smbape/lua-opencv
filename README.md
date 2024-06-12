@@ -17,7 +17,7 @@ Therefore the [OpenCV documentation](https://docs.opencv.org/4.x/index.html) sho
     - [Linux](#linux)
   - [How to install](#how-to-install)
 - [Examples](#examples)
-  - [Show image](#show-image)
+  - [Show an image](#show-an-image)
   - [Video capture Camera](#video-capture-camera)
   - [Rotate an image](#rotate-an-image)
   - [Drawing contours](#drawing-contours)
@@ -51,9 +51,9 @@ Prebuilt binaries are available for [LuaJIT 2.1](https://luajit.org/) and [Lua 5
 
 #### Windows
 
-  - Install [LuaRocks](https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Windows)
   - Install [CMake >= 3.25](https://cmake.org/download/)
   - Install [Git](https://git-scm.com/)
+  - Install [LuaRocks](https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Windows)
   - Install [NodeJS](https://nodejs.org/en/download/current)
   - Install [Python](https://www.python.org/downloads/)
   - Install [Visual Studio 2022 >= 17.7.2 with .NET Desktop and C++ Desktop](https://visualstudio.microsoft.com/fr/downloads/)
@@ -61,9 +61,11 @@ Prebuilt binaries are available for [LuaJIT 2.1](https://luajit.org/) and [Lua 5
 
 #### Linux
 
+  - Install [CMake >= 3.25](https://cmake.org/download/)
   - Install [LuaRocks](https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Unix)
+  - Install [Ninja](https://ninja-build.org/)
   - Install [NodeJS](https://nodejs.org/en/download/current)
-  - Install needed packages `sudo snap install cmake --classic && sudo apt -y install build-essential git python3-pip python3-venv python-is-python3 ninja-build unzip zip qtbase5-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbbmalloc2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-dev libreadline-dev`
+  - Install needed packages `sudo apt -y install build-essential git python3-pip python3-venv python-is-python3 unzip zip qtbase5-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbbmalloc2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-dev libreadline-dev`
   - For faster build time, you can use [Ninja](https://ninja-build.org/) `luarocks config --scope project cmake_generator Ninja`
 
 ### How to install
@@ -107,7 +109,7 @@ set LUA_MODULES=%~dp0lua_modules
 set "PATH=%LUA_MODULES%\bin;%APPDATA%\luarocks\bin;%PATH%"
 ```
 
-### Show image
+### Show an image
 
 ```lua
 local opencv_lua = require("opencv_lua")
@@ -256,7 +258,11 @@ cv.destroyAllWindows()
 #### Linux
 
   - Install [NodeJS](https://nodejs.org/en/download/current)
-  - Install needed packages `sudo snap install cmake --classic && sudo apt -y install build-essential ffmpeg git libreadline-dev libsm6 libxext6 ninja-build python-is-python3 python3-pip python3-venv qtbase5-dev unzip`
+  - Install [CMake >= 3.25](https://cmake.org/download/)
+  - Install [Ninja](https://ninja-build.org/)
+  - Install needed packages:
+    - Debian, Ubuntu: `sudo apt install -y curl g++ gcc git libgl1 libglib2.0-0 libreadline-dev libsm6 libxext6 make python3-pip python3-venv unzip wget`
+    - Fedora, Almalinux: `sudo dnf install -y curl gcc gcc-c++ git glib2 readline-devel libglvnd-glx libSM libXext make patch python3-devel python3-pip unzip wget`
 
 ### Initialize the project
 
@@ -270,6 +276,7 @@ cd lua-opencv
 @REM available versions are 5.1, 5.2, 5.3, 5.4
 build.bat "-DLua_VERSION=5.4" --target lua --install
 build.bat "-DLua_VERSION=5.4" --target luarocks
+@REM luarocks\luarocks.bat install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.10.0luajit2.1
 luarocks\luarocks.bat install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua
 luarocks\luarocks.bat install --deps-only samples\samples-scm-1.rockspec
 npm ci

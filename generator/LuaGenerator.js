@@ -1314,7 +1314,7 @@ class LuaGenerator {
                 }
             `.replace(/^ {16}/mg, "").trim());
 
-            const contentCpp = ["#include <registration.hpp>", ""];
+            const contentCpp = ["#include <lua_generated_pch.hpp>", ""]; // GCC: Only one precompiled header can be used in a particular compilation.
             const contentRegisterPrivate = [];
             const contentRegister = [];
 

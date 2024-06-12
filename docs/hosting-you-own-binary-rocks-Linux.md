@@ -5,20 +5,17 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [Prepare](#prepare)
 - [Prerequisites](#prerequisites)
+  - [[Ubuntu, Debian] Install needed packages:](#ubuntu-debian-install-needed-packages)
+  - [[Fedora] Install needed packages:](#fedora-install-needed-packages)
 - [Build System Environment](#build-system-environment)
 - [Install freetype and harfbuzz](#install-freetype-and-harfbuzz)
+  - [[Ubuntu, Debian] Install needed packages:](#ubuntu-debian-install-needed-packages-1)
+  - [[Fedora] Install needed packages:](#fedora-install-needed-packages-1)
+- [Download the source code](#download-the-source-code)
 - [Build](#build)
-  - [Change directory to the **build directory**](#change-directory-to-the-build-directory)
-  - [Download the source code](#download-the-source-code)
-  - [Create the **opencv_lua-contrib-custom** rockspec](#create-the-opencv_lua-contrib-custom-rockspec)
-    - [Change the package name to **opencv_lua-contrib-custom**](#change-the-package-name-to-opencv_lua-contrib-custom)
-    - [Add our custom build variables in the build.variables](#add-our-custom-build-variables-in-the-buildvariables)
-  - [Make the **opencv_lua-contrib-custom**-scm-1.rockspec rockspec](#make-the-opencv_lua-contrib-custom-scm-1rockspec-rockspec)
-- [Pack the prebuilt binary on the **server directory**](#pack-the-prebuilt-binary-on-the-server-directory)
 - [Testing our custom prebuilt binary](#testing-our-custom-prebuilt-binary)
-  - [Prepare](#prepare-1)
+  - [Prepare](#prepare)
   - [Initialize our test project and install our custom prebuilt binary](#initialize-our-test-project-and-install-our-custom-prebuilt-binary)
   - [Create a file with an UTF-16 name](#create-a-file-with-an-utf-16-name)
   - [Download the Microsoft JhengHei font family](#download-the-microsoft-jhenghei-font-family)
@@ -32,116 +29,69 @@ Here we will build a custom opencv with the folling modifications:
   - Add the freetype module.
 
 The procedure has been tested on :
-  - [Windows WSL](https://learn.microsoft.com/en-us/windows/wsl/install) with [Ubuntu 22.04 (Jammy Jellyfish)](https://releases.ubuntu.com/jammy/)
-  - [Windows WSL](https://learn.microsoft.com/en-us/windows/wsl/install) with [LinuxmintWSL2)](https://github.com/sileshn/LinuxmintWSL2)
-
-## Prepare
-
-  - Install [LuaRocks](https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Unix)
-  - Install [NodeJS](https://nodejs.org/en/download/current)
-  - Install needed packages `sudo snap install cmake --classic && sudo apt -y install build-essential git python3-pip python3-venv python-is-python3 ninja-build unzip zip qtbase5-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-dev libreadline-dev`
+  - [Ubuntu 22.04 (Jammy Jellyfish)](https://releases.ubuntu.com/jammy/)
 
 ## Prerequisites
 
-I assume you already have an [Lua](https://www.lua.org/start.html) or [LuaJIT](https://luajit.org/) installation.
-I assume you have already installed [LuaRocks](https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Unix)
-If not, you can install LuaJIT and LuaRocks by executing the following commands
+  - Install [CMake >= 3.25](https://cmake.org/download/)
+  - Install [LuaRocks](https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Unix)
+  - Install [Ninja](https://ninja-build.org/)
+  - Install [NodeJS](https://nodejs.org/en/download/current)
 
+### [Ubuntu, Debian] Install needed packages:
 ```sh
-mkdir -p "$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de"
-git clone --depth 1 --branch v0.0.4 https://github.com/smbape/lua-opencv.git $HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/src
-cd "$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/src"
-./build.sh "-DLua_VERSION=luajit-2.1" --target luajit --install
-./build.sh "-DLua_VERSION=luajit-2.1" --target luarocks
+sudo apt install -y build-essential curl git libavcodec-dev libavformat-dev libdc1394-dev \
+        libjpeg-dev libpng-dev libreadline-dev libswscale-dev libtbb-dev \
+        ninja-build pkg-config python3-pip python3-venv qtbase5-dev unzip wget zip
+```
+
+### [Fedora] Install needed packages:
+```sh
+sudo yum install -y build-essential curl git libavcodec-devel libavformat-devel libdc1394-devel \
+        libjpeg-devel libpng-devel libreadline-devel libswscale-devel make patch libtbb-devel \
+        ninja-build pkg-config python3-pip python3-venv qtbase5-devel unzip wget zip
 ```
 
 ## Build System Environment
 
-We will name our LuaRocks pakcage **opencv_lua-contrib-custom** in order to avoir conflict with the original package name
+We will name our LuaRocks pakcage **opencv_lua-custom** in order to avoir conflict with the original package name
 
 In this example, we will use the following directories: 
-  - The **Lua binary directory** is _$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/src/out/install/Linux-GCC-Release/bin_
-  - The **LuaRocks binary directory** is _$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/src/out/build.luaonly/Linux-GCC-Release/luarocks/luarocks-prefix/src/luarocks-build/bin_
-  - The **build directory** is _$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/build_
-  - The **server directory** is _$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/server_
-  - The **test directory** is _$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/test_
+  - The **Lua binary directory** is _$/io/opencv-lua-custom/build/out/prepublish/luajit-2.1/opencv_lua-custom//out/install/Linux-GCC-Release/bin_
+  - The **LuaRocks binary directory** is _/io/opencv-lua-custom/build/out/prepublish/luajit-2.1/opencv_lua-custom/out/build.luaonly/Linux-GCC-Release/luarocks/luarocks-prefix/src/luarocks-build/bin_
+  - The **build directory** is _/io/opencv-lua-custom/build_
+  - The **server directory** is _/io/opencv-lua-custom/server_
+  - The **test directory** is _/io/opencv-lua-custom/test_
 
 ## Install freetype and harfbuzz
 
 Freetype and harfbuzz are needed to build the OpenCV freetype contrib module
 
+### [Ubuntu, Debian] Install needed packages:
 ```sh
-sudo apt -y install libfreetype-dev libharfbuzz-dev
+sudo apt install -y libfreetype-dev libharfbuzz-dev
+```
+
+### [Fedora] Install needed packages:
+```sh
+sudo apt install -y freetype-devel harfbuzz-devel
+```
+
+## Download the source code
+
+```sh
+git clone --depth 1 --branch v0.0.4 https://github.com/smbape/lua-opencv.git /io/opencv-lua-custom/build && \
+cd /io/opencv-lua-custom/build && \
+npm ci
 ```
 
 ## Build
 
-Add your **Lua binary directory** to the PATH environment variable
 ```sh
-export PATH="$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/src/out/install/Linux-GCC-Release/bin:$PATH"
-```
-
-Add your **LuaRocks binary directory** to the PATH environment variable
-```sh
-export PATH="$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/src/out/build.luaonly/Linux-GCC-Release/luarocks/luarocks-prefix/src/luarocks-build/bin:$PATH"
-```
-
-### Change directory to the **build directory**
-
-```sh
-mkdir -p "$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/build" && \
-cd "$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/build"
-```
-
-### Download the source code
-
-```sh
-git clone --depth 1 --branch v0.0.4 https://github.com/smbape/lua-opencv.git && \
-cd lua-opencv
-```
-
-### Create the **opencv_lua-contrib-custom** rockspec
-
-```sh
-cp luarocks/opencv_lua-scm-1.rockspec opencv_lua-contrib-custom-scm-1.rockspec
-```
-
-Edit The **opencv_lua-contrib-custom**-scm-1.rockspec file:
-
-#### Change the package name to **opencv_lua-contrib-custom**
-
-```sh
-sed -e 's/package = "opencv_lua"/package = "opencv_lua-contrib-custom"/' -i opencv_lua-contrib-custom-scm-1.rockspec
-```
-
-#### Add our custom build variables in the build.variables
-
-```sh
-sed -e 's/LUA_INCDIR = "\$(LUA_INCDIR)",/LUA_INCDIR = "\$(LUA_INCDIR)",\n      BUILD_contrib = "ON",\n      WITH_FREETYPE = "ON",/' -i opencv_lua-contrib-custom-scm-1.rockspec
-```
-
-The command above adds the following variables
-
-```lua
-      BUILD_contrib = "ON",
-      WITH_FREETYPE = "ON",
-```
-
-### Make the **opencv_lua-contrib-custom**-scm-1.rockspec rockspec
-
-```sh
-cd luarocks && \
-luarocks --lua-version "5.1" --lua-dir "$(dirname "$(dirname "$(command -v luajit)")")" init --lua-versions "5.1,5.2,5.3,5.4" && \
-luarocks config --scope project cmake_generator Ninja && \
-luarocks config --scope project cmake_build_args -- -j$(( $(nproc) - 2 > 1 ? $(nproc) - 2 : 1 )) && \
-cd .. && \
-./luarocks/luarocks make opencv_lua-contrib-custom-scm-1.rockspec
-```
-
-## Pack the prebuilt binary on the **server directory**
-
-```sh
-LUAROCKS_SERVER="$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/server" DIST_VERSION=1 ROCKSPEC=opencv_lua-contrib-custom-scm-1.rockspec node --trace-uncaught scripts/pack.js
+# --lua-versions luajit-2.1,5.1,5.2,5.3,5.4
+node scripts/prepublish.js --pack --server="/d/opencv-lua-custom/server" --lua-versions luajit-2.1 --name=opencv_lua-custom \
+    -DBUILD_contrib=ON \
+    -DWITH_FREETYPE=ON
 ```
 
 ## Testing our custom prebuilt binary
@@ -152,34 +102,34 @@ Open a new terminal.
 
 Add your **Lua binary directory** to the PATH environment variable
 ```sh
-export PATH="$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/src/out/install/Linux-GCC-Release/bin:$PATH"
+export PATH="/io/opencv-lua-custom/build/out/prepublish/luajit-2.1/opencv_lua-custom/out/install/Linux-GCC-Release/bin:$PATH"
 ```
 
 Add your **LuaRocks binary directory** to the PATH environment variable
 ```sh
-export PATH="$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/src/out/build.luaonly/Linux-GCC-Release/luarocks/luarocks-prefix/src/luarocks-build/bin:$PATH"
+export PATH="/io/opencv-lua-custom/build/out/prepublish/luajit-2.1/opencv_lua-custom/out/build.luaonly/Linux-GCC-Release/luarocks/luarocks-prefix/src/luarocks-build/bin:$PATH"
 ```
 
 ### Initialize our test project and install our custom prebuilt binary
 
 ```sh
-git clone --depth 1 --branch 4.10.0 https://github.com/opencv/opencv_extra.git "$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/opencv_extra" && \
-mkdir "$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/test" && \
-cd "$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/test" && \
+git clone --depth 1 --branch 4.10.0 https://github.com/opencv/opencv_extra.git "/io/opencv-lua-custom/opencv_extra" && \
+mkdir "/io/opencv-lua-custom/test" && \
+cd "/io/opencv-lua-custom/test" && \
 luarocks --lua-version "5.1" --lua-dir "$(dirname "$(dirname "$(command -v luajit)")")" init --lua-versions "5.1,5.2,5.3,5.4" && \
-luarocks install --server="$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/server" opencv_lua-contrib-custom
+luarocks install --server="/io/opencv-lua-custom/server" opencv_lua-custom
 ```
 
 ### Create a file with an UTF-16 name
 
 ```sh
-cp -f "$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/opencv_extra/testdata/cv/qrcode/multiple/6_qrcodes.png" "$HOME/.vs/lua-opencv/53b58a2f-f3e5-480b-8803-dc266ac326de/opencv-lua-custom/opencv_extra/testdata/cv/qrcode/multiple/6_二维码.png"
+cp -f /io/opencv-lua-custom/opencv_extra/testdata/cv/qrcode/multiple/6_qrcodes.png /io/opencv-lua-custom/opencv_extra/testdata/cv/qrcode/multiple/6_二维码.png
 ```
 
 ### Download the [Microsoft JhengHei](https://learn.microsoft.com/sr-cyrl-rs/typography/font-list/microsoft-jhenghei) font family
 
 ```sh
-wget "https://github.com/taveevut/Windows-10-Fonts-Default/raw/master/msjh.ttc" -O msjh.ttc
+wget https://github.com/taveevut/Windows-10-Fonts-Default/raw/master/msjh.ttc -O msjh.ttc
 ```
 
 ### Execute a test script
@@ -230,7 +180,7 @@ if retval then
     end
 end
 
-cv.imshow("二维码", img_rgb)
+cv.imshow("qrcodes", img_rgb)
 cv.waitKey()
 cv.destroyAllWindows()
 ```
@@ -248,5 +198,5 @@ Alternatively, If you want an installation over http/s, upload the contents of *
 For example, if you uploaded it into http://example.com/binary-rock/, you can install the prebuilt binary with
 
 ```sh
-luarocks install --server=http://example.com/binary-rock opencv_lua-contrib-custom
+luarocks install --server=http://example.com/binary-rock opencv_lua-custom
 ```

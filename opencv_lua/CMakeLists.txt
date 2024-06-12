@@ -98,7 +98,16 @@ if (WITH_LUA_ROCKS)
 
   if (UNIX AND CMAKE_INSTALL_PREFIX)
     if(Qt5_DIR)
-      install(DIRECTORY "${Qt5_DIR}/../../../plugins" DESTINATION lib/${target_name}/qt)
+      unset(Qt5_PLUGINS_DIR)
+      if (EXISTS "${Qt5_DIR}/../../../plugins")
+        set(Qt5_PLUGINS_DIR "${Qt5_DIR}/../../../plugins")
+      elseif (EXISTS "${Qt5_DIR}/../../qt5/plugins")
+        set(Qt5_PLUGINS_DIR "${Qt5_DIR}/../../qt5/plugins")
+      endif()
+      if (Qt5_PLUGINS_DIR)
+        install(DIRECTORY "${Qt5_PLUGINS_DIR}" DESTINATION lib/${target_name}/qt)
+      endif()
+
       if (NOT APPLE)
         install(DIRECTORY /usr/share/fonts DESTINATION lib/${target_name}/qt)
       endif()
@@ -139,6 +148,7 @@ target_compile_definitions(${target_name}
     LUA_MODULE_LIB_NAME=OpenCV
     LUA_MODULE_LIB_VERSION=${OpenCV_VERSION}
   PRIVATE LUAAPI_EXPORTS)
+
 target_precompile_headers(${target_name} PRIVATE
   "$<$<COMPILE_LANGUAGE:CXX>:lua_generated_pch.hpp>"
 )
@@ -179,7 +189,6 @@ if (MSVC AND (MSVC_VERSION GREATER_EQUAL 1914))
 endif()
 
 IF (WIN32 AND CMAKE_GENERATOR STREQUAL Ninja)
-  target_compile_options(${target_name} PRIVATE "/Zc:__cplusplus" "/bigobj")
   target_compile_definitions(${target_name} PRIVATE _WINDLL)
 ENDIF()
 

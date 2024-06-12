@@ -1,4 +1,6 @@
-const { spawn } = require("node:child_process");
+const {
+    spawn
+} = require("node:child_process");
 const sysPath = require("node:path");
 const fs = require("fs-extra");
 const os = require("node:os");
@@ -7,12 +9,12 @@ const waterfall = require("async/waterfall");
 const prepublishRoot = sysPath.resolve(__dirname, "..", "out", "prepublish");
 const wrapperSuffix = os.platform() === "win32" ? ".bat" : "";
 const shellSuffix = os.platform() === "win32" ? ".bat" : ".sh";
-const pack = process.argv.includes("--pack");
-const repair = process.argv.includes("--repair");
 const GIT_BRANCH = process.env.GIT_BRANCH || "main";
 
 const spawnExec = (cmd, args, options, next) => {
-    const {stdio} = options;
+    const {
+        stdio
+    } = options;
 
     if (stdio === "tee") {
         options.stdio = ["inherit", "pipe", "pipe"];
@@ -62,11 +64,12 @@ const spawnExec = (cmd, args, options, next) => {
     }
 };
 
-const prepublish = (target, version, contrib, cache, next) => {
+const prepublish = (target, version, cache, options, next) => {
+    const { name, cmake_build_args, pack, repair } = options;
     const workspaceRoot = sysPath.join(prepublishRoot, version);
-    const projectRoot = sysPath.join(workspaceRoot, contrib ? "lua-opencv-contrib" : "lua-opencv");
+    const projectRoot = sysPath.join(workspaceRoot, name);
     const originalRockSpec = sysPath.join(projectRoot, "luarocks", "opencv_lua-scm-1.rockspec");
-    const scmRockSpec = contrib ? sysPath.join(projectRoot, "opencv_lua-contrib-scm-1.rockspec") : originalRockSpec;
+    const scmRockSpec = name !== "opencv_lua" ? sysPath.join(projectRoot, `${ name }-scm-1.rockspec`) : originalRockSpec;
 
     waterfall([
         next => {
@@ -103,13 +106,23 @@ const prepublish = (target, version, contrib, cache, next) => {
                 ]);
             }
 
-            if (contrib) {
+            if (name !== "opencv_lua" || cmake_build_args.length !== 0) {
                 tasks.push(async next => {
                     await fs.copy(originalRockSpec, scmRockSpec);
                     const buffer = await fs.readFile(scmRockSpec);
-                    await fs.writeFile(scmRockSpec, buffer.toString()
-                        .replaceAll("opencv_lua", "opencv_lua-contrib")
-                        .replace("LUA_INCDIR = \"$(LUA_INCDIR)\",", "LUA_INCDIR = \"$(LUA_INCDIR)\",\n      BUILD_contrib = \"ON\","));
+                    const indent = " ".repeat(6);
+
+                    let rockspec = buffer.toString();
+
+                    if (name !== "opencv_lua") {
+                        rockspec = rockspec.replaceAll("opencv_lua", name);
+                    }
+
+                    if (cmake_build_args.length !== 0) {
+                        rockspec = rockspec.replace("LUA_INCDIR = \"$(LUA_INCDIR)\",", `LUA_INCDIR = "$(LUA_INCDIR)",\n${ indent }${ cmake_build_args.join(`,\n${ indent }`) },`);
+                    }
+
+                    await fs.writeFile(scmRockSpec, rockspec);
                     next();
                 });
             }
@@ -138,11 +151,22 @@ const prepublish = (target, version, contrib, cache, next) => {
                 [luarocks, ["make", scmRockSpec]],
             ];
 
+            const env = {
+                ROCKSPEC: scmRockSpec,
+            };
+
             if (pack) {
                 const args = [sysPath.join("scripts", "pack.js")];
                 if (repair) {
                     args.push("--repair");
                 }
+
+                if (options.server) {
+                    args.push("--server", options.server);
+                } else {
+                    env.LUAROCKS_SERVER = sysPath.join(prepublishRoot, "server");
+                }
+
                 tasks.push(["node", args]);
             }
 
@@ -153,18 +177,14 @@ const prepublish = (target, version, contrib, cache, next) => {
                 ]);
             }
 
-            const env = {
-                ROCKSPEC: scmRockSpec,
-                LUAROCKS_SERVER: sysPath.join(prepublishRoot, "server"),
-            };
-
             const [cachedTarget, cachedVersion] = cache;
             const enableCache = cachedTarget !== target || cachedVersion !== version;
             if (enableCache) {
                 const abi = cachedTarget === "luajit" ? "5.1" : cachedVersion;
-                const suffix = contrib ? "-contrib" : "";
-                const OpenCV_DIR = sysPath.resolve(prepublishRoot, cachedVersion, `lua-opencv${ suffix }`, "luarocks", "lua_modules", "lib", "luarocks", `rocks-${ abi }`, `opencv_lua${ suffix }`, "scm-1");
-                env.OpenCV_DIR = OpenCV_DIR;
+                const OpenCV_DIR = sysPath.resolve(prepublishRoot, cachedVersion, name, "luarocks", "lua_modules", "lib", "luarocks", `rocks-${ abi }`, name, "scm-1");
+                if (fs.existsSync(OpenCV_DIR)) {
+                    env.OpenCV_DIR = OpenCV_DIR;
+                }
             }
 
             eachOfLimit(tasks, 1, ([cmd, args], icmd, next) => {
@@ -178,6 +198,60 @@ const prepublish = (target, version, contrib, cache, next) => {
     ], next);
 };
 
+const options = {
+    name: "opencv_lua",
+    cmake_build_args: [],
+};
+
+for (let i = 2; i < process.argv.length; i++) {
+    const arg = process.argv[i];
+    const eq = arg.indexOf("=");
+
+    let key, value;
+
+    if (eq === -1) {
+        key = arg;
+        value = true;
+    } else {
+        key = arg.slice(0, eq);
+        value = arg.slice(eq + 1);
+    }
+
+    switch (key) {
+        case "--pack":
+        case "--repair":
+            options[key.slice("--".length)] = value;
+            break;
+        case "--server":
+        case "--name":
+        case "--lua-versions":
+            if (eq === -1) {
+                value = process.argv[++i];
+            }
+            options[key.slice("--".length)] = value;
+            break;
+        default:
+            if (key.startsWith("-D")) {
+                if (eq === -1) {
+                    value = process.argv[++i];
+                }
+                const colon = key.indexOf(":");
+                const arg_name = key.slice("-D".length, colon === -1 ? key.length : colon);
+                options.cmake_build_args.push(`${ arg_name } = "${ value.replaceAll("\"", "\\\"") }"`);
+                continue;
+            }
+            throw new Error(`Unknown option ${ arg }`);
+    }
+}
+
+const versions = options["lua-versions"] ? options["lua-versions"].split(",") : null;
+const flavors = [false, true];
+
+if (options.cmake_build_args.length !== 0) {
+    flavors.length = 1;
+    flavors[0] = false;
+}
+
 eachOfLimit([
     ["luajit", "luajit-2.1"],
     ["lua", "5.4"],
@@ -185,7 +259,17 @@ eachOfLimit([
     ["lua", "5.2"],
     ["lua", "5.1"],
 ], 1, ([target, version], i, next) => {
-    eachOfLimit([false, true], 1, (contrib, icontrib, next) => {
-        prepublish(target, version, contrib, ["luajit", "luajit-2.1"], next);
+    if (versions && !versions.includes(version)) {
+        next();
+        return;
+    }
+
+    eachOfLimit(flavors, 1, (contrib, icontrib, next) => {
+        const opts = Object.assign({}, options);
+        if (contrib) {
+            opts.name += "-contrib";
+            opts.cmake_build_args = ["BUILD_contrib = \"ON\""];
+        }
+        prepublish(target, version, ["luajit", "luajit-2.1"], opts, next);
     }, next);
 });

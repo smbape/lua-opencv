@@ -19,15 +19,11 @@ namespace fs = std::filesystem;
 #define DOTDOT L".."
 #define QUESTION_MARK L"?"
 #define STAR L"*"
-#define SLASH L"/"
-#define BACK_SLASH L"\\"
 #else
 #define DOT "."
 #define DOTDOT ".."
 #define QUESTION_MARK "?"
 #define STAR "*"
-#define SLASH "/"
-#define BACK_SLASH "\\"
 #endif
 
 namespace {
@@ -107,33 +103,31 @@ namespace {
 		return pcur == plen;
 	}
 
-	fs::path normalize_path(const fs::path& path) {
-		std::vector<fs::path::string_type> parts; split(path.native(), { SLASH, BACK_SLASH }, parts);
+	void normalize_path(const fs::path& path, std::vector<fs::path::string_type>& normalized) {
+		split(fs::path(path).make_preferred().native(), { fs::path::string_type(&fs::path::preferred_separator, 1) }, normalized);
 
 		int end = 0;
-		for (const auto& part : parts) {
-			if (part == DOT || part.empty()) {
+		for (const auto& part : normalized) {
+			if (part == DOT || end != 0 && part.empty()) {
 				continue;
 			}
 
 			if (part == DOTDOT) {
 				end = std::max(0, end - 1);
 			}
+#ifdef _MSC_VER
+			// https://en.cppreference.com/w/cpp/filesystem/path/append
+			// path("C:") / "foo";         // the result is "C:foo"     (appends, without separator)
+			else if (end == 0 && part.ends_with(':')) {
+				normalized[end++] = part + fs::path::preferred_separator;
+			}
+#endif
 			else {
-				parts[end++] = part;
+				normalized[end++] = part;
 			}
 		}
 
-		if (end == 0) {
-			return "";
-		}
-
-		fs::path normalized(parts[0]);
-		for (int i = 1; i < end; i++) {
-			normalized /= parts[i];
-		}
-
-		return normalized;
+		normalized.resize(end);
 	}
 
 #ifdef _MSC_VER
@@ -199,7 +193,7 @@ namespace {
 				(i != last_part || (flags & FindFilesKind::FLTA_FOLDERS) == FindFilesKind::FLTA_FOLDERS) &&
 				part.find(QUESTION_MARK) == string_type::npos && part.find(STAR) == string_type::npos
 				) {
-				dir = dir / part;
+				dir /= part;
 				found = fs::exists(dir);
 				if (!found) {
 					break;
@@ -270,8 +264,8 @@ namespace {
 		FindFilesKind flags,
 		bool relative
 	) {
-		std::vector<fs::path::string_type> parts; split(path.native(), { SLASH, BACK_SLASH }, parts);
-		_findFiles(matches, parts, root_path, flags, relative);
+		std::vector<fs::path::string_type> parts; normalize_path(path, parts);
+		_findFiles(matches, parts, fs::path(root_path).make_preferred(), flags, relative);
 	}
 }
 
@@ -311,20 +305,31 @@ namespace fs_utils {
 
 		std::vector<std::string> matches;
 		fs::path root_path = fs::absolute(directory);
+		bool top_search_absolute = true;
 
 		while (true) {
+			bool search_absolute = top_search_absolute;
 			for (const auto& search_path : hints) {
 				if (search_path.empty()) {
 					continue;
 				}
 
 				fs::path spath(search_path);
+
+				if (spath.is_absolute()) {
+					if (!search_absolute) {
+						continue;
+					}
+					top_search_absolute = false;
+				}
+
 				if (!filter.empty()) {
 					spath = filter / spath;
 				}
+
 				spath /= path;
 
-				_findFiles(matches, normalize_path(spath), root_path, FindFilesKind::FLTA_FILESFOLDERS, false);
+				_findFiles(matches, spath, root_path, FindFilesKind::FLTA_FILESFOLDERS, false);
 				if (!matches.empty()) {
 					return matches[0];
 				}
