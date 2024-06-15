@@ -165,12 +165,12 @@ if retval then
     assert(#font ~= 0, "msjh.ttc was not fount")
     ft2:loadFontData(font, 0)
 
-    points = points:convertTo(cv.CV_32S)
+    points = points:convertTo(cv.CV_32S):table()
     for i = 1, #points do
-        local cnt = points[i - 1]
+        local cnt = points[i]
         cv.drawContours(img_rgb, { cnt }, 0, { 0, 0, 255 }, 2)
 
-        local position = cnt:table()[1]
+        local position = cnt[1]
 
         ft2:putText(img_rgb, "中文", position, opencv_lua.kwargs({
             fontHeight = 12,

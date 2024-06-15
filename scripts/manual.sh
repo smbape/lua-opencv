@@ -13,12 +13,6 @@ bash -c 'source scripts/tasks.sh && tidy'
 
 
 # ================================
-# generate doctoc
-# ================================
-bash -c 'source scripts/tasks.sh && doctoc'
-
-
-# ================================
 # build
 # ================================
 bash -c 'source scripts/tasks.sh && prepublish_stash_push'
@@ -27,8 +21,6 @@ bash -c 'source scripts/tasks.sh && new_version_rollback && build_full'
 
 bash -c 'source scripts/tasks.sh && prepublish_stash_pop'
 
-cp -f out/prepublish/luajit-2.1/opencv_lua/docs/docs.md ./docs/
-cp -f out/prepublish/luajit-2.1/opencv_lua/generator/ids.json ./generator/
 
 # ================================
 # Windows README.md samples check
@@ -65,6 +57,14 @@ bash -c 'source scripts/tasks.sh && test_prepublished_source_wsl'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-source-ubuntu-22.04 ubuntu:22.04 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-source-debian-11 debian:11 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-source-fedora-39 fedora:39 -- object_detection.lua'
+
+
+# ================================
+# generate doctoc
+# ================================
+cp -f out/prepublish/luajit-2.1/opencv_lua/docs/docs.md ./docs/
+cp -f out/prepublish/luajit-2.1/opencv_lua/generator/ids.json ./generator/
+bash -c 'source scripts/tasks.sh && doctoc'
 
 
 # ================================

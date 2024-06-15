@@ -10,7 +10,7 @@
 
 // Include the manifest file that indicates we support all
 // current versions of Windows.
-1 /* CREATEPROCESS_MANIFEST_RESOURCE_ID */ ICON DISCARDABLE "luajit.ico" 
+1 ICON DISCARDABLE "luajit.ico" 
 
 
 /////////////////////////////////////////////////////////////////////////////

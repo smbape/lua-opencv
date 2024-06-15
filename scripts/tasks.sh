@@ -186,8 +186,6 @@ export SCRIPT_SUFFIX='${SCRIPT_SUFFIX}'
 export LUAROCKS_SUFFIX='${LUAROCKS_SUFFIX}'
 export DIST_VERSION='${DIST_VERSION}'
 export projectDir='${projectDir}'
-export version='${version:-luajit-2.1}'
-export suffix='${suffix}'
 "
 }
 
@@ -343,21 +341,53 @@ function push_all() {
 }
 
 function prepublish_stash_push() {
-    for version in luajit-2.1 5.{4,3,2,1}; do
-        for suffix in '' '-contrib'; do
-            bash -c "cd out/prepublish/${version}/opencv_lua${suffix} && git stash push --include-untracked --all -- samples"
-            wsl -c "source scripts/wsl_init.sh && cd out/prepublish/${version}/opencv_lua${suffix} && git stash push --include-untracked --all -- samples"
-        done
+    local script='cd out/prepublish/${version}/opencv_lua${suffix} && git stash push --include-untracked --all -- samples'
+
+    bash -c "
+for version in luajit-2.1 5.{4,3,2,1}; do
+    for suffix in '' '-contrib'; do
+        _PATH=\$PATH; pushd \$PWD
+        ${script}
+        popd; PATH=\$_PATH; unset _PATH
     done
+done
+"
+
+    wsl -c "
+source scripts/wsl_init.sh
+for version in luajit-2.1 5.{4,3,2,1}; do
+    for suffix in '' '-contrib'; do
+        _PATH=\$PATH; pushd \$PWD
+        ${script}
+        popd; PATH=\$_PATH; unset _PATH
+    done
+done
+"
 }
 
 function prepublish_stash_pop() {
-    for version in luajit-2.1 5.{4,3,2,1}; do
-        for suffix in '' '-contrib'; do
-            bash -c "cd out/prepublish/${version}/opencv_lua${suffix} && git reset --hard HEAD && git stash pop"
-            wsl -c "source scripts/wsl_init.sh && cd out/prepublish/${version}/opencv_lua${suffix} && git reset --hard HEAD && git stash pop"
-        done
+    local script='cd ${CWD}/out/prepublish/${version}/opencv_lua${suffix} && git reset --hard HEAD && git stash pop'
+
+    bash -c "
+for version in luajit-2.1 5.{4,3,2,1}; do
+    for suffix in '' '-contrib'; do
+        _PATH=\$PATH; pushd \$PWD
+        ${script}
+        popd; PATH=\$_PATH; unset _PATH
     done
+done
+"
+
+    wsl -c "
+source scripts/wsl_init.sh
+for version in luajit-2.1 5.{4,3,2,1}; do
+    for suffix in '' '-contrib'; do
+        _PATH=\$PATH; pushd \$PWD
+        ${script}
+        popd; PATH=\$_PATH; unset _PATH
+    done
+done
+"
 }
 
 function prepublish_any() {
@@ -580,6 +610,7 @@ function build_custom_wsl() {
     new_version && \
     wsl -c "
 $(export_shared_env /mnt); source scripts/wsl_init.sh || exit \$?
+WORKING_DIRECTORY=\${sources}/../opencv-lua-custom
 [ -d \${WORKING_DIRECTORY} ] || mkdir \${WORKING_DIRECTORY} || exit \$?
 [ -d \${projectDir}/out/prepublish/server-${name} ] || mkdir \${projectDir}/out/prepublish/server-${name} || exit \$?
 [ -L \${WORKING_DIRECTORY}/server ] || ln -s \${projectDir}/out/prepublish/server-wsl \${WORKING_DIRECTORY}/server || exit \$?
@@ -622,6 +653,7 @@ function test_rock_script() {
     local script='
 
 if command -v cygpath &>/dev/null; then
+unset -f ln
 function ln() {
     local opt="$1"; shift
     local dest="$1"; shift
@@ -706,10 +738,6 @@ else
     cd ..
 fi
 
-function luarocks() {
-    ./luarocks/luarocks${LUAROCKS_SUFFIX} "$@"
-}
-
 # ================================
 # Install the rock
 # ================================
@@ -722,10 +750,10 @@ else
     opencv_lua_version=
 fi
 
-luarocks install --deps-only samples/samples-scm-1.rockspec || exit $?
-opencv_lua_installed="$(luarocks list --porcelain opencv_lua${suffix})"
-[ ${#opencv_lua_installed} -eq 0 ] || luarocks remove opencv_lua${suffix} || exit $?
-luarocks install "--server=${projectDir}/out/prepublish/server" opencv_lua${suffix} ${opencv_lua_version} || exit $?
+./luarocks/luarocks${LUAROCKS_SUFFIX} install --deps-only samples/samples-scm-1.rockspec || exit $?
+opencv_lua_installed="$(./luarocks/luarocks${LUAROCKS_SUFFIX} list --porcelain opencv_lua${suffix})"
+[ ${#opencv_lua_installed} -eq 0 ] || ./luarocks/luarocks${LUAROCKS_SUFFIX} remove opencv_lua${suffix} || exit $?
+./luarocks/luarocks${LUAROCKS_SUFFIX} install "--server=${projectDir}/out/prepublish/server" opencv_lua${suffix} ${opencv_lua_version} || exit $?
 
 # ================================
 # Run the tests
@@ -749,44 +777,72 @@ PYTHON_VENV_PATH="${CWD}/out/test/.venv" MODELS_PATH="${projectDir}/out/test/.mo
     echo "rock_type=${rock_type}; $script"
 }
 
-function test_prepublished_binary_windows() {
-    local script="$(test_rock_script 0 binary "$@")"
+function test_prepublished_windows() {
+    local exclude=$1; shift
+    local rock_type=$1; shift
+    local script="$(test_rock_script $exclude $rock_type "$@")"
+    local versions
 
-    for version in luajit-2.1 5.{4,3,2,1}; do
-        for suffix in '' '-contrib'; do
-            bash -c "source scripts/vcvars_restore_start.sh; $(export_shared_env); ${script}" || return $?
-        done
+    if [ "$rock_type" == "source" ]; then
+        versions='luajit-2.1'
+    else
+        versions='luajit-2.1 5.{4,3,2,1}'
+    fi
+
+    bash -c "
+$(export_shared_env)
+source scripts/vcvars_restore_start.sh
+
+for version in ${versions}; do
+    for suffix in '' '-contrib'; do
+        _PATH=\$PATH; pushd \$PWD
+        ${script} || exit \$?
+        popd; PATH=\$_PATH; unset _PATH
     done
+done
+"
 }
 
-function test_prepublished_binary_wsl() {
-    local script="$(test_rock_script 1 binary "$@")"
-
-    for version in luajit-2.1 5.{4,3,2,1}; do
-        for suffix in '' '-contrib'; do
-            wsl -c "$(export_shared_env /mnt); source \${projectDir}/scripts/wsl_init.sh || exit \$?; $script" || return $?
-        done
-    done
+function test_prepublished_binary_windows() {
+    test_prepublished_windows 0 binary "$@"
 }
 
 function test_prepublished_source_windows() {
-    local script="$(test_rock_script 0 source "$@")"
+    test_prepublished_windows 0 source "$@"
+}
 
-    for version in luajit-2.1; do
-        for suffix in '' '-contrib'; do
-            bash -c "source scripts/vcvars_restore_start.sh; $(export_shared_env); ${script}" || return $?
-        done
+function test_prepublished_wsl() {
+    local exclude=$1; shift
+    local rock_type=$1; shift
+    local script="$(test_rock_script $exclude $rock_type "$@")"
+    local versions
+
+    if [ "$rock_type" == "source" ]; then
+        versions='luajit-2.1'
+    else
+        versions='luajit-2.1 5.{4,3,2,1}'
+    fi
+
+    wsl -c "
+$(export_shared_env /mnt)
+source \${projectDir}/scripts/wsl_init.sh || exit \$?
+
+for version in ${versions}; do
+    for suffix in '' '-contrib'; do
+        _PATH=\$PATH; pushd \$PWD
+        ${script} || exit \$?
+        popd; PATH=\$_PATH; unset _PATH
     done
+done
+"
+}
+
+function test_prepublished_binary_wsl() {
+    test_prepublished_wsl 1 binary "$@"
 }
 
 function test_prepublished_source_wsl() {
-    local script="$(test_rock_script 1 source "$@")"
-
-    for version in luajit-2.1; do
-        for suffix in '' '-contrib'; do
-            wsl -c "$(export_shared_env /mnt); source \${projectDir}/scripts/wsl_init.sh || exit \$?; $script" || return $?
-        done
-    done
+    test_prepublished_wsl 1 source "$@"
 }
 
 function test_prepublished_docker() {
@@ -794,18 +850,29 @@ function test_prepublished_docker() {
     local exclude=$1; shift
     local rock_type=$1; shift
     local script="$(test_rock_script $exclude $rock_type "$@")"
+    local versions
 
-    for version in luajit-2.1 5.{4,3,2,1}; do
-        for suffix in '' '-contrib'; do
-            docker exec -u 1001 -it ${name} bash -c "
+    if [ "$rock_type" == "source" ]; then
+        versions='luajit-2.1'
+    else
+        versions='luajit-2.1 5.{4,3,2,1}'
+    fi
+
+docker exec -u 1001 -it ${name} bash -c "
 git config --global --add safe.directory /src/.git && \
 source /src/scripts/tasks.sh && \
 make_available_nvs && nvs add 16 && nvs use 16 && \
 cd /io || exit \$?
 $(export_shared_env '' /src)
-${script}" || return $?
-        done
+
+for version in ${versions}; do
+    for suffix in '' '-contrib'; do
+        _PATH=\$PATH; pushd \$PWD
+        ${script} || exit \$?
+        popd; PATH=\$_PATH; unset _PATH
     done
+done
+"
 }
 
 function install_test_essentials_debian() {
@@ -866,6 +933,11 @@ $(get_current_package_manager)
 \$cpm update -y && \
 \$cpm install -y curl gcc gcc-c++ git glib2 readline-devel libglvnd-glx libSM libXext make patch python3-pip unzip wget || \
 exit \$?
+
+source /etc/os-release
+if [ \"\$NAME\" == \"AlmaLinux\" ]; then
+    \$cpm install -y python3-devel # needed to install opencv-python || exit \$?
+fi
 
 $(docker_init_script)"
 }
@@ -989,19 +1061,33 @@ node scripts/test.js --Release'
 function test_prepublished_build_windows() {
     local script="$(test_build_script 0 "$@")"
 
-    for version in luajit-2.1 5.{4,3,2,1}; do
-        for suffix in '' '-contrib'; do
-            bash -c "source scripts/vcvars_restore_start.sh; $(export_shared_env); $script" || return $?
-        done
+    bash -c "
+source scripts/vcvars_restore_start.sh
+$(export_shared_env)
+
+for version in luajit-2.1 5.{4,3,2,1}; do
+    for suffix in '' '-contrib'; do
+        _PATH=\$PATH; pushd \$PWD
+        ${script} || exit \$?
+        popd; PATH=\$_PATH; unset _PATH
     done
+done
+"
 }
 
 function test_prepublished_build_wsl() {
     local script="$(test_build_script 1 "$@")"
 
-    for version in luajit-2.1 5.{4,3,2,1}; do
-        for suffix in '' '-contrib'; do
-            wsl -c "$(export_shared_env /mnt); source \${projectDir}/scripts/wsl_init.sh || exit \$?; $script" || return $?
-        done
+    wsl -c "
+$(export_shared_env /mnt)
+source \${projectDir}/scripts/wsl_init.sh || exit \$?
+
+for version in luajit-2.1 5.{4,3,2,1}; do
+    for suffix in '' '-contrib'; do
+        _PATH=\$PATH; pushd \$PWD
+        ${script} || exit \$?
+        popd; PATH=\$_PATH; unset _PATH
     done
+done
+"
 }
