@@ -547,7 +547,7 @@ module.exports = ({ self, self_get, shared_ptr }) => {
         }
 
         declarations.push(["cv.Mat.Mat", "", [`=createFromVectorOf${ type[0].toUpperCase() }${ type.slice(1) }`, "/Expr=$0, true"], [
-            [`vector_${ type }`, "vec", "", []],
+            [`std::vector<${ type }>`, "vec", "", []],
         ], "", ""]);
     }
 

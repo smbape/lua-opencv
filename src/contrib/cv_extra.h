@@ -1,5 +1,4 @@
 #pragma once
-#include <luadef.hpp>
 #include <opencv2/core.hpp>
 #include <variant>
 

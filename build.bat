@@ -66,14 +66,12 @@ IF [%1] == [-G] (
     SET has_generator=1
     GOTO :NEXT_OPT
 )
-
 IF ["%_param:~0,2%"] == ["-G"] (
     IF ["%_param%-%TARGET%"] == ["Ninja-ALL_BUILD"] SET TARGET=all
     SET CMAKE_GENERATOR="%_param%"
     SET has_generator=1
     GOTO :NEXT_OPT
 )
-
 IF [%1] == [-A] (
     SET CMAKE_GENERATOR_PLATFORM=-A %2
     GOTO :NEXT_OPT
@@ -97,6 +95,7 @@ SET CMAKE_LUA_DIR=%PREFIX%
 IF DEFINED LUA_DIR SET CMAKE_LUA_DIR=%LUA_DIR%
 
 IF [%TARGET%] == [lua] SET LUA_ONLY=ON
+IF [%TARGET%] == [lua] SET EXTRA_CMAKE_OPTIONS="-ULUA_DIR" %EXTRA_CMAKE_OPTIONS%
 IF [%TARGET%] == [luajit] SET LUA_ONLY=ON
 IF NOT [%LUA_ONLY%] == [ON] SET EXTRA_CMAKE_OPTIONS="-DLUA_DIR:PATH=%CMAKE_LUA_DIR%" %EXTRA_CMAKE_OPTIONS%
 IF [%TARGET%] == [luarocks] SET LUA_ONLY=ON
@@ -150,7 +149,6 @@ IF NOT DEFINED CMAKE_GENERATOR SET CMAKE_GENERATOR=-G "Visual Studio %VSCMD_VER:
 
 :MAKE
 ::Find CMake
-REM CMAKE="%DevEnvDir%\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe"
 SET "PATH=%DevEnvDir%\CommonExtensions\Microsoft\CMake\CMake\bin;%PATH%"
 FOR %%X IN (cmake.exe) DO (set CMAKE="%%~$PATH:X")
 IF NOT DEFINED CMAKE (
@@ -160,10 +158,9 @@ IF NOT DEFINED CMAKE (
 )
 
 ::Find Ninja
-REM -DCMAKE_MAKE_PROGRAM="%DevEnvDir%\CommonExtensions\Microsoft\CMake\Ninja\ninja.exe"
 SET "PATH=%DevEnvDir%\CommonExtensions\Microsoft\CMake\Ninja;%PATH%"
-FOR %%X IN (ninja.exe) DO (set NINJA="%%~$PATH:X")
-IF ["%CMAKE_GENERATOR%"] == ["-G Ninja"] SET EXTRA_CMAKE_OPTIONS=%EXTRA_CMAKE_OPTIONS% -DCMAKE_MAKE_PROGRAM=%NINJA%
+FOR %%X IN (ninja.exe) DO (set "NINJA=%%~$PATH:X")
+IF ["%CMAKE_GENERATOR:"=%"] == ["-G Ninja"] SET EXTRA_CMAKE_OPTIONS=%EXTRA_CMAKE_OPTIONS% "-DCMAKE_MAKE_PROGRAM=%NINJA%"
 
 SET ERROR=0
 SET TRY_RUN=

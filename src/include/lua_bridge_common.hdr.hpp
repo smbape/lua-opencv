@@ -1,8 +1,8 @@
 #pragma once
 
-#include <lua_generated_include.hpp>
 #include <luadef.hpp>
 #include <Keywords.hpp>
+#include <lua_generated_include.hpp>
 #include <register_all.hpp>
 
 namespace LUA_MODULE_NAME {

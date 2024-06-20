@@ -119,14 +119,30 @@ if (os.platform() === "win32") {
     ];
 }
 
-const run = (file, options, env, next) => {
-    const { BUILD_TYPE, OPENCV_BUILD_TYPE } = process.env;
+const unixCmd = argv => {
+    return argv.map(arg => {
+        if (arg.includes(" ") || arg.includes("\\")) {
+            return `'${ arg }'`;
+        }
+
+        if (arg[0] === "/" && arg[1] !== "/") {
+            return `/${ arg }`;
+        }
+
+        return arg;
+    }).join(" ");
+};
+
+const run = (file, env, options, next) => {
+    const { BUILD_TYPE, OPENCV_BUILD_TYPE } = options.env;
     if (BUILD_TYPE && BUILD_TYPE !== env.BUILD_TYPE || OPENCV_BUILD_TYPE && OPENCV_BUILD_TYPE !== env.OPENCV_BUILD_TYPE) {
-        next(null, 0, null);
+        next(null, 0);
         return;
     }
 
-    console.log("\nRunning", file, env);
+    const keys = Array.from(new Set([...Object.keys(config[env.BUILD_TYPE].env), ...Object.keys(env)]));
+    env = Object.assign({}, config[env.BUILD_TYPE].env, options.env, env);
+
     const extname = sysPath.extname(file);
 
     const args = [];
@@ -147,11 +163,19 @@ const run = (file, options, env, next) => {
         throw new Error(`Unsupported extenstion ${ extname }`);
     }
 
-    console.log(args.flat().map(arg => (arg.includes(" ") ? `"${ arg }"` : arg)).join(" "));
+    const cmd = [keys.map(key => `${ key }=${ env[key] }`).join(" "), unixCmd(args.flat())].join(" ");
+
+    if (options.bash) {
+        console.log(cmd, "||", "exit $?");
+        next(null, 0);
+        return;
+    }
+
+    console.log(cmd);
 
     args.push({
         stdio: options.stdio,
-        env: Object.assign({}, config[env.BUILD_TYPE].env, process.env, env),
+        env,
         cwd: options.cwd,
     });
 
@@ -175,6 +199,19 @@ const run = (file, options, env, next) => {
     }
 };
 
+const unixPath = path => {
+    return `/${ path.replace(":", "").replaceAll("\\", "/") }`;
+};
+
+const bash_init = `#!/usr/bin/env bash
+
+set -o pipefail
+
+function autoit() {
+    '${ unixPath(AUTOIT_EXE) }' '${ unixPath(AUTOIT_WRAPPER) }' ${ unixCmd(AUTOIT_WRAPPER_ARGV) } "$@"
+}
+`;
+
 const main = (options, next) => {
     options = Object.assign({
         cwd: WORKSPACE_ROOT,
@@ -188,6 +225,14 @@ const main = (options, next) => {
     const { cwd, includes, includes_ext, excludes } = options;
 
     excludes.push(...["init.lua", "common.lua", "download_model.py"]);
+
+    if (options.bash) {
+        console.log([
+            bash_init,
+            `cd ${ cwd.includes(" ") ? `'${ unixPath(cwd) }'` : unixPath(cwd) }`,
+            "",
+        ].join("\n"));
+    }
 
     explore(sysPath.join(cwd, "samples"), (path, stats, next) => {
         const file = sysPath.relative(cwd, path);
@@ -205,17 +250,17 @@ const main = (options, next) => {
 
         waterfall([
             next => {
-                run(file, options, {
+                run(file, {
                     BUILD_TYPE: "Release",
                     OPENCV_BUILD_TYPE: "Release",
-                }, next);
+                }, options, next);
             },
 
             (signal, next) => {
-                run(file, options, {
+                run(file, {
                     BUILD_TYPE: "Debug",
                     OPENCV_BUILD_TYPE: "Debug",
-                }, next);
+                }, options, next);
             },
         ], (code, signal) => {
             next(code);
@@ -234,6 +279,7 @@ if (typeof require !== "undefined" && require.main === module) {
         includes: [],
         excludes: [],
         argv: [],
+        env: Object.assign({}, process.env),
         "--": 0,
     };
 
@@ -246,8 +292,10 @@ if (typeof require !== "undefined" && require.main === module) {
             options.includes.push(arg);
         } else if (options["--"] > 1 || options["--"] === 1 && arg[0] === "-") {
             options.argv.push(arg);
-        } else if (arg === "--Debug" || arg === "--Release") {
-            process.env.BUILD_TYPE = arg.slice(2);
+        } else if (["--Debug", "--Release"].includes(arg)) {
+            options.env.BUILD_TYPE = arg.slice(2);
+        } else if (arg === "--bash") {
+            options[arg.slice(2)] = true;
         } else {
             options.cwd = sysPath.resolve(arg);
             options["--"] = 1;

@@ -169,6 +169,10 @@ else
     BUILD_FOLDER_NAME=build
 fi
 
+if [[ "$TARGET" == 'lua' ]]; then
+    EXTRA_CMAKE_OPTIONS="'-ULUA_DIR' $EXTRA_CMAKE_OPTIONS"
+fi
+
 if [[ "$TARGET" != 'lua' && "$TARGET" != 'luajit' ]]; then
     EXTRA_CMAKE_OPTIONS="'-DLUA_DIR:PATH=${LUA_DIR:-${CMAKE_INSTALL_PREFIX}}' $EXTRA_CMAKE_OPTIONS"
 fi

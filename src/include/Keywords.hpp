@@ -1,6 +1,7 @@
 #pragma once
 
 #include <luadef.hpp>
+#include <set>
 
 namespace LUA_MODULE_NAME {
 	struct Keywords {

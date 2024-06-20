@@ -24,16 +24,17 @@ const getOptions = output => {
         implicitNamespaceType: /^(?:Point|Rect|Scalar|Size|Vec)(?:\d[bdfisw])?$/,
         variantTypeReg: /(?:<cv::Ptr)/,
         shared_ptr: "cv::Ptr",
+        make_shared: "cv::makePtr",
+        exception: "cv::Exception",
+        Any: "Object",
         cname: "new",
 
         isCaseSensitive: true,
+        hasIsInstanceSupport: true, // do not generate reflection methods and properties
         hasInheritanceSupport: true, // do not duplicate parent methods
 
         // used to lookup classes
-        namespaces: new Set([
-            "cv",
-            "std",
-        ]),
+        namespaces: new Set([]),
 
         other_namespaces: new Set(),
 
@@ -43,10 +44,9 @@ const getOptions = output => {
             "std",
         ]),
 
-        pself: "self",
         self: "*self",
-        self_get: name => {
-            return `self->${ name }`;
+        self_get: (name = null) => {
+            return name ? `self->${ name }` : "self";
         },
 
         build: new Set(),
@@ -68,32 +68,57 @@ const getOptions = output => {
         ]),
     };
 
-    for (const opt of ["hdr", "impl", "save"]) {
-        options[opt] = !process.argv.includes(`--no-${ opt }`);
+    const argv = process.argv.slice(2);
+    const flags_true = ["hdr", "impl", "save"];
+    const flags_false = ["test"];
+
+    for (const opt of flags_true) {
+        options[opt] = !argv.includes(`--no-${ opt }`);
     }
 
-    for (const opt of ["test"]) {
-        options[opt] = process.argv.includes(`--${ opt }`);
+    for (const opt of flags_false) {
+        options[opt] = argv.includes(`--${ opt }`);
     }
 
-    for (const opt of process.argv) {
+    for (let i = 0; i < argv.length; i++) {
+        const opt = argv[i];
+
+        if (opt.startsWith("--no-") && flags_true.includes(opt.slice("--no-".length))) {
+            continue;
+        }
+
+        if (opt.startsWith("--") && flags_false.includes(opt.slice("--".length))) {
+            continue;
+        }
+
         if (opt.startsWith("--no-test=")) {
             for (const fqn of opt.slice("--no-test=".length).split(/[ ,]/)) {
                 options.notest.add(fqn);
             }
+            continue;
         }
 
         if (opt.startsWith("--build=")) {
             for (const fqn of opt.slice("--build=".length).split(/[ ,]/)) {
                 options.build.add(fqn);
             }
+            continue;
         }
 
         if (opt.startsWith("--skip=")) {
             for (const fqn of opt.slice("--skip=".length).split(/[ ,]/)) {
                 options.skip.add(fqn);
             }
+            continue;
         }
+
+        if (opt.startsWith("-D")) {
+            const [key, value] = opt.slice("-D".length).split("=");
+            options[key] = typeof value === "undefined" ? true : value;
+            continue;
+        }
+
+        throw new Error(`Unknown option ${ opt }`);
     }
 
     return options;
@@ -281,8 +306,6 @@ waterfall([
 
             ${ hdr_parser
                 .slice(hdr_parser_start, hdr_parser_end)
-                .replace(`${ " ".repeat(20) }if self.wrap_mode:`, `${ " ".repeat(20) }if False:`)
-                .replace(/\("std::", ""\), \("cv::", ""\)/g, Array.from(options.namespaces).map(namespace => `("${ namespace }::", "")`).join(", "))
                 .split("\n")
                 .join(`\n${ " ".repeat(12) }`) }
 
