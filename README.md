@@ -15,6 +15,10 @@ Therefore the [OpenCV documentation](https://docs.opencv.org/4.x/index.html) sho
   - [Prerequisites to source rock install](#prerequisites-to-source-rock-install)
     - [Windows](#windows)
     - [Linux](#linux)
+      - [Debian, Ubuntu](#debian-ubuntu)
+      - [Fedora](#fedora)
+      - [Almalinux 8](#almalinux-8)
+      - [Almalinux 9](#almalinux-9)
   - [How to install](#how-to-install)
 - [Examples](#examples)
   - [Show an image](#show-an-image)
@@ -65,8 +69,55 @@ Prebuilt binaries are available for [LuaJIT 2.1](https://luajit.org/) and [Lua 5
   - Install [LuaRocks](https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Unix)
   - Install [Ninja](https://ninja-build.org/)
   - Install [NodeJS](https://nodejs.org/en/download/current)
-  - Install needed packages `sudo apt -y install build-essential git python3-pip python3-venv python-is-python3 unzip zip qtbase5-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbbmalloc2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-dev libreadline-dev`
-  - For faster build time, you can use [Ninja](https://ninja-build.org/) `luarocks config --scope project cmake_generator Ninja`
+  - Install needed packages (see below for you corresponding distruction).
+  - Tell luarocks to use [Ninja](https://ninja-build.org/) as cmake generator `luarocks config --scope project cmake_generator Ninja`
+
+##### Debian, Ubuntu
+
+```sh
+sudo apt install -y build-essential curl git libavcodec-dev libavformat-dev libdc1394-dev \
+        libjpeg-dev libpng-dev libreadline-dev libswscale-dev libtbb-dev \
+        pkg-config python3-pip python3-venv qtbase5-dev unzip wget zip
+sudo apt install -y libtbbmalloc2 || apt install -y libtbb2
+```
+
+##### Fedora
+
+```sh
+sudo dnf install -y curl gcc gcc-c++ git \
+        libjpeg-devel libpng-devel readline-devel make patch tbb-devel \
+        libavcodec-free-devel libavformat-free-devel libdc1394-devel libswscale-free-devel \
+        pkg-config python3-pip qt5-qtbase-devel unzip wget zip
+```
+
+##### Almalinux 8
+
+```sh
+sudo dnf install -y curl gcc-toolset-12-gcc gcc-toolset-12-gcc-c++ git \
+        libjpeg-devel libpng-devel readline-devel make patch tbb-devel \
+        pkg-config python3.12-pip qt5-qtbase-devel unzip wget zip && \
+sudo config-manager --set-enabled powertools && \
+sudo dnf install -y epel-release && \
+sudo dnf install -y https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm
+sudo dnf install -y https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-8.noarch.rpm && \
+sudo dnf update -y && \
+sudo dnf install -y ffmpeg-devel && \
+source /opt/rh/gcc-toolset-12/enable
+```
+
+##### Almalinux 9
+
+```sh
+sudo dnf install -y curl gcc gcc-c++ git \
+        libjpeg-devel libpng-devel readline-devel make patch tbb-devel \
+        pkg-config python3-pip qt5-qtbase-devel unzip wget zip && \
+sudo config-manager --set-enabled crb && \
+sudo dnf install -y epel-release && \
+sudo dnf install -y https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-9.noarch.rpm
+sudo dnf install -y https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-9.noarch.rpm && \
+sudo dnf update -y && \
+sudo dnf install -y libavcodec-free-devel libavformat-free-devel libdc1394-devel libswscale-free-devel
+```
 
 ### How to install
 
@@ -76,7 +127,7 @@ I recommend you to try installing the prebuilt binary with
 luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua
 ```
 
-Or to specify the target lua version
+Or to specify the target lua version with one of the following commands
 
 ```sh
 luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.10.0luajit2.1
@@ -86,7 +137,21 @@ luarocks install --server=https://github.com/smbape/lua-opencv/releases/download
 luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.10.0lua5.1
 ```
 
-If none of the above works for you, then install the source rock
+Those prebuilt binaries should work on Windows and many linux distributions and have been tested on:
+  - Windows 11
+  - Ubuntu 20.04
+  - Ubuntu 22.04
+  - Ubuntu 24.04
+  - Debian 10
+  - Debian 11
+  - Debian 12
+  - Fedora 38
+  - Fedora 39
+  - Fedora 40
+  - Almalinux 8
+  - Almalinux 9
+
+If none of the above works for you, then install the source rock with
 
 ```sh
 luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.10.0
@@ -96,13 +161,13 @@ luarocks install --server=https://github.com/smbape/lua-opencv/releases/download
 
 On Windows, the lua_modules modules should be added to PATH as show with `luarocks path`
 
-```sh
+```cmd
 set "PATH=%LUA_MODULES%\bin;%APPDATA%\luarocks\bin;%PATH%"
 ```
 
-`LUA_MODULES` pointing to your lua_modules folder if any.
+`LUA_MODULES` is a variable pointing to your lua_modules folder.
 
-For example, in your lua project, initialized with `luarocks init`, modify the file `lua.bat` and after the line `set "LUAROCKS_SYSCONFDIR=` add
+For example, in your lua project, initialized with `luarocks init`, modify the file `lua.bat` and after the line with `set "LUAROCKS_SYSCONFDIR=`, add
 
 ```cmd
 set LUA_MODULES=%~dp0lua_modules
@@ -244,7 +309,11 @@ cv.waitKey()
 cv.destroyAllWindows()
 ```
 
+More expamples can be found in the samples directory.
+
 ## Running examples
+
+All the examples in the samples directory can be run by folling theses instructions.
 
 ### Prerequisites to run examples
 
@@ -262,7 +331,8 @@ cv.destroyAllWindows()
   - Install [Ninja](https://ninja-build.org/)
   - Install needed packages:
     - Debian, Ubuntu: `sudo apt install -y curl g++ gcc git libgl1 libglib2.0-0 libreadline-dev libsm6 libxext6 make python3-pip python3-venv unzip wget`
-    - Fedora, Almalinux: `sudo dnf install -y curl gcc gcc-c++ git glib2 readline-devel libglvnd-glx libSM libXext make patch python3-devel python3-pip unzip wget`
+    - Fedora, Almalinux 9: `sudo dnf install -y curl gcc gcc-c++ git glib2 readline-devel libglvnd-glx libSM libXext make patch python3-pip unzip wget`
+    - Almalinux 8: `sudo dnf install -y curl gcc gcc-c++ git glib2 readline-devel libglvnd-glx libSM libXext make patch python3.12-pip unzip wget`
 
 ### Initialize the project
 
@@ -303,7 +373,7 @@ node scripts/test.js --Release
 ## Hosting you own binary rocks
 
 If the provided binray rocks are not suitable for your environnment, you can install the source rock.  
-Installing the source rock takes a long time (01h25mn on my old computer, 30mn on the new one).  
+However, installing the source rock takes a long time (01h25mn on my old computer, 30mn on the new one).  
 Therefore, it is not practical to repeat that process again.  
 To avoid that long install time, you can host your own prebuilt binary rocks on a private server.
 

@@ -60,6 +60,9 @@ parser.add_argument('--async', type=int, default=0,
                     dest='asyncN',
                     help='Number of asynchronous forwards at the same time. '
                          'Choose 0 for synchronous mode')
+parser.add_argument('--fps', type=int, default=0, help='Input frames per second')
+parser.add_argument('-H', '--dheight', type=int, default=0, help='Displayed height')
+parser.add_argument('-W', '--dwidth', type=int, default=0, help='Displayed width')
 args, _ = parser.parse_known_args()
 
 # add hack to force argument add when the command line is empty
@@ -135,8 +138,8 @@ nmsThreshold = args.nms
 
 UNSUPPORTED_YOLO_VERSION = 'Unsupported yolo version. Supported versions are v3, v4, v5, v6, v7, v8.'
 
-DESIRED_HEIGHT = 640
-DESIRED_WIDTH = 640
+DESIRED_HEIGHT = args.dheight
+DESIRED_WIDTH = args.dwidth
 
 
 def resize_and_show(title, image):
@@ -328,8 +331,9 @@ process = True
 # Frames capturing thread
 #
 framesQueue = QueueFPS()
+inputFPS = args.fps
 def framesThreadBody():
-    global framesQueue, process
+    global framesQueue, process, inputFPS, DESIRED_HEIGHT, DESIRED_WIDTH
 
     while process:
         hasFrame, frame = cap.read()
@@ -337,10 +341,21 @@ def framesThreadBody():
             break
 
         if framesQueue.counter == 0:
-            inputFPS = cap.get(cv.CAP_PROP_FPS)
             if inputFPS == 0:
-                inputFPS = 30
-                cap.set(cv.CAP_PROP_FPS, inputFPS)
+                inputFPS = cap.get(cv.CAP_PROP_FPS)
+                if inputFPS == 0:
+                    inputFPS = 30
+                    cap.set(cv.CAP_PROP_FPS, inputFPS)
+
+            if DESIRED_HEIGHT == 0:
+                DESIRED_HEIGHT = int(cap.get(cv.CAP_PROP_FRAME_HEIGHT))
+                if DESIRED_HEIGHT == 0:
+                    DESIRED_HEIGHT = 640
+
+            if DESIRED_WIDTH == 0:
+                DESIRED_WIDTH = int(cap.get(cv.CAP_PROP_FRAME_WIDTH))
+                if DESIRED_WIDTH == 0:
+                    DESIRED_WIDTH = 640
 
             tickInit = cv.getTickCount()
         else:

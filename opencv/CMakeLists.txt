@@ -127,11 +127,65 @@ option(BUILD_opencv_python_bindings_generator "The Python bindings" ON)
 
 if (WITH_FREETYPE)
   if (WIN32)
-    find_package(FREETYPE REQUIRED)
+    find_path(FREETYPE_INCLUDE_DIRS "ft2build.h"
+      PATHS "${FREETYPE_DIR}" ENV FREETYPE_DIR
+      PATH_SUFFIXES "include"
+      NO_DEFAULT_PATH)
+    find_library(FREETYPE_LINK_LIBRARIES "freetype"
+      PATHS "${FREETYPE_DIR}" ENV FREETYPE_DIR
+      PATH_SUFFIXES "lib"
+      NO_DEFAULT_PATH)
+    if (FREETYPE_INCLUDE_DIRS AND FREETYPE_LINK_LIBRARIES)
+      file(READ "${FREETYPE_INCLUDE_DIRS}/freetype/freetype.h" FREETYPE_VERSION)
+
+      string(REGEX MATCH "FREETYPE_MAJOR +([0-9]+)" _ "${FREETYPE_VERSION}")
+      set(FREETYPE_VERSION_MAJOR ${CMAKE_MATCH_1})
+
+      string(REGEX MATCH "FREETYPE_MINOR +([0-9]+)" _ "${FREETYPE_VERSION}")
+      set(FREETYPE_VERSION_MINOR ${CMAKE_MATCH_1})
+
+      string(REGEX MATCH "FREETYPE_PATCH +([0-9]+)" _ "${FREETYPE_VERSION}")
+      set(FREETYPE_VERSION_PATCH ${CMAKE_MATCH_1})
+
+      set(FREETYPE_VERSION "${FREETYPE_VERSION_MAJOR}.${FREETYPE_VERSION_MINOR}.${FREETYPE_VERSION_PATCH}")
+
+      # Fake ocv_check_modules(FREETYPE)
+      set(FREETYPE_LIBRARIES "${FREETYPE_LINK_LIBRARIES}")
+      set(FREETYPE_LINK_LIBRARIES_XXXXX TRUE)
+      set(FREETYPE_FOUND TRUE)
+    endif()
+
+    find_path(HARFBUZZ_INCLUDE_DIRS "hb-ft.h"
+      PATHS "${HARFBUZZ_DIR}" ENV HARFBUZZ_DIR
+      PATH_SUFFIXES "include/harfbuzz"
+      NO_DEFAULT_PATH)
+    find_library(HARFBUZZ_LINK_LIBRARIES "harfbuzz"
+      PATHS "${HARFBUZZ_DIR}" ENV HARFBUZZ_DIR
+      PATH_SUFFIXES "lib"
+      NO_DEFAULT_PATH)
+    if (HARFBUZZ_INCLUDE_DIRS AND HARFBUZZ_LINK_LIBRARIES)
+      file(READ "${HARFBUZZ_INCLUDE_DIRS}/hb-version.h" HARFBUZZ_VERSION)
+
+      string(REGEX MATCH "HB_VERSION_MAJOR +([0-9]+)" _ ${HARFBUZZ_VERSION})
+      set(HARFBUZZ_VERSION_MAJOR ${CMAKE_MATCH_1})
+
+      string(REGEX MATCH "HB_VERSION_MINOR +([0-9]+)" _ ${HARFBUZZ_VERSION})
+      set(HARFBUZZ_VERSION_MINOR ${CMAKE_MATCH_1})
+
+      string(REGEX MATCH "HB_VERSION_MICRO +([0-9]+)" _ ${HARFBUZZ_VERSION})
+      set(HARFBUZZ_VERSION_PATCH ${CMAKE_MATCH_1})
+
+      set(HARFBUZZ_VERSION "${HARFBUZZ_VERSION_MAJOR}.${HARFBUZZ_VERSION_MINOR}.${HARFBUZZ_VERSION_PATCH}")
+
+      # Fake ocv_check_modules(HARFBUZZ)
+      set(HARFBUZZ_LIBRARIES "${HARFBUZZ_LINK_LIBRARIES}")
+      set(HARFBUZZ_LINK_LIBRARIES_XXXXX TRUE)
+      set(HARFBUZZ_FOUND TRUE)
+    endif()
   else()
-    find_package(Freetype REQUIRED)
+    find_package(Freetype)
+    find_package(HARFBUZZ)
   endif()
-  find_package(HARFBUZZ REQUIRED)
 endif()
 
 if (WIN32)
@@ -140,6 +194,14 @@ if (WIN32)
   if (ENABLE_EXPERIMENTAL_WIDE_CHAR)
     add_definitions("-DOPENCV_INCLUDE_PORT_FILE=<enable_wide_char.h>" -DENABLE_WIDE_CHAR)
     include_directories("${CMAKE_CURRENT_SOURCE_DIR}")
+
+    if (WIN32 AND WITH_CUDA)
+      if (ENABLE_EXPERIMENTAL_WIDE_CHAR)
+        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} --diag-suppress 767)
+      endif()
+      # Workaround long paths on windows
+      list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/cuda/Modules")
+    endif()
   endif()
 endif()
 
@@ -184,3 +246,9 @@ endforeach()
 
 set(OpenCV_LIBS "${OpenCV_LIBS}" PARENT_SCOPE)
 set(OpenCV_INCLUDE_DIRS "${OpenCV_INCLUDE_DIRS}" PARENT_SCOPE)
+
+if (MSVC AND TARGET opencv_world)
+  set_target_properties(opencv_world PROPERTIES
+    VS_PROJECT_IMPORT "${CMAKE_CURRENT_SOURCE_DIR}/opencv_world.user.props"
+  )
+endif()

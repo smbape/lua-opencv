@@ -13,18 +13,34 @@ description = {
       I recommend you to try installing the prebuilt binary with
       luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua
 
-      Or to specify the target lua version
+      Or to specify the target lua version with one of the following commands
       luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.10.0luajit2.1
       luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.10.0lua5.4
       luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.10.0lua5.3
       luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.10.0lua5.2
       luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.10.0lua5.1
 
-      If the prebuilt binary does not work, then I recommend to host your own binary rocks by following the instructions at
+      Those prebuilt binaries should work on windows and many linux distributions and have been tested on:
+        - Windows 11
+        - Ubuntu 20.04
+        - Ubuntu 22.04
+        - Ubuntu 24.04
+        - Debian 10
+        - Debian 11
+        - Debian 12
+        - Fedora 38
+        - Fedora 39
+        - Fedora 40
+        - Almalinux 8
+        - Almalinux 9
+
+      If the prebuilt binary does not work or you want a custom build, then I recommend you to host your own binary rocks by following the instructions at
       https://github.com/smbape/lua-opencv/tree/v0.0.4#hosting-you-own-binary-rocks
 
       Otherwise, follow the instructions at https://github.com/smbape/lua-opencv/tree/v0.0.4#prerequisites-to-source-rock-install
-      before attempting to install the source rock.
+      before attempting to install the source rock with
+
+      luarocks install --server=https://github.com/smbape/lua-opencv/releases/download/v0.0.4 opencv_lua 4.10.0
    ]],
    homepage = "https://github.com/smbape/lua-opencv",
    issues_url = "git+https://github.com/smbape/lua-opencv.git",

@@ -75,6 +75,10 @@ parser:option('--target'):choices(common.map_tostring(targets)):default(cv.dnn.D
 parser:option('--async'):convert(int):default(cv.getNumThreads())
     :description('Number of asynchronous forwards at the same time. ' ..
         'Choose 0 for synchronous mode')
+parser:option('--fps'):convert(int):default(0):description('Input frames per second')
+parser:option('-H --dheight'):convert(int):default(0):description('Displayed height')
+parser:option('-W --dwidth'):convert(int):default(0):description('Displayed width')
+parser:flag('--skip'):description('Skip frames to honor input fps')
 
 local default_cmdline = rawget(_G, "arg") or {}
 
@@ -145,7 +149,8 @@ local capture_counter = 0
 local network_counter = 0
 local tick_init = 0
 local frame = cv.UMat()
-local input_fps, future_outputs
+local input_fps = args.fps
+local future_outputs
 local winName = 'Deep learning object detection in OpenCV'
 
 -- Load names of classes
@@ -169,8 +174,8 @@ local nmsThreshold = args.nms
 
 local UNSUPPORTED_YOLO_VERSION = 'Unsupported yolo version. Supported versions are v3, v4, v5, v6, v7, v8.'
 
-local DESIRED_HEIGHT = 640
-local DESIRED_WIDTH = 640
+local DESIRED_HEIGHT = args.dheight
+local DESIRED_WIDTH = args.dwidth
 
 
 local function resize_and_show(title, image)
@@ -434,15 +439,31 @@ local function process_frame(future_outputs, frame)
 end
 
 local function read_frame()
-    local capture_fps, network_fps, label
+    local expected, capture_fps, network_fps, label
 
     if capture_counter == 0 then
         future_outputs = {}
 
-        input_fps = cap:get(cv.CAP_PROP_FPS)
         if input_fps == 0 then
-            input_fps = 30
-            cap:set(cv.CAP_PROP_FPS, input_fps)
+            input_fps = cap:get(cv.CAP_PROP_FPS)
+            if input_fps == 0 then
+                input_fps = 30
+                cap:set(cv.CAP_PROP_FPS, input_fps)
+            end
+        end
+
+        if DESIRED_HEIGHT == 0 then
+            DESIRED_HEIGHT = int(cap:get(cv.CAP_PROP_FRAME_HEIGHT))
+            if DESIRED_HEIGHT == 0 then
+                DESIRED_HEIGHT = 640
+            end
+        end
+
+        if DESIRED_WIDTH == 0 then
+            DESIRED_WIDTH = int(cap:get(cv.CAP_PROP_FRAME_WIDTH))
+            if DESIRED_WIDTH == 0 then
+                DESIRED_WIDTH = 640
+            end
         end
 
         tick_init = cv.getTickCount()
@@ -452,7 +473,7 @@ local function read_frame()
 
         -- compute delay before starting read to honor input_fps
         local delay = 1
-        local expected = input_fps * elapsed
+        expected = input_fps * elapsed
         if expected < capture_counter then
             delay = math.max(1, int(1000 * (capture_counter - expected) / input_fps))
         end
@@ -487,6 +508,12 @@ local function read_frame()
     end
 
     capture_counter = capture_counter + 1
+
+    if expected ~= nil and expected > capture_counter and args.skip then
+        -- Skip the frame
+        resize_and_show(winName, frame)
+        return true
+    end
 
     process_frame(future_outputs, frame)
     return true

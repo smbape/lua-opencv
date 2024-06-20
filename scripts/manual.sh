@@ -38,7 +38,7 @@ bash -c 'source scripts/tasks.sh && test_prepublished_binary_wsl'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-binary-ubuntu-22.04 ubuntu:22.04 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-binary-debian-11 debian:11 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-fedora-39 fedora:39 -- object_detection.lua'
-bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-almalinux-8 amd64/almalinux:8 -- object_detection.lua'
+bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-almalinux-9 amd64/almalinux:9 -- object_detection.lua'
 
 
 # ================================
@@ -54,9 +54,10 @@ bash -c 'source scripts/tasks.sh && test_prepublished_source_wsl'
 # ================================
 # Docker images README.md install source rock
 # ================================
-bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-source-ubuntu-22.04 ubuntu:22.04 -- object_detection.lua'
-bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-source-debian-11 debian:11 -- object_detection.lua'
-bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-source-fedora-39 fedora:39 -- object_detection.lua'
+bash -c 'source scripts/tasks.sh && test_prepublished_source_debian test-source-ubuntu-22.04 ubuntu:22.04 -- object_detection.lua'
+bash -c 'source scripts/tasks.sh && test_prepublished_source_debian test-source-debian-11 debian:11 -- object_detection.lua'
+bash -c 'source scripts/tasks.sh && test_prepublished_source_fedora test-source-fedora-39 fedora:39 -- object_detection.lua'
+bash -c 'source scripts/tasks.sh && test_prepublished_source_fedora test-source-almalinux-9 amd64/almalinux:9 -- object_detection.lua'
 
 
 # ================================

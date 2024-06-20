@@ -203,8 +203,10 @@ const options = {
     cmake_build_args: [],
 };
 
-for (let i = 2; i < process.argv.length; i++) {
-    const arg = process.argv[i];
+const argv = process.argv.slice(2);
+
+for (let i = 0; i < argv.length; i++) {
+    const arg = argv[i];
     const eq = arg.indexOf("=");
 
     let key, value;
@@ -226,20 +228,34 @@ for (let i = 2; i < process.argv.length; i++) {
         case "--name":
         case "--lua-versions":
             if (eq === -1) {
-                value = process.argv[++i];
+                value = argv[++i];
             }
             options[key.slice("--".length)] = value;
             break;
         default:
+            if (key === "-D") {
+                if (++i === argv.length) {
+                    throw new Error(`Unknown option ${ arg }`);
+                }
+
+                if (!argv[i].includes("=")) {
+                    throw new Error(`Value missing for option ${ argv[i] }`);
+                }
+
+                argv[i] = key + argv[i];
+                continue;
+            }
+
             if (key.startsWith("-D")) {
                 if (eq === -1) {
-                    value = process.argv[++i];
+                    value = argv[++i];
                 }
                 const colon = key.indexOf(":");
                 const arg_name = key.slice("-D".length, colon === -1 ? key.length : colon);
                 options.cmake_build_args.push(`${ arg_name } = "${ value.replaceAll("\"", "\\\"") }"`);
                 continue;
             }
+
             throw new Error(`Unknown option ${ arg }`);
     }
 }

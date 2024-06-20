@@ -52,9 +52,17 @@ set(ABIVER  ${MAJVER}.${MINVER})
 string(REPLACE "." "" NODOTABIVER ${ABIVER})
 
 
+# https://lfs.lug.org.cn/mirrors.html
 include(FetchContent)
 FetchContent_Declare(lua
-  URL                 https://www.lua.org/ftp/lua-${Lua_VERSION}.tar.gz
+  URL                 https://sources.buildroot.net/lua/lua-${Lua_VERSION}.tar.gz
+                      https://ftp.wrz.de/pub/BLFS/conglomeration/lua/lua-${Lua_VERSION}.tar.gz
+                      https://ftp2.osuosl.org/pub/blfs/conglomeration/lua/lua-${Lua_VERSION}.tar.gz
+                      https://mirror-hk.koddos.net/blfs/conglomeration/lua/lua-${Lua_VERSION}.tar.gz
+                      https://mirror.dogado.de/BLFS/conglomeration/lua/lua-${Lua_VERSION}.tar.gz
+                      https://mirror.koddos.net/blfs/conglomeration/lua/lua-${Lua_VERSION}.tar.gz
+                      https://repo.jing.rocks/blfs/conglomeration/lua/lua-${Lua_VERSION}.tar.gz
+                      https://www.lua.org/ftp/lua-${Lua_VERSION}.tar.gz
   URL_HASH            SHA256=${Lua_URL_HASH_${Lua_DLLVERSION}}
   PATCH_COMMAND       "${PATCH}" -p 1 -d "<SOURCE_DIR>" -i "${CMAKE_CURRENT_SOURCE_DIR}/patches/001-lua-${MAJVER}.${MINVER}-src.patch"
 )

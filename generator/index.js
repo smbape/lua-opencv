@@ -173,7 +173,7 @@ waterfall([
 
     (results, next) => {
         const [statsCMakeCache, statsPyOpenCVGeneratedInclude] = results;
-        if (statsCMakeCache && statsPyOpenCVGeneratedInclude && statsCMakeCache.mtimeMs <= statsPyOpenCVGeneratedInclude.mtimeMs) {
+        if (statsCMakeCache && statsPyOpenCVGeneratedInclude) {
             next();
             return;
         }
