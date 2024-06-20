@@ -248,6 +248,16 @@ namespace {
 	}
 
 	template<typename _Tm>
+	inline void _shape(const _Tm& self, std::vector<int>& shape) {
+		const auto dims = self.size.dims();
+		shape.assign(self.size.p, self.size.p + dims);
+		const auto channels = self.channels();
+		if (channels != 1) {
+			shape.push_back(channels);
+		}
+	}
+
+	template<typename _Tm>
 	inline void _createFromArray(lua_State* L, const Table& array, int type, _Tm& result) {
 		std::vector<double> values;
 		std::vector<int> sizes;
@@ -261,21 +271,29 @@ namespace {
 			type = CV_64F;
 		}
 
-		auto flags = CV_MAT_TYPE(type);
-		auto cn = CV_MAT_CN(flags);
-		auto depth = CV_MAT_DEPTH(flags);
+		const auto flags = CV_MAT_TYPE(type);
+		const auto cn = CV_MAT_CN(flags);
+		const auto depth = CV_MAT_DEPTH(flags);
 
 		cv::Mat data(sizes, CV_64F, reinterpret_cast<void*>(values.data()));
 
 		data.convertTo(result, depth);
 
 		if (cn != 1) {
-			auto dims = sizes.size();
-			if (cn == sizes.back()) {
-				result = result.reshape(cn, dims - 1, result.size.p);
-			}
-			else {
+			if (cn != sizes.back()) {
 				LUAL_MODULE_ERROR(L, "the given array has " << sizes.back() << " channels, while given type has " << cn << " channels");
+			}
+
+			const auto dims = sizes.size();
+
+			if constexpr (std::is_same_v<_Tm, cv::cuda::GpuMat>) {
+				if (dims == 3) {
+					result = result.reshape(cn);
+				} else {
+					LUAL_MODULE_ERROR(L, "the given array has " << dims << " dimensions, while GpuMat can only support 3 dimensions");
+				}
+			} else {
+				result = result.reshape(cn, dims - 1, result.size.p);
 			}
 		}
 	}
@@ -290,6 +308,10 @@ namespace {
 		const cv::Mat self = ([&] {
 			if constexpr (std::is_same_v<_Tm, cv::UMat>) {
 				return _self.getMat(cv::ACCESS_READ);
+			}
+			else if constexpr (std::is_same_v<_Tm, cv::cuda::GpuMat>) {
+				cv::Mat dst; _self.download(dst);
+				return dst;
 			}
 			else {
 				return _self;
@@ -702,22 +724,12 @@ namespace cvextra {
 	cv::Range Ellipsis(INT_MAX, INT_MIN);
 
 	std::vector<int> mat_shape(const cv::Mat& self) {
-		const auto dims = self.size.dims();
-		std::vector<int> shape(self.size.p, self.size.p + dims);
-		const auto channels = self.channels();
-		if (channels != 1) {
-			shape.push_back(channels);
-		}
+		std::vector<int> shape; _shape(self, shape);
 		return shape;
 	}
 
 	std::vector<int> umat_shape(const cv::UMat& self) {
-		const auto dims = self.size.dims();
-		std::vector<int> shape(self.size.p, self.size.p + dims);
-		const auto channels = self.channels();
-		if (channels != 1) {
-			shape.push_back(channels);
-		}
+		std::vector<int> shape; _shape(self, shape);
 		return shape;
 	}
 
@@ -1034,11 +1046,21 @@ namespace cvextra {
 		return _result;
 	}
 
+	cv::cuda::GpuMat createGpuMatFromArray(lua_State* L, const Table& array, int type, cv::cuda::GpuMat::Allocator* allocator) {
+		cv::cuda::GpuMat _result(allocator);
+		_createFromArray(L, array, type, _result);
+		return _result;
+	}
+
 	int pushtable_Mat(lua_State* L, const cv::Mat& self, bool nested) {
 		return _pushtable(L, self, nested);
 	}
 
 	int pushtable_UMat(lua_State* L, const cv::UMat& self, bool nested) {
+		return _pushtable(L, self, nested);
+	}
+
+	int pushtable_GpuMat(lua_State* L, const cv::cuda::GpuMat& self, bool nested) {
 		return _pushtable(L, self, nested);
 	}
 }

@@ -397,17 +397,19 @@ local function win32_join(args)
 end
 
 local function execute(args)
+    local success, status, code
     if package.config:sub(1, 1) == '\\' then
         -- assume windows
-        return os.execute(win32_join(args))
+        success, status, code = os.execute(win32_join(args))
     else
         -- assume linux
-        local success, status, code = os.execute(shell.join(args))
-        if _ENV == 'Lua 5.1' then return success end
-        if success then return 0 end
-        if status == 'exit' then return code / 0xff end
-        return 1
+        success, status, code = os.execute(shell.join(args))
     end
+
+    if _ENV == 'Lua 5.1' then return success end
+    if success then return 0 end
+    if status == 'exit' then return code / 0xff end
+    return 1
 end
 
 -- Function to read a file
@@ -477,6 +479,7 @@ local function map_tostring(obj)
 end
 
 return {
+    toboolean = toboolean,
     add_argument = add_argument,
     add_preproc_args = add_preproc_args,
     findFile = findFile,

@@ -271,8 +271,9 @@ function docker_run_bash() {
     fi
 
     if [ ${#container_id} -eq 0 ]; then
+        # https://stackoverflow.com/questions/73092750/how-to-show-gui-apps-from-docker-desktop-container-on-windows-11/73901260#73901260
         wsl -c "docker run -it \
--v \"\$PWD:/src\" \
+-v '/mnt$(cygpath -u "$PWD"):/src' \
 -v '/tmp/.X11-unix:/tmp/.X11-unix' \
 -v '/mnt/wslg:/mnt/wslg' \
 -e DISPLAY -e WAYLAND_DISPLAY -e XDG_RUNTIME_DIR -e PULSE_SERVER \
@@ -337,7 +338,7 @@ function new_version_rollback() {
 }
 
 function push_all() {
-    git push --all --follow-tags origin --force && git push --all --follow-tags github
+    git push --all --follow-tags origin && git push --all --follow-tags github
 }
 
 function prepublish_stash_push() {
@@ -405,13 +406,17 @@ function prepublish_windows() {
 }
 
 function use_luajit_opencv_lua_modules() {
+    local sources="$PWD/out/prepublish/luajit-2.1/opencv_lua"
     rm -rf luarocks/lua_modules && \
-    cmd.exe //c mklink //j "$(cygpath -w "$PWD/luarocks/lua_modules")" "$(cygpath -w "$PWD/out/prepublish/luajit-2.1/opencv_lua/luarocks/lua_modules")"
+    bash -c "cd ${sources}/ && source scripts/vcvars_restore_start.sh && ./luarocks/luarocks.bat install --deps-only samples/samples-scm-1.rockspec" && \
+    cmd.exe //c mklink //j "$(cygpath -w "$PWD/luarocks/lua_modules")" "$(cygpath -w "${sources}/luarocks/lua_modules")"
 }
 
 function use_luajit_opencv_lua_contrib_modules() {
+    local sources="$PWD/out/prepublish/luajit-2.1/opencv_lua-contrib"
     rm -rf luarocks/lua_modules && \
-    cmd.exe //c mklink //j "$(cygpath -w "$PWD/luarocks/lua_modules")" "$(cygpath -w "$PWD/out/prepublish/luajit-2.1/opencv_lua-contrib/luarocks/lua_modules")"
+    bash -c "cd ${sources}/ && source scripts/vcvars_restore_start.sh && ./luarocks/luarocks.bat install --deps-only samples/samples-scm-1.rockspec" && \
+    cmd.exe //c mklink //j "$(cygpath -w "$PWD/luarocks/lua_modules")" "$(cygpath -w "${sources}/luarocks/lua_modules")"
 }
 
 function build_windows() {
@@ -475,7 +480,7 @@ function prepublish_manylinux() {
     fix_mounted_volumes_permission_docker ${name} || return $?
 
     docker exec -it -u 1000 ${name} bash -c '
-export PATH="$HOME/bin:$PATH" && \
+export PATH="$HOME/bin${PATH:+:${PATH}}" && \
 export PATH="${PATH//:\/bin:/:}" && \
 git config --global --add safe.directory /src/.git && \
 source /src/scripts/tasks.sh && \
@@ -527,9 +532,14 @@ open_git_project "file://${projectDir}" "${WORKING_DIRECTORY}/build" || exit $?
 
 node scripts/prepublish.js --pack --server="${WORKING_DIRECTORY}/server" --lua-versions luajit-2.1 --name=opencv_lua-custom \
     -DBUILD_contrib=ON \
-    -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake \
+    -DWITH_FREETYPE=ON \
+    -DFREETYPE_DIR=C:/vcpkg/installed/x64-windows \
+    -DHARFBUZZ_DIR=C:/vcpkg/installed/x64-windows \
     -DENABLE_EXPERIMENTAL_WIDE_CHAR=ON \
-    -DWITH_FREETYPE=ON
+    -DWITH_CUDA=ON \
+    -DWITH_CUDNN=ON \
+    -DOPENCV_DNN_CUDA=ON \
+    -DCUDA_ARCH_BIN=$(nvidia-smi --query-gpu=compute_cap --format=csv | sed /compute_cap/d)
 ' && \
     new_version_rollback
 }
@@ -579,9 +589,35 @@ $(build_custom_linux_script)" && \
 function install_build_essentials_fedora_script() {
     local script='
 $cpm update -y && \
-$cpm install -y curl gcc gcc-c++ git libavcodec-free-devel libavformat-free-devel libdc1394-devel \
-        libjpeg-devel libpng-devel readline-devel libswscale-free-devel make patch tbb-devel \
-        pkg-config python3-pip qt5-qtbase-devel unzip wget zip'
+$cpm install -y git \
+        libjpeg-devel libpng-devel readline-devel make patch tbb-devel \
+        pkg-config python3.12-pip qt5-qtbase-devel unzip wget zip || \
+exit $?
+command -v curl &>/dev/null || $cpm install -y curl || exit $?
+
+ALMALINUX_VERSION=$(sed -rn "s/ALMALINUX_MANTISBT_PROJECT=\"AlmaLinux-([0-9])\"/\1/p" /etc/os-release)
+if [ ${#ALMALINUX_VERSION} -ne 0 ]; then
+    $cpm install -y "dnf-command(config-manager)" || exit $?
+
+    if [ ${ALMALINUX_VERSION} -eq 8 ]; then
+        $cpm config-manager --set-enabled powertools || exit $?
+    else
+        $cpm config-manager --set-enabled crb || exit $?
+    fi
+
+    $cpm install -y epel-release && \
+    $cpm install -y https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-${ALMALINUX_VERSION}.noarch.rpm && \
+    $cpm install -y https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-${ALMALINUX_VERSION}.noarch.rpm && \
+    $cpm update -y || exit $?
+
+    if [ ${ALMALINUX_VERSION} -eq 8 ]; then
+        $cpm install -y gcc-toolset-12-gcc gcc-toolset-12-gcc-c++ ffmpeg-devel || exit $?
+    else
+        $cpm install -y gcc gcc-c++ libavcodec-free-devel libavformat-free-devel libdc1394-devel libswscale-free-devel || exit $?
+    fi
+else
+    $cpm install -y gcc gcc-c++ libavcodec-free-devel libavformat-free-devel libdc1394-devel libswscale-free-devel || exit $?
+fi'
 
     echo "$(get_current_package_manager); ${script}"
 }
@@ -606,6 +642,7 @@ $(build_custom_linux_script)" && \
 }
 
 function build_custom_wsl() {
+    local name=wsl
     set_url_wsl && \
     new_version && \
     wsl -c "
@@ -613,19 +650,23 @@ $(export_shared_env /mnt); source scripts/wsl_init.sh || exit \$?
 WORKING_DIRECTORY=\${sources}/../opencv-lua-custom
 [ -d \${WORKING_DIRECTORY} ] || mkdir \${WORKING_DIRECTORY} || exit \$?
 [ -d \${projectDir}/out/prepublish/server-${name} ] || mkdir \${projectDir}/out/prepublish/server-${name} || exit \$?
-[ -L \${WORKING_DIRECTORY}/server ] || ln -s \${projectDir}/out/prepublish/server-wsl \${WORKING_DIRECTORY}/server || exit \$?
+[ -L \${WORKING_DIRECTORY}/server ] || ln -s \${projectDir}/out/prepublish/server-${name} \${WORKING_DIRECTORY}/server || exit \$?
 $(build_custom_linux_script)" && \
     new_version_rollback
 }
 
 function build_windows_debug() {
-    time ./build.bat -d "-DLua_VERSION=luajit-2.1" --install --target luajit \
-        "-DCMAKE_TOOLCHAIN_FILE:FILEPATH=C:/vcpkg/scripts/buildsystems/vcpkg.cmake" && \
+    time ./build.bat -d "-DLua_VERSION=luajit-2.1" --install --target luajit && \
     time ./build.bat -d "-DLua_VERSION=luajit-2.1" --install \
         "-DBUILD_contrib:BOOL=ON" \
         "-DWITH_FREETYPE:BOOL=ON" \
+        "-DFREETYPE_DIR:PATH=C:/vcpkg/installed/x64-windows" \
+        "-DHARFBUZZ_DIR:PATH=C:/vcpkg/installed/x64-windows" \
         "-DENABLE_EXPERIMENTAL_WIDE_CHAR:BOOL=ON" \
-        "-DCMAKE_TOOLCHAIN_FILE:FILEPATH=C:/vcpkg/scripts/buildsystems/vcpkg.cmake"
+        "-DWITH_CUDA:BOOL=ON" \
+        "-DWITH_CUDNN:BOOL=ON" \
+        "-DOPENCV_DNN_CUDA:BOOL=ON" \
+        "-DCUDA_ARCH_BIN=$(nvidia-smi --query-gpu=compute_cap --format=csv | sed /compute_cap/d)"
 }
 
 function build_wsl_debug() {
@@ -642,16 +683,13 @@ function build_full() {
     build_windows && \
     build_manylinux && \
     build_custom_windows && \
-    build_custom_wsl && \
+    build_custom_debian build-custom-ubuntu-22.04 ubuntu:22.04 && \
     build_windows_debug && \
     build_wsl_debug
 }
 
 function test_rock_script() {
-    local exclude=$1; shift
-    local rock_type=$1; shift
     local script='
-
 if command -v cygpath &>/dev/null; then
 unset -f ln
 function ln() {
@@ -711,8 +749,8 @@ fi
 [ "${version:0:6}" == luajit ] && target=luajit || target=lua
 open_git_project "file://${projectDir}" "${CWD}/out/test/build.luaonly/${version}/src" || exit $?
 
-export PATH="${PWD}/out/install/${ARCH}-Release/bin:$PATH"
-export PATH="${PWD}/out/build.luaonly/${ARCH}-Release/luarocks/luarocks-prefix/src/luarocks${LUAROCKS_BINDIR}:$PATH"
+export PATH="${PWD}/out/install/${ARCH}-Release/bin${PATH:+:${PATH}}"
+export PATH="${PWD}/out/build.luaonly/${ARCH}-Release/luarocks/luarocks-prefix/src/luarocks${LUAROCKS_BINDIR}${PATH:+:${PATH}}"
 
 command -v ${target}${EXE_SUFFIX} &>/dev/null || ./build${SCRIPT_SUFFIX} "-DLua_VERSION=${version}" --target ${target} --install || exit $?
 command -v luarocks${EXE_SUFFIX} &>/dev/null || ./build${SCRIPT_SUFFIX} "-DLua_VERSION=${version}" --target luarocks || exit $?
@@ -752,8 +790,22 @@ fi
 
 ./luarocks/luarocks${LUAROCKS_SUFFIX} install --deps-only samples/samples-scm-1.rockspec || exit $?
 opencv_lua_installed="$(./luarocks/luarocks${LUAROCKS_SUFFIX} list --porcelain opencv_lua${suffix})"
-[ ${#opencv_lua_installed} -eq 0 ] || ./luarocks/luarocks${LUAROCKS_SUFFIX} remove opencv_lua${suffix} || exit $?
-./luarocks/luarocks${LUAROCKS_SUFFIX} install "--server=${projectDir}/out/prepublish/server" opencv_lua${suffix} ${opencv_lua_version} || exit $?
+
+if [ ${#opencv_lua_installed} -ne 0 ]; then
+    if [ ${upgrade_rock} -eq 1 ]; then
+        remove_rock=1
+        install_rock=1
+    else
+        remove_rock=0
+        install_rock=0
+    fi
+else
+    remove_rock=0
+    install_rock=1
+fi
+
+[ ${remove_rock} -eq 0 ] || ./luarocks/luarocks${LUAROCKS_SUFFIX} remove opencv_lua${suffix} || exit $?
+[ ${install_rock} -eq 0 ] || ./luarocks/luarocks${LUAROCKS_SUFFIX} install "--server=${projectDir}/out/prepublish/server" opencv_lua${suffix} ${opencv_lua_version} || exit $?
 
 # ================================
 # Run the tests
@@ -765,6 +817,15 @@ fi
 
 PYTHON_VENV_PATH="${CWD}/out/test/.venv" MODELS_PATH="${projectDir}/out/test/.models" node scripts/test.js --Release'
 
+    local exclude=$1; shift
+    local rock_type=$1; shift
+
+    local upgrade_rock=0
+    if [ "$1" == "--upgrade" ]; then
+        upgrade_rock=1
+        shift
+    fi
+
     for arg in "$@"; do
         script="$script '$arg'"
     done
@@ -774,7 +835,7 @@ PYTHON_VENV_PATH="${CWD}/out/test/.venv" MODELS_PATH="${projectDir}/out/test/.mo
         script="$script $WSL_EXCLUDED_TESTS"
     fi
 
-    echo "rock_type=${rock_type}; $script"
+    echo "rock_type=${rock_type}; upgrade_rock=${upgrade_rock}; $script"
 }
 
 function test_prepublished_windows() {
@@ -859,6 +920,10 @@ function test_prepublished_docker() {
     fi
 
 docker exec -u 1001 -it ${name} bash -c "
+if [ -f /opt/rh/gcc-toolset-12/enable ]; then
+    source /opt/rh/gcc-toolset-12/enable || exit \$?
+fi
+
 git config --global --add safe.directory /src/.git && \
 source /src/scripts/tasks.sh && \
 make_available_nvs && nvs add 16 && nvs use 16 && \
@@ -931,13 +996,8 @@ function install_test_essentials_docker_fedora() {
     docker exec -it -u 0 ${name} bash -c "
 $(get_current_package_manager)
 \$cpm update -y && \
-\$cpm install -y curl gcc gcc-c++ git glib2 readline-devel libglvnd-glx libSM libXext make patch python3-pip unzip wget || \
-exit \$?
-
-source /etc/os-release
-if [ \"\$NAME\" == \"AlmaLinux\" ]; then
-    \$cpm install -y python3-devel # needed to install opencv-python || exit \$?
-fi
+\$cpm install -y gcc gcc-c++ git glib2 readline-devel libglvnd-glx libSM libXext make patch python3.12-pip unzip wget || exit \$?
+command -v curl &>/dev/null || \$cpm install -y curl || exit \$?
 
 $(docker_init_script)"
 }

@@ -4741,6 +4741,8 @@
 - [cv::cuda::GpuData](#cvcudagpudata)
 - [cv::cuda::GpuMat](#cvcudagpumat)
   - [GpuMat.step](#gpumatstep)
+  - [GpuMat.width](#gpumatwidth)
+  - [GpuMat.height](#gpumatheight)
   - [cv.cuda.GpuMat.new](#cvcudagpumatnew)
   - [cv.cuda.GpuMat.adjustROI](#cvcudagpumatadjustroi)
   - [cv.cuda.GpuMat.assignTo](#cvcudagpumatassignto)
@@ -4751,6 +4753,7 @@
   - [cv.cuda.GpuMat.convertTo](#cvcudagpumatconvertto)
   - [cv.cuda.GpuMat.copyTo](#cvcudagpumatcopyto)
   - [cv.cuda.GpuMat.create](#cvcudagpumatcreate)
+  - [cv.cuda.GpuMat.createFromArray](#cvcudagpumatcreatefromarray)
   - [cv.cuda.GpuMat.cudaPtr](#cvcudagpumatcudaptr)
   - [cv.cuda.GpuMat.defaultAllocator](#cvcudagpumatdefaultallocator)
   - [cv.cuda.GpuMat.depth](#cvcudagpumatdepth)
@@ -4760,6 +4763,13 @@
   - [cv.cuda.GpuMat.empty](#cvcudagpumatempty)
   - [cv.cuda.GpuMat.isContinuous](#cvcudagpumatiscontinuous)
   - [cv.cuda.GpuMat.locateROI](#cvcudagpumatlocateroi)
+  - [cv.cuda.GpuMat.operator*](#cvcudagpumatoperator)
+  - [cv.cuda.GpuMat.operator+](#cvcudagpumatoperator)
+  - [cv.cuda.GpuMat.operator-](#cvcudagpumatoperator-)
+  - [cv.cuda.GpuMat.operator/](#cvcudagpumatoperator)
+  - [cv.cuda.GpuMat.operator<](#cvcudagpumatoperator)
+  - [cv.cuda.GpuMat.operator<=](#cvcudagpumatoperator)
+  - [cv.cuda.GpuMat.operator==](#cvcudagpumatoperator)
   - [cv.cuda.GpuMat.release](#cvcudagpumatrelease)
   - [cv.cuda.GpuMat.reshape](#cvcudagpumatreshape)
   - [cv.cuda.GpuMat.row](#cvcudagpumatrow)
@@ -4768,7 +4778,9 @@
   - [cv.cuda.GpuMat.setTo](#cvcudagpumatsetto)
   - [cv.cuda.GpuMat.size](#cvcudagpumatsize)
   - [cv.cuda.GpuMat.step1](#cvcudagpumatstep1)
+  - [cv.cuda.GpuMat.sum](#cvcudagpumatsum)
   - [cv.cuda.GpuMat.swap](#cvcudagpumatswap)
+  - [cv.cuda.GpuMat.table](#cvcudagpumattable)
   - [cv.cuda.GpuMat.type](#cvcudagpumattype)
   - [cv.cuda.GpuMat.updateContinuityFlag](#cvcudagpumatupdatecontinuityflag)
   - [cv.cuda.GpuMat.upload](#cvcudagpumatupload)
@@ -51626,6 +51638,22 @@ lua:
     [propget] oGpuMat.step
 ```
 
+### GpuMat.width
+
+```cpp
+int cv::cuda::GpuMat::cols
+lua:
+    [propget, propput] oGpuMat.width
+```
+
+### GpuMat.height
+
+```cpp
+int cv::cuda::GpuMat::rows
+lua:
+    [propget, propput] oGpuMat.height
+```
+
 ### cv.cuda.GpuMat.new
 
 ```cpp
@@ -51842,6 +51870,16 @@ lua:
     oGpuMat:create( size, type ) -> None
 ```
 
+### cv.cuda.GpuMat.createFromArray
+
+```cpp
+static cv::cuda::GpuMat cv::cuda::GpuMat::createFromArray( const Table&                 array,
+                                                           int                          type = CV_64F,
+                                                           cv::cuda::GpuMat::Allocator* allocator = GpuMat::defaultAllocator() );
+lua:
+    cv.cuda.GpuMat.createFromArray( array[, type[, allocator]] ) -> retval
+```
+
 ### cv.cuda.GpuMat.cudaPtr
 
 ```cpp
@@ -51920,6 +51958,80 @@ void cv::cuda::GpuMat::locateROI( cv::Size&  wholeSize,
                                   cv::Point& ofs ) const;
 lua:
     oGpuMat:locateROI( wholeSize, ofs ) -> None
+```
+
+### cv.cuda.GpuMat.operator*
+
+```cpp
+static void cv::cuda::GpuMat::operator*( const cv::cuda::GpuMat& src1,
+                                         InputArray              src2,
+                                         cv::cuda::GpuMat        dst = cv::cuda::GpuMat() );
+lua:
+    cv.cuda.GpuMat.__mul( src1, src2[, dst] ) -> dst
+    src1 * src2 -> dst
+```
+
+### cv.cuda.GpuMat.operator+
+
+```cpp
+static void cv::cuda::GpuMat::operator+( const cv::cuda::GpuMat& src1,
+                                         InputArray              src2,
+                                         cv::cuda::GpuMat        dst = cv::cuda::GpuMat() );
+lua:
+    cv.cuda.GpuMat.__add( src1, src2[, dst] ) -> dst
+    src1 + src2 -> dst
+```
+
+### cv.cuda.GpuMat.operator-
+
+```cpp
+static void cv::cuda::GpuMat::operator-( const cv::cuda::GpuMat& src1,
+                                         InputArray              src2,
+                                         cv::cuda::GpuMat        dst = cv::cuda::GpuMat() );
+lua:
+    cv.cuda.GpuMat.__sub( src1, src2[, dst] ) -> dst
+    src1 - src2 -> dst
+```
+
+### cv.cuda.GpuMat.operator/
+
+```cpp
+static void cv::cuda::GpuMat::operator/( const cv::cuda::GpuMat& src1,
+                                         InputArray              src2,
+                                         cv::cuda::GpuMat        dst = cv::cuda::GpuMat() );
+lua:
+    cv.cuda.GpuMat.__div( src1, src2[, dst] ) -> dst
+    src1 / src2 -> dst
+```
+
+### cv.cuda.GpuMat.operator<
+
+```cpp
+static void cv::cuda::GpuMat::operator<( const cv::cuda::GpuMat& src1,
+                                         InputArray              src2,
+                                         cv::cuda::GpuMat        dst = cv::cuda::GpuMat() );
+lua:
+    cv.cuda.GpuMat.__lt( src1, src2[, dst] ) -> dst
+```
+
+### cv.cuda.GpuMat.operator<=
+
+```cpp
+static void cv::cuda::GpuMat::operator<=( const cv::cuda::GpuMat& src1,
+                                          InputArray              src2,
+                                          cv::cuda::GpuMat        dst = cv::cuda::GpuMat() );
+lua:
+    cv.cuda.GpuMat.__le( src1, src2[, dst] ) -> dst
+```
+
+### cv.cuda.GpuMat.operator==
+
+```cpp
+static void cv::cuda::GpuMat::operator==( const cv::cuda::GpuMat& src1,
+                                          InputArray              src2,
+                                          cv::cuda::GpuMat        dst = cv::cuda::GpuMat() );
+lua:
+    cv.cuda.GpuMat.__eq( src1, src2[, dst] ) -> dst
 ```
 
 ### cv.cuda.GpuMat.release
@@ -52016,12 +52128,28 @@ lua:
     oGpuMat:step1() -> retval
 ```
 
+### cv.cuda.GpuMat.sum
+
+```cpp
+cv::Scalar cv::cuda::GpuMat::sum();
+lua:
+    oGpuMat:sum() -> retval
+```
+
 ### cv.cuda.GpuMat.swap
 
 ```cpp
 void cv::cuda::GpuMat::swap( cv::cuda::GpuMat& mat );
 lua:
     oGpuMat:swap( mat ) -> None
+```
+
+### cv.cuda.GpuMat.table
+
+```cpp
+void cv::cuda::GpuMat::table( bool nested = false );
+lua:
+    oGpuMat:table( [nested] ) -> None
 ```
 
 ### cv.cuda.GpuMat.type

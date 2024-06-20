@@ -24,23 +24,23 @@ namespace anonymous {
 	/**
 	 * Maps a character string to a UTF-16 (wide character) string. The character string is not necessarily from a multibyte character set.
 	 *
-	 * @param codePage  [in]  Code page to use in performing the conversion.
-	 * @param c_str     [in]  Pointer to the character string to convert.
-	 * @param length    [in]  Size, in bytes, of the string indicated by the c_str parameter. Alternatively, this parameter can be set to -1 if the string is null-terminated.
-	 * @param wstr      [out] Pointer to a buffer that receives the converted string.
-	 * @return 	        The number of characters written to the buffer pointed to by wstr.
-	 * @see             https://stackoverflow.com/questions/6693010/how-do-i-use-multibytetowidechar/59617138#59617138
-	 *                  https://learn.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-multibytetowidechar
+	 * @param codePage    [in]  Code page to use in performing the conversion.
+	 * @param c_str       [in]  Pointer to the character string to convert.
+	 * @param cbMultiByte [in]  Size, in bytes, of the string indicated by the c_str parameter. Alternatively, this parameter can be set to -1 if the string is null-terminated.
+	 * @param wstr        [out] Pointer to a buffer that receives the converted string.
+	 * @return 	          The number of characters written to the buffer pointed to by wstr.
+	 * @see               https://stackoverflow.com/questions/6693010/how-do-i-use-multibytetowidechar/59617138#59617138
+	 *                    https://learn.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-multibytetowidechar
 	 */
-	inline int mbs_to_wcs(UINT codePage, const char* c_str, size_t length, std::wstring& wstr) {
+	inline int mbs_to_wcs(UINT codePage, const char* c_str, int cbMultiByte, std::wstring& wstr) {
 		if (null_or_empty(c_str)) {
 			wstr.clear();
 			return 0;
 		}
 
-		int size = MultiByteToWideChar(codePage, 0, c_str, length, nullptr, 0);
+		int size = MultiByteToWideChar(codePage, 0, c_str, cbMultiByte, nullptr, 0);
 		wstr.assign(size, 0);
-		return MultiByteToWideChar(codePage, 0, c_str, length, &wstr[0], size + 1);
+		return MultiByteToWideChar(codePage, 0, c_str, cbMultiByte, &wstr[0], size + 1);
 	}
 
 	/**
@@ -59,22 +59,22 @@ namespace anonymous {
 	/**
 	 * Maps a UTF-16 (wide character) string to a new character string. The new character string is not necessarily from a multibyte character set.
 	 *
-	 * @param  codePage Code page to use in performing the conversion.
-	 * @param  c_wstr   Pointer to the Unicode string to convert.
-	 * @param  length   Size, in characters, of the string indicated by c_wstr parameter.
-	 * @param  str      Pointer to a buffer that receives the converted string.
-	 * @return          The number of bytes written to the buffer pointed to by c_str.
-	 * @see             https://learn.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-widechartomultibyte
+	 * @param  codePage    Code page to use in performing the conversion.
+	 * @param  c_wstr      Pointer to the Unicode string to convert.
+	 * @param  cchWideChar Size, in characters, of the string indicated by c_wstr parameter.
+	 * @param  str         Pointer to a buffer that receives the converted string.
+	 * @return             The number of bytes written to the buffer pointed to by c_str.
+	 * @see                https://learn.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-widechartomultibyte
 	 */
-	inline int wcs_to_mbs(UINT codePage, const WCHAR* c_wstr, size_t length, std::string& str) {
+	inline int wcs_to_mbs(UINT codePage, const WCHAR* c_wstr, int cchWideChar, std::string& str) {
 		if (null_or_empty(c_wstr)) {
 			str.clear();
 			return 0;
 		}
 
-		int size = WideCharToMultiByte(codePage, 0, c_wstr, length, nullptr, 0, nullptr, nullptr);
+		int size = WideCharToMultiByte(codePage, 0, c_wstr, cchWideChar, nullptr, 0, nullptr, nullptr);
 		str.assign(size, 0);
-		return WideCharToMultiByte(codePage, 0, c_wstr, length, &str[0], size + 1, nullptr, nullptr);
+		return WideCharToMultiByte(codePage, 0, c_wstr, cchWideChar, &str[0], size + 1, nullptr, nullptr);
 	}
 
 	/**
@@ -100,7 +100,7 @@ namespace anonymous {
 	 * @see             https://stackoverflow.com/questions/6693010/how-do-i-use-multibytetowidechar/59617138#59617138
 	 *                  https://learn.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-multibytetowidechar
 	 */
-	inline int utf8_to_wcs(const char* c_str, size_t length, std::wstring& wstr) {
+	inline int utf8_to_wcs(const char* c_str, int length, std::wstring& wstr) {
 		return mbs_to_wcs(CP_UTF8, c_str, length, wstr);
 	}
 
@@ -116,10 +116,27 @@ namespace anonymous {
 		return mbs_to_wcs(CP_UTF8, str, wstr);
 	}
 
-	inline int wcs_to_utf8(const WCHAR* c_wstr, size_t length, std::string& str) {
-		return wcs_to_mbs(CP_UTF8, c_wstr, length, str);
+	/**
+	 * Maps a UTF-16 (wide character) string to a new character string. The new character string is not necessarily from a multibyte character set.
+	 * 
+	 * @param  c_wstr      Pointer to the Unicode string to convert.
+	 * @param  cchWideChar Size, in characters, of the string indicated by c_wstr parameter.
+	 * @param  str         Pointer to a buffer that receives the converted string.
+	 * @return             The number of bytes written to the buffer pointed to by c_str.
+	 * @see                https://learn.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-widechartomultibyte
+	 */
+	inline int wcs_to_utf8(const WCHAR* c_wstr, int cchWideChar, std::string& str) {
+		return wcs_to_mbs(CP_UTF8, c_wstr, cchWideChar, str);
 	}
 
+	/**
+	 * Maps a UTF-16 (wide character) string to a new character string. The new character string is not necessarily from a multibyte character set.
+	 * 
+	 * @param  wstr     Pointer to the Unicode string to convert.
+	 * @param  str      Pointer to a buffer that receives the converted string.
+	 * @return          The number of bytes written to the buffer pointed to by str.
+	 * @see             https://learn.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-widechartomultibyte
+	 */
 	inline int wcs_to_utf8(const std::wstring& wstr, std::string& str) {
 		return wcs_to_mbs(CP_UTF8, wstr, str);
 	}
@@ -506,9 +523,12 @@ namespace anonymous {
 			return LoadCursorW(hInstance, nullptr);
 		}
 
+#pragma warning( push )
+#pragma warning( disable : 4244 )
 		if (IS_INTRESOURCE(lpCursorName)) {
 			return LoadCursorW(hInstance, MAKEINTRESOURCEW(lpCursorName));
 		}
+#pragma warning( pop )
 
 		std::wstring wCursorName; ::anonymous::utf8_to_wcs(lpCursorName, -1, wCursorName);
 		return LoadCursorW(hInstance, wCursorName.c_str());
@@ -531,9 +551,13 @@ namespace anonymous {
 			return LoadIconW(hInstance, nullptr);
 		}
 
+#pragma warning( push )
+#pragma warning( disable : 4244 )
 		if (IS_INTRESOURCE(lpIconName)) {
 			return LoadIconW(hInstance, MAKEINTRESOURCEW(lpIconName));
 		}
+#pragma warning( pop )
+
 		std::wstring wIconName; ::anonymous::utf8_to_wcs(lpIconName, -1, wIconName);
 		return LoadIconW(hInstance, wIconName.c_str());
 	}

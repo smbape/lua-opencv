@@ -8,10 +8,12 @@
 - [Prerequisites](#prerequisites)
   - [[Ubuntu, Debian] Install needed packages:](#ubuntu-debian-install-needed-packages)
   - [[Fedora] Install needed packages:](#fedora-install-needed-packages)
+  - [[Almalinux 8] Install needed packages:](#almalinux-8-install-needed-packages)
+  - [[Almalinux 9] Install needed packages:](#almalinux-9-install-needed-packages)
 - [Build System Environment](#build-system-environment)
 - [Install freetype and harfbuzz](#install-freetype-and-harfbuzz)
   - [[Ubuntu, Debian] Install needed packages:](#ubuntu-debian-install-needed-packages-1)
-  - [[Fedora] Install needed packages:](#fedora-install-needed-packages-1)
+  - [[Fedora, Almalinux] Install needed packages:](#fedora-almalinux-install-needed-packages)
 - [Download the source code](#download-the-source-code)
 - [Build](#build)
 - [Testing our custom prebuilt binary](#testing-our-custom-prebuilt-binary)
@@ -25,7 +27,7 @@
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 Here we will build a custom opencv with the folling modifications:
-  - Add the contrib modules
+  - Add the contrib modules.
   - Add the freetype module.
 
 The procedure has been tested on :
@@ -47,14 +49,42 @@ sudo apt install -y build-essential curl git libavcodec-dev libavformat-dev libd
 
 ### [Fedora] Install needed packages:
 ```sh
-sudo yum install -y build-essential curl git libavcodec-devel libavformat-devel libdc1394-devel \
-        libjpeg-devel libpng-devel libreadline-devel libswscale-devel make patch libtbb-devel \
-        ninja-build pkg-config python3-pip python3-venv qtbase5-devel unzip wget zip
+sudo dnf install -y curl gcc gcc-c++ git \
+        libjpeg-devel libpng-devel readline-devel make patch tbb-devel \
+        libavcodec-free-devel libavformat-free-devel libdc1394-devel libswscale-free-devel \
+        pkg-config python3-pip qt5-qtbase-devel unzip wget zip
+```
+
+### [Almalinux 8] Install needed packages:
+```sh
+sudo dnf install -y curl gcc-toolset-12-gcc gcc-toolset-12-gcc-c++ git \
+        libjpeg-devel libpng-devel readline-devel make patch tbb-devel \
+        pkg-config python3.12-pip qt5-qtbase-devel unzip wget zip && \
+sudo config-manager --set-enabled powertools && \
+sudo dnf install -y epel-release && \
+sudo dnf install -y https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm
+sudo dnf install -y https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-8.noarch.rpm && \
+sudo dnf update -y && \
+sudo dnf install -y ffmpeg-devel && \
+source /opt/rh/gcc-toolset-12/enable
+```
+
+### [Almalinux 9] Install needed packages:
+```sh
+sudo dnf install -y curl gcc gcc-c++ git \
+        libjpeg-devel libpng-devel readline-devel make patch tbb-devel \
+        pkg-config python3-pip qt5-qtbase-devel unzip wget zip && \
+sudo config-manager --set-enabled crb && \
+sudo dnf install -y epel-release && \
+sudo dnf install -y https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-9.noarch.rpm
+sudo dnf install -y https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-9.noarch.rpm && \
+sudo dnf update -y && \
+sudo dnf install -y libavcodec-free-devel libavformat-free-devel libdc1394-devel libswscale-free-devel
 ```
 
 ## Build System Environment
 
-We will name our LuaRocks pakcage **opencv_lua-custom** in order to avoir conflict with the original package name
+We will name our LuaRocks pakcage **opencv_lua-custom** in order to avoid conflict with the original package name
 
 In this example, we will use the following directories: 
   - The **Lua binary directory** is _$/io/opencv-lua-custom/build/out/prepublish/luajit-2.1/opencv_lua-custom//out/install/Linux-GCC-Release/bin_
@@ -72,7 +102,7 @@ Freetype and harfbuzz are needed to build the OpenCV freetype contrib module
 sudo apt install -y libfreetype-dev libharfbuzz-dev
 ```
 
-### [Fedora] Install needed packages:
+### [Fedora, Almalinux] Install needed packages:
 ```sh
 sudo apt install -y freetype-devel harfbuzz-devel
 ```
@@ -160,7 +190,7 @@ if retval then
             ".",
         }
     }))
-    print("font", font)
+    assert(#font ~= 0, "msjh.ttc was not fount")
     ft2:loadFontData(font, 0)
 
     points = points:convertTo(cv.CV_32S):table()
@@ -185,7 +215,7 @@ cv.waitKey()
 cv.destroyAllWindows()
 ```
 
-Execture the test.lua script
+Execute the test.lua script
 
 ```sh
 ./lua test.lua

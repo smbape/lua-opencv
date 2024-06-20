@@ -72,6 +72,9 @@ exports.ALIASES = new Map([
     ["Pose3DPtr", "Ptr_Pose3D"],
     ["PoseCluster3DPtr", "Ptr_PoseCluster3D"],
 
+    // wrong namespace
+    ["cv::cuda::cuda::StereoBeliefPropagation", "cv::cuda::StereoBeliefPropagation"],
+
     // contrib not speficiying namespace
     ["cv::bgsegm::BackgroundSubtractor", "cv::BackgroundSubtractor"],
     ["cv::xfeatures2d::Feature2D", "cv::Feature2D"],

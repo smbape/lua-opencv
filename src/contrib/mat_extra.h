@@ -24,8 +24,10 @@ namespace cvextra {
 	cv::Mat createMatFromVectorOfMat(lua_State* L, const std::vector<cv::Mat>& vec);
 	cv::Mat createMatFromArray(lua_State* L, const LUA_MODULE_NAME::Table& array, int type);
 	cv::UMat createUMatFromArray(lua_State* L, const LUA_MODULE_NAME::Table& array, int type, cv::UMatUsageFlags usageFlags);
+	cv::cuda::GpuMat createGpuMatFromArray(lua_State* L, const LUA_MODULE_NAME::Table& array, int type, cv::cuda::GpuMat::Allocator* allocator);
 	int pushtable_Mat(lua_State* L, const cv::Mat& self, bool nested);
 	int pushtable_UMat(lua_State* L, const cv::UMat& self, bool nested);
+	int pushtable_GpuMat(lua_State* L, const cv::cuda::GpuMat& self, bool nested);
 
 	extern cv::Range Ellipsis;
 

@@ -47,7 +47,7 @@ if (DEFINED ENV{LUA_DIR})
     unset(Luajit_VERSION CACHE)
   endif()
 
-  list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
+  list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/lua/Modules")
 
   if (Lua_VERSION)
     find_package(Lua ${Lua_VERSION} EXACT REQUIRED)

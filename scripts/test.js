@@ -138,7 +138,7 @@ const run = (file, options, env, next) => {
         }
         args.push(config[env.BUILD_TYPE].exe, argv);
     } else if (extname === ".py") {
-        const argv = [file];
+        const argv = [file, ...options.argv];
         if (sysPath.basename(file) === "object_detection.py" && options.argv.length === 0) {
             argv.push("ssd_tf", "--input", "vtest.avi");
         }
@@ -244,7 +244,7 @@ if (typeof require !== "undefined" && require.main === module) {
             options.excludes.push(arg.slice(1));
         } else if (options["--"] === 1 && arg[0] !== "-") {
             options.includes.push(arg);
-        } else if (options["--"] > 1 || options["--"] !== 0 && arg[0] === "-") {
+        } else if (options["--"] > 1 || options["--"] === 1 && arg[0] === "-") {
             options.argv.push(arg);
         } else if (arg === "--Debug" || arg === "--Release") {
             process.env.BUILD_TYPE = arg.slice(2);
