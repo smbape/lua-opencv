@@ -80,7 +80,7 @@ cd /d "D:\opencv-lua-custom"
 ## Download the source code
 
 ```sh
-git clone --depth 1 --branch v0.0.4 https://github.com/smbape/lua-opencv.git build && \
+git clone --depth 1 --branch v0.0.5 https://github.com/smbape/lua-opencv.git build && \
 cd build && \
 npm ci
 ```

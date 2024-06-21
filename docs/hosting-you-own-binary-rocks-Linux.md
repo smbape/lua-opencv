@@ -110,7 +110,7 @@ sudo apt install -y freetype-devel harfbuzz-devel
 ## Download the source code
 
 ```sh
-git clone --depth 1 --branch v0.0.4 https://github.com/smbape/lua-opencv.git /io/opencv-lua-custom/build && \
+git clone --depth 1 --branch v0.0.5 https://github.com/smbape/lua-opencv.git /io/opencv-lua-custom/build && \
 cd /io/opencv-lua-custom/build && \
 npm ci
 ```
