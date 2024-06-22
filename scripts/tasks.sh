@@ -1028,8 +1028,7 @@ function test_prepublished_source_fedora() {
 
 function publish() {
     for suffix in '' '-contrib'; do
-        ./luarocks/luarocks.bat upload out/prepublish/server/opencv_lua${suffix}-${OPENCV_VERSION}-${DIST_VERSION}.rockspec --api-key=${LUA_ROCKS_API_KEY} && \
-        ./luarocks/luarocks.bat upload out/prepublish/server/opencv_lua${suffix}-contrib-${OPENCV_VERSION}-${DIST_VERSION}.rockspec --api-key=${LUA_ROCKS_API_KEY} || return $?
+        ./luarocks/luarocks.bat upload out/prepublish/server/opencv_lua${suffix}-${OPENCV_VERSION}-${DIST_VERSION}.rockspec --api-key=${LUA_ROCKS_API_KEY} || return $?
     done
     echo "Upload the content of $(cygpath -w "$PWD/out/prepublish/server") to github"
 }
