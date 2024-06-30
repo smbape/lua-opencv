@@ -553,6 +553,8 @@ mkdir -p "${WORKING_DIRECTORY}" && \
 open_git_project "file://${projectDir}" "${WORKING_DIRECTORY}/build" || exit $?
 [ -d node_modules ] || npm ci || exit $?
 
+find out/prepublish/ -mindepth 5 -maxdepth 5 -type f -name lockfile.lfs -delete
+
 node scripts/prepublish.js --pack --server="${WORKING_DIRECTORY}/server" --lua-versions luajit-2.1 --name=opencv_lua-custom \
     -DBUILD_contrib=ON \
     -DWITH_FREETYPE=ON'

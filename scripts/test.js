@@ -203,14 +203,7 @@ const unixPath = path => {
     return `/${ path.replace(":", "").replaceAll("\\", "/") }`;
 };
 
-const bash_init = `#!/usr/bin/env bash
-
-set -o pipefail
-
-function autoit() {
-    '${ unixPath(AUTOIT_EXE) }' '${ unixPath(AUTOIT_WRAPPER) }' ${ unixCmd(AUTOIT_WRAPPER_ARGV) } "$@"
-}
-`;
+const bash_init = "#!/usr/bin/env bash\n\nset -o pipefail\n";
 
 const main = (options, next) => {
     options = Object.assign({

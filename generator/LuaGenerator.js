@@ -1011,23 +1011,38 @@ class LuaGenerator {
                     }
                 }
 
-                if (has_body) {
-                    overload.push("", `${ callee };`);
+                const exception = typeof options.exception === "string" ? options.exception : "std::exception";
+
+                if (has_body || return_value_type === "void") {
+                    overload.push("", `
+                        try {
+                            ${ callee.trim().split("\n").join(`\n${ " ".repeat(28) }`) };
+                        } catch( ${ exception }& e ) {
+                            LUAL_MODULE_ERROR_RETURN(L, e.what());
+                        }
+                    `.replace(/^ {24}/mg, "").trim());
 
                     // body is responsible of return
-                    retval.length = 0;
-                } else if (return_value_type !== "void") {
-                    retval.push([-1, `lua_push(L, ${ callee });`]);
+                    if (has_body) {
+                        retval.length = 0;
+                    }
                 } else {
-                    overload.push("", `${ callee };`);
+                    retval.push([-1, `
+                        try {
+                            lua_push(L, ${ callee.trim().split("\n").join(`\n${ " ".repeat(28) }`) });
+                        } catch( ${ exception }& e ) {
+                            LUAL_MODULE_ERROR_RETURN(L, e.what());
+                        }
+                    `.replace(/^ {24}/mg, "").trim()]);
                 }
 
                 if (retval.length !== 0) {
                     retval.sort(([a], [b]) => a - b);
                     overload.push("", retval.map(([, result]) => result).join("\n"));
-                    overload.push("", "return lua_gettop(L) - vargc;");
-                } else if (!has_body) {
-                    // body is responsible of the return
+                }
+
+                // body is responsible of the return
+                if (!has_body) {
                     overload.push("", "return lua_gettop(L) - vargc;");
                 }
 
