@@ -77,11 +77,6 @@ endif()
 include(cmake/UsePython3Venv.cmake)
 if (VIRTUAL_ENV_created)
   execute_process(
-    COMMAND "${Python3_EXECUTABLE}" -m pip install --upgrade pip
-    COMMAND_ECHO STDERR
-    COMMAND_ERROR_IS_FATAL ANY
-  )
-  execute_process(
     COMMAND "${Python3_EXECUTABLE}" -m pip install numpy
     COMMAND_ECHO STDERR
     COMMAND_ERROR_IS_FATAL ANY
@@ -103,7 +98,7 @@ endif()
 # ===============
 # OpenCV
 # ===============
-if (DEFINED ENV{OpenCV_DIR})
+if ((NOT DEFINED OpenCV_DIR) AND (DEFINED ENV{OpenCV_DIR}))
   find_path (
     OpenCV_DIR
     "OpenCVConfig.cmake"

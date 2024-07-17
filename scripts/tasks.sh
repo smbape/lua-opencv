@@ -595,6 +595,7 @@ $cpm install -y git \
         libjpeg-devel libpng-devel readline-devel make patch tbb-devel \
         pkg-config python3.12-pip qt5-qtbase-devel unzip wget zip || \
 exit $?
+$cpm install -y python3.12-pip || $cpm install -y python3.11-pip || exit $?
 command -v curl &>/dev/null || $cpm install -y curl || exit $?
 
 ALMALINUX_VERSION=$(sed -rn "s/ALMALINUX_MANTISBT_PROJECT=\"AlmaLinux-([0-9])\"/\1/p" /etc/os-release)
@@ -998,7 +999,8 @@ function install_test_essentials_docker_fedora() {
     docker exec -it -u 0 ${name} bash -c "
 $(get_current_package_manager)
 \$cpm update -y && \
-\$cpm install -y gcc gcc-c++ git glib2 readline-devel libglvnd-glx libSM libXext make patch python3.12-pip unzip wget || exit \$?
+\$cpm install -y gcc gcc-c++ git glib2 readline-devel libglvnd-glx libSM libXext make patch unzip wget || exit \$?
+\$cpm install -y python3.12-pip || \$cpm install -y python3.11-pip || exit \$?
 command -v curl &>/dev/null || \$cpm install -y curl || exit \$?
 
 $(docker_init_script)"

@@ -10,17 +10,18 @@ namespace {
 	inline void check_error(lua_State* L, const Function& fn, Args&&... args) {
 		lua_push(L, fn);
 
+		// https://stackoverflow.com/questions/7230621/how-can-i-iterate-over-a-packed-variadic-template-argument-list/60136761#60136761
 		int nargs = 0;
 		([&] {
-			// Do things in your "loop" lambda
 			lua_push(L, args);
 			nargs++;
 			} (), ...);
 		lua_call(L, nargs, 0);
 	}
 
-	struct ErrWorker {
-		ErrWorker(
+	template<typename... Args>
+	struct AsyncWorker {
+		AsyncWorker(
 			lua_State* L,
 			const Function& callback,
 			const Object& userdata
@@ -29,7 +30,7 @@ namespace {
 			this->userdata.assign(L, userdata);
 		}
 
-		~ErrWorker() {
+		~AsyncWorker() {
 			// callback and userdata lua_State are invalid at this point
 			// because lua_State closes before the workers are destroyed on exit
 			// therefore, dereference lua_State
@@ -37,9 +38,24 @@ namespace {
 			userdata.free();
 		}
 
-		static std::map<size_t, ErrWorker> registered_workers;
+		static void handleCallback(Args... args, void* userdata) {
+			std::lock_guard<std::mutex> lock(callback_mutex);
+			auto worker = reinterpret_cast<AsyncWorker<Args...>*>(userdata);
+			worker->has_data = true;
+			worker->args = std::make_tuple(std::forward<Args>(args)...);
+		}
 
-		static ErrWorker& add_worker(lua_State* L, const Function& callback, const Object& userdata) {
+		static void handleNotify(lua_State* L, void* userdata) {
+			auto worker = reinterpret_cast<AsyncWorker<Args...>*>(userdata);
+			if (worker->has_data) {
+				worker->has_data = false;
+				std::apply(&check_error<Args..., const Object&>, std::tuple_cat(std::make_tuple(L, worker->callback), worker->args, std::tie(worker->userdata)));
+			}
+		}
+
+		static std::map<size_t, AsyncWorker<Args...>> registered_workers;
+
+		static AsyncWorker<Args...>& add_worker(lua_State* L, const Function& callback, const Object& userdata) {
 			auto key = registered_workers.size();
 			{
 				std::lock_guard<std::mutex> lock(callback_mutex);
@@ -50,44 +66,24 @@ namespace {
 			return registered_workers.at(key);
 		}
 
-		static int registerErrCallback(int status, const char* func_name, const char* err_msg, const char* file_name, int line, void* userdata) {
-			std::lock_guard<std::mutex> lock(callback_mutex);
-			auto worker = reinterpret_cast<ErrWorker*>(userdata);
-			worker->has_data = true;
-			worker->status = status;
-			worker->func_name = func_name;
-			worker->err_msg = err_msg;
-			worker->file_name = file_name;
-			worker->line = line;
-			return 0; // The return value isn't used
-		}
-
-		static void onCallbackNotify(lua_State* L, void* userdata) {
-			auto worker = reinterpret_cast<ErrWorker*>(userdata);
-			if (worker->has_data) {
-				worker->has_data = false;
-				check_error(L, worker->callback, worker->status, worker->func_name, worker->err_msg, worker->file_name, worker->line, worker->userdata);
-			}
-		}
-
-		lua_State* L;
 		Function callback;
 		Object userdata;
 		bool has_data = false;
-		int status;
-		const char* func_name;
-		const char* err_msg;
-		const char* file_name;
-		int line;
+		std::tuple<Args...> args = std::tuple<Args...>();
 	};
 
-	std::map<size_t, ErrWorker> ErrWorker::registered_workers;
+	template<typename... Args>
+	std::map<size_t, AsyncWorker<Args...>> AsyncWorker<Args...>::registered_workers;
 }
 
 namespace cvextra {
 	void redirectError(lua_State* L, const Function& errCallback, const Object& userdata) {
-		auto& worker = ErrWorker::add_worker(L, errCallback, userdata);
-		registerCallback(&ErrWorker::onCallbackNotify, &worker);
-		cv::redirectError(&ErrWorker::registerErrCallback, &worker);
+		using Worker = AsyncWorker<int, std::string, std::string, std::string, int>;
+		auto& worker = Worker::add_worker(L, errCallback, userdata);
+		registerCallback(&Worker::handleNotify, &worker);
+		cv::redirectError([](int status, const char* func_name, const char* err_msg, const char* file_name, int line, void* userdata) {
+			Worker::handleCallback(status, func_name, err_msg, file_name, line, userdata);
+			return 0; // The return value isn't used
+		}, &worker);
 	}
 }

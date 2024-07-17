@@ -237,7 +237,7 @@ add_library(libluajit::libluajit ALIAS libluajit)
 
 # Always generate debug files
 if(MSVC AND NOT "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-  set_target_properties(libluajit PROPERTIES LINK_FLAGS "/DEBUG")
+  target_link_options(libluajit PRIVATE "/DEBUG")
 endif()
 
 target_sources(libluajit
@@ -256,9 +256,9 @@ target_link_libraries(libluajit PRIVATE "${LJ_VM_OBJECT}")
 target_include_directories(libluajit PRIVATE ${LUA_INCLUDE_DIRS})
 add_dependencies(libluajit ${gen_lj_targets})
 
-IF (WIN32 AND (CMAKE_GENERATOR STREQUAL Ninja))
+if (WIN32 AND (CMAKE_GENERATOR STREQUAL Ninja))
   target_compile_definitions(libluajit PRIVATE _WINDLL)
-ENDIF()
+endif()
 
 if (APPLE AND BUILD_SHARED_LIBS)
   target_link_options(libluajit PRIVATE -dynamiclib -single_module -undefined dynamic_lookup)

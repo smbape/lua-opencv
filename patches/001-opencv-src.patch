@@ -83,7 +83,7 @@ index 32b2392904..c5ed2dc30d 100644
      }
  
 diff --git a/modules/python/src2/hdr_parser.py b/modules/python/src2/hdr_parser.py
-index fa2d0077d9..f7fe0a8b4b 100755
+index fa2d0077d..97f4b9c97 100755
 --- a/modules/python/src2/hdr_parser.py
 +++ b/modules/python/src2/hdr_parser.py
 @@ -70,6 +70,29 @@ class CppHeaderParser(object):
@@ -175,16 +175,51 @@ index fa2d0077d9..f7fe0a8b4b 100755
              func_modlist.append("="+arg)
              decl_str = decl_str[:npos] + decl_str[npos3+1:]
          npos = decl_str.find("CV_WRAP_PHANTOM")
-@@ -598,7 +630,7 @@ class CppHeaderParser(object):
-                     if eqpos >= 0:
+@@ -448,6 +480,7 @@ class CppHeaderParser(object):
+         decl_str = self.batch_replace(decl_str, [("static inline", ""),
+                                                  ("inline", ""),
+                                                  ("explicit ", ""),
++                                                 ("[[nodiscard]] ", ""),
+                                                  ("CV_EXPORTS_W", ""),
+                                                  ("CV_EXPORTS", ""),
+                                                  ("CV_CDECL", ""),
+@@ -599,35 +632,17 @@ class CppHeaderParser(object):
                          a = a[:eqpos].strip()
                      arg_type, arg_name, modlist, argno = self.parse_arg(a, argno)
--                    if self.wrap_mode:
-+                    if False:
-                         # TODO: Vectors should contain UMat, but this is not very easy to support and not very needed
-                         vector_mat = "vector_{}".format(mat)
-                         vector_mat_template = "vector<{}>".format(mat)
-@@ -659,10 +691,13 @@ class CppHeaderParser(object):
+                     if self.wrap_mode:
+-                        # TODO: Vectors should contain UMat, but this is not very easy to support and not very needed
+-                        vector_mat = "vector_{}".format(mat)
+-                        vector_mat_template = "vector<{}>".format(mat)
+-
+                         if arg_type == "InputArray":
+-                            arg_type = mat
+                             if is_arithm_op_func:
+                                 modlist.append("/AOS") # Arithm Ope Source
+                         elif arg_type == "InputOutputArray":
+-                            arg_type = mat
+                             modlist.append("/IO")
+                         elif arg_type == "OutputArray":
+-                            arg_type = mat
+                             modlist.append("/O")
+-                        elif arg_type == "InputArrayOfArrays":
+-                            arg_type = vector_mat
+                         elif arg_type == "InputOutputArrayOfArrays":
+-                            arg_type = vector_mat
+                             modlist.append("/IO")
+                         elif arg_type == "OutputArrayOfArrays":
+-                            arg_type = vector_mat
+                             modlist.append("/O")
+-                        defval = self.batch_replace(defval, [("InputArrayOfArrays", vector_mat_template),
+-                                                             ("InputOutputArrayOfArrays", vector_mat_template),
+-                                                             ("OutputArrayOfArrays", vector_mat_template),
+-                                                             ("InputArray", mat),
+-                                                             ("InputOutputArray", mat),
+-                                                             ("OutputArray", mat),
+-                                                             ("noArray", arg_type)]).strip()
+                     if '/IO' in modlist and '/O' in modlist:
+                         modlist.remove('/O')
+                     if (arg_name.lower() == 'filename' or arg_name.lower() == 'filepath') and '/PATH' not in modlist:
+@@ -659,10 +674,13 @@ class CppHeaderParser(object):
  
          the function will convert "A" to "cv.A" and "f" to "cv.A.f".
          """
@@ -201,7 +236,7 @@ index fa2d0077d9..f7fe0a8b4b 100755
          qualified_name = (("." in name) or ("::" in name))
          n = ""
          for b in self.block_stack:
-@@ -754,7 +789,10 @@ class CppHeaderParser(object):
+@@ -754,7 +772,10 @@ class CppHeaderParser(object):
  
              if stmt.startswith("enum") or stmt.startswith("namespace"):
                  # NB: Drop inheritance syntax for enum
@@ -213,7 +248,7 @@ index fa2d0077d9..f7fe0a8b4b 100755
                  stmt_list = stmt.rsplit(" ", 1)
                  if len(stmt_list) < 2:
                      stmt_list.append("<unnamed>")
-@@ -790,8 +828,18 @@ class CppHeaderParser(object):
+@@ -790,8 +811,18 @@ class CppHeaderParser(object):
                  var_modlist = []
                  if "CV_PROP_RW" in stmt:
                      var_modlist.append("/RW")
@@ -234,3 +269,45 @@ index fa2d0077d9..f7fe0a8b4b 100755
                  var_type, var_name1, modlist, argno = self.parse_arg(var_list[0], -1)
                  var_list = [var_name1] + [i.strip() for i in var_list[1:]]
  
+diff --git a/modules/python/src2/typing_stubs_generation/predefined_types.py b/modules/python/src2/typing_stubs_generation/predefined_types.py
+index f5ba0bc29..f9565b380 100644
+--- a/modules/python/src2/typing_stubs_generation/predefined_types.py
++++ b/modules/python/src2/typing_stubs_generation/predefined_types.py
+@@ -48,6 +48,12 @@ _PREDEFINED_TYPES = (
+                AliasRefTypeNode("NumPyArrayNumeric")),
+         export_name="MatLike"
+     ),
++    NoneTypeNode("InputArray"),
++    NoneTypeNode("InputOutputArray"),
++    NoneTypeNode("OutputArray"),
++    NoneTypeNode("InputArrayOfArrays"),
++    NoneTypeNode("InputOutputArrayOfArrays"),
++    NoneTypeNode("OutputArrayOfArrays"),
+     AliasTypeNode.sequence_("MatShape", PrimitiveTypeNode.int_()),
+     AliasTypeNode.sequence_("Size", PrimitiveTypeNode.int_(),
+                             doc="Required length is 2"),
+@@ -216,14 +222,24 @@ _PREDEFINED_TYPES = (
+                         ), export_name="SearchParams"),
+     AliasTypeNode.dict_("map_string_and_string", PrimitiveTypeNode.str_("map_string_and_string::key"),
+                         PrimitiveTypeNode.str_("map_string_and_string::value")),
++    AliasTypeNode.dict_("map<std_string,std_string>", PrimitiveTypeNode.str_("map_string_and_string::key"),
++                        PrimitiveTypeNode.str_("map_string_and_string::value")),
+     AliasTypeNode.dict_("map_string_and_int", PrimitiveTypeNode.str_("map_string_and_int::key"),
+                         PrimitiveTypeNode.int_("map_string_and_int::value")),
++    AliasTypeNode.dict_("map<std_string,int>", PrimitiveTypeNode.str_("map_string_and_int::key"),
++                        PrimitiveTypeNode.int_("map_string_and_int::value")),
+     AliasTypeNode.dict_("map_string_and_vector_size_t", PrimitiveTypeNode.str_("map_string_and_vector_size_t::key"),
+                         SequenceTypeNode("map_string_and_vector_size_t::value", PrimitiveTypeNode.int_("size_t"))),
++    AliasTypeNode.dict_("map<std_string,std_vector<size_t>>", PrimitiveTypeNode.str_("map_string_and_vector_size_t::key"),
++                        SequenceTypeNode("map_string_and_vector_size_t::value", PrimitiveTypeNode.int_("size_t"))),
+     AliasTypeNode.dict_("map_string_and_vector_float", PrimitiveTypeNode.str_("map_string_and_vector_float::key"),
+                         SequenceTypeNode("map_string_and_vector_float::value", PrimitiveTypeNode.float_())),
++    AliasTypeNode.dict_("map<std_string,std_vector<float>>", PrimitiveTypeNode.str_("map_string_and_vector_float::key"),
++                        SequenceTypeNode("map_string_and_vector_float::value", PrimitiveTypeNode.float_())),
+     AliasTypeNode.dict_("map_int_and_double", PrimitiveTypeNode.int_("map_int_and_double::key"),
+                         PrimitiveTypeNode.float_("map_int_and_double::value")),
++    AliasTypeNode.dict_("map<int,double>", PrimitiveTypeNode.int_("map_int_and_double::key"),
++                        PrimitiveTypeNode.float_("map_int_and_double::value")),
+ )
+ 
+ PREDEFINED_TYPES = dict(

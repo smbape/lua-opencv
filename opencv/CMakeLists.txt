@@ -30,7 +30,8 @@ list(GET OpenCV_VERSION_LIST 0 OpenCV_VERSION_MAJOR)
 list(GET OpenCV_VERSION_LIST 1 OpenCV_VERSION_MINOR)
 list(GET OpenCV_VERSION_LIST 2 OpenCV_VERSION_PATCH)
 
-set(OpenCV_DLLVERSION "${OpenCV_VERSION_MAJOR}${OpenCV_VERSION_MINOR}${OpenCV_VERSION_PATCH}" PARENT_SCOPE)
+set(OpenCV_DLLVERSION "${OpenCV_VERSION_MAJOR}${OpenCV_VERSION_MINOR}${OpenCV_VERSION_PATCH}")
+set(OpenCV_DLLVERSION "${OpenCV_DLLVERSION}" PARENT_SCOPE)
 set(OpenCV_DEBUG_POSTFIX d)
 
 # Tell cmake we will need opencv.
@@ -53,7 +54,7 @@ FetchContent_Populate(opencv
 option(BUILD_contrib "Build with opencv contrib" OFF)
 
 if (BUILD_contrib)
-  # https://github.com/opencv/opencv-python/tree/82
+  # https://github.com/opencv/opencv-python/tree/84
   set(OPENCV_CONTRIB_TAG_4100 1ed3dd2c53888e3289afdb22ec4e9ebbff3dba87)
   set(OPENCV_CONTRIB_TAG_490 c7602a8f74205e44389bd6a4e8d727d32e7e27b4)
   set(OPENCV_CONTRIB_TAG_481 f10c84d48b0714f2b408c9e5cccfac1277c8e6cc)
@@ -65,6 +66,16 @@ if (BUILD_contrib)
   set(OPENCV_CONTRIB_TAG_453 d5317d6297a8129b66dba1a1f7cc784e94639da9)
   set(OPENCV_CONTRIB_TAG_452 f5d7f6712d4ff229ba4f45cf79dfd11c557d56fd)
   set(OPENCV_CONTRIB_TAG_451 b91a781cbc1285d441aa682926d93d8c23678b0b)
+
+  if (NOT DEFINED OPENCV_CONTRIB_TAG_${OpenCV_DLLVERSION})
+    message(FATAL_ERROR "Unable to find git contrib tag for OPENCV_CONTRIB_TAG_${OpenCV_DLLVERSION}
+      OpenCV_VERSION       = ${OpenCV_VERSION}
+      OpenCV_DLLVERSION    = ${OpenCV_DLLVERSION}
+      OpenCV_VERSION_MAJOR = ${OpenCV_VERSION_MAJOR}
+      OpenCV_VERSION_MINOR = ${OpenCV_VERSION_MINOR}
+      OpenCV_VERSION_PATCH = ${OpenCV_VERSION_PATCH}
+      ")
+  endif()
 
   # Tell cmake that we will need opencv_contrib.
   include(FetchContent)

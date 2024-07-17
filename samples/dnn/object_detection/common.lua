@@ -406,10 +406,17 @@ local function execute(args)
         success, status, code = os.execute(shell.join(args))
     end
 
-    if _ENV == 'Lua 5.1' then return success end
-    if success then return 0 end
-    if status == 'exit' then return code / 0xff end
-    return 1
+    if _VERSION == 'Lua 5.1' then
+        code = success
+    elseif success then
+        code = 0
+    end
+
+    if code > 0xff then
+        code = code / 0xff
+    end
+
+    return code
 end
 
 -- Function to read a file

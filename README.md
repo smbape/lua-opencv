@@ -158,7 +158,7 @@ luarocks install --server=https://github.com/smbape/lua-opencv/releases/download
 
 ## Examples
 
-On Windows, the lua_modules modules should be added to PATH as show with `luarocks path`
+On Windows, the lua_modules modules should be added to PATH as shown with `luarocks path`
 
 ```cmd
 set "PATH=%LUA_MODULES%\bin;%APPDATA%\luarocks\bin;%PATH%"

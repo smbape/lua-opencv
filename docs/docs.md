@@ -4840,8 +4840,6 @@
   - [cv.bgsegm.BackgroundSubtractorCNT.setMinPixelStability](#cvbgsegmbackgroundsubtractorcntsetminpixelstability)
   - [cv.bgsegm.BackgroundSubtractorCNT.setUseHistory](#cvbgsegmbackgroundsubtractorcntsetusehistory)
 - [cv::bgsegm::BackgroundSubtractorGMG](#cvbgsegmbackgroundsubtractorgmg)
-  - [cv.bgsegm.BackgroundSubtractorGMG.apply](#cvbgsegmbackgroundsubtractorgmgapply)
-  - [cv.bgsegm.BackgroundSubtractorGMG.getBackgroundImage](#cvbgsegmbackgroundsubtractorgmggetbackgroundimage)
   - [cv.bgsegm.BackgroundSubtractorGMG.getBackgroundPrior](#cvbgsegmbackgroundsubtractorgmggetbackgroundprior)
   - [cv.bgsegm.BackgroundSubtractorGMG.getDecisionThreshold](#cvbgsegmbackgroundsubtractorgmggetdecisionthreshold)
   - [cv.bgsegm.BackgroundSubtractorGMG.getDefaultLearningRate](#cvbgsegmbackgroundsubtractorgmggetdefaultlearningrate)
@@ -55583,24 +55581,6 @@ lua:
 ```
 
 ## cv::bgsegm::BackgroundSubtractorGMG
-
-### cv.bgsegm.BackgroundSubtractorGMG.apply
-
-```cpp
-void cv::bgsegm::BackgroundSubtractorGMG::apply( InputArray  image,
-                                                 OutputArray fgmask,
-                                                 double      learningRate = -1 );
-lua:
-    oBackgroundSubtractorGMG:apply( image[, fgmask[, learningRate]] ) -> fgmask
-```
-
-### cv.bgsegm.BackgroundSubtractorGMG.getBackgroundImage
-
-```cpp
-void cv::bgsegm::BackgroundSubtractorGMG::getBackgroundImage( OutputArray backgroundImage ) const;
-lua:
-    oBackgroundSubtractorGMG:getBackgroundImage( [backgroundImage] ) -> backgroundImage
-```
 
 ### cv.bgsegm.BackgroundSubtractorGMG.getBackgroundPrior
 

@@ -125,7 +125,7 @@ const unixCmd = argv => {
             return `'${ arg }'`;
         }
 
-        if (arg[0] === "/" && arg[1] !== "/") {
+        if (os.platform() === "win32" && arg[0] === "/" && arg[1] !== "/") {
             return `/${ arg }`;
         }
 

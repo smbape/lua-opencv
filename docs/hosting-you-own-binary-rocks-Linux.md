@@ -87,7 +87,7 @@ sudo dnf install -y libavcodec-free-devel libavformat-free-devel libdc1394-devel
 We will name our LuaRocks pakcage **opencv_lua-custom** in order to avoid conflict with the original package name
 
 In this example, we will use the following directories: 
-  - The **Lua binary directory** is _$/io/opencv-lua-custom/build/out/prepublish/luajit-2.1/opencv_lua-custom//out/install/Linux-GCC-Release/bin_
+  - The **Lua binary directory** is _/io/opencv-lua-custom/build/out/prepublish/luajit-2.1/opencv_lua-custom//out/install/Linux-GCC-Release/bin_
   - The **LuaRocks binary directory** is _/io/opencv-lua-custom/build/out/prepublish/luajit-2.1/opencv_lua-custom/out/build.luaonly/Linux-GCC-Release/luarocks/luarocks-prefix/src/luarocks-build/bin_
   - The **build directory** is _/io/opencv-lua-custom/build_
   - The **server directory** is _/io/opencv-lua-custom/server_

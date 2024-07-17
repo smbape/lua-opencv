@@ -153,8 +153,10 @@ target_precompile_headers(${target_name} PRIVATE
   "$<$<COMPILE_LANGUAGE:CXX>:lua_generated_pch.hpp>"
 )
 
-target_link_libraries(${target_name} PRIVATE ${LUA_LIBRARIES} ${OpenCV_LIBS})
+target_link_libraries(${target_name} PRIVATE ${LUA_LIBRARIES})
 target_include_directories(${target_name} PRIVATE ${LUA_INCLUDE_DIR})
+
+target_link_libraries(${target_name} PRIVATE ${OpenCV_LIBS})
 if (DEFINED OpenCV_INCLUDE_DIRS)
   target_include_directories(${target_name} PRIVATE ${OpenCV_INCLUDE_DIRS})
 endif()
@@ -174,7 +176,11 @@ set_target_properties(${target_name} PROPERTIES
 
 # Always generate debug files
 if(MSVC AND NOT "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-  set_target_properties(${target_name} PROPERTIES LINK_FLAGS "/DEBUG")
+  target_link_options(${target_name} PRIVATE "/DEBUG")
+endif()
+
+if(WITH_CUDA AND MSVC AND "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+  target_link_options(${target_name} PRIVATE "/INCREMENTAL:NO")
 endif()
 
 # /Zc:__cplusplus is required to make __cplusplus accurate
@@ -188,9 +194,9 @@ if (MSVC AND (MSVC_VERSION GREATER_EQUAL 1914))
   target_compile_options(${target_name} PRIVATE "/Zc:__cplusplus" "/bigobj")
 endif()
 
-IF (WIN32 AND CMAKE_GENERATOR STREQUAL Ninja)
+if (WIN32 AND CMAKE_GENERATOR STREQUAL Ninja)
   target_compile_definitions(${target_name} PRIVATE _WINDLL)
-ENDIF()
+endif()
 
 # ===============
 # OpenCV Lua Test

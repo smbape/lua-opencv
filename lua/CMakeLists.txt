@@ -218,7 +218,7 @@ add_library(liblua SHARED ${LUA_SRC_CORE} ${LUA_SRC_LIB})
 
 # Always generate debug files
 if(MSVC AND NOT "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-  set_target_properties(liblua PROPERTIES LINK_FLAGS "/DEBUG")
+  target_link_options(liblua PRIVATE "/DEBUG")
 endif()
 
 set(LUA_INCLUDE_FILES
@@ -244,9 +244,9 @@ add_library(liblua::liblua ALIAS liblua)
 
 target_include_directories(liblua PRIVATE ${LUA_INCLUDE_DIRS})
 
-IF (WIN32 AND (CMAKE_GENERATOR STREQUAL Ninja))
+if (WIN32 AND (CMAKE_GENERATOR STREQUAL Ninja))
   target_compile_definitions(liblua PRIVATE _WINDLL)
-ENDIF()
+endif()
 
 if ((WIN32 OR CYGWIN OR MINGW) AND BUILD_SHARED_LIBS)
   target_compile_definitions(liblua PRIVATE LUA_BUILD_AS_DLL)

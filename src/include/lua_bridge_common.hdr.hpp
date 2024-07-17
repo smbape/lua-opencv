@@ -27,6 +27,11 @@ namespace LUA_MODULE_NAME {
 		return 1;
 	}
 
+	template<int Kind>
+	inline int lua_push(lua_State* L, const _Object<Kind>* o) {
+		return lua_push(L, *o);
+	}
+
 	inline bool lua_is(lua_State* L, int index, Object*) {
 		if (index < 0) {
 			index += lua_gettop(L) + 1;

@@ -17,8 +17,9 @@ namespace {
 		lua_call(L, nargs, 0);
 	}
 
-	struct HighGui {
-		HighGui(
+	template<typename... Args>
+	struct AsyncWorker {
+		AsyncWorker(
 			lua_State* L,
 			const Function& callback,
 			const Object& userdata
@@ -27,7 +28,7 @@ namespace {
 			this->userdata.assign(L, userdata);
 		}
 
-		~HighGui() {
+		~AsyncWorker() {
 			// callback and userdata lua_State are invalid at this point
 			// because lua_State closes before the workers are destroyed on exit
 			// therefore, dereference lua_State
@@ -35,9 +36,24 @@ namespace {
 			userdata.free();
 		}
 
-		static std::map<size_t, HighGui> registered_workers;
+		static void handleCallback(Args... args, void* userdata) {
+			std::lock_guard<std::mutex> lock(callback_mutex);
+			auto worker = reinterpret_cast<AsyncWorker<Args...>*>(userdata);
+			worker->has_data = true;
+			worker->args = std::make_tuple(std::forward<Args>(args)...);
+		}
 
-		static HighGui& add_worker(lua_State* L, const Function& callback, const Object& userdata) {
+		static void handleNotify(lua_State* L, void* userdata) {
+			auto worker = reinterpret_cast<AsyncWorker<Args...>*>(userdata);
+			if (worker->has_data) {
+				worker->has_data = false;
+				std::apply(&check_error<Args..., const Object&>, std::tuple_cat(std::make_tuple(L, worker->callback), worker->args, std::tie(worker->userdata)));
+			}
+		}
+
+		static std::map<size_t, AsyncWorker<Args...>> registered_workers;
+
+		static AsyncWorker<Args...>& add_worker(lua_State* L, const Function& callback, const Object& userdata) {
 			auto key = registered_workers.size();
 			{
 				std::lock_guard<std::mutex> lock(callback_mutex);
@@ -48,66 +64,14 @@ namespace {
 			return registered_workers.at(key);
 		}
 
-		static void registerTrackbarCallback(int pos, void* userdata) {
-			std::lock_guard<std::mutex> lock(callback_mutex);
-			auto worker = reinterpret_cast<HighGui*>(userdata);
-			worker->has_data = true;
-			worker->pos = pos;
-		}
-
-		static void onTrackbarNotify(lua_State* L, void* userdata) {
-			auto worker = reinterpret_cast<HighGui*>(userdata);
-			if (worker->has_data) {
-				worker->has_data = false;
-				check_error(L, worker->callback, worker->pos, worker->userdata);
-			}
-		}
-
-		static void registerButtonCallback(int state, void* userdata) {
-			std::lock_guard<std::mutex> lock(callback_mutex);
-			auto worker = reinterpret_cast<HighGui*>(userdata);
-			worker->has_data = true;
-			worker->state = state;
-		}
-
-		static void onButtonNotify(lua_State* L, void* userdata) {
-			auto worker = reinterpret_cast<HighGui*>(userdata);
-			if (worker->has_data) {
-				worker->has_data = false;
-				check_error(L, worker->callback, worker->state, worker->userdata);
-			}
-		}
-
-		static void registerMouseCallback(int event, int x, int y, int flags, void* userdata) {
-			std::lock_guard<std::mutex> lock(callback_mutex);
-			auto worker = reinterpret_cast<HighGui*>(userdata);
-			worker->has_data = true;
-			worker->event = event;
-			worker->x = x;
-			worker->y = y;
-			worker->flags = flags;
-		}
-
-		static void onMouseNotify(lua_State* L, void* userdata) {
-			auto worker = reinterpret_cast<HighGui*>(userdata);
-			if (worker->has_data) {
-				worker->has_data = false;
-				check_error(L, worker->callback, worker->event, worker->x, worker->y, worker->flags, worker->userdata);
-			}
-		}
-
 		Function callback;
 		Object userdata;
 		bool has_data = false;
-		int pos = 0;
-		int state = 0;
-		int event = 0;
-		int x = 0;
-		int y = 0;
-		int flags = 0;
+		std::tuple<Args...> args = std::tuple<Args...>();
 	};
 
-	std::map<size_t, HighGui> HighGui::registered_workers;
+	template<typename... Args>
+	std::map<size_t, AsyncWorker<Args...>> AsyncWorker<Args...>::registered_workers;
 }
 
 namespace cvextra {
@@ -117,9 +81,10 @@ namespace cvextra {
 		const Function& onMouse,
 		const Object& userdata
 	) {
-		auto& worker = HighGui::add_worker(L, onMouse, userdata);
-		registerCallback(&HighGui::onMouseNotify, &worker);
-		cv::setMouseCallback(winname, &HighGui::registerMouseCallback, &worker);
+		using Worker = AsyncWorker<int, int, int, int>;
+		auto& worker = Worker::add_worker(L, onMouse, userdata);
+		registerCallback(&Worker::handleNotify, &worker);
+		cv::setMouseCallback(winname, &Worker::handleCallback, &worker);
 	}
 
 	int createButton(
@@ -130,9 +95,10 @@ namespace cvextra {
 		int type,
 		bool initial_button_state
 	) {
-		auto& worker = HighGui::add_worker(L, on_change, userdata);
-		registerCallback(&HighGui::onButtonNotify, &worker);
-		return cv::createButton(bar_name, &HighGui::registerButtonCallback, &worker, type, initial_button_state);
+		using Worker = AsyncWorker<int>;
+		auto& worker = Worker::add_worker(L, on_change, userdata);
+		registerCallback(&Worker::handleNotify, &worker);
+		return cv::createButton(bar_name, &Worker::handleCallback, &worker, type, initial_button_state);
 	}
 
 	int createTrackbar(
@@ -156,9 +122,10 @@ namespace cvextra {
 		const Function& onChange,
 		const Object& userdata
 	) {
-		auto& worker = HighGui::add_worker(L, onChange, userdata);
-		registerCallback(&HighGui::onTrackbarNotify, &worker);
-		int n = cv::createTrackbar(trackbarname, winname, nullptr, count, &HighGui::registerTrackbarCallback, &worker);
+		using Worker = AsyncWorker<int>;
+		auto& worker = Worker::add_worker(L, onChange, userdata);
+		registerCallback(&Worker::handleNotify, &worker);
+		int n = cv::createTrackbar(trackbarname, winname, nullptr, count, &Worker::handleCallback, &worker);
 		cv::setTrackbarPos(trackbarname, winname, value);
 		return n;
 	}

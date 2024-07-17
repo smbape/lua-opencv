@@ -1017,7 +1017,7 @@ class LuaGenerator {
                     overload.push("", `
                         try {
                             ${ callee.trim().split("\n").join(`\n${ " ".repeat(28) }`) };
-                        } catch( ${ exception }& e ) {
+                        } catch ( ${ exception }& e ) {
                             LUAL_MODULE_ERROR_RETURN(L, e.what());
                         }
                     `.replace(/^ {24}/mg, "").trim());
@@ -1030,7 +1030,7 @@ class LuaGenerator {
                     retval.push([-1, `
                         try {
                             lua_push(L, ${ callee.trim().split("\n").join(`\n${ " ".repeat(28) }`) });
-                        } catch( ${ exception }& e ) {
+                        } catch ( ${ exception }& e ) {
                             LUAL_MODULE_ERROR_RETURN(L, e.what());
                         }
                     `.replace(/^ {24}/mg, "").trim()]);
