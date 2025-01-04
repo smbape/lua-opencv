@@ -1,4 +1,4 @@
-# Lua cv Binding
+# Lua OpenCV Binding
 
 ## Table Of Contents
 

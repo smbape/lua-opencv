@@ -791,7 +791,7 @@ namespace LUA_MODULE_NAME {
 	template<typename T>
 	int lua_method__gc(lua_State* L) {
 		using SharedPtr = std::shared_ptr<T>;
-		SharedPtr* userdata_ptr = static_cast<SharedPtr*>(lua_touserdata(L, 1));
+		auto userdata_ptr = static_cast<SharedPtr*>(lua_touserdata(L, 1));
 		userdata_ptr->reset();
 		userdata_ptr->~SharedPtr();
 		return 0;
@@ -803,6 +803,8 @@ namespace LUA_MODULE_NAME {
 		using T = typename std::tuple_element<I, _Tuple>::type;
 
 		if constexpr (is_usertype_v<T>) {
+			// for instantiable classes: lookup in the raw porperties of the metatable
+			// =================================================
 			usertype_push_metatable<T>(L); // push the metatable
 			lua_pushvalue(L, 2); // push the key
 			lua_rawget(L, -2);
@@ -814,6 +816,8 @@ namespace LUA_MODULE_NAME {
 
 			lua_pop(L, 1); // pop nil
 
+			// for instantiable classes: lookup in the registered getters of the class 
+			// =================================================
 			if (lua_is(L, 2, static_cast<std::string*>(nullptr))) {
 				const std::string k = lua_to(L, 2, static_cast<std::string*>(nullptr));
 				if (usertype_info<T>::getters.count(k)) {
@@ -826,6 +830,8 @@ namespace LUA_MODULE_NAME {
 			}
 		}
 		else {
+			// for static classes: lookup in the porperties of the metatable
+			// =================================================
 			basetype_info<T>::push(L); // push the metatable
 			lua_pushvalue(L, 2); // push the key
 			lua_gettable(L, -2); // pop the key, push metatable[key]
@@ -841,10 +847,13 @@ namespace LUA_MODULE_NAME {
 		}
 
 		if constexpr (I == sizeof...(_Ts) - 1) {
+			// if there are no parent class: return nil
+			// =================================================
 			return 1;
 		}
 		else {
-			// lookup in the parent metatable
+			// otherwise: lookup in the parent class
+			// =================================================
 			return lua_class__index<I + 1, _Ts...>(L);
 		}
 	}
@@ -855,6 +864,7 @@ namespace LUA_MODULE_NAME {
 		using T = typename std::tuple_element<I, _Tuple>::type;
 
 		if constexpr (is_usertype_v<T>) {
+			// call the setter if defined
 			if (lua_is(L, 2, static_cast<std::string*>(nullptr))) {
 				const std::string k = lua_to(L, 2, static_cast<std::string*>(nullptr));
 				if (usertype_info<T>::setters.count(k)) {
@@ -871,6 +881,7 @@ namespace LUA_MODULE_NAME {
 			return 0;
 		}
 		else {
+			// check the parent class setter
 			return lua_class__newindex<I + 1, _Ts...>(L);
 		}
 	}

@@ -220,6 +220,8 @@ namespace {
 		lua_pop(L, 1);
 	}
 }
+
+
 #ifdef __linux__
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE

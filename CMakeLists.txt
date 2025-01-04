@@ -167,8 +167,9 @@ else()
   find_package(OpenCV REQUIRED)
   string(REPLACE "." "" OpenCV_DLLVERSION ${OpenCV_VERSION})
 
-  # When built as a static library, only world library is created
-  # When world is part of the modules
+  # When built as a static library,
+  # only opencv_world library is created
+  # when opencv_world is part of the modules
   if (NOT OpenCV_SHARED AND ";${OpenCV_LIBS};" MATCHES ";opencv_world;")
     set(_OpenCV_LIBS opencv_world)
 

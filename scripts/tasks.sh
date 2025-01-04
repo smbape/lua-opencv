@@ -175,6 +175,8 @@ WSL_EXCLUDED_TESTS=${WSL_EXCLUDED_TESTS:-"'!02-video-capture-camera.lua' '!thres
 CONTAINER_NAME=${CONTAINER_NAME:-${CONTAINER_NAME_MANY_LINUX}}
 DOCKER_IMAGE=${DOCKER_IMAGE:-${DOCKER_IMAGE_MANY_LINUX}}
 
+LUA_VERSIONS="${LUA_VERSIONS:-$(echo luajit-2.1 5.{4,3,2,1})}"
+
 function export_shared_env() {
     local mount_prefix="$1"
     local projectDir="${2:-${mount_prefix}$PWD}"
@@ -345,7 +347,7 @@ function prepublish_stash_push() {
     local script='cd out/prepublish/${version}/opencv_lua${suffix} && git stash push --include-untracked --all -- samples'
 
     bash -c "
-for version in luajit-2.1 5.{4,3,2,1}; do
+for version in ${LUA_VERSIONS}; do
     for suffix in '' '-contrib'; do
         _PATH=\$PATH; pushd \$PWD
         ${script}
@@ -356,7 +358,7 @@ done
 
     wsl -c "
 source scripts/wsl_init.sh
-for version in luajit-2.1 5.{4,3,2,1}; do
+for version in ${LUA_VERSIONS}; do
     for suffix in '' '-contrib'; do
         _PATH=\$PATH; pushd \$PWD
         ${script}
@@ -370,7 +372,7 @@ function prepublish_stash_pop() {
     local script='cd ${CWD}/out/prepublish/${version}/opencv_lua${suffix} && git reset --hard HEAD && git stash pop'
 
     bash -c "
-for version in luajit-2.1 5.{4,3,2,1}; do
+for version in ${LUA_VERSIONS}; do
     for suffix in '' '-contrib'; do
         _PATH=\$PATH; pushd \$PWD
         ${script}
@@ -381,7 +383,7 @@ done
 
     wsl -c "
 source scripts/wsl_init.sh
-for version in luajit-2.1 5.{4,3,2,1}; do
+for version in ${LUA_VERSIONS}; do
     for suffix in '' '-contrib'; do
         _PATH=\$PATH; pushd \$PWD
         ${script}
@@ -392,7 +394,7 @@ done
 }
 
 function prepublish_any() {
-    time node scripts/prepublish.js --pack "$@" && \
+    time node scripts/prepublish.js --pack --lua-versions "${LUA_VERSIONS}" "$@" && \
     time ./build${SCRIPT_SUFFIX} "-DLua_VERSION=luajit-2.1" --target luajit --install && \
     time ./build${SCRIPT_SUFFIX} "-DLua_VERSION=luajit-2.1" --target luarocks
 }
@@ -488,7 +490,7 @@ make_available_nvs && nvs add 16 && nvs use 16 && \
 open_git_project file:///src /io/opencv-lua || exit $?
 [ -d node_modules ] || npm ci || exit $?
 find out/prepublish/ -mindepth 5 -maxdepth 5 -type f -name lockfile.lfs -delete
-node scripts/prepublish.js --server=/src/out/prepublish/server --pack --repair'
+node scripts/prepublish.js --pack --lua-versions '"'${LUA_VERSIONS}'"' --server=/src/out/prepublish/server --repair'
 }
 
 function build_manylinux() {
@@ -706,7 +708,6 @@ fi
 # ================================
 # Prepare directories
 # ================================
-mkdir -p out/test/${version} || exit $?
 mkdir -p ${projectDir}/out/test || exit $?
 test -d ${projectDir}/out/test/opencv/.git || git clone --depth 1 --branch ${OPENCV_VERSION} https://github.com/opencv/opencv.git ${projectDir}/out/test/opencv || exit $?
 
@@ -715,7 +716,8 @@ test -d ${projectDir}/out/test/opencv/.git || git clone --depth 1 --branch ${OPE
 # Get opencv sources from a single place
 # ================================
 if [ "${projectDir}" != "${PWD}" -a ! -L out/test/opencv ]; then
-    rm -rf out/test/opencv
+    mkdir -p out/test || exit $?
+    test-e out/test/opencv && rm -f out/test/opencv
     ln -s ${projectDir}/out/test/opencv out/test/opencv || exit $?
 fi
 
@@ -794,21 +796,19 @@ fi
 ./luarocks/luarocks${LUAROCKS_SUFFIX} install --deps-only samples/samples-scm-1.rockspec || exit $?
 opencv_lua_installed="$(./luarocks/luarocks${LUAROCKS_SUFFIX} list --porcelain opencv_lua${suffix})"
 
+install_rock=1
+remove_rock=0
+
 if [ ${#opencv_lua_installed} -ne 0 ]; then
     if [ ${upgrade_rock} -eq 1 ]; then
         remove_rock=1
-        install_rock=1
     else
-        remove_rock=0
         install_rock=0
     fi
-else
-    remove_rock=0
-    install_rock=1
 fi
 
 [ ${remove_rock} -eq 0 ] || ./luarocks/luarocks${LUAROCKS_SUFFIX} remove opencv_lua${suffix} || exit $?
-[ ${install_rock} -eq 0 ] || ./luarocks/luarocks${LUAROCKS_SUFFIX} install "--server=${projectDir}/out/prepublish/server" opencv_lua${suffix} ${opencv_lua_version} || exit $?
+[ ${install_rock} -eq 0 ] || ./luarocks/luarocks${LUAROCKS_SUFFIX} install "--server=${projectDir}/out/prepublish/server" opencv_lua${suffix} ${opencv_lua_version} --force || exit $?
 
 # ================================
 # Run the tests
@@ -850,7 +850,7 @@ function test_prepublished_windows() {
     if [ "$rock_type" == "source" ]; then
         versions='luajit-2.1'
     else
-        versions='luajit-2.1 5.{4,3,2,1}'
+        versions="${LUA_VERSIONS}"
     fi
 
     bash -c "
@@ -884,7 +884,7 @@ function test_prepublished_wsl() {
     if [ "$rock_type" == "source" ]; then
         versions='luajit-2.1'
     else
-        versions='luajit-2.1 5.{4,3,2,1}'
+        versions="${LUA_VERSIONS}"
     fi
 
     wsl -c "
@@ -919,10 +919,10 @@ function test_prepublished_docker() {
     if [ "$rock_type" == "source" ]; then
         versions='luajit-2.1'
     else
-        versions='luajit-2.1 5.{4,3,2,1}'
+        versions="${LUA_VERSIONS}"
     fi
 
-docker exec -u 1001 -it ${name} bash -c "
+    docker exec -u 1001 -it ${name} bash -c "
 if [ -f /opt/rh/gcc-toolset-12/enable ]; then
     source /opt/rh/gcc-toolset-12/enable || exit \$?
 fi
@@ -1128,7 +1128,7 @@ function test_prepublished_build_windows() {
 source scripts/vcvars_restore_start.sh
 $(export_shared_env)
 
-for version in luajit-2.1 5.{4,3,2,1}; do
+for version in ${LUA_VERSIONS}; do
     for suffix in '' '-contrib'; do
         _PATH=\$PATH; pushd \$PWD
         ${script} || exit \$?
@@ -1145,7 +1145,7 @@ function test_prepublished_build_wsl() {
 $(export_shared_env /mnt)
 source \${projectDir}/scripts/wsl_init.sh || exit \$?
 
-for version in luajit-2.1 5.{4,3,2,1}; do
+for version in ${LUA_VERSIONS}; do
     for suffix in '' '-contrib'; do
         _PATH=\$PATH; pushd \$PWD
         ${script} || exit \$?

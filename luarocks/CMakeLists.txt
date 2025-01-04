@@ -7,7 +7,7 @@ project(luarocks)
 
 include(../cmake/FindPatch.cmake)
 
-set(LuaRocks_VERSION 3.11.0)
+set(LuaRocks_VERSION 3.11.1)
 
 get_filename_component(LUA_BINDIR "${LUA_INTERPRETER}" DIRECTORY)
 file(TO_NATIVE_PATH "${LUA_BINDIR}" LUA_BINDIR)
@@ -37,8 +37,8 @@ set(COMMANDS
 )
 
 if (WIN32)
-  set(LuaRocks_URL https://luarocks.github.io/luarocks/releases/luarocks-${LuaRocks_VERSION}-windows-64.zip)
-  set(LuaRocks_URL_HASH SHA256=a638ea4c8e858106e8e2598e50e9b3fd563c111b44c36d33fe0f0e64d9f42685)
+  set(LuaRocks_URL https://luarocks.org/releases/luarocks-${LuaRocks_VERSION}-windows-64.zip)
+  set(LuaRocks_URL_HASH SHA256=c71dba3d03e12305e9ccd022c621c8869aba3d124d9249e214aed5c16f3682a3)
 
   include(ExternalProject)
   ExternalProject_Add(luarocks
@@ -57,8 +57,8 @@ if (WIN32)
     EXCLUDE_FROM_ALL  TRUE
   )
 else()
-  set(LuaRocks_URL https://github.com/luarocks/luarocks/archive/refs/tags/v${LuaRocks_VERSION}.tar.gz)
-  set(LuaRocks_URL_HASH SHA256=78698aa185f636e72865881425780a84c1dfb171f1789070f657f34116ff6521)
+  set(LuaRocks_URL https://luarocks.org/releases/luarocks-${LuaRocks_VERSION}.tar.gz)
+  set(LuaRocks_URL_HASH SHA256=c3fb3d960dffb2b2fe9de7e3cb004dc4d0b34bb3d342578af84f84325c669102)
 
   include(ExternalProject)
   ExternalProject_Add(luarocks

@@ -68,7 +68,7 @@ Prebuilt binaries are available for [LuaJIT 2.1](https://luajit.org/) and [Lua 5
   - Install [LuaRocks](https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Unix)
   - Install [Ninja](https://ninja-build.org/)
   - Install [NodeJS](https://nodejs.org/en/download/current)
-  - Install needed packages (see below for you corresponding distruction).
+  - Install needed packages (see below for you corresponding distribution).
   - Tell luarocks to use [Ninja](https://ninja-build.org/) as cmake generator `luarocks config --scope project cmake_generator Ninja`
 
 ##### Debian, Ubuntu
@@ -158,7 +158,7 @@ luarocks install --server=https://github.com/smbape/lua-opencv/releases/download
 
 ## Examples
 
-On Windows, the lua_modules modules should be added to PATH as shown with `luarocks path`
+On Windows, the lua_modules modules should be added to the PATH environment variable, as shown with `luarocks path`
 
 ```cmd
 set "PATH=%LUA_MODULES%\bin;%APPDATA%\luarocks\bin;%PATH%"

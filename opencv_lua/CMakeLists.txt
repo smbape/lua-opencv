@@ -90,10 +90,8 @@ endif()
 
 if (WITH_LUA_ROCKS)
   install(TARGETS ${target_name}
-    LIBRARY
-      DESTINATION "lib"
-    RUNTIME
-      DESTINATION "lib"
+    LIBRARY DESTINATION "lib"
+    RUNTIME DESTINATION "lib"
   )
 
   if (UNIX AND CMAKE_INSTALL_PREFIX)
@@ -130,14 +128,38 @@ if (WITH_LUA_ROCKS)
     # Install the script that does the post install work.
     install(SCRIPT "audiwheel_repair.cmake")
   endif()
+
+  # Install dev files under lib/${target_name}/devel to allow another rock
+  # to link to opencv_lua, opencv_lua-contrib
+  # without knowing which one was installed
+  foreach(m ${OpenCV_LIBS})
+    if(TARGET ${m})
+      get_target_property(__location_dbg ${m} IMPORTED_LOCATION_DEBUG)
+      if(EXISTS "${__location_dbg}")
+        install(FILES "${__location_dbg}" DESTINATION lib/${target_name}/devel/lib)
+      endif()
+
+      get_target_property(__location_release ${m}  IMPORTED_LOCATION_RELEASE)
+      if(EXISTS "${__location_release}")
+        install(FILES "${__location_release}" DESTINATION lib/${target_name}/devel/lib)
+      endif()
+
+      if ("${__location_dbg}" STREQUAL "__location_dbg-NOTFOUND" AND "${__location_release}" STREQUAL "__location_release-NOTFOUND")
+        install(TARGETS ${m} ARCHIVE DESTINATION lib/${target_name}/devel/lib)
+      endif()
+    endif()
+  endforeach()
+
+  foreach(m ${OpenCV_INCLUDE_DIRS})
+    if(EXISTS "${m}" AND m MATCHES "[\\/]include$")
+      install(DIRECTORY "${m}" DESTINATION lib/${target_name}/devel)
+    endif()
+  endforeach()
 else()
   install(TARGETS ${target_name}
-    LIBRARY
-      DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-    RUNTIME
-      DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-    ARCHIVE
-      DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    RUNTIME DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
   )
 endif()
 

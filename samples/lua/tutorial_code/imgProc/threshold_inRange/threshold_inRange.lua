@@ -94,7 +94,7 @@ cv.createTrackbar(high_V_name, window_detection_name, high_V, max_value, on_high
 while true do
     -- lua is not thread safe
     -- therefore, calling callbacks from another thread
-    -- will certainly causes unwanted behaviour
+    -- will certainly cause unwanted behaviour
     -- for that reason, callbacks are registered and called from the main thread
     opencv_lua.notifyCallbacks()
 

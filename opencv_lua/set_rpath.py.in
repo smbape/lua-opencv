@@ -1,17 +1,13 @@
 import os.path, subprocess
 
-install_libs = '@CMAKE_INSTALL_LIBSDIR@'
-alternative_libs = os.path.join('@CMAKE_INSTALL_PREFIX@', os.path.basename(install_libs))
-
 for lib in @PACKAGE_DATA@:
-    install_lib = os.path.dirname('@INSTALL_LIBDIR@/' + lib)
+    install_lib = os.path.dirname('@CMAKE_INSTALL_LIBDIR@/' + lib)
     subprocess.run([
         'patchelf',
         '--force-rpath',
         '--set-rpath',
         ':'.join([
-            '$ORIGIN/' + os.path.relpath(install_libs, install_lib),
-            '$ORIGIN/' + os.path.relpath(alternative_libs, install_lib),
+            '$ORIGIN/' + os.path.relpath('@CMAKE_INSTALL_LIBSDIR@', install_lib),
         ]),
         lib,
     ])

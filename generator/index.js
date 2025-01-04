@@ -19,7 +19,7 @@ const Python3_EXECUTABLE = process.env.Python3_EXECUTABLE ? process.env.Python3_
 
 const getOptions = output => {
     const options = {
-        APP_NAME: "cv",
+        APP_NAME: "OpenCV",
         namespace: "cv",
         implicitNamespaceType: /^(?:Point|Rect|Scalar|Size|Vec)(?:\d[bdfisw])?$/,
         variantTypeReg: /(?:<cv::Ptr)/,

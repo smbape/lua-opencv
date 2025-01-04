@@ -106,39 +106,36 @@ execute_process(
   COMMAND_ERROR_IS_FATAL ANY
 )
 
-# get FIXED_WHEEL_FILE
-string(REGEX MATCH "Fixed-up wheel written to (.+)" FIXED_WHEEL_FILE "${AUDITWHEEL_BUILD_LOGS}")
-string(LENGTH "Fixed-up wheel written to " FIXED_WHEEL_FILE_BEGIN)
-string(LENGTH "${FIXED_WHEEL_FILE}" FIXED_WHEEL_FILE_LENGTH)
-math(EXPR FIXED_WHEEL_FILE_LENGTH "${FIXED_WHEEL_FILE_LENGTH} - ${FIXED_WHEEL_FILE_BEGIN}")
-string(SUBSTRING "${FIXED_WHEEL_FILE}" ${FIXED_WHEEL_FILE_BEGIN} ${FIXED_WHEEL_FILE_LENGTH} FIXED_WHEEL_FILE)
+# get REPAIRED_WHEEL_FILE
+string(REGEX MATCH "Fixed-up wheel written to (.+)" REPAIRED_WHEEL_FILE "${AUDITWHEEL_BUILD_LOGS}")
+string(LENGTH "Fixed-up wheel written to " REPAIRED_WHEEL_FILE_BEGIN)
+string(LENGTH "${REPAIRED_WHEEL_FILE}" REPAIRED_WHEEL_FILE_LENGTH)
+math(EXPR REPAIRED_WHEEL_FILE_LENGTH "${REPAIRED_WHEEL_FILE_LENGTH} - ${REPAIRED_WHEEL_FILE_BEGIN}")
+string(SUBSTRING "${REPAIRED_WHEEL_FILE}" ${REPAIRED_WHEEL_FILE_BEGIN} ${REPAIRED_WHEEL_FILE_LENGTH} REPAIRED_WHEEL_FILE)
 
-message(STATUS "PostInstall: FIXED_WHEEL_FILE=\"${FIXED_WHEEL_FILE}\"")
+message(STATUS "PostInstall: REPAIRED_WHEEL_FILE=\"${REPAIRED_WHEEL_FILE}\"")
 
-# Replace shared library with the fixed one
+set(REPAIRED_DIR "${CMAKE_INSTALL_LIBDIR}/repaired")
+
+# Replace shared library with the repaired one
 execute_process(
-  COMMAND unzip -o -d "${INSTALL_LIBDIR}" "${FIXED_WHEEL_FILE}" "${target_name}/*" "${target_name}.libs/*"
-  WORKING_DIRECTORY "${PYPROJECT}"
-  COMMAND_ECHO STDERR
-  COMMAND_ERROR_IS_FATAL ANY
-)
-
-file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/${target_name}.libs/")
-
-execute_process(
-  COMMAND bash -c "cp -rf ${CMAKE_INSTALL_LIBDIR}/${target_name}/${target_name} ${CMAKE_INSTALL_LIBDIR}/${target_name}/${LIB_NAME} ${CMAKE_INSTALL_LIBDIR}/"
-  COMMAND mv "${CMAKE_INSTALL_LIBDIR}/${target_name}.libs" ./
+  COMMAND unzip -o -d "${REPAIRED_DIR}" "${REPAIRED_WHEEL_FILE}" "${target_name}/*" "${target_name}.libs/*"
   WORKING_DIRECTORY "${CMAKE_INSTALL_PREFIX}"
   COMMAND_ECHO STDERR
   COMMAND_ERROR_IS_FATAL ANY
 )
 
+file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBSDIR}")
+
 execute_process(
-  COMMAND rm -rf "${target_name}/${LIB_NAME}" "${target_name}/${target_name}"
-  WORKING_DIRECTORY "${INSTALL_LIBDIR}"
+  COMMAND bash -c "cp -rf ${REPAIRED_DIR}/${target_name}/${target_name} ${REPAIRED_DIR}/${target_name}/${LIB_NAME} ${CMAKE_INSTALL_LIBDIR}/"
+  COMMAND mv "${REPAIRED_DIR}/${target_name}.libs" "${CMAKE_INSTALL_LIBSDIR}"
+  WORKING_DIRECTORY "${CMAKE_INSTALL_PREFIX}"
   COMMAND_ECHO STDERR
   COMMAND_ERROR_IS_FATAL ANY
 )
+
+file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/${REPAIRED_DIR}")
 
 # Set RPATH to $ORIGIN/${target_name}/libs
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/set_rpath.py.in" "${PYPROJECT}/set_rpath.py" @ONLY)

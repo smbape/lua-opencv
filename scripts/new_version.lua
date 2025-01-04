@@ -57,23 +57,6 @@ if it already exists.]], util.see_also())
    cmd:flag("--repair", "Relabeling cross-distribution Linux rocks.")
 end
 
-local function read_all(file)
-   local f = assert(io.open(file, "rb"))
-   local content = f:read("*all")
-   f:close()
-   return content
-end
-
-local function write_file(file, content)
-   local f = assert(io.open(file, "w"))
-   f:write(content)
-   f:close()
-end
-
-local function interpolate(s, tab)
-   return (s:gsub('(@[^@]+@)', function(w) return tab[w:sub(1, -2)] or w end))
-end
-
 local function dump_table_as_python_array(tbl)
    local str = "["
    for k, v in pairs(tbl) do
@@ -116,8 +99,6 @@ function new_version.command(args)
          return out_rs, err, errcode
       end
 
-      local name, version = out_rs.package, out_rs.version
-
       out_rs.source.url = ""
       out_rs.build.type = "none"
       out_rs.build.variables = nil
@@ -130,36 +111,42 @@ function new_version.command(args)
       end
 
       local install_libdir = prefix .. "lib/lua/" .. abi
+      local shared_library_suffix
 
       if args.platform == "win32" then
-         out_rs.build.install = {
-            bin = {
-               prefix .. "bin/opencv_videoio_ffmpeg4100_64.dll",
-            },
-            lib = {
-               install_libdir .. "/opencv_lua.dll",
-            }
-         }
+         shared_library_suffix = ".dll"
+      else
+         shared_library_suffix = ".so"
+      end
+
+      ---@type string[]
+      local install_lib = {
+         install_libdir .. "/opencv_lua" .. shared_library_suffix,
+      }
+
+      out_rs.build.install = {
+         lib = install_lib
+      }
+
+      if args.platform == "win32" then
+         -- add ffmpeg dll
+         local opencv_videoio_ffmpeg = "opencv_videoio_ffmpeg4100_64.dll"
+         local ffmpeg_fullpath = prefix .. "bin/" .. opencv_videoio_ffmpeg
 
          local OpenCV_DIR = os.getenv("OpenCV_DIR")
          if OpenCV_DIR ~= nil then
             local dir_sep = package.config:sub(1, 1)
-            local ffmpeg = OpenCV_DIR:gsub("[/\\]", dir_sep) .. dir_sep .. "bin" .. dir_sep .. "opencv_videoio_ffmpeg4100_64.dll"
-            print("ffmpeg", ffmpeg)
+            local ffmpeg = OpenCV_DIR:gsub("[/\\]", dir_sep) .. dir_sep .. "bin" .. dir_sep .. opencv_videoio_ffmpeg
             if fs.exists(ffmpeg) then
-               out_rs.build.install.bin = { ffmpeg }
+               ffmpeg_fullpath = ffmpeg
             end
          end
+
+         out_rs.build.install.bin = { ffmpeg_fullpath }
       else
-         out_rs.build.install = {
-            lib = {
-               install_libdir .. "/opencv_lua.so",
-            }
-         }
-
          local package_data = { "opencv_lua.so" }
-         local install_lib = out_rs.build.install.lib
 
+         -- add Qt5 xcb plugin
          local libqxcb_relpath = "opencv_lua/qt/plugins/platforms/libqxcb.so"
          local libqxcb_fullpath = install_libdir .. "/" .. libqxcb_relpath
          local have_qt = fs.exists(libqxcb_fullpath)
@@ -168,18 +155,12 @@ function new_version.command(args)
             package_data[#package_data + 1] = libqxcb_relpath
          end
 
+         -- add repaired libs
          if args.repair then
-            -- add repaired libs
-            local libs = "opencv_lua.libs"
-            local copy_directories = out_rs.build.copy_directories
-            copy_directories[#copy_directories + 1] = libs
+            local install_libsdir = install_libdir .. "/opencv_lua/libs"
 
             if first_pass then
                first_pass = false
-
-               local path = require("luarocks.path")
-               local dir = require("luarocks.dir")
-               local install_libs = dir.path(path.install_dir(name, args.new_version), libs)
                local install_prefix = fs.current_dir()
 
                fs.change_dir(prefix .. "../..")
@@ -187,8 +168,8 @@ function new_version.command(args)
                   "-DENABLE_REPAIR=ON",
                   "-DPACKAGE_DATA=" .. dump_table_as_python_array(package_data),
                   "-DCMAKE_INSTALL_PREFIX=" .. install_prefix,
-                  "-DCMAKE_INSTALL_LIBDIR=lib/lua/" .. abi,
-                  "-DCMAKE_INSTALL_LIBSDIR=" .. install_libs,
+                  "-DCMAKE_INSTALL_LIBDIR=" .. install_libdir,
+                  "-DCMAKE_INSTALL_LIBSDIR=" .. install_libsdir,
                   "-P", "opencv_lua/audiwheel_repair.cmake"
                )
                fs.pop_dir()
@@ -197,19 +178,53 @@ function new_version.command(args)
                   return nil, err
                end
             end
+
+            local files = fs.list_dir(install_libsdir)
+            for _, fname in ipairs(files) do
+               local lib_src = install_libsdir .. "/" .. fname
+               local module_path = lib_src:sub(#install_libdir + 2)
+               local ext = module_path:match("(%-[^-]+)$")
+               local module_name = module_path:sub(1, -#ext - 1):gsub("/", ".")
+
+               install_lib[module_name] = lib_src
+            end
          end
 
          -- add fonts for Qt5
-         if have_qt and args.platform == "linux" then
-            local dejavu = install_libdir .. "/opencv_lua/qt/fonts/dejavu"
+         local dejavu = install_libdir .. "/opencv_lua/qt/fonts/dejavu"
+         if have_qt and args.platform == "linux" and fs.exists(dejavu) then
             local files = fs.list_dir(dejavu)
-            for _, filename in ipairs(files or {}) do
-               if filename:sub(-4) == ".ttf" then
-                  local font_dst = "opencv_lua/qt/fonts/" .. filename
-                  local font_src = dejavu .. "/" .. filename
+            for _, fname in ipairs(files) do
+               if fname:sub(-4) == ".ttf" then
+                  local font_dst = "opencv_lua/qt/fonts/" .. fname
+                  local font_src = dejavu .. "/" .. fname
                   install_lib[font_dst:sub(1, -5):gsub("/", ".")] = font_src -- :sub(1, -5) removes '.ttf' extenxion to have the corresponding lua module name
                end
             end
+         end
+      end
+
+      -- add install_libdir .. "/opencv_lua/devel" directory
+      ---@type string[]
+      local includes = { install_libdir .. "/opencv_lua/devel" }
+      while #includes ~= 0 do
+         ---@type string
+         local include = table.remove(includes)
+         if fs.is_dir(include) then
+            ---@type string[]
+            local files = fs.list_dir(include)
+            for i = #files, 1, -1 do
+               includes[#includes + 1] = include .. "/" .. files[i]
+            end
+         else
+            local module_name = include:sub(#install_libdir + 2)
+            local ext = module_name:match("(%..+)$")
+
+            if ext ~= nil then
+               module_name = module_name:sub(1, -#ext - 1):gsub("/", ".")
+            end
+
+            install_lib[module_name] = include
          end
       end
 

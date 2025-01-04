@@ -163,8 +163,6 @@ const prepublish = (target, version, cache, options, next) => {
 
                 if (options.server) {
                     args.push("--server", options.server);
-                } else {
-                    env.LUAROCKS_SERVER = sysPath.join(prepublishRoot, "server");
                 }
 
                 tasks.push(["node", args]);
@@ -201,6 +199,7 @@ const prepublish = (target, version, cache, options, next) => {
 const options = {
     name: "opencv_lua",
     cmake_build_args: [],
+    server: process.env.LUAROCKS_SERVER ? sysPath.resolve(process.env.LUAROCKS_SERVER) : sysPath.join(prepublishRoot, "server"),
 };
 
 const argv = process.argv.slice(2);
@@ -260,7 +259,7 @@ for (let i = 0; i < argv.length; i++) {
     }
 }
 
-const versions = options["lua-versions"] ? options["lua-versions"].split(",") : null;
+const versions = options["lua-versions"] ? options["lua-versions"].trim().split(/[\s,]+/) : [];
 const flavors = [false, true];
 
 if (options.cmake_build_args.length !== 0) {
@@ -275,7 +274,7 @@ eachOfLimit([
     ["lua", "5.2"],
     ["lua", "5.1"],
 ], 1, ([target, version], i, next) => {
-    if (versions && !versions.includes(version)) {
+    if (versions.length !== 0 && !versions.includes(version)) {
         next();
         return;
     }

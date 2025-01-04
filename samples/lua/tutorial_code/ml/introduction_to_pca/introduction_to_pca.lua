@@ -11,6 +11,7 @@ local argparse = require("argparse")
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local bit = bit or opencv_lua.bit ---@diagnostic disable-line: undefined-global
+local atan2 = math.atan2 or math.atan ---@diagnostic disable-line: deprecated
 local int = opencv_lua.math.int
 local INDEX_BASE = 1 -- lua is 1-based indexed
 
@@ -22,7 +23,7 @@ local function drawAxis(img, p_, q_, colour, scale)
     local q = { q_[i0], q_[i1] }
 
     -- [visualization1]
-    local angle = math.atan2(p[i1] - q[i1], p[i0] - q[i0]) -- angle in radians
+    local angle = atan2(p[i1] - q[i1], p[i0] - q[i0]) -- angle in radians
     local hypotenuse = math.sqrt((p[i1] - q[i1]) * (p[i1] - q[i1]) + (p[i0] - q[i0]) * (p[i0] - q[i0]))
 
     -- Here we lengthen the arrow by a factor of scale
@@ -68,7 +69,7 @@ local function getOrientation(pts, img)
     drawAxis(img, cntr, p1, { 0, 255, 0 }, 1)
     drawAxis(img, cntr, p2, { 255, 255, 0 }, 5)
 
-    local angle = math.atan2(eigenvectors(0, 1), eigenvectors(0, 0)) -- orientation in radians
+    local angle = atan2(eigenvectors(0, 1), eigenvectors(0, 0)) -- orientation in radians
     -- [visualization]
 
     return angle

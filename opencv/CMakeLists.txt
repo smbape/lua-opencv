@@ -203,7 +203,7 @@ if (WIN32)
   option(ENABLE_EXPERIMENTAL_WIDE_CHAR           "Attempt to support UTF-16 (wide character) strings on Windows."           OFF)
 
   if (ENABLE_EXPERIMENTAL_WIDE_CHAR)
-    add_definitions("-DOPENCV_INCLUDE_PORT_FILE=<enable_wide_char.h>" -DENABLE_WIDE_CHAR)
+    add_definitions(-DENABLE_WIDE_CHAR "-DOPENCV_INCLUDE_PORT_FILE=<enable_wide_char.h>")
     include_directories("${CMAKE_CURRENT_SOURCE_DIR}")
 
     if (WIN32 AND WITH_CUDA)
@@ -234,19 +234,12 @@ foreach(m opencv_core ${OPENCV_MODULES_PUBLIC})
     endif()
 
     install(TARGETS ${m}
-      LIBRARY
-        DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-        # PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
-        #                 GROUP_EXECUTE GROUP_READ
-      RUNTIME
-        DESTINATION "${CMAKE_INSTALL_BINDIR}"
+      LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+      RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
     )
 
     if (NOT WITH_LUA_ROCKS)
-      install(TARGETS ${m}
-        ARCHIVE
-          DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-      )
+      install(TARGETS ${m} ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
     endif()
   endif()
 

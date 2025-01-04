@@ -238,7 +238,7 @@ print(string.format("createFromArray %s took %.6f seconds. Sum = %d", inspect(ma
 
 -- https://luajit.org/ext_ffi.html
 -- Do the check to see if JIT is enabled. If so use the optimized FFI structs.
-if type(jit) == 'table' then
+if type(jit) == 'table' then ---@diagnostic disable-line: undefined-global
     -- print(jit.version)  --LuaJIT 2.0.2
 
     local status, ffi = pcall(require, "ffi")
