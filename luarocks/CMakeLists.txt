@@ -20,20 +20,20 @@ set(ABIVER ${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR})
 file(TO_NATIVE_PATH "${CMAKE_CURRENT_SOURCE_DIR}" PROJECT_DIR)
 
 if (WIN32)
-  set(luarocks_exe "<SOURCE_DIR>\\luarocks.exe")
-  set(luarocks luarocks.bat)
+  set(Luarocks_EXECUTABLE "<SOURCE_DIR>\\luarocks.exe")
+  set(luarocks_COMMAND luarocks.bat)
 else()
-  set(luarocks_exe "<BINARY_DIR>/bin/luarocks")
-  set(luarocks ./luarocks)
+  set(Luarocks_EXECUTABLE "<BINARY_DIR>/bin/luarocks")
+  set(luarocks_COMMAND ./luarocks)
 endif()
 
 set(COMMANDS
-  COMMAND "${luarocks_exe}" --lua-version "${ABIVER}" --lua-dir "${LUA_DIR}" init --lua-versions "5.1,5.2,5.3,5.4"
-  COMMAND "${luarocks_exe}" --lua-version "${ABIVER}" --lua-dir "${LUA_DIR}" init --lua-versions "5.1,5.2,5.3,5.4"
-  COMMAND ${luarocks} --lua-version "${ABIVER}" config --scope project lua_interpreter "${LUA_INTERPRETER_NAME}"
-  COMMAND ${luarocks} --lua-version "${ABIVER}" config --scope project variables.LUA_BINDIR "${LUA_BINDIR}"
-  COMMAND ${luarocks} --lua-version "${ABIVER}" config --scope project variables.LUA_DIR "${LUA_DIR}"
-  COMMAND ${luarocks} --lua-version "${ABIVER}" config --scope project variables.LUA_INCDIR "${LUA_INCDIR}"
+  COMMAND "${Luarocks_EXECUTABLE}" --lua-version "${ABIVER}" --lua-dir "${LUA_DIR}" init --lua-versions "5.1,5.2,5.3,5.4"
+  COMMAND "${Luarocks_EXECUTABLE}" --lua-version "${ABIVER}" --lua-dir "${LUA_DIR}" init --lua-versions "5.1,5.2,5.3,5.4"
+  COMMAND "${luarocks_COMMAND}" --lua-version "${ABIVER}" config --scope project lua_interpreter "${LUA_INTERPRETER_NAME}"
+  COMMAND "${luarocks_COMMAND}" --lua-version "${ABIVER}" config --scope project variables.LUA_BINDIR "${LUA_BINDIR}"
+  COMMAND "${luarocks_COMMAND}" --lua-version "${ABIVER}" config --scope project variables.LUA_DIR "${LUA_DIR}"
+  COMMAND "${luarocks_COMMAND}" --lua-version "${ABIVER}" config --scope project variables.LUA_INCDIR "${LUA_INCDIR}"
 )
 
 if (WIN32)
@@ -71,3 +71,16 @@ else()
     EXCLUDE_FROM_ALL    TRUE
   )
 endif()
+
+ExternalProject_Get_Property(luarocks SOURCE_DIR BINARY_DIR)
+
+string(REPLACE "<SOURCE_DIR>" "${SOURCE_DIR}" Luarocks_EXECUTABLE "${Luarocks_EXECUTABLE}")
+string(REPLACE "<BINARY_DIR>" "${BINARY_DIR}" Luarocks_EXECUTABLE "${Luarocks_EXECUTABLE}")
+
+string(REPLACE "./" "" luarocks_COMMAND "${luarocks_COMMAND}")
+set(luarocks_COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/${luarocks_COMMAND}")
+
+set(luarocks_SOURCE_DIR "${SOURCE_DIR}" PARENT_SCOPE)
+set(luarocks_BINARY_DIR "${BINARY_DIR}" PARENT_SCOPE)
+set(Luarocks_EXECUTABLE "${SOURCE_DIR}" PARENT_SCOPE)
+set(luarocks_COMMAND "${BINARY_DIR}" PARENT_SCOPE)

@@ -5,22 +5,33 @@ set(target_name opencv_lua)
 
 include(GNUInstallDirs)
 include(version.cmake)
-
-function(list_set_filename_component FileNames)
-  list(SUBLIST ARGV 1 -1 ARGS)
-
-  set(index 0)
-  foreach(FileName IN LISTS ${FileNames})
-    get_filename_component(FileName "${FileName}" ${ARGS})
-    list(REMOVE_AT ${FileNames} ${index})
-    list(INSERT ${FileNames} ${index} "${FileName}")
-    math(EXPR index "${index}+1")
-  endforeach()
-
-  set(${FileNames} ${${FileNames}} PARENT_SCOPE)
-endfunction()
+include(../cmake/vcpkg_regex_replace_string.cmake)
 
 file(RELATIVE_PATH CMAKE_RELATIVE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_SOURCE_DIR}")
+
+file(GLOB_RECURSE files_to_change
+  ${CMAKE_RELATIVE_SOURCE_DIR}README.md
+  ${CMAKE_RELATIVE_SOURCE_DIR}docs/hosting-you-own-binary-rocks-*
+  ${CMAKE_RELATIVE_SOURCE_DIR}generator/index.js
+  ${CMAKE_RELATIVE_SOURCE_DIR}luarocks/${target_name}-scm-1.rockspec
+  ${CMAKE_RELATIVE_SOURCE_DIR}samples/*.lua
+  ${CMAKE_RELATIVE_SOURCE_DIR}scripts/new_version.lua
+  ${CMAKE_RELATIVE_SOURCE_DIR}scripts/pack.js
+  ${CMAKE_RELATIVE_SOURCE_DIR}scripts/tasks.sh
+)
+
+foreach(item ${files_to_change})
+  vcpkg_regex_replace_string("${item}" "(/lua-opencv/releases/download/v|/lua-opencv/tree/v)[0-9]+\\.[0-9]+\\.[0-9]+" "\\1${PROJECT_VERSION}")
+  vcpkg_regex_replace_string("${item}" "(opencv-|/opencv/opencv/blob/|${target_name} )[0-9]+\\.[0-9]+\\.[0-9]+" "\\1${OpenCV_VERSION}")
+  vcpkg_regex_replace_string("${item}" "OPENCV_VERSION:-[0-9]+\\.[0-9]+\\.[0-9]+" "OPENCV_VERSION:-${OpenCV_VERSION}")
+  vcpkg_regex_replace_string("${item}" "(--branch )[0-9]+\\.[0-9]+\\.[0-9]+( https://github.com/opencv/opencv)" "\\1${OpenCV_VERSION}\\2")
+  vcpkg_regex_replace_string("${item}" "(--branch v)[0-9]+\\.[0-9]+\\.[0-9]+( https://github.com/smbape/lua-opencv)" "\\1${PROJECT_VERSION}\\2")
+  vcpkg_regex_replace_string("${item}" "opencv_videoio_ffmpeg[0-9]+_64\\.dll" "opencv_videoio_ffmpeg${OpenCV_DLLVERSION}_64.dll")
+  vcpkg_regex_replace_string("${item}" "opencv_world[0-9]+\\.dll" "opencv_world${OpenCV_DLLVERSION}.dll")
+
+  # Force LF EOL
+  configure_file(${item} ${item} @ONLY NEWLINE_STYLE LF)
+endforeach()
 
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin" CACHE PATH "Output directory for applications")
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib" CACHE PATH "Output directory for libraries")
@@ -50,20 +61,20 @@ execute_process(
 )
 
 file(GLOB_RECURSE project_source_headers "${CMAKE_RELATIVE_SOURCE_DIR}src/*.h" "${CMAKE_RELATIVE_SOURCE_DIR}src/*.hpp")
-list_set_filename_component(project_source_headers ABSOLUTE)
+list_set_filename_component(ABSOLUTE project_source_headers)
 source_group("Source Headers" FILES ${project_source_headers})
 
 file(GLOB_RECURSE project_sources_files "${CMAKE_RELATIVE_SOURCE_DIR}src/*.c" "${CMAKE_RELATIVE_SOURCE_DIR}src/*.cpp")
-list_set_filename_component(project_sources_files ABSOLUTE)
+list_set_filename_component(ABSOLUTE project_sources_files)
 source_group("Source Files" FILES ${project_sources_files})
 
 
 file(GLOB_RECURSE project_generated_headers "${CMAKE_RELATIVE_SOURCE_DIR}generated/*.h" "${CMAKE_RELATIVE_SOURCE_DIR}generated/*.hpp")
-list_set_filename_component(project_generated_headers ABSOLUTE)
+list_set_filename_component(ABSOLUTE project_generated_headers)
 source_group("Generated Headers" FILES ${project_generated_headers})
 
 file(GLOB_RECURSE project_generated_files "${CMAKE_RELATIVE_SOURCE_DIR}generated/*.c" "${CMAKE_RELATIVE_SOURCE_DIR}generated/*.cpp")
-list_set_filename_component(project_generated_files ABSOLUTE)
+list_set_filename_component(ABSOLUTE project_generated_files)
 source_group("Generated Files" FILES ${project_generated_files})
 
 
@@ -88,81 +99,6 @@ if(NOT BUILD_SHARED_LIBS AND (BUILD_WITH_STATIC_CRT OR NOT OpenCV_SHARED) AND MS
   )
 endif()
 
-if (WITH_LUA_ROCKS)
-  install(TARGETS ${target_name}
-    LIBRARY DESTINATION "lib"
-    RUNTIME DESTINATION "lib"
-  )
-
-  if (UNIX AND CMAKE_INSTALL_PREFIX)
-    if(Qt5_DIR)
-      unset(Qt5_PLUGINS_DIR)
-      if (EXISTS "${Qt5_DIR}/../../../plugins")
-        set(Qt5_PLUGINS_DIR "${Qt5_DIR}/../../../plugins")
-      elseif (EXISTS "${Qt5_DIR}/../../qt5/plugins")
-        set(Qt5_PLUGINS_DIR "${Qt5_DIR}/../../qt5/plugins")
-      endif()
-      if (Qt5_PLUGINS_DIR)
-        install(DIRECTORY "${Qt5_PLUGINS_DIR}" DESTINATION lib/${target_name}/qt)
-      endif()
-
-      if (NOT APPLE)
-        install(DIRECTORY /usr/share/fonts DESTINATION lib/${target_name}/qt)
-      endif()
-    endif()
-
-    # Add any variables you need during post install.
-    install(CODE "set(Qt5_DIR \"${Qt5_DIR}\")")
-    install(CODE "set(target_name \"${target_name}\")")
-    install(CODE "set(PROJECT_VERSION \"${PROJECT_VERSION}\")")
-    install(CODE "set(Python3_EXECUTABLE \"${Python3_EXECUTABLE}\")")
-    install(CODE "set(CMAKE_SOURCE_DIR \"${CMAKE_SOURCE_DIR}\")")
-    install(CODE "set(CMAKE_CURRENT_SOURCE_DIR \"${CMAKE_CURRENT_SOURCE_DIR}\")")
-    install(CODE "set(CMAKE_INSTALL_PREFIX \"${CMAKE_INSTALL_PREFIX}\")")
-    install(CODE "set(CMAKE_BINARY_DIR \"${CMAKE_BINARY_DIR}\")")
-    install(CODE "set(CMAKE_CURRENT_BINARY_DIR \"${CMAKE_CURRENT_BINARY_DIR}\")")
-    install(CODE "set(CMAKE_INSTALL_LIBDIR \"lib\")")
-    install(CODE "set(TARGET_FILE \"$<TARGET_FILE:${target_name}>\")")
-
-    # CMake will execute this last in the build.
-    # Install the script that does the post install work.
-    install(SCRIPT "audiwheel_repair.cmake")
-  endif()
-
-  # Install dev files under lib/${target_name}/devel to allow another rock
-  # to link to opencv_lua, opencv_lua-contrib
-  # without knowing which one was installed
-  foreach(m ${OpenCV_LIBS})
-    if(TARGET ${m})
-      get_target_property(__location_dbg ${m} IMPORTED_LOCATION_DEBUG)
-      if(EXISTS "${__location_dbg}")
-        install(FILES "${__location_dbg}" DESTINATION lib/${target_name}/devel/lib)
-      endif()
-
-      get_target_property(__location_release ${m}  IMPORTED_LOCATION_RELEASE)
-      if(EXISTS "${__location_release}")
-        install(FILES "${__location_release}" DESTINATION lib/${target_name}/devel/lib)
-      endif()
-
-      if ("${__location_dbg}" STREQUAL "__location_dbg-NOTFOUND" AND "${__location_release}" STREQUAL "__location_release-NOTFOUND")
-        install(TARGETS ${m} ARCHIVE DESTINATION lib/${target_name}/devel/lib)
-      endif()
-    endif()
-  endforeach()
-
-  foreach(m ${OpenCV_INCLUDE_DIRS})
-    if(EXISTS "${m}" AND m MATCHES "[\\/]include$")
-      install(DIRECTORY "${m}" DESTINATION lib/${target_name}/devel)
-    endif()
-  endforeach()
-else()
-  install(TARGETS ${target_name}
-    LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-    RUNTIME DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-    ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-  )
-endif()
-
 target_compile_definitions(${target_name}
   PUBLIC
     LUA_MODULE_NAME=${target_name}
@@ -183,7 +119,7 @@ if (DEFINED OpenCV_INCLUDE_DIRS)
   target_include_directories(${target_name} PRIVATE ${OpenCV_INCLUDE_DIRS})
 endif()
 
-target_include_directories(${target_name} PUBLIC "${CMAKE_SOURCE_DIR}/src/include" "${CMAKE_SOURCE_DIR}/src" "${CMAKE_SOURCE_DIR}/generated")
+target_include_directories(${target_name} PRIVATE "${CMAKE_SOURCE_DIR}/src/include" "${CMAKE_SOURCE_DIR}/src" "${CMAKE_SOURCE_DIR}/generated")
 
 if (WITH_LUA_ROCKS)
   include(../cmake/set_startup_project.cmake)
@@ -221,6 +157,108 @@ if (WIN32 AND CMAKE_GENERATOR STREQUAL Ninja)
 endif()
 
 # ===============
+# OpenCV Lua Install
+# ===============
+if (WITH_LUA_ROCKS)
+  if (UNIX AND CMAKE_INSTALL_PREFIX)
+    if(Qt5_DIR)
+      unset(Qt5_PLUGINS_DIR)
+      if (EXISTS "${Qt5_DIR}/../../../plugins")
+        set(Qt5_PLUGINS_DIR "${Qt5_DIR}/../../../plugins")
+      elseif (EXISTS "${Qt5_DIR}/../../qt5/plugins")
+        set(Qt5_PLUGINS_DIR "${Qt5_DIR}/../../qt5/plugins")
+      endif()
+      if (Qt5_PLUGINS_DIR)
+        install(DIRECTORY "${Qt5_PLUGINS_DIR}" DESTINATION lib/${target_name}/qt)
+      endif()
+
+      if (NOT APPLE)
+        install(DIRECTORY /usr/share/fonts DESTINATION lib/${target_name}/qt)
+      endif()
+    endif()
+
+    # Add any variables you need during post install.
+    install(CODE "set(Qt5_DIR \"${Qt5_DIR}\")")
+    install(CODE "set(target_name \"${target_name}\")")
+    install(CODE "set(PROJECT_VERSION \"${PROJECT_VERSION}\")")
+    install(CODE "set(Python3_EXECUTABLE \"${Python3_EXECUTABLE}\")")
+    install(CODE "set(CMAKE_SOURCE_DIR \"${CMAKE_SOURCE_DIR}\")")
+    install(CODE "set(CMAKE_CURRENT_SOURCE_DIR \"${CMAKE_CURRENT_SOURCE_DIR}\")")
+    install(CODE "set(CMAKE_INSTALL_PREFIX \"${CMAKE_INSTALL_PREFIX}\")")
+    install(CODE "set(CMAKE_BINARY_DIR \"${CMAKE_BINARY_DIR}\")")
+    install(CODE "set(CMAKE_CURRENT_BINARY_DIR \"${CMAKE_CURRENT_BINARY_DIR}\")")
+    install(CODE "set(CMAKE_INSTALL_LIBDIR \"lib\")")
+    install(CODE "set(TARGET_FILE \"$<TARGET_FILE:${target_name}>\")")
+
+    # CMake will execute this last in the build.
+    # Install the script that does the post install work.
+    install(SCRIPT "audiwheel_repair.cmake")
+  endif()
+
+  # install(FILES "${opencv_SOURCE_DIR}/modules/python/src2/hdr_parser.py" DESTINATION lib/${target_name}/modules/python/src2)
+
+  # Install dev files under lib/${target_name}/devel to allow another rock
+  # to link to opencv_lua, opencv_lua-contrib
+  # without knowing which one was installed
+  foreach(m ${OpenCV_LIBS})
+    if(TARGET ${m})
+      get_target_property(__interface_include_directories ${m} INTERFACE_INCLUDE_DIRECTORIES)
+      if(EXISTS "${__interface_include_directories}")
+        install(DIRECTORY "${__interface_include_directories}" DESTINATION lib/${target_name}/devel/include)
+      endif()
+
+      get_target_property(__imported_location_dbg ${m} IMPORTED_LOCATION_DEBUG)
+      if(EXISTS "${__imported_location_dbg}")
+        install(FILES "${__imported_location_dbg}" DESTINATION lib/${target_name}/devel/lib)
+      endif()
+
+      get_target_property(__imported_location_release ${m}  IMPORTED_LOCATION_RELEASE)
+      if(EXISTS "${__imported_location_release}")
+        install(FILES "${__imported_location_release}" DESTINATION lib/${target_name}/devel/lib)
+      endif()
+
+      if ("${__interface_include_directories}" STREQUAL "__interface_include_directories-NOTFOUND")
+        install(TARGETS ${m}
+          INCLUDES DESTINATION lib/${target_name}/devel/include
+          ARCHIVE DESTINATION lib/${target_name}/devel/lib
+        )
+      endif()
+
+      unset(__interface_include_directories)
+      unset(__imported_location_dbg)
+      unset(__imported_location_release)
+    endif()
+  endforeach()
+
+  set(ARCHIVE_EXPORT)
+  if (WIN32)
+    set(ARCHIVE_EXPORT
+      ARCHIVE DESTINATION lib/${target_name}/devel/lib
+    )
+  endif()
+
+  install(TARGETS ${target_name}
+    EXPORT OpenCVLuaConfig
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION lib
+    INCLUDES DESTINATION lib/${target_name}/devel/include
+    ${ARCHIVE_EXPORT}
+  )
+
+  install(EXPORT OpenCVLuaConfig
+    FILE OpenCVLuaConfig.cmake
+    NAMESPACE OpenCVLua::
+    DESTINATION lib/${target_name}/devel/lib
+  )
+else()
+  install(TARGETS ${target_name}
+    LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    RUNTIME DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+  )
+endif()
+
+# ===============
 # OpenCV Lua Test
 # ===============
 include(CTest)
@@ -248,27 +286,3 @@ endif()
 include(CPack)
 set(CPACK_PROJECT_NAME ${target_name})
 set(CPACK_PROJECT_VERSION ${LUA_MODULE_VERSION})
-
-include(../cmake/vcpkg_regex_replace_string.cmake)
-
-file(GLOB_RECURSE files_to_change
-  ${CMAKE_RELATIVE_SOURCE_DIR}README.md
-  ${CMAKE_RELATIVE_SOURCE_DIR}docs/hosting-you-own-binary-rocks-*
-  ${CMAKE_RELATIVE_SOURCE_DIR}generator/index.js
-  ${CMAKE_RELATIVE_SOURCE_DIR}luarocks/${target_name}-scm-1.rockspec
-  ${CMAKE_RELATIVE_SOURCE_DIR}samples/*.lua
-  ${CMAKE_RELATIVE_SOURCE_DIR}scripts/new_version.lua
-  ${CMAKE_RELATIVE_SOURCE_DIR}scripts/pack.js
-)
-
-foreach(item ${files_to_change})
-  vcpkg_regex_replace_string("${item}" "(/lua-opencv/releases/download/v|/lua-opencv/tree/v)[0-9]+\\.[0-9]+\\.[0-9]+" "\\1${PROJECT_VERSION}")
-  vcpkg_regex_replace_string("${item}" "(opencv-|/opencv/opencv/blob/|${target_name} )[0-9]+\\.[0-9]+\\.[0-9]+" "\\1${OpenCV_VERSION}")
-  vcpkg_regex_replace_string("${item}" "(--branch )[0-9]+\\.[0-9]+\\.[0-9]+( https://github.com/opencv/opencv)" "\\1${OpenCV_VERSION}\\2")
-  vcpkg_regex_replace_string("${item}" "(--branch v)[0-9]+\\.[0-9]+\\.[0-9]+( https://github.com/smbape/lua-opencv)" "\\1${PROJECT_VERSION}\\2")
-  vcpkg_regex_replace_string("${item}" "opencv_videoio_ffmpeg[0-9]+_64\\.dll" "opencv_videoio_ffmpeg${OpenCV_DLLVERSION}_64.dll")
-  vcpkg_regex_replace_string("${item}" "opencv_world[0-9]+\\.dll" "opencv_world${OpenCV_DLLVERSION}.dll")
-
-  # Force LF EOL
-  configure_file(${item} ${item} @ONLY NEWLINE_STYLE LF)
-endforeach()

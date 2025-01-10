@@ -332,10 +332,6 @@ target_include_directories(luac PRIVATE ${LUA_INCLUDE_DIRS})
 set_target_output_directories(luac)
 set_target_properties(luac PROPERTIES OUTPUT_NAME "luac-${VERSION}")
 
-if (MSVC AND NOT (CMAKE_GENERATOR STREQUAL Ninja))
-  set(EXECUTABLE_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/${CMAKE_BUILD_TYPE}")
-endif()
-
 add_custom_command(
   TARGET luac POST_BUILD
   COMMAND "${CMAKE_COMMAND}" -E create_symlink "luac-${VERSION}${CMAKE_EXECUTABLE_SUFFIX}" "luac${CMAKE_EXECUTABLE_SUFFIX}"

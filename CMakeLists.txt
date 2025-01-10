@@ -38,6 +38,8 @@ if(POLICY CMP0091)
   cmake_policy(SET CMP0091 NEW) # CMake 3.15+: leave MSVC runtime selection out of default CMAKE_<LANG>_FLAGS_<CONFIG> flags
 endif()
 
+include(cmake/cmake_path_manipulation.cmake)
+
 # ===============
 # Lua
 # ===============

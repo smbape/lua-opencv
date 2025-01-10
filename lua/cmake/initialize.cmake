@@ -11,8 +11,8 @@ endif()
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release;MinSizeRel;RelWithDebInfo" CACHE STRING "Configs" FORCE)
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "${CMAKE_CONFIGURATION_TYPES}")
 
-set(EXECUTABLE_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/bin" CACHE PATH "Output directory for applications")
-set(LIBRARY_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/lib" CACHE PATH "Output directory for libraries")
+set(EXECUTABLE_OUTPUT_PATH "${CMAK_BINARY_DIR}/bin" CACHE PATH "Output directory for applications")
+set(LIBRARY_OUTPUT_PATH "${CMAK_BINARY_DIR}/lib" CACHE PATH "Output directory for libraries")
 
 function(set_target_output_directories target)
   set_target_properties(${target} PROPERTIES
