@@ -77,13 +77,14 @@ file(GLOB_RECURSE project_generated_files "${CMAKE_RELATIVE_SOURCE_DIR}generated
 list_set_filename_component(ABSOLUTE project_generated_files)
 source_group("Generated Files" FILES ${project_generated_files})
 
-
 set(SRC_FILES
   ${project_source_headers}
   ${project_sources_files}
 
   ${project_generated_headers}
   ${project_generated_files}
+
+  ${OpenCV_SOURCE_OBJECTS}
 )
 
 if(POLICY CMP0091)
@@ -99,13 +100,19 @@ if(NOT BUILD_SHARED_LIBS AND (BUILD_WITH_STATIC_CRT OR NOT OpenCV_SHARED) AND MS
   )
 endif()
 
-target_compile_definitions(${target_name}
-  PUBLIC
-    LUA_MODULE_NAME=${target_name}
-    LUA_MODULE_VERSION=${LUA_MODULE_VERSION}
-    LUA_MODULE_LIB_NAME=OpenCV
-    LUA_MODULE_LIB_VERSION=${OpenCV_VERSION}
-  PRIVATE LUAAPI_EXPORTS)
+target_compile_definitions(${target_name} PRIVATE
+  LUA_MODULE_NAME=${target_name}
+  LUA_MODULE_VERSION=${LUA_MODULE_VERSION}
+  LUA_MODULE_LIB_NAME=OpenCV
+  LUA_MODULE_LIB_VERSION=${OpenCV_VERSION}
+  LUAAPI_EXPORTS
+)
+
+target_include_directories(${target_name} PRIVATE
+  "${CMAKE_SOURCE_DIR}/src/include"
+  "${CMAKE_SOURCE_DIR}/src"
+  "${CMAKE_SOURCE_DIR}/generated"
+)
 
 target_precompile_headers(${target_name} PRIVATE
   "$<$<COMPILE_LANGUAGE:CXX>:lua_generated_pch.hpp>"
@@ -114,12 +121,10 @@ target_precompile_headers(${target_name} PRIVATE
 target_link_libraries(${target_name} PRIVATE ${LUA_LIBRARIES})
 target_include_directories(${target_name} PRIVATE ${LUA_INCLUDE_DIR})
 
-target_link_libraries(${target_name} PRIVATE ${OpenCV_LIBS})
 if (DEFINED OpenCV_INCLUDE_DIRS)
   target_include_directories(${target_name} PRIVATE ${OpenCV_INCLUDE_DIRS})
 endif()
-
-target_include_directories(${target_name} PRIVATE "${CMAKE_SOURCE_DIR}/src/include" "${CMAKE_SOURCE_DIR}/src" "${CMAKE_SOURCE_DIR}/generated")
+target_link_libraries(${target_name} PRIVATE ${OpenCV_LIBS})
 
 if (WITH_LUA_ROCKS)
   include(../cmake/set_startup_project.cmake)
@@ -195,68 +200,33 @@ if (WITH_LUA_ROCKS)
     install(SCRIPT "audiwheel_repair.cmake")
   endif()
 
-  # install(FILES "${opencv_SOURCE_DIR}/modules/python/src2/hdr_parser.py" DESTINATION lib/${target_name}/modules/python/src2)
-
-  # Install dev files under lib/${target_name}/devel to allow another rock
-  # to link to opencv_lua, opencv_lua-contrib
-  # without knowing which one was installed
-  foreach(m ${OpenCV_LIBS})
-    if(TARGET ${m})
-      get_target_property(__interface_include_directories ${m} INTERFACE_INCLUDE_DIRECTORIES)
-      if(EXISTS "${__interface_include_directories}")
-        install(DIRECTORY "${__interface_include_directories}" DESTINATION lib/${target_name}/devel/include)
-      endif()
-
-      get_target_property(__imported_location_dbg ${m} IMPORTED_LOCATION_DEBUG)
-      if(EXISTS "${__imported_location_dbg}")
-        install(FILES "${__imported_location_dbg}" DESTINATION lib/${target_name}/devel/lib)
-      endif()
-
-      get_target_property(__imported_location_release ${m}  IMPORTED_LOCATION_RELEASE)
-      if(EXISTS "${__imported_location_release}")
-        install(FILES "${__imported_location_release}" DESTINATION lib/${target_name}/devel/lib)
-      endif()
-
-      if ("${__interface_include_directories}" STREQUAL "__interface_include_directories-NOTFOUND")
-        install(TARGETS ${m}
-          INCLUDES DESTINATION lib/${target_name}/devel/include
-          ARCHIVE DESTINATION lib/${target_name}/devel/lib
-        )
-      endif()
-
-      unset(__interface_include_directories)
-      unset(__imported_location_dbg)
-      unset(__imported_location_release)
-    endif()
-  endforeach()
-
-  set(ARCHIVE_EXPORT)
-  if (WIN32)
-    set(ARCHIVE_EXPORT
-      ARCHIVE DESTINATION lib/${target_name}/devel/lib
-    )
-  endif()
-
-  install(TARGETS ${target_name}
-    EXPORT OpenCVLuaConfig
-    LIBRARY DESTINATION lib
-    RUNTIME DESTINATION lib
-    INCLUDES DESTINATION lib/${target_name}/devel/include
-    ${ARCHIVE_EXPORT}
-  )
-
-  install(EXPORT OpenCVLuaConfig
-    FILE OpenCVLuaConfig.cmake
-    NAMESPACE OpenCVLua::
-    DESTINATION lib/${target_name}/devel/lib
-  )
+  set(LIBRAY_DESTINATION lib)
+  set(ARCHIVE_DESTINATION lib/${target_name}/devel/lib)
+  set(INCLUDES_DESTINATION lib/${target_name}/devel/include)
+  set(CMAKE_CONFIG_DESTINATION lib/${target_name}/devel/lib/cmake)
 else()
-  install(TARGETS ${target_name}
-    LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-    RUNTIME DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-    ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-  )
+  set(LIBRAY_DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+  set(ARCHIVE_DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+  set(INCLUDES_DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+  set(CMAKE_CONFIG_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake")
 endif()
+
+install(TARGETS ${target_name}
+  EXPORT OpenCVLuaTargets
+  LIBRARY DESTINATION "${LIBRAY_DESTINATION}"
+  RUNTIME DESTINATION "${LIBRAY_DESTINATION}"
+  ARCHIVE DESTINATION "${ARCHIVE_DESTINATION}"
+  INCLUDES DESTINATION "${INCLUDES_DESTINATION}"
+)
+
+install(EXPORT OpenCVLuaTargets
+  FILE OpenCVLuaTargets.cmake
+  NAMESPACE ${target_name}::
+  DESTINATION "${CMAKE_CONFIG_DESTINATION}"
+)
+
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/OpenCVLuaConfig.cmake.in" "${CMAKE_CURRENT_BINARY_DIR}/OpenCVLuaConfig.cmake" @ONLY)
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/OpenCVLuaConfig.cmake" DESTINATION "${CMAKE_CONFIG_DESTINATION}")
 
 # ===============
 # OpenCV Lua Test

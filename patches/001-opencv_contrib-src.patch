@@ -11,6 +11,19 @@ index 71d07d9..f98aa06 100644
      if (str.size() > maxLength)
      {
          if (cutEnd)
+diff --git a/modules/text/cmake/init.cmake b/modules/text/cmake/init.cmake
+index 254757e..0d89d0e 100644
+--- a/modules/text/cmake/init.cmake
++++ b/modules/text/cmake/init.cmake
+@@ -41,7 +41,7 @@ if(NOT HAVE_TESSERACT
+     set(link "${Tesseract_LIBRARIES}")
+     set(def "")
+     if(BUILD_SHARED_LIBS)
+-      set(imp IMPORTED)
++      set(imp IMPORTED GLOBAL)
+     endif()
+     add_library(ocv.3rdparty.${name} INTERFACE ${imp})
+     set_target_properties(ocv.3rdparty.${name} PROPERTIES
 diff --git a/modules/wechat_qrcode/src/wechat_qrcode.cpp b/modules/wechat_qrcode/src/wechat_qrcode.cpp
 index 64aad73..c6871f2 100644
 --- a/modules/wechat_qrcode/src/wechat_qrcode.cpp

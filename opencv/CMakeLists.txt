@@ -51,6 +51,8 @@ FetchContent_Populate(opencv
                   -P "${CMAKE_SOURCE_DIR}/cmake/git_patch_once.cmake"
 )
 
+option(BUILD_SHARED_LIBS "Build shared libraries (.dll/.so) instead of static ones (.lib/.a)" ON)
+
 option(BUILD_contrib "Build with opencv contrib" OFF)
 
 if (BUILD_contrib)

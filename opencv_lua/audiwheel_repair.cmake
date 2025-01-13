@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
 
 macro(cmake_script_append_var content_var)
-  foreach(var_name ${ARGN})
+  foreach(var_name IN ITEMS ${ARGN})
     set(${content_var} "${${content_var}}
 set(${var_name} \"${${var_name}}\")
 ")

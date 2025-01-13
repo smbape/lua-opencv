@@ -24,7 +24,8 @@ function(set_target_output_directories target)
 endfunction()
 
 macro(cmake_script_append_var content_var)
-  foreach(var_name ${ARGN})
+  foreach(var_name IN ITEMS ${ARGN})
+    string(REPLACE "\"" "\\\"" ${var_name} "${${var_name}}")
     set(${content_var} "${${content_var}}
 set(${var_name} \"${${var_name}}\")
 ")

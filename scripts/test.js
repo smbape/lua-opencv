@@ -141,7 +141,7 @@ const run = (file, env, options, next) => {
     }
 
     const keys = Array.from(new Set([...Object.keys(config[env.BUILD_TYPE].env), ...Object.keys(env)]));
-    env = Object.assign({}, config[env.BUILD_TYPE].env, options.env, env);
+    env = Object.assign({}, process.env, config[env.BUILD_TYPE].env, options.env, env);
 
     const extname = sysPath.extname(file);
 
@@ -272,7 +272,7 @@ if (typeof require !== "undefined" && require.main === module) {
         includes: [],
         excludes: [],
         argv: [],
-        env: Object.assign({}, process.env),
+        env: {},
         "--": 0,
     };
 
