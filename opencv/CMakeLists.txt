@@ -218,7 +218,11 @@ if (WIN32)
   endif()
 endif()
 
+set(__opencv_lua_find_package_targets_global ${CMAKE_FIND_PACKAGE_TARGETS_GLOBAL})
+set(CMAKE_FIND_PACKAGE_TARGETS_GLOBAL TRUE)
 add_subdirectory("${opencv_SOURCE_DIR}" "${opencv_BINARY_DIR}")
+set(CMAKE_FIND_PACKAGE_TARGETS_GLOBAL ${__opencv_lua_find_package_targets_global})
+unset(__opencv_lua_find_package_targets_global)
 
 set(opencv_SOURCE_DIR "${opencv_SOURCE_DIR}" PARENT_SCOPE)
 set(OpenCV_LIBS "")
