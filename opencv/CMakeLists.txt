@@ -106,27 +106,27 @@ file(TO_NATIVE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/opencv" OPENCV_INSTALL_DATA_DIR
 
 
 # 3rd party libs
-OCV_OPTION(BUILD_TIFF               "Build libtiff from source"          ON )
-OCV_OPTION(BUILD_JPEG               "Build libjpeg from source"          ON )
-OCV_OPTION(BUILD_WEBP               "Build WebP from source"             ON )
+option(BUILD_TIFF               "Build libtiff from source"          ON )
+option(BUILD_JPEG               "Build libjpeg from source"          ON )
+option(BUILD_WEBP               "Build WebP from source"             ON )
 
 # OpenCV build components
 # ===================================================
-OCV_OPTION(BUILD_opencv_apps        "Build utility applications (used for example to train classifiers)" OFF )
-OCV_OPTION(BUILD_DOCS               "Create build rules for OpenCV Documentation" OFF )
-OCV_OPTION(BUILD_PERF_TESTS         "Build performance tests"                     OFF )
-OCV_OPTION(BUILD_TESTS              "Build accuracy & regression tests"           OFF )
+option(BUILD_opencv_apps        "Build utility applications (used for example to train classifiers)" OFF )
+option(BUILD_DOCS               "Create build rules for OpenCV Documentation" OFF )
+option(BUILD_PERF_TESTS         "Build performance tests"                     OFF )
+option(BUILD_TESTS              "Build accuracy & regression tests"           OFF )
 
 # OpenCV installation options
 # ===================================================
-OCV_OPTION(INSTALL_CREATE_DISTRIB   "Change install rules to build the distribution package" ON)
+option(INSTALL_CREATE_DISTRIB   "Change install rules to build the distribution package" ON)
 
 if (MSVC AND BUILD_SHARED_LIBS)
   option(INSTALL_PDB_COMPONENT_EXCLUDE_FROM_ALL "Don't install PDB files by default" OFF)
 endif()
 
 # set(VIDEOIO_PLUGIN_LIST "" CACHE STRING "List of videoio backends to be compiled as plugins (ffmpeg, gstreamer, mfx, msmf or special value 'all')")
-option(BUILD_opencv_world "All OpenCV modules" ON)
+option(BUILD_opencv_world "All OpenCV modules" OFF)
 option(BUILD_opencv_python2 "The python2 module" OFF)
 option(BUILD_opencv_python3 "The python3 module" OFF)
 option(BUILD_opencv_java "The java module" OFF)
@@ -143,11 +143,15 @@ if (WITH_FREETYPE)
     find_path(FREETYPE_INCLUDE_DIRS "ft2build.h"
       PATHS "${FREETYPE_DIR}" ENV FREETYPE_DIR
       PATH_SUFFIXES "include"
-      NO_DEFAULT_PATH)
+      REQUIRED
+      NO_DEFAULT_PATH
+    )
     find_library(FREETYPE_LINK_LIBRARIES "freetype"
       PATHS "${FREETYPE_DIR}" ENV FREETYPE_DIR
       PATH_SUFFIXES "lib"
-      NO_DEFAULT_PATH)
+      REQUIRED
+      NO_DEFAULT_PATH
+    )
     if (FREETYPE_INCLUDE_DIRS AND FREETYPE_LINK_LIBRARIES)
       file(READ "${FREETYPE_INCLUDE_DIRS}/freetype/freetype.h" FREETYPE_VERSION)
 
@@ -171,11 +175,15 @@ if (WITH_FREETYPE)
     find_path(HARFBUZZ_INCLUDE_DIRS "hb-ft.h"
       PATHS "${HARFBUZZ_DIR}" ENV HARFBUZZ_DIR
       PATH_SUFFIXES "include/harfbuzz"
-      NO_DEFAULT_PATH)
+      REQUIRED
+      NO_DEFAULT_PATH
+    )
     find_library(HARFBUZZ_LINK_LIBRARIES "harfbuzz"
       PATHS "${HARFBUZZ_DIR}" ENV HARFBUZZ_DIR
       PATH_SUFFIXES "lib"
-      NO_DEFAULT_PATH)
+      REQUIRED
+      NO_DEFAULT_PATH
+    )
     if (HARFBUZZ_INCLUDE_DIRS AND HARFBUZZ_LINK_LIBRARIES)
       file(READ "${HARFBUZZ_INCLUDE_DIRS}/hb-version.h" HARFBUZZ_VERSION)
 
@@ -196,8 +204,8 @@ if (WITH_FREETYPE)
       set(HARFBUZZ_FOUND TRUE)
     endif()
   else()
-    find_package(Freetype)
-    find_package(HARFBUZZ)
+    find_package(Freetype REQUIRED)
+    find_package(HARFBUZZ REQUIRED)
   endif()
 endif()
 

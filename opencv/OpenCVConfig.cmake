@@ -11,8 +11,26 @@ if ((NOT DEFINED OpenCV_DIR) AND (DEFINED ENV{OpenCV_DIR}))
   )
 endif()
 
+function(save_variable lines_output_var variable_name)
+  list(APPEND ${lines_output_var} " ") # empty line
+  list(APPEND ${lines_output_var} "set(${variable_name}")
+  set(__lines "${${variable_name}}")
+  list_double_quote(__lines)
+  list(JOIN __lines "\n    " __lines)
+  list(APPEND ${lines_output_var} "    ${__lines}")
+  list(APPEND ${lines_output_var} ")")
+  unset(__lines)
+  set(${lines_output_var} ${${lines_output_var}} PARENT_SCOPE)
+endfunction()
+
 if (UNIX AND (NOT APPLE))
   set(WITH_QT "5" CACHE STRING "Build with Qt Backend support")
+endif()
+
+if (WITH_LUA_ROCKS)
+  set(OPENCV_INCLUDE_INSTALL_PATH "lib/opencv_lua/devel/include" CACHE STRING "Include directory destination")
+else()
+  set(OPENCV_INCLUDE_INSTALL_PATH "${CMAKE_INSTALL_INCLUDEDIR}" CACHE STRING "Include directory destination")
 endif()
 
 if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
@@ -20,13 +38,16 @@ if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
   get_filename_component(_IMPORT_PREFIX "${CMAKE_CURRENT_LIST_FILE}" DIRECTORY)
   add_subdirectory("${_IMPORT_PREFIX}")
 
+  list(REMOVE_DUPLICATES OpenCV_LIBS)
   set(OpenCV_LINK_LIBRARIES ${OpenCV_LIBS})
-  set(OpenCV_SOURCE_OBJECTS)
+  unset(OpenCV_DEPENDENCIES)
+  unset(OpenCV_PROPERTIES)
+  unset(OpenCV_SOURCE_OBJECTS)
 
   # We want the opencv lua module to be used as a replacement of opencv
   # when another lua module depends on opencv.
   # Linux lua expects shared libraries as modules (.so)
-  # Windows lua exepects a .dll, which can be a static or a shared library.
+  # Windows lua exepects a .dll file, which can be a static or a shared library.
   # For the opencv lua module to be used as a replcement of opencv,
   # it neeeds to have all the exported opencv functions.
   # One way to achieve that purpose is to build opencv as a static library.
@@ -34,14 +55,15 @@ if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
   # Which will lead to a repetitions of opencv functions beteween the lua opencv module and it's dependants.
   # Which will also lead to an increase of the size of the dependant modules.
   # The solution choosen is to directly embed the opencv objects in the opencv lua module.
-  # That will allow the opencv lua module shared library to have all the exported opencv functions,
-  # and more importantly, work on Linux and Windows
+  # That will allow the opencv lua module shared library to have all the exported opencv functions.
+  # Moreover, it works on Linux and Windows
   if (BUILD_SHARED_LIBS)
+    set(OpenCV_DEPENDENCIES ${OpenCV_LIBS})
+
     foreach(the_module ${OpenCV_LIBS})
       get_target_property(__cmake_binary_dir ${the_module} BINARY_DIR)
       get_target_property(__cmake_source_dir ${the_module} SOURCE_DIR)
       get_target_property(__cmake_sources ${the_module} SOURCES)
-      get_target_property(__cmake_imported ${the_module} IMPORTED)
 
       set(__cmake_c_compiled_objects ${__cmake_sources})
 
@@ -61,21 +83,32 @@ if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
         list(FILTER __cmake_c_compiled_objects EXCLUDE REGEX "/${the_module}_main.cpp$")
       endif()
 
-      # File have their object paths relative to the binary dir
-      list_cmake_path(RELATIVE_PATH __cmake_c_compiled_objects BASE_DIRECTORY ${__cmake_source_dir} OUTPUT_VARIABLE)
+      if (MSVC)
+        # Only the filename is relevant
+        list_cmake_path(GET __cmake_c_compiled_objects FILENAME)
 
-      # Files that are already in the binary dir keep their object path relative to the binary dir
-      cmake_path(RELATIVE_PATH __cmake_binary_dir BASE_DIRECTORY ${__cmake_source_dir} OUTPUT_VARIABLE __cmake_binary_dir_relative)
-      list_string(REPLACE "${__cmake_binary_dir_relative}/" "" __cmake_c_compiled_objects)
+        # The extension is removed
+        list(TRANSFORM __cmake_c_compiled_objects REPLACE "\\.c(c|pp|xx)?$" "")
 
-      # The ../ is replaced by __/ when generating the objects files
-      list_string(REPLACE "../" "__/" __cmake_c_compiled_objects)
+        # The object file path is relative to ${__cmake_binary_dir}/${the_module}.dir/${CMAKE_BUILD_TYPE}/
+        list(TRANSFORM __cmake_c_compiled_objects PREPEND "${__cmake_binary_dir}/${the_module}.dir/${CMAKE_BUILD_TYPE}/")
+      else()
+        # File have their object paths relative to the binary dir
+        list_cmake_path(RELATIVE_PATH __cmake_c_compiled_objects BASE_DIRECTORY ${__cmake_source_dir} OUTPUT_VARIABLE)
+
+        # Files that are already in the binary dir keep their object path relative to the binary dir
+        cmake_path(RELATIVE_PATH __cmake_binary_dir BASE_DIRECTORY ${__cmake_source_dir} OUTPUT_VARIABLE __cmake_binary_dir_relative)
+        list_string(REPLACE "${__cmake_binary_dir_relative}/" "" __cmake_c_compiled_objects)
+
+        # The ../ is replaced by __/ when generating the objects files
+        list_string(REPLACE "../" "__/" __cmake_c_compiled_objects)
+
+        # The object file path is relative to ${__cmake_binary_dir}/CMakeFiles/${the_module}.dir/
+        list(TRANSFORM __cmake_c_compiled_objects PREPEND "${__cmake_binary_dir}/CMakeFiles/${the_module}.dir/")
+      endif()
 
       # Object files are generated with ${CMAKE_C_OUTPUT_EXTENSION} extensions
       list(TRANSFORM __cmake_c_compiled_objects APPEND ${CMAKE_C_OUTPUT_EXTENSION})
-
-      # The object file path is relative to ${__cmake_binary_dir}/CMakeFiles/${the_module}.dir/
-      list(TRANSFORM __cmake_c_compiled_objects PREPEND "${__cmake_binary_dir}/CMakeFiles/${the_module}.dir/")
 
       # Mark the object files as GENERATED because they will not exists until opencv is built
       list(APPEND OpenCV_SOURCE_OBJECTS ${__cmake_c_compiled_objects})
@@ -88,37 +121,37 @@ if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
       list(APPEND OpenCV_SOURCE_OBJECTS ${__cmake_imported_objects})
       unset(__cmake_imported_objects)
 
-      foreach(__property_name LINK_LIBRARIES)
-        get_target_property(__property_value ${the_module} INTERFACE_${__property_name})
-        if("${__property_value}" STREQUAL "__property_value-NOTFOUND")
-          get_target_property(__property_value ${the_module} ${__property_name})
-          if("${__property_value}" STREQUAL "__property_value-NOTFOUND")
-            unset(__property_value)
-            continue()
-          endif()
-        endif()
-
-        list(APPEND OpenCV_${__property_name} ${__property_value})
-        unset(__property_value)
+      foreach(__property_name IN ITEMS LINK_LIBRARIES)
+        list(APPEND OpenCV_${__property_name} "$<TARGET_PROPERTY:${the_module},LINK_LIBRARIES>")
       endforeach()
+
+      get_target_property(__cmake_automoc ${the_module} AUTOMOC)
+      if (__cmake_automoc)
+        set(__mocs_compilation "${__cmake_binary_dir}/CMakeFiles/${the_module}.dir/${the_module}_autogen/mocs_compilation.cpp${CMAKE_C_OUTPUT_EXTENSION}")
+        set_source_files_properties("${__mocs_compilation}" PROPERTIES GENERATED TRUE)
+        list(APPEND OpenCV_SOURCE_OBJECTS "${__mocs_compilation}")
+      endif()
+      unset(__cmake_automoc)
 
       unset(__cmake_binary_dir)
       unset(__cmake_source_dir)
       unset(__cmake_sources)
     endforeach()
 
+    list(REMOVE_DUPLICATES OpenCV_SOURCE_OBJECTS)
+
     # Exclude OpenCV_LIBS from LINK_LIBRARIES
     list(JOIN OpenCV_LIBS "|" __link_libraries_excluded)
     list(FILTER OpenCV_LINK_LIBRARIES EXCLUDE REGEX "^(${__link_libraries_excluded})$")
     unset(__link_libraries_excluded)
-
     list(REMOVE_DUPLICATES OpenCV_LINK_LIBRARIES)
-    list(REMOVE_DUPLICATES OpenCV_SOURCE_OBJECTS)
 
-    source_group("OpenCV Source Objects" FILES ${OpenCV_SOURCE_OBJECTS})
+    set(OpenCV_LIBS ${OpenCV_LINK_LIBRARIES})
+    unset(OpenCV_LINK_LIBRARIES)
 
-    set(__imported_libraries)
-    set(__namespace)
+    unset(__imported_libraries)
+    unset(__namespace)
+    set(__has_linked_targets FALSE)
 
     foreach(target_name IN LISTS OpenCV_LINK_LIBRARIES)
       if (TARGET "${target_name}")
@@ -141,7 +174,7 @@ if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
 
           string(REPLACE ";" " " __library_opts "${__library_opts}")
 
-          list(APPEND __imported_libraries "") # empty line
+          list(APPEND __imported_libraries " ") # empty line
           list(APPEND __imported_libraries "# Create imported target ${__namespace}${target_name}")
           list(APPEND __imported_libraries "add_library(${__library_opts})")
           list(APPEND __imported_libraries "set_target_properties(${__namespace}${target_name} PROPERTIES")
@@ -192,6 +225,7 @@ if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
             LIBRARY DESTINATION objects/lib
             ARCHIVE DESTINATION objects/lib
           )
+          set(__has_linked_targets TRUE)
         endif()
         unset(__lib_imported)
       endif()
@@ -205,44 +239,48 @@ if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
     unset(__namespace)
     unset(__imported_libraries)
 
-    # Install link libraries that are targets
-    install(EXPORT OpenCVLinkedTargets
-      FILE OpenCVLinkedTargets.cmake
-      DESTINATION objects
-    )
-
     set(__opencv_objects_targets
-      "include(\"\${CMAKE_CURRENT_LIST_DIR}/OpenCVLinkedTargets.cmake\")"
       "include(\"\${CMAKE_CURRENT_LIST_DIR}/OpenCVImportedTargets.cmake\")"
+      ""
     )
 
-    # Export OBJECTS library to allow usage outside
-    list(APPEND __opencv_objects_targets "") # empty line
-    list(APPEND __opencv_objects_targets "set(OpenCV_SOURCE_OBJECTS")
-    set(__lines ${OpenCV_SOURCE_OBJECTS})
-    list_double_quote(__lines)
-    list(JOIN __lines "\n    " __lines)
-    list(APPEND __opencv_objects_targets "    ${__lines}")
-    list(APPEND __opencv_objects_targets ")")
-    unset(__lines)
+    # Install link libraries that are targets
+    if (__has_linked_targets)
+      list(APPEND __opencv_objects_targets "include(\"\${CMAKE_CURRENT_LIST_DIR}/OpenCVLinkedTargets.cmake\")")
+      install(EXPORT OpenCVLinkedTargets
+        FILE OpenCVLinkedTargets.cmake
+        DESTINATION objects
+      )
+    endif()
+    unset(__has_linked_targets)
 
-    # Keep reference to other link libraries
-    list(APPEND __opencv_objects_targets "") # empty line
-    list(APPEND __opencv_objects_targets "set(OpenCV_LIBS")
-    set(__lines ${OpenCV_LINK_LIBRARIES})
-    list_double_quote(__lines)
-    list(JOIN __lines "\n    " __lines)
-    list(APPEND __opencv_objects_targets "    ${__lines}")
-    list(APPEND __opencv_objects_targets ")")
-    unset(__lines)
+    save_variable(__opencv_objects_targets OpenCV_DEPENDENCIES)
+    save_variable(__opencv_objects_targets OpenCV_LIBS)
+    save_variable(__opencv_objects_targets OpenCV_PROPERTIES)
+    save_variable(__opencv_objects_targets OpenCV_SOURCE_OBJECTS)
 
     list(JOIN __opencv_objects_targets "\n" __opencv_objects_targets)
     file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/OpenCVObjects.cmake" "${__opencv_objects_targets}\n")
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/OpenCVObjects.cmake" DESTINATION objects)
-
     unset(__opencv_objects_targets)
+  else()
+    unset(OpenCV_SOURCE_OBJECTS)
+    unset(OpenCV_LIBS)
+    unset(OpenCV_WHOLE_ARCHIVE)
 
-    set(OpenCV_LIBS ${OpenCV_LINK_LIBRARIES})
+    foreach(target_name IN LISTS OpenCV_LINK_LIBRARIES)
+      if (TARGET "${target_name}")
+        list(APPEND OpenCV_WHOLE_ARCHIVE "${target_name}")
+      else()
+        list(APPEND OpenCV_LIBS "${target_name}")
+      endif()
+    endforeach()
+
+    # https://gitlab.kitware.com/cmake/cmake/-/issues/24504#note_1321969
+    string(REPLACE ";" "," OpenCV_WHOLE_ARCHIVE "${OpenCV_WHOLE_ARCHIVE}")
+    list(APPEND "$<LINK_GROUP:RESCAN,$<LINK_LIBRARY:WHOLE_ARCHIVE,${OpenCV_WHOLE_ARCHIVE}>>")
+    unset(OpenCV_WHOLE_ARCHIVE)
+
     unset(OpenCV_LINK_LIBRARIES)
   endif()
 else()
@@ -283,11 +321,9 @@ else()
 
   find_package(OpenCV REQUIRED)
 
-  set(OpenCV_SOURCE_OBJECTS)
+  unset(OpenCV_SOURCE_OBJECTS)
   if (BUILD_SHARED_LIBS AND EXISTS "${OpenCV_DIR}/objects/OpenCVObjects.cmake")
     include("${OpenCV_DIR}/objects/OpenCVObjects.cmake")
-    source_group("OpenCV Source Objects" FILES ${OpenCV_SOURCE_OBJECTS})
-
 
   # When built as a static library,
   # only opencv_world library is created
@@ -306,6 +342,20 @@ else()
     set(OpenCV_LIBS ${_OpenCV_LIBS})
     unset(_OpenCV_LIBS)
   endif()
+
+  set(OpenCV_LINK_LIBRARIES ${OpenCV_LIBS})
+  foreach(target_name IN LISTS OpenCV_LINK_LIBRARIES)
+    if (TARGET "${target_name}")
+      list(APPEND OpenCV_LIBS "$<LINK_LIBRARY:WHOLE_ARCHIVE,${target_name}>")
+    else()
+      list(APPEND OpenCV_LIBS "${target_name}")
+    endif()
+  endforeach()
+  unset(OpenCV_LINK_LIBRARIES)
+endif()
+
+if (DEFINED OpenCV_SOURCE_OBJECTS)
+  source_group("OpenCV Source Objects" FILES ${OpenCV_SOURCE_OBJECTS})
 endif()
 
 # message(STATUS "OpenCV library status:")

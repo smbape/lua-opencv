@@ -121,9 +121,18 @@ target_precompile_headers(${target_name} PRIVATE
 target_link_libraries(${target_name} PRIVATE ${LUA_LIBRARIES})
 target_include_directories(${target_name} PRIVATE ${LUA_INCLUDE_DIR})
 
+if (DEFINED OpenCV_DEPENDENCIES)
+  add_dependencies(${target_name} ${OpenCV_DEPENDENCIES})
+endif()
+
 if (DEFINED OpenCV_INCLUDE_DIRS)
   target_include_directories(${target_name} PRIVATE ${OpenCV_INCLUDE_DIRS})
 endif()
+
+if (DEFINED OpenCV_PROPERTIES)
+  set_target_properties(${target_name} PROPERTIES ${OpenCV_PROPERTIES})
+endif()
+
 target_link_libraries(${target_name} PRIVATE ${OpenCV_LIBS})
 
 if (WITH_LUA_ROCKS)
@@ -197,17 +206,15 @@ if (WITH_LUA_ROCKS)
 
     # CMake will execute this last in the build.
     # Install the script that does the post install work.
-    install(SCRIPT "audiwheel_repair.cmake")
+    install(SCRIPT "auditwheel_repair.cmake")
   endif()
 
   set(LIBRAY_DESTINATION lib)
   set(ARCHIVE_DESTINATION lib/${target_name}/devel/lib)
-  set(INCLUDES_DESTINATION lib/${target_name}/devel/include)
   set(CMAKE_CONFIG_DESTINATION lib/${target_name}/devel/lib/cmake)
 else()
   set(LIBRAY_DESTINATION "${CMAKE_INSTALL_LIBDIR}")
   set(ARCHIVE_DESTINATION "${CMAKE_INSTALL_LIBDIR}")
-  set(INCLUDES_DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
   set(CMAKE_CONFIG_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake")
 endif()
 
@@ -216,7 +223,7 @@ install(TARGETS ${target_name}
   LIBRARY DESTINATION "${LIBRAY_DESTINATION}"
   RUNTIME DESTINATION "${LIBRAY_DESTINATION}"
   ARCHIVE DESTINATION "${ARCHIVE_DESTINATION}"
-  INCLUDES DESTINATION "${INCLUDES_DESTINATION}"
+  INCLUDES DESTINATION "${OPENCV_INCLUDE_INSTALL_PATH}"
 )
 
 install(EXPORT OpenCVLuaTargets

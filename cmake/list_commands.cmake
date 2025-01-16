@@ -145,24 +145,41 @@ endfunction()
 # path2 = /a/b/g
 # RELATIVE_PATH path1 path2 = ../../g
 # The common path is /a/b/d/e/../../ = /a/b
-function(cmake_path_common_parent output path1 path2)
-  # __longest_common_path = ../../
-  file(RELATIVE_PATH __longest_common_path "${ARGV1}" "${ARGV2}")
+function(cmake_path_common_parent output)
+  list(LENGTH ARGN ARGN_LEN)
 
-  # __longest_common_path = ../../
-  string(REGEX MATCH "^([./]+)" __longest_common_path "${__longest_common_path}")
-
-  # __longest_common_path = NORMALIZE /a/b/d/e/../../ = /a/b
-  cmake_path(SET __longest_common_path NORMALIZE "${ARGV1}/${__longest_common_path}")
-
-  math(EXPR ARGS_REMAING "${ARGC} - 3")
-  if (ARGS_REMAING GREATER 0)
-    list(SUBLIST ARGV 3 ${ARGS_REMAING} ARGS)
-    cmake_path_common_parent(__longest_common_path "${__longest_common_path}" ${ARGS})
+  if (ARGN_LEN EQUAL 0)
+    unset(${output})
+    return()
   endif()
+
+  if (ARGN_LEN EQUAL 1)
+    set(${output} "${ARGV1}")
+    return()
+  endif()
+
+  list(GET ARGN 0 __longest_common_path)
+  list(SUBLIST ARGN 1 -1 ARGS)
+
+  foreach(__path2 IN LISTS ARGS)
+    set(__path1 "${__longest_common_path}")
+
+    # __longest_common_path = ../../
+    file(RELATIVE_PATH __longest_common_path "${__path1}" "${__path2}")
+
+    # __longest_common_path = ../../
+    string(REGEX MATCH "^([./]+)" __longest_common_path "${__longest_common_path}")
+
+    # __longest_common_path = NORMALIZE /a/b/d/e/../../ = /a/b
+    cmake_path(SET __longest_common_path NORMALIZE "${__path1}/${__longest_common_path}")
+  endforeach()
 
   # Remove trailling slash
   string(REGEX REPLACE "/$" "" __longest_common_path "${__longest_common_path}")
+
+  if ("x${__longest_common_path}" STREQUAL "x")
+    set(__longest_common_path "/")
+  endif()
 
   set(${output} "${__longest_common_path}" PARENT_SCOPE)
 endfunction()

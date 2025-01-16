@@ -677,6 +677,7 @@ function build_windows_debug() {
 function build_wsl_debug() {
     wsl -c '
 source scripts/wsl_init.sh || exit $?
+test -x build.sh || chmod +x build.sh
 time ./build.sh -d "-DLua_VERSION=luajit-2.1" --install --target luajit && \
 time ./build.sh -d "-DLua_VERSION=luajit-2.1" --install \
     "-DBUILD_contrib:BOOL=ON" \
@@ -1049,6 +1050,7 @@ find out/prepublish/ -type f \( -name CMakeCache.txt -o -name pyopencv_generated
 }
 
 function test_debug_windows() {
+    PATH="/c/vcpkg/installed/x64-windows/bin:$PATH" \
     PYTHON_VENV_PATH="${PWD}/out/test/.venv" MODELS_PATH="${PWD}/out/test/.models" node scripts/test.js --Debug "$@"
 }
 

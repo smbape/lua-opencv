@@ -16,6 +16,8 @@ rsync -t --delete -v -r \
     --exclude=.vs \
     --exclude="*.rock" \
     --exclude="*.rockspec" \
+    --exclude="*.sublime-workspace" \
+    --exclude="~$*" \
     --exclude=build.luarocks \
     --exclude=.luarocks \
     --exclude=luarocks/lua.bat \

@@ -170,7 +170,7 @@ function new_version.command(args)
                   "-DCMAKE_INSTALL_PREFIX=" .. install_prefix,
                   "-DCMAKE_INSTALL_LIBDIR=" .. install_libdir,
                   "-DCMAKE_INSTALL_LIBSDIR=" .. install_libsdir,
-                  "-P", "opencv_lua/audiwheel_repair.cmake"
+                  "-P", "opencv_lua/auditwheel_repair.cmake"
                )
                fs.pop_dir()
 
