@@ -20,7 +20,7 @@ file(GLOB_RECURSE files_to_change
   ${CMAKE_RELATIVE_SOURCE_DIR}scripts/tasks.sh
 )
 
-foreach(item ${files_to_change})
+foreach(item IN LISTS files_to_change)
   vcpkg_regex_replace_string("${item}" "(/lua-opencv/releases/download/v|/lua-opencv/tree/v)[0-9]+\\.[0-9]+\\.[0-9]+" "\\1${PROJECT_VERSION}")
   vcpkg_regex_replace_string("${item}" "(opencv-|/opencv/opencv/blob/|${target_name} )[0-9]+\\.[0-9]+\\.[0-9]+" "\\1${OpenCV_VERSION}")
   vcpkg_regex_replace_string("${item}" "OPENCV_VERSION:-[0-9]+\\.[0-9]+\\.[0-9]+" "OPENCV_VERSION:-${OpenCV_VERSION}")

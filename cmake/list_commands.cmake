@@ -89,7 +89,7 @@ function(list_string SUB_COMMAND)
     endforeach()
   endif()
 
-  set(${__items_var} ${${__items_var}} PARENT_SCOPE)
+  set(${__items_var} "${${__items_var}}" PARENT_SCOPE)
 endfunction()
 
 function(list_set_filename_component __component __items_var)
@@ -101,7 +101,7 @@ function(list_set_filename_component __component __items_var)
     math(EXPR __index "${__index} + 1")
   endforeach()
 
-  set(${__items_var} ${${__items_var}} PARENT_SCOPE)
+  set(${__items_var} "${${__items_var}}" PARENT_SCOPE)
 endfunction()
 
 function(list_cmake_convert SUB_COMMAND __items_var)
@@ -113,7 +113,7 @@ function(list_cmake_convert SUB_COMMAND __items_var)
     math(EXPR __index "${__index} + 1")
   endforeach()
 
-  set(${__items_var} ${${__items_var}} PARENT_SCOPE)
+  set(${__items_var} "${${__items_var}}" PARENT_SCOPE)
 endfunction()
 
 function(list_cmake_relative_path __items_var __directory)
@@ -125,7 +125,7 @@ function(list_cmake_relative_path __items_var __directory)
     math(EXPR __index "${__index} + 1")
   endforeach()
 
-  set(${__items_var} ${${__items_var}} PARENT_SCOPE)
+  set(${__items_var} "${${__items_var}}" PARENT_SCOPE)
 endfunction()
 
 function(list_cmake_path SUB_COMMAND __items_var)
@@ -137,7 +137,7 @@ function(list_cmake_path SUB_COMMAND __items_var)
     math(EXPR __index "${__index} + 1")
   endforeach()
 
-  set(${__items_var} ${${__items_var}} PARENT_SCOPE)
+  set(${__items_var} "${${__items_var}}" PARENT_SCOPE)
 endfunction()
 
 # To get the longest common path:
@@ -193,7 +193,7 @@ function(list_double_quote __items_var)
     math(EXPR __index "${__index} + 1")
   endforeach()
 
-  set(${__items_var} ${${__items_var}} PARENT_SCOPE)
+  set(${__items_var} "${${__items_var}}" PARENT_SCOPE)
 endfunction()
 
 function(list_print __items_var)

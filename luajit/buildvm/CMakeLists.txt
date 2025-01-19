@@ -15,7 +15,7 @@ add_compile_options(${HOST_XCFLAGS})
 set_target_output_directories(buildvm)
 
 if (MSVC)
-  foreach(config ${CMAKE_CONFIGURATION_TYPES})
+  foreach(config IN LISTS CMAKE_CONFIGURATION_TYPES)
     string(TOUPPER ${config} config)
     set_target_properties(buildvm PROPERTIES RUNTIME_OUTPUT_DIRECTORY_${config} "${EXECUTABLE_OUTPUT_PATH}")
   endforeach()

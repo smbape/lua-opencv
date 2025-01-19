@@ -18,7 +18,7 @@ endif()
 set_target_output_directories(minilua)
 
 if (MSVC)
-  foreach(config ${CMAKE_CONFIGURATION_TYPES})
+  foreach(config IN LISTS CMAKE_CONFIGURATION_TYPES)
     string(TOUPPER ${config} config)
     set_target_properties(minilua PROPERTIES RUNTIME_OUTPUT_DIRECTORY_${config} "${EXECUTABLE_OUTPUT_PATH}")
   endforeach()
