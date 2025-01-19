@@ -59,10 +59,104 @@ index 5b1e17529..9dbf65202 100644
        set_target_properties(libprotobuf PROPERTIES
          IMPORTED_LOCATION "${Protobuf_LIBRARY}"
          INTERFACE_INCLUDE_DIRECTORIES "${Protobuf_INCLUDE_DIR}"
+diff --git a/cmake/OpenCVGenConfig.cmake b/cmake/OpenCVGenConfig.cmake
+index df48ae084..15966c410 100644
+--- a/cmake/OpenCVGenConfig.cmake
++++ b/cmake/OpenCVGenConfig.cmake
+@@ -50,7 +50,9 @@ foreach(m ${OPENCV_MODULES_BUILD})
+   endif()
+ endforeach()
+ 
+-export(EXPORT OpenCVModules FILE "${CMAKE_BINARY_DIR}/OpenCVModules.cmake")
++if (NOT "${OPENCV_MODULE_TYPE}" STREQUAL "OBJECT")
++  export(EXPORT OpenCVModules FILE "${CMAKE_BINARY_DIR}/OpenCVModules.cmake")
++endif()
+ 
+ if(TARGET ippicv AND NOT BUILD_SHARED_LIBS)
+   set(USE_IPPICV TRUE)
+@@ -102,7 +104,9 @@ function(ocv_gen_config TMP_DIR NESTED_PATH ROOT_NAME)
+   configure_file("${OpenCV_SOURCE_DIR}/cmake/templates/OpenCVConfig-version.cmake.in" "${TMP_DIR}/OpenCVConfig-version.cmake" @ONLY)
+ 
+   configure_file("${OpenCV_SOURCE_DIR}/cmake/templates/OpenCVConfig.cmake.in" "${__tmp_nested}/OpenCVConfig.cmake" @ONLY)
+-  install(EXPORT OpenCVModules DESTINATION "${__install_nested}" FILE OpenCVModules.cmake COMPONENT dev)
++  if (NOT "${OPENCV_MODULE_TYPE}" STREQUAL "OBJECT")
++    install(EXPORT OpenCVModules DESTINATION "${__install_nested}" FILE OpenCVModules.cmake COMPONENT dev)
++  endif()
+   install(FILES
+       "${TMP_DIR}/OpenCVConfig-version.cmake"
+       "${__tmp_nested}/OpenCVConfig.cmake"
+diff --git a/cmake/OpenCVModule.cmake b/cmake/OpenCVModule.cmake
+index 5411a28c6..4748132be 100644
+--- a/cmake/OpenCVModule.cmake
++++ b/cmake/OpenCVModule.cmake
+@@ -948,7 +948,7 @@ macro(_ocv_create_module)
+   endif()
+ 
+   if(WIN32
+-      AND (BUILD_SHARED_LIBS AND NOT "x${OPENCV_MODULE_TYPE}" STREQUAL "xSTATIC")
++      AND (BUILD_SHARED_LIBS AND NOT "x${OPENCV_MODULE_TYPE}" STREQUAL "xSTATIC" AND NOT "x${OPENCV_MODULE_TYPE}" STREQUAL "xOBJECT")
+       AND NOT OPENCV_VS_VERSIONINFO_SKIP)
+     if(DEFINED OPENCV_VS_VERSIONINFO_FILE)
+       set(_VS_VERSION_FILE "${OPENCV_VS_VERSIONINFO_FILE}")
+@@ -975,7 +975,7 @@ macro(_ocv_create_module)
+           "${the_module}" STREQUAL "opencv_world" OR
+           "${the_module}" STREQUAL "opencv_cudev"
+       )
+-      AND (BUILD_SHARED_LIBS AND NOT "x${OPENCV_MODULE_TYPE}" STREQUAL "xSTATIC")
++      AND (BUILD_SHARED_LIBS AND NOT "x${OPENCV_MODULE_TYPE}" STREQUAL "xSTATIC" AND NOT "x${OPENCV_MODULE_TYPE}" STREQUAL "xOBJECT")
+       AND NOT OPENCV_SKIP_DLLMAIN_GENERATION
+   )
+       set(_DLLMAIN_FILE "${CMAKE_CURRENT_BINARY_DIR}/${the_module}_main.cpp")
+@@ -1018,6 +1018,10 @@ macro(_ocv_create_module)
+     set_target_properties(${the_module} PROPERTIES FOLDER "modules")
+   endif()
+ 
++  if(BUILD_SHARED_LIBS)
++    target_compile_definitions(${the_module} PRIVATE CVAPI_EXPORTS)
++  endif()
++
+   set_target_properties(${the_module} PROPERTIES
+     OUTPUT_NAME "${the_module}${OPENCV_DLLVERSION}"
+     DEBUG_POSTFIX "${OPENCV_DEBUG_POSTFIX}"
+@@ -1060,14 +1064,14 @@ macro(_ocv_create_module)
+ 
+   get_target_property(_target_type ${the_module} TYPE)
+   if(OPENCV_MODULE_${the_module}_CLASS STREQUAL "PUBLIC" AND
+-      ("${_target_type}" STREQUAL "SHARED_LIBRARY" OR (NOT BUILD_SHARED_LIBS OR NOT INSTALL_CREATE_DISTRIB)))
++      ("${_target_type}" STREQUAL "SHARED_LIBRARY" OR "${_target_type}" STREQUAL "OBJECT_LIBRARY" OR (NOT BUILD_SHARED_LIBS OR NOT INSTALL_CREATE_DISTRIB)))
+     ocv_install_target(${the_module} EXPORT OpenCVModules OPTIONAL
+       RUNTIME DESTINATION ${OPENCV_BIN_INSTALL_PATH} COMPONENT libs
+       LIBRARY DESTINATION ${OPENCV_LIB_INSTALL_PATH} COMPONENT libs NAMELINK_SKIP
+       ARCHIVE DESTINATION ${OPENCV_LIB_ARCHIVE_INSTALL_PATH} COMPONENT dev
+       )
+   endif()
+-  if("${_target_type}" STREQUAL "SHARED_LIBRARY")
++  if("${_target_type}" STREQUAL "SHARED_LIBRARY" OR "${_target_type}" STREQUAL "OBJECT_LIBRARY")
+     install(TARGETS ${the_module}
+       LIBRARY DESTINATION ${OPENCV_LIB_INSTALL_PATH} COMPONENT dev NAMELINK_ONLY)
+   endif()
 diff --git a/cmake/OpenCVUtils.cmake b/cmake/OpenCVUtils.cmake
-index 16babb493..51599aea8 100644
+index 16babb493..3b8a27551 100644
 --- a/cmake/OpenCVUtils.cmake
 +++ b/cmake/OpenCVUtils.cmake
+@@ -1277,7 +1277,7 @@ function(ocv_install_target)
+     )
+       set(__location_key "ARCHIVE")  # static libs
+       get_target_property(__target_type ${__target} TYPE)
+-      if("${__target_type}" STREQUAL "SHARED_LIBRARY")
++      if("${__target_type}" STREQUAL "SHARED_LIBRARY" OR "${__target_type}" STREQUAL "OBJECT_LIBRARY")
+         set(__location_key "RUNTIME")  # shared libs (.DLL)
+       endif()
+ 
+@@ -1319,7 +1319,7 @@ function(ocv_install_target)
+           if("${__target_type}" STREQUAL "SHARED_LIBRARY" OR "${__target_type}" STREQUAL "MODULE_LIBRARY")
+             install(FILES "$<TARGET_PDB_FILE:${__target}>" DESTINATION "${__dst}"
+                 COMPONENT ${__pdb_install_component} OPTIONAL ${__pdb_exclude_from_all})
+-          else()
++          else(NOT "${__target_type}" STREQUAL "OBJECT_LIBRARY")
+             # There is no generator expression similar to TARGET_PDB_FILE and TARGET_PDB_FILE can't be used: https://gitlab.kitware.com/cmake/cmake/issues/16932
+             # However we still want .pdb files like: 'lib/Debug/opencv_core341d.pdb' or '3rdparty/lib/zlibd.pdb'
+             install(FILES "$<TARGET_PROPERTY:${__target},ARCHIVE_OUTPUT_DIRECTORY>/$<CONFIG>/$<IF:$<BOOL:$<TARGET_PROPERTY:${__target},COMPILE_PDB_NAME_DEBUG>>,$<TARGET_PROPERTY:${__target},COMPILE_PDB_NAME_DEBUG>,$<TARGET_PROPERTY:${__target},COMPILE_PDB_NAME>>.pdb"
 @@ -1620,7 +1620,7 @@ endfunction()
  
  function(ocv_add_external_target name inc link def)

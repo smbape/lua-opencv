@@ -129,11 +129,9 @@ if (DEFINED OpenCV_INCLUDE_DIRS)
   target_include_directories(${target_name} PRIVATE ${OpenCV_INCLUDE_DIRS})
 endif()
 
-if (DEFINED OpenCV_PROPERTIES)
-  set_target_properties(${target_name} PROPERTIES ${OpenCV_PROPERTIES})
+if (DEFINED OpenCV_LIBS)
+  target_link_libraries(${target_name} PRIVATE ${OpenCV_LIBS})
 endif()
-
-target_link_libraries(${target_name} PRIVATE ${OpenCV_LIBS})
 
 if (WITH_LUA_ROCKS)
   include(../cmake/set_startup_project.cmake)
