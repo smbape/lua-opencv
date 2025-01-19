@@ -84,7 +84,6 @@ function(transform_to_object_file
   _sources_unique
   _filenames_duplicated
   _filenames_unique
-  _modules_unique
 )
   set(c_objects_unique "${${_c_objects_unique}}")
 
@@ -93,7 +92,6 @@ function(transform_to_object_file
     set(sources_unique "${${_sources_unique}}")
     set(filenames_duplicated "${${_filenames_duplicated}}")
     set(filenames_unique "${${_filenames_unique}}")
-    set(modules_unique "${${_modules_unique}}")
 
     foreach(c_file IN LISTS ${_c_files})
       cmake_path(GET c_file FILENAME c_file_filename)
@@ -115,14 +113,12 @@ function(transform_to_object_file
       # Else If the new file name is newly duplicated
       elseif (NOT index_unique EQUAL -1)
         list(GET sources_unique ${index_unique} source_duplicated)
-        list(GET modules_unique ${index_unique} the_module_duplicated)
-        get_object_file(c_object_duplicated ${the_module_duplicated} "${source_duplicated}" "${source_dir}" "${binary_dir}" TRUE)
+        get_object_file(c_object_duplicated ${the_module} "${source_duplicated}" "${source_dir}" "${binary_dir}" TRUE)
 
         # remove the old file from unique
         list(REMOVE_AT c_objects_unique ${index_unique})
         list(REMOVE_AT sources_unique ${index_unique})
         list(REMOVE_AT filenames_unique ${index_unique})
-        list(REMOVE_AT modules_unique ${index_unique})
 
         # add the old file to duplicated
         list(APPEND c_objects_duplicated "${c_object_duplicated}")
@@ -136,7 +132,6 @@ function(transform_to_object_file
         list(APPEND c_objects_unique "${c_object}")
         list(APPEND sources_unique "${c_file}")
         list(APPEND filenames_unique "${c_file_filename}")
-        list(APPEND modules_unique "${the_module}")
       endif()
     endforeach()
 
@@ -144,7 +139,6 @@ function(transform_to_object_file
     set(${_sources_unique} "${sources_unique}" PARENT_SCOPE)
     set(${_filenames_duplicated} "${filenames_duplicated}" PARENT_SCOPE)
     set(${_filenames_unique} "${filenames_unique}" PARENT_SCOPE)
-    set(${_modules_unique} "${modules_unique}" PARENT_SCOPE)
   else()
     foreach(c_file IN LISTS ${_c_files})
       get_object_file(c_object ${the_module} "${c_file}" "${source_dir}" "${binary_dir}")
@@ -183,9 +177,8 @@ if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
   add_subdirectory("${_IMPORT_PREFIX}")
 
   list(REMOVE_DUPLICATES OpenCV_LIBS)
-  set(OpenCV_LINK_LIBRARIES ${OpenCV_LIBS})
+  set(OpenCV_LINK_LIBRARIES)
   unset(OpenCV_DEPENDENCIES)
-  unset(OpenCV_PROPERTIES)
   unset(OpenCV_SOURCE_OBJECTS)
 
   # We want the opencv lua module to be used as a replacement of opencv
@@ -204,13 +197,6 @@ if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
   if (BUILD_SHARED_LIBS)
     set(OpenCV_DEPENDENCIES "${OpenCV_LIBS}")
 
-    unset(c_objects_unique)
-    unset(c_objects_duplicated)
-    unset(sources_unique)
-    unset(filenames_duplicated)
-    unset(filenames_unique)
-    unset(modules_unique)
-
     foreach(the_module IN LISTS OpenCV_LIBS)
       get_target_property(__cmake_binary_dir "${the_module}" BINARY_DIR)
       get_target_property(__cmake_source_dir "${the_module}" SOURCE_DIR)
@@ -218,9 +204,15 @@ if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
 
       # Keep object files already in the sources
       set(__cmake_imported_objects ${__cmake_sources})
-      list(FILTER __cmake_imported_objects INCLUDE REGEX "\\${CMAKE_C_OUTPUT_EXTENSION}$")
+      list(FILTER __cmake_imported_objects INCLUDE REGEX "(^\\\$<TARGET_OBJECTS:|\\${CMAKE_C_OUTPUT_EXTENSION}$)")
       list(APPEND OpenCV_SOURCE_OBJECTS ${__cmake_imported_objects})
       unset(__cmake_imported_objects)
+
+      unset(c_objects_unique)
+      unset(c_objects_duplicated)
+      unset(sources_unique)
+      unset(filenames_duplicated)
+      unset(filenames_unique)
 
       # Get c files objects
       get_c_sources(__cmake_c_compiled_objects __cmake_sources)
@@ -235,8 +227,20 @@ if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
         sources_unique
         filenames_duplicated
         filenames_unique
-        modules_unique
       )
+
+      # Mark the c object files as GENERATED because they will not exists until opencv is built
+      set(c_objects "${c_objects_unique}" "${c_objects_duplicated}")
+      set_source_files_properties("${c_objects}" PROPERTIES GENERATED TRUE)
+
+      # Add the c object files to source files
+      list(APPEND OpenCV_SOURCE_OBJECTS "${c_objects}")
+
+      unset(c_objects_unique)
+      unset(c_objects_duplicated)
+      unset(sources_unique)
+      unset(filenames_duplicated)
+      unset(filenames_unique)
 
       # Linked libraries should be preserved in order to link source objects
       list(APPEND OpenCV_LINK_LIBRARIES "$<TARGET_PROPERTY:${the_module},LINK_LIBRARIES>")
@@ -244,7 +248,11 @@ if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
       # Qt mocs should be added to source objects in order to define Qt symbols
       get_target_property(__cmake_automoc ${the_module} AUTOMOC)
       if (__cmake_automoc)
-        set(__mocs_compilation "${__cmake_binary_dir}/CMakeFiles/${the_module}.dir/${the_module}_autogen/mocs_compilation.cpp${CMAKE_C_OUTPUT_EXTENSION}")
+        if (CMAKE_GENERATOR MATCHES "Visual Studio")
+          set(__mocs_compilation "${__cmake_binary_dir}/${the_module}.dir/${CMAKE_BUILD_TYPE}/${the_module}_autogen/mocs_compilation.cpp${CMAKE_C_OUTPUT_EXTENSION}")
+        else()
+          set(__mocs_compilation "${__cmake_binary_dir}/CMakeFiles/${the_module}.dir/${the_module}_autogen/mocs_compilation.cpp${CMAKE_C_OUTPUT_EXTENSION}")
+        endif()
         set_source_files_properties("${__mocs_compilation}" PROPERTIES GENERATED TRUE)
         list(APPEND OpenCV_SOURCE_OBJECTS "${__mocs_compilation}")
       endif()
@@ -256,20 +264,6 @@ if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
     endforeach()
 
     list(REMOVE_DUPLICATES OpenCV_SOURCE_OBJECTS)
-
-    # Mark the c object files as GENERATED because they will not exists until opencv is built
-    set(c_objects "${c_objects_unique}" "${c_objects_duplicated}")
-    set_source_files_properties("${c_objects}" PROPERTIES GENERATED TRUE)
-
-    # Add the c object files to source files
-    list(APPEND OpenCV_SOURCE_OBJECTS "${c_objects}")
-
-    unset(c_objects_unique)
-    unset(c_objects_duplicated)
-    unset(sources_unique)
-    unset(filenames_duplicated)
-    unset(filenames_unique)
-    unset(modules_unique)
 
     unset(OpenCV_LINKED_TARGETS)
     foreach(the_module IN LISTS OpenCV_LIBS)
@@ -438,7 +432,6 @@ if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
 
     save_variable(__opencv_objects_targets OpenCV_DEPENDENCIES)
     save_variable(__opencv_objects_targets OpenCV_LIBS)
-    save_variable(__opencv_objects_targets OpenCV_PROPERTIES)
     save_variable(__opencv_objects_targets OpenCV_SOURCE_OBJECTS)
 
     list(JOIN __opencv_objects_targets "\n" __opencv_objects_targets)
