@@ -1,7 +1,11 @@
-# https://github.com/luvit/luv/blob/1.45.0-0/deps/lua.cmake
 cmake_minimum_required(VERSION 3.25)
+# https://github.com/luvit/luv/blob/1.45.0-0/deps/lua.cmake
 
-project(lua)
+if (LUA_MULTI_CONFIG)
+  set(CMAKE_CURRENT_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/${Lua_VERSION}")
+endif()
+
+project(lua LANGUAGES  C CXX ASM)
 
 if(MSVC AND NOT (CMAKE_GENERATOR STREQUAL Ninja))
   add_compile_options(/MP)
@@ -358,8 +362,11 @@ install(DIRECTORY "${EXECUTABLE_OUTPUT_PATH}/"
   USE_SOURCE_PERMISSIONS
 )
 
-set(LUA_SUFFIX "" PARENT_SCOPE)
 
+# ================================
+# Expose project variables
+# ================================
+set(LUA_SUFFIX "" PARENT_SCOPE)
 set(LUA_LIBRARIES liblua${LUA_SUFFIX}::liblua${LUA_SUFFIX} PARENT_SCOPE)
 set(LUA_INTERPRETER $<TARGET_FILE:lua${LUA_SUFFIX}> PARENT_SCOPE)
 set(LUA_INCDIR "${lua${LUA_SUFFIX}_SRC}" PARENT_SCOPE)

@@ -1,6 +1,10 @@
 # ===============
 # OpenCV Lua
 # ===============
+if (LUA_MULTI_CONFIG)
+  set(CMAKE_CURRENT_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/${Lua_VERSION}")
+endif()
+
 set(target_name opencv_lua)
 
 include(GNUInstallDirs)
@@ -51,14 +55,16 @@ if(NOT EXISTS "${CMAKE_SOURCE_DIR}/node_modules")
   )
 endif()
 
-set(ENV{CMAKE_BINARY_DIR} "${CMAKE_BINARY_DIR}")
-set(ENV{Python3_EXECUTABLE} "${Python3_EXECUTABLE}")
-execute_process(
-  COMMAND node --unhandled-rejections=strict --trace-uncaught --trace-warnings generator/index.js
-  WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-  COMMAND_ECHO STDERR
-  COMMAND_ERROR_IS_FATAL ANY
-)
+if (NOT opencv_lua_SKIP_GENERATION)
+  set(ENV{CMAKE_BINARY_DIR} "${CMAKE_BINARY_DIR}")
+  set(ENV{Python3_EXECUTABLE} "${Python3_EXECUTABLE}")
+  execute_process(
+    COMMAND node --unhandled-rejections=strict --trace-uncaught --trace-warnings generator/index.js
+    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+    COMMAND_ECHO STDERR
+    COMMAND_ERROR_IS_FATAL ANY
+  )
+endif()
 
 file(GLOB_RECURSE project_source_headers "${CMAKE_RELATIVE_SOURCE_DIR}src/*.h" "${CMAKE_RELATIVE_SOURCE_DIR}src/*.hpp")
 list_set_filename_component(ABSOLUTE project_source_headers)
@@ -216,22 +222,50 @@ else()
   set(CMAKE_CONFIG_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake")
 endif()
 
+# https://cmake.org/cmake/help/latest/guide/tutorial/Adding%20Export%20Configuration.html
+
+set(PACKAGE_NAME OpenCVLua)
+set(EXPORT_NAME ${PACKAGE_NAME}Targets)
+set(CMAKE_CONFIG_DESTINATION "${CMAKE_CONFIG_DESTINATION}/${PACKAGE_NAME}")
+
 install(TARGETS ${target_name}
-  EXPORT OpenCVLuaTargets
+  EXPORT ${EXPORT_NAME}
   LIBRARY DESTINATION "${LIBRAY_DESTINATION}"
   RUNTIME DESTINATION "${LIBRAY_DESTINATION}"
   ARCHIVE DESTINATION "${ARCHIVE_DESTINATION}"
   INCLUDES DESTINATION "${OPENCV_INCLUDE_INSTALL_PATH}"
 )
 
-install(EXPORT OpenCVLuaTargets
-  FILE OpenCVLuaTargets.cmake
+install(EXPORT ${EXPORT_NAME}
+  FILE "${EXPORT_NAME}.cmake"
   NAMESPACE ${target_name}::
   DESTINATION "${CMAKE_CONFIG_DESTINATION}"
 )
 
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/OpenCVLuaConfig.cmake.in" "${CMAKE_CURRENT_BINARY_DIR}/OpenCVLuaConfig.cmake" @ONLY)
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/OpenCVLuaConfig.cmake" DESTINATION "${CMAKE_CONFIG_DESTINATION}")
+include(CMakePackageConfigHelpers)
+
+# generate the config file that includes the exports
+configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_NAME}Config.cmake"
+  INSTALL_DESTINATION "${CMAKE_CONFIG_DESTINATION}"
+  NO_SET_AND_CHECK_MACRO
+  NO_CHECK_REQUIRED_COMPONENTS_MACRO
+)
+
+write_basic_package_version_file(
+  "${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_NAME}ConfigVersion.cmake"
+  VERSION "${OpenCV_VERSION}"
+  COMPATIBILITY AnyNewerVersion
+)
+
+install(FILES
+  "${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_NAME}Config.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_NAME}ConfigVersion.cmake"
+  DESTINATION "${CMAKE_CONFIG_DESTINATION}"
+)
+
+# configure_file("${CMAKE_CURRENT_SOURCE_DIR}/OpenCVLuaConfig.cmake.in" "${CMAKE_CURRENT_BINARY_DIR}/OpenCVLuaConfig.cmake" @ONLY)
+# install(FILES "${CMAKE_CURRENT_BINARY_DIR}/OpenCVLuaConfig.cmake" DESTINATION "${CMAKE_CONFIG_DESTINATION}")
 
 # ===============
 # OpenCV Lua Test

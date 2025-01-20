@@ -239,22 +239,6 @@ set(OpenCV_INCLUDE_DIRS "${OPENCV_CONFIG_FILE_INCLUDE_DIR}" "${opencv_SOURCE_DIR
 foreach(m opencv_core ${OPENCV_MODULES_PUBLIC})
   if(TARGET ${m})
     list(APPEND OpenCV_LIBS ${m})
-
-    if (WITH_LUA_ROCKS)
-      # luarocks does not support VERSION and SOVERSION
-      # https://github.com/luarocks/luarocks/issues/1532
-      set_property(TARGET ${m} PROPERTY VERSION)
-      set_property(TARGET ${m} PROPERTY SOVERSION)
-    endif()
-
-    install(TARGETS ${m}
-      LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-      RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
-    )
-
-    if (NOT WITH_LUA_ROCKS)
-      install(TARGETS ${m} ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
-    endif()
   endif()
 
   if(EXISTS "${OPENCV_MODULE_${m}_LOCATION}/include")

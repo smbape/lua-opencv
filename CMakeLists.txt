@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-# https://www.youtube.com/watch?v=mczb2COlt1g
-
-project(opencv_lua)
+project(opencv_lua LANGUAGES C CXX ASM)
 
 set(DEFAULT_BUILD_TYPE "Release")
 
