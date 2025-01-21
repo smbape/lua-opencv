@@ -32,22 +32,7 @@ include(cmake/list_commands.cmake)
 # ===============
 # Lua
 # ===============
-foreach(var_name BINDIR DIR INCDIR)
-  if (DEFINED LUA_${var_name} AND "${LUA_${var_name}} " STREQUAL " ")
-    unset(LUA_${var_name} CACHE)
-  endif()
-
-  if (DEFINED LUA_${var_name})
-    set(ENV{LUA_${var_name}} "${LUA_${var_name}}")
-  endif()
-endforeach()
-
-# Hack to ensure that Lua is built with BUILD_SHARED_LIBS ON
-set(BUILD_SHARED_LIBS_BACKUP ${BUILD_SHARED_LIBS})
-set(BUILD_SHARED_LIBS ON)
 include(cmake/FindLua.cmake)
-set(BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS_BACKUP})
-unset(BUILD_SHARED_LIBS_BACKUP)
 
 # ===============
 # Luarocks
@@ -91,14 +76,10 @@ endif()
 # OpenCV
 # ===============
 include(opencv/OpenCVConfig.cmake)
-
 string(REPLACE "." "" OpenCV_DLLVERSION ${OpenCV_VERSION})
 string(REPLACE "." ";" OpenCV_VERSION_PARTS ${OpenCV_VERSION})
-list(GET OpenCV_VERSION_PARTS 0 OpenCV_VERSION_MAJOR)
-list(GET OpenCV_VERSION_PARTS 1 OpenCV_VERSION_MINOR)
-list(GET OpenCV_VERSION_PARTS 2 OpenCV_VERSION_PATCH)
 
 # ===============
 # OpenCV Lua
 # ===============
-add_subdirectory(opencv_lua)
+add_subdirectory(opencv_lua "opencv_lua${LUA_MULTI_CONFIG_SUFFIX}")

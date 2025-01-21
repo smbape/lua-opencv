@@ -20,7 +20,7 @@ include(cmake/options.cmake)
 include(FetchContent)
 FetchContent_Declare(luajit
   # URL                 https://github.com/openresty/luajit2/archive/refs/tags/v2.1-20230410.tar.gz
-  URL                 https://github.com/LuaJIT/LuaJIT/archive/${Luajit_HASH_${Luajit_HASH_VERSION}}.zip
+  URL                 https://github.com/LuaJIT/LuaJIT/archive/${Luajit_COMMIT_HASH_${Luajit_HASH_VERSION}}.zip
   URL_HASH            SHA256=${Luajit_URL_HASH_${Luajit_HASH_VERSION}}
 )
 Fetchcontent_Populate(luajit)
@@ -261,7 +261,7 @@ if (WIN32 AND (CMAKE_GENERATOR STREQUAL Ninja))
 endif()
 
 if (APPLE AND BUILD_SHARED_LIBS)
-  target_link_options(libluajit PRIVATE -dynamiclib -single_module -undefined dynamic_lookup)
+  target_link_options(libluajit PRIVATE -dynamiclib -undefined dynamic_lookup)
 endif()
 
 if (("${Luajit_VERSION}" STREQUAL "2.1.0-beta3") AND ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin") AND ("${TARGET_LJARCH}" STREQUAL x64))

@@ -66,7 +66,8 @@ else()
     URL                 ${LuaRocks_URL}
     URL_HASH            ${LuaRocks_URL_HASH}
     PATCH_COMMAND       "${PATCH}" -p 1 -d "<SOURCE_DIR>" -i "${CMAKE_CURRENT_SOURCE_DIR}/patches/001-luarocks-src.patch"
-    CONFIGURE_COMMAND   cd "<SOURCE_DIR>" COMMAND ./configure "--prefix=<BINARY_DIR>" "--with-lua=${LUA_DIR}"
+    CONFIGURE_COMMAND   cd "<SOURCE_DIR>"
+              COMMAND   ./configure "--prefix=<BINARY_DIR>" "--lua-version=${ABIVER}" "--with-lua=${LUA_DIR}" "--with-lua-interpreter=${LUA_INTERPRETER_NAME}"
     BUILD_COMMAND       cd "<SOURCE_DIR>" COMMAND make COMMAND make install
     INSTALL_COMMAND     cd "${CMAKE_CURRENT_SOURCE_DIR}" ${COMMANDS}
     EXCLUDE_FROM_ALL    TRUE
@@ -76,19 +77,6 @@ endif()
 ExternalProject_Get_Property(luarocks SOURCE_DIR BINARY_DIR)
 
 cmake_path(SET luarocks_COMMAND NORMALIZE "${CMAKE_CURRENT_SOURCE_DIR}/${luarocks_COMMAND}")
-
-# if (EXISTS "${luarocks_COMMAND}")
-#   string(REPLACE "<SOURCE_DIR>" "${SOURCE_DIR}" COMMANDS "${COMMANDS}")
-#   string(REPLACE "<BINARY_DIR>" "${SOURCE_DIR}" COMMANDS "${COMMANDS}")
-
-#   execute_process(
-#     ${COMMANDS}
-#     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-#     COMMAND_ECHO STDERR
-#     COMMAND_ERROR_IS_FATAL ANY
-#   )
-#   return()
-# endif()
 
 string(REPLACE "<SOURCE_DIR>" "${SOURCE_DIR}" Luarocks_EXECUTABLE "${Luarocks_EXECUTABLE}")
 string(REPLACE "<BINARY_DIR>" "${BINARY_DIR}" Luarocks_EXECUTABLE "${Luarocks_EXECUTABLE}")

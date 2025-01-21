@@ -408,14 +408,14 @@ function prepublish_windows() {
 }
 
 function use_luajit_opencv_lua_modules() {
-    local sources="$PWD/out/prepublish/luajit-2.1/opencv_lua"
+    local sources="$PWD/out/prepublish/build/opencv_lua"
     rm -rf luarocks/lua_modules && \
     bash -c "cd ${sources}/ && source scripts/vcvars_restore_start.sh && ./luarocks/luarocks.bat install --deps-only samples/samples-scm-1.rockspec" && \
     cmd.exe //c mklink //j "$(cygpath -w "$PWD/luarocks/lua_modules")" "$(cygpath -w "${sources}/luarocks/lua_modules")"
 }
 
 function use_luajit_opencv_lua_contrib_modules() {
-    local sources="$PWD/out/prepublish/luajit-2.1/opencv_lua-contrib"
+    local sources="$PWD/out/prepublish/build/opencv_lua-contrib"
     rm -rf luarocks/lua_modules && \
     bash -c "cd ${sources}/ && source scripts/vcvars_restore_start.sh && ./luarocks/luarocks.bat install --deps-only samples/samples-scm-1.rockspec" && \
     cmd.exe //c mklink //j "$(cygpath -w "$PWD/luarocks/lua_modules")" "$(cygpath -w "${sources}/luarocks/lua_modules")"

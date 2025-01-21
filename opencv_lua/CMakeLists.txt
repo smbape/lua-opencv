@@ -1,10 +1,8 @@
+cmake_minimum_required(VERSION 3.25)
+
 # ===============
 # OpenCV Lua
 # ===============
-if (LUA_MULTI_CONFIG)
-  set(CMAKE_CURRENT_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/${Lua_VERSION}")
-endif()
-
 set(target_name opencv_lua)
 
 include(GNUInstallDirs)
@@ -187,11 +185,11 @@ if (WITH_LUA_ROCKS)
         set(Qt5_PLUGINS_DIR "${Qt5_DIR}/../../qt5/plugins")
       endif()
       if (Qt5_PLUGINS_DIR)
-        install(DIRECTORY "${Qt5_PLUGINS_DIR}" DESTINATION lib/${target_name}/qt)
+        install(FILES "${Qt5_PLUGINS_DIR}/platforms/libqxcb.so" DESTINATION "lib/${target_name}/qt/plugins/platforms")
       endif()
 
       if (NOT APPLE)
-        install(DIRECTORY /usr/share/fonts DESTINATION lib/${target_name}/qt)
+        install(DIRECTORY "/usr/share/fonts/dejavu" DESTINATION "lib/${target_name}/qt/fonts")
       endif()
     endif()
 
@@ -264,8 +262,9 @@ install(FILES
   DESTINATION "${CMAKE_CONFIG_DESTINATION}"
 )
 
-# configure_file("${CMAKE_CURRENT_SOURCE_DIR}/OpenCVLuaConfig.cmake.in" "${CMAKE_CURRENT_BINARY_DIR}/OpenCVLuaConfig.cmake" @ONLY)
-# install(FILES "${CMAKE_CURRENT_BINARY_DIR}/OpenCVLuaConfig.cmake" DESTINATION "${CMAKE_CONFIG_DESTINATION}")
+export(EXPORT ${EXPORT_NAME}
+  FILE "${CMAKE_CURRENT_BINARY_DIR}/${EXPORT_NAME}.cmake"
+)
 
 # ===============
 # OpenCV Lua Test

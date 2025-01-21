@@ -70,8 +70,8 @@ bash -c 'source scripts/tasks.sh && test_prepublished_source_fedora test-source-
 # ================================
 # generate doctoc
 # ================================
-cp -f out/prepublish/luajit-2.1/opencv_lua/docs/docs.md ./docs/
-cp -f out/prepublish/luajit-2.1/opencv_lua/generator/ids.json ./generator/
+cp -f out/prepublish/build/opencv_lua/docs/docs.md ./docs/
+cp -f out/prepublish/build/opencv_lua/generator/ids.json ./generator/
 bash -c 'source scripts/tasks.sh && doctoc'
 
 

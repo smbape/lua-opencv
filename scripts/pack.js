@@ -18,7 +18,6 @@ const luarocks = sysPath.join(luarocksDir, `luarocks${ batchSuffix }`);
 const lua = sysPath.join(luarocksDir, `lua${ batchSuffix }`);
 const new_version = sysPath.join(__dirname, "new_version.lua");
 
-const scmRockSpec = process.env.ROCKSPEC ? sysPath.resolve(process.env.ROCKSPEC) : sysPath.join(luarocksDir, `${ pkg.name }-scm-1.rockspec`);
 let srcRockSpec;
 
 const spawnExec = (cmd, args, options, next) => {
@@ -63,6 +62,7 @@ const spawnExec = (cmd, args, options, next) => {
 
 const options = {
     server: process.env.LUAROCKS_SERVER ? sysPath.resolve(process.env.LUAROCKS_SERVER) : sysPath.join(workspaceRoot, "out", "install", "luarocks"),
+    rockspec: process.env.ROCKSPEC ? sysPath.resolve(process.env.ROCKSPEC) : sysPath.join(luarocksDir, `${ pkg.name }-scm-1.rockspec`),
 };
 
 for (let i = 2; i < process.argv.length; i++) {
@@ -84,6 +84,7 @@ for (let i = 2; i < process.argv.length; i++) {
             options[key.slice("--".length)] = value;
             break;
         case "--server":
+        case "--rockspec":
             if (eq === -1) {
                 value = process.argv[++i];
             }
@@ -112,7 +113,7 @@ waterfall([
     },
 
     (performed, next) => {
-        spawnExec(luarocks, ["new_version", "--tag", `v${ version }`, scmRockSpec, `${ OpenCV_VERSION }-${ distVersion }`], {
+        spawnExec(luarocks, ["new_version", "--tag", `v${ version }`, options.rockspec, `${ OpenCV_VERSION }-${ distVersion }`], {
             stdio: "tee",
             cwd: workspaceRoot
         }, next);
@@ -177,7 +178,7 @@ waterfall([
 
         waterfall([
             next => {
-                const args = [new_version, scmRockSpec, binary, abi, "--platform", os.platform()];
+                const args = [new_version, options.rockspec, binary, abi, "--platform", os.platform()];
                 if (options.repair) {
                     args.push("--repair");
                 }

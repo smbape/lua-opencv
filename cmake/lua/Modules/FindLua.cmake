@@ -124,6 +124,24 @@ function(_lua_set_version_vars)
 endfunction(_lua_set_version_vars)
 
 function(_lua_get_header_version)
+  unset(LUAJIT_VERSION_STRING PARENT_SCOPE)
+  set(_hdr_file "${LUA_INCLUDE_DIR}/luajit.h")
+
+  if (EXISTS "${_hdr_file}")
+    file(STRINGS "${_hdr_file}" LUAJIT_VERSION_STRING
+      REGEX "^#define LUAJIT_VERSION[ \t]+\"LuaJIT ([0-9.]+)\"")
+    string(REGEX MATCH "^#define LUAJIT_VERSION[ \t]+\"LuaJIT ([0-9.]+)\"" LUAJIT_VERSION_STRING "${LUAJIT_VERSION_STRING}")
+    set(LUAJIT_VERSION_STRING "${CMAKE_MATCH_1}")
+    string(REPLACE "." ";" LUAJIT_VERSION_STRING_PARTS "${LUAJIT_VERSION_STRING}")
+    list(GET LUAJIT_VERSION_STRING_PARTS 0 LUAJIT_VERSION_MAJOR)
+    list(GET LUAJIT_VERSION_STRING_PARTS 1 LUAJIT_VERSION_MINOR)
+    list(GET LUAJIT_VERSION_STRING_PARTS 2 LUAJIT_VERSION_PATCH)
+    set(LUAJIT_VERSION_MAJOR ${LUAJIT_VERSION_MAJOR} PARENT_SCOPE)
+    set(LUAJIT_VERSION_MINOR ${LUAJIT_VERSION_MINOR} PARENT_SCOPE)
+    set(LUAJIT_VERSION_PATCH ${LUAJIT_VERSION_PATCH} PARENT_SCOPE)
+    set(LUAJIT_VERSION_STRING ${LUAJIT_VERSION_STRING} PARENT_SCOPE)
+  endif()
+
   unset(LUA_VERSION_STRING PARENT_SCOPE)
   set(_hdr_file "${LUA_INCLUDE_DIR}/lua.h")
 
@@ -254,11 +272,16 @@ if (LUA_LIBRARY)
   endif ()
 endif ()
 
+set(REQUIRED_VARS LUA_LIBRARIES LUA_INCLUDE_DIR)
+if (LUAJIT_VERSION_STRING)
+  list(APPEND LUAJIT_VERSION_STRING)
+endif()
+
 include(FindPackageHandleStandardArgs)
 # handle the QUIETLY and REQUIRED arguments and set LUA_FOUND to TRUE if
 # all listed variables are TRUE
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(Lua
-                                  REQUIRED_VARS LUA_LIBRARIES LUA_INCLUDE_DIR
+find_package_handle_standard_args(Lua
+                                  REQUIRED_VARS ${REQUIRED_VARS}
                                   VERSION_VAR LUA_VERSION_STRING)
 
 mark_as_advanced(LUA_INCLUDE_DIR LUA_LIBRARY)

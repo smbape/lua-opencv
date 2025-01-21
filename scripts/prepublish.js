@@ -64,9 +64,9 @@ const spawnExec = (cmd, args, options, next) => {
     }
 };
 
-const prepublish = (target, version, cache, options, next) => {
+const prepublish = (target, version, options, next) => {
     const { name, cmake_build_args, pack, repair } = options;
-    const workspaceRoot = sysPath.join(prepublishRoot, version);
+    const workspaceRoot = sysPath.join(prepublishRoot, "build");
     const projectRoot = sysPath.join(workspaceRoot, name);
     const originalRockSpec = sysPath.join(projectRoot, "luarocks", "opencv_lua-scm-1.rockspec");
     const scmRockSpec = name !== "opencv_lua" ? sysPath.join(projectRoot, `${ name }-scm-1.rockspec`) : originalRockSpec;
@@ -152,11 +152,11 @@ const prepublish = (target, version, cache, options, next) => {
             ];
 
             const env = {
-                ROCKSPEC: scmRockSpec,
+                LUA_MULTI_CONFIG: "ON",
             };
 
             if (pack) {
-                const args = [sysPath.join("scripts", "pack.js")];
+                const args = [sysPath.join("scripts", "pack.js"), "--rockspec", scmRockSpec];
                 if (repair) {
                     args.push("--repair");
                 }
@@ -173,16 +173,6 @@ const prepublish = (target, version, cache, options, next) => {
                     [luarocks, ["config", "--scope", "project", "cmake_generator", "Ninja"]],
                     [luarocks, ["config", "--scope", "project", "cmake_build_args", "--", `-j${ os.cpus().length }`]],
                 ]);
-            }
-
-            const [cachedTarget, cachedVersion] = cache;
-            const enableCache = cachedTarget !== target || cachedVersion !== version;
-            if (enableCache) {
-                const abi = cachedTarget === "luajit" ? "5.1" : cachedVersion;
-                const OpenCV_DIR = sysPath.resolve(prepublishRoot, cachedVersion, name, "luarocks", "lua_modules", "lib", "luarocks", `rocks-${ abi }`, name, "scm-1");
-                if (fs.existsSync(OpenCV_DIR)) {
-                    env.OpenCV_DIR = OpenCV_DIR;
-                }
             }
 
             eachOfLimit(tasks, 1, ([cmd, args], icmd, next) => {
@@ -285,6 +275,6 @@ eachOfLimit([
             opts.name += "-contrib";
             opts.cmake_build_args = ["BUILD_contrib = \"ON\""];
         }
-        prepublish(target, version, ["luajit", "luajit-2.1"], opts, next);
+        prepublish(target, version, opts, next);
     }, next);
 });
