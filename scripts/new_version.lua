@@ -218,10 +218,10 @@ function new_version.command(args)
             end
          else
             local module_name = include:sub(#install_libdir + 2)
-            local ext = module_name:match("(%..+)$")
 
+            local ext = module_name:match("(%..+)$")
             if ext ~= nil then
-               module_name = module_name:sub(1, -#ext - 1):gsub("/", ".")
+               module_name = module_name:sub(1, -#ext - 1):gsub("/", ".") .. ext:gsub("%.", "#")
             end
 
             install_lib[module_name] = include
