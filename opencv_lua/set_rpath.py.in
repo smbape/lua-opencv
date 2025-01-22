@@ -8,6 +8,7 @@ for lib in @PACKAGE_DATA@:
         '--set-rpath',
         ':'.join([
             '$ORIGIN/' + os.path.relpath('@CMAKE_INSTALL_LIBSDIR@', install_lib),
+            '$ORIGIN',
         ]),
         lib,
     ])

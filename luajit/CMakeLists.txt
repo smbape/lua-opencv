@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.25)
 
 project(luajit LANGUAGES C CXX ASM)
 
-if(MSVC AND NOT (CMAKE_GENERATOR STREQUAL Ninja))
+if(MSVC AND NOT (CMAKE_GENERATOR STREQUAL "Ninja"))
   add_compile_options(/MP)
 endif()
 
@@ -256,7 +256,7 @@ target_link_libraries(libluajit PRIVATE "${LJ_VM_OBJECT}")
 target_include_directories(libluajit PRIVATE ${LUA_INCLUDE_DIRS})
 add_dependencies(libluajit ${gen_lj_targets})
 
-if (WIN32 AND (CMAKE_GENERATOR STREQUAL Ninja))
+if (WIN32 AND (CMAKE_GENERATOR STREQUAL "Ninja"))
   target_compile_definitions(libluajit PRIVATE _WINDLL)
 endif()
 
@@ -371,7 +371,7 @@ if ((NOT WIN32) AND (NOT APPLE) AND (NOT (CMAKE_SYSTEM MATCHES "SunOS")) AND (NO
   target_link_options(luajit PRIVATE -Wl,-E)
 endif()
 
-if (MSVC AND NOT (CMAKE_GENERATOR STREQUAL Ninja))
+if (MSVC AND NOT (CMAKE_GENERATOR STREQUAL "Ninja"))
   set(EXECUTABLE_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/${CMAKE_BUILD_TYPE}")
 endif()
 

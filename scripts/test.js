@@ -77,7 +77,13 @@ const config = {
 if (os.platform() === "win32") {
     const { APPDATA, PATH } = process.env;
 
-    config.Release.env.PATH = `${ sysPath.join(LUAROCKS_BINDIR, "lua_modules", "bin") };${ sysPath.join(APPDATA, "luarocks", "bin") };${ PATH }`;
+    config.Release.env.PATH = [
+        sysPath.join(LUAROCKS_BINDIR, "lua_modules", "lib", "lua", ABIVER),
+        sysPath.join(LUAROCKS_BINDIR, "lua_modules", "bin"),
+        sysPath.join(APPDATA, "luarocks", "bin"),
+        PATH,
+    ].join(";");
+
     config.Debug.env.LUAROCKS_SYSCONFDIR = LUAROCKS_SYSCONFDIR;
 
     config.Debug.env.PATH = `${ LUA_BINDIR_DEBUG };${ sysPath.join(LUAROCKS_BINDIR, "lua_modules", "bin") };${ sysPath.join(APPDATA, "luarocks", "bin") };${ PATH }`;

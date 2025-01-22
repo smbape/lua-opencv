@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.25)
 
 project(lua LANGUAGES  C CXX ASM)
 
-if(MSVC AND NOT (CMAKE_GENERATOR STREQUAL Ninja))
+if(MSVC AND NOT (CMAKE_GENERATOR STREQUAL "Ninja"))
   add_compile_options(/MP)
 endif()
 
@@ -218,7 +218,7 @@ add_library(liblua::liblua ALIAS liblua)
 
 target_include_directories(liblua PRIVATE ${LUA_INCLUDE_DIRS})
 
-if (WIN32 AND (CMAKE_GENERATOR STREQUAL Ninja))
+if (WIN32 AND (CMAKE_GENERATOR STREQUAL "Ninja"))
   target_compile_definitions(liblua PRIVATE _WINDLL)
 endif()
 
@@ -272,7 +272,7 @@ target_include_directories(lua PRIVATE ${LUA_INCLUDE_DIRS})
 set_target_output_directories(lua)
 set_target_properties(lua PROPERTIES OUTPUT_NAME "lua-${VERSION}")
 
-if (MSVC AND NOT (CMAKE_GENERATOR STREQUAL Ninja))
+if (MSVC AND NOT (CMAKE_GENERATOR STREQUAL "Ninja"))
   set(EXECUTABLE_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/${CMAKE_BUILD_TYPE}")
 endif()
 

@@ -166,7 +166,7 @@ while read -r line; do
 done < /proc/version
 
 CONTAINER_NAME_MANY_LINUX=opencv-lua-manylinux2014-x86-64
-DOCKER_IMAGE_MANY_LINUX=quay.io/opencv-ci/opencv-python-manylinux2014-x86-64:20240524
+DOCKER_IMAGE_MANY_LINUX=quay.io/opencv-ci/opencv-python-manylinux2014-x86-64:20241202
 
 DIST_VERSION=${DIST_VERSION:-1}
 WSL_DISTNAME=${WSL_DISTNAME:-Ubuntu}
@@ -274,7 +274,10 @@ function docker_run_bash() {
 
     if [ ${#container_id} -eq 0 ]; then
         # https://stackoverflow.com/questions/73092750/how-to-show-gui-apps-from-docker-desktop-container-on-windows-11/73901260#73901260
+        # https://stackoverflow.com/questions/38485607/mount-host-directory-with-a-symbolic-link-inside-in-docker-container#40322275
+        local binaries=$(realpath "$PWD/../luarocks-binaries")
         wsl -c "docker run -it \
+-v '/mnt${binaries}:/mnt${binaries}' \
 -v '/mnt$(cygpath -u "$PWD"):/src' \
 -v '/tmp/.X11-unix:/tmp/.X11-unix' \
 -v '/mnt/wslg:/mnt/wslg' \
@@ -344,7 +347,7 @@ function push_all() {
 }
 
 function prepublish_stash_push() {
-    local script='cd out/prepublish/${version}/opencv_lua${suffix} && git stash push --include-untracked --all -- samples'
+    local script='cd out/prepublish/build/opencv_lua${suffix} && git stash push --include-untracked --all -- samples'
 
     bash -c "
 for version in ${LUA_VERSIONS}; do
@@ -369,7 +372,7 @@ done
 }
 
 function prepublish_stash_pop() {
-    local script='cd ${CWD}/out/prepublish/${version}/opencv_lua${suffix} && git reset --hard HEAD && git stash pop'
+    local script='cd ${CWD}/out/prepublish/build/opencv_lua${suffix} && git reset --hard HEAD && git stash pop'
 
     bash -c "
 for version in ${LUA_VERSIONS}; do
@@ -394,7 +397,7 @@ done
 }
 
 function prepublish_any() {
-    time node scripts/prepublish.js --pack --lua-versions "${LUA_VERSIONS}" "$@" && \
+    time node --trace-uncaught --unhandled-rejections=strict scripts/prepublish.js --pack --lua-versions "${LUA_VERSIONS}" "$@" && \
     time ./build${SCRIPT_SUFFIX} "-DLua_VERSION=luajit-2.1" --target luajit --install && \
     time ./build${SCRIPT_SUFFIX} "-DLua_VERSION=luajit-2.1" --target luarocks
 }
@@ -404,6 +407,11 @@ function set_url_windows() {
 }
 
 function prepublish_windows() {
+    if [ -d ../luarocks-binaries -a ! -L out/prepublish/server ]; then
+        rm -rf out/prepublish/server
+        mkdir -p out/prepublish && \
+        cmd.exe //c mklink //j "$(cygpath -w "$PWD/out/prepublish/server")" "$(cygpath -w "${PWD}/../luarocks-binaries")" || exit $?
+    fi
     DIST_VERSION=${DIST_VERSION} prepublish_any
 }
 
@@ -489,8 +497,8 @@ source /src/scripts/tasks.sh && \
 make_available_nvs && nvs add 16 && nvs use 16 && \
 open_git_project file:///src /io/opencv-lua || exit $?
 [ -d node_modules ] || npm ci || exit $?
-find out/prepublish/ -mindepth 5 -maxdepth 5 -type f -name lockfile.lfs -delete
-node scripts/prepublish.js --pack --lua-versions '"'${LUA_VERSIONS}'"' --server=/src/out/prepublish/server --repair'
+test -e out/prepublish && find out/prepublish/ -mindepth 5 -maxdepth 5 -type f -name lockfile.lfs -delete
+node --trace-uncaught --unhandled-rejections=strict scripts/prepublish.js --pack --lua-versions '"'${LUA_VERSIONS}'"' --server=/src/out/prepublish/server --repair'
 }
 
 function build_manylinux() {
@@ -532,7 +540,7 @@ mkdir -p "${WORKING_DIRECTORY}" && \
 open_git_project "file://${projectDir}" "${WORKING_DIRECTORY}/build" || exit $?
 [ -d node_modules ] || npm ci || exit $?
 
-node scripts/prepublish.js --pack --server="${WORKING_DIRECTORY}/server" --lua-versions luajit-2.1 --name=opencv_lua-custom \
+node --trace-uncaught --unhandled-rejections=strict scripts/prepublish.js --pack --server="${WORKING_DIRECTORY}/server" --lua-versions luajit-2.1 --name=opencv_lua-custom \
     -DBUILD_contrib=ON \
     -DWITH_FREETYPE=ON \
     -DFREETYPE_DIR=C:/vcpkg/installed/x64-windows \
@@ -557,7 +565,7 @@ open_git_project "file://${projectDir}" "${WORKING_DIRECTORY}/build" || exit $?
 
 find out/prepublish/ -mindepth 5 -maxdepth 5 -type f -name lockfile.lfs -delete
 
-node scripts/prepublish.js --pack --server="${WORKING_DIRECTORY}/server" --lua-versions luajit-2.1 --name=opencv_lua-custom \
+node --trace-uncaught --unhandled-rejections=strict scripts/prepublish.js --pack --server="${WORKING_DIRECTORY}/server" --lua-versions luajit-2.1 --name=opencv_lua-custom \
     -DBUILD_contrib=ON \
     -DWITH_FREETYPE=ON'
 }
@@ -677,7 +685,6 @@ function build_windows_debug() {
 function build_wsl_debug() {
     wsl -c '
 source scripts/wsl_init.sh || exit $?
-test -x build.sh || chmod +x build.sh
 time ./build.sh -d "-DLua_VERSION=luajit-2.1" --install --target luajit && \
 time ./build.sh -d "-DLua_VERSION=luajit-2.1" --install \
     "-DBUILD_contrib:BOOL=ON" \
@@ -1102,57 +1109,4 @@ function compile_debug_strict_wsl() {
 
 function install_build_essentials_wsl_debian() {
     "$WSL" -d "$WSL_DISTNAME" -u root -e bash -c "$(install_build_essentials_debian_script) || exit \$?; $(install_build_essentials_from_source)"
-}
-
-function test_build_script() {
-    local exclude=$1; shift
-    local script='
-cd out/prepublish/${version}/opencv_lua${suffix} && \
-./luarocks/luarocks${LUAROCKS_SUFFIX} install --deps-only samples/samples-scm-1.rockspec && \
-node scripts/test.js --Release'
-
-    for arg in "$@"; do
-        script="$script '$arg'"
-    done
-
-    if [ $exclude -eq 1 ]; then
-        # excluded due to camera device missing
-        script="$script $WSL_EXCLUDED_TESTS"
-    fi
-
-    echo "$script"
-}
-
-function test_prepublished_build_windows() {
-    local script="$(test_build_script 0 "$@")"
-
-    bash -c "
-source scripts/vcvars_restore_start.sh
-$(export_shared_env)
-
-for version in ${LUA_VERSIONS}; do
-    for suffix in '' '-contrib'; do
-        _PATH=\$PATH; pushd \$PWD
-        ${script} || exit \$?
-        popd; PATH=\$_PATH; unset _PATH
-    done
-done
-"
-}
-
-function test_prepublished_build_wsl() {
-    local script="$(test_build_script 1 "$@")"
-
-    wsl -c "
-$(export_shared_env /mnt)
-source \${projectDir}/scripts/wsl_init.sh || exit \$?
-
-for version in ${LUA_VERSIONS}; do
-    for suffix in '' '-contrib'; do
-        _PATH=\$PATH; pushd \$PWD
-        ${script} || exit \$?
-        popd; PATH=\$_PATH; unset _PATH
-    done
-done
-"
 }

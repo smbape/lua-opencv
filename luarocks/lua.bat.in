@@ -3,6 +3,6 @@ setlocal
 IF "%*"=="" (set I=-i) ELSE (set I=)
 set "LUAROCKS_SYSCONFDIR=@LUAROCKS_SYSCONFDIR@"
 set LUA_MODULES=%~dp0lua_modules
-set "PATH=%LUA_MODULES%\bin;%APPDATA%\luarocks\bin;%PATH%"
+set "PATH=%LUA_MODULES%\lib\@ABIVER@;%LUA_MODULES%\bin;%APPDATA%\luarocks\bin;%PATH%"
 "@LUA_BINDIR@\@LUA_INTERPRETER_NAME@" -e "package.path=\"%LUA_MODULES:\=\\%\\share\\lua\\@ABIVER@\\?.lua;%LUA_MODULES:\=\\%\\share\\lua\\@ABIVER@\\?\\init.lua;%APPDATA:\=\\%\\luarocks\\share\\lua\\@ABIVER@\\?.lua;%APPDATA:\=\\%\\luarocks\\share\\lua\\@ABIVER@\\?\\init.lua;\"..package.path;package.cpath=\"%LUA_MODULES:\=\\%\\lib\\lua\\@ABIVER@\\?.dll;%APPDATA:\=\\%\\luarocks\\lib\\lua\\@ABIVER@\\?.dll;\"..package.cpath" %I% %*
 exit /b %ERRORLEVEL%

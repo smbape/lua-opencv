@@ -24,8 +24,7 @@ file(GLOB_RECURSE files_to_change
 
 foreach(item IN LISTS files_to_change)
   vcpkg_regex_replace_string("${item}" "(/lua-opencv/releases/download/v|/lua-opencv/tree/v)[0-9]+\\.[0-9]+\\.[0-9]+" "\\1${PROJECT_VERSION}")
-  vcpkg_regex_replace_string("${item}" "(opencv-|/opencv/opencv/blob/|${target_name} )[0-9]+\\.[0-9]+\\.[0-9]+" "\\1${OpenCV_VERSION}")
-  vcpkg_regex_replace_string("${item}" "OPENCV_VERSION:-[0-9]+\\.[0-9]+\\.[0-9]+" "OPENCV_VERSION:-${OpenCV_VERSION}")
+  vcpkg_regex_replace_string("${item}" "(opencv-|/opencv/opencv/blob/|OPENCV_VERSION:-|${target_name} )[0-9]+\\.[0-9]+\\.[0-9]+" "\\1${OpenCV_VERSION}")
   vcpkg_regex_replace_string("${item}" "(--branch )[0-9]+\\.[0-9]+\\.[0-9]+( https://github.com/opencv/opencv)" "\\1${OpenCV_VERSION}\\2")
   vcpkg_regex_replace_string("${item}" "(--branch v)[0-9]+\\.[0-9]+\\.[0-9]+( https://github.com/smbape/lua-opencv)" "\\1${PROJECT_VERSION}\\2")
   vcpkg_regex_replace_string("${item}" "opencv_videoio_ffmpeg[0-9]+_64\\.dll" "opencv_videoio_ffmpeg${OpenCV_DLLVERSION}_64.dll")
@@ -168,7 +167,7 @@ if (MSVC AND (MSVC_VERSION GREATER_EQUAL 1914))
   target_compile_options(${target_name} PRIVATE "/Zc:__cplusplus" "/bigobj")
 endif()
 
-if (WIN32 AND CMAKE_GENERATOR STREQUAL Ninja)
+if (WIN32 AND CMAKE_GENERATOR STREQUAL "Ninja")
   target_compile_definitions(${target_name} PRIVATE _WINDLL)
 endif()
 
@@ -176,44 +175,9 @@ endif()
 # OpenCV Lua Install
 # ===============
 if (WITH_LUA_ROCKS)
-  if (UNIX AND CMAKE_INSTALL_PREFIX)
-    if(Qt5_DIR)
-      unset(Qt5_PLUGINS_DIR)
-      if (EXISTS "${Qt5_DIR}/../../../plugins")
-        set(Qt5_PLUGINS_DIR "${Qt5_DIR}/../../../plugins")
-      elseif (EXISTS "${Qt5_DIR}/../../qt5/plugins")
-        set(Qt5_PLUGINS_DIR "${Qt5_DIR}/../../qt5/plugins")
-      endif()
-      if (Qt5_PLUGINS_DIR)
-        install(FILES "${Qt5_PLUGINS_DIR}/platforms/libqxcb.so" DESTINATION "lib/${target_name}/qt/plugins/platforms")
-      endif()
-
-      if (NOT APPLE)
-        install(DIRECTORY "/usr/share/fonts/dejavu" DESTINATION "lib/${target_name}/qt/fonts")
-      endif()
-    endif()
-
-    # Add any variables you need during post install.
-    install(CODE "set(Qt5_DIR \"${Qt5_DIR}\")")
-    install(CODE "set(target_name \"${target_name}\")")
-    install(CODE "set(PROJECT_VERSION \"${PROJECT_VERSION}\")")
-    install(CODE "set(Python3_EXECUTABLE \"${Python3_EXECUTABLE}\")")
-    install(CODE "set(CMAKE_SOURCE_DIR \"${CMAKE_SOURCE_DIR}\")")
-    install(CODE "set(CMAKE_CURRENT_SOURCE_DIR \"${CMAKE_CURRENT_SOURCE_DIR}\")")
-    install(CODE "set(CMAKE_INSTALL_PREFIX \"${CMAKE_INSTALL_PREFIX}\")")
-    install(CODE "set(CMAKE_BINARY_DIR \"${CMAKE_BINARY_DIR}\")")
-    install(CODE "set(CMAKE_CURRENT_BINARY_DIR \"${CMAKE_CURRENT_BINARY_DIR}\")")
-    install(CODE "set(CMAKE_INSTALL_LIBDIR \"lib\")")
-    install(CODE "set(TARGET_FILE \"$<TARGET_FILE:${target_name}>\")")
-
-    # CMake will execute this last in the build.
-    # Install the script that does the post install work.
-    install(SCRIPT "auditwheel_repair.cmake")
-  endif()
-
-  set(LIBRAY_DESTINATION lib)
-  set(ARCHIVE_DESTINATION lib/${target_name}/devel/lib)
-  set(CMAKE_CONFIG_DESTINATION lib/${target_name}/devel/lib/cmake)
+  set(LIBRAY_DESTINATION "lib")
+  set(ARCHIVE_DESTINATION "lib/${target_name}/devel/lib")
+  set(CMAKE_CONFIG_DESTINATION "lib/${target_name}/devel/lib/cmake")
 else()
   set(LIBRAY_DESTINATION "${CMAKE_INSTALL_LIBDIR}")
   set(ARCHIVE_DESTINATION "${CMAKE_INSTALL_LIBDIR}")
@@ -265,6 +229,49 @@ install(FILES
 export(EXPORT ${EXPORT_NAME}
   FILE "${CMAKE_CURRENT_BINARY_DIR}/${EXPORT_NAME}.cmake"
 )
+
+if (WITH_LUA_ROCKS AND CMAKE_INSTALL_PREFIX)
+  install(CODE "set(CMAKE_CONFIG_DESTINATION \"${CMAKE_CONFIG_DESTINATION}\")")
+  install(CODE "set(CMAKE_CURRENT_SOURCE_DIR \"${CMAKE_CURRENT_SOURCE_DIR}\")")
+  install(CODE "set(CMAKE_INSTALL_PREFIX \"${CMAKE_INSTALL_PREFIX}\")")
+  install(CODE "set(CMAKE_SOURCE_DIR \"${CMAKE_SOURCE_DIR}\")")
+  install(CODE "set(EXPORT_NAME \"${EXPORT_NAME}\")")
+  install(CODE "set(LIBRAY_DESTINATION \"${LIBRAY_DESTINATION}\")")
+
+  install(SCRIPT "export_targets_repair.cmake")
+
+  if (UNIX)
+    # Add any variables you need during post install.
+    install(CODE "set(CMAKE_BINARY_DIR \"${CMAKE_BINARY_DIR}\")")
+    install(CODE "set(CMAKE_CURRENT_BINARY_DIR \"${CMAKE_CURRENT_BINARY_DIR}\")")
+    install(CODE "set(CMAKE_INSTALL_LIBDIR \"lib\")")
+    install(CODE "set(PROJECT_VERSION \"${PROJECT_VERSION}\")")
+    install(CODE "set(Python3_EXECUTABLE \"${Python3_EXECUTABLE}\")")
+    install(CODE "set(Qt5_DIR \"${Qt5_DIR}\")")
+    install(CODE "set(TARGET_FILE \"$<TARGET_FILE:${target_name}>\")")
+    install(CODE "set(target_name \"${target_name}\")")
+
+    # CMake will execute this last in the build.
+    # Install the script that does the post install work.
+    install(SCRIPT "auditwheel_repair.cmake")
+
+    if(Qt5_DIR)
+      unset(Qt5_PLUGINS_DIR)
+      if (EXISTS "${Qt5_DIR}/../../../plugins")
+        set(Qt5_PLUGINS_DIR "${Qt5_DIR}/../../../plugins")
+      elseif (EXISTS "${Qt5_DIR}/../../qt5/plugins")
+        set(Qt5_PLUGINS_DIR "${Qt5_DIR}/../../qt5/plugins")
+      endif()
+      if (Qt5_PLUGINS_DIR)
+        install(FILES "${Qt5_PLUGINS_DIR}/platforms/libqxcb.so" DESTINATION "lib/${target_name}/qt/plugins/platforms")
+      endif()
+
+      if (NOT APPLE)
+        install(DIRECTORY "/usr/share/fonts/dejavu" DESTINATION "lib/${target_name}/qt/fonts")
+      endif()
+    endif()
+  endif()
+endif()
 
 # ===============
 # OpenCV Lua Test

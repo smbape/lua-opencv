@@ -45,12 +45,12 @@ if (NOT (target_name MATCHES "^[A-Za-z0-9_]+$"))
   message(FATAL_ERROR "For security reasons, target name variable cannot be empty and must only contains alpha numeric characters")
 endif()
 
-get_filename_component(LIB_NAME "${TARGET_FILE}" NAME)
+get_filename_component(SONAME "${TARGET_FILE}" NAME)
 
 set(INSTALL_LIBDIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
-set(INSTALL_LIB_NAME "${INSTALL_LIBDIR}/${LIB_NAME}")
+set(INSTALL_SONAME "${INSTALL_LIBDIR}/${SONAME}")
 
-message(STATUS "PostInstall: Set non-toolchain portion of runtime path of \"${INSTALL_LIB_NAME}\"")
+message(STATUS "PostInstall: Set non-toolchain portion of runtime path of \"${INSTALL_SONAME}\"")
 
 set(PYPROJECT "${CMAKE_CURRENT_BINARY_DIR}/pyproject")
 
@@ -87,11 +87,8 @@ execute_process(
   COMMAND_ERROR_IS_FATAL ANY
 )
 
-string(REGEX MATCH "Library rpath: \\[([^]]+)\\]" LD_LIBRARY_PATH "${ELF_SYMBOLS}")
-string(LENGTH "Library rpath: [" LD_LIBRARY_PATH_BEGIN)
-string(LENGTH "${LD_LIBRARY_PATH}" LD_LIBRARY_PATH_LENGTH)
-math(EXPR LD_LIBRARY_PATH_LENGTH "${LD_LIBRARY_PATH_LENGTH} - ${LD_LIBRARY_PATH_BEGIN} - 1")
-string(SUBSTRING "${LD_LIBRARY_PATH}" ${LD_LIBRARY_PATH_BEGIN} ${LD_LIBRARY_PATH_LENGTH} LD_LIBRARY_PATH)
+string(REGEX MATCH "Library r(un)?path: \\[([^]]+)\\]" LD_LIBRARY_PATH "${ELF_SYMBOLS}")
+set(LD_LIBRARY_PATH "${CMAKE_MATCH_2}")
 
 message(STATUS "PostInstall: LD_LIBRARY_PATH=\"${LD_LIBRARY_PATH}\"")
 
@@ -116,10 +113,23 @@ string(SUBSTRING "${REPAIRED_WHEEL_FILE}" ${REPAIRED_WHEEL_FILE_BEGIN} ${REPAIRE
 message(STATUS "PostInstall: REPAIRED_WHEEL_FILE=\"${REPAIRED_WHEEL_FILE}\"")
 
 set(REPAIRED_DIR "${CMAKE_INSTALL_LIBDIR}/repaired")
+set(FILE_LIST "${target_name}/*")
+
+execute_process(
+  COMMAND unzip -l "${REPAIRED_WHEEL_FILE}" "${target_name}.libs/*"
+  WORKING_DIRECTORY "${CMAKE_INSTALL_PREFIX}"
+  RESULT_VARIABLE HAS_LIBS_ERROR
+  OUTPUT_QUIET
+  ERROR_QUIET
+)
+
+if(HAS_LIBS_ERROR EQUAL "0")
+    list(APPEND FILE_LIST "${target_name}.libs/*")
+endif()
 
 # Replace shared library with the repaired one
 execute_process(
-  COMMAND unzip -o -d "${REPAIRED_DIR}" "${REPAIRED_WHEEL_FILE}" "${target_name}/*" "${target_name}.libs/*"
+  COMMAND unzip -o -d "${REPAIRED_DIR}" "${REPAIRED_WHEEL_FILE}" ${FILE_LIST}
   WORKING_DIRECTORY "${CMAKE_INSTALL_PREFIX}"
   COMMAND_ECHO STDERR
   COMMAND_ERROR_IS_FATAL ANY
@@ -127,9 +137,18 @@ execute_process(
 
 file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBSDIR}")
 
+set(COPY_COMMANDS COMMAND cp -f "${REPAIRED_DIR}/${target_name}/${SONAME}" "${CMAKE_INSTALL_LIBDIR}/")
+
+if (EXISTS "${REPAIRED_DIR}/${target_name}/${target_name}")
+  list(APPEND COPY_COMMANDS COMMAND cp -rf "${REPAIRED_DIR}/${target_name}/${target_name}" "${CMAKE_INSTALL_LIBDIR}/")
+endif()
+
+if(HAS_LIBS_ERROR EQUAL "0")
+    list(APPEND COPY_COMMANDS COMMAND mv "${REPAIRED_DIR}/${target_name}.libs" "${CMAKE_INSTALL_LIBSDIR}")
+endif()
+
 execute_process(
-  COMMAND bash -c "cp -rf ${REPAIRED_DIR}/${target_name}/${target_name} ${REPAIRED_DIR}/${target_name}/${LIB_NAME} ${CMAKE_INSTALL_LIBDIR}/"
-  COMMAND mv "${REPAIRED_DIR}/${target_name}.libs" "${CMAKE_INSTALL_LIBSDIR}"
+  ${COPY_COMMANDS}
   WORKING_DIRECTORY "${CMAKE_INSTALL_PREFIX}"
   COMMAND_ECHO STDERR
   COMMAND_ERROR_IS_FATAL ANY

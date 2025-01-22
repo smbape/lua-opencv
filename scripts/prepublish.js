@@ -9,7 +9,6 @@ const waterfall = require("async/waterfall");
 const prepublishRoot = sysPath.resolve(__dirname, "..", "out", "prepublish");
 const wrapperSuffix = os.platform() === "win32" ? ".bat" : "";
 const shellSuffix = os.platform() === "win32" ? ".bat" : ".sh";
-const GIT_BRANCH = process.env.GIT_BRANCH || "main";
 
 const spawnExec = (cmd, args, options, next) => {
     const {
@@ -65,7 +64,7 @@ const spawnExec = (cmd, args, options, next) => {
 };
 
 const prepublish = (target, version, options, next) => {
-    const { name, cmake_build_args, pack, repair } = options;
+    const { name, cmake_build_args, branch, pack, repair } = options;
     const workspaceRoot = sysPath.join(prepublishRoot, "build");
     const projectRoot = sysPath.join(workspaceRoot, name);
     const originalRockSpec = sysPath.join(projectRoot, "luarocks", "opencv_lua-scm-1.rockspec");
@@ -90,16 +89,16 @@ const prepublish = (target, version, options, next) => {
                     ["git", ["remote", "set-url", "origin", sysPath.resolve(__dirname, "..")]],
                     ["git", ["reset", "--hard", "HEAD"]],
                     ["git", ["clean", "-fd"]],
-                    ["git", ["fetch", "origin", GIT_BRANCH]],
-                    ["git", ["checkout", GIT_BRANCH]],
-                    ["git", ["pull", "origin", GIT_BRANCH, "--force"]],
+                    ["git", ["fetch", "origin", branch]],
+                    ["git", ["checkout", branch]],
+                    ["git", ["pull", "origin", branch, "--force"]],
                 ]);
             } else {
                 tasks.push(...[
-                    ["git", ["init", "-b", GIT_BRANCH]],
+                    ["git", ["init", "-b", branch]],
                     ["git", ["remote", "add", "origin", sysPath.resolve(__dirname, "..")]],
-                    ["git", ["pull", "origin", GIT_BRANCH]],
-                    ["git", ["branch", "--set-upstream-to=origin/main", GIT_BRANCH]],
+                    ["git", ["pull", "origin", branch]],
+                    ["git", ["branch", "--set-upstream-to=origin/main", branch]],
                     ["git", ["config", "pull.rebase", "true"]],
                     ["git", ["config", "user.email", "you@example.com"]],
                     ["git", ["config", "user.name", "Your Name"]],
@@ -189,6 +188,7 @@ const prepublish = (target, version, options, next) => {
 const options = {
     name: "opencv_lua",
     cmake_build_args: [],
+    branch: process.env.GIT_BRANCH || "main",
     server: process.env.LUAROCKS_SERVER ? sysPath.resolve(process.env.LUAROCKS_SERVER) : sysPath.join(prepublishRoot, "server"),
 };
 
@@ -213,6 +213,7 @@ for (let i = 0; i < argv.length; i++) {
         case "--repair":
             options[key.slice("--".length)] = value;
             break;
+        case "--branch":
         case "--server":
         case "--name":
         case "--lua-versions":

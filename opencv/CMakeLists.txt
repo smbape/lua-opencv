@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.25)
 
 # Sources: https://github.com/opencv/ci-gha-workflow/blob/main/.github/workflows/OCV-WinPack-4.x-W10.yaml
 
-# Name of the project (will be the name of the plugin)
 project(opencv)
 
 include(../cmake/FindPatch.cmake)
