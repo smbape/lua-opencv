@@ -221,6 +221,10 @@ namespace LUA_MODULE_NAME {
 		return result;
 	}
 
+	// ================================
+	// T
+	// ================================
+
 	template<typename T>
 	inline bool lua_is(lua_State* L, int index, T* ptr) {
 		if constexpr (std::is_enum_v<T>) {
@@ -247,6 +251,44 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename T>
+	inline int lua_push(lua_State* L, T* ptr) {
+		return lua_push(L, reference_internal(ptr));
+	}
+
+	template<typename T>
+	inline typename std::enable_if<is_usertype_v<T>, int>::type lua_push(lua_State* L, T&& obj) {
+		return lua_push(L, std::make_shared<T>(std::move(obj)));
+	}
+
+	template<typename T>
+	inline typename std::enable_if<is_usertype_v<T>, int>::type lua_push(lua_State* L, const T& obj) {
+		return lua_push(L, std::make_shared<T>(obj));
+	}
+
+	template<typename T>
+	inline typename std::enable_if<std::is_enum_v<T>, int>::type lua_push(lua_State* L, const T& value) {
+		return lua_push(L, static_cast<int>(value));
+	}
+
+	// ================================
+	// T*
+	// ================================
+
+	template<typename T>
+	inline typename std::enable_if<is_usertype_v<T>, bool>::type lua_is(lua_State* L, int index, T**) {
+		return lua_is(L, index, static_cast<T*>(nullptr));
+	}
+
+	template<typename T>
+	inline typename std::enable_if<is_usertype_v<T>, T*>::type lua_to(lua_State* L, int index, T**) {
+		return lua_to(L, index, static_cast<T*>(nullptr)).get();
+	}
+
+	// ================================
+	// std::shared_ptr
+	// ================================
+
+	template<typename T>
 	inline bool lua_is(lua_State* L, int index, std::shared_ptr<T>*) {
 		return lua_is(L, index, static_cast<T*>(nullptr));
 	}
@@ -266,36 +308,6 @@ namespace LUA_MODULE_NAME {
 		lua_setmetatable(L, -2);
 
 		return 1; // return userdata
-	}
-
-	template<typename T>
-	inline int lua_push(lua_State* L, T* ptr) {
-		return lua_push(L, reference_internal(ptr));
-	}
-
-	template<typename T>
-	inline typename std::enable_if<is_usertype_v<T>, bool>::type lua_is(lua_State* L, int index, T**) {
-		return lua_is(L, index, static_cast<T*>(nullptr));
-	}
-
-	template<typename T>
-	inline typename std::enable_if<is_usertype_v<T>, T*>::type lua_to(lua_State* L, int index, T**) {
-		return lua_to(L, index, static_cast<T*>(nullptr)).get();
-	}
-
-	template<typename T>
-	inline typename std::enable_if<is_usertype_v<T>, int>::type lua_push(lua_State* L, T&& obj) {
-		return lua_push(L, std::make_shared<T>(std::move(obj)));
-	}
-
-	template<typename T>
-	inline typename std::enable_if<is_usertype_v<T>, int>::type lua_push(lua_State* L, const T& obj) {
-		return lua_push(L, std::make_shared<T>(obj));
-	}
-
-	template<typename T>
-	inline typename std::enable_if<std::is_enum_v<T>, int>::type lua_push(lua_State* L, const T& value) {
-		return lua_push(L, static_cast<int>(value));
 	}
 
 	// ================================

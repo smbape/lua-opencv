@@ -789,34 +789,41 @@ else
     cd ..
 fi
 
-# ================================
-# Install the rock
-# ================================
-# Should we use an exact version?
-if [ "${rock_type}" == "source" ]; then
-    opencv_lua_version=${OPENCV_VERSION}
-elif [ "${version:0:6}" == luajit ]; then
-    opencv_lua_version=${OPENCV_VERSION}luajit2.1
-else
-    opencv_lua_version=
-fi
-
 ./luarocks/luarocks${LUAROCKS_SUFFIX} install --deps-only samples/samples-scm-1.rockspec || exit $?
-opencv_lua_installed="$(./luarocks/luarocks${LUAROCKS_SUFFIX} list --porcelain opencv_lua${suffix})"
 
-install_rock=1
-remove_rock=0
+function install_local_rock() {
+    local rock_name="$1"
+    local rock_version
 
-if [ ${#opencv_lua_installed} -ne 0 ]; then
-    if [ ${upgrade_rock} -eq 1 ]; then
-        remove_rock=1
+    # Should we use an exact version?
+    if [ "${rock_type}" == "source" ]; then
+        rock_version=${OPENCV_VERSION}
+    elif [ "${version:0:6}" == luajit ]; then
+        rock_version=${OPENCV_VERSION}luajit2.1
     else
-        install_rock=0
+        rock_version=
     fi
-fi
 
-[ ${remove_rock} -eq 0 ] || ./luarocks/luarocks${LUAROCKS_SUFFIX} remove opencv_lua${suffix} || exit $?
-[ ${install_rock} -eq 0 ] || ./luarocks/luarocks${LUAROCKS_SUFFIX} install "--server=${projectDir}/out/prepublish/server" opencv_lua${suffix} ${opencv_lua_version} --force || exit $?
+    local rock_installed="$(./luarocks/luarocks${LUAROCKS_SUFFIX} list --porcelain ${rock_name}${suffix})"
+    local install_rock=1
+    local remove_rock=0
+
+    if [ ${#rock_installed} -ne 0 ]; then
+        if [ ${upgrade_rock} -eq 1 ]; then
+            remove_rock=1
+        else
+            install_rock=0
+        fi
+    fi
+
+    [ ${remove_rock} -eq 0 ]  || ./luarocks/luarocks${LUAROCKS_SUFFIX} remove  ${rock_name}${suffix} || exit $?
+    [ ${install_rock} -eq 0 ] || ./luarocks/luarocks${LUAROCKS_SUFFIX} install ${rock_name}${suffix} ${rock_version} "--only-server=${projectDir}/out/prepublish/server" --force || exit $?
+}
+
+# ================================
+# Install rock
+# ================================
+install_local_rock opencv_lua
 
 # ================================
 # Run the tests

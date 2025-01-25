@@ -53,70 +53,19 @@ namespace LUA_MODULE_NAME {
 	template<typename T>
 	inline std::shared_ptr<T>& lua_userdata_to(lua_State* L, int index, T*);
 
+
+	// ================================
+	// T
+	// ================================
+
 	template<typename T>
 	inline bool lua_is(lua_State* L, int index, T* ptr);
-
-	template<typename T>
-	inline bool lua_is(lua_State* L, int index, std::shared_ptr<T>*);
-
-	template<typename K, typename V>
-	inline bool lua_is(lua_State* L, int index, std::map<K, V>* ptr);
-
-	template<typename T>
-	inline bool lua_is(lua_State* L, int index, std::optional<T>*);
-
-	template<typename T1, typename T2>
-	inline bool lua_is(lua_State* L, int index, std::pair<T1, T2>* ptr);
-
-	template<typename... _Ts>
-	inline bool lua_is(lua_State* L, int index, std::tuple<_Ts...>* ptr);
-
-	template<typename... _Ts>
-	inline bool lua_is(lua_State* L, int index, std::variant<_Ts...>* ptr);
-
-	template<typename T>
-	inline bool lua_is(lua_State* L, int index, std::vector<T>* ptr, size_t len = 0, bool loose = false);
-
 
 	template<typename T>
 	inline typename std::enable_if<std::is_enum_v<T>, int>::type lua_to(lua_State* L, int index, T* ptr);
 
 	template<typename T>
 	inline typename std::enable_if<!std::is_enum_v<T>, std::shared_ptr<T>>::type lua_to(lua_State* L, int index, T* ptr);
-
-	template<typename T>
-	inline std::shared_ptr<T> lua_to(lua_State* L, int index, std::shared_ptr<T>*);
-
-	template<typename T>
-	inline typename std::enable_if<is_usertype_v<T>, bool>::type lua_is(lua_State* L, int index, T**);
-
-	template<typename T>
-	inline typename std::enable_if<is_usertype_v<T>, T*>::type lua_to(lua_State* L, int index, T**);
-
-	template<typename K, typename V>
-	inline std::shared_ptr<std::map<K, V>> lua_to(lua_State* L, int index, std::map<K, V>* ptr);
-
-	template<typename T>
-	inline std::optional<T> lua_to(lua_State* L, int index, std::optional<T>*);
-
-	template<typename T1, typename T2>
-	inline std::shared_ptr<std::pair<T1, T2>> lua_to(lua_State* L, int index, std::pair<T1, T2>* ptr);
-
-	template<typename... _Ts>
-	inline std::shared_ptr<std::tuple<_Ts...>> lua_to(lua_State* L, int index, std::tuple<_Ts...>* ptr);
-
-	template<typename... _Ts>
-	inline std::variant<_Ts...> lua_to(lua_State* L, int index, std::variant<_Ts...>* ptr);
-
-	template<typename T>
-	inline void lua_to(lua_State* L, int index, std::vector<T>& out);
-
-	template<typename T>
-	inline std::shared_ptr<std::vector<T>> lua_to(lua_State* L, int index, std::vector<T>* ptr);
-
-
-	template<typename T>
-	inline int lua_push(lua_State* L, const std::shared_ptr<T>& ptr);
 
 	template<typename T>
 	inline int lua_push(lua_State* L, T* ptr);
@@ -130,23 +79,117 @@ namespace LUA_MODULE_NAME {
 	template<typename T>
 	inline typename std::enable_if<std::is_enum_v<T>, int>::type lua_push(lua_State* L, const T& value);
 
+
+	// ================================
+	// T*
+	// ================================
+
+	template<typename T>
+	inline typename std::enable_if<is_usertype_v<T>, bool>::type lua_is(lua_State* L, int index, T**);
+
+	template<typename T>
+	inline typename std::enable_if<is_usertype_v<T>, T*>::type lua_to(lua_State* L, int index, T**);
+
+
+	// ================================
+	// std::shared_ptr
+	// ================================
+
+	template<typename T>
+	inline bool lua_is(lua_State* L, int index, std::shared_ptr<T>*);
+
+	template<typename T>
+	inline std::shared_ptr<T> lua_to(lua_State* L, int index, std::shared_ptr<T>*);
+
+	template<typename T>
+	inline int lua_push(lua_State* L, const std::shared_ptr<T>& ptr);
+
+
+	// ================================
+	// std::map
+	// ================================
+
+	template<typename K, typename V>
+	inline bool lua_is(lua_State* L, int index, std::map<K, V>* ptr);
+
+	template<typename K, typename V>
+	inline std::shared_ptr<std::map<K, V>> lua_to(lua_State* L, int index, std::map<K, V>* ptr);
+
 	template<typename K, typename V>
 	inline int lua_push(lua_State* L, std::map<K, V>&& kv);
 
 	template<typename K, typename V>
 	inline int lua_push(lua_State* L, const std::map<K, V>& kv);
 
+
+	// ================================
+	// std::optional
+	// ================================
+
+	template<typename T>
+	inline bool lua_is(lua_State* L, int index, std::optional<T>*);
+
+	template<typename T>
+	inline std::optional<T> lua_to(lua_State* L, int index, std::optional<T>*);
+
 	template<typename T>
 	inline int lua_push(lua_State* L, const std::optional<T>& p);
+
+
+	// ================================
+	// std::pair
+	// ================================
+
+	template<typename T1, typename T2>
+	inline bool lua_is(lua_State* L, int index, std::pair<T1, T2>* ptr);
+
+	template<typename T1, typename T2>
+	inline std::shared_ptr<std::pair<T1, T2>> lua_to(lua_State* L, int index, std::pair<T1, T2>* ptr);
 
 	template<typename T1, typename T2>
 	inline int lua_push(lua_State* L, const std::pair<T1, T2>& p);
 
+
+	// ================================
+	// std::tuple
+	// ================================
+
+	template<typename... _Ts>
+	inline bool lua_is(lua_State* L, int index, std::tuple<_Ts...>* ptr);
+
+	template<typename... _Ts>
+	inline std::shared_ptr<std::tuple<_Ts...>> lua_to(lua_State* L, int index, std::tuple<_Ts...>* ptr);
+
 	template<typename... _Ts>
 	inline int lua_push(lua_State* L, const std::tuple<_Ts...>& value);
 
+
+	// ================================
+	// std::variant
+	// ================================
+
+	template<typename... _Ts>
+	inline bool lua_is(lua_State* L, int index, std::variant<_Ts...>* ptr);
+
+	template<typename... _Ts>
+	inline std::variant<_Ts...> lua_to(lua_State* L, int index, std::variant<_Ts...>* ptr);
+
 	template<typename... _Ts>
 	inline int lua_push(lua_State* L, const std::variant<_Ts...>& value);
+
+
+	// ================================
+	// std::vector
+	// ================================
+
+	template<typename T>
+	inline bool lua_is(lua_State* L, int index, std::vector<T>* ptr, size_t len = 0, bool loose = false);
+
+	template<typename T>
+	inline void lua_to(lua_State* L, int index, std::vector<T>& out);
+
+	template<typename T>
+	inline std::shared_ptr<std::vector<T>> lua_to(lua_State* L, int index, std::vector<T>* ptr);
 
 	template<typename T>
 	inline int lua_push(lua_State* L, std::vector<T>&& vec);
