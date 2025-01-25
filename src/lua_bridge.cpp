@@ -262,6 +262,48 @@ namespace {
 #endif
 
 namespace LUA_MODULE_NAME {
+	template<typename T>
+	LUA_EXPORTS bool exported_lua_is(lua_State* L, int index, T* ptr) {
+		return lua_is(L, index, ptr);
+	}
+
+	template<typename T>
+	LUA_EXPORTS std::shared_ptr<T> exported_lua_to(lua_State* L, int index, T* ptr) {
+		return lua_to(L, index, ptr);
+	}
+
+	template<typename T>
+	LUA_EXPORTS int exported_lua_push(lua_State* L, T* ptr) {
+		return lua_push(L, ptr);
+	}
+
+	template<typename T>
+	LUA_EXPORTS int exported_lua_push(lua_State* L, T&& obj) {
+		return lua_push(L, std::move(obj));
+	}
+
+	template<typename T>
+	LUA_EXPORTS int exported_lua_push(lua_State* L, const T& obj) {
+		return lua_push(L, obj);
+	}
+
+	template
+	LUA_EXPORTS bool exported_lua_is<cv::Mat>(lua_State* L, int index, cv::Mat* ptr);
+
+	template
+	LUA_EXPORTS std::shared_ptr<cv::Mat> exported_lua_to<cv::Mat>(lua_State* L, int index, cv::Mat* ptr);
+
+	template
+	LUA_EXPORTS int exported_lua_push<cv::Mat>(lua_State* L, cv::Mat* ptr);
+
+	template
+	LUA_EXPORTS int exported_lua_push<cv::Mat>(lua_State* L, cv::Mat&& obj);
+
+	template
+	LUA_EXPORTS int exported_lua_push<cv::Mat>(lua_State* L, const cv::Mat& obj);
+}
+
+namespace LUA_MODULE_NAME {
 	void register_extensions(lua_State* L) {
 #ifdef __linux__
 		configure_qt_qpa();

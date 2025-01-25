@@ -179,21 +179,40 @@ namespace LUA_MODULE_NAME {
 
 
 	// ================================
+	// stl container
+	// ================================
+
+	template<template<typename> typename Container, typename... _Ts>
+	inline bool _stl_container_lua_is(lua_State* L, int index, Container<_Ts...>* ptr, size_t len, bool loose);
+
+	template<template<typename> typename Container, typename... _Ts>
+	inline void _stl_container_lua_to(lua_State* L, int index, Container<_Ts...>& out);
+
+	template<template<typename> typename Container, typename... _Ts>
+	inline std::shared_ptr<Container<_Ts...>> _stl_container_lua_to(lua_State* L, int index, Container<_Ts...>* ptr);
+
+	template<template<typename> typename Container, typename... _Ts>
+	inline int _stl_container_lua_push(lua_State* L, Container<_Ts...>&& container);
+
+	template<template<typename> typename Container, typename... _Ts>
+	inline int _stl_container_lua_push(lua_State* L, const Container<_Ts...>& container);
+
+	// ================================
 	// std::vector
 	// ================================
 
-	template<typename T>
-	inline bool lua_is(lua_State* L, int index, std::vector<T>* ptr, size_t len = 0, bool loose = false);
+	template<class T, class Allocator = std::allocator<T>>
+	inline bool lua_is(lua_State* L, int index, std::vector<T, Allocator>* ptr, size_t len = 0, bool loose = false);
 
-	template<typename T>
-	inline void lua_to(lua_State* L, int index, std::vector<T>& out);
+	template<class T, class Allocator = std::allocator<T>>
+	inline void lua_to(lua_State* L, int index, std::vector<T, Allocator>& out);
 
-	template<typename T>
-	inline std::shared_ptr<std::vector<T>> lua_to(lua_State* L, int index, std::vector<T>* ptr);
+	template<class T, class Allocator = std::allocator<T>>
+	inline std::shared_ptr<std::vector<T, Allocator>> lua_to(lua_State* L, int index, std::vector<T, Allocator>* ptr);
 
-	template<typename T>
-	inline int lua_push(lua_State* L, std::vector<T>&& vec);
+	template<class T, class Allocator = std::allocator<T>>
+	inline int lua_push(lua_State* L, std::vector<T, Allocator>&& vec);
 
-	template<typename T>
-	inline int lua_push(lua_State* L, const std::vector<T>& vec);
+	template<class T, class Allocator = std::allocator<T>>
+	inline int lua_push(lua_State* L, const std::vector<T, Allocator>& vec);
 }

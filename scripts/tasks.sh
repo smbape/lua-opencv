@@ -418,14 +418,22 @@ function prepublish_windows() {
 function use_luajit_opencv_lua_modules() {
     local sources="$PWD/out/prepublish/build/opencv_lua"
     rm -rf luarocks/lua_modules && \
-    bash -c "cd ${sources}/ && source scripts/vcvars_restore_start.sh && ./luarocks/luarocks.bat install --deps-only samples/samples-scm-1.rockspec" && \
+    bash -c "
+        cd ${sources}/ && \
+        ./build${SCRIPT_SUFFIX} -DLua_VERSION=luajit-2.1 --target luajit --install && \
+        ./build${SCRIPT_SUFFIX} -DLua_VERSION=luajit-2.1 --target luarocks && \
+        source scripts/vcvars_restore_start.sh && ./luarocks/luarocks.bat install --deps-only samples/samples-scm-1.rockspec" && \
     cmd.exe //c mklink //j "$(cygpath -w "$PWD/luarocks/lua_modules")" "$(cygpath -w "${sources}/luarocks/lua_modules")"
 }
 
 function use_luajit_opencv_lua_contrib_modules() {
     local sources="$PWD/out/prepublish/build/opencv_lua-contrib"
     rm -rf luarocks/lua_modules && \
-    bash -c "cd ${sources}/ && source scripts/vcvars_restore_start.sh && ./luarocks/luarocks.bat install --deps-only samples/samples-scm-1.rockspec" && \
+    bash -c "
+        cd ${sources}/ && \
+        ./build${SCRIPT_SUFFIX} -DLua_VERSION=luajit-2.1 --target luajit --install && \
+        ./build${SCRIPT_SUFFIX} -DLua_VERSION=luajit-2.1 --target luarocks && \
+        source scripts/vcvars_restore_start.sh && ./luarocks/luarocks.bat install --deps-only samples/samples-scm-1.rockspec" && \
     cmd.exe //c mklink //j "$(cygpath -w "$PWD/luarocks/lua_modules")" "$(cygpath -w "${sources}/luarocks/lua_modules")"
 }
 

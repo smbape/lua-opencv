@@ -708,11 +708,14 @@ namespace LUA_MODULE_NAME {
 	}
 
 	// ================================
-	// std::vector
+	// stl container
 	// ================================
 
-	template<typename T>
-	inline bool lua_is(lua_State* L, int index, std::vector<T>* ptr, size_t len, bool loose) {
+	template<template<typename> typename Container, typename... _Ts>
+	inline bool _stl_container_lua_is(lua_State* L, int index, Container<_Ts...>* ptr, size_t len, bool loose) {
+		using _Tuple = typename std::tuple<_Ts...>;
+		using T = typename std::tuple_element<0, _Tuple>::type;
+
 		if (lua_isuserdata(L, index)) {
 			return lua_userdata_is(L, index, ptr) && (len == 0 || lua_userdata_to(L, index, ptr)->size() <= len);
 		}
@@ -743,10 +746,13 @@ namespace LUA_MODULE_NAME {
 		return true;
 	}
 
-	template<typename T>
-	inline void lua_to(lua_State* L, int index, std::vector<T>& out) {
+	template<template<typename> typename Container, typename... _Ts>
+	inline void _stl_container_lua_to(lua_State* L, int index, Container<_Ts...>& out) {
+		using _Tuple = typename std::tuple<_Ts...>;
+		using T = typename std::tuple_element<0, _Tuple>::type;
+
 		if (lua_isuserdata(L, index)) {
-			out = *lua_userdata_to(L, index, static_cast<std::vector<T>*>(nullptr));
+			out = *lua_userdata_to(L, index, static_cast<Container<_Ts...>*>(nullptr));
 			return;
 		}
 
@@ -766,33 +772,62 @@ namespace LUA_MODULE_NAME {
 		}
 	}
 
-	template<typename T>
-	inline std::shared_ptr<std::vector<T>> lua_to(lua_State* L, int index, std::vector<T>* ptr) {
+	template<template<typename> typename Container, typename... _Ts>
+	inline std::shared_ptr<Container<_Ts...>> _stl_container_lua_to(lua_State* L, int index, Container<_Ts...>* ptr) {
 		if (lua_isuserdata(L, index)) {
 			return lua_userdata_to(L, index, ptr);
 		}
 
-		static std::vector<T> res;
+		static Container<_Ts...> res;
 		lua_to(L, index, res);
-		return std::make_shared<std::vector<T>>(res);
+		return std::make_shared<Container<_Ts...>>(res);
 	}
 
-	template<typename T>
-	inline int lua_push(lua_State* L, std::vector<T>&& vec) {
-		std::vector<T> _vec(std::move(vec));
-		return lua_push(L, _vec);
+	template<template<typename> typename Container, typename... _Ts>
+	inline int _stl_container_lua_push(lua_State* L, Container<_Ts...>&& container) {
+		Container<_Ts...> _container(std::move(container));
+		return lua_push(L, _container);
 	}
 
-	template<typename T>
-	inline int lua_push(lua_State* L, const std::vector<T>& vec) {
+	template<template<typename> typename Container, typename... _Ts>
+	inline int _stl_container_lua_push(lua_State* L, const Container<_Ts...>& container) {
 		lua_newtable(L);
 		int index = lua_gettop(L);
 		int i = 0;
-		for (const auto& v : vec) {
+		for (const auto& v : container) {
 			lua_push(L, v);
 			lua_rawseti(L, index, ++i);
 		}
 		return 1;
+	}
+
+	// ================================
+	// std::vector
+	// ================================
+
+	template<class T, class Allocator>
+	inline bool lua_is(lua_State* L, int index, std::vector<T, Allocator>* ptr, size_t len, bool loose) {
+		return _stl_container_lua_is<std::vector, T, Allocator>(L, index, ptr, len, loose);
+	}
+
+	template<class T, class Allocator>
+	inline void lua_to(lua_State* L, int index, std::vector<T, Allocator>& out) {
+		return _stl_container_lua_to<std::vector, T, Allocator>(L, index, out);
+	}
+
+	template<class T, class Allocator>
+	inline std::shared_ptr<std::vector<T, Allocator>> lua_to(lua_State* L, int index, std::vector<T, Allocator>* ptr) {
+		return _stl_container_lua_to<std::vector, T, Allocator>(L, index, ptr);
+	}
+
+	template<class T, class Allocator>
+	inline int lua_push(lua_State* L, std::vector<T, Allocator>&& vec) {
+		return _stl_container_lua_push<std::vector, T, Allocator>(L, std::move(vec));
+	}
+
+	template<class T, class Allocator>
+	inline int lua_push(lua_State* L, const std::vector<T, Allocator>& vec) {
+		return _stl_container_lua_push<std::vector, T, Allocator>(L, vec);
 	}
 
 	template<typename T>
