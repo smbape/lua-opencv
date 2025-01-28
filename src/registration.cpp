@@ -171,6 +171,8 @@ int LUA_MODULE_LUAOPEN(lua_State* L) {
 
 	using namespace LUA_MODULE_NAME;
 
+	init_global_state(L);
+
 	register_version(L);
 	register_Keywords(L);
 	register_bit(L);

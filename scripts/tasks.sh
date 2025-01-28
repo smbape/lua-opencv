@@ -1079,6 +1079,7 @@ function test_debug_windows() {
 function test_debug_wsl() {
     local script='
 source scripts/wsl_init.sh || exit $?
+./luarocks/luarocks${LUAROCKS_SUFFIX} install --deps-only samples/samples-scm-1.rockspec || exit $?
 PYTHON_VENV_PATH="${PWD}/out/test/.venv" MODELS_PATH="${projectDir}/out/test/.models" node scripts/test.js --Debug'
 
     for arg in "$@"; do
