@@ -13,9 +13,9 @@ const genFunc = (libname, fname, args) => {
 
     return `
 ${ fdecl.join(" ") } ( ... )
-    local args={...}
-    local has_kwarg = ${ kwargs }.is_instance(args[#args])
-    local kwargs = has_kwarg and args[#args] or ${ kwargs }()
+    local args={n=select("#", ...), ...}
+    local has_kwarg = ${ kwargs }.isinstance(args[args.n])
+    local kwargs = has_kwarg and args[args.n] or ${ kwargs }()
     local usedkw = 0
 
     ${ args.map((decl, i) => {
@@ -39,12 +39,12 @@ ${ fdecl.join(" ") } ( ... )
             -- get argument ${ kwname || argname }
             local ${ argname }${ defval == null ? "" : ` = ${ defval }` }
             local has_${ argname } = false
-            if (not has_kwarg) or #args > ${ i + 1 } then
+            if (not has_kwarg) or args.n > ${ i + 1 } then
                 -- positional parameter should not be a named parameter
                 if has_kwarg and kwargs:has("${ kwname || argname }") then
-                    error('${ kwname || argname } was both specified as a Positional and NamedParameter')
+                    error("${ kwname || argname } was both specified as a Positional and NamedParameter")
                 end
-                has_${ argname } = #args >= ${ i + 1 }
+                has_${ argname } = args.n >= ${ i + 1 }
                 if has_${ argname } then
                     ${ argname } = args[${ i + 1 }]
                 end
@@ -54,13 +54,13 @@ ${ fdecl.join(" ") } ( ... )
                 ${ argname } = kwargs:get("${ kwname || argname }")
                 usedkw = usedkw + 1
             elseif ${ mandatory } then
-                error('${ kwname || argname } is mandatory')
+                error("${ kwname || argname } is mandatory")
             end
         `.replace(/^ {8}/mg, "").replace("elseif true then", "else").replace(/\n[^\S\n]+elseif false then\n[^\n]+/, "").trim();
     }).join(`\n\n${ " ".repeat(4) }`) }
 
     if usedkw ~= kwargs:size() then
-        error('there are ' .. (kwargs:size() - usedkw) .. ' unknown named parameters')
+        error("there are " .. (kwargs:size() - usedkw) .. " unknown named parameters")
     end
 
     --- ====================== ---

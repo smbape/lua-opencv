@@ -7,6 +7,9 @@
 #include <lua_bridge_common.hpp>
 #include <lua_bridge_arrays.hpp>
 
+#include <lua_generated_include.hpp>
+#include <register_all.hpp>
+
 namespace LUA_MODULE_NAME {
 	// ================================
 	// cv::Range
@@ -29,8 +32,7 @@ namespace LUA_MODULE_NAME {
 		return cv::Range(vec.at(0), vec.at(1));
 	}
 
-	template<>
-	inline void lua_to<cv::Range>(lua_State* L, int index, std::vector<cv::Range>& out) {
+	inline void lua_to(lua_State* L, int index, std::vector<cv::Range>& out) {
 		if (lua_isuserdata(L, index)) {
 			out = *lua_userdata_to(L, index, static_cast<std::vector<cv::Range>*>(nullptr));
 			return;

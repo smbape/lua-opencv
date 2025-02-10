@@ -20,6 +20,7 @@ const Python3_EXECUTABLE = process.env.Python3_EXECUTABLE ? process.env.Python3_
 const getOptions = output => {
     const options = {
         APP_NAME: "OpenCV",
+        language: "lua",
         namespace: "cv",
         implicitNamespaceType: /^(?:Point|Rect|Scalar|Size|Vec)(?:\d[bdfisw])?$/,
         variantTypeReg: /(?:<cv::Ptr)/,
@@ -27,6 +28,7 @@ const getOptions = output => {
         make_shared: "cv::makePtr",
         exception: "cv::Exception",
         Any: "Object",
+        AnyObject: "Object",
         cname: "new",
 
         isCaseSensitive: true,

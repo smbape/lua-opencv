@@ -41,7 +41,7 @@ The procedure has been tested on:
   - Install [Git](https://git-scm.com/)
   - Install [NodeJS](https://nodejs.org/en/download/current)
   - Install [Python](https://www.python.org/downloads/)
-  - Install [Visual Studio 2022 >= 17.7.2](https://visualstudio.microsoft.com/fr/downloads/)
+  - Install [Visual Studio 2022 >= 17.13.0](https://visualstudio.microsoft.com/fr/downloads/)
 
 In your windows search, search and open the `x64 Native Tools Command Prompt for VS 2022`
 

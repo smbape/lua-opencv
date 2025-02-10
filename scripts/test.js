@@ -125,18 +125,33 @@ if (os.platform() === "win32") {
     ];
 }
 
+const unixPath = path => {
+    return path.replaceAll("\\", "/").replace(/^(\w+):/, (match, drive) => {
+        return `/${ drive.toLowerCase() }`;
+    })
+};
+
+const unixEscape = (arg, verbatim = true) => {
+    if (arg.includes(" ") || arg.includes("\\")) {
+        return `'${ arg }'`;
+    }
+
+    if (verbatim && os.platform() === "win32" && arg[0] === "/" && arg[1] !== "/") {
+        return `/${ arg }`;
+    }
+
+    return arg;
+}
+
+const unixEnv = (key, value) => {
+    if (os.platform() === "win32" && key === "PATH") {
+        value = value.split(sysPath.delimiter).map(unixPath).join(":");
+    }
+    return `${ key }=${ unixEscape(value) }`;
+};
+
 const unixCmd = argv => {
-    return argv.map(arg => {
-        if (arg.includes(" ") || arg.includes("\\")) {
-            return `'${ arg }'`;
-        }
-
-        if (os.platform() === "win32" && arg[0] === "/" && arg[1] !== "/") {
-            return `/${ arg }`;
-        }
-
-        return arg;
-    }).join(" ");
+    return argv.map(arg => unixEscape(arg)).join(" ");
 };
 
 const run = (file, env, options, next) => {
@@ -169,7 +184,7 @@ const run = (file, env, options, next) => {
         throw new Error(`Unsupported extenstion ${ extname }`);
     }
 
-    const cmd = [keys.map(key => `${ key }=${ env[key] }`).join(" "), unixCmd(args.flat())].join(" ");
+    const cmd = [keys.map(key => unixEnv(key, env[key])).join(" "), unixCmd(args.flat())].join(" ");
 
     if (options.bash) {
         console.log(cmd, "||", "exit $?");
@@ -205,10 +220,6 @@ const run = (file, env, options, next) => {
     }
 };
 
-const unixPath = path => {
-    return `/${ path.replace(":", "").replaceAll("\\", "/") }`;
-};
-
 const bash_init = "#!/usr/bin/env bash\n\nset -o pipefail\n";
 
 const main = (options, next) => {
@@ -228,7 +239,7 @@ const main = (options, next) => {
     if (options.bash) {
         console.log([
             bash_init,
-            `cd ${ cwd.includes(" ") ? `'${ unixPath(cwd) }'` : unixPath(cwd) }`,
+            `cd ${ unixEscape(unixPath(cwd), false) } || exit \$?`,
             "",
         ].join("\n"));
     }

@@ -1,15 +1,12 @@
 #pragma once
 
 #include <lua_bridge.hpp>
+#include <shared_mutex>
 
 namespace LUA_MODULE_NAME {
 	int __call_constructor(lua_State* L);
 
-	bool is_call_garbage_collect();
-
-	using Callback = std::function<void(lua_State*, void*)>;
-	extern std::mutex callback_mutex;
-	void registerCallback(Callback callback, void* userdata);
+	std::unique_lock<std::shared_timed_mutex> lock_callbacks();
 }
 
 // This function needs to be exported.

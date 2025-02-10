@@ -48,7 +48,7 @@ cv.namedWindow(title_window)
 
 -- [create_trackbar]
 local trackbar_name = string.format('Alpha x %d', alpha_slider_max)
-cv.createTrackbar(trackbar_name, title_window, 0, alpha_slider_max, on_trackbar, 0)
+cv.createTrackbar(trackbar_name, title_window, 0, alpha_slider_max, on_trackbar)
 -- [create_trackbar]
 
 -- Show some stuff

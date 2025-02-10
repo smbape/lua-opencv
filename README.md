@@ -59,7 +59,7 @@ Prebuilt binaries are available for [LuaJIT 2.1](https://luajit.org/) and [Lua 5
   - Install [LuaRocks](https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Windows)
   - Install [NodeJS](https://nodejs.org/en/download/current)
   - Install [Python](https://www.python.org/downloads/)
-  - Install [Visual Studio 2022 >= 17.7.2 with .NET Desktop and C++ Desktop](https://visualstudio.microsoft.com/fr/downloads/)
+  - Install [Visual Studio 2022 >= 17.13.0 with .NET Desktop and C++ Desktop](https://visualstudio.microsoft.com/fr/downloads/)
   - In your windows search, search and open the `x64 Native Tools Command Prompt for VS 2022`
 
 #### Linux
@@ -320,7 +320,7 @@ All the examples in the samples directory can be run by folling theses instructi
 
   - Install [Git](https://git-scm.com/)
   - Install [NodeJS](https://nodejs.org/en/download/current)
-  - Install [Visual Studio 2022 >= 17.7.2 with '.NET desktop development' and 'Desktop development with C++'](https://visualstudio.microsoft.com/fr/downloads/)
+  - Install [Visual Studio 2022 >= 17.13.0 with '.NET desktop development' and 'Desktop development with C++'](https://visualstudio.microsoft.com/fr/downloads/)
   - In your windows search, search and open the `x64 Native Tools Command Prompt for VS 2022`
 
 #### Linux

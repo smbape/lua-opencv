@@ -23,7 +23,7 @@ FetchContent_Declare(luajit
   URL                 https://github.com/LuaJIT/LuaJIT/archive/${Luajit_COMMIT_HASH_${Luajit_HASH_VERSION}}.zip
   URL_HASH            SHA256=${Luajit_URL_HASH_${Luajit_HASH_VERSION}}
 )
-Fetchcontent_Populate(luajit)
+FetchContent_MakeAvailable(luajit)
 
 set(luajit_SRC "${luajit_SOURCE_DIR}/src")
 set(LUA_SHARE_DIR "${luajit_BINARY_DIR}/share/luajit-${VERSION}/jit")
@@ -264,7 +264,7 @@ if (APPLE AND BUILD_SHARED_LIBS)
   target_link_options(libluajit PRIVATE -dynamiclib -undefined dynamic_lookup)
 endif()
 
-if (("${Luajit_VERSION}" STREQUAL "2.1.0-beta3") AND ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin") AND ("${TARGET_LJARCH}" STREQUAL x64))
+if (("${Luajit_VERSION}" STREQUAL "2.1.0-beta3") AND ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin") AND ("${TARGET_LJARCH}" STREQUAL "x64"))
   target_link_options(libluajit PRIVATE -image_base 7fff04c4a000)
 endif()
 
@@ -342,7 +342,7 @@ set_target_properties(luajit PROPERTIES OUTPUT_NAME "luajit-${VERSION}")
 
 if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
   add_compile_definitions(LUAJIT_UNWIND_EXTERNAL)
-  if (("${Luajit_VERSION}" STREQUAL "2.1.0-beta3") AND ("${TARGET_LJARCH}" STREQUAL x64))
+  if (("${Luajit_VERSION}" STREQUAL "2.1.0-beta3") AND ("${TARGET_LJARCH}" STREQUAL "x64"))
     target_link_options(luajit PRIVATE -pagezero_size 10000 -image_base 100000000)
   endif()
 endif()

@@ -2,6 +2,7 @@
 
 #include <luadef.hpp>
 #include <opencv2/core.hpp>
+#include <opencv2/gapi/util/variant.hpp>
 
 namespace LUA_MODULE_NAME {
 	inline bool lua_is(lua_State* L, int index, cv::Range*);
@@ -35,8 +36,7 @@ namespace LUA_MODULE_NAME {
 
 	inline cv::Range lua_to(lua_State* L, int index, cv::Range*);
 
-	template<>
-	inline void lua_to<cv::Range>(lua_State* L, int index, std::vector<cv::Range>& out);
+	inline void lua_to(lua_State* L, int index, std::vector<cv::Range>& out);
 
 	template<typename T>
 	inline cv::Ptr<T> lua_to(lua_State* L, int index, cv::Ptr<T>*);

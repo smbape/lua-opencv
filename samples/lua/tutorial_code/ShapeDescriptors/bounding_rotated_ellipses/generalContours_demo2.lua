@@ -57,7 +57,7 @@ local function thresh_callback(val)
         end
         -- rotated rectangle
         local box = cv.boxPoints(minRect[i])
-        box = box:convertTo(cv.CV_32S) -- np.intp: Integer used for indexing (same as C ssize_t; normally either int32 or int64)
+        box = box:convertTo(cv.CV_32S):reshape(2) -- np.intp: Integer used for indexing (same as C ssize_t; normally either int32 or int64)
         cv.drawContours(drawing, { box }, 0, color)
     end
     -- [forContour]

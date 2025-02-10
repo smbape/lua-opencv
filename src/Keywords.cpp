@@ -85,6 +85,14 @@ namespace LUA_MODULE_NAME {
 	const std::map<std::variant<std::string, int>, std::function<int(lua_State*)>> usertype_info<Keywords>::getters({});
 	const std::map<std::variant<std::string, int>, std::function<int(lua_State*)>> usertype_info<Keywords>::setters({});
 
+	bool usertype_info<Keywords>::lua_userdata_is(lua_State* L, int index) {
+		return lua_userdata_signature_is<Keywords>(L, index);
+	}
+
+	std::shared_ptr<Keywords> usertype_info<Keywords>::lua_userdata_to(lua_State* L, int index) {
+		return lua_userdata_signature_to<Keywords>(L, index);
+	}
+
 	const struct luaL_Reg usertype_info<Keywords>::methods[] = {
 		{"isinstance", lua_method_isinstance<Keywords>},
 		{"new", Keywords_constructor},

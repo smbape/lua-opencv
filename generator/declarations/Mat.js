@@ -378,6 +378,11 @@ module.exports = ({ self, self_get, shared_ptr }) => {
 
         // Extended Functions
 
+        ["cv.Mat.__tostring", "void", [`/Output=ouput << cv::format(${ self }, fmt)`], [
+            ["std::string", "ouput", "", ["/O", "/Ref"]],
+            ["Formatter::FormatType", "fmt", "Formatter::FMT_NUMPY", []],
+        ], "", ""],
+
         ["cv.Mat.sum", "cv::Scalar", ["/Call=cv::sum", `/Expr=${ self }`], [], "", ""],
 
         ["cv.Mat.operator+", "void", ["/Call=cv::add", `/Expr=${ self }, $0`], [

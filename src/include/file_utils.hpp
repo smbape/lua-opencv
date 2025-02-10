@@ -27,4 +27,10 @@ namespace fs_utils {
 		const std::string& filter = "",
 		const std::vector<std::string>& hints = std::vector<std::string>(1, ".")
 	);
+
+	CV_EXPORTS_W std::string absolute(const std::string& path);
+	CV_EXPORTS_W std::string current_path();
+	CV_EXPORTS_W bool exists(const std::string& path);
+	CV_EXPORTS_W bool equivalent(const std::string& p1, const std::string& p2);
+	CV_EXPORTS_W std::string temp_directory_path();
 }

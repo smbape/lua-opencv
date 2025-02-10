@@ -40,8 +40,7 @@ FetchContent_Declare(lua
   URL_HASH            SHA256=${Lua_URL_HASH_${Lua_DLLVERSION}}
   PATCH_COMMAND       "${PATCH}" -p 1 -d "<SOURCE_DIR>" -i "${CMAKE_CURRENT_SOURCE_DIR}/patches/001-lua-${MAJVER}.${MINVER}-src.patch"
 )
-
-Fetchcontent_Populate(lua)
+FetchContent_MakeAvailable(lua)
 
 if ("${ABIVER}" STREQUAL "5.2")
   add_compile_definitions(LUA_COMPAT_ALL)

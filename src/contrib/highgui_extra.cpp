@@ -37,17 +37,17 @@ namespace {
 		}
 
 		static void handleCallback(Args... args, void* userdata) {
-			std::lock_guard<std::mutex> lock(callback_mutex);
-			auto worker = reinterpret_cast<AsyncWorker<Args...>*>(userdata);
-			worker->has_data = true;
-			worker->args = std::make_tuple(std::forward<Args>(args)...);
+			auto lock = lock_callbacks();
+			auto& worker = *reinterpret_cast<AsyncWorker<Args...>*>(userdata);
+			worker.has_data = true;
+			worker.args = std::make_tuple(std::forward<Args>(args)...);
 		}
 
 		static void handleNotify(lua_State* L, void* userdata) {
-			auto worker = reinterpret_cast<AsyncWorker<Args...>*>(userdata);
-			if (worker->has_data) {
-				worker->has_data = false;
-				std::apply(&check_error<Args..., const Object&>, std::tuple_cat(std::make_tuple(L, worker->callback), worker->args, std::tie(worker->userdata)));
+			auto& worker = *reinterpret_cast<AsyncWorker<Args...>*>(userdata);
+			if (worker.has_data) {
+				worker.has_data = false;
+				std::apply(&check_error<Args..., const Object&>, std::tuple_cat(std::make_tuple(L, worker.callback), worker.args, std::tie(worker.userdata)));
 			}
 		}
 
@@ -56,7 +56,7 @@ namespace {
 		static AsyncWorker<Args...>& add_worker(lua_State* L, const Function& callback, const Object& userdata) {
 			auto key = registered_workers.size();
 			{
-				std::lock_guard<std::mutex> lock(callback_mutex);
+				auto lock = lock_callbacks();
 				registered_workers.emplace(std::piecewise_construct,
 					std::forward_as_tuple(key),
 					std::forward_as_tuple(L, callback, userdata));

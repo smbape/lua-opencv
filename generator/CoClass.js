@@ -308,8 +308,11 @@ class CoClass {
             arg_decl[0] = getAlias(argtype);
         }
 
-        if (fname === this.name && !this.isStatic()) {
-            fname = options.cname ? options.cname : "create";
+        const cname = options.cname ? options.cname : "create";
+        const cnames = options.cnames ? options.cnames : new Set([cname]);
+
+        if (!this.isStatic() && fname === this.name) {
+            fname = cname;
             list_of_modifiers.push("/CO", "/S");
             decl[0] = path.slice(0, -1).join("::");
             decl[1] = this.fqn;
@@ -324,6 +327,10 @@ class CoClass {
             if (list_of_arguments.length === 0 || !list_of_arguments.some(([argtype, argname, defval]) => defval === "")) {
                 this.has_default_constructor = true;
             }
+        }
+
+        if (!this.isStatic() && cnames.has(fname)) {
+            fname = cname;
         }
 
         for (const modifier of list_of_modifiers) {

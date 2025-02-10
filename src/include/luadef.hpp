@@ -152,13 +152,6 @@
 }} while(0)
 #endif
 
-#ifndef LUA_MODULE_ASSERT_SET_HR
-#define LUA_MODULE_ASSERT_SET_HR( expr ) do { if(!!(expr)) { hr = S_OK; } else { \
-fprintf(stderr, LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_NAME) "(%s) Error: (%s) in %s, file %s, line %d\n", LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_VERSION), #expr, Lua_Module_Func, __FILE__, __LINE__); \
-hr = E_FAIL; } \
-} while(0)
-#endif
-
 #ifndef LUA_MODULE_ASSERT
 #define LUA_MODULE_ASSERT( expr ) do { if(!!(expr)) ; else { \
 fflush(stdout); fflush(stderr); \
@@ -229,94 +222,8 @@ namespace LUA_MODULE_NAME {
 
 	template<typename T>
 	struct basetype_info;
-
-	template<int Kind>
-	struct _Object {
-		_Object() = default;
-		~_Object() {
-			reset();
-		}
-
-		_Object(lua_State* L_, int index) : L(L_) {
-			if (L != nullptr) {
-				lua_pushvalue(L, index);
-				ref = luaL_ref(L, LUA_REGISTRYINDEX);
-			}
-		}
-
-		_Object(const _Object& other) {
-			*this = other;
-		}
-
-		_Object& operator=(const _Object& other) {
-			// Guard self assignment
-			if (this == &other) {
-				return *this;
-			}
-
-			reset();
-
-			if (other.L != nullptr) {
-				L = other.L;
-				lua_rawgeti(other.L, LUA_REGISTRYINDEX, other.ref);
-				ref = luaL_ref(other.L, LUA_REGISTRYINDEX);
-			}
-
-			return *this;
-		}
-
-		_Object(_Object&& other) noexcept {
-			*this = std::move(other);
-		}
-
-		_Object& operator=(_Object&& other) noexcept {
-			// Guard self assignment
-			if (this == &other) {
-				return *this;
-			}
-
-			reset();
-
-			L = std::exchange(other.L, nullptr); // leave other in valid state
-			ref = std::exchange(other.ref, LUA_REFNIL);
-			return *this;
-		}
-
-		void reset() {
-			if (ref != LUA_REFNIL) {
-				luaL_unref(L, LUA_REGISTRYINDEX, ref);
-				free();
-			}
-		}
-
-		void free() {
-			L = nullptr;
-			ref = LUA_REFNIL;
-		}
-
-		void assign(lua_State* L, const _Object& other) {
-			reset();
-
-			if (L != nullptr) {
-				this->L = L;
-				lua_push(L, other);
-				ref = luaL_ref(L, LUA_REGISTRYINDEX);
-			}
-		}
-
-		inline bool operator==(const _Object& rhs) const {
-			return L == rhs.L && ref == rhs.ref;
-		}
-
-		inline bool operator!=(const _Object& rhs) { return !(*this == rhs); }
-
-		lua_State* L = nullptr;
-		int ref = LUA_REFNIL;
-	};
-
-	using Object = _Object<0>;
-	using Table = _Object<1>;
-	using Function = _Object<2>;
-
-	const Object lua_nil;
 }
+
+#ifndef CV_PROP_W
+#define CV_PROP_W
+#endif

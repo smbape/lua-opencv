@@ -157,13 +157,17 @@ namespace {
 	}
 #endif
 
-	inline void _addMatch(std::vector<std::string>& matches, const fs::path::string_type& match) {
+	inline std::string _string_type_to_string(const fs::path::string_type& match) {
 #ifdef _MSC_VER
 		std::string str; wcs_to_utf8(match.c_str(), match.length(), str);
-		matches.push_back(str);
+		return str;
 #else
-		matches.push_back(match);
+		return match;
 #endif
+	}
+
+	inline void _addMatch(std::vector<std::string>& matches, const fs::path::string_type& match) {
+		matches.push_back(_string_type_to_string(match));
 	}
 
 	void _findFiles(
@@ -303,8 +307,13 @@ namespace fs_utils {
 			return found;
 		}
 
-		std::vector<std::string> matches;
 		fs::path root_path = fs::absolute(directory);
+
+		if (path == ".") {
+			return _string_type_to_string(root_path.native());
+		}
+
+		std::vector<std::string> matches;
 		bool top_search_absolute = true;
 
 		while (true) {
@@ -343,5 +352,25 @@ namespace fs_utils {
 		}
 
 		return found;
+	}
+
+	std::string absolute(const std::string& path) {
+		return _string_type_to_string(fs::absolute(path).native());
+	}
+
+	std::string current_path() {
+		return _string_type_to_string(fs::current_path().native());
+	}
+
+	bool exists(const std::string& path) {
+		return fs::exists(path);
+	}
+
+	bool equivalent(const std::string& p1, const std::string& p2) {
+		return fs::equivalent(p1, p2);
+	}
+
+	std::string temp_directory_path() {
+		return _string_type_to_string(fs::temp_directory_path().native());
 	}
 }

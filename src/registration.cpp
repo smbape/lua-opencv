@@ -75,47 +75,6 @@ namespace {
 		lua_pop(L, 1);
 	}
 
-	bool garbage_collecte_active = false;
-
-	int is_call_garbage_collect(lua_State* L) {
-		return lua_push(L, garbage_collecte_active);
-	}
-
-	int call_garbage_collect(lua_State* L) {
-		auto vargc = lua_gettop(L);
-
-		if (vargc == 1) {
-			if (!lua_is(L, 1, static_cast<bool*>(nullptr))) {
-				return luaL_typeerror(L, 1, "boolean");
-			}
-			auto value = lua_to(L, 1, static_cast<bool*>(nullptr));
-			garbage_collecte_active = value;
-			return 0;
-		}
-
-		return luaL_error(L, "1 argument expected, got %d", vargc);
-	}
-
-	const struct luaL_Reg funcs_garbage_collect[] = {
-		{ "is_call_garbage_collect", is_call_garbage_collect },
-		{ "call_garbage_collect", call_garbage_collect },
-		{ NULL, NULL }
-	};
-
-	void register_garbage_collect(lua_State* L) {
-		lua_pushfuncs(L, funcs_garbage_collect);
-	}
-
-	std::vector<std::tuple<Callback, void*>> registered_callbacks;
-
-	int notifyCallbacks(lua_State* L) {
-		std::lock_guard<std::mutex> lock(callback_mutex);
-		for (const auto& [callback, userdata] : registered_callbacks) {
-			callback(L, userdata);
-		}
-		return 0;
-	}
-
 	const struct luaL_Reg funcs_callbacks[] = {
 		{ "notifyCallbacks",    notifyCallbacks },
 		{ NULL, NULL }
@@ -128,6 +87,51 @@ namespace {
 	const struct luaL_Reg no_funcs[] = {
 		{ NULL, NULL }
 	};
+}
+
+namespace {
+	struct CallbackHandler {
+		Callback callback;
+		void* userdata = nullptr;
+	};
+
+	std::unordered_map<int, CallbackHandler> registered_callbacks;
+	std::vector<int> once_ids;
+	int _callback_id = 0;
+
+	std::shared_timed_mutex callback_mutex;
+
+	struct Notifier {
+		static std::shared_timed_mutex notifier_mutex;
+		static bool notifying;
+
+		bool notify;
+
+		Notifier() {
+			std::unique_lock lock(notifier_mutex);
+
+			notify = !notifying;
+
+			if (notify) {
+				notifying = true;
+			}
+		}
+
+		~Notifier() {
+			std::unique_lock lock(notifier_mutex);
+
+			if (notify) {
+				notifying = false;
+			}
+		}
+
+		operator const bool() const {
+			return notify;
+		}
+	};
+
+	std::shared_timed_mutex Notifier::notifier_mutex;
+	bool Notifier::notifying = false;
 }
 
 namespace LUA_MODULE_NAME {
@@ -147,15 +151,62 @@ namespace LUA_MODULE_NAME {
 		return lua_gettop(L) - vargc;
 	}
 
-	bool is_call_garbage_collect() {
-		return garbage_collecte_active;
+	std::unique_lock<std::shared_timed_mutex> lock_callbacks() {
+		return std::unique_lock<std::shared_timed_mutex>(callback_mutex);
 	}
 
-	std::mutex callback_mutex;
+	int registerCallback(Callback callback, void* userdata, std::optional<std::function<void(int)>> onRegistration) {
+		auto lock = lock_callbacks();
 
-	void registerCallback(Callback callback, void* userdata) {
-		std::lock_guard<std::mutex> lock(callback_mutex);
-		registered_callbacks.push_back(std::make_tuple(callback, userdata));
+		registered_callbacks.emplace(std::piecewise_construct,
+			std::forward_as_tuple(_callback_id),
+			std::forward_as_tuple(std::move(callback), userdata));
+
+		if (onRegistration) {
+			onRegistration.value()(_callback_id);
+		}
+
+		return _callback_id++;
+	}
+
+	int registerCallbackOnce(Callback callback, void* userdata, std::optional<std::function<void(int)>> onRegistration) {
+		return registerCallback(std::move(callback), userdata, std::move([onRegistration](int callback_id) {
+			once_ids.push_back(callback_id);
+			if (onRegistration) {
+				onRegistration.value()(callback_id);
+			}
+			}));
+	}
+
+	bool unregisterCallback(int callback_id) {
+		auto lock = lock_callbacks();
+
+		if (registered_callbacks.count(callback_id)) {
+			registered_callbacks.erase(callback_id);
+			return true;
+		}
+
+		return false;
+	}
+
+	int notifyCallbacks(lua_State* L) {
+		Notifier notify;
+
+		// avoid notifyCallbacks while already in notifyCallbacks
+		if (notify) {
+			auto lock = lock_callbacks();
+
+			for (const auto& [callback_id, value] : registered_callbacks) {
+				const auto& [callback, userdata] = value;
+				callback(L, userdata);
+			}
+
+			for (const auto& callback_id : once_ids) {
+				registered_callbacks.erase(callback_id);
+			}
+		}
+
+		return 0;
 	}
 }
 
@@ -177,7 +228,6 @@ int LUA_MODULE_LUAOPEN(lua_State* L) {
 	register_Keywords(L);
 	register_bit(L);
 	register_math(L);
-	register_garbage_collect(L);
 	regiter_callbacks(L);
 	register_all(L);
 	register_extensions(L);

@@ -3,6 +3,12 @@ module.exports = [
     ["class cv._OutputArray", "", [], [], "", ""],
     ["class cv._InputOutputArray", "", [], [], "", ""],
 
+    ["cv.format", "void", ["/Output=ouput << cv::format(mtx, fmt)"], [
+        ["std::string", "ouput", "", ["/O", "/Ref"]],
+        ["InputArray", "mtx", "", []],
+        ["Formatter::FormatType", "fmt", "Formatter::FMT_NUMPY", []],
+    ], "", ""],
+
     ["cv.read", "void", ["=readMat"], [
         ["FileNode", "node", "", []],
         ["Mat", "mat", "", ["/O"]],
