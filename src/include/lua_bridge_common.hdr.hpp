@@ -1,11 +1,12 @@
 #pragma once
 
-#include <cmath>
-#include <thread>
 #include <luadef.hpp>
 #include <Keywords.hpp>
 
 namespace LUA_MODULE_NAME {
+	lua_State* get_global_state();
+	void init_global_state(lua_State* L);
+
 	using Callback = std::function<void(lua_State*, void*)>;
 	int registerCallback(Callback callback, void* userdata = nullptr, std::optional<std::function<void(int)>> onRegistration = std::nullopt);
 	int registerCallbackOnce(Callback callback, void* userdata = nullptr, std::optional<std::function<void(int)>> onRegistration = std::nullopt);
@@ -74,37 +75,39 @@ namespace LUA_MODULE_NAME {
 	 * https://en.cppreference.com/w/cpp/types/numeric_limits
 	 */
 	inline bool lua_is(lua_State* L, int index, std::integral auto* ptr) {
+		using Integer = std::decay<decltype(*ptr)>::type;
+
 		if (lua_type(L, index) != LUA_TNUMBER) {
 			return false;
 		}
 #if LUA_VERSION_NUM >= 503
 		// Lua 5.3 and greater checks for numeric precision
-		if (!lua_isinteger(L, index)) {
-			return false;
+		if (lua_isinteger(L, index)) {
+			lua_Integer v = lua_tointeger(L, index);
+			return v >= std::numeric_limits<Integer>::min() && v <= std::numeric_limits<Integer>::max();
 		}
-
-		const auto v = lua_tointeger(L, index);
-#else
+#endif
 		const lua_Number v = lua_tonumber(L, index);
 		// https://stackoverflow.com/questions/1521607/check-double-variable-if-it-contains-an-integer-and-not-floating-point/1521682#1521682
 		static double intpart;
 		if (std::modf(v, &intpart) != 0.0) {
 			return false;
 		}
-#endif
-		using Integer = std::decay<decltype(*ptr)>::type;
+
 		return v >= std::numeric_limits<Integer>::min() && v <= std::numeric_limits<Integer>::max();
 	}
 
 	inline auto lua_to(lua_State* L, int index, std::integral auto* ptr) {
 		using Integer = std::decay<decltype(*ptr)>::type;
+
 #if LUA_VERSION_NUM >= 503
 		// Lua 5.3 and greater checks for numeric precision
-		return static_cast<Integer>(lua_tointeger(L, index));
-#else
+		if (lua_isinteger(L, index)) {
+			return static_cast<Integer>(lua_tointeger(L, index));
+		}
+#endif
 		const lua_Number v = lua_tonumber(L, index);
 		return static_cast<Integer>(v);
-#endif
 	}
 
 	inline int lua_push(lua_State* L, std::integral auto n) {
@@ -261,7 +264,9 @@ namespace LUA_MODULE_NAME {
 
 		void reset() {
 			if (ref != LUA_REFNIL) {
-				luaL_unref(L, LUA_REGISTRYINDEX, ref);
+				if (get_global_state()) {
+					luaL_unref(L, LUA_REGISTRYINDEX, ref);
+				}
 				free();
 			}
 		}
@@ -300,10 +305,6 @@ namespace LUA_MODULE_NAME {
 	using Function = _Object<2>;
 
 	const Object lua_nil;
-
-	lua_State* get_global_state();
-
-	void init_global_state(lua_State* L);
 
 	struct PushGuard {
 		lua_State* L;

@@ -207,7 +207,11 @@ if ! command -v cmake &>/dev/null; then
     fi
 
     sh ${CMAKE_INSTALL_SCRIPT} --skip-license --prefix=/opt/cmake && \
-    ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake || exit $?
+    ln -s /opt/cmake/bin/ccmake /usr/local/bin/ccmake && \
+    ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake && \
+    ln -s /opt/cmake/bin/cmake-gui /usr/local/bin/cmake-gui && \
+    ln -s /opt/cmake/bin/cpack /usr/local/bin/cpack && \
+    ln -s /opt/cmake/bin/ctest /usr/local/bin/ctest || exit $?
 fi
 
 if ! command -v ninja &>/dev/null; then
@@ -398,8 +402,8 @@ done
 
 function prepublish_any() {
     time node --trace-uncaught --unhandled-rejections=strict scripts/prepublish.js --pack --lua-versions "${LUA_VERSIONS}" "$@" && \
-    time ./build${SCRIPT_SUFFIX} "-DLua_VERSION=luajit-2.1" --target luajit --install && \
-    time ./build${SCRIPT_SUFFIX} "-DLua_VERSION=luajit-2.1" --target luarocks
+    time ./build${SCRIPT_SUFFIX} -DLua_VERSION=luajit-2.1 --target luajit --install && \
+    time ./build${SCRIPT_SUFFIX} -DLua_VERSION=luajit-2.1 --target luarocks
 }
 
 function set_url_windows() {
@@ -415,26 +419,96 @@ function prepublish_windows() {
     DIST_VERSION=${DIST_VERSION} prepublish_any
 }
 
-function use_luajit_opencv_lua_modules() {
+function use_luajit_modules() {
     local sources="$PWD/out/prepublish/build/opencv_lua"
-    rm -rf luarocks/lua_modules && \
+    rm -rf luarocks/lua_modules out/build.luaonly/x64-*/luarocks/luarocks-prefix/src/luarocks-stamp && \
+        ./build${SCRIPT_SUFFIX} -d -DLua_VERSION=luajit-2.1 --target luajit --install && \
+        ./build${SCRIPT_SUFFIX} -d -DLua_VERSION=luajit-2.1 --target luarocks && \
+        ./build${SCRIPT_SUFFIX} -DLua_VERSION=luajit-2.1 --target luajit --install && \
+        ./build${SCRIPT_SUFFIX} -DLua_VERSION=luajit-2.1 --target luarocks && \
     bash -c "
         cd ${sources}/ && \
         ./build${SCRIPT_SUFFIX} -DLua_VERSION=luajit-2.1 --target luajit --install && \
         ./build${SCRIPT_SUFFIX} -DLua_VERSION=luajit-2.1 --target luarocks && \
-        source scripts/vcvars_restore_start.sh && ./luarocks/luarocks.bat install --deps-only samples/samples-scm-1.rockspec" && \
+        source scripts/vcvars_restore_start.sh && ./luarocks/luarocks${LUAROCKS_SUFFIX} install --deps-only samples/samples-scm-1.rockspec" && \
+    rm -rf luarocks/lua_modules && \
     cmd.exe //c mklink //j "$(cygpath -w "$PWD/luarocks/lua_modules")" "$(cygpath -w "${sources}/luarocks/lua_modules")"
 }
 
-function use_luajit_opencv_lua_contrib_modules() {
+function use_luajit_contrib_modules() {
     local sources="$PWD/out/prepublish/build/opencv_lua-contrib"
-    rm -rf luarocks/lua_modules && \
+    rm -rf luarocks/lua_modules out/build.luaonly/x64-*/luarocks/luarocks-prefix/src/luarocks-stamp && \
+        ./build${SCRIPT_SUFFIX} -d -DLua_VERSION=luajit-2.1 --target luajit --install && \
+        ./build${SCRIPT_SUFFIX} -d -DLua_VERSION=luajit-2.1 --target luarocks && \
+        ./build${SCRIPT_SUFFIX} -DLua_VERSION=luajit-2.1 --target luajit --install && \
+        ./build${SCRIPT_SUFFIX} -DLua_VERSION=luajit-2.1 --target luarocks && \
     bash -c "
         cd ${sources}/ && \
         ./build${SCRIPT_SUFFIX} -DLua_VERSION=luajit-2.1 --target luajit --install && \
         ./build${SCRIPT_SUFFIX} -DLua_VERSION=luajit-2.1 --target luarocks && \
-        source scripts/vcvars_restore_start.sh && ./luarocks/luarocks.bat install --deps-only samples/samples-scm-1.rockspec" && \
+        source scripts/vcvars_restore_start.sh && ./luarocks/luarocks${LUAROCKS_SUFFIX} install --deps-only samples/samples-scm-1.rockspec" && \
+    rm -rf luarocks/lua_modules && \
     cmd.exe //c mklink //j "$(cygpath -w "$PWD/luarocks/lua_modules")" "$(cygpath -w "${sources}/luarocks/lua_modules")"
+}
+
+function use_lua_modules() {
+    local version="${1:-5.4}"
+    local sources="$PWD/out/prepublish/build/opencv_lua"
+    rm -rf luarocks/lua_modules out/build.luaonly/x64-*/luarocks/luarocks-prefix/src/luarocks-stamp && \
+        ./build${SCRIPT_SUFFIX} -d -DLua_VERSION=${version} --target lua --install && \
+        ./build${SCRIPT_SUFFIX} -d -DLua_VERSION=${version} --target luarocks && \
+        ./build${SCRIPT_SUFFIX} -DLua_VERSION=${version} --target lua --install && \
+        ./build${SCRIPT_SUFFIX} -DLua_VERSION=${version} --target luarocks && \
+    bash -c "
+        cd ${sources}/ && \
+        ./build${SCRIPT_SUFFIX} -DLua_VERSION=${version} --target lua --install && \
+        ./build${SCRIPT_SUFFIX} -DLua_VERSION=${version} --target luarocks && \
+        source scripts/vcvars_restore_start.sh && ./luarocks/luarocks${LUAROCKS_SUFFIX} install --deps-only samples/samples-scm-1.rockspec" && \
+    rm -rf luarocks/lua_modules && \
+    cmd.exe //c mklink //j "$(cygpath -w "$PWD/luarocks/lua_modules")" "$(cygpath -w "${sources}/luarocks/lua_modules")"
+}
+
+function use_lua_contrib_modules() {
+    local version="${1:-5.4}"
+    local sources="$PWD/out/prepublish/build/opencv_lua-contrib"
+    rm -rf luarocks/lua_modules out/build.luaonly/x64-*/luarocks/luarocks-prefix/src/luarocks-stamp && \
+        ./build${SCRIPT_SUFFIX} -d -DLua_VERSION=${version} --target lua --install && \
+        ./build${SCRIPT_SUFFIX} -d -DLua_VERSION=${version} --target luarocks && \
+        ./build${SCRIPT_SUFFIX} -DLua_VERSION=${version} --target lua --install && \
+        ./build${SCRIPT_SUFFIX} -DLua_VERSION=${version} --target luarocks && \
+    bash -c "
+        cd ${sources}/ && \
+        ./build${SCRIPT_SUFFIX} -DLua_VERSION=${version} --target lua --install && \
+        ./build${SCRIPT_SUFFIX} -DLua_VERSION=${version} --target luarocks && \
+        source scripts/vcvars_restore_start.sh && ./luarocks/luarocks${LUAROCKS_SUFFIX} install --deps-only samples/samples-scm-1.rockspec" && \
+    rm -rf luarocks/lua_modules && \
+    cmd.exe //c mklink //j "$(cygpath -w "$PWD/luarocks/lua_modules")" "$(cygpath -w "${sources}/luarocks/lua_modules")"
+}
+
+function use_wsl_luajit_modules() {
+    wsl -c '
+source scripts/wsl_init.sh || exit $?
+source ${projectDir}/scripts/tasks.sh || exit $?
+
+rm -rf luarocks/lua_modules out/build.luaonly/Linux-GCC-Debug/luarocks/luarocks-prefix/src/luarocks-stamp && \
+    ./build${SCRIPT_SUFFIX} -d -DLua_VERSION=luajit-2.1 --target luajit --install && \
+    ./build${SCRIPT_SUFFIX} -d -DLua_VERSION=luajit-2.1 --target luarocks && \
+    ./luarocks/luarocks${LUAROCKS_SUFFIX} install --deps-only samples/samples-scm-1.rockspec
+'
+}
+
+function use_wsl_lua_modules() {
+    local script='
+source scripts/wsl_init.sh || exit $?
+source ${projectDir}/scripts/tasks.sh || exit $?
+
+rm -rf luarocks/lua_modules out/build.luaonly/Linux-GCC-Debug/luarocks/luarocks-prefix/src/luarocks-stamp && \
+    ./build${SCRIPT_SUFFIX} -d -DLua_VERSION=${version} --target lua --install && \
+    ./build${SCRIPT_SUFFIX} -d -DLua_VERSION=${version} --target luarocks && \
+    ./luarocks/luarocks${LUAROCKS_SUFFIX} install --deps-only samples/samples-scm-1.rockspec
+'
+
+    wsl -c "version=${1:-5.4}; ${script}"
 }
 
 function build_windows() {
@@ -442,7 +516,7 @@ function build_windows() {
     new_version && \
     time prepublish_windows && \
     new_version_rollback && \
-    use_luajit_opencv_lua_modules
+    use_luajit_modules
 }
 
 function set_url_docker() {
@@ -677,8 +751,19 @@ $(build_custom_linux_script)" && \
 }
 
 function build_windows_debug() {
-    time ./build.bat -d "-DLua_VERSION=luajit-2.1" --install --target luajit && \
-    time ./build.bat -d "-DLua_VERSION=luajit-2.1" --install \
+    if [ ! -e luarocks/lua.bat ]; then
+        use_luajit_modules || exit $?
+    fi
+
+    local version="$(./luarocks/lua${LUAROCKS_SUFFIX} -v | sed -r -e "s/^([[:alnum:]]+) ([0-9]+\.[0-9]+).+$/target=\1 version=\2/")"
+    local target
+    eval "$version"
+    if [ "${target}" == "LuaJIT" ]; then
+        version=luajit-2.1
+    fi
+
+    time \
+    ./build${SCRIPT_SUFFIX} -d "-DLua_VERSION=${version}" --install \
         "-DBUILD_contrib:BOOL=ON" \
         "-DWITH_FREETYPE:BOOL=ON" \
         "-DFREETYPE_DIR:PATH=C:/vcpkg/installed/x64-windows" \
@@ -687,17 +772,36 @@ function build_windows_debug() {
         "-DWITH_CUDA:BOOL=ON" \
         "-DWITH_CUDNN:BOOL=ON" \
         "-DOPENCV_DNN_CUDA:BOOL=ON" \
-        "-DCUDA_ARCH_BIN=$(nvidia-smi --query-gpu=compute_cap --format=csv | sed /compute_cap/d)"
+        "-DCUDA_ARCH_BIN=$(nvidia-smi --query-gpu=compute_cap --format=csv | sed /compute_cap/d)" \
+        "$@"
 }
 
 function build_wsl_debug() {
-    wsl -c '
+    local script='
 source scripts/wsl_init.sh || exit $?
-time ./build.sh -d "-DLua_VERSION=luajit-2.1" --install --target luajit && \
-time ./build.sh -d "-DLua_VERSION=luajit-2.1" --install \
+
+if [ ! -x luarocks/lua ]; then
+    source "${projectDir}/scripts/tasks.sh" || exit $?
+    use_wsl_luajit_modules || exit $?
+fi
+
+version="$(./luarocks/lua${LUAROCKS_SUFFIX} -v | sed -r -e "s/^([[:alnum:]]+) ([0-9]+\.[0-9]+).+$/target=\1 version=\2/")"
+target
+eval "$version"
+if [ "${target}" == "LuaJIT" ]; then
+    version=luajit-2.1
+fi
+
+time \
+    ./build${SCRIPT_SUFFIX} -d "-DLua_VERSION=${version}" --install \
     "-DBUILD_contrib:BOOL=ON" \
-    "-DWITH_FREETYPE:BOOL=ON"
-'
+    "-DWITH_FREETYPE:BOOL=ON"'
+
+    for arg in "$@"; do
+        script="$script $arg"
+    done
+
+    wsl -c "$script"
 }
 
 function build_full() {
@@ -801,15 +905,15 @@ fi
 
 function install_local_rock() {
     local rock_name="$1"
-    local rock_version
+    local rock_version="$2"
 
     # Should we use an exact version?
-    if [ "${rock_type}" == "source" ]; then
-        rock_version=${OPENCV_VERSION}
-    elif [ "${version:0:6}" == luajit ]; then
-        rock_version=${OPENCV_VERSION}luajit2.1
-    else
-        rock_version=
+    if [ "${rock_type}" == "binary" ]; then
+        if [ "${version:0:6}" == luajit ]; then
+            rock_version="${rock_version}luajit2.1"
+        else
+            rock_version=
+        fi
     fi
 
     local rock_installed="$(./luarocks/luarocks${LUAROCKS_SUFFIX} list --porcelain ${rock_name}${suffix})"
@@ -831,7 +935,7 @@ function install_local_rock() {
 # ================================
 # Install rock
 # ================================
-install_local_rock opencv_lua
+install_local_rock opencv_lua ${OPENCV_VERSION}
 
 # ================================
 # Run the tests
@@ -853,7 +957,7 @@ PYTHON_VENV_PATH="${CWD}/out/test/.venv" MODELS_PATH="${projectDir}/out/test/.mo
     fi
 
     for arg in "$@"; do
-        script="$script '$arg'"
+        script="$script $arg"
     done
 
     if [ $exclude -eq 1 ]; then
@@ -1055,7 +1159,7 @@ function test_prepublished_source_fedora() {
 
 function publish() {
     for suffix in '' '-contrib'; do
-        ./luarocks/luarocks.bat upload out/prepublish/server/opencv_lua${suffix}-${OPENCV_VERSION}-${DIST_VERSION}.rockspec --api-key=${LUA_ROCKS_API_KEY} || return $?
+        ./luarocks/luarocks${LUAROCKS_SUFFIX} upload out/prepublish/server/opencv_lua${suffix}-${OPENCV_VERSION}-${DIST_VERSION}.rockspec --api-key=${LUA_ROCKS_API_KEY} || return $?
     done
     echo "Upload the content of $(cygpath -w "$PWD/out/prepublish/server") to github"
 }
@@ -1072,18 +1176,20 @@ find out/prepublish/ -type f \( -name CMakeCache.txt -o -name pyopencv_generated
 }
 
 function test_debug_windows() {
+    MODELS_PATH="${PWD}/out/test/.models" \
     PATH="/c/vcpkg/installed/x64-windows/bin:$PATH" \
-    PYTHON_VENV_PATH="${PWD}/out/test/.venv" MODELS_PATH="${PWD}/out/test/.models" node scripts/test.js --Debug "$@"
+    PYTHON_VENV_PATH="${PWD}/out/test/.venv" node scripts/test.js --Debug "$@"
 }
 
 function test_debug_wsl() {
     local script='
 source scripts/wsl_init.sh || exit $?
 ./luarocks/luarocks${LUAROCKS_SUFFIX} install --deps-only samples/samples-scm-1.rockspec || exit $?
-PYTHON_VENV_PATH="${PWD}/out/test/.venv" MODELS_PATH="${projectDir}/out/test/.models" node scripts/test.js --Debug'
+MODELS_PATH="${projectDir}/out/test/.models" \
+PYTHON_VENV_PATH="${PWD}/out/test/.venv" node scripts/test.js --Debug'
 
     for arg in "$@"; do
-        script="$script '$arg'"
+        script="$script $arg"
     done
 
     # excluded due to camera device missing

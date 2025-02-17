@@ -34,6 +34,23 @@ else()
 endif()
 
 if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
+  # We want the opencv lua module to be used as a replacement of opencv
+  # when another lua module depends on opencv.
+  # 
+  # Linux lua expects shared libraries as modules (.so)
+  # Windows lua exepects a .dll file, which can be a static or a shared library.
+  # 
+  # For the opencv lua module to be used as a replcement of opencv,
+  # it needs to have all the exported opencv functions also exported.
+  # 
+  # One way to achieve that purpose is to build opencv as a static library
+  # and then use target_link_libraries(shared_lib PRIVATE "$<LINK_LIBRARY:WHOLE_ARCHIVE,static_lib1;static_lib2>")
+  # @see: https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html#genex:LINK_LIBRARY
+  # However, on Windows, set(OPENCV_MODULE_TYPE "STATIC") will cause all dependent libraries to be also static.
+  # We do not want that because in other for opencv_lua to be linked against, it must be a shared library
+  # 
+  # The solution choosen is to directly embed the opencv objects in the opencv lua module.
+  # That will allow the opencv lua module shared library to have all the exported opencv functions.
   set(OPENCV_MODULE_TYPE "OBJECT")
 
   # Compute the subdirectory prefix relative to this file.

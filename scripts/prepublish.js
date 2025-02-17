@@ -10,6 +10,22 @@ const prepublishRoot = sysPath.resolve(__dirname, "..", "out", "prepublish");
 const wrapperSuffix = os.platform() === "win32" ? ".bat" : "";
 const shellSuffix = os.platform() === "win32" ? ".bat" : ".sh";
 
+const unixEscape = (arg, verbatim = true) => {
+    if (verbatim && os.platform() === "win32" && arg[0] === "/" && arg[1] !== "/") {
+        arg = `/${ arg }`;
+    }
+
+    if (/[^\w/=.-]/.test(arg)) {
+        arg = `'${ arg.replaceAll("'", "'\\''") }'`;
+    }
+
+    return arg;
+};
+
+const unixCmd = argv => {
+    return argv.map(arg => unixEscape(arg)).join(" ");
+};
+
 const spawnExec = (cmd, args, options, next) => {
     const {
         stdio
@@ -26,6 +42,8 @@ const spawnExec = (cmd, args, options, next) => {
     const stderr = Object.assign([], {
         nread: 0
     });
+
+    console.log([cmd, unixCmd(args.flat())].join(" "));
 
     let err = false;
 
@@ -150,10 +168,6 @@ const prepublish = (target, version, options, next) => {
                 [luarocks, ["make", scmRockSpec]],
             ];
 
-            const env = {
-                LUA_MULTI_CONFIG: "ON",
-            };
-
             if (pack) {
                 const args = [sysPath.join("scripts", "pack.js"), "--rockspec", scmRockSpec];
                 if (repair) {
@@ -178,7 +192,7 @@ const prepublish = (target, version, options, next) => {
                 spawnExec(cmd, args, {
                     stdio: "inherit",
                     cwd: projectRoot,
-                    env: Object.assign(env, process.env)
+                    env: process.env
                 }, next);
             }, next);
         },

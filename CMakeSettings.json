@@ -4,23 +4,23 @@
       "name": "x64-Debug",
       "generator": "Ninja",
       "configurationType": "Debug",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
       "buildRoot": "${projectDir}\\out\\build\\${name}",
       "installRoot": "${projectDir}\\out\\install\\${name}",
       "cmakeCommandArgs": "",
       "buildCommandArgs": "",
-      "ctestCommandArgs": "",
-      "inheritEnvironments": [ "msvc_x64_x64" ]
+      "ctestCommandArgs": ""
     },
     {
       "name": "x64-Release",
       "generator": "Ninja",
       "configurationType": "Release",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
       "buildRoot": "${projectDir}\\out\\build\\${name}",
       "installRoot": "${projectDir}\\out\\install\\${name}",
       "cmakeCommandArgs": "",
       "buildCommandArgs": "",
-      "ctestCommandArgs": "",
-      "inheritEnvironments": [ "msvc_x64_x64" ]
+      "ctestCommandArgs": ""
     },
     {
       "name": "Linux-GCC-Debug",
@@ -34,6 +34,8 @@
         ".vs",
         "*.rock",
         "*.rockspec",
+        "*.sublime-workspace",
+        "~$*",
         "build.luarocks",
         ".luarocks",
         "luarocks/lua.bat",
@@ -44,25 +46,29 @@
         "luarocks/.luarocks",
         "generated",
         "node_modules",
-        "out"
+        "opencv_extra",
+        "out",
+        "samples/dnn/object_detection/models"
       ],
+      "remoteCopySourcesCopyGeneratedIncludes": false,
       "cmakeCommandArgs": "",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
       "inheritEnvironments": [ "linux_x64" ],
       "remoteMachineName": "${defaultRemoteMachineName}",
       "remoteCMakeListsRoot": "$HOME/.vs/${projectDirName}/${workspaceHash}/src",
-      "remoteBuildRoot": "$HOME/.vs/${projectDirName}/${workspaceHash}/out/build/${name}",
-      "remoteInstallRoot": "$HOME/.vs/${projectDirName}/${workspaceHash}/out/install/${name}",
+      "remoteBuildRoot": "$HOME/.vs/${projectDirName}/${workspaceHash}/src/out/build/${name}",
+      "remoteInstallRoot": "$HOME/.vs/${projectDirName}/${workspaceHash}/src/out/install/${name}",
       "remoteCopySources": true,
       "rsyncCommandArgs": "-t --delete",
       "remoteCopyBuildOutput": false,
-      "remoteCopySourcesMethod": "rsync"
+      "remoteCopySourcesMethod": "rsync",
+      "variables": []
     },
     {
       "name": "Linux-GCC-Release",
       "generator": "Ninja",
-      "configurationType": "Debug",
+      "configurationType": "Release",
       "cmakeExecutable": "cmake",
       "remoteCopySourcesExclusionList": [
         ".git",
@@ -71,6 +77,8 @@
         ".vs",
         "*.rock",
         "*.rockspec",
+        "*.sublime-workspace",
+        "~$*",
         "build.luarocks",
         ".luarocks",
         "luarocks/lua.bat",
@@ -81,20 +89,24 @@
         "luarocks/.luarocks",
         "generated",
         "node_modules",
-        "out"
+        "opencv_extra",
+        "out",
+        "samples/dnn/object_detection/models"
       ],
+      "remoteCopySourcesCopyGeneratedIncludes": false,
       "cmakeCommandArgs": "",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
       "inheritEnvironments": [ "linux_x64" ],
       "remoteMachineName": "${defaultRemoteMachineName}",
       "remoteCMakeListsRoot": "$HOME/.vs/${projectDirName}/${workspaceHash}/src",
-      "remoteBuildRoot": "$HOME/.vs/${projectDirName}/${workspaceHash}/out/build/${name}",
-      "remoteInstallRoot": "$HOME/.vs/${projectDirName}/${workspaceHash}/out/install/${name}",
+      "remoteBuildRoot": "$HOME/.vs/${projectDirName}/${workspaceHash}/src/out/build/${name}",
+      "remoteInstallRoot": "$HOME/.vs/${projectDirName}/${workspaceHash}/src/out/install/${name}",
       "remoteCopySources": true,
       "rsyncCommandArgs": "-t --delete",
       "remoteCopyBuildOutput": false,
-      "remoteCopySourcesMethod": "rsync"
+      "remoteCopySourcesMethod": "rsync",
+      "variables": []
     }
   ]
 }

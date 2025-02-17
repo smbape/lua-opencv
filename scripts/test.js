@@ -97,14 +97,14 @@ if (os.platform() === "win32") {
                 `${ LUA_MODULES }/share/lua/${ ABIVER }/?/init.lua`,
                 `${ APPDATA }/luarocks/share/lua/${ ABIVER }/?.lua`,
                 `${ APPDATA }/luarocks/share/lua/${ ABIVER }/?/init.lua`,
-            ].join(";").replace(/[\\/]/g, sysPath.sep.repeat(2)) };"..package.path`,
+            ].join(";").replace(/[\\]/g, "\\\\") };"..package.path`,
 
             `package.cpath="${ [
                 `${ LUA_BINDIR_DEBUG }/?.dll`,
                 `${ LUA_BINDIR_DEBUG }/loadall.dll`,
                 `${ LUA_MODULES }/lib/lua/${ ABIVER }/?.dll`,
                 `${ APPDATA }/luarocks/lib/lua/${ ABIVER }/?.dll`,
-            ].join(";").replace(/[\\/]/g, sysPath.sep.repeat(2)) };"..package.cpath`,
+            ].join(";").replace(/[\\]/g, "\\\\") };"..package.cpath`,
         ].join(";"),
     ];
 } else if (fs.existsSync(config.Debug.exe)) {
@@ -114,13 +114,13 @@ if (os.platform() === "win32") {
             `package.path="${ [
                 `${ LUA_MODULES }/share/lua/${ ABIVER }/?.lua`,
                 `${ LUA_MODULES }/share/lua/${ ABIVER }/?/init.lua`,
-            ].join(";").replace(/[\\/]/g, sysPath.sep.repeat(2)) };"..package.path`,
+            ].join(";").replace(/[\\]/g, "\\\\") };"..package.path`,
 
             `package.cpath="${ [
                 `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lib") }/?.so`,
                 `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lib") }/loadall.so`,
                 `${ LUA_MODULES }/lib/lua/${ ABIVER }/?.so`,
-            ].join(";").replace(/[\\/]/g, sysPath.sep.repeat(2)) };"..package.cpath`,
+            ].join(";").replace(/[\\]/g, "\\\\") };"..package.cpath`,
         ].join(";"),
     ];
 }
@@ -128,26 +128,26 @@ if (os.platform() === "win32") {
 const unixPath = path => {
     return path.replaceAll("\\", "/").replace(/^(\w+):/, (match, drive) => {
         return `/${ drive.toLowerCase() }`;
-    })
+    });
 };
 
 const unixEscape = (arg, verbatim = true) => {
-    if (arg.includes(" ") || arg.includes("\\")) {
-        return `'${ arg }'`;
+    if (verbatim && os.platform() === "win32" && arg[0] === "/" && arg[1] !== "/") {
+        arg = `/${ arg }`;
     }
 
-    if (verbatim && os.platform() === "win32" && arg[0] === "/" && arg[1] !== "/") {
-        return `/${ arg }`;
+    if (/[^\w/=.-]/.test(arg)) {
+        arg = `'${ arg.replaceAll("'", "'\\''") }'`;
     }
 
     return arg;
-}
+};
 
 const unixEnv = (key, value) => {
     if (os.platform() === "win32" && key === "PATH") {
         value = value.split(sysPath.delimiter).map(unixPath).join(":");
     }
-    return `${ key }=${ unixEscape(value) }`;
+    return `${ key }=${ unixEscape(value, false) }`;
 };
 
 const unixCmd = argv => {
@@ -239,7 +239,7 @@ const main = (options, next) => {
     if (options.bash) {
         console.log([
             bash_init,
-            `cd ${ unixEscape(unixPath(cwd), false) } || exit \$?`,
+            `cd ${ unixEscape(unixPath(cwd), false) } || exit $?`,
             "",
         ].join("\n"));
     }

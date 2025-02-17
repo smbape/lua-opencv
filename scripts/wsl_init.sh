@@ -2,7 +2,7 @@
 
 export PATH="${PATH//\/mnt\/*:/}"
 
-workspaceHash=53b58a2f-f3e5-480b-8803-dc266ac326de
+workspaceHash=c0ef0985-b598-4736-af7d-1776141f784c
 projectDir="$(wslpath -w "$PWD" | sed -e "s#\(.*\)#/mnt/\L\1#" -e "s#\\\\#/#g" -e "s#:##")" # If docker is installed, PWD will starts with /mnt/wsl/docker-desktop-bind-mounts/
 projectDirName=$(basename "$projectDir")
 sources="$HOME/.vs/${projectDirName}/${workspaceHash}/src"

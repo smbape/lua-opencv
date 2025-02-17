@@ -52,24 +52,38 @@ endif()
 # Python
 # ===============
 include(cmake/UsePython3Venv.cmake)
-if (VIRTUAL_ENV_created)
+if (UNIX AND NOT (auditwheel IN_LIST Pip_MODULES))
+  pip_install(build auditwheel)
   execute_process(
-    COMMAND "${Python3_EXECUTABLE}" -m pip install numpy
+    COMMAND "${Python3_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/patches/patch_auditwheel_whitelist.py"
     COMMAND_ECHO STDERR
     COMMAND_ERROR_IS_FATAL ANY
   )
-  if (UNIX)
-    execute_process(
-      COMMAND "${Python3_EXECUTABLE}" -m pip install build auditwheel
-      COMMAND_ECHO STDERR
-      COMMAND_ERROR_IS_FATAL ANY
-    )
-    execute_process(
-      COMMAND "${Python3_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/patches/patch_auditwheel_whitelist.py"
-      COMMAND_ECHO STDERR
-      COMMAND_ERROR_IS_FATAL ANY
-    )
-  endif()
+endif()
+
+# Needed python packages
+pip_install(numpy)
+
+# ===============
+# Node
+# ===============
+find_program(NODE_EXECUTABLE
+  NAMES node
+  REQUIRED
+)
+
+find_program(NPM_EXECUTABLE
+  NAMES npm npm.cmd NAMES_PER_DIR
+  REQUIRED
+)
+
+if(NOT EXISTS "${CMAKE_SOURCE_DIR}/node_modules")
+  execute_process(
+    COMMAND "${NPM_EXECUTABLE}" ci
+    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+    COMMAND_ECHO STDERR
+    COMMAND_ERROR_IS_FATAL ANY
+  )
 endif()
 
 # ===============

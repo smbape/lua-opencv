@@ -23,6 +23,32 @@ const DISID_CONSTANTS = new Map([
     ["DISPID_VALUE", 0],
 ]);
 
+const splitModifiers = modifiers => {
+    const splitted = {
+        getters: [],
+        setters: [],
+        multiple: [],
+        others: [],
+    };
+
+    for (const modifier of modifiers) {
+        if (modifier === "/R" || modifier.startsWith("/RExpr=")) {
+            splitted.getters.push(modifier);
+        } else if (modifier === "/W") {
+            splitted.setters.push(modifier);
+        } else if (modifier === "/RW") {
+            splitted.getters.push(modifier);
+            splitted.setters.push(modifier);
+        } else if (modifier.startsWith("/WType=") || modifier.startsWith("/WExpr=")) {
+            splitted.multiple.push(modifier);
+        } else {
+            splitted.others.push(modifier);
+        }
+    }
+
+    return splitted;
+};
+
 // avoid long names on windows
 // the files are no longer readable if the full path
 // exceeds 255 characters
@@ -278,18 +304,58 @@ class CoClass {
         const descriptor = {
             type: getAlias(argtype),
             value: defval,
-            modifiers: list_of_modifiers
+            modifiers: Array.from(new Set(list_of_modifiers))
         };
 
-        if (this.properties.has(argname)) {
-            // poor man object comparison
-            if (JSON.stringify(this.properties.get(argname)) === JSON.stringify(descriptor)) {
-                return;
-            }
-            console.log(`duplicate property '${ argname }' of '${ this.fqn }'`);
+        if (!this.properties.has(argname)) {
+            this.properties.set(argname, descriptor);
+            return;
         }
 
-        this.properties.set(argname, descriptor);
+        const existing = this.properties.get(argname);
+        if (descriptor.type !== existing.type) {
+            throw new Error(`Property ${ argname } type is changing from ${ existing.type } to ${ descriptor.type }`);
+        }
+
+        if (descriptor.value && existing.value && descriptor.value !== existing.value) {
+            throw new Error(`Property ${ argname } value is changing from ${ existing.value } to ${ descriptor.value }`);
+        }
+
+        const descriptorSplitted = splitModifiers(descriptor.modifiers);
+        const existingSplitted = splitModifiers(existing.modifiers);
+
+        if (
+            descriptorSplitted.getters.length !== 0
+            && existingSplitted.getters.length !== 0
+            // poor man object comparison
+            && JSON.stringify(descriptorSplitted.getters) !== JSON.stringify(existingSplitted.getters)
+        ) {
+            throw new Error(`Property ${ argname } getters are changing from ${ JSON.stringify(existingSplitted.getters) } to ${ JSON.stringify(descriptorSplitted.getters) }`);
+        }
+
+        if (
+            descriptorSplitted.setters.length !== 0
+            && existingSplitted.setters.length !== 0
+            // poor man object comparison
+            && JSON.stringify(descriptorSplitted.setters) !== JSON.stringify(existingSplitted.setters)
+        ) {
+            throw new Error(`Property ${ argname } setters are changing from ${ JSON.stringify(existingSplitted.setters) } to ${ JSON.stringify(descriptorSplitted.setters) }`);
+        }
+
+        if (
+            descriptorSplitted.others.length !== 0
+            && existingSplitted.others.length !== 0
+            // poor man object comparison
+            && JSON.stringify(descriptorSplitted.others) !== JSON.stringify(existingSplitted.others)
+        ) {
+            throw new Error(`Property ${ argname } attributes are changing from ${ JSON.stringify(existingSplitted.others) } to ${ JSON.stringify(descriptorSplitted.others) }`);
+        }
+
+        for (const [, modifiers] of Object.entries(descriptorSplitted)) {
+            existing.modifiers.push(...modifiers);
+        }
+
+        existing.modifiers = Array.from(new Set(existing.modifiers));
     }
 
     addEnum(fqn) {

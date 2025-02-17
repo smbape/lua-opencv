@@ -50,8 +50,6 @@ FetchContent_Populate(opencv
                   -P "${CMAKE_SOURCE_DIR}/cmake/git_patch_once.cmake"
 )
 
-option(BUILD_SHARED_LIBS "Build shared libraries (.dll/.so) instead of static ones (.lib/.a)" ON)
-
 option(BUILD_contrib "Build with opencv contrib" OFF)
 
 if (BUILD_contrib)
@@ -232,8 +230,11 @@ set(CMAKE_FIND_PACKAGE_TARGETS_GLOBAL ${__opencv_lua_find_package_targets_global
 unset(__opencv_lua_find_package_targets_global)
 
 set(opencv_SOURCE_DIR "${opencv_SOURCE_DIR}" PARENT_SCOPE)
-set(OpenCV_LIBS "")
 set(OpenCV_INCLUDE_DIRS "${OPENCV_CONFIG_FILE_INCLUDE_DIR}" "${opencv_SOURCE_DIR}/include")
+
+
+list(REMOVE_DUPLICATES OPENCV_MODULES_PUBLIC)
+unset(OpenCV_LIBS)
 
 foreach(m opencv_core ${OPENCV_MODULES_PUBLIC})
   if(TARGET ${m})

@@ -30,13 +30,7 @@ namespace {
 			this->userdata.assign(L, userdata);
 		}
 
-		~AsyncWorker() {
-			// callback and userdata lua_State are invalid at this point
-			// because lua_State closes before the workers are destroyed on exit
-			// therefore, dereference lua_State
-			callback.free();
-			userdata.free();
-		}
+		~AsyncWorker() = default;
 
 		static void handleCallback(Args... args, void* userdata) {
 			auto lock = lock_callbacks();

@@ -40,7 +40,7 @@ endmacro()
 lua_bindings_git_describe(PROJECT_VCSVERSION "${CMAKE_CURRENT_SOURCE_DIR}/..")
 
 execute_process(
-  COMMAND node -pe "require('./package').version"
+  COMMAND "${NODE_EXECUTABLE}" -pe "require('./package').version"
   WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
   OUTPUT_VARIABLE PROJECT_VERSION
   COMMAND_ECHO STDERR

@@ -175,17 +175,8 @@ const proto = {
             ["size_t", "index", "", []],
         ], "", ""], options);
 
-        coclass.addMethod([`${ fqn }.sol::meta_function::index`, vtype, ["/Call=lua_vector_method__index", `/Expr=L, ${ self }, $0`], [
-            ["std::string", "index", "", ["/Ref", "/C"]],
-        ], "", ""], options);
-
         coclass.addMethod([`${ fqn }.sol::meta_function::new_index`, "void", ["/Call=lua_vector_method__newindex", `/Expr=L, ${ self }, $0`], [
             ["size_t", "index", "", []],
-            [vtype, "value", "", []],
-        ], "", ""], options);
-
-        coclass.addMethod([`${ fqn }.sol::meta_function::new_index`, "void", ["/Call=lua_vector_method__newindex", `/Expr=L, ${ self }, $0`], [
-            ["std::string", "index", "", ["/Ref", "/C"]],
             [vtype, "value", "", []],
         ], "", ""], options);
 
@@ -305,14 +296,14 @@ const generatePropertyDoc = (processor, coclass, name, propname, modifiers, cppt
         attributes.push("propput");
     }
 
-    const is_static = modifiers.includes("/S") || coclass.isStatic();
+    const isStatic = modifiers.includes("/S") || coclass.isStatic();
 
     processor.docs.push([
         "```cpp",
         cppsignature.join(" "),
         // "",
         "lua:",
-        `${ " ".repeat(4) }[${ attributes.join(", ") }] ${ is_static ? "" : "o" }${ coclass.name }.${ name }`,
+        `${ " ".repeat(4) }[${ attributes.join(", ") }] ${ isStatic ? "" : "o" }${ coclass.name }.${ name }`,
         "```",
         ""
     ].join("\n").replace(/\s*\( {2}\)/g, "()"));
@@ -320,6 +311,35 @@ const generatePropertyDoc = (processor, coclass, name, propname, modifiers, cppt
 
 const getProgId = (id, { progids }) => {
     return progids && progids.has(id) ? progids.get(id) : id;
+};
+
+const getPropname = (propname, modifiers) => {
+    for (const modifier of modifiers.slice().sort((a, b) => {
+        if (a.startsWith("/idlname=")) {
+            return 1;
+        }
+
+        if (b.startsWith("/idlname=")) {
+            return -1;
+        }
+
+        if (a[0] === "=") {
+            return -1;
+        }
+
+        if (b[0] === "=") {
+            return 1;
+        }
+
+        return 0;
+    })) {
+        if (modifier[0] === "=") {
+            propname = modifier.slice(1);
+        } else if (modifier.startsWith("/idlname=")) {
+            propname = modifier.slice("/idlname=".length);
+        }
+    }
+    return propname;
 };
 
 class LuaGenerator {
@@ -352,25 +372,62 @@ class LuaGenerator {
         const dynamic_set = [];
         const registeri = contentRegister.length;
 
+        for (const [fname, overloads] of coclass.methods.entries()) {
+            const ename = LuaGenerator.getLuaFn(fname);
+            const luaFn = `Lua_${ ename.replaceAll("::", "_") }`;
+
+            let rexpr = false;
+            let wexpr = false;
+            let name = null;
+
+            for (const decl of overloads) {
+                const [, , func_modifiers] = decl;
+
+                if (func_modifiers.includes("/attr=propget")) {
+                    name = getPropname(fname, func_modifiers);
+                    rexpr = true;
+                    break;
+                } else if (func_modifiers.includes("/attr=propput")) {
+                    name = getPropname(fname, func_modifiers);
+                    wexpr = false;
+                    break;
+                }
+            }
+
+            const key_name = JSON.stringify(name);
+
+            if (rexpr || wexpr) {
+                if (dynamic_get.length === 0 && dynamic_set.length === 0) {
+                    contentRegisterPrivate.push("");
+                }
+                contentRegisterPrivate.push(`int ${ luaFn }(lua_State* L);`);
+            }
+
+            if (rexpr) {
+                dynamic_get.push(`{ ${ key_name }, ${ luaFn } }`);
+            }
+
+            if (wexpr) {
+                dynamic_set.push(`{ ${ key_name }, ${ luaFn } }`);
+            }
+        }
+
         for (const [name, property] of coclass.properties.entries()) {
             const {type, modifiers} = property;
             const cpptype = processor.getCppType(type, coclass, options);
-            const is_static = modifiers.includes("/S") || coclass.isStatic();
-            const obj = `${ is_static ? `${ fqn }::` : "self->" }`;
-            const enum_fqn = processor.getEnumType(type, coclass, options);
-            const is_enum_class = enum_fqn && processor.classes.has(enum_fqn) && processor.classes.get(enum_fqn).is_enum_class;
-            const as_type = enum_fqn ? enum_fqn : cpptype;
+            const isStatic = modifiers.includes("/S") || coclass.isStatic();
+            const obj = `${ isStatic ? `${ fqn }::` : "self->" }`;
             const is_enum = modifiers.includes("/Enum");
 
             let propname = name;
-            let getter, setter;
-            let has_propget = is_static || is_enum || modifiers.includes("/R") || modifiers.includes("/RW");
+            let getter;
+            let has_propget = isStatic || is_enum || modifiers.includes("/R") || modifiers.includes("/RW");
             let has_propput = modifiers.includes("/W") || modifiers.includes("/RW");
 
             for (const modifier of modifiers) {
                 if (modifier[0] === "=") {
                     propname = modifier.slice(1);
-                } else if (modifier[0] === "/idlname=") {
+                } else if (modifier.startsWith("/idlname=")) {
                     propname = modifier.slice("/idlname=".length);
                 } else if (modifier.startsWith("/R=")) {
                     getter = modifier.slice("/R=".length);
@@ -378,7 +435,6 @@ class LuaGenerator {
                 } else if (modifier.startsWith("/RExpr=")) {
                     has_propget = true;
                 } else if (modifier.startsWith("/W=")) {
-                    setter = modifier.slice("/W=".length);
                     has_propput = true;
                 } else if (modifier.startsWith("/WExpr=")) {
                     has_propput = true;
@@ -401,7 +457,7 @@ class LuaGenerator {
                     }
                 }
 
-                if (is_enum || is_static && modifiers.includes("/C")) {
+                if (is_enum || isStatic && modifiers.includes("/C")) {
                     if (registeri === contentRegister.length) {
                         contentRegister.push(""); // new line
                     }
@@ -442,56 +498,63 @@ class LuaGenerator {
                 rexpr = `lua_push(L, ${ rexpr });`;
             }
 
-            let in_val;
-
             if (has_propput) {
-                if (setter) {
-                    setter = `${ obj }${ setter }`;
-                }
+                const overloads = [];
 
-                let wtype = as_type;
+                let c_setter;
+                let c_type = type;
 
                 for (const modifier of modifiers) {
-                    if (modifier.startsWith("/WType=")) {
-                        wtype = modifier.slice("/WType=".length);
+                    if (modifier.startsWith("/W=")) {
+                        c_setter = modifier.slice("/W=".length);
+                    } else if (modifier.startsWith("/WType=")) {
+                        c_type = modifier.slice("/WType=".length);
+                    } else if (modifier.startsWith("/WExpr=")) {
+                        overloads.push([c_setter, c_type, modifier.slice("/WExpr=".length)]);
                     }
                 }
 
-                in_val = `extract_holder(value, static_cast<${ wtype }*>(nullptr))`;
-
-                if (enum_fqn && !is_enum_class) {
-                    // input must be int and cast as enum
-                    in_val = `static_cast<${ enum_fqn }>(${ in_val })`;
+                if (overloads.length === 0) {
+                    overloads.push([c_setter, c_type]);
                 }
 
-                let has_expr = false;
-                for (const modifier of modifiers) {
-                    if (modifier.startsWith("/WExpr=")) {
-                        in_val = makeExpansion(modifier.slice("/WExpr=".length), in_val);
-                        has_expr = true;
+                wexpr = [];
+                const cpptypes = [];
+
+                for (const [o_setter, o_type, o_expr] of overloads) {
+                    const wtype = processor.getCppType(o_type, coclass, options);
+
+                    cpptypes.push(wtype);
+
+                    let in_val = "value";
+
+                    if (o_expr) {
+                        in_val = makeExpansion(o_expr, in_val);
+                        in_val = in_val.replaceAll(/\$(?:value\b|\{\s*value\s*\})/g, "value");
+                    } else {
+                        const setter = o_setter ? `${ obj }${ o_setter }` : undefined;
+                        in_val = setter ? `${ setter }(${ in_val })` : `${ obj }${ propname } = ${ in_val }`;
                     }
+
+                    wexpr.push(`
+                        if (lua_is(L, 3, static_cast<${ wtype }*>(nullptr))) {
+                            auto value_holder = lua_to(L, 3, static_cast<${ wtype }*>(nullptr));
+                            decltype(auto) value = extract_holder(value_holder, static_cast<${ wtype }*>(nullptr));
+                            ${ in_val.split("\n").join(`\n${ " ".repeat(24) }`) };
+                            return 0;
+                        }
+                    `.replace(/^ {24}/mg, "").trim());
                 }
 
-                if (has_expr) {
-                    in_val = in_val.replaceAll(/\$(?:value\b|\{\s*value\s*\})/g, "value");
-                } else {
-                    in_val = setter ? `${ setter }(${ in_val })` : `${ obj }${ propname } = ${ in_val }`;
-                }
+                wexpr.push(`return luaL_typeerror(L, 3, ${ JSON.stringify(cpptypes.join("|")) });`);
 
-                wexpr = `
-                    if (!lua_is(L, 3, static_cast<${ wtype }*>(nullptr))) {
-                        return luaL_typeerror(L, 3, ${ JSON.stringify(cpptype) });
-                    }
-                    auto value = lua_to(L, 3, static_cast<${ wtype }*>(nullptr));
-                    ${ in_val.split("\n").join(`\n${ " ".repeat(20) }`) };
-                    return 0;
-                `.replace(/^ {20}/mg, "").trim();
+                wexpr = wexpr.join("\n\n");
             }
 
             const key_name = JSON.stringify(name);
             const obj_decl = [];
 
-            if (!is_static) {
+            if (!isStatic) {
                 obj_decl.push(`
                     if (!lua_is(L, 1, static_cast<::${ fqn }*>(nullptr))) {
                         return luaL_typeerror(L, 1, ${ JSON.stringify(fqn) });
@@ -626,15 +689,16 @@ class LuaGenerator {
             const ename = LuaGenerator.getLuaFn(fname);
             const overloads = coclass.methods.get(fname);
             const contentFunction = [];
-
-            const has_constructor = overloads.some(([, , func_modifiers]) => func_modifiers.includes("/CO") && !func_modifiers.some(modifier => modifier[0] === "="));
+            const luaFn = `Lua_${ ename.replaceAll("::", "_") }`;
+            const isProperty = contentRegisterPrivate.includes(`int ${ luaFn }(lua_State* L);`);
+            const hasConstructor = overloads.some(([, , func_modifiers]) => func_modifiers.includes("/CO") && !func_modifiers.some(modifier => modifier[0] === "="));
 
             // generate docs header
-            processor.docs.push(`### ${ fqn.replaceAll("::", ".") }.${ has_constructor ? "new" : fname }\n`.replaceAll("_", "\\_"));
+            processor.docs.push(`### ${ fqn.replaceAll("::", ".") }.${ hasConstructor ? "new" : fname }\n`.replaceAll("_", "\\_"));
 
-            let is_constructor = false;
+            let isConstructor = false;
             let overload_id = 0;
-            let argc_max = 0;
+            let argcMax = 0;
             const argnames = new Set();
 
             for (const decl of overloads) {
@@ -652,9 +716,9 @@ class LuaGenerator {
                     list_of_arguments.push([AnyObject, "unused", `${ AnyObject }()`, ["/ignore"]]);
                 }
 
-                is_constructor = func_modifiers.includes("/CO") && !func_modifiers.some(modifier => modifier[0] === "=");
+                isConstructor = func_modifiers.includes("/CO") && !func_modifiers.some(modifier => modifier[0] === "=");
                 const argc = list_of_arguments.length;
-                argc_max = Math.max(argc_max, argc);
+                argcMax = Math.max(argcMax, argc);
 
                 const in_args = new Array(argc).fill(false);
                 const out_args = new Array(argc).fill(false);
@@ -664,7 +728,7 @@ class LuaGenerator {
 
                 if (return_value_type !== "" && return_value_type !== "void") {
                     outlist.push("retval");
-                } else if (is_constructor) {
+                } else if (isConstructor) {
                     outlist.push("self");
                 }
 
@@ -716,18 +780,19 @@ class LuaGenerator {
                     return diff === 0 ? a - b : diff;
                 });
 
-                const is_static = func_modifiers.includes("/S") || coclass.isStatic();
+                const isStatic = func_modifiers.includes("/S") || coclass.isStatic();
+                const offset = (isStatic ? 0 : 1) + (isProperty ? 1 : 0);
                 const callargs = [];
                 const retval = [];
                 const overload = [];
                 const extractors = [];
                 const precondition = [];
 
-                if (!is_static) {
+                if (!isStatic) {
                     precondition.push("!self");
                 }
 
-                precondition.push(`argc + kwargc > ${ is_static ? argc : argc + 1 }`);
+                precondition.push(`argc + kwargc > ${ argc + offset }`);
 
                 overload.push(`
                     if (${ precondition.join(" || ") }) {
@@ -850,11 +915,10 @@ class LuaGenerator {
                     const arr_cpptype = processor.getCppType(arrtype, coclass, options);
                     const is_shared_ptr = cpptype.startsWith(`${ shared_ptr }<`);
                     const is_by_ref = !is_ptr && !is_shared_ptr && processor.classes.has(cpptype) && !processor.enums.has(cpptype);
-                    const in_type = is_shared_ptr ? cpptype.slice(`${ shared_ptr }<`.length, -">".length) : cpptype;
-                    const var_type = is_array ? arr_cpptype : in_type;
+                    const var_type = is_array ? arr_cpptype : cpptype;
                     const lua_is = `lua_is${ arg_suffix }`;
                     const lua_to = `lua_to${ arg_suffix }`;
-                    const argi = is_static ? i : i + 1;
+                    const argi = i + offset;
                     const argn = argi + 1;
 
                     if (is_out_arg && is_array) {
@@ -1003,10 +1067,10 @@ class LuaGenerator {
                 `.replace(/^ {20}/mg, "").trim());
 
                 let callee;
-                const path = name.split(is_constructor ? "::" : ".");
+                const path = name.split(isConstructor ? "::" : ".");
                 let is_operator = false;
 
-                if (is_static) {
+                if (isStatic) {
                     callee = `::${ path.join("::") }`;
                 } else {
                     callee = "self";
@@ -1049,7 +1113,7 @@ class LuaGenerator {
                     callee = `${ callee }(${ expr })`;
                 }
 
-                if (is_constructor && !has_call) {
+                if (isConstructor && !has_call) {
                     const pos = callee.indexOf("(");
                     callee = `std::make_shared<${ callee.slice(0, pos) }>${ callee.slice(pos) }`;
                 } else if (func_modifiers.includes("/Ref")) {
@@ -1129,19 +1193,17 @@ class LuaGenerator {
                     outlist,
                     indexes,
                     firstoptarg,
-                    is_constructor,
+                    isConstructor,
                     options
                 );
             }
-
-            const lua_fname = `Lua_${ ename.replaceAll("::", "_") }`;
 
             let start = 0;
             while (contentFunction[start] === "" && start + 1 < contentFunction.length) {
                 start++;
             }
 
-            contentRegisterPrivate.push(`auto ${ lua_fname }(lua_State* L) {`);
+            contentRegisterPrivate.push(`int ${ luaFn }(lua_State* L) {`);
 
             if (!coclass.isStatic()) {
                 contentRegisterPrivate.push(`    ::${ fqn }* self = lua_is(L, 1, static_cast<${ fqn }*>(nullptr)) ? lua_to(L, 1, static_cast<${ fqn }*>(nullptr)).get() : nullptr;`, "");
@@ -1174,12 +1236,12 @@ class LuaGenerator {
 
             if (ename.startsWith("sol::meta_function::")) {
                 const meta_method = LuaGenerator.getMetaMethod(ename);
-                methods.push([meta_method, lua_fname]);
-            } else {
-                methods.push([ename, lua_fname]);
+                methods.push([meta_method, luaFn]);
+            } else if (!isProperty) {
+                methods.push([ename, luaFn]);
             }
 
-            if (is_constructor || fname == cname) {
+            if (isConstructor || fname === cname) {
                 meta_methods.push(["__call", "__call_constructor"]);
             }
         }
@@ -1208,7 +1270,7 @@ class LuaGenerator {
         outlist,
         indexes,
         firstoptarg,
-        is_constructor,
+        isConstructor,
         options
     ) {
         const ename = LuaGenerator.getLuaFn(fname);
@@ -1216,7 +1278,7 @@ class LuaGenerator {
         const {fqn} = coclass;
         const [name, return_value_type, func_modifiers, list_of_arguments] = decl;
         const argc = list_of_arguments.length;
-        const is_static = func_modifiers.includes("/S") || coclass.isStatic();
+        const isStatic = func_modifiers.includes("/S") || coclass.isStatic();
         const cppfqn = processor.typedefs.has(fqn) ? processor.typedefs.get(fqn) : fqn;
 
         // generate docs body
@@ -1231,7 +1293,7 @@ class LuaGenerator {
 
         let outstr;
 
-        if (is_constructor) {
+        if (isConstructor) {
             outstr = `<${ cppfqn } object>`;
         } else if (outlist.length !== 0) {
             outstr = outlist.join(", ");
@@ -1239,21 +1301,21 @@ class LuaGenerator {
             outstr = "None";
         }
 
-        const caller = is_static ? fqn.replaceAll("::", ".") : `o${ coclass.name }`;
+        const caller = isStatic ? fqn.replaceAll("::", ".") : `o${ coclass.name }`;
         const is_call_fn = fname === "sol::meta_function::call" || fname === "sol::meta_function::call_function" || fname === "operator()";
 
         let description = is_call_fn ?
             `${ caller }( ${ argstr } ) -> ${ outstr }` :
-            `${ caller }${ is_static ? "." : ":" }${ is_constructor ? "new" : meta_method }( ${ argstr } ) -> ${ outstr }`;
+            `${ caller }${ isStatic ? "." : ":" }${ isConstructor ? "new" : meta_method }( ${ argstr } ) -> ${ outstr }`;
 
-        if (is_constructor || coclass.is_vector && fname === "new") {
+        if (isConstructor || coclass.is_vector && fname === "new") {
             description += `\n    ${ caller }( ${ argstr } ) -> ${ outstr }`;
         }
 
         const op = LuaGenerator.getBinaryOperator(ename);
         if (op) {
             const args = argnamelist.slice(0, firstoptarg);
-            if (!is_static) {
+            if (!isStatic) {
                 args.unshift("self");
             }
             description += `\n    ${ args.join(` ${ op } `) } -> ${ outstr }`;
@@ -1261,9 +1323,9 @@ class LuaGenerator {
 
         let cppsignature = `${ processor.typedefs.has(return_value_type) ? processor.typedefs.get(return_value_type) : processor.getCppType(return_value_type, coclass, options) } ${ name.replaceAll(".", "::") }`;
 
-        if (is_constructor) {
+        if (isConstructor) {
             cppsignature = cppfqn;
-        } else if (is_static && !coclass.isStatic()) {
+        } else if (isStatic && !coclass.isStatic()) {
             cppsignature = `static ${ cppsignature }`;
         }
 
@@ -1388,7 +1450,6 @@ class LuaGenerator {
                 `.replace(/^ {20}/mg, "").trim());
 
                 contentDecl.push(impl.join("\n"));
-
             } else if (processor.derives.has(fqn)) {
                 registers.push("", `
                     template<>
@@ -1493,7 +1554,7 @@ class LuaGenerator {
 
             LuaGenerator.writeProperties(processor, coclass, contentRegisterPrivate, contentRegister, options);
 
-            if (coclass.properties.size !== 0 && coclass.methods.size !== 0) {
+            if (!coclass.isStatic() || coclass.properties.size !== 0 && coclass.methods.size !== 0) {
                 // new line
                 contentRegisterPrivate.push("");
                 contentRegister.push("");

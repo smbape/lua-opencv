@@ -85,7 +85,7 @@ for ac_option in "$@"; do
             has_test=1
             continue
             ;;
-        -D*)
+        -D*|-U*)
             EXTRA_CMAKE_OPTIONS="$EXTRA_CMAKE_OPTIONS '$ac_option'"
             continue
             ;;
@@ -169,7 +169,7 @@ else
     BUILD_FOLDER_NAME=build
 fi
 
-if [[ "$TARGET" == 'lua' ]]; then
+if [[ "$TARGET" == 'lua' || "$TARGET" == 'luajit' ]]; then
     EXTRA_CMAKE_OPTIONS="'-ULUA_DIR' $EXTRA_CMAKE_OPTIONS"
 fi
 

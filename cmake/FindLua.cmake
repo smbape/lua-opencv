@@ -1,11 +1,6 @@
 option(BUILD_LUA "Build Lua from source" ON)
 
 function(update_lua_multi_config)
-  if (NOT LUA_MULTI_CONFIG)
-    unset(LUA_MULTI_CONFIG_SUFFIX PARENT_SCOPE)
-    return()
-  endif()
-
   if (LUAJIT_VERSION_STRING)
     string(REPLACE "." ";" LUAJIT_VERSION_STRING_PARTS "${LUAJIT_VERSION_STRING}")
     list(GET LUAJIT_VERSION_STRING_PARTS 0 LUAJIT_VERSION_MAJOR)

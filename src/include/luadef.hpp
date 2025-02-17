@@ -172,6 +172,7 @@ extern "C" {
 
 #include <algorithm>
 #include <array>
+#include <cmath>
 #include <concepts>
 #include <functional>
 #include <initializer_list>
@@ -179,9 +180,12 @@ extern "C" {
 #include <map>
 #include <memory>
 #include <optional>
+#include <sstream>
 #include <string>
+#include <thread>
 #include <tuple>
 #include <type_traits>
+#include <typeindex>
 #include <utility>
 #include <variant>
 #include <vector>

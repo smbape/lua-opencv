@@ -3,7 +3,7 @@ set(VIRTUAL_ENV "${CMAKE_CURRENT_BINARY_DIR}/.venv")
 
 if (NOT EXISTS "${VIRTUAL_ENV}")
     set(VIRTUAL_ENV_created TRUE)
-else()
+elseif(NOT DEFINED VIRTUAL_ENV_created)
     set(VIRTUAL_ENV_created FALSE)
 endif()
 
@@ -26,5 +26,28 @@ find_package(Python3 COMPONENTS Interpreter REQUIRED)
 if (VIRTUAL_ENV_created)
     execute_process(COMMAND "${Python3_EXECUTABLE}" -m pip install --upgrade pip)
 endif()
+
+execute_process(COMMAND "${Python3_EXECUTABLE}" -m pip list -l --format=freeze OUTPUT_VARIABLE Pip_MODULES)
+string(REPLACE "\n" ";" Pip_MODULES "${Pip_MODULES}")
+list(TRANSFORM Pip_MODULES REPLACE "=.+" "")
+
+function(pip_install)
+    set(to_install)
+
+    foreach(module IN LISTS ARGN)
+        if (NOT module IN_LIST Pip_MODULES)
+            list(APPEND to_install ${module})
+        endif()
+    endforeach()
+
+    if (to_install)
+        execute_process(
+            COMMAND "${Python3_EXECUTABLE}" -m pip install ${to_install}
+            COMMAND_ECHO STDERR
+            COMMAND_ERROR_IS_FATAL ANY
+        )
+        list(APPEND Pip_MODULES ${to_install})
+    endif()
+endfunction()
 
 string(REPLACE / // PYTHON_BIN_PATH "${Python3_EXECUTABLE}")

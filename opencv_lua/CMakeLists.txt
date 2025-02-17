@@ -9,17 +9,17 @@ include(GNUInstallDirs)
 include(version.cmake)
 include(../cmake/vcpkg_regex_replace_string.cmake)
 
-file(RELATIVE_PATH CMAKE_RELATIVE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_SOURCE_DIR}")
+file(RELATIVE_PATH relative_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_SOURCE_DIR}")
 
 file(GLOB_RECURSE files_to_change
-  ${CMAKE_RELATIVE_SOURCE_DIR}README.md
-  ${CMAKE_RELATIVE_SOURCE_DIR}docs/hosting-you-own-binary-rocks-*
-  ${CMAKE_RELATIVE_SOURCE_DIR}generator/index.js
-  ${CMAKE_RELATIVE_SOURCE_DIR}luarocks/${target_name}-scm-1.rockspec
-  ${CMAKE_RELATIVE_SOURCE_DIR}samples/*.lua
-  ${CMAKE_RELATIVE_SOURCE_DIR}scripts/new_version.lua
-  ${CMAKE_RELATIVE_SOURCE_DIR}scripts/pack.js
-  ${CMAKE_RELATIVE_SOURCE_DIR}scripts/tasks.sh
+  ${relative_SOURCE_DIR}README.md
+  ${relative_SOURCE_DIR}docs/hosting-you-own-binary-rocks-*
+  ${relative_SOURCE_DIR}generator/index.js
+  ${relative_SOURCE_DIR}luarocks/${target_name}-scm-1.rockspec
+  ${relative_SOURCE_DIR}samples/*.lua
+  ${relative_SOURCE_DIR}scripts/new_version.lua
+  ${relative_SOURCE_DIR}scripts/pack.js
+  ${relative_SOURCE_DIR}scripts/tasks.sh
 )
 
 foreach(item IN LISTS files_to_change)
@@ -37,46 +37,33 @@ endforeach()
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin" CACHE PATH "Output directory for applications")
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib" CACHE PATH "Output directory for libraries")
 
-# generate source files
-if(NOT EXISTS "${CMAKE_SOURCE_DIR}/node_modules")
-  if (WIN32)
-    set(npm npm.cmd)
-  else()
-    set(npm npm)
-  endif()
-  execute_process(
-    COMMAND ${npm} ci
-    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-    COMMAND_ECHO STDERR
-    COMMAND_ERROR_IS_FATAL ANY
-  )
-endif()
+option(SKIP_bindings_generation "Skip binding files generation" OFF)
 
-if (NOT opencv_lua_SKIP_GENERATION)
+if (NOT SKIP_bindings_generation)
   set(ENV{CMAKE_BINARY_DIR} "${CMAKE_BINARY_DIR}")
   set(ENV{Python3_EXECUTABLE} "${Python3_EXECUTABLE}")
   execute_process(
-    COMMAND node --unhandled-rejections=strict --trace-uncaught --trace-warnings generator/index.js
+    COMMAND "${NODE_EXECUTABLE}" --unhandled-rejections=strict --trace-uncaught --trace-warnings generator/index.js
     WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
     COMMAND_ECHO STDERR
     COMMAND_ERROR_IS_FATAL ANY
   )
 endif()
 
-file(GLOB_RECURSE project_source_headers "${CMAKE_RELATIVE_SOURCE_DIR}src/*.h" "${CMAKE_RELATIVE_SOURCE_DIR}src/*.hpp")
+file(GLOB_RECURSE project_source_headers "${relative_SOURCE_DIR}src/*.h" "${relative_SOURCE_DIR}src/*.hpp")
 list_set_filename_component(ABSOLUTE project_source_headers)
 source_group("Source Headers" FILES ${project_source_headers})
 
-file(GLOB_RECURSE project_sources_files "${CMAKE_RELATIVE_SOURCE_DIR}src/*.c" "${CMAKE_RELATIVE_SOURCE_DIR}src/*.cpp")
+file(GLOB_RECURSE project_sources_files "${relative_SOURCE_DIR}src/*.c" "${relative_SOURCE_DIR}src/*.cpp")
 list_set_filename_component(ABSOLUTE project_sources_files)
 source_group("Source Files" FILES ${project_sources_files})
 
 
-file(GLOB_RECURSE project_generated_headers "${CMAKE_RELATIVE_SOURCE_DIR}generated/*.h" "${CMAKE_RELATIVE_SOURCE_DIR}generated/*.hpp")
+file(GLOB_RECURSE project_generated_headers "${relative_SOURCE_DIR}generated/*.h" "${relative_SOURCE_DIR}generated/*.hpp")
 list_set_filename_component(ABSOLUTE project_generated_headers)
 source_group("Generated Headers" FILES ${project_generated_headers})
 
-file(GLOB_RECURSE project_generated_files "${CMAKE_RELATIVE_SOURCE_DIR}generated/*.c" "${CMAKE_RELATIVE_SOURCE_DIR}generated/*.cpp")
+file(GLOB_RECURSE project_generated_files "${relative_SOURCE_DIR}generated/*.c" "${relative_SOURCE_DIR}generated/*.cpp")
 list_set_filename_component(ABSOLUTE project_generated_files)
 source_group("Generated Files" FILES ${project_generated_files})
 

@@ -37,6 +37,11 @@ IF ["%_param:~0,2%"] == ["-D"] (
     GOTO :NEXT_OPT
 )
 
+IF ["%_param:~0,2%"] == ["-U"] (
+    SET EXTRA_CMAKE_OPTIONS=%EXTRA_CMAKE_OPTIONS% "!_param!"
+    GOTO :NEXT_OPT
+)
+
 IF [%1] == [-d] SET CMAKE_BUILD_TYPE=Debug
 IF [%1] == [--dry-run] SET is_dry_run=1
 IF [%1] == [--no-build] SET skip_build=1
@@ -97,6 +102,7 @@ IF DEFINED LUA_DIR SET CMAKE_LUA_DIR=%LUA_DIR%
 IF [%TARGET%] == [lua] SET LUA_ONLY=ON
 IF [%TARGET%] == [lua] SET EXTRA_CMAKE_OPTIONS="-ULUA_DIR" %EXTRA_CMAKE_OPTIONS%
 IF [%TARGET%] == [luajit] SET LUA_ONLY=ON
+IF [%TARGET%] == [luajit] SET EXTRA_CMAKE_OPTIONS="-ULUA_DIR" %EXTRA_CMAKE_OPTIONS%
 IF NOT [%LUA_ONLY%] == [ON] SET EXTRA_CMAKE_OPTIONS="-DLUA_DIR:PATH=%CMAKE_LUA_DIR%" %EXTRA_CMAKE_OPTIONS%
 IF [%TARGET%] == [luarocks] SET LUA_ONLY=ON
 

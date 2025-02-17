@@ -144,7 +144,9 @@ if (EXISTS "${REPAIRED_DIR}/${target_name}/${target_name}")
 endif()
 
 if(HAS_LIBS_ERROR EQUAL "0")
-    list(APPEND COPY_COMMANDS COMMAND mv "${REPAIRED_DIR}/${target_name}.libs" "${CMAKE_INSTALL_LIBSDIR}")
+  get_filename_component(CMAKE_INSTALL_LIBSDIR_PARENT "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBSDIR}" DIRECTORY)
+  file(MAKE_DIRECTORY "${CMAKE_INSTALL_LIBSDIR_PARENT}")
+  list(APPEND COPY_COMMANDS COMMAND mv "${REPAIRED_DIR}/${target_name}.libs" "${CMAKE_INSTALL_LIBSDIR}")
 endif()
 
 execute_process(

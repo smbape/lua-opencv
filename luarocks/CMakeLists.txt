@@ -65,7 +65,7 @@ else()
   ExternalProject_Add(luarocks
     URL                 ${LuaRocks_URL}
     URL_HASH            ${LuaRocks_URL_HASH}
-    PATCH_COMMAND       "${PATCH}" -p 1 -d "<SOURCE_DIR>" -i "${CMAKE_CURRENT_SOURCE_DIR}/patches/001-luarocks-src.patch"
+    PATCH_COMMAND       "${PATCH_EXECUTABLE}" -p 1 -d "<SOURCE_DIR>" -i "${CMAKE_CURRENT_SOURCE_DIR}/patches/001-luarocks-src.patch"
     CONFIGURE_COMMAND   cd "<SOURCE_DIR>"
               COMMAND   ./configure "--prefix=<BINARY_DIR>" "--lua-version=${ABIVER}" "--with-lua=${LUA_DIR}" "--with-lua-interpreter=${LUA_INTERPRETER_NAME}"
     BUILD_COMMAND       cd "<SOURCE_DIR>" COMMAND make COMMAND make install

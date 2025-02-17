@@ -386,66 +386,52 @@ module.exports = ({ self, self_get, shared_ptr }) => {
         ["cv.Mat.sum", "cv::Scalar", ["/Call=cv::sum", `/Expr=${ self }`], [], "", ""],
 
         ["cv.Mat.operator+", "void", ["/Call=cv::add", `/Expr=${ self }, $0`], [
-            ["cv::Mat", "m", "", []],
-            ["OutputArray", "dst", "", []],
-        ], "", ""],
-
-        ["cv.Mat.operator+", "void", ["/Call=cv::add", `/Expr=${ self }, $0`], [
-            ["cv::Scalar", "s", "", []],
+            ["InputArray", "src2", "", []],
             ["OutputArray", "dst", "", []],
         ], "", ""],
 
         ["cv.Mat.operator+", "void", ["/Call=cv::add", "/S"], [
-            ["cv::Scalar", "s", "", []],
-            ["cv::Mat", "m", "", []],
+            ["InputArray", "src1", "", []],
+            ["cv::Mat", "src2", "", []],
             ["OutputArray", "dst", "", []],
         ], "", ""],
 
         ["cv.Mat.operator-", "void", ["/Call=cv::subtract", `/Expr=${ self }, $0`], [
-            ["cv::Mat", "m", "", []],
-            ["OutputArray", "dst", "", []],
-        ], "", ""],
-
-        ["cv.Mat.operator-", "void", ["/Call=cv::subtract", `/Expr=${ self }, $0`], [
-            ["cv::Scalar", "s", "", []],
+            ["InputArray", "src2", "", []],
             ["OutputArray", "dst", "", []],
         ], "", ""],
 
         ["cv.Mat.operator-", "void", ["/Call=cv::subtract", "/S"], [
-            ["cv::Scalar", "s", "", []],
-            ["cv::Mat", "m", "", []],
+            ["InputArray", "src1", "", []],
+            ["cv::Mat", "src2", "", []],
             ["OutputArray", "dst", "", []],
         ], "", ""],
 
         ["cv.Mat.operator*", "void", ["/Call=cv::multiply", `/Expr=${ self }, $0`], [
-            ["cv::Mat", "m", "", []],
-            ["OutputArray", "dst", "", []],
-        ], "", ""],
-
-        ["cv.Mat.operator*", "void", ["/Call=cv::multiply", `/Expr=${ self }, $0`], [
-            ["double", "s", "", []],
+            ["InputArray", "src2", "", []],
             ["OutputArray", "dst", "", []],
         ], "", ""],
 
         ["cv.Mat.operator*", "void", ["/Call=cv::multiply", "/S"], [
-            ["double", "s", "", []],
-            ["cv::Mat", "m", "", []],
+            ["InputArray", "src1", "", []],
+            ["cv::Mat", "src2", "", []],
             ["OutputArray", "dst", "", []],
         ], "", ""],
 
         ["cv.Mat.operator/", "void", ["/Call=cv::divide", `/Expr=${ self }, $0`], [
-            ["cv::Mat", "m", "", []],
-            ["OutputArray", "dst", "", []],
-        ], "", ""],
-
-        ["cv.Mat.operator/", "void", ["/Call=cv::divide", `/Expr=${ self }, $0`], [
-            ["double", "s", "", []],
+            ["InputArray", "src2", "", []],
             ["OutputArray", "dst", "", []],
         ], "", ""],
 
         ["cv.Mat.operator/", "void", ["/Call=cv::divide", "/S"], [
-            ["double", "s", "", []],
-            ["cv::Mat", "m", "", []],
+            ["InputArray", "src1", "", []],
+            ["cv::Mat", "src2", "", []],
+            ["OutputArray", "dst", "", []],
+        ], "", ""],
+
+        ["cv.Mat.operator/", "void", ["/Call=cv::divide", "/S"], [
+            ["double", "scale", "", []],
+            ["cv::Mat", "src2", "", []],
             ["OutputArray", "dst", "", []],
         ], "", ""],
 

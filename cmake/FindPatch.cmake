@@ -4,17 +4,13 @@ find_package(Git)
 if(WIN32)
   # prioritize Git Patch on Windows as other Patches may be very old and incompatible.
   if(Git_FOUND)
-    get_filename_component(GIT_DIR ${GIT_EXECUTABLE} DIRECTORY)
-    get_filename_component(GIT_DIR ${GIT_DIR} DIRECTORY)
+    cmake_path(SET GIT_DIR NORMALIZE "${GIT_EXECUTABLE}/../../..")
   endif()
 endif()
 
-find_program(PATCH
+find_program(PATCH_EXECUTABLE
   NAMES patch
   HINTS ${GIT_DIR}
   PATH_SUFFIXES usr/bin
+  REQUIRED
 )
-
-if(NOT PATCH)
-  message(FATAL_ERROR "Did not find GNU Patch")
-endif()

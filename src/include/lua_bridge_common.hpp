@@ -1,8 +1,5 @@
 #pragma once
 
-#include <typeindex>
-#include <typeinfo>
-#include <unordered_map>
 #include <lua_bridge_common.hdr.hpp>
 
 namespace LUA_MODULE_NAME {
@@ -263,16 +260,24 @@ namespace LUA_MODULE_NAME {
 
 	template<typename T>
 	inline bool lua_is(lua_State* L, int index, std::shared_ptr<T>*) {
-		return lua_is(L, index, static_cast<T*>(nullptr));
+		return lua_isnil(L, index) || lua_is(L, index, static_cast<T*>(nullptr));
 	}
 
 	template<typename T>
 	inline std::shared_ptr<T> lua_to(lua_State* L, int index, std::shared_ptr<T>*) {
+		if (lua_isnil(L, index)) {
+			return std::shared_ptr<T>();
+		}
 		return lua_to(L, index, static_cast<T*>(nullptr));
 	}
 
 	template<typename T>
 	inline int lua_push(lua_State* L, const std::shared_ptr<T>& ptr) {
+		if (!ptr) {
+			lua_pushnil(L);
+			return 1;
+		}
+
 		if constexpr (requires(const std::type_index& index) { usertype_info<T>::derives_pushers.count(index); }) {
 			// Downcasting
 			if (auto search = usertype_info<T>::derives_pushers.find(std::type_index(typeid(*ptr))); search != usertype_info<T>::derives_pushers.end()) {
@@ -431,7 +436,9 @@ namespace LUA_MODULE_NAME {
 		if (lua_isnil(L, index)) {
 			return std::nullopt;
 		}
-		return static_cast<T>(lua_to(L, index, static_cast<T*>(nullptr)));
+		auto value_holder = lua_to(L, index, static_cast<T*>(nullptr));
+		decltype(auto) value = extract_holder(value_holder, static_cast<T*>(nullptr));
+		return value;
 	}
 
 	template<typename T>
@@ -932,7 +939,6 @@ namespace LUA_MODULE_NAME {
 	int lua_method__gc(lua_State* L) {
 		using SharedPtr = std::shared_ptr<T>;
 		auto userdata_ptr = static_cast<SharedPtr*>(lua_touserdata(L, 1));
-		userdata_ptr->reset();
 		userdata_ptr->~SharedPtr();
 		return 0;
 	}

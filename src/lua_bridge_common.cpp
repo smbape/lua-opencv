@@ -2,6 +2,20 @@
 
 namespace {
 	lua_State* lua_globalState = nullptr;
+
+	struct StateGuard {
+		StateGuard() = default;
+
+		~StateGuard() {
+			lua_globalState = nullptr;
+		}
+	};
+
+	int StateGuard__gc(lua_State* L) {
+		auto userdata_ptr = static_cast<StateGuard*>(lua_touserdata(L, 1));
+		userdata_ptr->~StateGuard();
+		return 0;
+	}
 }
 
 namespace LUA_MODULE_NAME {
@@ -11,6 +25,22 @@ namespace LUA_MODULE_NAME {
 
 	void init_global_state(lua_State* L) {
 		lua_globalState = L;
+
+		// userdata = new StateGuard();
+		auto userdata_ptr = static_cast<StateGuard*>(lua_newuserdata(L, sizeof(StateGuard)));
+		new(userdata_ptr) StateGuard();
+
+		// metatable = { __gc = function() --[[ dereference the global state ]] end }
+		lua_newtable(L);
+		lua_pushliteral(L, "__gc");
+		lua_pushcfunction(L, (lua_CFunction)StateGuard__gc);
+		lua_rawset(L, -3);
+
+		// setmetatable(userdata, metatable)
+		lua_setmetatable(L, -2);
+
+		// keep reference to userdata until lua_State is closed
+		luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 
 	/**

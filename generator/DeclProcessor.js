@@ -189,7 +189,7 @@ class DeclProcessor {
                     const __type__ = options.meta_methods.get("__type__");
                     const modifiers = typeof __type__ === "string" ? [`/Call=${ __type__ }`] : [`/Output=${ JSON.stringify(displayName) }`];
                     const name = options.meta_methods_name && options.meta_methods_name.has("__type__") ? options.meta_methods_name.get("__type__") : "__type__";
-                    coclass.addMethod([`${ fqn }.__type__`, "std::string", ["/S", ...modifiers], [], "", ""], options);
+                    coclass.addMethod([`${ fqn }.${ name }`, "std::string", ["/S", ...modifiers], [], "", ""], options);
                 }
             }
 
