@@ -129,11 +129,11 @@ luarocks install --server=https://raw.githubusercontent.com/smbape/luarocks-bina
 Or to specify the target lua version with one of the following commands
 
 ```sh
-luarocks install --server=https://raw.githubusercontent.com/smbape/luarocks-binaries/refs/heads/main opencv_lua 4.10.0luajit2.1
-luarocks install --server=https://raw.githubusercontent.com/smbape/luarocks-binaries/refs/heads/main opencv_lua 4.10.0lua5.4
-luarocks install --server=https://raw.githubusercontent.com/smbape/luarocks-binaries/refs/heads/main opencv_lua 4.10.0lua5.3
-luarocks install --server=https://raw.githubusercontent.com/smbape/luarocks-binaries/refs/heads/main opencv_lua 4.10.0lua5.2
-luarocks install --server=https://raw.githubusercontent.com/smbape/luarocks-binaries/refs/heads/main opencv_lua 4.10.0lua5.1
+luarocks install --server=https://raw.githubusercontent.com/smbape/luarocks-binaries/refs/heads/main opencv_lua 4.11.0luajit2.1
+luarocks install --server=https://raw.githubusercontent.com/smbape/luarocks-binaries/refs/heads/main opencv_lua 4.11.0lua5.4
+luarocks install --server=https://raw.githubusercontent.com/smbape/luarocks-binaries/refs/heads/main opencv_lua 4.11.0lua5.3
+luarocks install --server=https://raw.githubusercontent.com/smbape/luarocks-binaries/refs/heads/main opencv_lua 4.11.0lua5.2
+luarocks install --server=https://raw.githubusercontent.com/smbape/luarocks-binaries/refs/heads/main opencv_lua 4.11.0lua5.1
 ```
 
 Those prebuilt binaries should work on Windows and many linux distributions and have been tested on:
@@ -153,7 +153,7 @@ Those prebuilt binaries should work on Windows and many linux distributions and 
 If none of the above works for you, then install the source rock with
 
 ```sh
-luarocks install --server=https://raw.githubusercontent.com/smbape/luarocks-binaries/refs/heads/main opencv_lua 4.10.0
+luarocks install --server=https://raw.githubusercontent.com/smbape/luarocks-binaries/refs/heads/main opencv_lua 4.11.0
 ```
 
 ## Examples
@@ -338,14 +338,14 @@ All the examples in the samples directory can be run by folling theses instructi
 #### Windows
 
 ```cmd
-git clone --depth 1 --branch 4.10.0 https://github.com/opencv/opencv.git
+git clone --depth 1 --branch 4.11.0 https://github.com/opencv/opencv.git
 git clone --depth 1 --branch v0.0.5 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
 @REM build.bat "-DLua_VERSION=luajit-2.1" --target luajit --install
 @REM available versions are 5.1, 5.2, 5.3, 5.4
 build.bat "-DLua_VERSION=5.4" --target lua --install
 build.bat "-DLua_VERSION=5.4" --target luarocks
-@REM luarocks\luarocks.bat install --server=https://raw.githubusercontent.com/smbape/luarocks-binaries/refs/heads/main opencv_lua 4.10.0luajit2.1
+@REM luarocks\luarocks.bat install --server=https://raw.githubusercontent.com/smbape/luarocks-binaries/refs/heads/main opencv_lua 4.11.0luajit2.1
 luarocks\luarocks.bat install --server=https://raw.githubusercontent.com/smbape/luarocks-binaries/refs/heads/main opencv_lua
 luarocks\luarocks.bat install --deps-only samples\samples-scm-1.rockspec
 npm ci
@@ -355,14 +355,14 @@ node scripts\test.js --Release
 #### Linux
 
 ```sh
-git clone --depth 1 --branch 4.10.0 https://github.com/opencv/opencv.git
+git clone --depth 1 --branch 4.11.0 https://github.com/opencv/opencv.git
 git clone --depth 1 --branch v0.0.5 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
 # ./build.sh "-DLua_VERSION=luajit-2.1" --target luajit --install
 # available versions are 5.1, 5.2, 5.3, 5.4
 ./build.sh "-DLua_VERSION=5.4" --target lua --install
 ./build.sh "-DLua_VERSION=5.4" --target luarocks
-# ./luarocks/luarocks install --server=https://raw.githubusercontent.com/smbape/luarocks-binaries/refs/heads/main opencv_lua 4.10.0luajit2.1
+# ./luarocks/luarocks install --server=https://raw.githubusercontent.com/smbape/luarocks-binaries/refs/heads/main opencv_lua 4.11.0luajit2.1
 ./luarocks/luarocks install --server=https://raw.githubusercontent.com/smbape/luarocks-binaries/refs/heads/main opencv_lua
 ./luarocks/luarocks install --deps-only samples/samples-scm-1.rockspec
 npm ci

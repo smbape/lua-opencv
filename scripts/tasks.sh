@@ -170,7 +170,7 @@ DOCKER_IMAGE_MANY_LINUX=quay.io/opencv-ci/opencv-python-manylinux2014-x86-64:202
 
 DIST_VERSION=${DIST_VERSION:-1}
 WSL_DISTNAME=${WSL_DISTNAME:-Ubuntu}
-OPENCV_VERSION=${OPENCV_VERSION:-4.10.0}
+OPENCV_VERSION=${OPENCV_VERSION:-4.11.0}
 WSL_EXCLUDED_TESTS=${WSL_EXCLUDED_TESTS:-"'!02-video-capture-camera.lua' '!threshold_inRange.lua' '!objectDetection.lua'"}
 CONTAINER_NAME=${CONTAINER_NAME:-${CONTAINER_NAME_MANY_LINUX}}
 DOCKER_IMAGE=${DOCKER_IMAGE:-${DOCKER_IMAGE_MANY_LINUX}}
@@ -255,10 +255,21 @@ function open_git_project() {
     fi
 }
 
+# https://superuser.com/questions/1749781/how-can-i-check-if-the-environment-is-wsl-from-a-shell-script#answer-1749811
+if [ -e /proc/sys/fs/binfmt_misc/WSLInterop ]; then
+
+function wsl() {
+    bash "$@"
+}
+
+else
+
 WSL="$(command -v wsl)"
 function wsl() {
     "$WSL" -d "$WSL_DISTNAME" -e bash -li "$@"
 }
+
+fi
 
 function docker_run_bash() {
     local name=${1:-${CONTAINER_NAME}}
@@ -420,12 +431,18 @@ function prepublish_windows() {
 }
 
 function use_luajit_modules() {
-    local sources="$PWD/out/prepublish/build/opencv_lua"
-    rm -rf luarocks/lua_modules out/build.luaonly/x64-*/luarocks/luarocks-prefix/src/luarocks-stamp && \
+    rm -rf luarocks/{lua_modules,lua${LUAROCKS_SUFFIX},luarocks${LUAROCKS_SUFFIX}} out/build.luaonly/x64-*/luarocks/luarocks-prefix/src/luarocks-stamp && \
         ./build${SCRIPT_SUFFIX} -d -DLua_VERSION=luajit-2.1 --target luajit --install && \
         ./build${SCRIPT_SUFFIX} -d -DLua_VERSION=luajit-2.1 --target luarocks && \
         ./build${SCRIPT_SUFFIX} -DLua_VERSION=luajit-2.1 --target luajit --install && \
-        ./build${SCRIPT_SUFFIX} -DLua_VERSION=luajit-2.1 --target luarocks && \
+        ./build${SCRIPT_SUFFIX} -DLua_VERSION=luajit-2.1 --target luarocks || exit $?
+
+    local sources="$PWD/out/prepublish/build/opencv_lua"
+    if [ ! -e ${sources} ]; then
+        bash -c "source scripts/vcvars_restore_start.sh && ./luarocks/luarocks${LUAROCKS_SUFFIX} install --deps-only samples/samples-scm-1.rockspec"
+        return $?
+    fi
+
     bash -c "
         cd ${sources}/ && \
         ./build${SCRIPT_SUFFIX} -DLua_VERSION=luajit-2.1 --target luajit --install && \
@@ -436,12 +453,18 @@ function use_luajit_modules() {
 }
 
 function use_luajit_contrib_modules() {
-    local sources="$PWD/out/prepublish/build/opencv_lua-contrib"
-    rm -rf luarocks/lua_modules out/build.luaonly/x64-*/luarocks/luarocks-prefix/src/luarocks-stamp && \
+    rm -rf luarocks/{lua_modules,lua${LUAROCKS_SUFFIX},luarocks${LUAROCKS_SUFFIX}} out/build.luaonly/x64-*/luarocks/luarocks-prefix/src/luarocks-stamp && \
         ./build${SCRIPT_SUFFIX} -d -DLua_VERSION=luajit-2.1 --target luajit --install && \
         ./build${SCRIPT_SUFFIX} -d -DLua_VERSION=luajit-2.1 --target luarocks && \
         ./build${SCRIPT_SUFFIX} -DLua_VERSION=luajit-2.1 --target luajit --install && \
-        ./build${SCRIPT_SUFFIX} -DLua_VERSION=luajit-2.1 --target luarocks && \
+        ./build${SCRIPT_SUFFIX} -DLua_VERSION=luajit-2.1 --target luarocks || exit $?
+
+    local sources="$PWD/out/prepublish/build/opencv_lua-contrib"
+    if [ ! -e ${sources} ]; then
+        bash -c "source scripts/vcvars_restore_start.sh && ./luarocks/luarocks${LUAROCKS_SUFFIX} install --deps-only samples/samples-scm-1.rockspec"
+        return $?
+    fi
+
     bash -c "
         cd ${sources}/ && \
         ./build${SCRIPT_SUFFIX} -DLua_VERSION=luajit-2.1 --target luajit --install && \
@@ -453,12 +476,19 @@ function use_luajit_contrib_modules() {
 
 function use_lua_modules() {
     local version="${1:-5.4}"
-    local sources="$PWD/out/prepublish/build/opencv_lua"
-    rm -rf luarocks/lua_modules out/build.luaonly/x64-*/luarocks/luarocks-prefix/src/luarocks-stamp && \
+
+    rm -rf luarocks/{lua_modules,lua${LUAROCKS_SUFFIX},luarocks${LUAROCKS_SUFFIX}} out/build.luaonly/x64-*/luarocks/luarocks-prefix/src/luarocks-stamp && \
         ./build${SCRIPT_SUFFIX} -d -DLua_VERSION=${version} --target lua --install && \
         ./build${SCRIPT_SUFFIX} -d -DLua_VERSION=${version} --target luarocks && \
         ./build${SCRIPT_SUFFIX} -DLua_VERSION=${version} --target lua --install && \
-        ./build${SCRIPT_SUFFIX} -DLua_VERSION=${version} --target luarocks && \
+        ./build${SCRIPT_SUFFIX} -DLua_VERSION=${version} --target luarocks || exit $?
+
+    local sources="$PWD/out/prepublish/build/opencv_lua"
+    if [ ! -e ${sources} ]; then
+        bash -c "source scripts/vcvars_restore_start.sh && ./luarocks/luarocks${LUAROCKS_SUFFIX} install --deps-only samples/samples-scm-1.rockspec"
+        return $?
+    fi
+
     bash -c "
         cd ${sources}/ && \
         ./build${SCRIPT_SUFFIX} -DLua_VERSION=${version} --target lua --install && \
@@ -470,12 +500,19 @@ function use_lua_modules() {
 
 function use_lua_contrib_modules() {
     local version="${1:-5.4}"
-    local sources="$PWD/out/prepublish/build/opencv_lua-contrib"
-    rm -rf luarocks/lua_modules out/build.luaonly/x64-*/luarocks/luarocks-prefix/src/luarocks-stamp && \
+
+    rm -rf luarocks/{lua_modules,lua${LUAROCKS_SUFFIX},luarocks${LUAROCKS_SUFFIX}} out/build.luaonly/x64-*/luarocks/luarocks-prefix/src/luarocks-stamp && \
         ./build${SCRIPT_SUFFIX} -d -DLua_VERSION=${version} --target lua --install && \
         ./build${SCRIPT_SUFFIX} -d -DLua_VERSION=${version} --target luarocks && \
         ./build${SCRIPT_SUFFIX} -DLua_VERSION=${version} --target lua --install && \
-        ./build${SCRIPT_SUFFIX} -DLua_VERSION=${version} --target luarocks && \
+        ./build${SCRIPT_SUFFIX} -DLua_VERSION=${version} --target luarocks || exit $?
+
+    local sources="$PWD/out/prepublish/build/opencv_lua-contrib"
+    if [ ! -e ${sources} ]; then
+        bash -c "source scripts/vcvars_restore_start.sh && ./luarocks/luarocks${LUAROCKS_SUFFIX} install --deps-only samples/samples-scm-1.rockspec"
+        return $?
+    fi
+
     bash -c "
         cd ${sources}/ && \
         ./build${SCRIPT_SUFFIX} -DLua_VERSION=${version} --target lua --install && \
@@ -488,9 +525,8 @@ function use_lua_contrib_modules() {
 function use_wsl_luajit_modules() {
     wsl -c '
 source scripts/wsl_init.sh || exit $?
-source ${projectDir}/scripts/tasks.sh || exit $?
 
-rm -rf luarocks/lua_modules out/build.luaonly/Linux-GCC-Debug/luarocks/luarocks-prefix/src/luarocks-stamp && \
+rm -rf luarocks/{lua_modules,lua${LUAROCKS_SUFFIX},luarocks${LUAROCKS_SUFFIX}} out/build.luaonly/Linux-GCC-Debug/luarocks/luarocks-prefix/src/luarocks-stamp && \
     ./build${SCRIPT_SUFFIX} -d -DLua_VERSION=luajit-2.1 --target luajit --install && \
     ./build${SCRIPT_SUFFIX} -d -DLua_VERSION=luajit-2.1 --target luarocks && \
     ./luarocks/luarocks${LUAROCKS_SUFFIX} install --deps-only samples/samples-scm-1.rockspec
@@ -500,9 +536,8 @@ rm -rf luarocks/lua_modules out/build.luaonly/Linux-GCC-Debug/luarocks/luarocks-
 function use_wsl_lua_modules() {
     local script='
 source scripts/wsl_init.sh || exit $?
-source ${projectDir}/scripts/tasks.sh || exit $?
 
-rm -rf luarocks/lua_modules out/build.luaonly/Linux-GCC-Debug/luarocks/luarocks-prefix/src/luarocks-stamp && \
+rm -rf luarocks/{lua_modules,lua${LUAROCKS_SUFFIX},luarocks${LUAROCKS_SUFFIX}} out/build.luaonly/Linux-GCC-Debug/luarocks/luarocks-prefix/src/luarocks-stamp && \
     ./build${SCRIPT_SUFFIX} -d -DLua_VERSION=${version} --target lua --install && \
     ./build${SCRIPT_SUFFIX} -d -DLua_VERSION=${version} --target luarocks && \
     ./luarocks/luarocks${LUAROCKS_SUFFIX} install --deps-only samples/samples-scm-1.rockspec
@@ -597,7 +632,6 @@ function set_url_wsl() {
 function prepublish_wsl() {
     wsl -c '
 source scripts/wsl_init.sh || exit $?
-source scripts/tasks.sh && \
 prepublish_any --server="${projectDir}/out/prepublish/server"
 '
 }
@@ -750,17 +784,23 @@ $(build_custom_linux_script)" && \
     new_version_rollback
 }
 
-function build_windows_debug() {
-    if [ ! -e luarocks/lua.bat ]; then
-        use_luajit_modules || exit $?
-    fi
-
+function get_lua_version() {
     local version="$(./luarocks/lua${LUAROCKS_SUFFIX} -v | sed -r -e "s/^([[:alnum:]]+) ([0-9]+\.[0-9]+).+$/target=\1 version=\2/")"
     local target
     eval "$version"
     if [ "${target}" == "LuaJIT" ]; then
         version=luajit-2.1
     fi
+
+    echo "$version"
+}
+
+function build_windows_debug() {
+    if [ ! -e luarocks/lua${LUAROCKS_SUFFIX} ] || ! ./luarocks/lua${LUAROCKS_SUFFIX} -v &> /dev/null; then
+        use_luajit_modules || exit $?
+    fi
+
+    local version="$(get_lua_version)"
 
     time \
     ./build${SCRIPT_SUFFIX} -d "-DLua_VERSION=${version}" --install \
@@ -780,17 +820,11 @@ function build_wsl_debug() {
     local script='
 source scripts/wsl_init.sh || exit $?
 
-if [ ! -x luarocks/lua ]; then
-    source "${projectDir}/scripts/tasks.sh" || exit $?
+if [ ! -e luarocks/lua${LUAROCKS_SUFFIX} ] || ! ./luarocks/lua${LUAROCKS_SUFFIX} -v &> /dev/null; then
     use_wsl_luajit_modules || exit $?
 fi
 
-version="$(./luarocks/lua${LUAROCKS_SUFFIX} -v | sed -r -e "s/^([[:alnum:]]+) ([0-9]+\.[0-9]+).+$/target=\1 version=\2/")"
-target
-eval "$version"
-if [ "${target}" == "LuaJIT" ]; then
-    version=luajit-2.1
-fi
+version="$(get_lua_version)"
 
 time \
     ./build${SCRIPT_SUFFIX} -d "-DLua_VERSION=${version}" --install \
@@ -1211,7 +1245,15 @@ find out/build/Linux-GCC-Debug/ -type f \( -name CMakeCache.txt -o -name pyopenc
 
 function compile_debug_windows() {
     local file="$1"
-    compile_debug_strict_windows "opencv_lua/CMakeFiles/opencv_lua.dir/__/${file}"
+
+    local version="$(./luarocks/lua${LUAROCKS_SUFFIX} -v | sed -r -e "s/^([[:alnum:]]+) ([0-9]+\.[0-9]+).+$/target=\1 version=\2/")"
+    local target
+    eval "$version"
+    if [ "${target}" == "LuaJIT" ]; then
+        version=luajit-2.1
+    fi
+
+    compile_debug_strict_windows "opencv_lua/${version}/CMakeFiles/opencv_lua.dir/__/${file}"
 }
 
 function compile_debug_wsl() {
@@ -1221,12 +1263,12 @@ function compile_debug_wsl() {
 
 function compile_debug_strict_windows() {
     local file="$1"
-    bash -c "cd out/build/x64-Debug/ && ninja ${file}.obj"
+    bash -c "cd out/build/x64-Debug/ && ninja -d explain '${file}.obj'"
 }
 
 function compile_debug_strict_wsl() {
     local file="$1"
-    wsl -c "source scripts/wsl_init.sh && cd out/build/Linux-GCC-Debug/ && ninja ${file}.o"
+    wsl -c "source scripts/wsl_init.sh && cd out/build/Linux-GCC-Debug/ && ninja -d explain '${file}.o'"
 }
 
 function install_build_essentials_wsl_debian() {

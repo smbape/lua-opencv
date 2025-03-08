@@ -11,7 +11,7 @@ const eachOfLimit = require("async/eachOfLimit");
 const waterfall = require("async/waterfall");
 const { explore } = require("fs-explorer");
 
-const OpenCV_VERSION = "opencv-4.10.0";
+const OpenCV_VERSION = "opencv-4.11.0";
 // const OpenCV_DLLVERSION = OpenCV_VERSION.slice("opencv-".length).replaceAll(".", "");
 global.OpenCV_VERSION = OpenCV_VERSION;
 
@@ -56,6 +56,8 @@ const getOptions = output => {
         skip: new Set(),
 
         output: sysPath.join(output, "generated"),
+
+        excludes: new Set(["cv::dnn::DictValue"]),
 
         onClass: (processor, coclass, opts) => {
             // Nothing to do
@@ -339,7 +341,6 @@ waterfall([
     },
 
     (processor, configuration, next) => {
-        // func_modifiers = ["=readMat"]
         const generator = new LuaGenerator();
         generator.generate(processor, configuration, options, next);
     },

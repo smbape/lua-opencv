@@ -12,7 +12,7 @@ Sources:
     https://learnopencv.com/object-detection-using-yolov5-and-opencv-dnn-in-c-and-python/
     https://github.com/ultralytics/ultralytics/blob/main/examples/YOLOv8-CPP-Inference/inference.cpp
     https://docs.opencv.org/4.x/d4/d2f/tf_det_tutorial_dnn_conversion.html
-    https://github.com/opencv/opencv/blob/4.10.0/samples/dnn/object_detection.py
+    https://github.com/opencv/opencv/blob/4.11.0/samples/dnn/object_detection.py
 --]]
 
 local __file__ = arg[0]

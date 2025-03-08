@@ -9,7 +9,7 @@ namespace LUA_MODULE_NAME {
 
 	template<typename T, typename V>
 	inline decltype(auto) extract_holder(T& holder, V*) {
-		if constexpr (std::is_same_v<std::remove_cvref_t<T>, std::remove_cvref_t<V>>) {
+		if constexpr (std::is_same_v<std::remove_cvref_t<T>, V>) {
 			return holder;
 		}
 		else if constexpr (std::is_enum_v<V>) {
@@ -22,7 +22,7 @@ namespace LUA_MODULE_NAME {
 
 	template<typename T, typename V>
 	inline decltype(auto) extract_holder(T& holder, V& defval, bool empty) {
-		if constexpr (std::is_same_v<T, V>) {
+		if constexpr (std::is_same_v<std::remove_cvref_t<T>, std::remove_cvref_t<V>>) {
 			return empty ? defval : holder;
 		}
 		else if constexpr (std::is_enum_v<V>) {
@@ -185,7 +185,11 @@ namespace LUA_MODULE_NAME {
 
 	template<typename T>
 	inline bool lua_userdata_is(lua_State* L, int index, T*) {
-		return usertype_info<T>::lua_userdata_is(L, index);
+		if constexpr (is_usertype_v<T>) {
+			return usertype_info<T>::lua_userdata_is(L, index);
+		} else {
+			return false;
+		}
 	}
 
 
@@ -214,7 +218,7 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename T>
-	inline typename std::enable_if<!std::is_enum_v<T>, std::shared_ptr<T>>::type lua_to(lua_State* L, int index, T* ptr) {
+	inline typename std::enable_if<is_usertype_v<T>, std::shared_ptr<T>>::type lua_to(lua_State* L, int index, T* ptr) {
 		return lua_userdata_to(L, index, ptr);
 	}
 
@@ -347,8 +351,10 @@ namespace LUA_MODULE_NAME {
 
 	template<typename K, typename V>
 	inline void lua_to(lua_State* L, int index, std::map<K, V>& out) {
+		using Map = std::map<K, V>;
+
 		if (lua_isuserdata(L, index)) {
-			out = *lua_userdata_to(L, index, static_cast<std::map<K, V>*>(nullptr));
+			out = *lua_userdata_to(L, index, static_cast<Map*>(nullptr));
 			return;
 		}
 
@@ -397,9 +403,9 @@ namespace LUA_MODULE_NAME {
 			index += lua_gettop(L) + 1;
 		}
 
-		static std::map<K, V> out;
-		lua_to(L, index, out);
-		return std::make_shared<std::map<K, V>>(out);
+		auto out = std::make_shared<std::map<K, V>>();
+		lua_to(L, index, *out);
+		return out;
 	}
 
 	template<typename K, typename V>

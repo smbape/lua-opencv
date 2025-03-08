@@ -99,7 +99,7 @@ const findFile = (path, rootPath = ".") => {
         }
 
         continue;
-    } while (!isAbsolute && parent !== rootPath);
+    } while (!isAbsolute && parent !== rootPath); // eslint-disable-line no-unmodified-loop-condition
 
     return null;
 };

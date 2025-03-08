@@ -4,7 +4,7 @@ package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:su
 
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.10.0/samples/python/tutorial_code/imgProc/opening_closing_hats/morphology_2.py
+    https://github.com/opencv/opencv/blob/4.11.0/samples/python/tutorial_code/imgProc/opening_closing_hats/morphology_2.py
 --]]
 
 local argparse = require("argparse")

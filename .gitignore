@@ -5,6 +5,7 @@
 /node_modules
 /opencv_extra
 /out
+/samples/data/animated_image.webp
 /samples/dnn/object_detection/models
 /*.rock
 /*.rockspec

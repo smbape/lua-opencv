@@ -374,7 +374,7 @@ namespace LUA_MODULE_NAME {
 	inline typename std::enable_if<std::is_enum_v<T>, int>::type lua_to(lua_State* L, int index, T* ptr);
 
 	template<typename T>
-	inline typename std::enable_if<!std::is_enum_v<T>, std::shared_ptr<T>>::type lua_to(lua_State* L, int index, T* ptr);
+	inline typename std::enable_if<is_usertype_v<T>, std::shared_ptr<T>>::type lua_to(lua_State* L, int index, T* ptr);
 
 	template<typename T>
 	inline int lua_push(lua_State* L, T* ptr);

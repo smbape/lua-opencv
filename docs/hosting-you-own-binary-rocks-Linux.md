@@ -143,7 +143,7 @@ export PATH="/io/opencv-lua-custom/build/out/prepublish/luajit-2.1/opencv_lua-cu
 ### Initialize our test project and install our custom prebuilt binary
 
 ```sh
-git clone --depth 1 --branch 4.10.0 https://github.com/opencv/opencv_extra.git "/io/opencv-lua-custom/opencv_extra" && \
+git clone --depth 1 --branch 4.11.0 https://github.com/opencv/opencv_extra.git "/io/opencv-lua-custom/opencv_extra" && \
 mkdir "/io/opencv-lua-custom/test" && \
 cd "/io/opencv-lua-custom/test" && \
 luarocks --lua-version "5.1" --lua-dir "$(dirname "$(dirname "$(command -v luajit)")")" init --lua-versions "5.1,5.2,5.3,5.4" && \

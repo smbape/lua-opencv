@@ -1,6 +1,5 @@
 #pragma once
 
-#include <lua_bridge_arrays.hpp>
 namespace LUA_MODULE_NAME {
 	template<typename Array, bool is_arrays_type>
 	struct _OptionalArray;

@@ -121,7 +121,7 @@ set PATH=D:\opencv-lua-custom\build\out\prepublish\luajit-2.1\opencv_lua-custom\
 
 ```cmd
 chcp 65001
-git clone --depth 1 --branch 4.10.0 https://github.com/opencv/opencv_extra.git "D:\opencv-lua-custom\opencv_extra"
+git clone --depth 1 --branch 4.11.0 https://github.com/opencv/opencv_extra.git "D:\opencv-lua-custom\opencv_extra"
 mkdir "D:\opencv-lua-custom\test"
 cd /d "D:\opencv-lua-custom\test"
 luarocks --lua-version "5.1" --lua-dir "D:\opencv-lua-custom\build\out\prepublish\luajit-2.1\opencv_lua-custom\out\install\x64-Release" init --lua-versions "5.1,5.2,5.3,5.4"
@@ -214,7 +214,7 @@ lua.bat test.lua
 Open a `x64 Native Tools Command Prompt for VS 2022` terminal
 
 ```cmd
-git clone --depth 1 --branch 4.10.0 https://github.com/opencv/opencv.git "D:\opencv-lua-custom\opencv"
+git clone --depth 1 --branch 4.11.0 https://github.com/opencv/opencv.git "D:\opencv-lua-custom\opencv"
 luarocks.bat install --deps-only D:\opencv-lua-custom\build\samples\samples-scm-1.rockspec
 lua.bat D:\opencv-lua-custom\build\samples\dnn\object_detection\object_detection.lua ssd_tf --input Megamind.avi --backend 5 --target 6
 ```

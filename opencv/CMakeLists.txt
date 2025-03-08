@@ -21,8 +21,8 @@ endif()
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release;MinSizeRel;RelWithDebInfo" CACHE STRING "Configs" FORCE)
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "${CMAKE_CONFIGURATION_TYPES}")
 
-set(OpenCV_VERSION 4.10.0 CACHE STRING "Choose the OpenCV version.")
-set_property(CACHE OpenCV_VERSION PROPERTY STRINGS "4.10.0" "4.9.0" "4.8.1" "4.8.0" "4.7.0" "4.6.0" "4.5.5" "4.5.4" "4.5.3" "4.5.2" "4.5.1")
+set(OpenCV_VERSION 4.11.0 CACHE STRING "Choose the OpenCV version.")
+set_property(CACHE OpenCV_VERSION PROPERTY STRINGS "4.11.0" "4.10.0" "4.9.0")
 
 string(REPLACE "." ";" OpenCV_VERSION_LIST ${OpenCV_VERSION})
 list(GET OpenCV_VERSION_LIST 0 OpenCV_VERSION_MAJOR)
@@ -53,18 +53,10 @@ FetchContent_Populate(opencv
 option(BUILD_contrib "Build with opencv contrib" OFF)
 
 if (BUILD_contrib)
-  # https://github.com/opencv/opencv-python/tree/84
+  # https://github.com/opencv/opencv-python/tree/86
+  set(OPENCV_CONTRIB_TAG_4110 0e5254ebf54d2aed6e7eaf6660bf3b797cf50a02)
   set(OPENCV_CONTRIB_TAG_4100 1ed3dd2c53888e3289afdb22ec4e9ebbff3dba87)
   set(OPENCV_CONTRIB_TAG_490 c7602a8f74205e44389bd6a4e8d727d32e7e27b4)
-  set(OPENCV_CONTRIB_TAG_481 f10c84d48b0714f2b408c9e5cccfac1277c8e6cc)
-  set(OPENCV_CONTRIB_TAG_480 f10c84d48b0714f2b408c9e5cccfac1277c8e6cc)
-  set(OPENCV_CONTRIB_TAG_470 e247b680a6bd396f110274b6c214406a93171350)
-  set(OPENCV_CONTRIB_TAG_460 db16caf6ceee76b43b94c846be276e92a43e9700)
-  set(OPENCV_CONTRIB_TAG_455 49e8f123ca08e76891856a1ecce491b62d08ba20)
-  set(OPENCV_CONTRIB_TAG_454 2bc3e1a169afd2675ef68221176f32cc0ea5427a)
-  set(OPENCV_CONTRIB_TAG_453 d5317d6297a8129b66dba1a1f7cc784e94639da9)
-  set(OPENCV_CONTRIB_TAG_452 f5d7f6712d4ff229ba4f45cf79dfd11c557d56fd)
-  set(OPENCV_CONTRIB_TAG_451 b91a781cbc1285d441aa682926d93d8c23678b0b)
 
   if (NOT DEFINED OPENCV_CONTRIB_TAG_${OpenCV_DLLVERSION})
     message(FATAL_ERROR "Unable to find git contrib tag for OPENCV_CONTRIB_TAG_${OpenCV_DLLVERSION}

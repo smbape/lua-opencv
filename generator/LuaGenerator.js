@@ -184,6 +184,20 @@ const proto = {
     },
 };
 
+const toCamelCase = str => {
+    return str.toLowerCase().replace(/(?:^([a-z])|[^a-z\d_]+([a-z])|[^a-z\d_]+$)/g, (match, begin, middle, end) => {
+        if (begin) {
+            return begin.toUpperCase();
+        }
+
+        if (middle) {
+            return middle.toUpperCase();
+        }
+
+        return "";
+    });
+};
+
 const conditional = (...args) => {
     const [is_optional] = args.slice(-2);
     if (!is_optional) {
@@ -1026,8 +1040,8 @@ class LuaGenerator {
                                 Keywords::push(L, vargc, "${ argname }");
                             }
 
-                            using ${ argname }_Holder = decltype(lua_to(L, ${ argn }, static_cast<${ var_type }*>(nullptr)));
-                            ${ argname }_Holder ${ argname }_holder;
+                            using ${ toCamelCase(argname) }Holder = decltype(lua_to(L, ${ argn }, static_cast<${ var_type }*>(nullptr)));
+                            ${ toCamelCase(argname) }Holder ${ argname }_holder;
 
                             ${ conditional(...[
                                 `${ argname }_positional`,

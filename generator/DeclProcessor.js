@@ -240,9 +240,12 @@ class DeclProcessor {
 
     add_class(decl, options = {}) {
         const [name, base, list_of_modifiers, properties] = decl;
-        const parents = base ? base.slice(": ".length).split(", ") : [];
         const path = getAlias(name.slice(name.indexOf(" ") + 1)).split(".");
         const fqn = path.join("::");
+
+        if (options.excludes && options.excludes.has(fqn)) {
+            return;
+        }
 
         const coclass = this.getCoClass(fqn, options);
 
@@ -281,6 +284,8 @@ class DeclProcessor {
         }
 
         this.bases.set(fqn, new Set());
+
+        const parents = base ? base.slice(": ".length).split(", ") : [];
 
         for (let parent of parents) {
             parent = getAlias(parent);
@@ -332,6 +337,10 @@ class DeclProcessor {
 
         const path = name.slice(start).split(".");
         const fqn = path.join("::");
+
+        if (options.excludes && options.excludes.has(fqn)) {
+            return;
+        }
 
         if (this.enums.has(fqn)) {
             this.enums.get(fqn)[3].push(...enums);
@@ -412,7 +421,13 @@ class DeclProcessor {
 
         const [name, , list_of_modifiers, properties] = decl;
         const path = getAlias(name).split(".");
-        const coclass = this.getCoClass(path.slice(0, -1).join("::"), options);
+        const fqn = path.slice(0, -1).join("::");
+
+        if (options.excludes && options.excludes.has(fqn)) {
+            return;
+        }
+
+        const coclass = this.getCoClass(fqn, options);
 
         if (list_of_modifiers.includes("/Properties")) {
             for (const property of properties) {

@@ -19,13 +19,6 @@ exports.makeExpansion = (str, ...args) => {
     return str;
 };
 
-const useNamspace = (namespaces, namespace) => {
-    const parts = namespace.split("::");
-    for (let i = 0; i < parts.length; i++) {
-        namespaces.add(`using namespace ${ parts.slice(0, parts.length - i).join("::") };`);
-    }
-};
-
 exports.useNamespaces = (body, method, processor, coclass) => {
     const namespaces = new Set();
 
