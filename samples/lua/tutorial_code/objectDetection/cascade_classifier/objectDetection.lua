@@ -92,6 +92,9 @@ if not cap.isOpened then
 end
 
 while true do
+    -- Without this, memory grows indefinitely
+    collectgarbage()
+
     local ret, frame = cap:read()
     if frame:empty() then
         print('--(!) No captured frame -- Break!')

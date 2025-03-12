@@ -1,10 +1,7 @@
 /* eslint-disable no-magic-numbers */
-const version = process.env.npm_package_version || require("../package.json").version;
 const fs = require("node:fs");
 const sysPath = require("node:path");
 const waterfall = require("async/waterfall");
-
-const [VERSION_MAJOR, VERSION_MINOR] = version.split(".");
 
 const knwon_ids = require("./ids");
 const FileUtils = require("./FileUtils");
@@ -198,32 +195,6 @@ const toCamelCase = str => {
     });
 };
 
-const conditional = (...args) => {
-    const [is_optional] = args.slice(-2);
-    if (!is_optional) {
-        args = args.slice(0, -2);
-    }
-
-    const text = [];
-
-    for (let i = 0; i < args.length; i += 2) {
-        if (!args[i + 1]) {
-            continue;
-        }
-
-        const has_more = i + 2 < args.length;
-        const condition = text.length === 0 ? `if (${ args[i] })` : has_more ? `else if (${ args[i] })` : "else";
-
-        text.push(`
-            ${ condition } {
-                ${ args[i + 1].split("\n").join(`\n${ " ".repeat(16) }`) }
-            }
-        `.replace(/^ {12}/mg, "").trim());
-    }
-
-    return text.join(" ");
-};
-
 const meta_functions = new Map([
     ["sol::meta_function::index", "__index"],
     ["sol::meta_function::new_index", "__newindex"],
@@ -380,6 +351,7 @@ class LuaGenerator {
         return meta_binaries_op.get(fname);
     }
 
+    // eslint-disable-next-line complexity
     static writeProperties(processor, coclass, contentRegisterPrivate, contentRegister, options) {
         const { fqn } = coclass;
         const dynamic_get = [];
@@ -551,13 +523,19 @@ class LuaGenerator {
                     }
 
                     wexpr.push(`
-                        if (lua_is(L, 3, static_cast<${ wtype }*>(nullptr))) {
-                            auto value_holder = lua_to(L, 3, static_cast<${ wtype }*>(nullptr));
+                    {
+                        auto value_holder = lua_to(L, 3, static_cast<${ wtype }*>(nullptr), is_valid);
+                        if (is_valid) {
                             decltype(auto) value = extract_holder(value_holder, static_cast<${ wtype }*>(nullptr));
-                            ${ in_val.split("\n").join(`\n${ " ".repeat(24) }`) };
+                            ${ in_val.split("\n").join(`\n${ " ".repeat(28) }`) };
                             return 0;
                         }
-                    `.replace(/^ {24}/mg, "").trim());
+                    }
+                    `.replace(/^ {20}/mg, "").trim());
+                }
+
+                if (wexpr.length === 1) {
+                    wexpr[0] = wexpr[0].slice(1, -1).trim().replace(/^ {4}/mg, "");
                 }
 
                 wexpr.push(`return luaL_typeerror(L, 3, ${ JSON.stringify(cpptypes.join("|")) });`);
@@ -570,15 +548,20 @@ class LuaGenerator {
 
             if (!isStatic) {
                 obj_decl.push(`
-                    if (!lua_is(L, 1, static_cast<::${ fqn }*>(nullptr))) {
+                    bool is_valid;
+                    auto self = lua_to(L, 1, static_cast<${ fqn }*>(nullptr), is_valid);
+                    if (!is_valid) {
                         return luaL_typeerror(L, 1, ${ JSON.stringify(fqn) });
                     }
-                    ::${ fqn }* self = lua_to(L, 1, static_cast<::${ fqn }*>(nullptr)).get();
                 `.replace(/^ {20}/mg, "").trim());
                 obj_decl.push("");
             }
 
             if (rexpr) {
+                if (rexpr.includes("is_valid") && !obj_decl[0].includes("bool is_valid;")) {
+                    obj_decl.unshift("bool is_valid;");
+                }
+
                 dynamic_get.push(`
                     { ${ key_name }, [](lua_State* L) {
                         ${ obj_decl.join("\n").split("\n").join(`\n${ " ".repeat(24) }`) }
@@ -589,6 +572,10 @@ class LuaGenerator {
             }
 
             if (wexpr) {
+                if (wexpr.includes("is_valid") && !obj_decl[0].includes("bool is_valid;")) {
+                    obj_decl.unshift("bool is_valid;");
+                }
+
                 dynamic_set.push(`
                     { ${ key_name }, [](lua_State* L) {
                         ${ obj_decl.join("\n").split("\n").join(`\n${ " ".repeat(24) }`) }
@@ -613,11 +600,10 @@ class LuaGenerator {
                 });
 
                 int dynamic_get(lua_State* L) {
-                    if (lua_is(L, 2, static_cast<std::string*>(nullptr))) {
-                        const std::string k = lua_to(L, 2, static_cast<std::string*>(nullptr));
-                        if (getters.count(k)) {
-                            return getters.at(k)(L);
-                        }
+                    bool is_valid;
+                    const std::string k = lua_to(L, 2, static_cast<std::string*>(nullptr), is_valid);
+                    if (is_valid && getters.count(k)) {
+                        return getters.at(k)(L);
                     }
                     return 0;
                 }
@@ -637,11 +623,10 @@ class LuaGenerator {
                 });
 
                 void dynamic_set(lua_State* L) {
-                    if (lua_is(L, 2, static_cast<std::string*>(nullptr))) {
-                        const std::string k = lua_to(L, 2, static_cast<std::string*>(nullptr));
-                        if (setters.count(k)) {
-                            return setters.at(k)(L);
-                        }
+                    bool is_valid;
+                    const std::string k = lua_to(L, 2, static_cast<std::string*>(nullptr), is_valid);
+                    if (is_valid && setters.count(k)) {
+                        return setters.at(k)(L);
                     }
 
                     // set the value on the module
@@ -681,6 +666,7 @@ class LuaGenerator {
         }
     }
 
+    // eslint-disable-next-line complexity
     static writeMethods(processor, coclass, contentRegisterPrivate, contentRegister, options) {
         const { fqn } = coclass;
         const { shared_ptr } = options;
@@ -930,10 +916,10 @@ class LuaGenerator {
                     const is_shared_ptr = cpptype.startsWith(`${ shared_ptr }<`);
                     const is_by_ref = !is_ptr && !is_shared_ptr && processor.classes.has(cpptype) && !processor.enums.has(cpptype);
                     const var_type = is_array ? arr_cpptype : cpptype;
-                    const lua_is = `lua_is${ arg_suffix }`;
-                    const lua_to = `lua_to${ arg_suffix }`;
                     const argi = i + offset;
                     const argn = argi + 1;
+                    const nd_mat = arg_modifiers.includes("/ND");
+                    const defarg = `default_${ argname }_value`;
 
                     if (is_out_arg && is_array) {
                         is_optional = true;
@@ -947,119 +933,147 @@ class LuaGenerator {
                         }
                     }
 
-                    overload.push("", `
-                        // =========================
-                        // check argument ${ argname }
-                        // =========================
-                        bool ${ argname }_positional = false;
-                        bool ${ argname }_kwarg = false;
-                        if (argc > ${ argi }) {
-                            // positional parameter
-                            ${ argname }_positional = ${ lua_is }(L, ${ argn }, static_cast<${ var_type }*>(nullptr));
-                            if (!${ argname }_positional) {
-                                goto overload${ overload_id };
-                            }
-
-                            // should not be a named parameter
-                            if (has_kwargs && Keywords::has(L, vargc, "${ argname }")) {
-                                goto overload${ overload_id };
-                            }
-                        }
-                        else if (has_kwargs && Keywords::has(L, vargc, "${ argname }")) {
-                            // named parameter
-                            Keywords::push(L, vargc, "${ argname }");
-                            ${ argname }_kwarg = ${ lua_is }(L, -1, static_cast<${ var_type }*>(nullptr));
-                            lua_pop(L, 1);
-                            if (!${ argname }_kwarg) {
-                                goto overload${ overload_id };
-                            }
-                            usedkw++;
-                        }
-                    `.replace(/^ {24}/mg, "").trim());
-
-                    if (!is_optional) {
-                        overload.push(`
-                            else {
-                                // mandatory parameter
-                                goto overload${ overload_id };
-                            }
-                        `.replace(/^ {28}/mg, "").trim());
-                    }
-
                     extractors.push("", `
                         // =========================
-                        // get argument ${ argname }
+                        // extract argument ${ argname }
                         // =========================
                     `.replace(/^ {24}/mg, "").trim());
 
                     if (is_optional) {
+                        extractors.push("is_valid = false;");
                         const ref = defval !== "" && is_by_ref && !defval.includes("(") && !defval.includes("'") && !defval.includes("\"") && !/^(?:\.|\d+\.)\d+$/.test(defval) ? "&" : "";
-                        const copy = ref || is_out_arg || defval === "" || defval.includes("(");
+                        const copy = is_out_arg || defval === "" || defval.includes("(");
                         if (!is_array || defval !== "") {
-                            extractors.push(`${ copy ? "" : "static " }${ cpptype }${ ref } ${ argname }_default${ defval !== "" ? ` = ${ defval }` : "" };`);
+                            extractors.push(`${ copy || ref ? "" : "static " }${ cpptype }${ ref } ${ defarg }${ defval !== "" && defval !== "{}" ? ` { ${ defval } }` : "" };`);
                         }
                     }
 
                     if (is_array) {
                         extractors.push(`
                             Optional${ arg_suffix[0].toUpperCase() + arg_suffix.slice(1) }<${ var_type }> ${ argname }_${ arrtype };
-                            ${ conditional(...[
-                                `${ argname }_positional`,
-                                `${ argname }_${ arrtype } = ${ lua_to }(L, ${ argn }, static_cast<${ var_type }*>(nullptr));`,
-                                `${ argname }_kwarg`,
-                                [
-                                    `Keywords::push(L, vargc, "${ argname }");`,
-                                    `${ argname }_${ arrtype } = ${ lua_to }(L, -1, static_cast<${ var_type }*>(nullptr));`,
-                                    "lua_pop(L, 1);",
-                                ].join("\n"),
-                                is_optional,
-                                defval === "" ? false : `${ argname }_${ arrtype }.reset(${ argname }_default);`,
-                            ]).split("\n").join(`\n${ " ".repeat(28) }`) }
 
-                            decltype(auto) ${ argname } = *${ argname }_${ arrtype };
+                            if (argc > ${ argi }) {
+                                // positional parameter
+                                ${ argname }_${ arrtype } = lua_to${ arg_suffix }(L, ${ argn }, static_cast<${ var_type }*>(nullptr), is_valid${ arg_suffix === "arrays" && nd_mat ? ", true" : "" });
+                                if (!is_valid) {
+                                    goto overload${ overload_id };
+                                }
+
+                                // should not be a named parameter
+                                if (has_kwargs && Keywords::has(L, vargc, "${ argname }")) {
+                                    goto overload${ overload_id };
+                                }
+                            }
+                            else if (has_kwargs && Keywords::has(L, vargc, "${ argname }")) {
+                                // named parameter
+                                Keywords::push(L, vargc, "${ argname }");
+                                ${ argname }_${ arrtype } = lua_to${ arg_suffix }(L, -1, static_cast<${ var_type }*>(nullptr), is_valid${ arg_suffix === "arrays" && nd_mat ? ", true" : "" });
+                                lua_pop(L, 1);
+                                if (!is_valid) {
+                                    goto overload${ overload_id };
+                                }
+                                usedkw++;
+                            }
                         `.replace(/^ {28}/mg, "").trim());
+
+                        if (!is_optional) {
+                            extractors.push(`
+                                else {
+                                    // mandatory parameter
+                                    goto overload${ overload_id };
+                                }
+                            `.replace(/^ {32}/mg, "").trim());
+                        } else if (defval !== "") {
+                            extractors.push(`
+                                else {
+                                    ${ argname }_${ arrtype } = ${ defarg };
+                                }
+                            `.replace(/^ {32}/mg, "").trim());
+                        }
+
+                        extractors.push("", `decltype(auto) ${ argname } = *${ argname }_${ arrtype };`);
                     } else if (is_shared_ptr) {
                         extractors.push(`
                             ${ cpptype } ${ argname };
-                            ${ conditional(...[
-                                `${ argname }_positional`,
-                                `${ argname } = ${ lua_to }(L, ${ argn }, static_cast<${ var_type }*>(nullptr));`,
-                                `${ argname }_kwarg`,
-                                [
-                                    `Keywords::push(L, vargc, "${ argname }");`,
-                                    `${ argname } = ${ lua_to }(L, -1, static_cast<${ var_type }*>(nullptr));`,
-                                    "lua_pop(L, 1);",
-                                ].join("\n"),
-                                is_optional,
-                                `${ argname } = ${ argname }_default;`,
-                            ]).split("\n").join(`\n${ " ".repeat(28) }`) }
+
+                            if (argc > ${ argi }) {
+                                // positional parameter
+                                ${ argname } = lua_to(L, ${ argn }, static_cast<${ var_type }*>(nullptr), is_valid);
+                                if (!is_valid) {
+                                    goto overload${ overload_id };
+                                }
+
+                                // should not be a named parameter
+                                if (has_kwargs && Keywords::has(L, vargc, "${ argname }")) {
+                                    goto overload${ overload_id };
+                                }
+                            }
+                            else if (has_kwargs && Keywords::has(L, vargc, "${ argname }")) {
+                                // named parameter
+                                Keywords::push(L, vargc, "${ argname }");
+                                ${ argname } = lua_to(L, -1, static_cast<${ var_type }*>(nullptr), is_valid);
+                                lua_pop(L, 1);
+                                if (!is_valid) {
+                                    goto overload${ overload_id };
+                                }
+                                usedkw++;
+                            }
                         `.replace(/^ {28}/mg, "").trim());
+
+                        if (!is_optional) {
+                            extractors.push(`
+                                else {
+                                    // mandatory parameter
+                                    goto overload${ overload_id };
+                                }
+                            `.replace(/^ {32}/mg, "").trim());
+                        } else {
+                            extractors.push(`
+                                else {
+                                    ${ argname } = ${ defarg };
+                                }
+                            `.replace(/^ {32}/mg, "").trim());
+                        }
                     } else {
                         extractors.push(`
-                            if (${ argname }_kwarg) {
-                                Keywords::push(L, vargc, "${ argname }");
-                            }
-
-                            using ${ toCamelCase(argname) }Holder = decltype(lua_to(L, ${ argn }, static_cast<${ var_type }*>(nullptr)));
+                            using ${ toCamelCase(argname) }Holder = decltype(lua_to(L, ${ argn }, static_cast<${ var_type }*>(nullptr), is_valid));
                             ${ toCamelCase(argname) }Holder ${ argname }_holder;
 
-                            ${ conditional(...[
-                                `${ argname }_positional`,
-                                `${ argname }_holder = ${ lua_to }(L, ${ argn }, static_cast<${ var_type }*>(nullptr));`,
-                                `${ argname }_kwarg`,
-                                `${ argname }_holder = ${ lua_to }(L, -1, static_cast<${ var_type }*>(nullptr));`,
-                                is_optional,
-                                false,
-                            ]).split("\n").join(`\n${ " ".repeat(28) }`) }
+                            if (argc > ${ argi }) {
+                                // positional parameter
+                                ${ argname }_holder = lua_to(L, ${ argn }, static_cast<${ var_type }*>(nullptr), is_valid);
+                                if (!is_valid) {
+                                    goto overload${ overload_id };
+                                }
 
-                            decltype(auto) ${ argname } = extract_holder(${ argname }_holder, ${
-                                is_optional ? `${ argname }_default, !${ argname }_positional && !${ argname }_kwarg` :
-                                `static_cast<${ var_type }*>(nullptr)`
-                            });
-
-                            if (${ argname }_kwarg) {
-                                lua_pop(L, 1);
+                                // should not be a named parameter
+                                if (has_kwargs && Keywords::has(L, vargc, "${ argname }")) {
+                                    goto overload${ overload_id };
+                                }
                             }
+                            else if (has_kwargs && Keywords::has(L, vargc, "${ argname }")) {
+                                // named parameter
+                                Keywords::push(L, vargc, "${ argname }");
+                                ${ argname }_holder = lua_to(L, -1, static_cast<${ var_type }*>(nullptr), is_valid);
+                                lua_pop(L, 1);
+                                if (!is_valid) {
+                                    goto overload${ overload_id };
+                                }
+                                usedkw++;
+                            }
+                        `.replace(/^ {28}/mg, "").trim());
+
+                        if (!is_optional) {
+                            extractors.push(`
+                                else {
+                                    // mandatory parameter
+                                    goto overload${ overload_id };
+                                }
+                            `.replace(/^ {32}/mg, "").trim());
+                        }
+
+                        extractors.push("", `
+                            decltype(auto) ${ argname } = ${ is_optional ? `!is_valid ? ${ defarg } : ` : "" }extract_holder(${ argname }_holder, static_cast<${ var_type }*>(nullptr));
                         `.replace(/^ {28}/mg, "").trim());
                     }
 
@@ -1082,7 +1096,8 @@ class LuaGenerator {
 
                 let callee;
                 const path = name.split(isConstructor ? "::" : ".");
-                let is_operator = false;
+                let is_operator = /^operator\s*(?:[+\-*/%^&|!=<>]=?|[~,]|(?:<<|>>)=?|&&|\|\||\+\+|--|->\*?)$/.test(path[path.length - 1]);
+                const operator = is_operator ? path[path.length - 1].slice("operator".length).trim() : null;
 
                 if (isStatic) {
                     callee = `::${ path.join("::") }`;
@@ -1097,33 +1112,33 @@ class LuaGenerator {
                         }
                     }
 
-                    // [+\-*/%\^&|!=<>]=?|[~,]|(?:<<|>>)=?|&&|\|\||\+\+|--|->\*?
-                    if (callargs.length === 0 && /^operator\s*(?:[+\-*/%\^&|!=<>]=?|[~,]|(?:<<|>>)=?|&&|\|\||\+\+|--|->\*?)$/.test(path[path.length - 1])) {
-                        const operator = path[path.length - 1].slice("operator".length).trim();
+                    if (callargs.length === 0 && is_operator) {
                         callee = `${ operator }(*${ callee })`;
-                        is_operator = true;
-                    } else if (callargs.length === 1 && /^operator\s*(?:[+\-*/%\^&|!=<>]=?|[~,]|(?:<<|>>)=?|&&|\|\||\+\+|--|->\*?)$/.test(path[path.length - 1])) {
-                        const operator = path[path.length - 1].slice("operator".length).trim();
+                    } else if (callargs.length === 1 && is_operator) {
                         callee = `(*${ callee }) ${ operator } `;
-                        is_operator = true;
                     } else {
                         callee = `${ callee }->${ path[path.length - 1] }`;
+                        is_operator = false;
                     }
                 }
 
                 let expr = callargs.join(", ");
+                let has_expr = false;
                 let has_call = false;
 
                 for (const modifier of func_modifiers) {
                     if (modifier.startsWith("/Expr=")) {
                         expr = makeExpansion(modifier.slice("/Expr=".length), expr);
+                        has_expr = true;
                     } else if (modifier.startsWith("/Call=")) {
                         callee = makeExpansion(modifier.slice("/Call=".length), callee);
                         has_call = true;
                     }
                 }
 
-                if (!is_operator || expr) {
+                if (isStatic && is_operator && callargs.length === 2 && !has_expr && !has_call) {
+                    callee = `(${ callargs.join(`) ${operator} (`) })`;
+                } else if (!is_operator || expr) {
                     callee = `${ callee }(${ expr })`;
                 }
 
@@ -1218,9 +1233,10 @@ class LuaGenerator {
             }
 
             contentRegisterPrivate.push(`int ${ luaFn }(lua_State* L) {`);
+            contentRegisterPrivate.push("    bool is_valid;", "");
 
             if (!coclass.isStatic()) {
-                contentRegisterPrivate.push(`    ::${ fqn }* self = lua_is(L, 1, static_cast<${ fqn }*>(nullptr)) ? lua_to(L, 1, static_cast<${ fqn }*>(nullptr)).get() : nullptr;`, "");
+                contentRegisterPrivate.push(`    auto self = lua_to(L, 1, static_cast<${ fqn }*>(nullptr), is_valid);`, "");
             }
 
             // usertype_push_metatable<T>(L);
@@ -1235,7 +1251,7 @@ class LuaGenerator {
 
             contentRegisterPrivate.push(`
                     auto vargc = lua_gettop(L);
-                    auto has_kwargs = vargc != 0 && lua_is(L, vargc, static_cast<Keywords*>(nullptr));
+                    auto has_kwargs = vargc != 0 && usertype_info<Keywords>::lua_userdata_is(L, vargc);
                     auto kwargc = has_kwargs ? Keywords::size(L, vargc) : 0;
                     const int argc = has_kwargs ? vargc - 1 : vargc;
 
@@ -1261,8 +1277,8 @@ class LuaGenerator {
         }
 
         if (!coclass.isStatic()) {
-            methods.unshift(["__gc", `lua_method__gc<::${ fqn }>`]);
-            methods.unshift(["isinstance", `lua_method_isinstance<::${ fqn }>`]);
+            methods.unshift(["__gc", `lua_method__gc<${ fqn }>`]);
+            methods.unshift(["isinstance", `lua_method_isinstance<${ fqn }>`]);
         }
 
         contentRegisterPrivate.push("", `
@@ -1392,7 +1408,6 @@ class LuaGenerator {
 
     generate(processor, configuration, options, cb) {
         const { generated_include } = configuration;
-        const { APP_NAME } = options;
 
         const files = new Map();
         const registrationsHdr = [];
@@ -1420,23 +1435,22 @@ class LuaGenerator {
                     static const struct luaL_Reg* meta_methods;
                     static const std::map<std::string, std::function<int(lua_State*)>> getters;
                     static const std::map<std::string, std::function<int(lua_State*)>> setters;
-                    static bool lua_userdata_is(lua_State* L, int index);
-                    static std::shared_ptr<::${ fqn }> lua_userdata_to(lua_State* L, int index);
+                    static std::shared_ptr<${ fqn }> lua_userdata_to(lua_State* L, int index, bool& is_valid);
                 `.replace(/^ {20}/mg, "").trim().split("\n");
 
                 const impl = `
-                    int usertype_info<::${ fqn }>::metatable = LUA_REFNIL;
-                    const void* usertype_info<::${ fqn }>::signature;
-                    const struct luaL_Reg* usertype_info<::${ fqn }>::methods = ::methods;
-                    const struct luaL_Reg* usertype_info<::${ fqn }>::meta_methods = ::meta_methods;
-                    const std::map<std::string, std::function<int(lua_State*)>> usertype_info<::${ fqn }>::getters(std::move(::getters));
-                    const std::map<std::string, std::function<int(lua_State*)>> usertype_info<::${ fqn }>::setters(std::move(::setters));
+                    int usertype_info<${ fqn }>::metatable = LUA_REFNIL;
+                    const void* usertype_info<${ fqn }>::signature;
+                    const struct luaL_Reg* usertype_info<${ fqn }>::methods = ::methods;
+                    const struct luaL_Reg* usertype_info<${ fqn }>::meta_methods = ::meta_methods;
+                    const std::map<std::string, std::function<int(lua_State*)>> usertype_info<${ fqn }>::getters(std::move(::getters));
+                    const std::map<std::string, std::function<int(lua_State*)>> usertype_info<${ fqn }>::setters(std::move(::setters));
 
-                    bool usertype_info<::${ fqn }>::lua_userdata_is(lua_State* L, int index) {
-                        return lua_userdata_signature_is<::${ [fqn, ...coclass.parents].join(", ::") }>(L, index);
-                    }
-
-                    std::shared_ptr<::${ fqn }> usertype_info<::${ fqn }>::lua_userdata_to(lua_State* L, int index) {
+                    std::shared_ptr<${ fqn }> usertype_info<${ fqn }>::lua_userdata_to(lua_State* L, int index, bool& is_valid) {
+                        is_valid = lua_userdata_signature_is<::${ [fqn, ...coclass.parents].join(", ::") }>(L, index);
+                        if (!is_valid) {
+                            return std::shared_ptr<${ fqn }>();
+                        }
                         return lua_userdata_signature_to<::${ [fqn, ...coclass.parents].join(", ::") }>(L, index);
                     }
                 `.replace(/^ {20}/mg, "").trim().split("\n");
@@ -1444,21 +1458,21 @@ class LuaGenerator {
                 if (processor.derives.has(fqn)) {
                     decl.push(...`
                         static std::unordered_set<const void*> derives;
-                        static std::unordered_map<std::type_index, std::function<int(lua_State*, const std::shared_ptr<::${ fqn }>&)>> derives_pushers;
+                        static std::unordered_map<std::type_index, std::function<int(lua_State*, const std::shared_ptr<${ fqn }>&)>> derives_pushers;
                     `.replace(/^ {24}/mg, "").trim().split("\n"));
 
                     impl.push(...`
-                        std::unordered_set<const void*> usertype_info<::${ fqn }>::derives;
-                        std::unordered_map<std::type_index, std::function<int(lua_State*, const std::shared_ptr<::${ fqn }>&)>> usertype_info<::${ fqn }>::derives_pushers;
+                        std::unordered_set<const void*> usertype_info<${ fqn }>::derives;
+                        std::unordered_map<std::type_index, std::function<int(lua_State*, const std::shared_ptr<${ fqn }>&)>> usertype_info<${ fqn }>::derives_pushers;
                     `.replace(/^ {24}/mg, "").trim().split("\n"));
                 }
 
                 registers.push("", `
                     template<>
-                    struct is_usertype<::${ fqn }> : std::true_type { };
+                    struct is_usertype<${ fqn }> : std::true_type { };
 
                     template <>
-                    struct usertype_info<::${ fqn }> {
+                    struct usertype_info<${ fqn }> {
                         ${ decl.join(`\n${ " ".repeat(24) }`) }
                     };
                 `.replace(/^ {20}/mg, "").trim());
@@ -1467,16 +1481,16 @@ class LuaGenerator {
             } else if (processor.derives.has(fqn)) {
                 registers.push("", `
                     template<>
-                    struct is_basetype<::${ fqn }> : std::true_type { };
+                    struct is_basetype<${ fqn }> : std::true_type { };
 
                     template <>
-                    struct basetype_info<::${ fqn }> {
+                    struct basetype_info<${ fqn }> {
                         static int push(lua_State* L);
                     };
                 `.replace(/^ {20}/mg, "").trim());
 
                 contentDecl.push(`
-                    int basetype_info<::${ fqn }>::push(lua_State* L) {
+                    int basetype_info<${ fqn }>::push(lua_State* L) {
                         return lua_rawget_create_if_nil(L, { ${ getProgId(coclass.path.join("."), options).split(".").map(part => JSON.stringify(part)).join(", ") } });
                     }
                 `.replace(/^ {20}/mg, "").trim());
@@ -1500,7 +1514,7 @@ class LuaGenerator {
                 contentRegister.push(`
                     lua_rawget_create_if_nil(L, { ${ getProgId(coclass.path.join("."), options).split(".").map(part => JSON.stringify(part)).join(", ") } });
 
-                    ${ Array.from(coclass.properties.keys()).map(name => `lua_pushliteral(L, "${ name }"); lua_push(L, ::${ fqn }::${ name }); lua_rawset(L, -3);`).join(`\n${ " ".repeat(20) }`) }
+                    ${ Array.from(coclass.properties.keys()).map(name => `lua_pushliteral(L, "${ name }"); lua_push(L, ${ fqn }::${ name }); lua_rawset(L, -3);`).join(`\n${ " ".repeat(20) }`) }
 
                     lua_pop(L, 1);
                 `.replace(/^ {20}/mg, "").trim());
@@ -1548,9 +1562,9 @@ class LuaGenerator {
                 for (const parent of parents) {
                     if (processor.classes.has(parent) && !processor.classes.get(parent).isStatic()) {
                         contentRegister.push(`
-                            usertype_info<::${ parent }>::derives.insert(usertype_info<::${ fqn }>::signature);
-                            usertype_info<::${ parent }>::derives_pushers[std::type_index(typeid(::${ fqn }))] = std::move([] (lua_State* L, const std::shared_ptr<::${ parent }>& ptr) {
-                                return lua_push(L, std::reinterpret_pointer_cast<::${ fqn }>(ptr));
+                            usertype_info<::${ parent }>::derives.insert(usertype_info<${ fqn }>::signature);
+                            usertype_info<::${ parent }>::derives_pushers[std::type_index(typeid(${ fqn }))] = std::move([] (lua_State* L, const std::shared_ptr<::${ parent }>& ptr) {
+                                return lua_push(L, std::reinterpret_pointer_cast<${ fqn }>(ptr));
                             });
                         `.replace(/^ {28}/mg, "").trim());
                     }

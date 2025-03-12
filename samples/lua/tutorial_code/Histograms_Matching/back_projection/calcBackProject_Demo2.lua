@@ -100,6 +100,9 @@ cv.createTrackbar('High thresh', window_image, up, 255, callback_up)
 cv.setMouseCallback(window_image, pickPoint)
 
 while true do
+    -- Without this, memory grows indefinitely
+    collectgarbage()
+
     -- lua is not thread safe
     -- therefore, calling callbacks from another thread
     -- will certainly cause unwanted behaviour

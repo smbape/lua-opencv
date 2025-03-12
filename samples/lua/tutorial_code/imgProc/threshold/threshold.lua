@@ -64,6 +64,9 @@ cv.createTrackbar(trackbar_value, window_name, 0, max_value, Threshold_Demo)
 Threshold_Demo(0)
 
 while true do
+    -- Without this, memory grows indefinitely
+    collectgarbage()
+
     -- lua is not thread safe
     -- therefore, calling callbacks from another thread
     -- will certainly cause unwanted behaviour

@@ -1,15 +1,17 @@
 #include <file_utils.hpp>
 
 #ifdef _MSC_VER
-#ifndef NOMINMAX
+#pragma push_macro("NOMINMAX")
+#pragma push_macro("STRICT")
+#pragma push_macro("RELATIVE")
+#pragma push_macro("ABSOLUTE")
 #define NOMINMAX
-#endif
-
-#ifndef STRICT
 #define STRICT
-#endif
-
-#include <windows.h>
+#include <Windows.h>
+#pragma pop_macro("NOMINMAX")
+#pragma pop_macro("STRICT")
+#pragma pop_macro("RELATIVE")
+#pragma pop_macro("ABSOLUTE")
 #endif
 
 namespace fs = std::filesystem;
@@ -330,15 +332,16 @@ namespace fs_utils {
 						continue;
 					}
 					top_search_absolute = false;
+
+					_findFiles(matches, path, spath, FindFilesKind::FLTA_FILESFOLDERS, false);
+				} else {
+					if (!filter.empty()) {
+						spath = filter / spath;
+					}
+
+					_findFiles(matches, spath / path, root_path, FindFilesKind::FLTA_FILESFOLDERS, false);
 				}
 
-				if (!filter.empty()) {
-					spath = filter / spath;
-				}
-
-				spath /= path;
-
-				_findFiles(matches, spath, root_path, FindFilesKind::FLTA_FILESFOLDERS, false);
 				if (!matches.empty()) {
 					return matches[0];
 				}

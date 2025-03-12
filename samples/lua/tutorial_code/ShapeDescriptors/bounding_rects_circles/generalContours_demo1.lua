@@ -99,6 +99,9 @@ thresh_callback(thresh)
 -- [trackbar]
 
 while true do
+    -- Without this, memory grows indefinitely
+    collectgarbage()
+
     -- lua is not thread safe
     -- therefore, calling callbacks from another thread
     -- will certainly cause unwanted behaviour

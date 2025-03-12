@@ -68,7 +68,7 @@ const getOptions = output => {
         },
 
         vectors: new Set([
-            "std::vector<std::variant<int, cv::Range>>",
+            "std::vector<cv::util::variant<int, cv::Range>>",
         ]),
     };
 
@@ -334,10 +334,10 @@ waterfall([
             print(json.dumps({"decls": all_decls, "namespaces": sorted(parser.namespaces)}, indent=4))
         `.trim().replace(/^ {12}/mg, "");
 
-        // fs.writeFileSync(sysPath.join(PROJECT_DIR, "gen.py"), code);
-
         child.stdin.write(code);
         child.stdin.end();
+
+        // fs.writeFileSync(sysPath.join(PROJECT_DIR, "gen.py"), code.replace("# parser.print_decls", "parser.print_decls").replace("print(json.dumps", "# print(json.dumps"));
     },
 
     (processor, configuration, next) => {

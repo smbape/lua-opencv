@@ -5,8 +5,8 @@ project(opencv_lua LANGUAGES C CXX ASM)
 set(DEFAULT_BUILD_TYPE "Release")
 
 if((NOT DEFINED CMAKE_BUILD_TYPE) OR ("${CMAKE_BUILD_TYPE} " STREQUAL " "))
-  message(STATUS "Setting build type to '${DEFAULT_BUILD_TYPE}' as none was specified.")
-  set(CMAKE_BUILD_TYPE "${DEFAULT_BUILD_TYPE}" CACHE STRING "Choose the type of build." FORCE)
+    message(STATUS "Setting build type to '${DEFAULT_BUILD_TYPE}' as none was specified.")
+    set(CMAKE_BUILD_TYPE "${DEFAULT_BUILD_TYPE}" CACHE STRING "Choose the type of build." FORCE)
 endif()
 
 # Set the possible values of build type for cmake-gui
@@ -20,11 +20,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 if(MSVC AND NOT (CMAKE_GENERATOR STREQUAL "Ninja"))
-  add_compile_options(/MP)
+    add_compile_options(/MP)
 endif()
 
 if(POLICY CMP0091)
-  cmake_policy(SET CMP0091 NEW) # CMake 3.15+: leave MSVC runtime selection out of default CMAKE_<LANG>_FLAGS_<CONFIG> flags
+    cmake_policy(SET CMP0091 NEW) # CMake 3.15+: leave MSVC runtime selection out of default CMAKE_<LANG>_FLAGS_<CONFIG> flags
 endif()
 
 include(cmake/list_commands.cmake)
@@ -41,24 +41,19 @@ add_subdirectory(luarocks)
 
 set(LUA_ONLY "$ENV{LUA_ONLY}")
 if (LUA_ONLY)
-  message(STATUS "Processing Lua related targets only")
-  unset(LUA_INCLUDE_DIR CACHE)
-  unset(LUA_INTERPRETER CACHE)
-  unset(LUA_LIBRARY CACHE)
-  return()
+    message(STATUS "Processing Lua related targets only")
+    unset(LUA_INCLUDE_DIR CACHE)
+    unset(LUA_INTERPRETER CACHE)
+    unset(LUA_LIBRARY CACHE)
+    return()
 endif()
 
 # ===============
 # Python
 # ===============
 include(cmake/UsePython3Venv.cmake)
-if (UNIX AND NOT (auditwheel IN_LIST Pip_MODULES))
-  pip_install(build auditwheel)
-  execute_process(
-    COMMAND "${Python3_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/patches/patch_auditwheel_whitelist.py"
-    COMMAND_ECHO STDERR
-    COMMAND_ERROR_IS_FATAL ANY
-  )
+if (UNIX)
+    pip_install(build auditwheel)
 endif()
 
 # Needed python packages
@@ -67,23 +62,21 @@ pip_install(numpy)
 # ===============
 # Node
 # ===============
-find_program(NODE_EXECUTABLE
-  NAMES node
-  REQUIRED
-)
+find_program(NODE_EXECUTABLE NAMES node REQUIRED)
 
-find_program(NPM_EXECUTABLE
-  NAMES npm npm.cmd NAMES_PER_DIR
-  REQUIRED
-)
+if (WIN32)
+    find_program(NPM_EXECUTABLE NAMES npm.cmd REQUIRED)
+else()
+    find_program(NPM_EXECUTABLE NAMES npm REQUIRED)
+endif()
 
 if(NOT EXISTS "${CMAKE_SOURCE_DIR}/node_modules")
-  execute_process(
-    COMMAND "${NPM_EXECUTABLE}" ci
-    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-    COMMAND_ECHO STDERR
-    COMMAND_ERROR_IS_FATAL ANY
-  )
+    execute_process(
+        COMMAND "${NPM_EXECUTABLE}" ci
+        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+        COMMAND_ECHO STDERR
+        COMMAND_ERROR_IS_FATAL ANY
+    )
 endif()
 
 # ===============

@@ -69,9 +69,12 @@ exports.ALIASES = new Map([
     ["cv::OutputArray", "OutputArray"],
     ["cv::OutputArrayOfArrays", "OutputArrayOfArrays"],
 
+    ["LUA_MODULE_NAME", "opencv_lua"],
+
     ["DescriptorExtractor", "Feature2D"],
     ["FeatureDetector", "Feature2D"],
     ["GCompileArgs", "std::vector<GCompileArg>"],
+    ["cv::GCompileArgs", "std::vector<GCompileArg>"],
     ["GMetaArgs", "std::vector<GMetaArg>"],
     ["GMat2", "std::tuple<GMat_and_GMat>"],
     ["GRunArgs", "std::vector<GRunArg>"],
@@ -102,8 +105,8 @@ exports.PTR = new Set([
 ]);
 
 exports.CUSTOM_CLASSES = [
-    ["cv.GProtoInputArgs", ["/Simple"]],            // TODO : implement
-    ["cv.GProtoOutputArgs", ["/Simple"]],           // TODO : implement
+    ["cv.GProtoInputArgs", ["/Simple"]], // TODO : implement
+    ["cv.GProtoOutputArgs", ["/Simple"]], // TODO : implement
     ["cv.detail.ExtractArgsCallback", ["/Simple"]], // TODO : implement
     ["cv.detail.ExtractMetaCallback", ["/Simple"]], // TODO : implement
 ];

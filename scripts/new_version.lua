@@ -1,3 +1,5 @@
+local unpack = table.unpack or unpack ---@diagnostic disable-line: deprecated
+
 -- Load cfg first so that the loader knows it is running inside LuaRocks
 local cfg = require("luarocks.core.cfg")
 local fs = require("luarocks.fs")
@@ -54,7 +56,14 @@ if it already exists.]], util.see_also())
    cmd:option("--tag", "New SCM tag.")
    cmd:option("--prefix", "Install prefix.")
    cmd:option("--platform", "OS platform.")
-   cmd:flag("--repair", "Relabeling cross-distribution Linux rocks.")
+
+   cmd:flag("--repair", "Vendor in external shared library dependencies of the binary rock.")
+   cmd:option("--plat", "Desired target platform.")
+   cmd:flag("--strip", "Strip symbols in the resulting wheel.")
+   cmd:option("--exclude", "Exclude SONAME from grafting into the resulting wheel Please make sure wheel metadata reflects your dependencies. " .. 
+                           "See https://github.com/pypa/auditwheel/pull/411#issuecomment-1500826281 (can contain wildcards, for example libfoo.so.*)")
+   cmd:flag("--only-plat", "Do not check for higher policy compatibility.")
+   cmd:flag("--disable-isa-ext-check", "Do not check for extended ISA compatibility (e.g. x86_64_v2)")
 end
 
 local function dump_table_as_python_array(tbl)
@@ -162,16 +171,38 @@ function new_version.command(args)
             if first_pass then
                first_pass = false
                local install_prefix = fs.current_dir()
-
-               fs.change_dir(prefix .. "../..")
-               local ok, err = fs.execute("cmake",
+               local cmake_args = {
                   "-DENABLE_REPAIR=ON",
                   "-DPACKAGE_DATA=" .. dump_table_as_python_array(package_data),
                   "-DCMAKE_INSTALL_PREFIX=" .. install_prefix,
                   "-DCMAKE_INSTALL_LIBDIR=" .. install_libdir,
                   "-DCMAKE_INSTALL_LIBSDIR=" .. install_libsdir,
-                  "-P", "opencv_lua/auditwheel_repair.cmake"
-               )
+               }
+
+               for _, flag in ipairs({
+                  "strip",
+                  "only_plat",
+                  "disable_isa_ext_check",
+               }) do
+                  if args[flag] then
+                     cmake_args[#cmake_args + 1] = "-DAUDITWHEEL_" .. flag .. "=ON"
+                  end
+               end
+
+               for _, option in ipairs({
+                  "plat",
+                  "exclude",
+               }) do
+                  if args[option] ~= nil then
+                     cmake_args[#cmake_args + 1] = "-DAUDITWHEEL_" .. option .. "=" .. args[option]
+                  end
+               end
+
+               cmake_args[#cmake_args + 1] = "-P"
+               cmake_args[#cmake_args + 1] = "opencv_lua/auditwheel_repair.cmake"
+
+               fs.change_dir(prefix .. "../..")
+               local ok, err = fs.execute("cmake", unpack(cmake_args))
                fs.pop_dir()
 
                if not ok then

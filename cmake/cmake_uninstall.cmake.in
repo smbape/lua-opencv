@@ -1,0 +1,12 @@
+set(file "${CMAKE_INSTALL_PREFIX}/@TARGET_FILE@")
+
+if(IS_SYMLINK "${file}" OR EXISTS "${file}")
+    execute_process(
+        COMMAND "@CMAKE_COMMAND@" -E remove "${file}"
+        OUTPUT_VARIABLE rm_out
+        RESULT_VARIABLE rm_retval
+        )
+    if(NOT "${rm_retval}" STREQUAL 0)
+        message(FATAL_ERROR "Problem when removing ${CMAKE_INSTALL_PREFIX}/@TARGET_FILE@")
+    endif()
+endif()

@@ -3,7 +3,150 @@
 #include <luadef.hpp>
 #include <Keywords.hpp>
 
+#ifdef _MSC_VER
+#pragma push_macro("NOMINMAX")
+#pragma push_macro("STRICT")
+#pragma push_macro("RELATIVE")
+#pragma push_macro("ABSOLUTE")
+#define NOMINMAX
+#define STRICT
+#include <Windows.h>
+#pragma pop_macro("NOMINMAX")
+#pragma pop_macro("STRICT")
+#pragma pop_macro("RELATIVE")
+#pragma pop_macro("ABSOLUTE")
+#endif
+
 namespace LUA_MODULE_NAME {
+#ifdef _MSC_VER
+	namespace wide_char {
+		template <typename char_type>
+		inline bool null_or_empty(const char_type* s) {
+			return s == nullptr || *s == 0;
+		}
+
+		/**
+		 * Maps a character string to a UTF-16 (wide character) string. The character string is not necessarily from a multibyte character set.
+		 *
+		 * @param codePage    [in]  Code page to use in performing the conversion.
+		 * @param c_str       [in]  Pointer to the character string to convert.
+		 * @param cbMultiByte [in]  Size, in bytes, of the string indicated by the c_str parameter. Alternatively, this parameter can be set to -1 if the string is null-terminated.
+		 * @param wstr        [out] Pointer to a buffer that receives the converted string.
+		 * @return 	          The number of characters written to the buffer pointed to by wstr.
+		 * @see               https://stackoverflow.com/questions/6693010/how-do-i-use-multibytetowidechar/59617138#59617138
+		 *                    https://learn.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-multibytetowidechar
+		 */
+		inline int mbs_to_wcs(UINT codePage, const char* c_str, int cbMultiByte, std::wstring& wstr) {
+			if (null_or_empty(c_str)) {
+				wstr.clear();
+				return 0;
+			}
+
+			int size = MultiByteToWideChar(codePage, 0, c_str, cbMultiByte, nullptr, 0);
+			wstr.assign(size, 0);
+			return MultiByteToWideChar(codePage, 0, c_str, cbMultiByte, &wstr[0], size + 1);
+		}
+
+		/**
+		 * Maps a character string to a UTF-16 (wide character) string. The character string is not necessarily from a multibyte character set.
+		 *
+		 * @param codePage  [in]  Code page to use in performing the conversion.
+		 * @param  str      [in]  The string to convert.
+		 * @param  wstr     [out] Pointer to a buffer that receives the converted string.
+		 * @see             https://stackoverflow.com/questions/6693010/how-do-i-use-multibytetowidechar/59617138#59617138
+		 *                  https://learn.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-multibytetowidechar
+		 */
+		inline int mbs_to_wcs(UINT codePage, const std::string& str, std::wstring& wstr) {
+			return mbs_to_wcs(codePage, str.c_str(), str.length(), wstr);
+		}
+
+		/**
+		 * Maps a UTF-16 (wide character) string to a new character string. The new character string is not necessarily from a multibyte character set.
+		 *
+		 * @param  codePage    Code page to use in performing the conversion.
+		 * @param  c_wstr      Pointer to the Unicode string to convert.
+		 * @param  cchWideChar Size, in characters, of the string indicated by c_wstr parameter.
+		 * @param  str         Pointer to a buffer that receives the converted string.
+		 * @return             The number of bytes written to the buffer pointed to by c_str.
+		 * @see                https://learn.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-widechartomultibyte
+		 */
+		inline int wcs_to_mbs(UINT codePage, const WCHAR* c_wstr, int cchWideChar, std::string& str) {
+			if (null_or_empty(c_wstr)) {
+				str.clear();
+				return 0;
+			}
+
+			int size = WideCharToMultiByte(codePage, 0, c_wstr, cchWideChar, nullptr, 0, nullptr, nullptr);
+			str.assign(size, 0);
+			return WideCharToMultiByte(codePage, 0, c_wstr, cchWideChar, &str[0], size + 1, nullptr, nullptr);
+		}
+
+		/**
+		 * Maps a UTF-16 (wide character) string to a new character string. The new character string is not necessarily from a multibyte character set.
+		 *
+		 * @param  codePage Code page to use in performing the conversion.
+		 * @param  wstr     Pointer to the Unicode string to convert.
+		 * @param  str      Pointer to a buffer that receives the converted string.
+		 * @return          The number of bytes written to the buffer pointed to by str.
+		 * @see             https://learn.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-widechartomultibyte
+		 */
+		inline int wcs_to_mbs(UINT codePage, const std::wstring& wstr, std::string& str) {
+			return wcs_to_mbs(codePage, wstr.c_str(), wstr.length(), str);
+		}
+
+		/**
+		 * Maps a character string to a UTF-16 (wide character) string. The character string is not necessarily from a multibyte character set.
+		 *
+		 * @param c_str     [in]  Pointer to the character string to convert.
+		 * @param length    [in]  Size, in bytes, of the string indicated by the c_str parameter. Alternatively, this parameter can be set to -1 if the string is null-terminated.
+		 * @param wstr      [out] Pointer to a buffer that receives the converted string.
+		 * @return 	        The number of characters written
+		 * @see             https://stackoverflow.com/questions/6693010/how-do-i-use-multibytetowidechar/59617138#59617138
+		 *                  https://learn.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-multibytetowidechar
+		 */
+		inline int utf8_to_wcs(const char* c_str, int length, std::wstring& wstr) {
+			return mbs_to_wcs(CP_UTF8, c_str, length, wstr);
+		}
+
+		/**
+		 * Maps a character string to a UTF-16 (wide character) string. The character string is not necessarily from a multibyte character set.
+		 *
+		 * @param  str      [in]  The string to convert.
+		 * @param  wstr     [out] Pointer to a buffer that receives the converted string.
+		 * @see             https://stackoverflow.com/questions/6693010/how-do-i-use-multibytetowidechar/59617138#59617138
+		 *                  https://learn.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-multibytetowidechar
+		 */
+		inline int utf8_to_wcs(const std::string& str, std::wstring& wstr) {
+			return mbs_to_wcs(CP_UTF8, str, wstr);
+		}
+
+		/**
+		 * Maps a UTF-16 (wide character) string to a new character string. The new character string is not necessarily from a multibyte character set.
+		 * 
+		 * @param  c_wstr      Pointer to the Unicode string to convert.
+		 * @param  cchWideChar Size, in characters, of the string indicated by c_wstr parameter.
+		 * @param  str         Pointer to a buffer that receives the converted string.
+		 * @return             The number of bytes written to the buffer pointed to by c_str.
+		 * @see                https://learn.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-widechartomultibyte
+		 */
+		inline int wcs_to_utf8(const WCHAR* c_wstr, int cchWideChar, std::string& str) {
+			return wcs_to_mbs(CP_UTF8, c_wstr, cchWideChar, str);
+		}
+
+		/**
+		 * Maps a UTF-16 (wide character) string to a new character string. The new character string is not necessarily from a multibyte character set.
+		 * 
+		 * @param  wstr     Pointer to the Unicode string to convert.
+		 * @param  str      Pointer to a buffer that receives the converted string.
+		 * @return          The number of bytes written to the buffer pointed to by str.
+		 * @see             https://learn.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-widechartomultibyte
+		 */
+		inline int wcs_to_utf8(const std::wstring& wstr, std::string& str) {
+			return wcs_to_mbs(CP_UTF8, wstr, str);
+		}
+	}
+#endif
+
 	lua_State* get_global_state();
 	void init_global_state(lua_State* L);
 
@@ -12,6 +155,7 @@ namespace LUA_MODULE_NAME {
 	int registerCallbackOnce(Callback callback, void* userdata = nullptr, std::optional<std::function<void(int)>> onRegistration = std::nullopt);
 	bool unregisterCallback(int callback_id);
 	int notifyCallbacks(lua_State* L);
+
 
 	// ================================
 	// reference_internal generics
@@ -37,33 +181,17 @@ namespace LUA_MODULE_NAME {
 		return shared_ptr(shared_ptr{}, const_cast<_Tp*>(&element));
 	}
 
-	template<typename T, typename V>
-	inline void assign_maybe_shared(void*& obj, T& value, V*) {
-		using SharedPtr = std::shared_ptr<V>;
-		if constexpr (std::is_same_v<T, SharedPtr>) {
-			obj = new SharedPtr(value);
-		}
-		else {
-			obj = new SharedPtr(new V(value));
-		}
-	}
 
 	// ================================
-	// exxplicit: lua_is, lua_to, lua_push
+	// exxplicit: lua_to, lua_push
 	// ================================
 
 	template<typename T>
-	inline bool lua_userdata_is(lua_State* L, int index, T*);
+	inline std::shared_ptr<T> lua_userdata_to(lua_State* L, int index, T*, bool& is_valid);
 
-	template<typename T>
-	inline std::shared_ptr<T> lua_userdata_to(lua_State* L, int index, T*);
-
-	inline bool lua_is(lua_State* L, int index, bool*) {
-		return lua_isboolean(L, index);
-	}
-
-	inline auto lua_to(lua_State* L, int index, bool*) {
-		return !!lua_toboolean(L, index);
+	inline auto lua_to(lua_State* L, int index, bool*, bool& is_valid) {
+		is_valid = lua_isboolean(L, index);
+		return is_valid && !!lua_toboolean(L, index);
 	}
 
 	inline int lua_push(lua_State* L, bool value) {
@@ -71,42 +199,29 @@ namespace LUA_MODULE_NAME {
 		return 1;
 	}
 
-	/**
-	 * https://en.cppreference.com/w/cpp/types/numeric_limits
-	 */
-	inline bool lua_is(lua_State* L, int index, std::integral auto* ptr) {
+	inline auto lua_to(lua_State* L, int index, std::integral auto* ptr, bool& is_valid) {
 		using Integer = std::decay<decltype(*ptr)>::type;
 
-		if (lua_type(L, index) != LUA_TNUMBER) {
-			return false;
+		is_valid = lua_type(L, index) == LUA_TNUMBER;
+		if (!is_valid) {
+			return static_cast<Integer>(0);
 		}
+
 #if LUA_VERSION_NUM >= 503
-		// Lua 5.3 and greater checks for numeric precision
+		// Lua 5.3 and greater check for numeric precision
+		// https://en.cppreference.com/w/cpp/types/numeric_limits
 		if (lua_isinteger(L, index)) {
 			lua_Integer v = lua_tointeger(L, index);
-			return v >= std::numeric_limits<Integer>::min() && v <= std::numeric_limits<Integer>::max();
+			is_valid = v >= std::numeric_limits<Integer>::min() && v <= std::numeric_limits<Integer>::max();
+			return static_cast<Integer>(v);
 		}
 #endif
+
 		const lua_Number v = lua_tonumber(L, index);
+
 		// https://stackoverflow.com/questions/1521607/check-double-variable-if-it-contains-an-integer-and-not-floating-point/1521682#1521682
-		static double intpart;
-		if (std::modf(v, &intpart) != 0.0) {
-			return false;
-		}
-
-		return v >= std::numeric_limits<Integer>::min() && v <= std::numeric_limits<Integer>::max();
-	}
-
-	inline auto lua_to(lua_State* L, int index, std::integral auto* ptr) {
-		using Integer = std::decay<decltype(*ptr)>::type;
-
-#if LUA_VERSION_NUM >= 503
-		// Lua 5.3 and greater checks for numeric precision
-		if (lua_isinteger(L, index)) {
-			return static_cast<Integer>(lua_tointeger(L, index));
-		}
-#endif
-		const lua_Number v = lua_tonumber(L, index);
+		double intpart;
+		is_valid = std::modf(v, &intpart) == 0.0;
 		return static_cast<Integer>(v);
 	}
 
@@ -120,12 +235,12 @@ namespace LUA_MODULE_NAME {
 		return 1;
 	}
 
-	inline bool lua_is(lua_State* L, int index, std::floating_point auto*) {
-		return lua_type(L, index) == LUA_TNUMBER;
-	}
-
-	inline auto lua_to(lua_State* L, int index, std::floating_point auto* ptr) {
+	inline auto lua_to(lua_State* L, int index, std::floating_point auto* ptr, bool& is_valid) {
 		using Float = std::decay<decltype(*ptr)>::type;
+		is_valid = lua_type(L, index) == LUA_TNUMBER;
+		if (!is_valid) {
+			return static_cast<Float>(0);
+		}
 		return static_cast<Float>(lua_tonumber(L, index));
 	}
 
@@ -134,17 +249,20 @@ namespace LUA_MODULE_NAME {
 		return 1;
 	}
 
-	inline bool lua_is(lua_State* L, int index, std::string*) {
-		return lua_type(L, index) == LUA_TSTRING || lua_isnil(L, index);
-	}
-
-	inline std::string lua_to(lua_State* L, int index, std::string*) {
-		if (lua_isnil(L, index)) {
+	inline std::string lua_to(lua_State* L, int index, std::string*, bool& is_valid) {
+		is_valid = lua_isnil(L, index);
+		if (is_valid) {
 			return std::string();
 		}
+
+		is_valid = lua_type(L, index) == LUA_TSTRING;
+		if (!is_valid) {
+			return "";
+		}
+
 		size_t len;
-		auto str = lua_tolstring(L, index, &len);
-		return std::string(str, len);
+		auto c_str = lua_tolstring(L, index, &len);
+		return std::string(c_str, len);
 	}
 
 	inline int lua_push(lua_State* L, const std::string& str) {
@@ -152,11 +270,35 @@ namespace LUA_MODULE_NAME {
 		return 1;
 	}
 
-	inline bool lua_is(lua_State* L, int index, unsigned char**) {
-		return lua_islightuserdata(L, index);
+#ifdef _MSC_VER
+	inline std::wstring lua_to(lua_State* L, int index, std::wstring*, bool& is_valid) {
+		is_valid = lua_isnil(L, index);
+		if (is_valid) {
+			return std::wstring();
+		}
+
+		is_valid = lua_type(L, index) == LUA_TSTRING;
+		if (!is_valid) {
+			return L"";
+		}
+
+		size_t len;
+		auto c_str = lua_tolstring(L, index, &len);
+		std::wstring wstr; wide_char::utf8_to_wcs(c_str, len, wstr);
+		return wstr;
 	}
 
-	inline unsigned char* lua_to(lua_State* L, int index, unsigned char**) {
+	inline int lua_push(lua_State* L, const std::wstring& wstr) {
+		std::string str; wide_char::wcs_to_utf8(wstr, str);
+		return lua_push(L, str);
+	}
+#endif
+
+	inline unsigned char* lua_to(lua_State* L, int index, unsigned char**, bool& is_valid) {
+		is_valid = lua_islightuserdata(L, index);
+		if (!is_valid) {
+			return static_cast<unsigned char*>(nullptr); 
+		}
 		return reinterpret_cast<unsigned char*>(lua_touserdata(L, index));
 	}
 
@@ -170,11 +312,11 @@ namespace LUA_MODULE_NAME {
 		return 1;
 	}
 
-	inline bool lua_is(lua_State* L, int index, void**) {
-		return lua_islightuserdata(L, index);
-	}
-
-	inline void* lua_to(lua_State* L, int index, void**) {
+	inline void* lua_to(lua_State* L, int index, void**, bool& is_valid) {
+		is_valid = lua_islightuserdata(L, index);
+		if (!is_valid) {
+			return static_cast<void*>(nullptr); 
+		}
 		return reinterpret_cast<void*>(lua_touserdata(L, index));
 	}
 
@@ -188,10 +330,6 @@ namespace LUA_MODULE_NAME {
 		return 1;
 	}
 
-	inline bool lua_is(lua_State* L, int index, Keywords* ptr) {
-		return lua_istable(L, index) && lua_userdata_is(L, index, ptr);
-	}
-
 	inline int lua_push(lua_State* L, const char* s) {
 		lua_pushstring(L, s);
 		return 1;
@@ -203,13 +341,20 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<int Kind>
+	struct _Object;
+
+	template<int Kind>
+	inline bool lua_is_object(lua_State* L, int index, _Object<Kind>*);
+
+	template<int Kind>
 	struct _Object {
 		_Object() = default;
 		~_Object() {
 			reset();
 		}
 
-		_Object(lua_State* L, int index) {
+		_Object(lua_State* L, int index, bool& is_valid) {
+			is_valid = lua_is_object(L, index, static_cast<_Object<Kind>*>(nullptr));
 			init(L, index);
 		}
 
@@ -301,8 +446,25 @@ namespace LUA_MODULE_NAME {
 	};
 
 	using Object = _Object<0>;
+	template<>
+	inline bool lua_is_object<0>(lua_State* L, int index, Object*) {
+		if (index < 0) {
+			index += lua_gettop(L) + 1;
+		}
+		return lua_gettop(L) >= index;
+	}
+
 	using Table = _Object<1>;
+	template<>
+	inline bool lua_is_object<1>(lua_State* L, int index, Table*) {
+		return lua_istable(L, index);
+	}
+
 	using Function = _Object<2>;
+	template<>
+	inline bool lua_is_object<2>(lua_State* L, int index, Function*) {
+		return lua_isfunction(L, index);
+	}
 
 	const Object lua_nil;
 
@@ -318,8 +480,8 @@ namespace LUA_MODULE_NAME {
 	};
 
 	template<int Kind>
-	inline _Object<Kind> lua_to(lua_State* L, int index, _Object<Kind>*) {
-		return _Object<Kind>(L, index);
+	inline _Object<Kind> lua_to(lua_State* L, int index, _Object<Kind>*, bool& is_valid) {
+		return _Object<Kind>(L, index, is_valid);
 	}
 
 	template<int Kind>
@@ -343,23 +505,8 @@ namespace LUA_MODULE_NAME {
 		return lua_push(L, *o);
 	}
 
-	inline bool lua_is(lua_State* L, int index, Object*) {
-		if (index < 0) {
-			index += lua_gettop(L) + 1;
-		}
-		return lua_gettop(L) >= index;
-	}
-
-	inline bool lua_is(lua_State* L, int index, Table*) {
-		return lua_istable(L, index);
-	}
-
-	inline bool lua_is(lua_State* L, int index, Function*) {
-		return lua_isfunction(L, index);
-	}
-
 	// ================================
-	// templated: lua_is, lua_to, lua_push
+	// templated: lua_to, lua_push
 	// ================================
 
 
@@ -368,13 +515,10 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<typename T>
-	inline bool lua_is(lua_State* L, int index, T* ptr);
+	inline typename std::enable_if<std::is_enum_v<T>, int>::type lua_to(lua_State* L, int index, T* ptr, bool& is_valid);
 
 	template<typename T>
-	inline typename std::enable_if<std::is_enum_v<T>, int>::type lua_to(lua_State* L, int index, T* ptr);
-
-	template<typename T>
-	inline typename std::enable_if<is_usertype_v<T>, std::shared_ptr<T>>::type lua_to(lua_State* L, int index, T* ptr);
+	inline typename std::enable_if<is_usertype_v<T>, std::shared_ptr<T>>::type lua_to(lua_State* L, int index, T* ptr, bool& is_valid);
 
 	template<typename T>
 	inline int lua_push(lua_State* L, T* ptr);
@@ -394,10 +538,7 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<typename T>
-	inline typename std::enable_if<is_usertype_v<T>, bool>::type lua_is(lua_State* L, int index, T**);
-
-	template<typename T>
-	inline typename std::enable_if<is_usertype_v<T>, T*>::type lua_to(lua_State* L, int index, T**);
+	inline typename std::enable_if<is_usertype_v<T>, T*>::type lua_to(lua_State* L, int index, T**, bool& is_valid);
 
 
 	// ================================
@@ -405,10 +546,7 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<typename T>
-	inline bool lua_is(lua_State* L, int index, std::shared_ptr<T>*);
-
-	template<typename T>
-	inline std::shared_ptr<T> lua_to(lua_State* L, int index, std::shared_ptr<T>*);
+	inline std::shared_ptr<T> lua_to(lua_State* L, int index, std::shared_ptr<T>*, bool& is_valid);
 
 	template<typename T>
 	inline int lua_push(lua_State* L, const std::shared_ptr<T>& ptr);
@@ -419,13 +557,10 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<typename K, typename V>
-	inline bool lua_is(lua_State* L, int index, std::map<K, V>* ptr);
+	inline void lua_to(lua_State* L, int index, std::map<K, V>& out, bool& is_valid);
 
 	template<typename K, typename V>
-	inline void lua_to(lua_State* L, int index, std::map<K, V>& out);
-
-	template<typename K, typename V>
-	inline std::shared_ptr<std::map<K, V>> lua_to(lua_State* L, int index, std::map<K, V>* ptr);
+	inline std::shared_ptr<std::map<K, V>> lua_to(lua_State* L, int index, std::map<K, V>* ptr, bool& is_valid);
 
 	template<typename K, typename V>
 	inline int lua_push(lua_State* L, std::map<K, V>&& kv);
@@ -439,10 +574,7 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<typename T>
-	inline bool lua_is(lua_State* L, int index, std::optional<T>*);
-
-	template<typename T>
-	inline std::optional<T> lua_to(lua_State* L, int index, std::optional<T>*);
+	inline std::optional<T> lua_to(lua_State* L, int index, std::optional<T>*, bool& is_valid);
 
 	template<typename T>
 	inline int lua_push(lua_State* L, const std::optional<T>& p);
@@ -453,10 +585,7 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<typename T1, typename T2>
-	inline bool lua_is(lua_State* L, int index, std::pair<T1, T2>* ptr);
-
-	template<typename T1, typename T2>
-	inline std::shared_ptr<std::pair<T1, T2>> lua_to(lua_State* L, int index, std::pair<T1, T2>* ptr);
+	inline std::shared_ptr<std::pair<T1, T2>> lua_to(lua_State* L, int index, std::pair<T1, T2>* ptr, bool& is_valid);
 
 	template<typename T1, typename T2>
 	inline int lua_push(lua_State* L, const std::pair<T1, T2>& p);
@@ -467,10 +596,7 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<typename... _Ts>
-	inline bool lua_is(lua_State* L, int index, std::tuple<_Ts...>* ptr);
-
-	template<typename... _Ts>
-	inline std::shared_ptr<std::tuple<_Ts...>> lua_to(lua_State* L, int index, std::tuple<_Ts...>* ptr);
+	inline std::shared_ptr<std::tuple<_Ts...>> lua_to(lua_State* L, int index, std::tuple<_Ts...>* ptr, bool& is_valid);
 
 	template<typename... _Ts>
 	inline int lua_push(lua_State* L, const std::tuple<_Ts...>& value);
@@ -481,10 +607,7 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<typename... _Ts>
-	inline bool lua_is(lua_State* L, int index, std::variant<_Ts...>* ptr);
-
-	template<typename... _Ts>
-	inline std::variant<_Ts...> lua_to(lua_State* L, int index, std::variant<_Ts...>* ptr);
+	inline std::variant<_Ts...> lua_to(lua_State* L, int index, std::variant<_Ts...>* ptr, bool& is_valid);
 
 	template<typename... _Ts>
 	inline int lua_push(lua_State* L, const std::variant<_Ts...>& value);
@@ -495,13 +618,10 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<template<typename> typename Container, typename... _Ts>
-	inline bool _stl_container_lua_is(lua_State* L, int index, Container<_Ts...>* ptr, size_t len, bool loose);
+	inline void _stl_container_lua_to(lua_State* L, int index, Container<_Ts...>& out, bool& is_valid, size_t len, bool loose);
 
 	template<template<typename> typename Container, typename... _Ts>
-	inline void _stl_container_lua_to(lua_State* L, int index, Container<_Ts...>& out);
-
-	template<template<typename> typename Container, typename... _Ts>
-	inline std::shared_ptr<Container<_Ts...>> _stl_container_lua_to(lua_State* L, int index, Container<_Ts...>* ptr);
+	inline std::shared_ptr<Container<_Ts...>> _stl_container_lua_to(lua_State* L, int index, Container<_Ts...>* ptr, bool& is_valid, size_t len, bool loose);
 
 	template<template<typename> typename Container, typename... _Ts>
 	inline int _stl_container_lua_push(lua_State* L, Container<_Ts...>&& container);
@@ -515,13 +635,10 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<class T, class Allocator = std::allocator<T>>
-	inline bool lua_is(lua_State* L, int index, std::vector<T, Allocator>* ptr, size_t len = 0, bool loose = false);
+	inline void lua_to(lua_State* L, int index, std::vector<T, Allocator>& out, bool& is_valid, size_t len = 0, bool loose = false);
 
 	template<class T, class Allocator = std::allocator<T>>
-	inline void lua_to(lua_State* L, int index, std::vector<T, Allocator>& out);
-
-	template<class T, class Allocator = std::allocator<T>>
-	inline std::shared_ptr<std::vector<T, Allocator>> lua_to(lua_State* L, int index, std::vector<T, Allocator>* ptr);
+	inline std::shared_ptr<std::vector<T, Allocator>> lua_to(lua_State* L, int index, std::vector<T, Allocator>* ptr, bool& is_valid, size_t len = 0, bool loose = false);
 
 	template<class T, class Allocator = std::allocator<T>>
 	inline int lua_push(lua_State* L, std::vector<T, Allocator>&& vec);
@@ -535,8 +652,5 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<class R, class... Args>
-	inline bool lua_is(lua_State* L, int index, std::function<R(Args...)>*);
-
-	template<class R, class... Args>
-	inline std::function<R(Args...)> lua_to(lua_State* L, int index, std::function<R(Args...)>*);
+	inline std::function<R(Args...)> lua_to(lua_State* L, int index, std::function<R(Args...)>*, bool& is_valid);
 }

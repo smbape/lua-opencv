@@ -97,14 +97,14 @@ if (os.platform() === "win32") {
                 `${ LUA_MODULES }/share/lua/${ ABIVER }/?/init.lua`,
                 `${ APPDATA }/luarocks/share/lua/${ ABIVER }/?.lua`,
                 `${ APPDATA }/luarocks/share/lua/${ ABIVER }/?/init.lua`,
-            ].join(";").replace(/[\\]/g, "\\\\") };"..package.path`,
+            ].join(";").replace(/[\\]/g, "/") };"..package.path`,
 
             `package.cpath="${ [
-                `${ LUA_BINDIR_DEBUG }/?.dll`,
-                `${ LUA_BINDIR_DEBUG }/loadall.dll`,
+                `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lib").replaceAll("\\", "/") }/?.dll`,
+                `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lib").replaceAll("\\", "/") }/loadall.dll`,
                 `${ LUA_MODULES }/lib/lua/${ ABIVER }/?.dll`,
                 `${ APPDATA }/luarocks/lib/lua/${ ABIVER }/?.dll`,
-            ].join(";").replace(/[\\]/g, "\\\\") };"..package.cpath`,
+            ].join(";").replace(/[\\]/g, "/") };"..package.cpath`,
         ].join(";"),
     ];
 } else if (fs.existsSync(config.Debug.exe)) {
@@ -114,13 +114,13 @@ if (os.platform() === "win32") {
             `package.path="${ [
                 `${ LUA_MODULES }/share/lua/${ ABIVER }/?.lua`,
                 `${ LUA_MODULES }/share/lua/${ ABIVER }/?/init.lua`,
-            ].join(";").replace(/[\\]/g, "\\\\") };"..package.path`,
+            ].join(";").replace(/[\\]/g, "/") };"..package.path`,
 
             `package.cpath="${ [
                 `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lib") }/?.so`,
                 `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lib") }/loadall.so`,
                 `${ LUA_MODULES }/lib/lua/${ ABIVER }/?.so`,
-            ].join(";").replace(/[\\]/g, "\\\\") };"..package.cpath`,
+            ].join(";").replace(/[\\]/g, "/") };"..package.cpath`,
         ].join(";"),
     ];
 }
@@ -226,7 +226,7 @@ const main = (options, next) => {
     options = Object.assign({
         cwd: WORKSPACE_ROOT,
         includes: [],
-        includes_ext: [".lua", ".py"],
+        includes_ext: [".lua"],
         excludes: [],
         argv: [],
         stdio: "inherit",
@@ -252,7 +252,7 @@ const main = (options, next) => {
         if (
             !includes_ext.includes(extname) ||
             excludes.some(exclude => basename.startsWith(exclude)) ||
-            includes.length !== 0 && !includes.some(include => basename.startsWith(include))
+            includes.length !== 0 && !includes.some(include => basename.includes(include))
         ) {
             next();
             return;

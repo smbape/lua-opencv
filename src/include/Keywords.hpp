@@ -25,7 +25,7 @@ namespace LUA_MODULE_NAME {
 		static const struct luaL_Reg meta_methods[];
 		static const std::map<std::variant<std::string, int>, std::function<int(lua_State*)>> getters;
 		static const std::map<std::variant<std::string, int>, std::function<int(lua_State*)>> setters;
-        static bool lua_userdata_is(lua_State* L, int index);
-        static std::shared_ptr<Keywords> lua_userdata_to(lua_State* L, int index);
+		static bool lua_userdata_is(lua_State* L, int index);
+		static std::shared_ptr<Keywords> lua_userdata_to(lua_State* L, int index, bool& is_valid);
 	};
 }

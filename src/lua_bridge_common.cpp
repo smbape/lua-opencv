@@ -51,13 +51,13 @@ namespace LUA_MODULE_NAME {
 		const char* str = s.c_str();
 		auto len = s.length();
 
-		T index = 0;
+		T value = 0;
 		decltype(len) i = 0;
 
 		for (; i < len && std::isdigit(static_cast<unsigned char>(*str)); ++str) {
 			int digit = *str - '0';
-			index *= 10;
-			index += digit;
+			value *= 10;
+			value += digit;
 			i++;
 		}
 
@@ -65,7 +65,7 @@ namespace LUA_MODULE_NAME {
 			luaL_error(L, "invalid index %s", s.c_str());
 		}
 
-		return index;
+		return value;
 	}
 
 	/**

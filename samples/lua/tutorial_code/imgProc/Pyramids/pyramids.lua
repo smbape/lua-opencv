@@ -35,6 +35,9 @@ local function main(args)
     -- [load]
     -- [loop]
     while true do
+        -- Without this, memory grows indefinitely
+        collectgarbage()
+
         local rows, cols, _channels = src.rows, src.cols, src:channels()
         -- [show_image]
         cv.imshow('Pyramids Demo', src)

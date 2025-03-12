@@ -1,0 +1,20 @@
+diff --git a/src/lj_record.c b/src/lj_record.c
+index 38c180e8..1ad0e351 100644
+--- a/src/lj_record.c
++++ b/src/lj_record.c
+@@ -1047,6 +1047,7 @@ void lj_record_ret(jit_State *J, BCReg rbase, ptrdiff_t gotresults)
+ 
+ /* -- Metamethod handling ------------------------------------------------- */
+ 
++#pragma runtime_checks( "", off )
+ /* Prepare to record call to metamethod. */
+ static BCReg rec_mm_prep(jit_State *J, ASMFunction cont)
+ {
+@@ -1131,6 +1132,7 @@ nocheck:
+   }
+   return 0;  /* No metamethod. */
+ }
++#pragma runtime_checks( "", restore )
+ 
+ /* Record call to arithmetic metamethod. */
+ static TRef rec_mm_arith(jit_State *J, RecordIndex *ix, MMS mm)

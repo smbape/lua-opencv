@@ -63,6 +63,9 @@ local function main()
     local frames = animation.frames
     local durations = animation.durations
     while true do
+        -- Without this, memory grows indefinitely
+        collectgarbage()
+
         local frame = frames[i + INDEX_BASE]
         local duration = durations[i + INDEX_BASE]
 

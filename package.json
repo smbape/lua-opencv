@@ -15,10 +15,9 @@
     "doctoc": "^2.2.1",
     "eol": "^0.9.1",
     "exceljs": "^4.4.0",
-    "fs-explorer": "^1.4.2",
+    "fs-explorer": "git+ssh://git@github.com:smbape/node-fs-explorer.git#master",
     "fs-extra": "^11.1.1",
     "mkdirp": "^3.0.1",
-    "node-autoit-binding-utils": "git+ssh://git@github.com:smbape/node-autoit-binding-utils.git",
     "semver": "^7.5.4",
     "ssf": "^0.11.2",
     "uuid": "^9.0.0"

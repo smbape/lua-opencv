@@ -13,32 +13,33 @@
 namespace LUA_MODULE_NAME {
 #ifdef HAVE_OPENCV_DNN
 	// https://github.com/opencv/opencv/blob/4.11.0/modules/dnn/misc/python/pyopencv_dnn.hpp#L7-L37
-	inline bool lua_is(lua_State* L, int index, cv::dnn::DictValue*) {
-		return lua_isnil(L, index)
-			|| lua_is(L, index, static_cast<int64*>(nullptr))
-			|| lua_is(L, index, static_cast<double*>(nullptr))
-			|| lua_is(L, index, static_cast<std::string*>(nullptr));
-	}
-
-	// https://github.com/opencv/opencv/blob/4.11.0/modules/dnn/misc/python/pyopencv_dnn.hpp#L7-L37
-	inline cv::dnn::DictValue lua_to(lua_State* L, int index, cv::dnn::DictValue*) {
-		if (lua_isnil(L, index)) {
+	inline cv::dnn::DictValue lua_to(lua_State* L, int index, cv::dnn::DictValue*, bool& is_valid) {
+		is_valid = lua_isnil(L, index);
+		if (is_valid) {
 			return cv::dnn::DictValue();
 		}
 
-		if (lua_is(L, index, static_cast<int64*>(nullptr))) {
-			return cv::dnn::DictValue(lua_to(L, index, static_cast<int64*>(nullptr)));
+		{
+			auto value = lua_to(L, index, static_cast<int64*>(nullptr), is_valid);
+			if (is_valid) {
+				return cv::dnn::DictValue(value);
+			}
 		}
 
-		if (lua_is(L, index, static_cast<double*>(nullptr))) {
-			return cv::dnn::DictValue(lua_to(L, index, static_cast<double*>(nullptr)));
+		{
+			auto value = lua_to(L, index, static_cast<double*>(nullptr), is_valid);
+			if (is_valid) {
+				return cv::dnn::DictValue(value);
+			}
 		}
 
-		if (lua_is(L, index, static_cast<std::string*>(nullptr))) {
-			return cv::dnn::DictValue(lua_to(L, index, static_cast<std::string*>(nullptr)));
+		{
+			auto value = lua_to(L, index, static_cast<std::string*>(nullptr), is_valid);
+			if (is_valid) {
+				return cv::dnn::DictValue(value);
+			}
 		}
 
-		luaL_error(L, "Unsupported value type");
 		return cv::dnn::DictValue();
 	}
 
@@ -65,52 +66,25 @@ namespace LUA_MODULE_NAME {
 	}
 
 	// https://github.com/opencv/opencv/blob/4.11.0/modules/dnn/misc/python/pyopencv_dnn.hpp#L75-L88
-	inline bool lua_is(lua_State* L, int index, cv::dnn::LayerParams*) {
-		return lua_is(L, index, static_cast<std::map<std::string, cv::dnn::DictValue>*>(nullptr));
-	}
-
-	// https://github.com/opencv/opencv/blob/4.11.0/modules/dnn/misc/python/pyopencv_dnn.hpp#L75-L88
-	inline void lua_to(lua_State* L, int index, cv::dnn::LayerParams& lp) {
+	inline void lua_to(lua_State* L, int index, cv::dnn::LayerParams& lp, bool& is_valid) {
 		using K = std::string;
 		using V = cv::dnn::DictValue;
-		using Map = cv::dnn::LayerParams;
+		using Map = std::map<K, V>;
 
-		if (index < 0) {
-			index += lua_gettop(L) + 1;
+		auto kv_holder = lua_to(L, index, static_cast<Map*>(nullptr), is_valid);
+		if (!is_valid) {
+			return;
 		}
+		decltype(auto) kv = extract_holder(kv_holder, static_cast<Map*>(nullptr));
 
-		// Push another reference to the table on top of the stack (so we know
-		// where it is, and this function can work for negative, positive and
-		// pseudo indices
-		lua_pushvalue(L, index);
-		// stack now contains: -1 => table
-
-		lua_pushnil(L);
-		// stack now contains: -1 => nil; -2 => table
-
-		while (lua_next(L, -2)) {
-			// stack now contains: -1 => value; -2 => key; -3 => table
-			const auto key = lua_to(L, -2, static_cast<K*>(nullptr));
-			auto value_holder = lua_to(L, -1, static_cast<V*>(nullptr));
-			decltype(auto) value = extract_holder(value_holder, static_cast<V*>(nullptr));
-
-			lp.set(key, value);
-
-			// pop value
-			lua_pop(L, 1);
-			// stack now contains: -1 => key; -2 => table
+		for (const auto& [k, v] : kv) {
+			lp.set(k, v);
 		}
-
-		// stack now contains: -1 => table (when lua_next returns 0 it pops the key
-		// but does not push anything.)
-		// Pop table
-		lua_pop(L, 1);
-		// Stack is now the same as it was on entry to this function
 	}
 
-	inline cv::dnn::LayerParams lua_to(lua_State* L, int index, cv::dnn::LayerParams*) {
+	inline cv::dnn::LayerParams lua_to(lua_State* L, int index, cv::dnn::LayerParams*, bool& is_valid) {
 		cv::dnn::LayerParams lp;
-		lua_to(L, index, lp);
+		lua_to(L, index, lp, is_valid);
 		return lp;
 	}
 
@@ -135,108 +109,66 @@ namespace LUA_MODULE_NAME {
 
 #ifdef HAVE_OPENCV_FLANN
 	// https://github.com/opencv/opencv/blob/4.11.0/modules/dnn/misc/python/pyopencv_dnn.hpp#L18-L103
-	inline bool lua_is(lua_State* L, int index, cv::flann::IndexParams*) {
-		return lua_is(L, index, static_cast<std::map<std::string, std::variant<bool, int, double>>*>(nullptr));
-	}
-
-	// https://github.com/opencv/opencv/blob/4.11.0/modules/dnn/misc/python/pyopencv_dnn.hpp#L18-L103
-	inline void lua_to(lua_State* L, int index, cv::flann::IndexParams& p) {
+	inline void lua_to(lua_State* L, int index, cv::flann::IndexParams& p, bool& is_valid) {
 		using K = std::string;
-		using V = std::variant<bool, int, double>;
-		using Map = cv::flann::IndexParams;
+		using V = cv::util::variant<bool, int, double>;
+		using Map = std::map<K, V>;
 
-		if (index < 0) {
-			index += lua_gettop(L) + 1;
+		auto kv_holder = lua_to(L, index, static_cast<Map*>(nullptr), is_valid);
+		if (!is_valid) {
+			return;
 		}
+		decltype(auto) kv = extract_holder(kv_holder, static_cast<Map*>(nullptr));
 
-		// Push another reference to the table on top of the stack (so we know
-		// where it is, and this function can work for negative, positive and
-		// pseudo indices
-		lua_pushvalue(L, index);
-		// stack now contains: -1 => table
-
-		lua_pushnil(L);
-		// stack now contains: -1 => nil; -2 => table
-
-		while (lua_next(L, -2)) {
-			// stack now contains: -1 => value; -2 => key; -3 => table
-			const auto key = lua_to(L, -2, static_cast<K*>(nullptr));
-			auto value_holder = lua_to(L, -1, static_cast<V*>(nullptr));
-			decltype(auto) value = extract_holder(value_holder, static_cast<V*>(nullptr));
-
-			if (std::holds_alternative<bool>(value)) {
-				p.setBool(key, std::get<bool>(value));
-			} else if (std::holds_alternative<int>(value)) {
-				if (key == "algorithm") {
-					p.setAlgorithm(std::get<int>(value));
+		for (const auto& [k, v] : kv) {
+			if (cv::util::holds_alternative<bool>(v)) {
+				p.setBool(k, cv::util::get<bool>(v));
+			} else if (cv::util::holds_alternative<int>(v)) {
+				if (k == "algorithm") {
+					p.setAlgorithm(cv::util::get<int>(v));
 				} else {
-					p.setInt(key, std::get<int>(value));
+					p.setInt(k, cv::util::get<int>(v));
 				}
-			} else if (std::holds_alternative<double>(value)) {
-				if (key == "eps") {
-					p.setFloat(key, static_cast<float>(std::get<double>(value)));
+			} else if (cv::util::holds_alternative<double>(v)) {
+				if (k == "eps") {
+					p.setFloat(k, static_cast<float>(cv::util::get<double>(v)));
 				} else {
-					p.setDouble(key, std::get<double>(value));
+					p.setDouble(k, cv::util::get<double>(v));
 				}
 			}
-
-			// pop value
-			lua_pop(L, 1);
-			// stack now contains: -1 => key; -2 => table
 		}
-
-		// stack now contains: -1 => table (when lua_next returns 0 it pops the key
-		// but does not push anything.)
-		// Pop table
-		lua_pop(L, 1);
-		// Stack is now the same as it was on entry to this function
 	}
 
-	inline std::shared_ptr<cv::flann::IndexParams> lua_to(lua_State* L, int index, cv::flann::IndexParams*) {
+	inline std::shared_ptr<cv::flann::IndexParams> lua_to(lua_State* L, int index, cv::flann::IndexParams*, bool& is_valid) {
 		auto p = std::make_shared<cv::flann::IndexParams>();
-		lua_to(L, index, *p);
+		lua_to(L, index, *p, is_valid);
 		return p;
 	}
 
-	inline bool lua_is(lua_State* L, int index, cv::flann::SearchParams*) {
-		return lua_is(L, index, static_cast<cv::flann::IndexParams*>(nullptr));
+	inline void lua_to(lua_State* L, int index, cv::flann::SearchParams& value, bool& is_valid) {
+		lua_to(L, index, static_cast<cv::flann::IndexParams&>(value), is_valid);
 	}
 
-	inline void lua_to(lua_State* L, int index, cv::flann::SearchParams& value) {
-		lua_to(L, index, static_cast<cv::flann::IndexParams&>(value));
-	}
-
-	inline std::shared_ptr<cv::flann::SearchParams> lua_to(lua_State* L, int index, cv::flann::SearchParams*) {
+	inline std::shared_ptr<cv::flann::SearchParams> lua_to(lua_State* L, int index, cv::flann::SearchParams*, bool& is_valid) {
 		auto value = std::make_shared<cv::flann::SearchParams>();
-		lua_to(L, index, *value);
+		lua_to(L, index, *value, is_valid);
 		return value;
 	}
 #endif
 
 #ifdef HAVE_OPENCV_GAPI
 	// https://github.com/opencv/opencv/tree/4.11.0/modules/gapi/misc/python/pyopencv_gapi.hpp#L179-L199
-	inline bool lua_is(lua_State* L, int index, cv::gapi::wip::draw::Prim*) {
-		return lua_is(L, index, static_cast<std::variant<
-			cv::gapi::wip::draw::Rect,
-			cv::gapi::wip::draw::Text,
-			cv::gapi::wip::draw::Circle,
-			cv::gapi::wip::draw::Line,
-			cv::gapi::wip::draw::Mosaic,
-			cv::gapi::wip::draw::Image,
-			cv::gapi::wip::draw::Poly
-		>*>(nullptr));
-	}
-
-	// https://github.com/opencv/opencv/tree/4.11.0/modules/gapi/misc/python/pyopencv_gapi.hpp#L179-L199
-	inline cv::gapi::wip::draw::Prim lua_to(lua_State* L, int index, cv::gapi::wip::draw::Prim*) {
+	inline cv::gapi::wip::draw::Prim lua_to(lua_State* L, int index, cv::gapi::wip::draw::Prim*, bool& is_valid) {
 		cv::gapi::wip::draw::Prim prim;
 
-#define TRY_EXTRACT(Primitive)                                                                           \
-		if (lua_is(L, index, static_cast<cv::gapi::wip::draw::Primitive*>(nullptr))) {                   \
-			auto value_holder = lua_to(L, index, static_cast<cv::gapi::wip::draw::Primitive*>(nullptr)); \
-			prim = extract_holder(value_holder, static_cast<cv::gapi::wip::draw::Primitive*>(nullptr));  \
-			return prim;                                                                                 \
-		}                                                                                                \
+#define TRY_EXTRACT(Primitive)                                                                                     \
+		{                                                                                                          \
+			auto value_holder = lua_to(L, index, static_cast<cv::gapi::wip::draw::Primitive*>(nullptr), is_valid); \
+			if (is_valid) {                                                                                        \
+				prim = extract_holder(value_holder, static_cast<cv::gapi::wip::draw::Primitive*>(nullptr));        \
+				return prim;                                                                                       \
+			}                                                                                                      \
+		}                                                                                                          \
 
 		TRY_EXTRACT(Rect)
 		TRY_EXTRACT(Text)
@@ -247,7 +179,6 @@ namespace LUA_MODULE_NAME {
 		TRY_EXTRACT(Poly)
 #undef TRY_EXTRACT
 
-		luaL_error(L, "Unsupported primitive type");
 		return prim;
 	}
 
@@ -275,25 +206,17 @@ namespace LUA_MODULE_NAME {
 	}
 
 	// https://github.com/opencv/opencv/tree/4.11.0/modules/gapi/misc/python/pyopencv_gapi.hpp#L208-L226
-	inline bool lua_is(lua_State* L, int index, cv::GMetaArg*) {
-		return lua_is(L, index, static_cast<std::variant<
-			cv::GMatDesc,
-			cv::GScalarDesc,
-			cv::GArrayDesc,
-			cv::GOpaqueDesc
-		>*>(nullptr));
-	}
-
-	// https://github.com/opencv/opencv/tree/4.11.0/modules/gapi/misc/python/pyopencv_gapi.hpp#L208-L226
-	inline cv::GMetaArg lua_to(lua_State* L, int index, cv::GMetaArg*) {
+	inline cv::GMetaArg lua_to(lua_State* L, int index, cv::GMetaArg*, bool& is_valid) {
 		cv::GMetaArg arg;
 
-#define TRY_EXTRACT(Meta)                                                      \
-		if (lua_is(L, index, static_cast<Meta*>(nullptr))) {                   \
-			auto value_holder = lua_to(L, index, static_cast<Meta*>(nullptr)); \
-			arg = extract_holder(value_holder, static_cast<Meta*>(nullptr));   \
-			return arg;                                                        \
-		}                                                                      \
+#define TRY_EXTRACT(Meta)                                                                \
+		{                                                                                \
+			auto value_holder = lua_to(L, index, static_cast<Meta*>(nullptr), is_valid); \
+			if (is_valid) {                                                              \
+				arg = extract_holder(value_holder, static_cast<Meta*>(nullptr));         \
+				return arg;                                                              \
+			}                                                                            \
+		}                                                                                \
 
 		TRY_EXTRACT(cv::GMatDesc)
 		TRY_EXTRACT(cv::GScalarDesc)
@@ -301,18 +224,12 @@ namespace LUA_MODULE_NAME {
 		TRY_EXTRACT(cv::GOpaqueDesc)
 #undef TRY_EXTRACT
 
-		luaL_error(L, "Unsupported cv::GMetaArg type");
 		return arg;
 	}
 
 	// https://github.com/opencv/opencv/tree/4.11.0/modules/gapi/misc/python/pyopencv_gapi.hpp#L270-L274
-	inline bool lua_is(lua_State* L, int index, cv::GArg*) {
-		LUA_MODULE_WARN("Setting a cv::GArg is not yet supported");
-		return false;
-	}
-
-	// https://github.com/opencv/opencv/tree/4.11.0/modules/gapi/misc/python/pyopencv_gapi.hpp#L270-L274
-	inline std::shared_ptr<cv::GArg> lua_to(lua_State* L, int index, cv::GArg*) {
+	inline std::shared_ptr<cv::GArg> lua_to(lua_State* L, int index, cv::GArg*, bool& is_valid) {
+		is_valid = false;
 		// value = cv::GArg(cv::detail::PyObjectHolder(obj));
 		luaL_error(L, "Setting a cv::GArg is not yet supported");
 		return std::shared_ptr<cv::GArg>();
@@ -402,7 +319,8 @@ namespace LUA_MODULE_NAME {
 	}
 
 	// modules/gapi/include/opencv2/gapi/garg.hpp#L98-L109
-	inline cv::GRunArg lua_to(lua_State* L, int index, cv::GRunArg*) {
+	inline cv::GRunArg lua_to(lua_State* L, int index, cv::GRunArg*, bool& is_valid) {
+		is_valid = false;
 		luaL_error(L, "Setting a cv::GRunArg is not allowed");
 		return cv::GRunArg();
 	}
@@ -453,21 +371,20 @@ namespace LUA_MODULE_NAME {
 	// cv::Range
 	// ================================
 
-	inline bool lua_is(lua_State* L, int index, cv::Range*) {
-		return lua_is(L, index, static_cast<std::vector<int>*>(nullptr), 2);
+	inline void lua_to(lua_State* L, int index, cv::Range& range, bool& is_valid) {
+		auto vec_holder = lua_to(L, index, static_cast<std::pair<int, int>*>(nullptr), is_valid);
+		if (!is_valid) {
+			return;
+		}
+		decltype(auto) vec = extract_holder(vec_holder, static_cast<std::pair<int, int>*>(nullptr));
+		range.start = vec.first;
+		range.end = vec.second;
 	}
 
-	inline void lua_to(lua_State* L, int index, cv::Range& range) {
-		static std::vector<int> vec;
-		lua_to(L, index, vec);
-		range.start = vec.at(0);
-		range.end = vec.at(1);
-	}
-
-	inline cv::Range lua_to(lua_State* L, int index, cv::Range*) {
-		static std::vector<int> vec;
-		lua_to(L, index, vec);
-		return cv::Range(vec.at(0), vec.at(1));
+	inline cv::Range lua_to(lua_State* L, int index, cv::Range*, bool& is_valid) {
+		cv::Range out;
+		lua_to(L, index, out, is_valid);
+		return out;
 	}
 
 	inline int lua_push(lua_State* L, const cv::Range& range) {
@@ -478,49 +395,36 @@ namespace LUA_MODULE_NAME {
 		return 1;
 	}
 
-	inline void lua_to(lua_State* L, int index, std::vector<cv::Range>& ranges) {
+	inline void lua_to(lua_State* L, int index, std::vector<cv::Range>& ranges, bool& is_valid) {
 		if (lua_isuserdata(L, index)) {
-			ranges = *lua_userdata_to(L, index, static_cast<std::vector<cv::Range>*>(nullptr));
+			ranges = *lua_userdata_to(L, index, static_cast<std::vector<cv::Range>*>(nullptr), is_valid);
 			return;
 		}
 
-		if (index < 0) {
-			index += lua_gettop(L) + 1;
+		auto vec_holder = lua_to(L, index, static_cast<std::vector<std::pair<int, int>>*>(nullptr), is_valid);
+		if (!is_valid) {
+			return;
 		}
+		decltype(auto) vec = extract_holder(vec_holder, static_cast<std::vector<std::pair<int, int>>*>(nullptr));
 
-		auto size = lua_rawlen(L, index);
-		ranges.resize(size);
+		ranges.resize(vec.size());
 
-		for (auto i = 1; i <= size; ++i) {
-			lua_pushnumber(L, i);
-			lua_rawget(L, index); // push range table
-
-			lua_pushnumber(L, 1);
-			lua_rawget(L, -2); // push start
-			ranges[i - 1].start = lua_to(L, -1, static_cast<int*>(nullptr));
-			lua_pop(L, 1); // pop start
-
-			lua_pushnumber(L, 2);
-			lua_rawget(L, -2); // push end
-			ranges[i - 1].end = lua_to(L, -1, static_cast<int*>(nullptr));
-			lua_pop(L, 1); // pop end
-
-			lua_pop(L, 1); // pop range table
+		auto i = 0;
+		for (const auto& [start, end] : vec) {
+			ranges[i].start = start;
+			ranges[i].end = end;
+			i++;
 		}
 	}
+
 
 	// ================================
 	// cv::Ptr
 	// ================================
 
 	template<typename T>
-	inline bool lua_is(lua_State* L, int index, cv::Ptr<T>*) {
-		return lua_is(L, index, static_cast<T*>(nullptr));
-	}
-
-	template<typename T>
-	inline cv::Ptr<T> lua_to(lua_State* L, int index, cv::Ptr<T>*) {
-		return lua_to(L, index, static_cast<T*>(nullptr));
+	inline cv::Ptr<T> lua_to(lua_State* L, int index, cv::Ptr<T>*, bool& is_valid) {
+		return lua_to(L, index, static_cast<T*>(nullptr), is_valid);
 	}
 
 	template<typename T>
@@ -528,19 +432,20 @@ namespace LUA_MODULE_NAME {
 		return lua_push(L, std::shared_ptr<T>(ptr));
 	}
 
+
 	// ================================
 	// cv::Point_
 	// ================================
-	template<typename _Tp>
-	inline bool lua_is(lua_State* L, int index, cv::Point_<_Tp>*) {
-		return lua_is(L, index, static_cast<std::vector<_Tp>*>(nullptr), 2);
-	}
 
 	template<typename _Tp>
-	inline cv::Point_<_Tp> lua_to(lua_State* L, int index, cv::Point_<_Tp>*) {
-		static std::vector<_Tp> vec;
-		lua_to(L, index, vec);
-		return cv::Point_<_Tp>(vec.at(0), vec.at(1));
+	inline cv::Point_<_Tp> lua_to(lua_State* L, int index, cv::Point_<_Tp>*, bool& is_valid) {
+		auto pt_holder = lua_to(L, index, static_cast<std::tuple<_Tp, _Tp>*>(nullptr), is_valid);
+		if (!is_valid) {
+			return cv::Point_<_Tp>();
+		}
+		decltype(auto) pt = extract_holder(pt_holder, static_cast<std::tuple<_Tp, _Tp>*>(nullptr));
+
+		return cv::Point_<_Tp>(std::get<0>(pt), std::get<1>(pt));
 	}
 
 	template<typename _Tp>
@@ -552,19 +457,20 @@ namespace LUA_MODULE_NAME {
 		return 1;
 	}
 
+
 	// ================================
 	// cv::Point3_
 	// ================================
-	template<typename _Tp>
-	inline bool lua_is(lua_State* L, int index, cv::Point3_<_Tp>*) {
-		return lua_is(L, index, static_cast<std::vector<_Tp>*>(nullptr), 3);
-	}
 
 	template<typename _Tp>
-	inline cv::Point3_<_Tp> lua_to(lua_State* L, int index, cv::Point3_<_Tp>*) {
-		static std::vector<_Tp> vec;
-		lua_to(L, index, vec);
-		return cv::Point3_<_Tp>(vec.at(0), vec.at(1), vec.at(2));
+	inline cv::Point3_<_Tp> lua_to(lua_State* L, int index, cv::Point3_<_Tp>*, bool& is_valid) {
+		auto pt_holder = lua_to(L, index, static_cast<std::tuple<_Tp, _Tp, _Tp>*>(nullptr), is_valid);
+		if (!is_valid) {
+			return cv::Point3_<_Tp>();
+		}
+		decltype(auto) pt = extract_holder(pt_holder, static_cast<std::tuple<_Tp, _Tp, _Tp>*>(nullptr));
+
+		return cv::Point3_<_Tp>(std::get<0>(pt), std::get<1>(pt), std::get<2>(pt));
 	}
 
 	template<typename _Tp>
@@ -577,19 +483,20 @@ namespace LUA_MODULE_NAME {
 		return 1;
 	}
 
+
 	// ================================
 	// cv::Rect_
 	// ================================
-	template<typename _Tp>
-	inline bool lua_is(lua_State* L, int index, cv::Rect_<_Tp>*) {
-		return lua_is(L, index, static_cast<std::vector<_Tp>*>(nullptr), 4);
-	}
 
 	template<typename _Tp>
-	inline cv::Rect_<_Tp> lua_to(lua_State* L, int index, cv::Rect_<_Tp>*) {
-		static std::vector<_Tp> vec;
-		lua_to(L, index, vec);
-		return cv::Rect_<_Tp>(vec.at(0), vec.at(1), vec.at(2), vec.at(3));
+	inline cv::Rect_<_Tp> lua_to(lua_State* L, int index, cv::Rect_<_Tp>*, bool& is_valid) {
+		auto rect_holder = lua_to(L, index, static_cast<std::tuple<_Tp, _Tp, _Tp, _Tp>*>(nullptr), is_valid);
+		if (!is_valid) {
+			return cv::Rect_<_Tp>();
+		}
+		decltype(auto) rect = extract_holder(rect_holder, static_cast<std::tuple<_Tp, _Tp, _Tp, _Tp>*>(nullptr));
+
+		return cv::Rect_<_Tp>(std::get<0>(rect), std::get<1>(rect), std::get<2>(rect), std::get<3>(rect));
 	}
 
 	template<typename _Tp>
@@ -603,22 +510,23 @@ namespace LUA_MODULE_NAME {
 		return 1;
 	}
 
+
 	// ================================
 	// cv::Scalar_
 	// ================================
-	template<typename _Tp>
-	inline bool lua_is(lua_State* L, int index, cv::Scalar_<_Tp>*) {
-		return lua_is(L, index, static_cast<_Tp*>(nullptr)) || lua_is(L, index, static_cast<std::vector<_Tp>*>(nullptr), 4, true);
-	}
 
 	template<typename _Tp>
-	inline cv::Scalar_<_Tp> lua_to(lua_State* L, int index, cv::Scalar_<_Tp>*) {
-		if (lua_is(L, index, static_cast<_Tp*>(nullptr))) {
-			return cv::Scalar_<_Tp>(lua_to(L, index, static_cast<_Tp*>(nullptr)));
+	inline cv::Scalar_<_Tp> lua_to(lua_State* L, int index, cv::Scalar_<_Tp>*, bool& is_valid) {
+		auto v = lua_to(L, index, static_cast<_Tp*>(nullptr), is_valid);
+		if (is_valid) {
+			return cv::Scalar_<_Tp>(v);
 		}
 
-		static std::vector<_Tp> vec;
-		lua_to(L, index, vec);
+		auto vec_holder = lua_to(L, index, static_cast<std::vector<_Tp>*>(nullptr), is_valid, 4, true);
+		if (!is_valid) {
+			return cv::Scalar_<_Tp>();
+		}
+		decltype(auto) vec = extract_holder(vec_holder, static_cast<std::vector<_Tp>*>(nullptr));
 
 		switch (vec.size()) {
 		case 1:
@@ -644,22 +552,24 @@ namespace LUA_MODULE_NAME {
 		return 1;
 	}
 
+
 	// ================================
 	// cv::Size_
 	// ================================
-	template<typename _Tp>
-	inline bool lua_is(lua_State* L, int index, cv::Size_<_Tp>*) {
-		return lua_isnil(L, index) || lua_is(L, index, static_cast<std::vector<_Tp>*>(nullptr), 2);
-	}
 
 	template<typename _Tp>
-	inline cv::Size_<_Tp> lua_to(lua_State* L, int index, cv::Size_<_Tp>*) {
+	inline cv::Size_<_Tp> lua_to(lua_State* L, int index, cv::Size_<_Tp>*, bool& is_valid) {
 		if (lua_isnil(L, index)) {
 			return cv::Size_<_Tp>();
 		}
-		static std::vector<_Tp> vec;
-		lua_to(L, index, vec);
-		return cv::Size_<_Tp>(vec.at(0), vec.at(1));
+
+		auto sz_holder = lua_to(L, index, static_cast<std::tuple<_Tp, _Tp>*>(nullptr), is_valid);
+		if (!is_valid) {
+			return cv::Size_<_Tp>();
+		}
+
+		decltype(auto) sz = extract_holder(sz_holder, static_cast<std::tuple<_Tp, _Tp>*>(nullptr));
+		return cv::Size_<_Tp>(std::get<0>(sz), std::get<1>(sz));
 	}
 
 	template<typename _Tp>
@@ -671,32 +581,33 @@ namespace LUA_MODULE_NAME {
 		return 1;
 	}
 
+
 	// ================================
 	// cv::Vec
 	// ================================
-	template<typename _Tp, int cn>
-	inline bool lua_is(lua_State* L, int index, cv::Vec<_Tp, cn>*) {
-		return lua_is(L, index, static_cast<std::vector<_Tp>*>(nullptr), cn, true);
-	}
 
 	template<typename _Tp, int cn>
-	inline cv::Vec<_Tp, cn>  lua_to(lua_State* L, int index, cv::Vec<_Tp, cn>*) {
-		static std::vector<_Tp> vec;
-		lua_to(L, index, vec);
+	inline cv::Vec<_Tp, cn>  lua_to(lua_State* L, int index, cv::Vec<_Tp, cn>*, bool& is_valid) {
+		cv::Vec<_Tp, cn> out;
 
-		static cv::Vec<_Tp, cn> res;
+		auto vec_holder = lua_to(L, index, static_cast<std::vector<_Tp>*>(nullptr), is_valid, cn, true);
+		if (!is_valid) {
+			return out;
+		}
+
+		decltype(auto) vec = extract_holder(vec_holder, static_cast<std::vector<_Tp>*>(nullptr));
 
 		const auto size = vec.size();
 
 		for (int i = 0; i < size; i++) {
-			res[i] = vec.at(i);
+			out[i] = vec.at(i);
 		}
 
 		for (int i = size; i < cn; i++) {
-			res[i] = _Tp(0);
+			out[i] = static_cast<_Tp>(0);
 		}
 
-		return res;
+		return out;
 	}
 
 	template<typename _Tp, int cn>
@@ -709,60 +620,38 @@ namespace LUA_MODULE_NAME {
 		return 1;
 	}
 
+
 	// ================================
 	// cv::util::variant
 	// ================================
+
 	template<std::size_t I = 0, typename... _Ts>
-	inline bool _lua_is(lua_State* L, int index, cv::util::variant<_Ts...>* ptr) {
+	inline cv::util::variant<_Ts...> _lua_to(lua_State* L, int index, cv::util::variant<_Ts...>* ptr, bool& is_valid) {
 		using _Tuple = typename std::tuple<_Ts...>;
 		using T = typename std::tuple_element<I, _Tuple>::type;
+		using Variant = typename cv::util::variant<_Ts...>;
 
 		if constexpr (!std::is_same_v<T, cv::util::monostate> && !std::is_same_v<T, cv::gapi::wip::draw::FText> && !std::is_same_v<T, cv::GFrameDesc>) {
-			if (lua_is(L, index, static_cast<T*>(nullptr))) {
-				return true;
+			Variant out;
+			auto holder = lua_to(L, index, static_cast<T*>(nullptr), is_valid);
+			if (is_valid) {
+				out = extract_holder(holder, static_cast<T*>(nullptr));
+				return out;
 			}
 		}
 
 		if constexpr (I == sizeof...(_Ts) - 1) {
-			return false;
+			is_valid = false;
+			return Variant();
 		}
 		else {
-			return _lua_is<I + 1, _Ts...>(L, index, ptr);
+			return _lua_to<I + 1, _Ts...>(L, index, ptr, is_valid);
 		}
 	}
 
 	template<typename... _Ts>
-	inline bool lua_is(lua_State* L, int index, cv::util::variant<_Ts...>* ptr) {
-		return _lua_is(L, index, ptr);
-	}
-
-	template<std::size_t I = 0, typename... _Ts>
-	inline cv::util::variant<_Ts...> _lua_to(lua_State* L, int index, cv::util::variant<_Ts...>* ptr) {
-		using _Tuple = typename std::tuple<_Ts...>;
-		using T = typename std::tuple_element<I, _Tuple>::type;
-		using Arg = typename cv::util::variant<_Ts...>;
-
-		if constexpr (!std::is_same_v<T, cv::util::monostate> && !std::is_same_v<T, cv::gapi::wip::draw::FText> && !std::is_same_v<T, cv::GFrameDesc>) {
-			if (lua_is(L, index, static_cast<T*>(nullptr))) {
-				Arg res;
-				auto holder = lua_to(L, index, static_cast<T*>(nullptr));
-				auto value = extract_holder(holder, static_cast<T*>(nullptr));
-				res = value;
-				return res;
-			}
-		}
-
-		if constexpr (I == sizeof...(_Ts) - 1) {
-			return Arg();
-		}
-		else {
-			return _lua_to<I + 1, _Ts...>(L, index, ptr);
-		}
-	}
-
-	template<typename... _Ts>
-	inline cv::util::variant<_Ts...> lua_to(lua_State* L, int index, cv::util::variant<_Ts...>* ptr) {
-		return _lua_to(L, index, ptr);
+	inline cv::util::variant<_Ts...> lua_to(lua_State* L, int index, cv::util::variant<_Ts...>* ptr, bool& is_valid) {
+		return _lua_to(L, index, ptr, is_valid);
 	}
 
 	template<std::size_t I = 0, typename... _Ts>
@@ -794,6 +683,7 @@ namespace LUA_MODULE_NAME {
 	// ================================
 	// cv::optional
 	// ================================
+
 	template<typename T>
 	inline int lua_push(lua_State* L, const cv::optional<T>& opt) {
 		if (!opt.has_value()) {

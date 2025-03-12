@@ -18,27 +18,27 @@ add_custom_command(
 add_custom_target(gen_buildvm_arch ALL DEPENDS minilua "${BUILDVM_ARCH_HEADER}" "${luajit_SRC}/luajit.h")
 
 if (NOT CMAKE_CROSSCOMPILING)
-  add_subdirectory(buildvm)
-  set(BUILDVM_TARGET_FILE $<TARGET_FILE:buildvm>)
+    add_subdirectory(buildvm)
+    set(BUILDVM_TARGET_FILE $<TARGET_FILE:buildvm>)
 else()
-  if ("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Windows")
-    set(BUILDVM_EXE buildvm.exe)
-  else()
-    set(BUILDVM_EXE buildvm)
-  endif()
+    if ("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Windows")
+        set(BUILDVM_EXE buildvm.exe)
+    else()
+        set(BUILDVM_EXE buildvm)
+    endif()
 
-  set(buildvm_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/buildvm")
-  set(BUILDVM_TARGET_FILE "${buildvm_BINARY_DIR}/bin/${BUILDVM_EXE}")
-  file(MAKE_DIRECTORY "${buildvm_BINARY_DIR}")
+    set(buildvm_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/buildvm")
+    set(BUILDVM_TARGET_FILE "${buildvm_BINARY_DIR}/bin/${BUILDVM_EXE}")
+    file(MAKE_DIRECTORY "${buildvm_BINARY_DIR}")
 
-  add_custom_command(OUTPUT "${BUILDVM_TARGET_FILE}"
-    COMMAND "${CMAKE_COMMAND}" "${CMAKE_CURRENT_SOURCE_DIR}/buildvm"
-    COMMAND "${CMAKE_COMMAND}" --build .
-    DEPENDS gen_buildvm_arch
-    WORKING_DIRECTORY "${buildvm_BINARY_DIR}"
-  )
+    add_custom_command(OUTPUT "${BUILDVM_TARGET_FILE}"
+        COMMAND "${CMAKE_COMMAND}" "${CMAKE_CURRENT_SOURCE_DIR}/buildvm"
+        COMMAND "${CMAKE_COMMAND}" --build .
+        DEPENDS gen_buildvm_arch
+        WORKING_DIRECTORY "${buildvm_BINARY_DIR}"
+    )
 
-  add_custom_target(buildvm ALL DEPENDS "${BUILDVM_TARGET_FILE}")
+    add_custom_target(buildvm ALL DEPENDS "${BUILDVM_TARGET_FILE}")
 endif()
 
 add_dependencies(buildvm gen_buildvm_arch)

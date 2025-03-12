@@ -47,14 +47,15 @@ const updateContent = (file, replacer, cb) => {
     ], cb);
 };
 
+const files_to_change = [
+    "README.md",
+    "docs/hosting-you-own-binary-rocks-Windows.md",
+    "docs/hosting-you-own-binary-rocks-Linux.md",
+    "luarocks/opencv_lua-scm-1.rockspec",
+];
+
 waterfall([
     next => {
-        const files_to_change = [
-            "README.md",
-            "docs/hosting-you-own-binary-rocks-Windows.md",
-            "docs/hosting-you-own-binary-rocks-Linux.md",
-            "luarocks/opencv_lua-scm-1.rockspec",
-        ];
         eachOfLimit(files_to_change, os.cpus().length, (filename, i, next) => {
             updateContent(sysPath.join(workspaceRoot, filename), oldContent => {
                 return oldContent
@@ -75,7 +76,7 @@ waterfall([
                 return;
             }
 
-            const child = spawn("git", ["add", readme], {
+            const child = spawn("git", ["add", ...files_to_change.map(filename => sysPath.join(workspaceRoot, filename))], {
                 stdio: "inherit"
             });
 

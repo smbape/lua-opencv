@@ -13,11 +13,17 @@ bash -c 'source scripts/tasks.sh && tidy'
 
 
 # ================================
+# bump a new version
+# ================================
+bash -c 'source scripts/tasks.sh && new_version'
+
+
+# ================================
 # build
 # ================================
 bash -c 'source scripts/tasks.sh && prepublish_stash_push'
 
-bash -c 'source scripts/tasks.sh && new_version_rollback && build_full'
+bash -c 'source scripts/tasks.sh && build_full'
 
 bash -c 'source scripts/tasks.sh && prepublish_stash_pop'
 
@@ -25,12 +31,30 @@ bash -c 'source scripts/tasks.sh && prepublish_stash_pop'
 # ================================
 # Windows README.md samples check
 # ================================
-bash -c 'source scripts/tasks.sh && test_prepublished_binary_windows'
+bash -c 'source scripts/tasks.sh && test_debug_windows --bash > ./out/build/x64-Debug/test_all.sh' && \
+./out/build/x64-Debug/test_all.sh && \
+bash -c '
+source scripts/tasks.sh && \
+mkdir -p out/build/x64-Release && \
+truncate -s 0 out/build/x64-Release/test_all.sh && \
+test_prepublished_binary_windows --upgrade --bash \>\> $PWD/out/build/x64-Release/test_all.sh
+' && \
+./out/build/x64-Release/test_all.sh
 
 # ================================
 # WSL README.md samples check
 # ================================
-bash -c 'source scripts/tasks.sh && test_prepublished_binary_wsl'
+bash -c 'source scripts/tasks.sh && test_debug_wsl --bash \> ./out/build/Linux-GCC-Debug/test_all.sh' && \
+bash -c 'source scripts/tasks.sh && wsl -c "source scripts/wsl_init.sh && chmod +x ./out/build/Linux-GCC-Debug/test_all.sh && ./out/build/Linux-GCC-Debug/test_all.sh"'
+bash -c '
+source scripts/tasks.sh && \
+wsl -c "
+source scripts/wsl_init.sh && \
+mkdir -p out/build/Linux-GCC-Release && \
+truncate -s 0 out/build/Linux-GCC-Release/test_all.sh
+" && \
+test_prepublished_binary_wsl --upgrade --bash \>\> \$sources/out/build/Linux-GCC-Release/test_all.sh' && \
+bash -c 'source scripts/tasks.sh && wsl -c "source scripts/wsl_init.sh && chmod +x ./out/build/Linux-GCC-Release/test_all.sh && ./out/build/Linux-GCC-Release/test_all.sh"'
 
 # ================================
 # Docker images README.md samples check
@@ -76,15 +100,21 @@ bash -c 'source scripts/tasks.sh && doctoc'
 
 
 # ================================
+# add modified docs to the new_version
+# ================================
+bash -c 'source scripts/tasks.sh && update_new_version'
+
+
+# ================================
 # prepublish the new version
 # ================================
-bash -c 'source scripts/tasks.sh && new_version_rollback && new_version && push_all && time prepublish_windows && time prepublish_manylinux'
+bash -c 'source scripts/tasks.sh && time prepublish_windows && time prepublish_manylinux'
 
 
 # ================================
 # publish
 # ================================
-bash -c 'source scripts/tasks.sh && publish'
+bash -c 'source scripts/tasks.sh && push_all && publish'
 
 
 # ================================

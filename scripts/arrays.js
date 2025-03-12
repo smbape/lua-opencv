@@ -1,7 +1,13 @@
 const fs = require("node:fs");
 const sysPath = require("node:path");
 
-const plain = new Set([
+const primitiveTypes = new Set([
+    "bool",
+    "double",
+    "cv::Scalar",
+]);
+
+const nonArrayTypes = new Set([
     "bool",
     "double",
     "cv::cuda::GpuMat",
@@ -10,31 +16,56 @@ const plain = new Set([
     "cv::Scalar",
 ]);
 
-// include/opencv2/core/mat.hpp(198)
-// include/opencv2/core/mat.hpp(323)
-// include/opencv2/core/mat.hpp(325)
-// include/opencv2/core/mat.hpp(397)
-const supported = new Map([
+const ndArraySupport = new Set([
+    "cv::Mat",
+]);
+
+const limitedSupport = new Map([
     ["bool", ["InputArray"]],
     ["double", ["InputArray"]],
     ["cv::Scalar", ["InputArray"]],
-    ["std::vector<std::vector<bool>>", ["InputOutputArray"]],
+
+    // Remove OutputArray : https://github.com/opencv/opencv/blob/4.11.0/modules/core/include/opencv2/core/mat.hpp#L325
+    // Remove InputOutputArray : https://github.com/opencv/opencv/blob/4.11.0/modules/core/include/opencv2/core/mat.hpp#L399
     ["std::vector<bool>", ["InputArray"]],
+
+    // Remove InputArray : https://github.com/opencv/opencv/blob/4.11.0/modules/core/include/opencv2/core/mat.hpp#L200
+    // Remove OutputArray : https://github.com/opencv/opencv/blob/4.11.0/modules/core/include/opencv2/core/mat.hpp#L327
+    ["std::vector<std::vector<bool>>", ["InputOutputArray"]],
 ]);
 
-const constexpr = (type, spaces, expr) => {
-    const conditions = [];
+const constexprRestirction = (type, restriction = null) => {
+    const restrictions = [];
 
-    if (plain.has(type)) {
-        conditions.push("!is_arrays_type");
+    if (nonArrayTypes.has(type) && !ndArraySupport.has(type)) {
+        restrictions.push("!is_arrays_type");
     }
 
-    if (supported.has(type)) {
-        const condition = supported.get(type).map(array => `std::is_same_v<Array, cv::_${ array }>`).join(" || ");
-        conditions.push(plain.has(type) ? `(${ condition })` : condition);
+    if (limitedSupport.has(type)) {
+        const validArrayTypes = limitedSupport.get(type);
+        const disjuctions = validArrayTypes.map(ArrayType => `std::is_same_v<Array, cv::_${ ArrayType }>`);
+        restrictions.push(disjuctions.length > 1 ? `(${ disjuctions.join(" || ") })` : disjuctions[0]);
     }
 
-    if (conditions.length === 0) {
+    if (restrictions.length === 1 && restrictions[0].startsWith("(") && restrictions[0].endsWith(")")) {
+        restrictions[0] = restrictions[0].slice(1, -1);
+    }
+
+    if (restriction) {
+        restrictions.push(restriction);
+    }
+
+    if (restrictions.length === 0) {
+        return "";
+    }
+
+    return restrictions.join(" && ");
+};
+
+const constexprWrap = (type, spaces, expr) => {
+    const restriction = constexprRestirction(type);
+
+    if (restriction.length === 0) {
         return expr;
     }
 
@@ -42,13 +73,13 @@ const constexpr = (type, spaces, expr) => {
     const lines = expr.replace(new RegExp(`^${ indent }`, "mg"), "").split("\n");
 
     return `
-        if constexpr (${ conditions.join(" && ") }) {
+        if constexpr (${ restriction }) {
             ${ lines.join(`\n${ " ".repeat(12) }`) }
         }
     `.trim().replace(/^ {8}/mg, indent);
 };
 
-const types = [
+const knownArrayTypes = [
     // Unique types
     "cv::Mat",
     "cv::UMat",
@@ -91,266 +122,36 @@ const types = [
 // Ambiguous because array of numbers
 for (const _Tp of ["b", "s", "w"]) {
     for (const cn of [2, 3, 4]) { // eslint-disable-line no-magic-numbers
-        types.push(`cv::Vec${ cn }${ _Tp }`);
+        knownArrayTypes.push(`cv::Vec${ cn }${ _Tp }`);
     }
 }
 
 for (const cn of [2, 3, 4, 6, 8]) { // eslint-disable-line no-magic-numbers
-    types.push(`cv::Vec${ cn }i`);
+    knownArrayTypes.push(`cv::Vec${ cn }i`);
 }
 
 for (const _Tp of ["f", "d"]) {
     for (const cn of [2, 3, 4, 6]) { // eslint-disable-line no-magic-numbers
-        types.push(`cv::Vec${ cn }${ _Tp }`);
+        knownArrayTypes.push(`cv::Vec${ cn }${ _Tp }`);
     }
 }
 
-const length = types.length;
+const length = knownArrayTypes.length;
 
 // Mat and UMat does not have vector<vector>
 for (let i = 2; i < length; i++) {
-    types.push(`std::vector<${ types[i] }>`);
+    knownArrayTypes.push(`std::vector<${ knownArrayTypes[i] }>`);
 }
 
-for (let i = 0; i < types.length; i++) {
-    types[i] = `std::vector<${ types[i] }>`;
+for (let i = 0; i < knownArrayTypes.length; i++) {
+    knownArrayTypes[i] = `std::vector<${ knownArrayTypes[i] }>`;
 }
 
-types.unshift(...plain);
-
-const code = `
-    #pragma once
-
-    #include <lua_bridge_common.hpp>
-    #include <opencv2/core.hpp>
-
-    namespace LUA_MODULE_NAME {
-        // InputArray, outputArray, InputOutputArray
-        // InputArrayOfArrays, outputArrayOfArrays, InputOutputArrayOfArrays
-        template<typename Array, bool is_arrays_type>
-        struct _OptionalArray
-        {
-            static const bool is_valid(lua_State* L, int index) {
-                if (lua_isnil(L, index)) {
-                    return true;
-                }
-
-                if (lua_isuserdata(L, index) && lua_is(L, index, static_cast<Array*>(nullptr))) {
-                    return true;
-                }
-
-                ${ types.map((type, i) => constexpr(type, 16, `
-                if (lua_is(L, index, static_cast<${ type }*>(nullptr))) {
-                    return true;
-                }`.trim())).join(`\n\n${ " ".repeat(16) }`) }
-
-                return false;
-            }
-
-            _OptionalArray() {
-                if constexpr (is_arrays_type) {
-                    setField(*this, *this, ${ types.length + 1 });
-                }
-                else {
-                    setField(*this, *this, ${ types.length + 2 });
-                }
-            };
-
-            _OptionalArray(lua_State* L, int index) {
-                if (lua_isnil(L, index)) {
-                    if constexpr (is_arrays_type) {
-                        setField(*this, *this, ${ types.length + 1 });
-                    }
-                    else {
-                        setField(*this, *this, ${ types.length + 2 });
-                    }
-                    return;
-                }
-
-                if (lua_isuserdata(L, index) && lua_is(L, index, static_cast<Array*>(nullptr))) {
-                    ptr = lua_to(L, index, static_cast<Array*>(nullptr));
-                    return;
-                }
-
-                ${ types.map((type, i) => constexpr(type, 16, `
-                if (lua_is(L, index, static_cast<${ type }*>(nullptr))) {
-                    auto value = lua_to(L, index, static_cast<${ type }*>(nullptr));
-                    assign_maybe_shared(this->obj, value, static_cast<${ type }*>(nullptr));
-                    setField(*this, *this, ${ i + 1 });
-                    return;
-                }`.trim())).join(`\n\n${ " ".repeat(16) }`) }
-            }
-
-            _OptionalArray(const std::shared_ptr<Array>& ptr) : ptr(ptr) {}
-
-            _OptionalArray(const _OptionalArray& other) {
-                other.setField(other, *this, other.field);
-            }
-
-            _OptionalArray& operator=(const _OptionalArray& other) {
-                other.setField(other, *this, other.field);
-                return *this;
-            }
-
-            _OptionalArray(_OptionalArray&& other) noexcept :
-                ptr(std::move(other.ptr)),
-                mval(std::move(other.mval)),
-                vval(std::move(other.vval))
-            {
-                switch (field) {
-                ${ types.map((type, i) => `
-                case ${ i + 1 }:
-                    ${ constexpr(type, 20, `
-                    this->obj = new std::shared_ptr<${ type }>(std::move(*reinterpret_cast<std::shared_ptr<${ type }>*>(other.obj)));
-                    `.trim()) }
-                    break;
-                `.trim()).join(`\n${ " ".repeat(16) }`) }
-                default:
-                    // Nothind do do
-                    break;
-                }
-            }
-
-            ~_OptionalArray() {
-                switch (field) {
-                ${ types.map((type, i) => `
-                case ${ i + 1 }:
-                    ${ constexpr(type, 20, `
-                    delete reinterpret_cast<std::shared_ptr<${ type }>*>(obj);
-                    obj = nullptr;
-                    `.trim()) }
-                    break;
-                `.trim()).join(`\n${ " ".repeat(16) }`) }
-                default:
-                    // Nothind do do
-                    break;
-                }
-            }
-
-            template<typename T>
-            inline void reset(T& obj) {
-                ptr = std::make_shared<Array>(obj);
-            }
-
-            template<typename T>
-            inline void reset(const T& obj) {
-                ptr = std::make_shared<Array>(obj);
-            }
-
-            static void setField(const _OptionalArray& src, _OptionalArray& dst, std::uint8_t _field) {
-                dst.field = _field;
-
-                switch (_field) {
-                ${ types.map((type, i) => `
-                case ${ i + 1 }:
-                    ${ constexpr(type, 20, `
-                    if (&src != &dst) {
-                        if (dst.obj) {
-                            *reinterpret_cast<std::shared_ptr<${ type }>*>(dst.obj) = *reinterpret_cast<std::shared_ptr<${ type }>*>(src.obj);
-                        }
-                        else {
-                            dst.obj = new std::shared_ptr<${ type }>(*reinterpret_cast<std::shared_ptr<${ type }>*>(src.obj));
-                        }
-                    }
-                    if (dst.obj) {
-                        dst.reset(**reinterpret_cast<std::shared_ptr<${ type }>*>(dst.obj));
-                    }
-                    `) }
-                    break;
-                `.trim()).join(`\n${ " ".repeat(16) }`) }
-                case ${ types.length + 1 }:
-                    dst.reset(dst.vval);
-                    break;
-                case ${ types.length + 2 }:
-                    dst.reset(dst.mval);
-                    break;
-                default:
-                    if (&src != &dst) {
-                        dst.ptr = src.ptr;
-                    }
-                }
-            }
-
-            auto get() {
-                return ptr;
-            }
-
-            operator bool() const {
-                return static_cast<bool>(ptr);
-            }
-
-            auto& operator*() {
-                return *ptr;
-            }
-
-            std::uint8_t field = 0;
-            std::shared_ptr<Array> ptr;
-            cv::Mat mval;
-            std::vector<cv::Mat> vval;
-            void* obj = nullptr;
-        };
-
-        template<typename Array, bool is_arrays_type>
-        inline int lua_push(lua_State* L, const _OptionalArray<Array, is_arrays_type>& dst) {
-            switch (dst.field) {
-            ${ types.map((type, i) => `
-            case ${ i + 1 }:
-                ${ constexpr(type, 16, `
-                return lua_push(L, *reinterpret_cast<std::shared_ptr<${ type }>*>(dst.obj));
-                `.trim()) }
-                break;
-            `.trim()).join(`\n${ " ".repeat(12) }`) }
-            case ${ types.length + 1 }:
-                return lua_push(L, dst.vval);
-            case ${ types.length + 2 }:
-                return lua_push(L, dst.mval);
-            default:
-                // Nothind do do
-                break;
-            }
-
-            lua_pushnil(L);
-            return 1;
-        }
-
-        // InputArray, outputArray, InputOutputArray
-        template<typename Array>
-        struct OptionalArray : public _OptionalArray<Array, false> {
-            using _OptionalArray<Array, false>::_OptionalArray;
-        };
-
-        // InputArrayOfArrays, outputArrayOfArrays, InputOutputArrayOfArrays
-        template<typename Array>
-        struct OptionalArrays : public _OptionalArray<Array, true> {
-            using _OptionalArray<Array, true>::_OptionalArray;
-        };
-
-        template<typename Array>
-        inline bool lua_isarrays(lua_State* L, int index, Array*) {
-            return OptionalArrays<Array>::is_valid(L, index);
-        }
-
-        template<typename Array>
-        inline decltype(auto) lua_toarrays(lua_State* L, int index, Array*) {
-            return OptionalArrays<Array>(L, index);
-        }
-
-        template<typename Array>
-        inline bool lua_isarray(lua_State* L, int index, Array*) {
-            return OptionalArray<Array>::is_valid(L, index);
-        }
-
-        template<typename Array>
-        inline decltype(auto) lua_toarray(lua_State* L, int index, Array*) {
-            return OptionalArray<Array>(L, index);
-        }
-    }
-`.replace(/^ {4}/mg, "").trim().replace(/[^\S\n]+$/mg, "").replaceAll(" ".repeat(4), "\t");
+const types = [...nonArrayTypes, ...knownArrayTypes];
 
 const hdr = `
     #pragma once
 
-    #include <lua_bridge_arrays.hpp>
     namespace LUA_MODULE_NAME {
         template<typename Array, bool is_arrays_type>
         struct _OptionalArray;
@@ -360,8 +161,406 @@ const hdr = `
     }
 `.replace(/^ {4}/mg, "").trim().replace(/[^\S\n]+$/mg, "").replaceAll(" ".repeat(4), "\t");
 
-fs.writeFileSync(sysPath.join(__dirname, "../src/include/lua_bridge_arrays.hdr.hpp"), hdr);
+const hdr_impl = `
+    #pragma once
 
-fs.writeFileSync(sysPath.join(__dirname, "../src/include/lua_bridge_arrays.hpp"), code);
+    #include <lua_bridge_common.hpp>
+    #include <opencv2/opencv.hpp>
 
-fs.writeFileSync(sysPath.join(__dirname, "../generator/vectors.js"), `module.exports = ${ JSON.stringify(types.filter(type => type.startsWith("std::vector")), null, 4) };`);
+    /**
+     * Internal class used to create
+     *   InputArray, OutputArray, InputOutputArray
+     *   InputArrayOfArrays, OutputArrayOfArrays, InputOutputArrayOfArrays
+     * It holds the Array data until destruction.
+     * Array defaults to cv::Mat for *Array and std::vector<cv::Mat> for *Arrays
+     */
+
+    namespace LUA_MODULE_NAME {
+        template<typename Array, bool is_arrays_type>
+        class _OptionalArray {
+        public:
+            _OptionalArray();
+            ~_OptionalArray();
+
+            _OptionalArray(_OptionalArray& other);
+            _OptionalArray(_OptionalArray&& other) noexcept;
+            _OptionalArray(const _OptionalArray& other) = delete;
+
+            _OptionalArray& operator=(_OptionalArray& other);
+            _OptionalArray& operator=(_OptionalArray&& other) noexcept;
+            _OptionalArray& operator=(const _OptionalArray& other) = delete;
+
+            // Array parameter default value
+            // 
+            // cv.omnidir.undistortImage void 
+            //     InputArray distorted 
+            //     OutputArray undistorted /O
+            //     InputArray K 
+            //     InputArray D 
+            //     InputArray xi 
+            //     int flags 
+            //     InputArray Knew cv::noArray()
+            //     Size new_size Size()/C; /Ref
+            //     InputArray R Mat::eye(3, 3, CV_64F)
+            template<typename T>
+            typename std::enable_if<!std::is_same_v<T, _OptionalArray>, _OptionalArray&>::type operator=(T& value) {
+                reset(value);
+                return *this;
+            }
+
+            _OptionalArray(lua_State* L, int index, bool& is_valid, const bool nd_mat = false);
+
+            void reset();
+
+            operator bool() const {
+                return static_cast<bool>(m_ptr);
+            }
+
+            decltype(auto) get() {
+                return m_ptr.get();
+            }
+
+            decltype(auto) operator*() {
+                return m_ptr.operator*();
+            }
+
+            const int index() const {
+                return m_index;
+            }
+
+            const void* data() const {
+                return m_data;
+            }
+
+            const bool is_shared_ptr() const {
+                return m_is_shared_ptr;
+            }
+
+        private:
+            void initialize();
+            void free();
+
+            template<typename T>
+            void reset(T& value);
+
+            template<typename T>
+            void reset(T&& value);
+
+            int m_index { -1 };
+            void* m_data { nullptr };
+            bool m_is_shared_ptr { false };
+            std::shared_ptr<Array> m_ptr;
+        };
+
+        template<typename Array, bool is_arrays_type>
+        int lua_push(lua_State* L, const _OptionalArray<Array, is_arrays_type>& opt_array);
+
+        // InputArray, OutputArray, InputOutputArray
+        template<typename Array>
+        using OptionalArray = _OptionalArray<Array, false>;
+
+        // InputArrayOfArrays, OutputArrayOfArrays, InputOutputArrayOfArrays
+        template<typename Array>
+        using OptionalArrays = _OptionalArray<Array, true>;
+
+        template<typename Array>
+        inline auto lua_toarray(lua_State* L, int index, Array*, bool& is_valid) {
+            // COPY or MOVE constructor/assignment
+            return OptionalArray<Array>(L, index, is_valid);
+        }
+
+        template<typename Array>
+        inline auto lua_toarrays(lua_State* L, int index, Array*, bool& is_valid, const bool nd_mat = false) {
+            // COPY or MOVE constructor/assignment
+            return OptionalArrays<Array>(L, index, is_valid, nd_mat);
+        }
+    }
+`.replace(/^ {4}/mg, "").trim().replace(/[^\S\n]+$/mg, "").replaceAll(" ".repeat(4), "\t");
+
+const impl = `
+    #include <lua_bridge_arrays.hpp>
+
+    namespace LUA_MODULE_NAME {
+        template<typename Array, bool is_arrays_type>
+        _OptionalArray<Array, is_arrays_type>::_OptionalArray() {
+            initialize();
+        }
+
+        template<typename Array, bool is_arrays_type>
+        _OptionalArray<Array, is_arrays_type>::~_OptionalArray() {
+            free();
+        }
+
+        template<typename Array, bool is_arrays_type>
+        _OptionalArray<Array, is_arrays_type>::_OptionalArray(_OptionalArray<Array, is_arrays_type>& other) {
+            *this = other;
+        }
+
+        template<typename Array, bool is_arrays_type>
+        _OptionalArray<Array, is_arrays_type>::_OptionalArray(_OptionalArray<Array, is_arrays_type>&& other) noexcept {
+            *this = std::move(other);
+        }
+
+        template<typename Array, bool is_arrays_type>
+        _OptionalArray<Array, is_arrays_type>& _OptionalArray<Array, is_arrays_type>::operator=(_OptionalArray<Array, is_arrays_type>& other) {
+            free();
+
+            switch (other.m_index) {
+                ${ types.map((type, i) => `
+                case ${ i }:
+                    ${ constexprWrap(type, 20, `
+                        ${ !primitiveTypes.has(type) ? `
+                            if (other.m_is_shared_ptr) {
+                                reset(*reinterpret_cast<std::shared_ptr<${ type }>*>(other.m_data));
+                            }
+                        `.replace(/^ {4}/mg, "").trim() : "" }
+                        reset(*reinterpret_cast<${ type }*>(other.m_data));
+                    `.replace(/^ {4}/mg, "").trim()) }
+                    break;
+                `.trim()).join(`\n${ " ".repeat(16) }`) }
+                default:
+                    // Nothing to do
+                    break;
+            }
+
+            return *this;
+        }
+
+        // https://stackoverflow.com/questions/6687388/why-do-some-people-use-swap-for-move-assignments#answer-6687520
+        template<typename Array, bool is_arrays_type>
+        _OptionalArray<Array, is_arrays_type>& _OptionalArray<Array, is_arrays_type>::operator=(_OptionalArray<Array, is_arrays_type>&& other) noexcept {
+            // 1. Destroy visible resources
+            free();
+
+            // 2. Move assign all bases and members.
+            m_index = other.m_index;
+            m_data = other.m_data;
+            m_is_shared_ptr = other.m_is_shared_ptr;
+            m_ptr = std::move(other.m_ptr);
+
+            // 3. If the move assignment of bases and members didn't,
+            //           make the rhs resource-less, then make it so.
+            other.m_index = -1;
+            other.m_data = nullptr;
+            other.m_is_shared_ptr = false;
+
+            return *this;
+        }
+
+        template<typename Array, bool is_arrays_type>
+        _OptionalArray<Array, is_arrays_type>::_OptionalArray(lua_State* L, int index, bool& is_valid, const bool nd_mat) {
+            if (lua_isnil(L, index)) {
+                is_valid = true;
+                initialize();
+                return;
+            }
+
+            if constexpr (is_arrays_type) {
+                if (nd_mat) {
+                    ${ Array.from(ndArraySupport).map(type => `
+                        auto value = lua_to(L, index, static_cast<${ type }*>(nullptr), is_valid);
+                        if (is_valid) {
+                            std::vector<${ type }> vec(1);
+                            vec.front() = extract_holder(value, static_cast<${ type }*>(nullptr));
+                            reset(std::move(vec));
+                            return;
+                        }
+                    `.replace(/^ {4}/mg, "").trim()).join(`\n\n${ " ".repeat(20) }`) }
+                }
+            }
+
+            ${ types.map((type, i) => constexprWrap(type, 12, `
+            {
+                auto value = lua_to(L, index, static_cast<${ type }*>(nullptr), is_valid);
+                if (is_valid) {
+                    reset(value);
+                    return;
+                }
+            }`.trim())).join(`\n\n${ " ".repeat(12) }`) }
+
+            is_valid = false;
+        }
+
+        template<typename Array, bool is_arrays_type>
+        void _OptionalArray<Array, is_arrays_type>::initialize() {
+            if constexpr (is_arrays_type) {
+                reset(std::vector<cv::Mat>());
+            }
+            else {
+                reset(cv::Mat());
+            }
+        }
+
+        template<typename Array, bool is_arrays_type>
+        void _OptionalArray<Array, is_arrays_type>::free() {
+            if (m_ptr) {
+                m_ptr.reset();
+            }
+
+            switch (m_index) {
+                ${ types.map((type, i) => `
+                case ${ i }:
+                    ${ constexprWrap(type, 20, !primitiveTypes.has(type) ? `
+                        if (m_is_shared_ptr) {
+                            delete reinterpret_cast<std::shared_ptr<${ type }>*>(m_data);
+                        } else {
+                            delete reinterpret_cast<${ type }*>(m_data);
+                        }
+                    `.replace(/^ {4}/mg, "").trim() : `delete reinterpret_cast<${ type }*>(m_data);`) }
+                    break;
+                `.trim()).join(`\n${ " ".repeat(16) }`) }
+                default:
+                    // Nothind do do
+                    break;
+            }
+
+            m_index = -1;
+            m_data = nullptr;
+            m_is_shared_ptr = false;
+        }
+
+        template<typename Array, bool is_arrays_type>
+        void _OptionalArray<Array, is_arrays_type>::reset() {
+            free();
+            initialize();
+        }
+
+        template<typename Array, bool is_arrays_type>
+        template<typename T>
+        void _OptionalArray<Array, is_arrays_type>::reset(T& value) {
+            // reset(T& value);
+            // m_data is a copy of value
+            // m_ptr = std::make_shared<Array>(m_data);
+            // m_index = TypeIndex
+            // m_is_shared_ptr = false
+
+            // reset(std::shared_ptr<T>& value);
+            // m_data is a copy of shared_ptr
+            // m_ptr = std::make_shared<Array>(*m_data);
+            // m_index = TypeIndex
+            // m_is_shared_ptr = true
+
+            ${ types.map((type, i) => `
+                if constexpr (${ constexprRestirction(type, `std::is_same_v<T, ${ type }>`) }) {
+                    auto pp = new T(value);
+                    m_data = pp;
+                    m_index = ${ i };
+                    m_is_shared_ptr = false;
+                    m_ptr = std::make_shared<Array>(*pp);
+                }
+                ${ !primitiveTypes.has(type) ? `
+                    else if constexpr (${ constexprRestirction(type, `std::is_same_v<T, std::shared_ptr<${ type }>>`) }) {
+                        auto pp = new T(value);
+                        m_data = pp;
+                        m_index = ${ i };
+                        m_is_shared_ptr = true;
+                        m_ptr = std::make_shared<Array>(**pp);
+                    }
+                `.replace(/^ {4}/mg, "").trim() : "" }
+            `.replace(/^ {4}/mg, "").trim()).join(`\n${ " ".repeat(12) }else `) }
+            else {
+                static_assert(!std::is_same_v<T, T>, "Unsupported type");
+            }
+        }
+
+        template<typename Array, bool is_arrays_type>
+        template<typename T>
+        void _OptionalArray<Array, is_arrays_type>::reset(T&& value) {
+            // reset(T&& value);
+            // m_data is a move of value
+            // m_ptr = std::make_shared<Array>(m_data);
+            // m_index = TypeIndex
+            // m_is_shared_ptr = false
+
+            // reset(std::shared_ptr<T>&& value);
+            // m_data is a copy of shared_ptr
+            // m_ptr = std::make_shared<Array>(*m_data);
+            // m_index = TypeIndex
+            // m_is_shared_ptr = true
+
+            ${ types.map((type, i) => `
+                if constexpr (${ constexprRestirction(type, `std::is_same_v<T, ${ type }>`) }) {
+                    auto pp = new T(std::move(value));
+                    m_data = pp;
+                    m_index = ${ i };
+                    m_is_shared_ptr = false;
+                    m_ptr = std::make_shared<Array>(*pp);
+                }
+                ${ !primitiveTypes.has(type) ? `
+                    else if constexpr (${ constexprRestirction(type, `std::is_same_v<T, std::shared_ptr<${ type }>>`) }) {
+                        auto pp = new T(std::move(value));
+                        m_data = pp;
+                        m_index = ${ i };
+                        m_is_shared_ptr = true;
+                        m_ptr = std::make_shared<Array>(**pp);
+                    }
+                `.replace(/^ {4}/mg, "").trim() : "" }
+            `.replace(/^ {4}/mg, "").trim()).join(`\n${ " ".repeat(12) }else `) }
+            else {
+                static_assert(!std::is_same_v<T, T>, "Unsupported type");
+            }
+        }
+
+        template<typename Array, bool is_arrays_type>
+        int lua_push(lua_State* L, const _OptionalArray<Array, is_arrays_type>& opt_array) {
+            switch (opt_array.index()) {
+                ${ types.map((type, i) => `
+                case ${ i }:
+                    ${ !primitiveTypes.has(type) ? `
+                        if (opt_array.is_shared_ptr()) {
+                            return lua_push(L, *reinterpret_cast<const std::shared_ptr<${ type }>*>(opt_array.data()));
+                        }
+                    `.replace(/^ {4}/mg, "").trim() : "" }
+                    return lua_push(L, *reinterpret_cast<const ${ type }*>(opt_array.data()));
+                `.trim()).join(`\n${ " ".repeat(16) }`) }
+                default:
+                    lua_pushnil(L);
+                    return 1;
+            }
+        }
+
+        // Template instantiation to force template definition in this file
+        // since template declaration is in a header
+
+        template class _OptionalArray<cv::_InputArray, false>;
+        template class _OptionalArray<cv::_OutputArray, false>;
+        template class _OptionalArray<cv::_InputOutputArray, false>;
+
+        template class _OptionalArray<cv::_InputArray, true>;
+        template class _OptionalArray<cv::_OutputArray, true>;
+        template class _OptionalArray<cv::_InputOutputArray, true>;
+
+        // Array parameter default value
+        // 
+        // cv.omnidir.undistortImage void 
+        //     InputArray distorted 
+        //     OutputArray undistorted /O
+        //     InputArray K 
+        //     InputArray D 
+        //     InputArray xi 
+        //     int flags 
+        //     InputArray Knew cv::noArray()
+        //     Size new_size Size()/C; /Ref
+        //     InputArray R Mat::eye(3, 3, CV_64F)
+        template void _OptionalArray<cv::_InputArray, false>::reset<cv::Mat>(cv::Mat&);
+
+        template int lua_push<cv::_InputArray, false>(lua_State* L, const _OptionalArray<cv::_InputArray, false>& opt_array);
+        template int lua_push<cv::_OutputArray, false>(lua_State* L, const _OptionalArray<cv::_OutputArray, false>& opt_array);
+        template int lua_push<cv::_InputOutputArray, false>(lua_State* L, const _OptionalArray<cv::_InputOutputArray, false>& opt_array);
+
+        template int lua_push<cv::_InputArray, true>(lua_State* L, const _OptionalArray<cv::_InputArray, true>& opt_array);
+        template int lua_push<cv::_OutputArray, true>(lua_State* L, const _OptionalArray<cv::_OutputArray, true>& opt_array);
+        template int lua_push<cv::_InputOutputArray, true>(lua_State* L, const _OptionalArray<cv::_InputOutputArray, true>& opt_array);
+    }
+
+`.replace(/^ {4}/mg, "").trim().replace(/[^\S\n]+$/mg, "").replaceAll(" ".repeat(4), "\t");
+
+const LF = "\n";
+
+fs.writeFileSync(sysPath.join(__dirname, "../src/include/lua_bridge_arrays.hdr.hpp"), hdr + LF);
+
+fs.writeFileSync(sysPath.join(__dirname, "../src/include/lua_bridge_arrays.hpp"), hdr_impl + LF);
+
+fs.writeFileSync(sysPath.join(__dirname, "../src/lua_bridge_arrays.cpp"), impl + LF);
+
+fs.writeFileSync(sysPath.join(__dirname, "../generator/vectors.js"), `module.exports = ${ JSON.stringify(knownArrayTypes, null, 4) };${ LF }`);

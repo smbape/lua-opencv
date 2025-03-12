@@ -34,6 +34,9 @@ local function main(args)
     -- Loop - Will filter the image with different kernel sizes each 0.5 seconds
     local ind = 0
     while true do
+        -- Without this, memory grows indefinitely
+        collectgarbage()
+
         -- [update_kernel]
         -- Update kernel size for a normalized box filter
         local kernel_size = 3 + 2 * (ind % 5)

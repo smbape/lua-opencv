@@ -251,7 +251,7 @@ index 2543c81c6a..c727f9d5d6 100644
      }
  
 diff --git a/modules/python/src2/hdr_parser.py b/modules/python/src2/hdr_parser.py
-index 27f0fe0963..a0ad867c1f 100755
+index 27f0fe0963..bfae01a806 100755
 --- a/modules/python/src2/hdr_parser.py
 +++ b/modules/python/src2/hdr_parser.py
 @@ -70,6 +70,29 @@ class CppHeaderParser(object):
@@ -284,7 +284,7 @@ index 27f0fe0963..a0ad867c1f 100755
      def parse_arg(self, arg_str, argno):
          """
          Parses <arg_type> [arg_name]
-@@ -170,20 +193,17 @@ class CppHeaderParser(object):
+@@ -170,25 +193,47 @@ class CppHeaderParser(object):
                      arg_type += w
                  continue
              elif w == "<":
@@ -307,8 +307,39 @@ index 27f0fe0963..a0ad867c1f 100755
 -                        arg_type += "_end_"
                      angle_stack[-1:] = []
              elif angle_stack:
++                if angle_stack[-1] != 0:
++                    arg_type += " "
                  arg_type += w
-@@ -227,8 +247,6 @@ class CppHeaderParser(object):
+                 angle_stack[-1] += 1
+-            elif arg_type == "struct":
++            elif arg_type == "struct" or (wi + 1 < len(word_list) and (arg_type + " " + w) in [
++                # https://en.cppreference.com/w/cpp/language/types
++                "signed char",
++                "unsigned char",
++                "short int",
++                "signed short",
++                "signed short int",
++                "unsigned short",
++                "unsigned short int",
++                "signed int",
++                "unsigned int",
++                "long int",
++                "signed long",
++                "signed long int",
++                "unsigned long",
++                "unsigned long int",
++                "long long",
++                "long long int",
++                "signed long long",
++                "signed long long int",
++                "unsigned long long",
++                "unsigned long long int",
++                "long double"
++            ]):
+                 arg_type += " " + w
+             elif arg_type and arg_type != "~":
+                 arg_name = " ".join(word_list[wi:])
+@@ -227,8 +272,6 @@ class CppHeaderParser(object):
          if add_star:
              arg_type += "*"
  
@@ -317,7 +348,7 @@ index 27f0fe0963..a0ad867c1f 100755
          return arg_type, arg_name, modlist, argno
  
      def parse_enum(self, decl_str):
-@@ -424,11 +442,25 @@ class CppHeaderParser(object):
+@@ -424,11 +467,25 @@ class CppHeaderParser(object):
          npos = decl_str.find("CV_EXPORTS_AS")
          if npos >= 0:
              arg, npos3 = self.get_macro_arg(decl_str, npos)
@@ -343,7 +374,7 @@ index 27f0fe0963..a0ad867c1f 100755
              func_modlist.append("="+arg)
              decl_str = decl_str[:npos] + decl_str[npos3+1:]
          npos = decl_str.find("CV_WRAP_PHANTOM")
-@@ -452,6 +484,7 @@ class CppHeaderParser(object):
+@@ -452,6 +509,7 @@ class CppHeaderParser(object):
          decl_str = self.batch_replace(decl_str, [("static inline", ""),
                                                   ("inline", ""),
                                                   ("explicit ", ""),
@@ -351,7 +382,7 @@ index 27f0fe0963..a0ad867c1f 100755
                                                   ("CV_EXPORTS_W", ""),
                                                   ("CV_EXPORTS", ""),
                                                   ("CV_CDECL", ""),
-@@ -603,35 +636,17 @@ class CppHeaderParser(object):
+@@ -603,35 +661,17 @@ class CppHeaderParser(object):
                          a = a[:eqpos].strip()
                      arg_type, arg_name, modlist, argno = self.parse_arg(a, argno)
                      if self.wrap_mode:
@@ -387,7 +418,7 @@ index 27f0fe0963..a0ad867c1f 100755
                      if '/IO' in modlist and '/O' in modlist:
                          modlist.remove('/O')
                      if (arg_name.lower() == 'filename' or arg_name.lower() == 'filepath') and '/PATH' not in modlist:
-@@ -663,10 +678,13 @@ class CppHeaderParser(object):
+@@ -663,10 +703,13 @@ class CppHeaderParser(object):
  
          the function will convert "A" to "cv.A" and "f" to "cv.A.f".
          """
@@ -404,7 +435,7 @@ index 27f0fe0963..a0ad867c1f 100755
          qualified_name = (("." in name) or ("::" in name))
          n = ""
          for b in self.block_stack:
-@@ -758,7 +776,10 @@ class CppHeaderParser(object):
+@@ -758,7 +801,10 @@ class CppHeaderParser(object):
  
              if stmt.startswith("enum") or stmt.startswith("namespace"):
                  # NB: Drop inheritance syntax for enum
@@ -416,7 +447,7 @@ index 27f0fe0963..a0ad867c1f 100755
                  stmt_list = stmt.rsplit(" ", 1)
                  if len(stmt_list) < 2:
                      stmt_list.append("<unnamed>")
-@@ -794,8 +815,18 @@ class CppHeaderParser(object):
+@@ -794,8 +840,18 @@ class CppHeaderParser(object):
                  var_modlist = []
                  if "CV_PROP_RW" in stmt:
                      var_modlist.append("/RW")

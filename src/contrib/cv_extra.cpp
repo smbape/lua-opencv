@@ -49,17 +49,21 @@ namespace cv {
 		return dst.at<int>(0, 0);
 	}
 
-	std::variant<std::shared_ptr<Mat>, int> argmax(InputArray src, int axis, bool lastIndex) {
+	cv::util::variant<std::shared_ptr<Mat>, int> argmax(InputArray src, int axis, bool lastIndex) {
 		const auto is1D = src.dims() == 1 || src.dims() == 2 && (src.rows() == 1 || src.cols() == 1);
 
 		Mat dst;
 		cv::reduceArgMax(src, dst, axis == 0 && is1D && src.dims() == 2 ? 1 : axis, lastIndex);
 
+		cv::util::variant<std::shared_ptr<Mat>, int> var;
+
 		if (is1D) {
-			return dst.at<int>(0, 0);
+			var = dst.at<int>(0, 0);
+		} else {
+			var = std::make_shared<cv::Mat>(dst);
 		}
 
-		return std::make_shared<cv::Mat>(dst);
+		return var;
 	}
 
 	void bincount(InputArray _x, OutputArray out, InputArray _weights, int minlength) {

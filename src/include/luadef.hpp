@@ -2,6 +2,51 @@
 
 // CV_EXPORTS_W : include this file in lua_generated_include
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+#include <lua.h>
+#include <lauxlib.h>
+#ifdef __cplusplus
+}
+#endif
+
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <cstring>
+#include <concepts>
+#include <functional>
+#include <initializer_list>
+#include <iostream>
+#include <map>
+#include <memory>
+#include <optional>
+#include <sstream>
+#include <string>
+#include <thread>
+#include <tuple>
+#include <type_traits>
+#include <typeindex>
+#include <utility>
+#include <variant>
+#include <vector>
+
+#if (LUA_VERSION_NUM == 501) && !(defined lua_rawlen)
+#define lua_rawlen lua_objlen
+#endif
+
+#if LUA_VERSION_NUM < 502
+#define lua_pushfuncs(L, funcs) luaL_register(L, NULL, funcs)
+#else
+#define lua_pushfuncs(L, funcs) luaL_setfuncs(L, funcs, 0)
+#endif
+
+#if LUA_VERSION_NUM < 504
+extern int luaL_typeerror(lua_State* L, int arg, const char* tname);
+#endif
+
+
 #if defined _WIN32
 #  define LUA_CDECL __cdecl
 #  define LUA_STDCALL __stdcall
@@ -161,48 +206,47 @@ return E_FAIL; } \
 } while(0)
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-#include <lua.h>
-#include <lauxlib.h>
-#ifdef __cplusplus
-}
-#endif
-
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <concepts>
-#include <functional>
-#include <initializer_list>
-#include <iostream>
-#include <map>
-#include <memory>
-#include <optional>
-#include <sstream>
-#include <string>
-#include <thread>
-#include <tuple>
-#include <type_traits>
-#include <typeindex>
-#include <utility>
-#include <variant>
-#include <vector>
-
-#if (LUA_VERSION_NUM == 501) && !(defined lua_rawlen)
-#define lua_rawlen lua_objlen
-#endif
-
-#if LUA_VERSION_NUM < 502
-#define lua_pushfuncs(L, funcs) luaL_register(L, NULL, funcs)
+// https://github.com/Manu343726/ctti/blob/master/include/ctti/detail/pretty_function.hpp#L10-L18
+#if defined(__clang__)
+	#define LUA_MODULE__PRETTY_FUNCTION __PRETTY_FUNCTION__
+#elif defined(__GNUC__) && !defined(__clang__)
+	#define LUA_MODULE__PRETTY_FUNCTION __PRETTY_FUNCTION__
+#elif defined(_MSC_VER)
+	#define LUA_MODULE__PRETTY_FUNCTION __FUNCSIG__
 #else
-#define lua_pushfuncs(L, funcs) luaL_setfuncs(L, funcs, 0)
+	#error "No support for this compiler."
 #endif
 
-#if LUA_VERSION_NUM < 504
-extern int luaL_typeerror(lua_State* L, int arg, const char* tname);
+// https://github.com/Manu343726/ctti/blob/master/include/ctti/detail/pretty_function.hpp#L42-L53
+#if defined(__clang__)
+	#define LUA_MODULE__TYPE_PRETTY_FUNCTION_PREFIX "const char* " LUA_MODULE_NAME_STR "::internal::GetTypeName() [T = "
+	#define LUA_MODULE__TYPE_PRETTY_FUNCTION_SUFFIX "]"
+#elif defined(__GNUC__) && !defined(__clang__)
+	#define LUA_MODULE__TYPE_PRETTY_FUNCTION_PREFIX "const char* " LUA_MODULE_NAME_STR "::internal::GetTypeName() [with T = "
+	#define LUA_MODULE__TYPE_PRETTY_FUNCTION_SUFFIX "]"
+#elif defined(_MSC_VER)
+	#define LUA_MODULE__TYPE_PRETTY_FUNCTION_PREFIX "const char *__cdecl " LUA_MODULE_NAME_STR "::internal::GetTypeName<"
+	#define LUA_MODULE__TYPE_PRETTY_FUNCTION_SUFFIX ">(void)"
+#else
+	#error "No support for this compiler."
 #endif
+
+#define LUA_MODULE__TYPE_PRETTY_FUNCTION_LEFT (sizeof(LUA_MODULE__TYPE_PRETTY_FUNCTION_PREFIX) - 1)
+#define LUA_MODULE__TYPE_PRETTY_FUNCTION_RIGHT (sizeof(LUA_MODULE__TYPE_PRETTY_FUNCTION_SUFFIX) - 1)
+
+namespace LUA_MODULE_NAME {
+	// https://blog.molecular-matters.com/2015/12/11/getting-the-type-of-a-template-argument-as-string-without-rtti/
+	namespace internal {
+		template <typename T>
+		const char* GetTypeName(void) {
+			constexpr size_t size = sizeof(LUA_MODULE__PRETTY_FUNCTION) - LUA_MODULE__TYPE_PRETTY_FUNCTION_LEFT - LUA_MODULE__TYPE_PRETTY_FUNCTION_RIGHT;
+			static char typeName[size] = {};
+			memcpy(typeName, LUA_MODULE__PRETTY_FUNCTION + LUA_MODULE__TYPE_PRETTY_FUNCTION_LEFT, size - 1u);
+			return typeName;
+			// return LUA_MODULE__PRETTY_FUNCTION;
+		}
+	}
+}
 
 namespace LUA_MODULE_NAME {
 	// ================================

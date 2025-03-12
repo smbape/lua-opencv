@@ -64,6 +64,9 @@ cv.namedWindow(window_name)
 -- [Loop]
 local ind = 0
 while true do
+    -- Without this, memory grows indefinitely
+    collectgarbage()
+
     local t = os.clock()
     update_map(ind, map_x_tbl, map_y_tbl, src.rows, src.cols)
     local map_x = cv.Mat.createFromArray(map_x_tbl, cv.CV_32FC1)

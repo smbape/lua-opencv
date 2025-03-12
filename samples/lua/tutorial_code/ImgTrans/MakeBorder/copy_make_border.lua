@@ -51,6 +51,9 @@ local function main(args)
     local right = left
     -- [init_arguments]
     while true do
+        -- Without this, memory grows indefinitely
+        collectgarbage()
+
         -- [update_value]
         local value = { math.random(0, 255), math.random(0, 255), math.random(0, 255) }
         -- [update_value]

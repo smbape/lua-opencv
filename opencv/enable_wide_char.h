@@ -15,7 +15,7 @@
 #include <string>
 #include <windows.h>
 
-namespace anonymous {
+namespace enable_wide_char {
 	template <typename char_type>
 	inline bool null_or_empty(const char_type* s) {
 		return s == nullptr || *s == 0;
@@ -149,10 +149,10 @@ namespace anonymous {
 #define CallWindowProc CallWindowProcW
 
 #undef CreateWindow
-#define CreateWindow ::anonymous::_CreateWindow
+#define CreateWindow ::enable_wide_char::_CreateWindow
 
 #undef CreateWindowEx
-#define CreateWindowEx ::anonymous::_CreateWindowEx
+#define CreateWindowEx ::enable_wide_char::_CreateWindowEx
 
 #undef DefWindowProc
 #define DefWindowProc DefWindowProcW
@@ -164,7 +164,7 @@ namespace anonymous {
 #define GetMessage GetMessageW
 
 #undef GetModuleHandle
-#define GetModuleHandle ::anonymous::_GetModuleHandle
+#define GetModuleHandle ::enable_wide_char::_GetModuleHandle
 
 #undef GetMonitorInfo
 #define GetMonitorInfo GetMonitorInfoW
@@ -173,7 +173,7 @@ namespace anonymous {
 #define GetObject GetObjectW
 
 #undef GetSaveFileName
-#define GetSaveFileName ::anonymous::_GetSaveFileName
+#define GetSaveFileName ::enable_wide_char::_GetSaveFileName
 
 #undef GetWindowLong
 #define GetWindowLong GetWindowLongW
@@ -182,37 +182,37 @@ namespace anonymous {
 #define GetWindowLongPtr GetWindowLongPtrW
 
 #undef GetWindowText
-#define GetWindowText ::anonymous::_GetWindowText
+#define GetWindowText ::enable_wide_char::_GetWindowText
 
 #undef LoadCursor
-#define LoadCursor ::anonymous::_LoadCursor
+#define LoadCursor ::enable_wide_char::_LoadCursor
 
 #undef LoadIcon
-#define LoadIcon ::anonymous::_LoadIcon
+#define LoadIcon ::enable_wide_char::_LoadIcon
 
 #undef PeekMessage
 #define PeekMessage PeekMessageW
 
 #undef RegCreateKeyEx
-#define RegCreateKeyEx ::anonymous::_RegCreateKeyEx
+#define RegCreateKeyEx ::enable_wide_char::_RegCreateKeyEx
 
 #undef RegDeleteKey
-#define RegDeleteKey ::anonymous::_RegDeleteKey
+#define RegDeleteKey ::enable_wide_char::_RegDeleteKey
 
 #undef RegEnumKeyEx
-#define RegEnumKeyEx ::anonymous::_RegEnumKeyEx
+#define RegEnumKeyEx ::enable_wide_char::_RegEnumKeyEx
 
 #undef RegisterClass
-#define RegisterClass ::anonymous::_RegisterClass
+#define RegisterClass ::enable_wide_char::_RegisterClass
 
 #undef RegOpenKeyEx
-#define RegOpenKeyEx ::anonymous::_RegOpenKeyEx
+#define RegOpenKeyEx ::enable_wide_char::_RegOpenKeyEx
 
 #undef RegQueryValueEx
-#define RegQueryValueEx ::anonymous::_RegQueryValueEx
+#define RegQueryValueEx ::enable_wide_char::_RegQueryValueEx
 
 #undef RegSetValueEx
-#define RegSetValueEx ::anonymous::_RegSetValueEx
+#define RegSetValueEx ::enable_wide_char::_RegSetValueEx
 
 #undef SendMessage
 #define SendMessage SendMessageW
@@ -224,12 +224,12 @@ namespace anonymous {
 #define SetWindowLongPtr SetWindowLongPtrW
 
 #undef SetWindowText
-#define SetWindowText ::anonymous::_SetWindowText
+#define SetWindowText ::enable_wide_char::_SetWindowText
 
 #undef UnregisterClass
-#define UnregisterClass ::anonymous::_UnregisterClass
+#define UnregisterClass ::enable_wide_char::_UnregisterClass
 
-namespace anonymous {
+namespace enable_wide_char {
 
 	/**
 	 * Creates an overlapped, pop-up, or child window with an extended window style; otherwise, this function is identical to the CreateWindow function.
@@ -264,8 +264,8 @@ namespace anonymous {
 		_In_opt_ HINSTANCE hInstance,
 		_In_opt_ LPVOID lpParam
 	) {
-		std::wstring wClassName; ::anonymous::utf8_to_wcs(lpClassName, -1, wClassName);
-		std::wstring wWindowName; ::anonymous::utf8_to_wcs(lpWindowName, -1, wWindowName);
+		std::wstring wClassName; ::enable_wide_char::utf8_to_wcs(lpClassName, -1, wClassName);
+		std::wstring wWindowName; ::enable_wide_char::utf8_to_wcs(lpWindowName, -1, wWindowName);
 		return CreateWindowExW(
 			dwExStyle,
 			lpClassName == nullptr ? nullptr : wClassName.c_str(),
@@ -313,8 +313,8 @@ namespace anonymous {
 		_In_opt_ HINSTANCE hInstance,
 		_In_opt_ LPVOID lpParam
 	) {
-		std::wstring wClassName; ::anonymous::utf8_to_wcs(lpClassName, -1, wClassName);
-		std::wstring wWindowName; ::anonymous::utf8_to_wcs(lpWindowName, -1, wWindowName);
+		std::wstring wClassName; ::enable_wide_char::utf8_to_wcs(lpClassName, -1, wClassName);
+		std::wstring wWindowName; ::enable_wide_char::utf8_to_wcs(lpWindowName, -1, wWindowName);
 		return CreateWindowW(
 			lpClassName == nullptr ? nullptr : wClassName.c_str(),
 			lpWindowName == nullptr ? nullptr : wWindowName.c_str(),
@@ -368,7 +368,7 @@ namespace anonymous {
 			return GetModuleHandleW(nullptr);
 		}
 
-		std::wstring wModuleName; ::anonymous::utf8_to_wcs(lpModuleName, -1, wModuleName);
+		std::wstring wModuleName; ::enable_wide_char::utf8_to_wcs(lpModuleName, -1, wModuleName);
 		return GetModuleHandleW(wModuleName.c_str());
 	}
 
@@ -401,7 +401,7 @@ namespace anonymous {
 
 		std::wstring wstrFilter;
 		if (lpOpenFileName->lpstrFilter != nullptr) {
-			::anonymous::utf8_to_wcs(lpOpenFileName->lpstrFilter, -1, wstrFilter);
+			::enable_wide_char::utf8_to_wcs(lpOpenFileName->lpstrFilter, -1, wstrFilter);
 			ofn.lpstrFilter = wstrFilter.c_str();
 		}
 
@@ -442,13 +442,13 @@ namespace anonymous {
 
 		std::wstring wstrInitialDir;
 		if (lpOpenFileName->lpstrInitialDir != nullptr) {
-			::anonymous::utf8_to_wcs(lpOpenFileName->lpstrInitialDir, -1, wstrInitialDir);
+			::enable_wide_char::utf8_to_wcs(lpOpenFileName->lpstrInitialDir, -1, wstrInitialDir);
 			ofn.lpstrInitialDir = wstrInitialDir.c_str();
 		}
 
 		std::wstring wstrTitle;
 		if (lpOpenFileName->lpstrTitle != nullptr) {
-			::anonymous::utf8_to_wcs(lpOpenFileName->lpstrTitle, -1, wstrTitle);
+			::enable_wide_char::utf8_to_wcs(lpOpenFileName->lpstrTitle, -1, wstrTitle);
 			ofn.lpstrTitle = wstrTitle.c_str();
 		}
 
@@ -458,7 +458,7 @@ namespace anonymous {
 
 		std::wstring wstrDefExt;
 		if (lpOpenFileName->lpstrDefExt != nullptr) {
-			::anonymous::utf8_to_wcs(lpOpenFileName->lpstrDefExt, -1, wstrDefExt);
+			::enable_wide_char::utf8_to_wcs(lpOpenFileName->lpstrDefExt, -1, wstrDefExt);
 			ofn.lpstrDefExt = wstrDefExt.c_str();
 		}
 
@@ -467,7 +467,7 @@ namespace anonymous {
 
 		std::wstring wTemplateName;
 		if (lpOpenFileName->lpTemplateName != nullptr) {
-			::anonymous::utf8_to_wcs(lpOpenFileName->lpTemplateName, -1, wTemplateName);
+			::enable_wide_char::utf8_to_wcs(lpOpenFileName->lpTemplateName, -1, wTemplateName);
 			ofn.lpTemplateName = wTemplateName.c_str();
 		}
 
@@ -487,19 +487,19 @@ namespace anonymous {
 
 		if (ofn.lpstrCustomFilter != nullptr && ofn.nMaxCustFilter != 0) {
 			std::string strCustomFilter;
-			auto nMaxCustFilter = ::anonymous::wcs_to_utf8(ofn.lpstrCustomFilter, -1, strCustomFilter);
+			auto nMaxCustFilter = ::enable_wide_char::wcs_to_utf8(ofn.lpstrCustomFilter, -1, strCustomFilter);
 			memcpy(lpOpenFileName->lpstrCustomFilter, strCustomFilter.c_str(), std::min(ofn.nMaxCustFilter, static_cast<DWORD>(nMaxCustFilter)));
 		}
 
 		if (ofn.lpstrFile != nullptr && ofn.nMaxFile != 0) {
 			std::string strFile;
-			auto nMaxFile = ::anonymous::wcs_to_utf8(ofn.lpstrFile, -1, strFile);
+			auto nMaxFile = ::enable_wide_char::wcs_to_utf8(ofn.lpstrFile, -1, strFile);
 			memcpy(lpOpenFileName->lpstrFile, strFile.c_str(), std::min(ofn.nMaxFile, static_cast<DWORD>(nMaxFile)));
 		}
 
 		if (ofn.lpstrFileTitle != nullptr && ofn.nMaxFileTitle != 0) {
 			std::string strFileTitle;
-			auto nMaxFileTitle = ::anonymous::wcs_to_utf8(ofn.lpstrFileTitle, -1, strFileTitle);
+			auto nMaxFileTitle = ::enable_wide_char::wcs_to_utf8(ofn.lpstrFileTitle, -1, strFileTitle);
 			memcpy(lpOpenFileName->lpstrFileTitle, strFileTitle.c_str(), std::min(ofn.nMaxFileTitle, static_cast<DWORD>(nMaxFileTitle)));
 		}
 
@@ -530,7 +530,7 @@ namespace anonymous {
 		}
 #pragma warning( pop )
 
-		std::wstring wCursorName; ::anonymous::utf8_to_wcs(lpCursorName, -1, wCursorName);
+		std::wstring wCursorName; ::enable_wide_char::utf8_to_wcs(lpCursorName, -1, wCursorName);
 		return LoadCursorW(hInstance, wCursorName.c_str());
 	}
 
@@ -558,7 +558,7 @@ namespace anonymous {
 		}
 #pragma warning( pop )
 
-		std::wstring wIconName; ::anonymous::utf8_to_wcs(lpIconName, -1, wIconName);
+		std::wstring wIconName; ::enable_wide_char::utf8_to_wcs(lpIconName, -1, wIconName);
 		return LoadIconW(hInstance, wIconName.c_str());
 	}
 
@@ -588,8 +588,8 @@ namespace anonymous {
 		_Out_ PHKEY phkResult,
 		_Out_opt_ LPDWORD lpdwDisposition
 	) {
-		std::wstring wSubKey; ::anonymous::utf8_to_wcs(lpSubKey, -1, wSubKey);
-		std::wstring wClass; ::anonymous::utf8_to_wcs(lpClass, -1, wClass);
+		std::wstring wSubKey; ::enable_wide_char::utf8_to_wcs(lpSubKey, -1, wSubKey);
+		std::wstring wClass; ::enable_wide_char::utf8_to_wcs(lpClass, -1, wClass);
 		return RegCreateKeyExW(
 			hKey,
 			lpSubKey == nullptr ? nullptr : wSubKey.c_str(),
@@ -619,7 +619,7 @@ namespace anonymous {
 			return RegDeleteKeyW(hKey, nullptr);
 		}
 
-		std::wstring wSubKey; ::anonymous::utf8_to_wcs(lpSubKey, -1, wSubKey);
+		std::wstring wSubKey; ::enable_wide_char::utf8_to_wcs(lpSubKey, -1, wSubKey);
 		return RegDeleteKeyW(hKey, wSubKey.c_str());
 	}
 
@@ -718,13 +718,13 @@ namespace anonymous {
 
 		std::wstring wszMenuName;
 		if (lpWndClass->lpszMenuName != nullptr) {
-			::anonymous::utf8_to_wcs(lpWndClass->lpszMenuName, -1, wszMenuName);
+			::enable_wide_char::utf8_to_wcs(lpWndClass->lpszMenuName, -1, wszMenuName);
 			wndc.lpszMenuName = wszMenuName.c_str();
 		}
 
 		std::wstring wszClassName;
 		if (lpWndClass->lpszClassName != nullptr) {
-			::anonymous::utf8_to_wcs(lpWndClass->lpszClassName, -1, wszClassName);
+			::enable_wide_char::utf8_to_wcs(lpWndClass->lpszClassName, -1, wszClassName);
 			wndc.lpszClassName = wszClassName.c_str();
 		}
 
@@ -749,7 +749,7 @@ namespace anonymous {
 		_In_ REGSAM samDesired,
 		_Out_ PHKEY phkResult
 	) {
-		std::wstring wSubKey; ::anonymous::utf8_to_wcs(lpSubKey, -1, wSubKey);
+		std::wstring wSubKey; ::enable_wide_char::utf8_to_wcs(lpSubKey, -1, wSubKey);
 		return RegOpenKeyExW(
 			hKey,
 			lpSubKey == nullptr ? nullptr : wSubKey.c_str(),
@@ -779,7 +779,7 @@ namespace anonymous {
 		_Out_writes_bytes_to_opt_(*lpcbData, *lpcbData) __out_data_source(REGISTRY) LPBYTE lpData,
 		_When_(lpData == NULL, _Out_opt_) _When_(lpData != NULL, _Inout_opt_) LPDWORD lpcbData
 	) {
-		std::wstring wValueName; ::anonymous::utf8_to_wcs(lpValueName, -1, wValueName);
+		std::wstring wValueName; ::enable_wide_char::utf8_to_wcs(lpValueName, -1, wValueName);
 		return RegQueryValueExW(
 			hKey,
 			lpValueName == nullptr ? nullptr : wValueName.c_str(),
@@ -810,7 +810,7 @@ namespace anonymous {
 		_In_reads_bytes_opt_(cbData) CONST BYTE* lpData,
 		_In_ DWORD cbData
 	) {
-		std::wstring wValueName; ::anonymous::utf8_to_wcs(lpValueName, -1, wValueName);
+		std::wstring wValueName; ::enable_wide_char::utf8_to_wcs(lpValueName, -1, wValueName);
 		return RegSetValueExW(
 			hKey,
 			lpValueName == nullptr ? nullptr : wValueName.c_str(),
@@ -838,7 +838,7 @@ namespace anonymous {
 			return SetWindowTextW(hWnd, nullptr);
 		}
 
-		std::wstring wString; ::anonymous::utf8_to_wcs(lpString, -1, wString);
+		std::wstring wString; ::enable_wide_char::utf8_to_wcs(lpString, -1, wString);
 		return SetWindowTextW(hWnd, wString.c_str());
 	}
 
@@ -858,7 +858,7 @@ namespace anonymous {
 			return UnregisterClassW(nullptr, hInstance);
 		}
 
-		std::wstring wClassName; ::anonymous::utf8_to_wcs(lpClassName, -1, wClassName);
+		std::wstring wClassName; ::enable_wide_char::utf8_to_wcs(lpClassName, -1, wClassName);
 		return UnregisterClassW(wClassName.c_str(), hInstance);
 	}
 }
@@ -875,7 +875,7 @@ namespace cv {
 	 * @see           https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/stat-functions?view=msvc-170
 	 */
 	inline int stat(const char* path, struct stat* buffer) {
-		std::wstring wpath; ::anonymous::utf8_to_wcs(path, -1, wpath);
+		std::wstring wpath; ::enable_wide_char::utf8_to_wcs(path, -1, wpath);
 		struct _stat _buffer;
 		auto ret = ::_wstat(wpath.c_str(), &_buffer);
 
@@ -903,8 +903,8 @@ namespace cv {
 	 * @see             https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/fopen-wfopen?view=msvc-170
 	 */
 	inline FILE* fopen(const char* filename, const char* mode) {
-		std::wstring wfilename; ::anonymous::utf8_to_wcs(filename, -1, wfilename);
-		std::wstring wmode; ::anonymous::utf8_to_wcs(mode, -1, wmode);
+		std::wstring wfilename; ::enable_wide_char::utf8_to_wcs(filename, -1, wfilename);
+		std::wstring wmode; ::enable_wide_char::utf8_to_wcs(mode, -1, wmode);
 		return _wfopen(wfilename.c_str(), wmode.c_str());
 	}
 }

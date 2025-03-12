@@ -87,6 +87,9 @@ on_linear_transform_alpha_trackbar(alpha_init)
 on_gamma_correction_trackbar(gamma_init)
 
 while true do
+    -- Without this, memory grows indefinitely
+    collectgarbage()
+
     -- lua is not thread safe
     -- therefore, calling callbacks from another thread
     -- will certainly cause unwanted behaviour

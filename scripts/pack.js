@@ -1,3 +1,21 @@
+const auditwheelOptions = {
+    aliases: new Map([]),
+    flags: new Set([
+        "--strip",
+        "--only-plat",
+        "--disable-isa-ext-check",
+    ]),
+    options: new Set([
+        "--plat",
+        "--exclude",
+    ]),
+};
+
+if (module !== require.main) {
+    exports.auditwheelOptions = auditwheelOptions;
+    return;
+}
+
 const { spawn, spawnSync } = require("node:child_process");
 const sysPath = require("node:path");
 const fs = require("fs-extra");
@@ -21,7 +39,6 @@ const new_version = sysPath.join(__dirname, "new_version.lua");
 let srcRockSpec;
 
 const spawnExec = (cmd, args, options, next) => {
-    console.log(cmd, `'${ args.join("' '") }'`);
     const {stdio} = options;
 
     if (stdio === "tee") {
@@ -31,21 +48,35 @@ const spawnExec = (cmd, args, options, next) => {
     const stdout = Object.assign([], {
         nread: 0
     });
+
     const stderr = Object.assign([], {
         nread: 0
     });
 
+    console.log(cmd, `'${ args.join("' '") }'`);
+
+    let err = false;
+
     const child = spawn(cmd, args, options);
-    child.on("error", next);
+
+    child.on("error", _err => {
+        err = true;
+        next(_err);
+    });
+
     child.on("close", code => {
-        if (stdio === "tee") {
+        if (err) {
+            return;
+        }
+
+        if (stdio === "pipe" || stdio === "tee") {
             next(code, Buffer.concat(stdout, stdout.nread), Buffer.concat(stderr, stderr.nread));
         } else {
             next(code);
         }
     });
 
-    if (stdio === "tee") {
+    if (stdio === "pipe" || stdio === "tee") {
         child.stdout.on("data", chunk => {
             stdout.push(chunk);
             stdout.nread += chunk.length;
@@ -65,8 +96,25 @@ const options = {
     rockspec: process.env.ROCKSPEC ? sysPath.resolve(process.env.ROCKSPEC) : sysPath.join(luarocksDir, `${ pkg.name }-scm-1.rockspec`),
 };
 
-for (let i = 2; i < process.argv.length; i++) {
-    const arg = process.argv[i];
+const aliases = new Map([
+    ...auditwheelOptions.aliases,
+]);
+
+const optionValueKeys = new Set([
+    "--repair",
+    ...auditwheelOptions.flags,
+]);
+
+const oneValueKeys = new Set([
+    "--server",
+    "--rockspec",
+    ...auditwheelOptions.options,
+]);
+
+const argv = process.argv.slice(2);
+
+for (let i = 0; i < argv.length; i++) {
+    const arg = argv[i];
     const eq = arg.indexOf("=");
 
     let key, value;
@@ -79,20 +127,27 @@ for (let i = 2; i < process.argv.length; i++) {
         value = arg.slice(eq + 1);
     }
 
-    switch (key) {
-        case "--repair":
-            options[key.slice("--".length)] = value;
-            break;
-        case "--server":
-        case "--rockspec":
-            if (eq === -1) {
-                value = process.argv[++i];
-            }
-            options[key.slice("--".length)] = value;
-            break;
-        default:
-            throw new Error(`Unknown option ${ arg }`);
+    if (aliases.has(key)) {
+        key = aliases.get(key);
     }
+
+    if (optionValueKeys.has(key)) {
+        if (value !== true) {
+            throw new Error(`${ key } is a flag not, therefore, cannot have a value`);
+        }
+        options[key.slice("--".length)] = value;
+        continue;
+    }
+
+    if (oneValueKeys.has(key)) {
+        if (eq === -1) {
+            value = argv[++i];
+        }
+        options[key.slice("--".length)] = value;
+        continue;
+    }
+
+    throw new Error(`Unknown option ${ arg }`);
 }
 
 waterfall([
@@ -140,8 +195,14 @@ waterfall([
     },
 
     next => {
-        const has_luarocks = os.platform() !== "win32" || spawnSync(luarocks, ["list", "luarocks"]).stdout.toString().trim().includes("luarocks");
-        if (has_luarocks) {
+        spawnExec(luarocks, ["list", "--porcelain", "luarocks"], {
+            stdio: "pipe",
+            cwd: workspaceRoot
+        }, next);
+    },
+
+    (_stdout, _stderr, next) => {
+        if (_stdout.toString().trim().includes("luarocks")) {
             next();
             return;
         }
@@ -171,6 +232,7 @@ waterfall([
     (_stdout, _stderr, next) => {
         const [, target, ver] = (_stdout.length === 0 ? _stderr : _stdout).toString().trim().toLowerCase().match(/(\w+) (\d+\.\d+)/);
         const abi = target === "luajit" ? "5.1" : ver;
+        options.abi = abi;
 
         const binary = `${ OpenCV_VERSION }${ target }${ ver }-${ distVersion }`;
         const binaryRockSpec = `${ srcRockSpec.slice(0, -`${ OpenCV_VERSION }-${ distVersion }.rockspec`.length) }${ binary }.rockspec`;
@@ -179,8 +241,21 @@ waterfall([
         waterfall([
             next => {
                 const args = [new_version, options.rockspec, binary, abi, "--platform", os.platform()];
-                if (options.repair) {
+
+                if (os.platform() !== "win32" && options.repair) {
                     args.push("--repair");
+
+                    for (const flag of auditwheelOptions.flags) {
+                        if (options[flag.slice("--".length)]) {
+                            args.push(flag);
+                        }
+                    }
+
+                    for (const option of auditwheelOptions.options) {
+                        if (Object.hasOwn(options, option.slice("--".length))) {
+                            args.push(option, options[option.slice("--".length)]);
+                        }
+                    }
                 }
 
                 spawnExec(lua, args, {
@@ -214,20 +289,37 @@ waterfall([
     },
 
     next => {
-        fs.readFile(luarocks, next);
+        const luarocks_admin = sysPath.join(luarocksDir, "lua_modules", "bin", `luarocks-admin${ batchSuffix }`);
+        fs.readFile(luarocks_admin, next);
     },
 
     (buffer, next) => {
         const content = buffer.toString();
-        const pos = content.indexOf(" --project-tree ");
-        const quote = os.platform() === "win32" ? "\"" : "'";
-        const end = content.lastIndexOf(quote, pos - 1);
-        const start = content.lastIndexOf(quote, end - 1) + quote.length;
-        const exe = content.slice(start, end);
 
-        spawnExec(exe.replace(/(?<=^|[/\\])luarocks([^/\\]*)$/, "luarocks-admin$1"), ["make-manifest", options.server], {
+        let lua_admin;
+
+        if (os.platform() === "win32") {
+            const end = content.indexOf("\" %*");
+            const start = content.lastIndexOf("\"", end - 1) + 1;
+            lua_admin = content.slice(start, end).replace(/rocks-\d\.\d/, `rocks-${ options.abi }`);
+        } else {
+            const end = content.indexOf("' \"$@\"");
+            const start = content.lastIndexOf("'", end - 1) + 1;
+            lua_admin = content.slice(start, end).replace(/rocks-\d\.\d/, `rocks-${ options.abi }`);
+        }
+
+        const init_argv = [
+            "-e",
+            [
+                `package.path='${ [
+                    `${ sysPath.join(luarocksDir, "src") }/?.lua`,
+                ].join(";").replace(/[\\]/g, "/") };'..package.path`,
+            ].join(";"),
+        ];
+
+        spawnExec(lua, [...init_argv, lua_admin, "make-manifest", options.server], {
             stdio: "inherit",
-            cwd: luarocksDir
+            cwd: luarocksDir,
         }, next);
     },
 ], err => {

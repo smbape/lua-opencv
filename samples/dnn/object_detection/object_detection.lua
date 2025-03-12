@@ -22,6 +22,8 @@ local sysPath = require("path")
 local opencv_lua = require("init")
 local common = require("common")
 
+local __dirname__ = sysPath.dirname(sysPath.abspath(__file__))
+
 local cv = opencv_lua.cv
 local kwargs = opencv_lua.kwargs
 local int = function(val) return opencv_lua.math.int(tonumber(val)) end
@@ -30,7 +32,7 @@ local unpack = table.unpack or unpack ---@diagnostic disable-line: deprecated
 local findFile = common.findFile
 local INDEX_BASE = 1 -- lua is 1-based indexed
 
-local default_models = sysPath.join(sysPath.dirname(sysPath.abspath(__file__)), 'models.yml')
+local default_models = sysPath.join(__dirname__, 'models.yml')
 local backends = { cv.dnn.DNN_BACKEND_DEFAULT, cv.dnn.DNN_BACKEND_HALIDE, cv.dnn.DNN_BACKEND_INFERENCE_ENGINE, cv.dnn
     .DNN_BACKEND_OPENCV,
     cv.dnn.DNN_BACKEND_VKCOM, cv.dnn.DNN_BACKEND_CUDA }
@@ -102,13 +104,13 @@ common.add_preproc_args(known_args.zoo, parser, 'object_detection')
 
 local args = parser:parse()
 
-local __dirname__ = sysPath.dirname(sysPath.abspath(__file__))
 local MODELS_PATH = os.getenv('MODELS_PATH') or sysPath.join(__dirname__, 'models')
 
 local OPENCV_SAMPLES_DATA_PATH = opencv_lua.env.OPENCV_SAMPLES_DATA_PATH
 
-local SAMPLES_PATH = opencv_lua.fs_utils.findFile("samples")
-local PYTHON_VENV_PATH = os.getenv('PYTHON_VENV_PATH') or sysPath.join(SAMPLES_PATH, ".venv")
+local PYTHON_VENV_PATH = os.getenv('PYTHON_VENV_PATH') or sysPath.join(opencv_lua.fs_utils.findFile("samples", opencv_lua.kwargs({
+    directory = __dirname__
+})), ".venv")
 local PYTHONPATH = sysPath.join(sysPath.dirname(OPENCV_SAMPLES_DATA_PATH), "dnn")
 
 if package.config:sub(1, 1) == '\\' then
@@ -490,6 +492,10 @@ local function read_frame()
         cap:release()
         cap = nil
         return false
+    end
+
+    if frame:empty() then
+        error("frame is empty")
     end
 
     -- flip to gve the mirror impression if we are capturing a camera

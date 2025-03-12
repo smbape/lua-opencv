@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
 
 set(files_to_change
-  "${CMAKE_INSTALL_PREFIX}/${CMAKE_CONFIG_DESTINATION}/${EXPORT_NAME}.cmake"
+    "${CMAKE_INSTALL_PREFIX}/${CMAKE_CONFIG_DESTINATION}/${EXPORT_NAME}.cmake"
 )
 
 foreach(build_type IN ITEMS debug release)

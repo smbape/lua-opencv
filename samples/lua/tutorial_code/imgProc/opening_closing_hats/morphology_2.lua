@@ -61,6 +61,9 @@ cv.createTrackbar(title_trackbar_kernel_size, title_window, 0, max_kernel_size, 
 morphology_operations(0)
 
 while true do
+    -- Without this, memory grows indefinitely
+    collectgarbage()
+
     -- lua is not thread safe
     -- therefore, calling callbacks from another thread
     -- will certainly cause unwanted behaviour

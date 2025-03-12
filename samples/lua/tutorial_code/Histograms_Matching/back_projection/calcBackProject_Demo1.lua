@@ -84,6 +84,9 @@ Hist_and_Backproj(bins)
 cv.imshow(window_image, src)
 
 while true do
+    -- Without this, memory grows indefinitely
+    collectgarbage()
+
     -- lua is not thread safe
     -- therefore, calling callbacks from another thread
     -- will certainly cause unwanted behaviour

@@ -185,7 +185,7 @@ test ${#PLATFORM} -eq 0 || GENERATOR="$GENERATOR -A $PLATFORM"
 eval "set -- $EXTRA_CMAKE_OPTIONS"
 
 test $skip_config -eq 1 || ${try_run}cmake -G $GENERATOR -DCMAKE_BUILD_TYPE:STRING=$CMAKE_BUILD_TYPE "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}" -S "$SCRIPTPATH" -B "$BUILD_FOLDER" "$@" || exit $?
-test $skip_build -eq 1 || ${try_run}cmake --build "$BUILD_FOLDER" --target $TARGET -j$(nproc) || exit $?
+test $skip_build -eq 1 || ${try_run}cmake --build "$BUILD_FOLDER" --target $TARGET -j$(nproc) -- -d explain || exit $?
 test $has_install -eq 0 || ${try_run}cmake --install "$BUILD_FOLDER" --prefix "$CMAKE_INSTALL_PREFIX" || exit $?
 
 if test $has_test -eq 1; then

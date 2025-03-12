@@ -71,4 +71,4 @@ end
 };
 
 const [,, libname, fname, ...args] = process.argv;
-console.log(genFunc(libname, fname, args.map(arg => (/^[\['"]/.test(arg) ? eval(arg) : arg))));
+console.log(genFunc(libname, fname, args.map(arg => (/^[['"]/.test(arg) ? eval(arg) : arg)))); // eslint-disable-line no-eval

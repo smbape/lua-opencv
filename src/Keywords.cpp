@@ -3,6 +3,10 @@
 namespace {
 	using namespace LUA_MODULE_NAME;
 
+	int Keywords_isinstance(lua_State* L) {
+		return lua_push(L, lua_gettop(L) == 1 && usertype_info<Keywords>::lua_userdata_is(L, 1));
+	}
+
 	// Define the functions for Lua bindings
 	int Keywords_constructor(lua_State* L) {
 		auto vargc = lua_gettop(L);
@@ -86,15 +90,23 @@ namespace LUA_MODULE_NAME {
 	const std::map<std::variant<std::string, int>, std::function<int(lua_State*)>> usertype_info<Keywords>::setters({});
 
 	bool usertype_info<Keywords>::lua_userdata_is(lua_State* L, int index) {
-		return lua_userdata_signature_is<Keywords>(L, index);
+		if (!lua_istable(L, index) || !lua_getmetatable(L, index)) {
+			return false;
+		}
+
+		auto signature = lua_topointer(L, -1);
+		lua_pop(L, 1);
+
+		return lua_userdata_signature_is<0, Keywords>(L, index, signature);
 	}
 
-	std::shared_ptr<Keywords> usertype_info<Keywords>::lua_userdata_to(lua_State* L, int index) {
+	std::shared_ptr<Keywords> usertype_info<Keywords>::lua_userdata_to(lua_State* L, int index, bool& is_valid) {
+		is_valid = usertype_info<Keywords>::lua_userdata_is(L, index);
 		return lua_userdata_signature_to<Keywords>(L, index);
 	}
 
 	const struct luaL_Reg usertype_info<Keywords>::methods[] = {
-		{"isinstance", lua_method_isinstance<Keywords>},
+		{"isinstance", Keywords_isinstance},
 		{"new", Keywords_constructor},
 		{"has", Keywords_has},
 		{"get", Keywords_get},

@@ -127,15 +127,15 @@ namespace {
 		std::vector<cv::Range>& ranges,
 		std::vector<int>& newshape,
 		const cv::Mat& self,
-		const std::vector<std::variant<int, cv::Range>>& idx,
+		const std::vector<cv::util::variant<int, cv::Range>>& idx,
 		const int i,
 		const int dims,
 		int& ellipis_idx
 	) {
 		const int ellipis_missing_ranges = dims - idx.size();
 
-		if (std::holds_alternative<cv::Range>(idx[i])) {
-			const auto& range = std::get<cv::Range>(idx[i]);
+		if (cv::util::holds_alternative<cv::Range>(idx[i])) {
+			const auto& range = cv::util::get<cv::Range>(idx[i]);
 			if (range.empty()) {
 				LUAL_MODULE_ERROR(L, "range at index " << i << " is empty");
 			}
@@ -161,16 +161,16 @@ namespace {
 		}
 		else if (ellipis_idx != -1) {
 			const int k = i + ellipis_missing_ranges;
-			const auto start = std::get<int>(idx[i]);
+			const auto start = cv::util::get<int>(idx[i]);
 			ranges[k] = cv::Range(start, start + 1);
 		}
 		else {
-			const auto start = std::get<int>(idx[i]);
+			const auto start = cv::util::get<int>(idx[i]);
 			ranges[i] = cv::Range(start, start + 1);
 		}
 	}
 
-	inline cv::Mat check_reshape(lua_State* L, cv::Mat& res, std::vector<int>& newshape, const std::vector<std::variant<int, cv::Range>>& idx) {
+	inline cv::Mat check_reshape(lua_State* L, cv::Mat& res, std::vector<int>& newshape, const std::vector<cv::util::variant<int, cv::Range>>& idx) {
 		if (!res.isContinuous()) {
 			LUAL_MODULE_ERROR(L, "Reshaping of n-dimensional non-continuous matrices is not supported yet.");
 		}
@@ -656,7 +656,7 @@ namespace {
 	}
 
 	template<typename T>
-	void _Mat_newindex_at(lua_State* L, cv::Mat& self, const std::vector<std::variant<int, cv::Range>>& idx, const T& value) {
+	void _Mat_newindex_at(lua_State* L, cv::Mat& self, const std::vector<cv::util::variant<int, cv::Range>>& idx, const T& value) {
 		if (idx.size() == 0) {
 			LUAL_MODULE_ERROR(L, "index can not be empty");
 		}
@@ -901,7 +901,7 @@ namespace cvextra {
 		return lua_push(L, std::make_shared<cv::Mat>(self, ellipis_ranges));
 	}
 
-	int Mat_index_at(lua_State* L, cv::Mat& self, const std::vector<std::variant<int, cv::Range>>& idx) {
+	int Mat_index_at(lua_State* L, cv::Mat& self, const std::vector<cv::util::variant<int, cv::Range>>& idx) {
 		if (idx.size() == 0) {
 			LUAL_MODULE_ERROR(L, "index can not be empty");
 		}
@@ -986,11 +986,11 @@ namespace cvextra {
 		_Mat_newindex_at(L, self, ranges, value);
 	}
 
-	void Mat_newindex_at(lua_State* L, cv::Mat& self, const std::vector<std::variant<int, cv::Range>>& idx, const cv::Mat& value) {
+	void Mat_newindex_at(lua_State* L, cv::Mat& self, const std::vector<cv::util::variant<int, cv::Range>>& idx, const cv::Mat& value) {
 		_Mat_newindex_at(L, self, idx, value);
 	}
 
-	void Mat_newindex_at(lua_State* L, cv::Mat& self, const std::vector<std::variant<int, cv::Range>>& idx, const double value) {
+	void Mat_newindex_at(lua_State* L, cv::Mat& self, const std::vector<cv::util::variant<int, cv::Range>>& idx, const double value) {
 		_Mat_newindex_at(L, self, idx, value);
 	}
 

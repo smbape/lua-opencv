@@ -117,6 +117,9 @@ cv.createTrackbar('Quality Level:', myShiTomasi_window, myShiTomasi_qualityLevel
 myShiTomasi_function(myShiTomasi_qualityLevel)
 
 while true do
+    -- Without this, memory grows indefinitely
+    collectgarbage()
+
     -- lua is not thread safe
     -- therefore, calling callbacks from another thread
     -- will certainly cause unwanted behaviour
