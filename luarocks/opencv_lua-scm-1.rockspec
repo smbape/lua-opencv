@@ -2,7 +2,7 @@ rockspec_format = "3.0"
 package = "opencv_lua"
 version = "scm-1"
 source = {
-   url = "git+https://github.com/smbape/lua-opencv.git"
+   url = "git+file://D:/development/git/lua-opencv"
 }
 description = {
    summary = "OpenCV bindings for lua",
@@ -43,7 +43,7 @@ description = {
       luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.11.0
    ]],
    homepage = "https://github.com/smbape/lua-opencv",
-   issues_url = "git+https://github.com/smbape/lua-opencv.git",
+   issues_url = "git+file://D:/development/git/lua-opencv",
    license = "MIT",
    labels = { "opencv" },
 }
