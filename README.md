@@ -339,7 +339,7 @@ All the examples in the samples directory can be run by folling theses instructi
 
 ```cmd
 git clone --depth 1 --branch 4.11.0 https://github.com/opencv/opencv.git
-git clone --depth 1 --branch v0.0.5 https://github.com/smbape/lua-opencv.git
+git clone --depth 1 --branch v0.1.0 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
 @REM build.bat "-DLua_VERSION=luajit-2.1" --target luajit --install
 @REM available versions are 5.1, 5.2, 5.3, 5.4
@@ -356,7 +356,7 @@ node scripts\test.js --Release
 
 ```sh
 git clone --depth 1 --branch 4.11.0 https://github.com/opencv/opencv.git
-git clone --depth 1 --branch v0.0.5 https://github.com/smbape/lua-opencv.git
+git clone --depth 1 --branch v0.1.0 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
 # ./build.sh "-DLua_VERSION=luajit-2.1" --target luajit --install
 # available versions are 5.1, 5.2, 5.3, 5.4
