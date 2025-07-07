@@ -28,9 +28,17 @@ const unixCmd = argv => {
 };
 
 const spawnExec = (cmd, args, options, next) => {
-    const {
-        stdio
-    } = options;
+    options = Object.assign({}, options);
+
+    // https://nodejs.org/docs/latest-v18.x/api/child_process.html#spawning-bat-and-cmd-files-on-windows
+    if (os.platform() === "win32" && (cmd.endsWith(".bat") || cmd.endsWith(".cmd"))) {
+        if (cmd.includes(" ")) {
+            cmd = `"${ cmd }"`;
+        }
+        options.shell = true;
+    }
+
+    const {stdio} = options;
 
     if (stdio === "tee") {
         options.stdio = ["inherit", "pipe", "pipe"];

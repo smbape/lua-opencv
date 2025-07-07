@@ -21,8 +21,8 @@ endif()
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release;MinSizeRel;RelWithDebInfo" CACHE STRING "Configs" FORCE)
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "${CMAKE_CONFIGURATION_TYPES}")
 
-set(OpenCV_VERSION 4.11.0 CACHE STRING "Choose the OpenCV version.")
-set_property(CACHE OpenCV_VERSION PROPERTY STRINGS "4.11.0" "4.10.0" "4.9.0")
+set(OpenCV_VERSION 4.12.0 CACHE STRING "Choose the OpenCV version.")
+set_property(CACHE OpenCV_VERSION PROPERTY STRINGS "4.12.0")
 
 string(REPLACE "." ";" OpenCV_VERSION_LIST ${OpenCV_VERSION})
 list(GET OpenCV_VERSION_LIST 0 OpenCV_VERSION_MAJOR)
@@ -53,10 +53,8 @@ FetchContent_Populate(opencv
 option(BUILD_contrib "Build with opencv contrib" OFF)
 
 if (BUILD_contrib)
-    # https://github.com/opencv/opencv-python/tree/86
-    set(OPENCV_CONTRIB_TAG_4110 0e5254ebf54d2aed6e7eaf6660bf3b797cf50a02)
-    set(OPENCV_CONTRIB_TAG_4100 1ed3dd2c53888e3289afdb22ec4e9ebbff3dba87)
-    set(OPENCV_CONTRIB_TAG_490 c7602a8f74205e44389bd6a4e8d727d32e7e27b4)
+    # https://github.com/opencv/opencv-python/tree/88
+    set(OPENCV_CONTRIB_TAG_4120 d943e1d61c8bc556a13783e1546ee7c1a9e0b1cf)
 
     if (NOT DEFINED OPENCV_CONTRIB_TAG_${OpenCV_DLLVERSION})
         message(FATAL_ERROR "Unable to find git contrib tag for OPENCV_CONTRIB_TAG_${OpenCV_DLLVERSION}
@@ -78,16 +76,18 @@ if (BUILD_contrib)
         # PATCH_COMMAND is run once for each BUILD_TYPE
         # however, source download is only done once when it is a git repository
         # use a custom patch command to perform patch only once
-        PATCH_COMMAND "${CMAKE_COMMAND}"
-                                        "-DSOURCE_DIR=<SOURCE_DIR>"
-                                        "-DGIT_EXECUTABLE=${GIT_EXECUTABLE}"
-                                        "-DPATCH_FILE=${CMAKE_SOURCE_DIR}/patches/001-opencv_contrib-src.patch"
-                                        -P "${CMAKE_SOURCE_DIR}/cmake/git_patch_once.cmake"
+        PATCH_COMMAND   "${CMAKE_COMMAND}"
+                        "-DSOURCE_DIR=<SOURCE_DIR>"
+                        "-DGIT_EXECUTABLE=${GIT_EXECUTABLE}"
+                        "-DPATCH_FILE=${CMAKE_SOURCE_DIR}/patches/001-opencv_contrib-src.patch"
+                        -P "${CMAKE_SOURCE_DIR}/cmake/git_patch_once.cmake"
     )
 
     set(OPENCV_EXTRA_MODULES_PATH "${opencv_contrib_SOURCE_DIR}/modules" CACHE PATH "Where to look for additional OpenCV modules (can be ;-separated list of paths)")
 endif()
 
+set(OPENCV_SOURCE_DIR "${opencv_SOURCE_DIR}")
+set(OPENCV_BINARY_DIR "${opencv_BINARY_DIR}")
 include("${opencv_SOURCE_DIR}/cmake/OpenCVUtils.cmake")
 
 set(opencv_BINARY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/build" CACHE STRING "Where to build opencv.")

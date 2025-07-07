@@ -4,7 +4,7 @@ package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:su
 
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.11.0/samples/python/tutorial_code/imgProc/opening_closing_hats/morphology_2.py
+    https://github.com/opencv/opencv/blob/4.12.0/samples/python/tutorial_code/imgProc/opening_closing_hats/morphology_2.py
 --]]
 
 local argparse = require("argparse")
@@ -13,10 +13,10 @@ local cv = opencv_lua.cv
 
 local morph_size = 0
 local max_operator = 4
-local max_elem = 2
+local max_elem = 3
 local max_kernel_size = 21
 local title_trackbar_operator_type = 'Operator:\n 0: Opening - 1: Closing  \n 2: Gradient - 3: Top Hat \n 4: Black Hat'
-local title_trackbar_element_type = 'Element:\n 0: Rect - 1: Cross - 2: Ellipse'
+local title_trackbar_element_type = 'Element:\n 0: Rect - 1: Cross - 2: Ellipse - 3: Diamond'
 local title_trackbar_kernel_size = 'Kernel size:\n 2n + 1'
 local title_window = 'Morphology Transformations Demo'
 local morph_op_dic = { cv.MORPH_OPEN, cv.MORPH_CLOSE, cv.MORPH_GRADIENT, cv.MORPH_TOPHAT, cv.MORPH_BLACKHAT }
@@ -35,6 +35,8 @@ local function morphology_operations(val)
         morph_elem = cv.MORPH_CROSS
     elseif val_type == 2 then
         morph_elem = cv.MORPH_ELLIPSE
+    elseif val_type == 2 then
+        morph_elem = cv.MORPH_DIAMOND
     end
 
     local element = cv.getStructuringElement(morph_elem, { 2 * morph_size + 1, 2 * morph_size + 1 },

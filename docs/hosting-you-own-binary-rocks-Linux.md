@@ -9,7 +9,7 @@
   - [[Ubuntu, Debian] Install needed packages:](#ubuntu-debian-install-needed-packages)
   - [[Fedora] Install needed packages:](#fedora-install-needed-packages)
   - [[Almalinux 8] Install needed packages:](#almalinux-8-install-needed-packages)
-  - [[Almalinux 9] Install needed packages:](#almalinux-9-install-needed-packages)
+  - [[Almalinux 9, 10] Install needed packages:](#almalinux-9-10-install-needed-packages)
 - [Build System Environment](#build-system-environment)
 - [Install freetype and harfbuzz](#install-freetype-and-harfbuzz)
   - [[Ubuntu, Debian] Install needed packages:](#ubuntu-debian-install-needed-packages-1)
@@ -75,7 +75,7 @@ sudo dnf install -y ffmpeg-devel && \
 source /opt/rh/gcc-toolset-12/enable
 ```
 
-### [Almalinux 9] Install needed packages:
+### [Almalinux 9, 10] Install needed packages:
 ```sh
 sudo dnf install -y curl gcc gcc-c++ git \
         libjpeg-devel libpng-devel readline-devel make patch tbb-devel \
@@ -116,7 +116,7 @@ sudo apt install -y freetype-devel harfbuzz-devel
 ## Download the source code
 
 ```sh
-git clone --depth 1 --branch v0.1.0 https://github.com/smbape/lua-opencv.git /io/luarocks-binaries-custom/lua-opencv && \
+git clone --depth 1 --branch v0.2.0 https://github.com/smbape/lua-opencv.git /io/luarocks-binaries-custom/lua-opencv && \
 cd /io/luarocks-binaries-custom/build && \
 npm ci
 ```
@@ -160,7 +160,7 @@ export PATH="/io/luarocks-binaries-custom/lua-opencv/out/prepublish/build/opencv
 ### Initialize our test project and install our custom prebuilt binary
 
 ```sh
-git clone --depth 1 --branch 4.11.0 https://github.com/opencv/opencv_extra.git /io/luarocks-binaries-custom/opencv_extra && \
+git clone --depth 1 --branch 4.12.0 https://github.com/opencv/opencv_extra.git /io/luarocks-binaries-custom/opencv_extra && \
 mkdir /io/luarocks-binaries-custom/test && \
 cd /io/luarocks-binaries-custom/test && \
 luarocks --lua-version 5.1 --lua-dir "$(dirname "$(dirname "$(command -v luajit)")")" init --lua-versions "5.1,5.2,5.3,5.4" && \
@@ -245,7 +245,7 @@ Execute the test-opencv.lua script
 ### Test CUDA
 
 ```sh
-git clone --depth 1 --branch 4.11.0 https://github.com/opencv/opencv.git /io/luarocks-binaries-custom/opencv && \
+git clone --depth 1 --branch 4.12.0 https://github.com/opencv/opencv.git /io/luarocks-binaries-custom/opencv && \
 ./luarocks install --deps-only /io/luarocks-binaries-custom/lua-opencv/samples/samples-scm-1.rockspec && \
 ./lua /io/luarocks-binaries-custom/lua-opencv/samples/dnn/object_detection/object_detection.lua ssd_tf --input Megamind.avi --backend 5 --target 6
 ```

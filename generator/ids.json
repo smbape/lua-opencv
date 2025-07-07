@@ -1795,6 +1795,10 @@
         "iid": "c8e0a8e6-7ff8-44e3-ae41-f49d1bf856bd",
         "clsid": "64daf657-b3af-4185-9199-921706817027"
     },
+    "VectorOfAruco_Dictionary": {
+        "iid": "ce720e75-0789-49e9-b59f-936b562040cc",
+        "clsid": "96a5c0b6-55da-47d1-a4c7-ef17a04acb2a"
+    },
     "VectorOfDetail_CameraParams": {
         "iid": "6c34462d-d8f1-49bf-8c10-4cb5f69fdff0",
         "clsid": "31aaec00-0c08-4c97-8006-8b8e4b727c0f"

@@ -4,7 +4,7 @@ package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:su
 
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.11.0/samples/python/tutorial_code/Histograms_Matching/back_projection/calcBackProject_Demo1.py
+    https://github.com/opencv/opencv/blob/4.12.0/samples/python/tutorial_code/Histograms_Matching/back_projection/calcBackProject_Demo1.py
 --]]
 
 local argparse = require("argparse")

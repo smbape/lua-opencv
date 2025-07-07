@@ -213,6 +213,9 @@ string(LENGTH "${repaired_WHEEL_FILE}" repaired_WHEEL_FILE_LENGTH)
 math(EXPR repaired_WHEEL_FILE_LENGTH "${repaired_WHEEL_FILE_LENGTH} - ${repaired_WHEEL_FILE_BEGIN}")
 string(SUBSTRING "${repaired_WHEEL_FILE}" ${repaired_WHEEL_FILE_BEGIN} ${repaired_WHEEL_FILE_LENGTH} repaired_WHEEL_FILE)
 
+cmake_path(GET repaired_WHEEL_FILE PARENT_PATH repaired_WHEEL_DIR)
+file(GLOB repaired_WHEEL_FILE "${repaired_WHEEL_DIR}/${target_name}-${PROJECT_VERSION}-*.whl")
+
 message(STATUS "PostInstall: repaired_WHEEL_FILE=\"${repaired_WHEEL_FILE}\"")
 
 set(repaired_DIR "${CMAKE_INSTALL_LIBDIR}/repaired")

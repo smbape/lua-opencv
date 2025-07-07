@@ -1,5 +1,26 @@
+diff --git a/modules/cannops/CMakeLists.txt b/modules/cannops/CMakeLists.txt
+index 557fbe7f..8c0a8188 100644
+--- a/modules/cannops/CMakeLists.txt
++++ b/modules/cannops/CMakeLists.txt
+@@ -10,7 +10,7 @@ ocv_glob_module_sources()
+ ocv_install_used_external_targets(${CANN_LIBRARIES})
+ ocv_create_module(${CANN_LIBRARIES})
+ 
+-ocv_include_directories(${CMAKE_SOURCE_DIR}/modules/ts/include)
++ocv_include_directories(${OPENCV_SOURCE_DIR}/modules/ts/include)
+ 
+ ocv_add_accuracy_tests(DEPENDS_ON opencv_cannops)
+ ocv_add_perf_tests(DEPENDS_ON opencv_cannops)
+@@ -18,6 +18,6 @@ ocv_add_samples(opencv_cannops)
+ 
+ # compile ascnedc kernels.
+ add_subdirectory(ascendc_kernels)
+-ocv_include_directories(${CMAKE_BINARY_DIR}/include/ascendc_kernels)
++ocv_include_directories(${OPENCV_BINARY_DIR}/include/ascendc_kernels)
+ ocv_target_link_libraries(opencv_cannops PRIVATE ascendc_kernels)
+ ocv_target_link_libraries(opencv_test_cannops PRIVATE ascendc_kernels)
 diff --git a/modules/cvv/src/stfl/stringutils.cpp b/modules/cvv/src/stfl/stringutils.cpp
-index 71d07d9..f98aa06 100644
+index 71d07d9b..f98aa06e 100644
 --- a/modules/cvv/src/stfl/stringutils.cpp
 +++ b/modules/cvv/src/stfl/stringutils.cpp
 @@ -248,7 +248,7 @@ void unescapeCommas(QString &str)
@@ -11,8 +32,129 @@ index 71d07d9..f98aa06 100644
      if (str.size() > maxLength)
      {
          if (cutEnd)
+diff --git a/modules/face/CMakeLists.txt b/modules/face/CMakeLists.txt
+index 4616515f..13fb07fc 100644
+--- a/modules/face/CMakeLists.txt
++++ b/modules/face/CMakeLists.txt
+@@ -17,7 +17,7 @@ ocv_download(
+       "${OPENCV_FACE_ALIGNMENT_URL}"
+       "$ENV{OPENCV_FACE_ALIGNMENT_URL}"
+       "https://raw.githubusercontent.com/opencv/opencv_3rdparty/${__commit_hash}/"
+-    DESTINATION_DIR "${CMAKE_BINARY_DIR}/${OPENCV_TEST_DATA_INSTALL_PATH}/cv/face/"
++    DESTINATION_DIR "${OPENCV_BINARY_DIR}/${OPENCV_TEST_DATA_INSTALL_PATH}/cv/face/"
+     ID "data"
+     RELATIVE_URL
+     STATUS res
+diff --git a/modules/julia/CMakeLists.txt b/modules/julia/CMakeLists.txt
+index fcf380d7..c85d4605 100644
+--- a/modules/julia/CMakeLists.txt
++++ b/modules/julia/CMakeLists.txt
+@@ -71,7 +71,7 @@ ocv_add_module(
+     opencv_calib3d
+ )
+ 
+-set(HDR_PARSER_PATH ${CMAKE_SOURCE_DIR}/modules/python/src2/hdr_parser.py)
++set(HDR_PARSER_PATH ${OPENCV_SOURCE_DIR}/modules/python/src2/hdr_parser.py)
+ 
+ set(opencv_hdrs "")
+ foreach(m ${OPENCV_MODULES_BUILD})
+@@ -85,7 +85,7 @@ message(STATUS "Generating Julia Binding Files")
+ 
+ execute_process(
+                 WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/gen"
+-                COMMAND ${PYTHON_DEFAULT_EXECUTABLE} "${CMAKE_CURRENT_BINARY_DIR}/gen/gen_all.py" ${CMAKE_SOURCE_DIR}/modules ${OPENCV_MODULES_BUILD}
++                COMMAND ${PYTHON_DEFAULT_EXECUTABLE} "${CMAKE_CURRENT_BINARY_DIR}/gen/gen_all.py" ${OPENCV_SOURCE_DIR}/modules ${OPENCV_MODULES_BUILD}
+                 )
+ 
+ file(COPY ${CMAKE_CURRENT_BINARY_DIR}/gen/cpp_files/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/gen/autogen_cpp)
+@@ -100,7 +100,7 @@ ocv_add_library(${the_module} SHARED ${OPENCV_MODULE_${the_module}_HEADERS}
+                                      "${CMAKE_CURRENT_BINARY_DIR}/gen/autogen_cpp/cv_core.cpp")
+ 
+ if(NOT JULIA_PKG_INSTALL_PATH)
+-    set(JULIA_PKG_INSTALL_PATH ${CMAKE_BINARY_DIR})
++    set(JULIA_PKG_INSTALL_PATH ${OPENCV_BINARY_DIR})
+ endif()
+ set(JULIA_PKG_INSTALL_PATH_HOOK ${JULIA_PKG_INSTALL_PATH} CACHE STRING "" FORCE)
+ mark_as_advanced(JULIA_PKG_INSTALL_PATH_HOOK)
+@@ -155,9 +155,9 @@ ocv_target_link_libraries(${the_module} JlCxx::cxxwrap_julia_stl)
+ 
+ add_custom_command(TARGET ${the_module}
+                    POST_BUILD
+-                   COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/package/OpenCV ${CMAKE_BINARY_DIR}/OpenCV
+-                   COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_BINARY_DIR}/gen/autogen_jl/ ${CMAKE_BINARY_DIR}/OpenCV/src
+-                   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${the_module}> ${CMAKE_BINARY_DIR}/OpenCV/src/lib/libopencv_julia
++                   COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/package/OpenCV ${OPENCV_BINARY_DIR}/OpenCV
++                   COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_BINARY_DIR}/gen/autogen_jl/ ${OPENCV_BINARY_DIR}/OpenCV/src
++                   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${the_module}> ${OPENCV_BINARY_DIR}/OpenCV/src/lib/libopencv_julia
+                    COMMENT "Copying over julia package"
+                    )
+ 
+diff --git a/modules/matlab/CMakeLists.txt b/modules/matlab/CMakeLists.txt
+index 11967a5a..ff5e45f5 100644
+--- a/modules/matlab/CMakeLists.txt
++++ b/modules/matlab/CMakeLists.txt
+@@ -125,7 +125,7 @@ string(REGEX REPLACE "(\r?\n)+$" "" GIT_COMMIT "${GIT_COMMIT}")
+ set(HDR_PARSER_PATH ${OpenCV_SOURCE_DIR}/modules/python/src2)
+ 
+ # set mex compiler options
+-prepend("-I" MEX_INCLUDE_DIRS ${CMAKE_BINARY_DIR})
++prepend("-I" MEX_INCLUDE_DIRS ${OPENCV_BINARY_DIR})
+ prepend("-I" MEX_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include)
+ if (MSVC)
+     prepend("-L" MEX_LIB_DIR  ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR})
+@@ -181,7 +181,7 @@ if (NOT MEX_WORKS)
+                 ${CMAKE_CURRENT_SOURCE_DIR}/generator/gen_matlab.py
+                 --hdrparser ${HDR_PARSER_PATH}
+                 --extra     "test=${CMAKE_CURRENT_SOURCE_DIR}/test/test_generator.hpp"
+-                --outdir    ${CMAKE_BINARY_DIR}/junk
++                --outdir    ${OPENCV_BINARY_DIR}/junk
+         ERROR_VARIABLE GEN_ERROR
+         OUTPUT_QUIET
+     )
+@@ -200,7 +200,7 @@ if (NOT MEX_WORKS)
+     execute_process(
+         COMMAND ${MATLAB_MEX_SCRIPT} ${MEX_OPTS} "CXXFLAGS=\$CXXFLAGS ${MEX_CXX_FLAGS}"
+                 ${MEX_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/test/test_compiler.cpp
+-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/junk
++        WORKING_DIRECTORY ${OPENCV_BINARY_DIR}/junk
+         ERROR_VARIABLE MEX_ERROR
+         OUTPUT_QUIET
+     )
+diff --git a/modules/sfm/CMakeLists.txt b/modules/sfm/CMakeLists.txt
+index 46da72e3..6fe1d3ad 100644
+--- a/modules/sfm/CMakeLists.txt
++++ b/modules/sfm/CMakeLists.txt
+@@ -44,13 +44,13 @@ if((gflags_FOUND OR Gflags_FOUND OR GFLAGS_FOUND OR GFLAGS_INCLUDE_DIRS) AND (gl
+   if(NOT DEFINED SFM_GLOG_GFLAGS_TEST_CACHE_KEY OR NOT (SFM_GLOG_GFLAGS_TEST_CACHE_KEY STREQUAL __cache_key))
+     set(__fname "${CMAKE_CURRENT_LIST_DIR}/cmake/checks/check_glog_gflags.cpp")
+     try_compile(
+-        SFM_GLOG_GFLAGS_TEST "${CMAKE_BINARY_DIR}" "${__fname}"
++        SFM_GLOG_GFLAGS_TEST "${OPENCV_BINARY_DIR}" "${__fname}"
+         CMAKE_FLAGS "-DINCLUDE_DIRECTORIES:STRING=${GLOG_INCLUDE_DIRS};${GFLAGS_INCLUDE_DIRS}"
+         LINK_LIBRARIES ${GLOG_LIBRARIES} ${GFLAGS_LIBRARIES}
+         OUTPUT_VARIABLE __output
+     )
+     if(NOT SFM_GLOG_GFLAGS_TEST)
+-      file(APPEND ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeError.log
++      file(APPEND ${OPENCV_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeError.log
+           "Failed compilation check: ${__fname}\n"
+           "${__output}\n\n"
+       )
+diff --git a/modules/text/CMakeLists.txt b/modules/text/CMakeLists.txt
+index 0fe7e6fb..b854df51 100644
+--- a/modules/text/CMakeLists.txt
++++ b/modules/text/CMakeLists.txt
+@@ -18,7 +18,7 @@ if(TARGET ocv.3rdparty.tesseract)
+ endif()
+ 
+ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/text_config.hpp.in
+-               ${CMAKE_BINARY_DIR}/text_config.hpp @ONLY)
++               ${OPENCV_BINARY_DIR}/text_config.hpp @ONLY)
+ 
+ ocv_include_directories(${CMAKE_CURRENT_BINARY_DIR})
+ 
 diff --git a/modules/text/cmake/init.cmake b/modules/text/cmake/init.cmake
-index 254757e..0d89d0e 100644
+index 254757ec..0d89d0e6 100644
 --- a/modules/text/cmake/init.cmake
 +++ b/modules/text/cmake/init.cmake
 @@ -41,7 +41,7 @@ if(NOT HAVE_TESSERACT
@@ -24,8 +166,21 @@ index 254757e..0d89d0e 100644
      endif()
      add_library(ocv.3rdparty.${name} INTERFACE ${imp})
      set_target_properties(ocv.3rdparty.${name} PROPERTIES
+diff --git a/modules/wechat_qrcode/CMakeLists.txt b/modules/wechat_qrcode/CMakeLists.txt
+index a15c4337..ac63f993 100644
+--- a/modules/wechat_qrcode/CMakeLists.txt
++++ b/modules/wechat_qrcode/CMakeLists.txt
+@@ -29,7 +29,7 @@ foreach(model_name ${model_names})
+                         "${OPENCV_WECHAT_QRCODE_URL}"
+                         "$ENV{OPENCV_WECHAT_QRCODE_URL}"
+                         "https://raw.githubusercontent.com/WeChatCV/opencv_3rdparty/${wechat_qrcode_commit_hash}/"
+-                        DESTINATION_DIR "${CMAKE_BINARY_DIR}/downloads/wechat_qrcode"
++                        DESTINATION_DIR "${OPENCV_BINARY_DIR}/downloads/wechat_qrcode"
+                         ID "wechat_qrcode"
+                         RELATIVE_URL
+                         STATUS res)
 diff --git a/modules/wechat_qrcode/src/wechat_qrcode.cpp b/modules/wechat_qrcode/src/wechat_qrcode.cpp
-index 64aad73..c6871f2 100644
+index 64aad736..c6871f28 100644
 --- a/modules/wechat_qrcode/src/wechat_qrcode.cpp
 +++ b/modules/wechat_qrcode/src/wechat_qrcode.cpp
 @@ -57,7 +57,7 @@ WeChatQRCode::WeChatQRCode(const String& detector_prototxt_path,
@@ -47,7 +202,7 @@ index 64aad73..c6871f2 100644
          p->use_nn_sr_ = true;
          // initialize dnn model (caffe format)
 diff --git a/modules/wechat_qrcode/src/zxing/common/bitmatrix.hpp b/modules/wechat_qrcode/src/zxing/common/bitmatrix.hpp
-index 3cf7ec3..8c2569c 100644
+index 3cf7ec3c..8c2569cd 100644
 --- a/modules/wechat_qrcode/src/zxing/common/bitmatrix.hpp
 +++ b/modules/wechat_qrcode/src/zxing/common/bitmatrix.hpp
 @@ -15,9 +15,9 @@

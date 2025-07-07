@@ -75,6 +75,12 @@
   - [MapOfStringAndVectorOfSize\_t.sol::meta\_function::length](#mapofstringandvectorofsize%5C_tsolmeta%5C_functionlength)
   - [MapOfStringAndVectorOfSize\_t.sol::meta\_function::new\_index](#mapofstringandvectorofsize%5C_tsolmeta%5C_functionnew%5C_index)
   - [MapOfStringAndVectorOfSize\_t.table](#mapofstringandvectorofsize%5C_ttable)
+- [VectorOfAruco\_Dictionary](#vectorofaruco%5C_dictionary)
+  - [VectorOfAruco\_Dictionary.new](#vectorofaruco%5C_dictionarynew)
+  - [VectorOfAruco\_Dictionary.sol::meta\_function::index](#vectorofaruco%5C_dictionarysolmeta%5C_functionindex)
+  - [VectorOfAruco\_Dictionary.sol::meta\_function::length](#vectorofaruco%5C_dictionarysolmeta%5C_functionlength)
+  - [VectorOfAruco\_Dictionary.sol::meta\_function::new\_index](#vectorofaruco%5C_dictionarysolmeta%5C_functionnew%5C_index)
+  - [VectorOfAruco\_Dictionary.table](#vectorofaruco%5C_dictionarytable)
 - [VectorOfBool](#vectorofbool)
   - [VectorOfBool.new](#vectorofboolnew)
   - [VectorOfBool.sol::meta\_function::index](#vectorofboolsolmeta%5C_functionindex)
@@ -896,6 +902,7 @@
   - [cv.MORPH\_RECT](#cvmorph%5C_rect)
   - [cv.MORPH\_CROSS](#cvmorph%5C_cross)
   - [cv.MORPH\_ELLIPSE](#cvmorph%5C_ellipse)
+  - [cv.MORPH\_DIAMOND](#cvmorph%5C_diamond)
   - [cv.INTER\_NEAREST](#cvinter%5C_nearest)
   - [cv.INTER\_LINEAR](#cvinter%5C_linear)
   - [cv.INTER\_CUBIC](#cvinter%5C_cubic)
@@ -932,6 +939,7 @@
   - [cv.THRESH\_MASK](#cvthresh%5C_mask)
   - [cv.THRESH\_OTSU](#cvthresh%5C_otsu)
   - [cv.THRESH\_TRIANGLE](#cvthresh%5C_triangle)
+  - [cv.THRESH\_DRYRUN](#cvthresh%5C_dryrun)
   - [cv.ADAPTIVE\_THRESH\_MEAN\_C](#cvadaptive%5C_thresh%5C_mean%5C_c)
   - [cv.ADAPTIVE\_THRESH\_GAUSSIAN\_C](#cvadaptive%5C_thresh%5C_gaussian%5C_c)
   - [cv.GC\_BGD](#cvgc%5C_bgd)
@@ -1343,6 +1351,7 @@
   - [cv.IMWRITE\_PNG\_COMPRESSION](#cvimwrite%5C_png%5C_compression)
   - [cv.IMWRITE\_PNG\_STRATEGY](#cvimwrite%5C_png%5C_strategy)
   - [cv.IMWRITE\_PNG\_BILEVEL](#cvimwrite%5C_png%5C_bilevel)
+  - [cv.IMWRITE\_PNG\_FILTER](#cvimwrite%5C_png%5C_filter)
   - [cv.IMWRITE\_PXM\_BINARY](#cvimwrite%5C_pxm%5C_binary)
   - [cv.IMWRITE\_EXR\_TYPE](#cvimwrite%5C_exr%5C_type)
   - [cv.IMWRITE\_EXR\_COMPRESSION](#cvimwrite%5C_exr%5C_compression)
@@ -1428,6 +1437,13 @@
   - [cv.IMWRITE\_PNG\_STRATEGY\_HUFFMAN\_ONLY](#cvimwrite%5C_png%5C_strategy%5C_huffman%5C_only)
   - [cv.IMWRITE\_PNG\_STRATEGY\_RLE](#cvimwrite%5C_png%5C_strategy%5C_rle)
   - [cv.IMWRITE\_PNG\_STRATEGY\_FIXED](#cvimwrite%5C_png%5C_strategy%5C_fixed)
+  - [cv.IMWRITE\_PNG\_FILTER\_NONE](#cvimwrite%5C_png%5C_filter%5C_none)
+  - [cv.IMWRITE\_PNG\_FILTER\_SUB](#cvimwrite%5C_png%5C_filter%5C_sub)
+  - [cv.IMWRITE\_PNG\_FILTER\_UP](#cvimwrite%5C_png%5C_filter%5C_up)
+  - [cv.IMWRITE\_PNG\_FILTER\_AVG](#cvimwrite%5C_png%5C_filter%5C_avg)
+  - [cv.IMWRITE\_PNG\_FILTER\_PAETH](#cvimwrite%5C_png%5C_filter%5C_paeth)
+  - [cv.IMWRITE\_PNG\_FAST\_FILTERS](#cvimwrite%5C_png%5C_fast%5C_filters)
+  - [cv.IMWRITE\_PNG\_ALL\_FILTERS](#cvimwrite%5C_png%5C_all%5C_filters)
   - [cv.IMWRITE\_PAM\_FORMAT\_NULL](#cvimwrite%5C_pam%5C_format%5C_null)
   - [cv.IMWRITE\_PAM\_FORMAT\_BLACKANDWHITE](#cvimwrite%5C_pam%5C_format%5C_blackandwhite)
   - [cv.IMWRITE\_PAM\_FORMAT\_GRAYSCALE](#cvimwrite%5C_pam%5C_format%5C_grayscale)
@@ -1444,6 +1460,11 @@
   - [cv.IMWRITE\_GIF\_COLORTABLE\_SIZE\_64](#cvimwrite%5C_gif%5C_colortable%5C_size%5C_64)
   - [cv.IMWRITE\_GIF\_COLORTABLE\_SIZE\_128](#cvimwrite%5C_gif%5C_colortable%5C_size%5C_128)
   - [cv.IMWRITE\_GIF\_COLORTABLE\_SIZE\_256](#cvimwrite%5C_gif%5C_colortable%5C_size%5C_256)
+  - [cv.IMAGE\_METADATA\_UNKNOWN](#cvimage%5C_metadata%5C_unknown)
+  - [cv.IMAGE\_METADATA\_EXIF](#cvimage%5C_metadata%5C_exif)
+  - [cv.IMAGE\_METADATA\_XMP](#cvimage%5C_metadata%5C_xmp)
+  - [cv.IMAGE\_METADATA\_ICCP](#cvimage%5C_metadata%5C_iccp)
+  - [cv.IMAGE\_METADATA\_MAX](#cvimage%5C_metadata%5C_max)
   - [cv.CAP\_ANY](#cvcap%5C_any)
   - [cv.CAP\_VFW](#cvcap%5C_vfw)
   - [cv.CAP\_V4L](#cvcap%5C_v4l)
@@ -2042,6 +2063,7 @@
   - [cv.EMD](#cvemd)
   - [cv.GaussianBlur](#cvgaussianblur)
   - [cv.HoughCircles](#cvhoughcircles)
+  - [cv.HoughCirclesWithAccumulator](#cvhoughcircleswithaccumulator)
   - [cv.HoughLines](#cvhoughlines)
   - [cv.HoughLinesP](#cvhoughlinesp)
   - [cv.HoughLinesPointSet](#cvhoughlinespointset)
@@ -2239,6 +2261,7 @@
   - [cv.getBuildInformation](#cvgetbuildinformation)
   - [cv.getCPUFeaturesLine](#cvgetcpufeaturesline)
   - [cv.getCPUTickCount](#cvgetcputickcount)
+  - [cv.getClosestEllipsePoints](#cvgetclosestellipsepoints)
   - [cv.getDefaultAlgorithmHint](#cvgetdefaultalgorithmhint)
   - [cv.getDefaultNewCameraMatrix](#cvgetdefaultnewcameramatrix)
   - [cv.getDerivKernels](#cvgetderivkernels)
@@ -2281,14 +2304,20 @@
   - [cv.illuminationChange](#cvilluminationchange)
   - [cv.imcount](#cvimcount)
   - [cv.imdecode](#cvimdecode)
+  - [cv.imdecodeWithMetadata](#cvimdecodewithmetadata)
+  - [cv.imdecodeanimation](#cvimdecodeanimation)
   - [cv.imdecodemulti](#cvimdecodemulti)
   - [cv.imencode](#cvimencode)
+  - [cv.imencodeWithMetadata](#cvimencodewithmetadata)
+  - [cv.imencodeanimation](#cvimencodeanimation)
   - [cv.imencodemulti](#cvimencodemulti)
   - [cv.imread](#cvimread)
+  - [cv.imreadWithMetadata](#cvimreadwithmetadata)
   - [cv.imreadanimation](#cvimreadanimation)
   - [cv.imreadmulti](#cvimreadmulti)
   - [cv.imshow](#cvimshow)
   - [cv.imwrite](#cvimwrite)
+  - [cv.imwriteWithMetadata](#cvimwritewithmetadata)
   - [cv.imwriteanimation](#cvimwriteanimation)
   - [cv.imwritemulti](#cvimwritemulti)
   - [cv.inRange](#cvinrange)
@@ -2425,6 +2454,7 @@
   - [cv.textureFlattening](#cvtextureflattening)
   - [cv.theRNG](#cvtherng)
   - [cv.threshold](#cvthreshold)
+  - [cv.thresholdWithMask](#cvthresholdwithmask)
   - [cv.trace](#cvtrace)
   - [cv.transform](#cvtransform)
   - [cv.transpose](#cvtranspose)
@@ -2513,6 +2543,7 @@
   - [Animation.bgcolor](#animationbgcolor)
   - [Animation.durations](#animationdurations)
   - [Animation.frames](#animationframes)
+  - [Animation.still\_image](#animationstill%5C_image)
   - [cv.Animation.new](#cvanimationnew)
 - [cv::AsyncArray](#cvasyncarray)
   - [cv.AsyncArray.new](#cvasyncarraynew)
@@ -3013,9 +3044,13 @@
   - [cv.GeneralizedHoughGuil.setXi](#cvgeneralizedhoughguilsetxi)
 - [cv::GraphicalCodeDetector](#cvgraphicalcodedetector)
   - [cv.GraphicalCodeDetector.decode](#cvgraphicalcodedetectordecode)
+  - [cv.GraphicalCodeDetector.decodeBytes](#cvgraphicalcodedetectordecodebytes)
+  - [cv.GraphicalCodeDetector.decodeBytesMulti](#cvgraphicalcodedetectordecodebytesmulti)
   - [cv.GraphicalCodeDetector.decodeMulti](#cvgraphicalcodedetectordecodemulti)
   - [cv.GraphicalCodeDetector.detect](#cvgraphicalcodedetectordetect)
   - [cv.GraphicalCodeDetector.detectAndDecode](#cvgraphicalcodedetectordetectanddecode)
+  - [cv.GraphicalCodeDetector.detectAndDecodeBytes](#cvgraphicalcodedetectordetectanddecodebytes)
+  - [cv.GraphicalCodeDetector.detectAndDecodeBytesMulti](#cvgraphicalcodedetectordetectanddecodebytesmulti)
   - [cv.GraphicalCodeDetector.detectAndDecodeMulti](#cvgraphicalcodedetectordetectanddecodemulti)
   - [cv.GraphicalCodeDetector.detectMulti](#cvgraphicalcodedetectordetectmulti)
 - [cv::HOGDescriptor](#cvhogdescriptor)
@@ -3050,6 +3085,8 @@
   - [cv.HOGDescriptor.save](#cvhogdescriptorsave)
   - [cv.HOGDescriptor.setSVMDetector](#cvhogdescriptorsetsvmdetector)
 - [cv::IStreamReader](#cvistreamreader)
+  - [cv.IStreamReader.read](#cvistreamreaderread)
+  - [cv.IStreamReader.seek](#cvistreamreaderseek)
 - [cv::KAZE](#cvkaze)
   - [KAZE.DIFF\_PM\_G1](#kazediff%5C_pm%5C_g1)
   - [KAZE.DIFF\_PM\_G2](#kazediff%5C_pm%5C_g2)
@@ -3283,6 +3320,7 @@
   - [cv.Mat.ptr](#cvmatptr)
   - [cv.Mat.push\_back](#cvmatpush%5C_back)
   - [cv.Mat.ravel](#cvmatravel)
+  - [cv.Mat.reinterpret](#cvmatreinterpret)
   - [cv.Mat.reserve](#cvmatreserve)
   - [cv.Mat.reserveBuffer](#cvmatreservebuffer)
   - [cv.Mat.reshape](#cvmatreshape)
@@ -4003,6 +4041,7 @@
   - [cv.QRCodeDetector.new](#cvqrcodedetectornew)
   - [cv.QRCodeDetector.decodeCurved](#cvqrcodedetectordecodecurved)
   - [cv.QRCodeDetector.detectAndDecodeCurved](#cvqrcodedetectordetectanddecodecurved)
+  - [cv.QRCodeDetector.getEncoding](#cvqrcodedetectorgetencoding)
   - [cv.QRCodeDetector.setEpsX](#cvqrcodedetectorsetepsx)
   - [cv.QRCodeDetector.setEpsY](#cvqrcodedetectorsetepsy)
   - [cv.QRCodeDetector.setUseAlignmentMarkers](#cvqrcodedetectorsetusealignmentmarkers)
@@ -4033,6 +4072,7 @@
   - [QRCodeEncoder.CORRECT\_LEVEL\_M](#qrcodeencodercorrect%5C_level%5C_m)
   - [QRCodeEncoder.CORRECT\_LEVEL\_Q](#qrcodeencodercorrect%5C_level%5C_q)
   - [QRCodeEncoder.CORRECT\_LEVEL\_H](#qrcodeencodercorrect%5C_level%5C_h)
+  - [QRCodeEncoder.ECI\_SHIFT\_JIS](#qrcodeencodereci%5C_shift%5C_jis)
   - [QRCodeEncoder.ECI\_UTF8](#qrcodeencodereci%5C_utf8)
   - [cv.QRCodeEncoder.create](#cvqrcodeencodercreate)
   - [cv.QRCodeEncoder.encode](#cvqrcodeencoderencode)
@@ -4564,12 +4604,15 @@
 - [cv::aruco::ArucoDetector](#cvarucoarucodetector)
   - [cv.aruco.ArucoDetector.new](#cvarucoarucodetectornew)
   - [cv.aruco.ArucoDetector.detectMarkers](#cvarucoarucodetectordetectmarkers)
+  - [cv.aruco.ArucoDetector.detectMarkersMultiDict](#cvarucoarucodetectordetectmarkersmultidict)
   - [cv.aruco.ArucoDetector.getDetectorParameters](#cvarucoarucodetectorgetdetectorparameters)
+  - [cv.aruco.ArucoDetector.getDictionaries](#cvarucoarucodetectorgetdictionaries)
   - [cv.aruco.ArucoDetector.getDictionary](#cvarucoarucodetectorgetdictionary)
   - [cv.aruco.ArucoDetector.getRefineParameters](#cvarucoarucodetectorgetrefineparameters)
   - [cv.aruco.ArucoDetector.read](#cvarucoarucodetectorread)
   - [cv.aruco.ArucoDetector.refineDetectedMarkers](#cvarucoarucodetectorrefinedetectedmarkers)
   - [cv.aruco.ArucoDetector.setDetectorParameters](#cvarucoarucodetectorsetdetectorparameters)
+  - [cv.aruco.ArucoDetector.setDictionaries](#cvarucoarucodetectorsetdictionaries)
   - [cv.aruco.ArucoDetector.setDictionary](#cvarucoarucodetectorsetdictionary)
   - [cv.aruco.ArucoDetector.setRefineParameters](#cvarucoarucodetectorsetrefineparameters)
   - [cv.aruco.ArucoDetector.write](#cvarucoarucodetectorwrite)
@@ -4607,6 +4650,7 @@
   - [CharucoParameters.distCoeffs](#charucoparametersdistcoeffs)
   - [CharucoParameters.minMarkers](#charucoparametersminmarkers)
   - [CharucoParameters.tryRefineMarkers](#charucoparameterstryrefinemarkers)
+  - [CharucoParameters.checkMarkers](#charucoparameterscheckmarkers)
   - [cv.aruco.CharucoParameters.new](#cvarucocharucoparametersnew)
 - [cv::aruco::DetectorParameters](#cvarucodetectorparameters)
   - [DetectorParameters.adaptiveThreshWinSizeMin](#detectorparametersadaptivethreshwinsizemin)
@@ -5218,6 +5262,7 @@
   - [cv.dnn.Net.getUnconnectedOutLayersNames](#cvdnnnetgetunconnectedoutlayersnames)
   - [cv.dnn.Net.quantize](#cvdnnnetquantize)
   - [cv.dnn.Net.readFromModelOptimizer](#cvdnnnetreadfrommodeloptimizer)
+  - [cv.dnn.Net.registerOutput](#cvdnnnetregisteroutput)
   - [cv.dnn.Net.setHalideScheduler](#cvdnnnetsethalidescheduler)
   - [cv.dnn.Net.setInput](#cvdnnnetsetinput)
   - [cv.dnn.Net.setInputShape](#cvdnnnetsetinputshape)
@@ -5274,6 +5319,7 @@
   - [cv.fisheye.initUndistortRectifyMap](#cvfisheyeinitundistortrectifymap)
   - [cv.fisheye.projectPoints](#cvfisheyeprojectpoints)
   - [cv.fisheye.solvePnP](#cvfisheyesolvepnp)
+  - [cv.fisheye.solvePnPRansac](#cvfisheyesolvepnpransac)
   - [cv.fisheye.stereoCalibrate](#cvfisheyestereocalibrate)
   - [cv.fisheye.stereoRectify](#cvfisheyestereorectify)
   - [cv.fisheye.undistortImage](#cvfisheyeundistortimage)
@@ -6829,6 +6875,64 @@ lua:
 void MapOfStringAndVectorOfSize_t::table();
 lua:
     oMapOfStringAndVectorOfSize_t:table() -> None
+```
+
+## VectorOfAruco\_Dictionary
+
+### VectorOfAruco\_Dictionary.new
+
+```cpp
+std::vector<cv::aruco::Dictionary>();
+lua:
+    VectorOfAruco_Dictionary.new() -> <std::vector<cv::aruco::Dictionary> object>
+    VectorOfAruco_Dictionary() -> <std::vector<cv::aruco::Dictionary> object>
+```
+
+```cpp
+std::vector<cv::aruco::Dictionary>( size_t size );
+lua:
+    VectorOfAruco_Dictionary.new( size ) -> <std::vector<cv::aruco::Dictionary> object>
+    VectorOfAruco_Dictionary( size ) -> <std::vector<cv::aruco::Dictionary> object>
+```
+
+```cpp
+std::vector<cv::aruco::Dictionary>( std::vector<cv::aruco::Dictionary> other );
+lua:
+    VectorOfAruco_Dictionary.new( other ) -> <std::vector<cv::aruco::Dictionary> object>
+    VectorOfAruco_Dictionary( other ) -> <std::vector<cv::aruco::Dictionary> object>
+```
+
+### VectorOfAruco\_Dictionary.sol::meta\_function::index
+
+```cpp
+cv::aruco::Dictionary VectorOfAruco_Dictionary::sol::meta_function::index( size_t index );
+lua:
+    oVectorOfAruco_Dictionary:__index( index ) -> retval
+```
+
+### VectorOfAruco\_Dictionary.sol::meta\_function::length
+
+```cpp
+size_t VectorOfAruco_Dictionary::size( Object unused = Object() );
+lua:
+    oVectorOfAruco_Dictionary:__len( unused ) -> retval
+```
+
+### VectorOfAruco\_Dictionary.sol::meta\_function::new\_index
+
+```cpp
+void VectorOfAruco_Dictionary::sol::meta_function::new_index( size_t                index,
+                                                              cv::aruco::Dictionary value );
+lua:
+    oVectorOfAruco_Dictionary:__newindex( index, value ) -> None
+```
+
+### VectorOfAruco\_Dictionary.table
+
+```cpp
+void VectorOfAruco_Dictionary::table();
+lua:
+    oVectorOfAruco_Dictionary:table() -> None
 ```
 
 ## VectorOfBool
@@ -14603,6 +14707,14 @@ lua:
     [propget] cv.MORPH_ELLIPSE
 ```
 
+### cv.MORPH\_DIAMOND
+
+```cpp
+int cv::MORPH_DIAMOND
+lua:
+    [propget] cv.MORPH_DIAMOND
+```
+
 ### cv.INTER\_NEAREST
 
 ```cpp
@@ -14889,6 +15001,14 @@ lua:
 int cv::THRESH_TRIANGLE
 lua:
     [propget] cv.THRESH_TRIANGLE
+```
+
+### cv.THRESH\_DRYRUN
+
+```cpp
+int cv::THRESH_DRYRUN
+lua:
+    [propget] cv.THRESH_DRYRUN
 ```
 
 ### cv.ADAPTIVE\_THRESH\_MEAN\_C
@@ -18179,6 +18299,14 @@ lua:
     [propget] cv.IMWRITE_PNG_BILEVEL
 ```
 
+### cv.IMWRITE\_PNG\_FILTER
+
+```cpp
+int cv::IMWRITE_PNG_FILTER
+lua:
+    [propget] cv.IMWRITE_PNG_FILTER
+```
+
 ### cv.IMWRITE\_PXM\_BINARY
 
 ```cpp
@@ -18859,6 +18987,62 @@ lua:
     [propget] cv.IMWRITE_PNG_STRATEGY_FIXED
 ```
 
+### cv.IMWRITE\_PNG\_FILTER\_NONE
+
+```cpp
+int cv::IMWRITE_PNG_FILTER_NONE
+lua:
+    [propget] cv.IMWRITE_PNG_FILTER_NONE
+```
+
+### cv.IMWRITE\_PNG\_FILTER\_SUB
+
+```cpp
+int cv::IMWRITE_PNG_FILTER_SUB
+lua:
+    [propget] cv.IMWRITE_PNG_FILTER_SUB
+```
+
+### cv.IMWRITE\_PNG\_FILTER\_UP
+
+```cpp
+int cv::IMWRITE_PNG_FILTER_UP
+lua:
+    [propget] cv.IMWRITE_PNG_FILTER_UP
+```
+
+### cv.IMWRITE\_PNG\_FILTER\_AVG
+
+```cpp
+int cv::IMWRITE_PNG_FILTER_AVG
+lua:
+    [propget] cv.IMWRITE_PNG_FILTER_AVG
+```
+
+### cv.IMWRITE\_PNG\_FILTER\_PAETH
+
+```cpp
+int cv::IMWRITE_PNG_FILTER_PAETH
+lua:
+    [propget] cv.IMWRITE_PNG_FILTER_PAETH
+```
+
+### cv.IMWRITE\_PNG\_FAST\_FILTERS
+
+```cpp
+int cv::IMWRITE_PNG_FAST_FILTERS
+lua:
+    [propget] cv.IMWRITE_PNG_FAST_FILTERS
+```
+
+### cv.IMWRITE\_PNG\_ALL\_FILTERS
+
+```cpp
+int cv::IMWRITE_PNG_ALL_FILTERS
+lua:
+    [propget] cv.IMWRITE_PNG_ALL_FILTERS
+```
+
 ### cv.IMWRITE\_PAM\_FORMAT\_NULL
 
 ```cpp
@@ -18985,6 +19169,46 @@ lua:
 int cv::IMWRITE_GIF_COLORTABLE_SIZE_256
 lua:
     [propget] cv.IMWRITE_GIF_COLORTABLE_SIZE_256
+```
+
+### cv.IMAGE\_METADATA\_UNKNOWN
+
+```cpp
+int cv::IMAGE_METADATA_UNKNOWN
+lua:
+    [propget] cv.IMAGE_METADATA_UNKNOWN
+```
+
+### cv.IMAGE\_METADATA\_EXIF
+
+```cpp
+int cv::IMAGE_METADATA_EXIF
+lua:
+    [propget] cv.IMAGE_METADATA_EXIF
+```
+
+### cv.IMAGE\_METADATA\_XMP
+
+```cpp
+int cv::IMAGE_METADATA_XMP
+lua:
+    [propget] cv.IMAGE_METADATA_XMP
+```
+
+### cv.IMAGE\_METADATA\_ICCP
+
+```cpp
+int cv::IMAGE_METADATA_ICCP
+lua:
+    [propget] cv.IMAGE_METADATA_ICCP
+```
+
+### cv.IMAGE\_METADATA\_MAX
+
+```cpp
+int cv::IMAGE_METADATA_MAX
+lua:
+    [propget] cv.IMAGE_METADATA_MAX
 ```
 
 ### cv.CAP\_ANY
@@ -23810,6 +24034,22 @@ lua:
     cv.HoughCircles( image, method, dp, minDist[, circles[, param1[, param2[, minRadius[, maxRadius]]]]] ) -> circles
 ```
 
+### cv.HoughCirclesWithAccumulator
+
+```cpp
+void cv::HoughCirclesWithAccumulator( InputArray  image,
+                                      OutputArray circles,
+                                      int         method,
+                                      double      dp,
+                                      double      minDist,
+                                      double      param1 = 100,
+                                      double      param2 = 100,
+                                      int         minRadius = 0,
+                                      int         maxRadius = 0 );
+lua:
+    cv.HoughCirclesWithAccumulator( image, method, dp, minDist[, circles[, param1[, param2[, minRadius[, maxRadius]]]]] ) -> circles
+```
+
 ### cv.HoughLines
 
 ```cpp
@@ -23869,9 +24109,10 @@ void cv::HoughLinesWithAccumulator( InputArray  image,
                                     double      srn = 0,
                                     double      stn = 0,
                                     double      min_theta = 0,
-                                    double      max_theta = CV_PI );
+                                    double      max_theta = CV_PI,
+                                    bool        use_edgeval = false );
 lua:
-    cv.HoughLinesWithAccumulator( image, rho, theta, threshold[, lines[, srn[, stn[, min_theta[, max_theta]]]]] ) -> lines
+    cv.HoughLinesWithAccumulator( image, rho, theta, threshold[, lines[, srn[, stn[, min_theta[, max_theta[, use_edgeval]]]]]] ) -> lines
 ```
 
 ### cv.HuMoments
@@ -26359,6 +26600,16 @@ lua:
     cv.getCPUTickCount() -> retval
 ```
 
+### cv.getClosestEllipsePoints
+
+```cpp
+void cv::getClosestEllipsePoints( const cv::RotatedRect& ellipse_params,
+                                  InputArray             points,
+                                  OutputArray            closest_pts );
+lua:
+    cv.getClosestEllipsePoints( ellipse_params, points[, closest_pts] ) -> closest_pts
+```
+
 ### cv.getDefaultAlgorithmHint
 
 ```cpp
@@ -26793,6 +27044,28 @@ lua:
     cv.imdecode( buf, flags ) -> retval
 ```
 
+### cv.imdecodeWithMetadata
+
+```cpp
+cv::Mat cv::imdecodeWithMetadata( InputArray          buf,
+                                  std::vector<int>&   metadataTypes,
+                                  OutputArrayOfArrays metadata,
+                                  int                 flags = IMREAD_ANYCOLOR );
+lua:
+    cv.imdecodeWithMetadata( buf[, metadata[, flags[, metadataTypes]]] ) -> retval, metadataTypes, metadata
+```
+
+### cv.imdecodeanimation
+
+```cpp
+bool cv::imdecodeanimation( InputArray     buf,
+                            cv::Animation& animation,
+                            int            start = 0,
+                            int            count = INT16_MAX );
+lua:
+    cv.imdecodeanimation( buf[, start[, count[, animation]]] ) -> retval, animation
+```
+
 ### cv.imdecodemulti
 
 ```cpp
@@ -26813,6 +27086,30 @@ bool cv::imencode( const std::string&      ext,
                    const std::vector<int>& params = std::vector<int>() );
 lua:
     cv.imencode( ext, img[, params[, buf]] ) -> retval, buf
+```
+
+### cv.imencodeWithMetadata
+
+```cpp
+bool cv::imencodeWithMetadata( const std::string&      ext,
+                               InputArray              img,
+                               const std::vector<int>& metadataTypes,
+                               InputArrayOfArrays      metadata,
+                               std::vector<uchar>&     buf,
+                               const std::vector<int>& params = std::vector<int>() );
+lua:
+    cv.imencodeWithMetadata( ext, img, metadataTypes, metadata[, params[, buf]] ) -> retval, buf
+```
+
+### cv.imencodeanimation
+
+```cpp
+bool cv::imencodeanimation( const std::string&      ext,
+                            const cv::Animation&    animation,
+                            std::vector<uchar>&     buf,
+                            const std::vector<int>& params = std::vector<int>() );
+lua:
+    cv.imencodeanimation( ext, animation[, params[, buf]] ) -> retval, buf
 ```
 
 ### cv.imencodemulti
@@ -26841,6 +27138,17 @@ void cv::imread( const std::string& filename,
                  int                flags = IMREAD_COLOR_BGR );
 lua:
     cv.imread( filename[, dst[, flags]] ) -> dst
+```
+
+### cv.imreadWithMetadata
+
+```cpp
+cv::Mat cv::imreadWithMetadata( const std::string&  filename,
+                                std::vector<int>&   metadataTypes,
+                                OutputArrayOfArrays metadata,
+                                int                 flags = IMREAD_ANYCOLOR );
+lua:
+    cv.imreadWithMetadata( filename[, metadata[, flags[, metadataTypes]]] ) -> retval, metadataTypes, metadata
 ```
 
 ### cv.imreadanimation
@@ -26891,6 +27199,18 @@ bool cv::imwrite( const std::string&      filename,
                   const std::vector<int>& params = std::vector<int>() );
 lua:
     cv.imwrite( filename, img[, params] ) -> retval
+```
+
+### cv.imwriteWithMetadata
+
+```cpp
+bool cv::imwriteWithMetadata( const std::string&      filename,
+                              InputArray              img,
+                              const std::vector<int>& metadataTypes,
+                              InputArrayOfArrays&     metadata,
+                              const std::vector<int>& params = std::vector<int>() );
+lua:
+    cv.imwriteWithMetadata( filename, img, metadataTypes, metadata[, params] ) -> retval
 ```
 
 ### cv.imwriteanimation
@@ -28639,6 +28959,19 @@ lua:
     cv.threshold( src, thresh, maxval, type[, dst] ) -> retval, dst
 ```
 
+### cv.thresholdWithMask
+
+```cpp
+double cv::thresholdWithMask( InputArray       src,
+                              InputOutputArray dst,
+                              InputArray       mask,
+                              double           thresh,
+                              double           maxval,
+                              int              type );
+lua:
+    cv.thresholdWithMask( src[, dst[, mask[, thresh[, maxval[, type]]]]] ) -> retval, dst
+```
+
 ### cv.trace
 
 ```cpp
@@ -29393,13 +29726,22 @@ lua:
     [propget, propput] oAnimation.frames
 ```
 
+### Animation.still\_image
+
+```cpp
+cv::Mat cv::Animation::still_image
+lua:
+    [propget, propput] oAnimation.still_image
+```
+
 ### cv.Animation.new
 
 ```cpp
-cv::Animation();
+cv::Animation( int        loopCount = 0,
+               cv::Scalar bgColor = Scalar() );
 lua:
-    cv.Animation.new() -> <cv::Animation object>
-    cv.Animation() -> <cv::Animation object>
+    cv.Animation.new( [loopCount[, bgColor]] ) -> <cv::Animation object>
+    cv.Animation( [loopCount[, bgColor]] ) -> <cv::Animation object>
 ```
 
 ## cv::AsyncArray
@@ -33586,6 +33928,27 @@ lua:
     oGraphicalCodeDetector:decode( img, points[, straight_code] ) -> retval, straight_code
 ```
 
+### cv.GraphicalCodeDetector.decodeBytes
+
+```cpp
+std::string cv::GraphicalCodeDetector::decode( InputArray  img,
+                                               InputArray  points,
+                                               OutputArray straight_code = noArray() ) const;
+lua:
+    oGraphicalCodeDetector:decodeBytes( img, points[, straight_code] ) -> retval, straight_code
+```
+
+### cv.GraphicalCodeDetector.decodeBytesMulti
+
+```cpp
+bool cv::GraphicalCodeDetector::decodeMulti( InputArray                img,
+                                             InputArray                points,
+                                             std::vector<std::string>& decoded_info,
+                                             OutputArrayOfArrays       straight_code = noArray() ) const;
+lua:
+    oGraphicalCodeDetector:decodeBytesMulti( img, points[, straight_code[, decoded_info]] ) -> retval, decoded_info, straight_code
+```
+
 ### cv.GraphicalCodeDetector.decodeMulti
 
 ```cpp
@@ -33614,6 +33977,27 @@ std::string cv::GraphicalCodeDetector::detectAndDecode( InputArray  img,
                                                         OutputArray straight_code = noArray() ) const;
 lua:
     oGraphicalCodeDetector:detectAndDecode( img[, points[, straight_code]] ) -> retval, points, straight_code
+```
+
+### cv.GraphicalCodeDetector.detectAndDecodeBytes
+
+```cpp
+std::string cv::GraphicalCodeDetector::detectAndDecode( InputArray  img,
+                                                        OutputArray points = noArray(),
+                                                        OutputArray straight_code = noArray() ) const;
+lua:
+    oGraphicalCodeDetector:detectAndDecodeBytes( img[, points[, straight_code]] ) -> retval, points, straight_code
+```
+
+### cv.GraphicalCodeDetector.detectAndDecodeBytesMulti
+
+```cpp
+bool cv::GraphicalCodeDetector::detectAndDecodeMulti( InputArray                img,
+                                                      std::vector<std::string>& decoded_info,
+                                                      OutputArray               points = noArray(),
+                                                      OutputArrayOfArrays       straight_code = noArray() ) const;
+lua:
+    oGraphicalCodeDetector:detectAndDecodeBytesMulti( img[, points[, straight_code[, decoded_info]]] ) -> retval, decoded_info, points, straight_code
 ```
 
 ### cv.GraphicalCodeDetector.detectAndDecodeMulti
@@ -33929,6 +34313,24 @@ lua:
 ```
 
 ## cv::IStreamReader
+
+### cv.IStreamReader.read
+
+```cpp
+long long cv::IStreamReader::read( char*     buffer,
+                                   long long size );
+lua:
+    oIStreamReader:read( buffer, size ) -> retval
+```
+
+### cv.IStreamReader.seek
+
+```cpp
+long long cv::IStreamReader::seek( long long offset,
+                                   int       origin );
+lua:
+    oIStreamReader:seek( offset, origin ) -> retval
+```
 
 ## cv::KAZE
 
@@ -37707,6 +38109,14 @@ lua:
 void cv::Mat::ravel( cv::Mat& out );
 lua:
     oMat:ravel( [out] ) -> out
+```
+
+### cv.Mat.reinterpret
+
+```cpp
+cv::Mat cv::Mat::reinterpret( int type );
+lua:
+    oMat:reinterpret( type ) -> retval
 ```
 
 ### cv.Mat.reserve
@@ -43875,14 +44285,6 @@ lua:
     oPyRotationWarper:warpPointBackward( pt, K, R ) -> retval
 ```
 
-```cpp
-cv::Point2f cv::PyRotationWarper::warpPointBackward( const cv::Point2f& pt,
-                                                     InputArray         K,
-                                                     InputArray         R );
-lua:
-    oPyRotationWarper:warpPointBackward( pt, K, R ) -> retval
-```
-
 ### cv.PyRotationWarper.warpRoi
 
 ```cpp
@@ -43922,6 +44324,14 @@ std::string cv::QRCodeDetector::detectAndDecodeCurved( InputArray  img,
                                                        OutputArray straight_qrcode = noArray() );
 lua:
     oQRCodeDetector:detectAndDecodeCurved( img[, points[, straight_qrcode]] ) -> retval, points, straight_qrcode
+```
+
+### cv.QRCodeDetector.getEncoding
+
+```cpp
+cv::QRCodeEncoder::ECIEncodings cv::QRCodeDetector::getEncoding( int codeIdx = 0 );
+lua:
+    oQRCodeDetector:getEncoding( [codeIdx] ) -> retval
 ```
 
 ### cv.QRCodeDetector.setEpsX
@@ -44153,6 +44563,14 @@ lua:
 static int cv::QRCodeEncoder::CORRECT_LEVEL_H
 lua:
     [propget] QRCodeEncoder.CORRECT_LEVEL_H
+```
+
+### QRCodeEncoder.ECI\_SHIFT\_JIS
+
+```cpp
+static int cv::QRCodeEncoder::ECI_SHIFT_JIS
+lua:
+    [propget] QRCodeEncoder.ECI_SHIFT_JIS
 ```
 
 ### QRCodeEncoder.ECI\_UTF8
@@ -46432,6 +46850,14 @@ lua:
     cv.TrackerDaSiamRPN.create( [parameters] ) -> retval
 ```
 
+```cpp
+static cv::Ptr<cv::TrackerDaSiamRPN> cv::TrackerDaSiamRPN::create( const cv::dnn::Net& siam_rpn,
+                                                                   const cv::dnn::Net& kernel_cls1,
+                                                                   const cv::dnn::Net& kernel_r1 );
+lua:
+    cv.TrackerDaSiamRPN.create( siam_rpn, kernel_cls1, kernel_r1 ) -> retval
+```
+
 ### cv.TrackerDaSiamRPN.getTrackingScore
 
 ```cpp
@@ -46499,6 +46925,12 @@ lua:
 static cv::Ptr<cv::TrackerGOTURN> cv::TrackerGOTURN::create( const cv::TrackerGOTURN::Params& parameters = TrackerGOTURN::Params() );
 lua:
     cv.TrackerGOTURN.create( [parameters] ) -> retval
+```
+
+```cpp
+static cv::Ptr<cv::TrackerGOTURN> cv::TrackerGOTURN::create( const cv::dnn::Net& model );
+lua:
+    cv.TrackerGOTURN.create( model ) -> retval
 ```
 
 ## cv::TrackerGOTURN::Params
@@ -46615,6 +47047,13 @@ lua:
     cv.TrackerNano.create( [parameters] ) -> retval
 ```
 
+```cpp
+static cv::Ptr<cv::TrackerNano> cv::TrackerNano::create( const cv::dnn::Net& backbone,
+                                                         const cv::dnn::Net& neckhead );
+lua:
+    cv.TrackerNano.create( backbone, neckhead ) -> retval
+```
+
 ### cv.TrackerNano.getTrackingScore
 
 ```cpp
@@ -46674,6 +47113,15 @@ lua:
 static cv::Ptr<cv::TrackerVit> cv::TrackerVit::create( const cv::TrackerVit::Params& parameters = TrackerVit::Params() );
 lua:
     cv.TrackerVit.create( [parameters] ) -> retval
+```
+
+```cpp
+static cv::Ptr<cv::TrackerVit> cv::TrackerVit::create( const cv::dnn::Net& model,
+                                                       cv::Scalar          meanvalue = Scalar(0.485, 0.456, 0.406),
+                                                       cv::Scalar          stdvalue = Scalar(0.229, 0.224, 0.225),
+                                                       float               tracking_score_threshold = 0.20f );
+lua:
+    cv.TrackerVit.create( model[, meanvalue[, stdvalue[, tracking_score_threshold]]] ) -> retval
 ```
 
 ### cv.TrackerVit.getTrackingScore
@@ -48864,6 +49312,15 @@ lua:
     cv.aruco.ArucoDetector( [dictionary[, detectorParams[, refineParams]]] ) -> <cv::aruco::ArucoDetector object>
 ```
 
+```cpp
+cv::aruco::ArucoDetector( const std::vector<cv::aruco::Dictionary>& dictionaries,
+                          const cv::aruco::DetectorParameters&      detectorParams = DetectorParameters(),
+                          const cv::aruco::RefineParameters&        refineParams = RefineParameters() );
+lua:
+    cv.aruco.ArucoDetector.new( dictionaries[, detectorParams[, refineParams]] ) -> <cv::aruco::ArucoDetector object>
+    cv.aruco.ArucoDetector( dictionaries[, detectorParams[, refineParams]] ) -> <cv::aruco::ArucoDetector object>
+```
+
 ### cv.aruco.ArucoDetector.detectMarkers
 
 ```cpp
@@ -48875,12 +49332,32 @@ lua:
     oArucoDetector:detectMarkers( image[, corners[, ids[, rejectedImgPoints]]] ) -> corners, ids, rejectedImgPoints
 ```
 
+### cv.aruco.ArucoDetector.detectMarkersMultiDict
+
+```cpp
+void cv::aruco::ArucoDetector::detectMarkersMultiDict( InputArray          image,
+                                                       OutputArrayOfArrays corners,
+                                                       OutputArray         ids,
+                                                       OutputArrayOfArrays rejectedImgPoints = noArray(),
+                                                       OutputArray         dictIndices = noArray() ) const;
+lua:
+    oArucoDetector:detectMarkersMultiDict( image[, corners[, ids[, rejectedImgPoints[, dictIndices]]]] ) -> corners, ids, rejectedImgPoints, dictIndices
+```
+
 ### cv.aruco.ArucoDetector.getDetectorParameters
 
 ```cpp
 cv::aruco::DetectorParameters cv::aruco::ArucoDetector::getDetectorParameters() const;
 lua:
     oArucoDetector:getDetectorParameters() -> retval
+```
+
+### cv.aruco.ArucoDetector.getDictionaries
+
+```cpp
+std::vector<cv::aruco::Dictionary> cv::aruco::ArucoDetector::getDictionaries() const;
+lua:
+    oArucoDetector:getDictionaries() -> retval
 ```
 
 ### cv.aruco.ArucoDetector.getDictionary
@@ -48928,6 +49405,14 @@ lua:
 void cv::aruco::ArucoDetector::setDetectorParameters( const cv::aruco::DetectorParameters& detectorParameters );
 lua:
     oArucoDetector:setDetectorParameters( detectorParameters ) -> None
+```
+
+### cv.aruco.ArucoDetector.setDictionaries
+
+```cpp
+void cv::aruco::ArucoDetector::setDictionaries( const std::vector<cv::aruco::Dictionary>& dictionaries );
+lua:
+    oArucoDetector:setDictionaries( dictionaries ) -> None
 ```
 
 ### cv.aruco.ArucoDetector.setDictionary
@@ -49227,6 +49712,14 @@ lua:
 bool cv::aruco::CharucoParameters::tryRefineMarkers
 lua:
     [propget, propput] oCharucoParameters.tryRefineMarkers
+```
+
+### CharucoParameters.checkMarkers
+
+```cpp
+bool cv::aruco::CharucoParameters::checkMarkers
+lua:
+    [propget, propput] oCharucoParameters.checkMarkers
 ```
 
 ### cv.aruco.CharucoParameters.new
@@ -50906,6 +51399,13 @@ lua:
 ```
 
 ### cv.cuda.GpuMat.convertTo
+
+```cpp
+void cv::cuda::GpuMat::convertTo( cv::cuda::GpuMat& dst,
+                                  int               rtype ) const;
+lua:
+    oGpuMat:convertTo( rtype[, dst] ) -> dst
+```
 
 ```cpp
 void cv::cuda::GpuMat::convertTo( cv::cuda::GpuMat& dst,
@@ -53996,7 +54496,7 @@ cv::dnn::Image2BlobParams( const cv::Scalar&         scalefactor,
                            bool                      swapRB = false,
                            int                       ddepth = CV_32F,
                            cv::dnn::DataLayout       datalayout = DNN_LAYOUT_NCHW,
-                           cv::dnn::ImagePaddingMode mode = DNN_PMODE_NULL,
+                           cv::dnn::ImagePaddingMode mode = dnn::DNN_PMODE_NULL,
                            cv::Scalar                borderValue = 0.0 );
 lua:
     cv.dnn.Image2BlobParams.new( scalefactor[, size[, mean[, swapRB[, ddepth[, datalayout[, mode[, borderValue]]]]]]] ) -> <cv::dnn::Image2BlobParams object>
@@ -54572,6 +55072,16 @@ lua:
     cv.dnn.Net.readFromModelOptimizer( bufferModelConfig, bufferWeights ) -> retval
 ```
 
+### cv.dnn.Net.registerOutput
+
+```cpp
+int cv::dnn::Net::registerOutput( const std::string& outputName,
+                                  int                layerId,
+                                  int                outputPort );
+lua:
+    oNet:registerOutput( outputName, layerId, outputPort ) -> retval
+```
+
 ### cv.dnn.Net.setHalideScheduler
 
 ```cpp
@@ -55112,6 +55622,26 @@ bool cv::fisheye::solvePnP( InputArray       objectPoints,
                             cv::TermCriteria criteria = TermCriteria(TermCriteria::MAX_ITER + TermCriteria::EPS, 10, 1e-8) );
 lua:
     cv.fisheye.solvePnP( objectPoints, imagePoints, cameraMatrix, distCoeffs[, rvec[, tvec[, useExtrinsicGuess[, flags[, criteria]]]]] ) -> retval, rvec, tvec
+```
+
+### cv.fisheye.solvePnPRansac
+
+```cpp
+bool cv::fisheye::solvePnPRansac( InputArray       objectPoints,
+                                  InputArray       imagePoints,
+                                  InputArray       cameraMatrix,
+                                  InputArray       distCoeffs,
+                                  OutputArray      rvec,
+                                  OutputArray      tvec,
+                                  bool             useExtrinsicGuess = false,
+                                  int              iterationsCount = 100,
+                                  float            reprojectionError = 8.0,
+                                  double           confidence = 0.99,
+                                  OutputArray      inliers = noArray(),
+                                  int              flags = SOLVEPNP_ITERATIVE,
+                                  cv::TermCriteria criteria = TermCriteria(TermCriteria::MAX_ITER + TermCriteria::EPS, 10, 1e-8) );
+lua:
+    cv.fisheye.solvePnPRansac( objectPoints, imagePoints, cameraMatrix, distCoeffs[, rvec[, tvec[, useExtrinsicGuess[, iterationsCount[, reprojectionError[, confidence[, inliers[, flags[, criteria]]]]]]]]] ) -> retval, rvec, tvec, inliers
 ```
 
 ### cv.fisheye.stereoCalibrate

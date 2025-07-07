@@ -11,6 +11,12 @@ bash -c 'source scripts/tasks.sh && stash_push'
 # ================================
 bash -c 'source scripts/tasks.sh && tidy'
 
+# Update checks:
+#   - replace CMAKE_SOURCE_DIR with OPENCV_SOURCE_DIR
+#   - replace CMAKE_BINARY_DIR with OPENCV_BINARY_DIR
+#   - check modules/core/include/opencv2/core/mat.hpp changes
+#   - check python changes
+
 
 # ================================
 # bump a new version
@@ -62,7 +68,6 @@ bash -c 'source scripts/tasks.sh && wsl -c "source scripts/wsl_init.sh && chmod 
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-binary-ubuntu-20.04 ubuntu:20.04 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-binary-ubuntu-22.04 ubuntu:22.04 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-binary-ubuntu-24.04 ubuntu:24.04 -- object_detection.lua'
-bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-binary-debian-10 debian:10 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-binary-debian-11 debian:11 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-binary-debian-12 debian:12 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-fedora-38 fedora:38 -- object_detection.lua'
@@ -70,6 +75,7 @@ bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-fedora-40 fedora:40 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-almalinux-8 amd64/almalinux:8 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-almalinux-9 amd64/almalinux:9 -- object_detection.lua'
+bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-almalinux-10 amd64/almalinux:10 -- object_detection.lua'
 
 
 # ================================
@@ -86,7 +92,7 @@ bash -c 'source scripts/tasks.sh && test_prepublished_source_wsl'
 # Docker images README.md install source rock
 # ================================
 bash -c 'source scripts/tasks.sh && test_prepublished_source_debian test-source-ubuntu-22.04 ubuntu:22.04 -- object_detection.lua'
-bash -c 'source scripts/tasks.sh && test_prepublished_source_debian test-source-debian-11 debian:11 -- object_detection.lua'
+bash -c 'source scripts/tasks.sh && test_prepublished_source_debian test-source-debian-12 debian:12 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_source_fedora test-source-fedora-39 fedora:39 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_source_fedora test-source-almalinux-9 amd64/almalinux:9 -- object_detection.lua'
 

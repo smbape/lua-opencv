@@ -176,7 +176,7 @@ DOCKER_IMAGE_MANY_LINUX_aarch64=quay.io/opencv-ci/opencv-python-manylinux2014-aa
 
 DIST_VERSION=${DIST_VERSION:-1}
 WSL_DISTNAME=${WSL_DISTNAME:-Ubuntu}
-OPENCV_VERSION=${OPENCV_VERSION:-4.11.0}
+OPENCV_VERSION=${OPENCV_VERSION:-4.12.0}
 WSL_EXCLUDED_TESTS=${WSL_EXCLUDED_TESTS:-"'!02-video-capture-camera.lua' '!threshold_inRange.lua' '!objectDetection.lua'"}
 CONTAINER_NAME=${CONTAINER_NAME:-${CONTAINER_NAME_MANY_LINUX_x86_64}}
 DOCKER_IMAGE=${DOCKER_IMAGE:-${DOCKER_IMAGE_MANY_LINUX_x86_64}}
@@ -466,7 +466,8 @@ function set_url_github() {
 }
 
 function push_all() {
-    git push --all --follow-tags origin && git push --all --follow-tags github
+    git push --all --progress  -- origin && git push --tags --progress  -- origin && \
+    git push --all --progress  -- github && git push --tags --progress  -- github
 }
 
 function prepublish_stash_push() {
@@ -1125,7 +1126,7 @@ test -d ${projectDir}/out/test/opencv/.git || git clone --depth 1 --branch ${OPE
 # ================================
 if [ "${projectDir}" != "${PWD}" -a ! -L out/test/opencv ]; then
     mkdir -p out/test || exit $?
-    test-e out/test/opencv && rm -f out/test/opencv
+    test -e out/test/opencv && rm -f out/test/opencv
     ln -s ${projectDir}/out/test/opencv out/test/opencv || exit $?
 fi
 

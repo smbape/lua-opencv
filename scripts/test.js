@@ -13,11 +13,23 @@ const WORKSPACE_ROOT = process.env.WORKSPACE_ROOT ? sysPath.resolve(process.env.
 const LUAROCKS_BINDIR = process.env.LUAROCKS_BINDIR ? sysPath.resolve(process.env.LUAROCKS_BINDIR) : sysPath.join(WORKSPACE_ROOT, "luarocks");
 const luarcoks = sysPath.join(LUAROCKS_BINDIR, `luarocks${ batchSuffix }`);
 
-const lua_interpreter = spawnSync(luarcoks, ["config", "lua_interpreter"]).stdout.toString().trim();
-const LUA_BINDIR = spawnSync(luarcoks, ["config", "variables.LUA_BINDIR"]).stdout.toString().trim();
-const LUAROCKS_SYSCONFDIR = spawnSync(luarcoks, ["config", "sysconfdir"]).stdout.toString().trim();
+const spawnShellSync = (cmd, args, options = {}) => {
+    // https://nodejs.org/docs/latest-v18.x/api/child_process.html#spawning-bat-and-cmd-files-on-windows
+    if (os.platform() === "win32" && (cmd.endsWith(".bat") || cmd.endsWith(".cmd"))) {
+        if (cmd.includes(" ")) {
+            cmd = `"${ cmd }"`;
+        }
+        options.shell = true;
+    }
+
+    return spawnSync(cmd, args, options);
+};
+
+const lua_interpreter = spawnShellSync(luarcoks, ["config", "lua_interpreter"]).stdout.toString().trim();
+const LUA_BINDIR = spawnShellSync(luarcoks, ["config", "variables.LUA_BINDIR"]).stdout.toString().trim();
+const LUAROCKS_SYSCONFDIR = spawnShellSync(luarcoks, ["config", "sysconfdir"]).stdout.toString().trim();
 const LUA_BINDIR_DEBUG = LUA_BINDIR.replace("Release", "Debug");
-const ABIVER = spawnSync(luarcoks, ["config", "lua_version"]).stdout.toString().trim();
+const ABIVER = spawnShellSync(luarcoks, ["config", "lua_version"]).stdout.toString().trim();
 const LUA_MODULES = sysPath.join(LUAROCKS_BINDIR, "lua_modules");
 
 const PROJECT_DIR = WORKSPACE_ROOT;
@@ -194,13 +206,22 @@ const run = (file, env, options, next) => {
 
     console.log(cmd);
 
-    args.push({
+    const opts = {
         stdio: options.stdio,
         env,
         cwd: options.cwd,
-    });
+    };
 
-    const child = spawn(...args);
+    // https://nodejs.org/docs/latest-v18.x/api/child_process.html#spawning-bat-and-cmd-files-on-windows
+    if (os.platform() === "win32" && (args[0].endsWith(".bat") || args[0].endsWith(".cmd"))) {
+        if (args[0].includes(" ")) {
+            args[0] = `"${ args[0] }"`;
+        }
+        opts.shell = true;
+    }
+
+    const child = spawn(...args, opts);
+
     child.on("error", err => {
         if (next !== null) {
             next(err);

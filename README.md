@@ -18,7 +18,7 @@ Therefore the [OpenCV documentation](https://docs.opencv.org/4.x/index.html) sho
       - [Debian, Ubuntu](#debian-ubuntu)
       - [Fedora](#fedora)
       - [Almalinux 8](#almalinux-8)
-      - [Almalinux 9](#almalinux-9)
+      - [Almalinux 9, 10](#almalinux-9-10)
   - [How to install](#how-to-install)
 - [Examples](#examples)
   - [Show an image](#show-an-image)
@@ -104,7 +104,7 @@ sudo dnf install -y ffmpeg-devel patchelf && \
 source /opt/rh/gcc-toolset-12/enable
 ```
 
-##### Almalinux 9
+##### Almalinux 9, 10
 
 ```sh
 sudo dnf install -y curl gcc gcc-c++ git \
@@ -129,11 +129,11 @@ luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/d
 Or to specify the target lua version with one of the following commands
 
 ```sh
-luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.11.0luajit2.1
-luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.11.0lua5.4
-luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.11.0lua5.3
-luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.11.0lua5.2
-luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.11.0lua5.1
+luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.12.0luajit2.1
+luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.12.0lua5.4
+luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.12.0lua5.3
+luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.12.0lua5.2
+luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.12.0lua5.1
 ```
 
 Those prebuilt binaries should work on Windows and many linux distributions and have been tested on:
@@ -141,7 +141,6 @@ Those prebuilt binaries should work on Windows and many linux distributions and 
   - Ubuntu 20.04
   - Ubuntu 22.04
   - Ubuntu 24.04
-  - Debian 10
   - Debian 11
   - Debian 12
   - Fedora 38
@@ -149,11 +148,12 @@ Those prebuilt binaries should work on Windows and many linux distributions and 
   - Fedora 40
   - Almalinux 8
   - Almalinux 9
+  - Almalinux 10
 
 If none of the above works for you, then install the source rock with
 
 ```sh
-luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.11.0
+luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.12.0
 ```
 
 ## Examples
@@ -330,7 +330,7 @@ All the examples in the samples directory can be run by folling theses instructi
   - Install [Ninja](https://ninja-build.org/)
   - Install needed packages:
     - Debian, Ubuntu: `sudo apt install -y curl g++ gcc git libgl1 libglib2.0-0 libreadline-dev libsm6 libxext6 make python3-pip python3-venv unzip wget`
-    - Fedora, Almalinux 9: `sudo dnf install -y curl gcc gcc-c++ git glib2 readline-devel libglvnd-glx libSM libXext make patch python3-pip unzip wget`
+    - Fedora, Almalinux 9, Almalinux 10: `sudo dnf install -y curl gcc gcc-c++ git glib2 readline-devel libglvnd-glx libSM libXext make patch python3-pip unzip wget`
     - Almalinux 8: `sudo dnf install -y curl gcc gcc-c++ git glib2 readline-devel libglvnd-glx libSM libXext make patch python3.12-pip unzip wget`
 
 ### Initialize the project
@@ -338,14 +338,14 @@ All the examples in the samples directory can be run by folling theses instructi
 #### Windows
 
 ```cmd
-git clone --depth 1 --branch 4.11.0 https://github.com/opencv/opencv.git
-git clone --depth 1 --branch v0.1.0 https://github.com/smbape/lua-opencv.git
+git clone --depth 1 --branch 4.12.0 https://github.com/opencv/opencv.git
+git clone --depth 1 --branch v0.2.0 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
 @REM build.bat "-DLua_VERSION=luajit-2.1" --target luajit --install
 @REM available versions are 5.1, 5.2, 5.3, 5.4
 build.bat "-DLua_VERSION=5.4" --target lua --install
 build.bat "-DLua_VERSION=5.4" --target luarocks
-@REM luarocks\luarocks.bat install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.11.0luajit2.1
+@REM luarocks\luarocks.bat install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.12.0luajit2.1
 luarocks\luarocks.bat install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua
 luarocks\luarocks.bat install --deps-only samples\samples-scm-1.rockspec
 npm ci
@@ -355,14 +355,14 @@ node scripts\test.js --Release
 #### Linux
 
 ```sh
-git clone --depth 1 --branch 4.11.0 https://github.com/opencv/opencv.git
-git clone --depth 1 --branch v0.1.0 https://github.com/smbape/lua-opencv.git
+git clone --depth 1 --branch 4.12.0 https://github.com/opencv/opencv.git
+git clone --depth 1 --branch v0.2.0 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
 # ./build.sh "-DLua_VERSION=luajit-2.1" --target luajit --install
 # available versions are 5.1, 5.2, 5.3, 5.4
 ./build.sh "-DLua_VERSION=5.4" --target lua --install
 ./build.sh "-DLua_VERSION=5.4" --target luarocks
-# ./luarocks/luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.11.0luajit2.1
+# ./luarocks/luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.12.0luajit2.1
 ./luarocks/luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua
 ./luarocks/luarocks install --deps-only samples/samples-scm-1.rockspec
 npm ci

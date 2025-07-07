@@ -49,6 +49,7 @@ exports.CPP_TYPES = new Map([
     ["GInferListOutputs", "cv::detail::GInferOutputsTyped<cv::GArray<cv::GMat>>"],
     ["String", "std::string"],
     ["string", "std::string"],
+    ["NativeByteArray", "std::string"],
 
     ["LayerId", "dnn::DictValue"],
 

@@ -4,7 +4,7 @@ package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:su
 
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.11.0/samples/python/tutorial_code/TrackingMotion/generic_corner_detector/cornerDetector_Demo.py
+    https://github.com/opencv/opencv/blob/4.12.0/samples/python/tutorial_code/TrackingMotion/generic_corner_detector/cornerDetector_Demo.py
 --]]
 
 local argparse = require("argparse")

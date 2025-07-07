@@ -139,7 +139,7 @@ function new_version.command(args)
 
       if args.platform == "win32" then
          -- add ffmpeg dll
-         local opencv_videoio_ffmpeg = "opencv_videoio_ffmpeg4110_64.dll"
+         local opencv_videoio_ffmpeg = "opencv_videoio_ffmpeg4120_64.dll"
          local ffmpeg_fullpath = prefix .. "bin/" .. opencv_videoio_ffmpeg
 
          local OpenCV_DIR = os.getenv("OpenCV_DIR")

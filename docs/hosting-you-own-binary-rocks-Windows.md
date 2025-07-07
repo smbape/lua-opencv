@@ -119,7 +119,7 @@ set PATH=D:\luarocks-binaries-custom\lua-opencv\out\prepublish\build\opencv_lua-
 
 ```cmd
 chcp 65001
-git clone --depth 1 --branch 4.11.0 https://github.com/opencv/opencv_extra.git "D:\luarocks-binaries-custom\opencv_extra"
+git clone --depth 1 --branch 4.12.0 https://github.com/opencv/opencv_extra.git "D:\luarocks-binaries-custom\opencv_extra"
 mkdir "D:\luarocks-binaries-custom\test"
 cd /d "D:\luarocks-binaries-custom\test"
 luarocks --lua-version "5.1" --lua-dir "D:\luarocks-binaries-custom\lua-opencv\out\prepublish\build\opencv_lua-custom\out\install\x64-Release" init --lua-versions "5.1,5.2,5.3,5.4"
@@ -215,7 +215,7 @@ Open a `x64 Native Tools Command Prompt for VS 2022` terminal
 
 ```cmd
 cd /d "D:\luarocks-binaries-custom\test"
-git clone --depth 1 --branch 4.11.0 https://github.com/opencv/opencv.git "D:\luarocks-binaries-custom\opencv"
+git clone --depth 1 --branch 4.12.0 https://github.com/opencv/opencv.git "D:\luarocks-binaries-custom\opencv"
 luarocks.bat install --deps-only D:\luarocks-binaries-custom\lua-opencv\samples\samples-scm-1.rockspec
 lua.bat D:\luarocks-binaries-custom\lua-opencv\samples\dnn\object_detection\object_detection.lua ssd_tf --input Megamind.avi --backend 5 --target 6
 ```

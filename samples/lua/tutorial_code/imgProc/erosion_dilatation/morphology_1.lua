@@ -4,7 +4,7 @@ package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:su
 
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.11.0/samples/python/tutorial_code/imgProc/erosion_dilatation/morphology_1.py
+    https://github.com/opencv/opencv/blob/4.12.0/samples/python/tutorial_code/imgProc/erosion_dilatation/morphology_1.py
 --]]
 
 local argparse = require("argparse")
@@ -12,9 +12,9 @@ local opencv_lua = require("init")
 local cv = opencv_lua.cv
 
 local src = nil
-local max_elem = 2
+local max_elem = 3
 local max_kernel_size = 21
-local title_trackbar_element_shape = 'Element:\n 0: Rect \n 1: Cross \n 2: Ellipse'
+local title_trackbar_element_shape = 'Element:\n 0: Rect \n 1: Cross \n 2: Ellipse \n 3: Diamond'
 local title_trackbar_kernel_size = 'Kernel size:\n 2n + 1'
 local title_erosion_window = 'Erosion Demo'
 local title_dilation_window = 'Dilation Demo'
@@ -28,6 +28,8 @@ local function morph_shape(val)
         return cv.MORPH_CROSS
     elseif val == 2 then
         return cv.MORPH_ELLIPSE
+    elseif val == 3 then
+        return cv.MORPH_DIAMOND
     end
 end
 
