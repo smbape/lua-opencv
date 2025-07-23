@@ -78,7 +78,7 @@ vcpkg install freetype:x64-windows harfbuzz:x64-windows
 ## Download the source code
 
 ```sh
-git clone --depth 1 --branch v0.1.0 https://github.com/smbape/lua-opencv.git /d/luarocks-binaries-custom/lua-opencv && \
+git clone --depth 1 --branch v0.2.0 https://github.com/smbape/lua-opencv.git /d/luarocks-binaries-custom/lua-opencv && \
 cd /d/luarocks-binaries-custom/lua-opencv && \
 npm ci
 ```
