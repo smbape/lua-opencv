@@ -7,9 +7,12 @@ namespace LUA_MODULE_NAME {
 	// extract_holder
 	// ================================
 
-	template<typename T, typename V>
-	inline decltype(auto) extract_holder(T& holder, V*) {
-		if constexpr (std::is_same_v<std::remove_cvref_t<T>, V>) {
+	template<typename H, typename V>
+	inline decltype(auto) extract_holder(H& holder, V*) {
+		if constexpr (has_extract_holder_v<std::remove_cvref_t<H>, V>) {
+			return extract_holder_info<std::remove_cvref_t<H>, V>::extract(holder);
+		}
+		else if constexpr (std::is_same_v<std::remove_cvref_t<H>, V>) {
 			return holder;
 		}
 		else if constexpr (std::is_enum_v<V>) {
@@ -63,65 +66,22 @@ namespace LUA_MODULE_NAME {
 	// templated: lua_to, lua_push
 	// ================================
 
-	template<std::size_t I, typename... _Ts>
-	inline bool lua_userdata_signature_is(lua_State* L, int index, const void* signature) {
-		using _Tuple = typename std::tuple<_Ts...>;
-		using T = typename std::tuple_element<0, _Tuple>::type;
-		using Base = typename std::tuple_element<I, _Tuple>::type;
-
-		if constexpr (I == 0) {
-			if (signature == usertype_info<T>::signature) {
-				return true;
-			}
-
-			if constexpr (requires(const void* signature) { usertype_info<T>::derives.count(signature); }) {
-				// Upcasting
-				if (usertype_info<T>::derives.count(signature)) {
-					return true;
-				}
-			}
-		} else if constexpr (is_usertype_v<Base>) {
-			if (signature == usertype_info<Base>::signature) {
-				// Downcasting
-				auto ptr = static_cast<std::shared_ptr<Base>*>(lua_touserdata(L, index));
-				if (std::type_index(typeid(**ptr)) == std::type_index(typeid(T))) {
-					return true;
-				}
-			}
-		}
-
-		if constexpr (I != sizeof...(_Ts) - 1) {
-			return lua_userdata_signature_is<I + 1, _Ts...>(L, index, signature);
-		} else {
-			return false;
-		}
-	}
-
-	template<typename... _Ts>
-	inline bool lua_userdata_signature_is(lua_State* L, int index) {
-		if (!lua_isuserdata(L, index) || !lua_getmetatable(L, index)) {
-			return false;
-		}
-
-		auto signature = lua_topointer(L, -1);
-		lua_pop(L, 1);
-
-		return lua_userdata_signature_is<0, _Ts...>(L, index, signature);
-	}
-
 	template<std::size_t I, typename T, typename... _Ts>
-	inline std::shared_ptr<T> lua_userdata_signature_to(lua_State* L, int index, const void* signature) {
+	inline std::shared_ptr<T> lua_userdata_signature_to(lua_State* L, int index, const void* signature, bool& is_valid) {
 		using SharedPtr = std::shared_ptr<T>;
 		using _Tuple = typename std::tuple<_Ts...>;
 
 		if constexpr (I == 0) {
 			if (signature == usertype_info<T>::signature) {
+				is_valid = true;
 				return *static_cast<SharedPtr*>(lua_touserdata(L, index));
 			}
 
 			if constexpr (requires(const void* signature) { usertype_info<T>::derives.count(signature); }) {
 				// Upcasting
 				if (usertype_info<T>::derives.count(signature)) {
+					is_valid = true;
+
 					// https://stackoverflow.com/questions/40336882/c-reinterpret-cast-of-stdshared-ptr-reference-to-optimize#40345780
 					// Shared pointer to derived type is implicitly convertible (1) to a shared pointer to base class.
 					return *static_cast<SharedPtr*>(lua_touserdata(L, index));
@@ -131,6 +91,8 @@ namespace LUA_MODULE_NAME {
 			using Base = typename std::tuple_element<I - 1, _Tuple>::type;
 			if constexpr (is_usertype_v<Base>) {
 				if (signature == usertype_info<Base>::signature) {
+					is_valid = true;
+
 					// Downcasting
 					auto ptr = static_cast<std::shared_ptr<Base>*>(lua_touserdata(L, index));
 					if (std::type_index(typeid(**ptr)) == std::type_index(typeid(T))) {
@@ -141,22 +103,24 @@ namespace LUA_MODULE_NAME {
 		}
 
 		if constexpr (I != sizeof...(_Ts)) {
-			return lua_userdata_signature_to<I + 1, T, _Ts...>(L, index, signature);
+			return lua_userdata_signature_to<I + 1, T, _Ts...>(L, index, signature, is_valid);
 		} else {
+			is_valid = false;
 			return SharedPtr();
 		}
 	}
 
 	template<typename T, typename... _Ts>
-	inline std::shared_ptr<T> lua_userdata_signature_to(lua_State* L, int index) {
-		if (!lua_getmetatable(L, index)) {
+	inline std::shared_ptr<T> lua_userdata_signature_to(lua_State* L, int index, bool& is_valid) {
+		if (!lua_isuserdata(L, index) || !lua_getmetatable(L, index)) {
+			is_valid = false;
 			return std::shared_ptr<T>();
 		}
 
 		auto signature = lua_topointer(L, -1);
 		lua_pop(L, 1);
 
-		return lua_userdata_signature_to<0, T, _Ts...>(L, index, signature);
+		return lua_userdata_signature_to<0, T, _Ts...>(L, index, signature, is_valid);
 	}
 
 	template<typename T>
@@ -190,7 +154,9 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename T>
-	inline int lua_push(lua_State* L, T* ptr) {
+	inline
+	typename std::enable_if<!std::is_function_v<T>, int>::type
+	lua_push(lua_State* L, const T* &ptr) {
 		return lua_push(L, reference_internal(ptr));
 	}
 
@@ -734,55 +700,18 @@ namespace LUA_MODULE_NAME {
 
 			FunctionInvoker() = default;
 
-			FunctionInvoker(lua_State* L, int index) {
-				thread_id = std::this_thread::get_id();
-				bool is_valid;
-				fn.assign(L, lua_to(L, index, static_cast<Function*>(nullptr), is_valid));
-			}
-
-			~FunctionInvoker() = default;
-
-			R operator()(Args&&... args) {
-				lua_State* L = fn.L;
-				lua_push(L, fn);
-
-				// https://stackoverflow.com/questions/7230621/how-can-i-iterate-over-a-packed-variadic-template-argument-list/60136761#60136761
-				int nargs = 0;
-				([&] {
-					lua_push(L, args);
-					nargs++;
-					} (), ...);
-				lua_call(L, nargs, 1);
-
-				bool is_valid;
-				R res = lua_to(L, -1, static_cast<R*>(nullptr), is_valid);
-				lua_pop(L, 1);
-
-				if (!is_valid) {
-					luaL_error(L, "Callback returned an invalid type");
+			FunctionInvoker(lua_State* L, int index, bool& is_valid) {
+				this->thread_id = std::this_thread::get_id();
+				auto fn = lua_to(L, index, static_cast<Function*>(nullptr), is_valid);
+				if (is_valid) {
+					this->fn.assign(L, fn);
 				}
-
-				return std::move(res);
-			}
-		};
-
-		template <class... Args>
-		struct FunctionInvoker<void, Args...> {
-			std::thread::id thread_id;
-			Function fn;
-
-			FunctionInvoker() = default;
-
-			FunctionInvoker(lua_State* L, int index) {
-				thread_id = std::this_thread::get_id();
-				bool is_valid;
-				fn.assign(L, lua_to(L, index, static_cast<Function*>(nullptr), is_valid));
 			}
 
 			~FunctionInvoker() = default;
 
 			template <class... _Ts>
-			void invoke(lua_State* L, _Ts&&... args) {
+			static void invoke(Function& fn, lua_State* L, _Ts&&... args) {
 				lua_push(L, fn);
 
 				// https://stackoverflow.com/questions/7230621/how-can-i-iterate-over-a-packed-variadic-template-argument-list/60136761#60136761
@@ -791,19 +720,38 @@ namespace LUA_MODULE_NAME {
 					lua_push(L, args);
 					nargs++;
 					} (), ...);
-				lua_call(L, nargs, 0);
+
+				if constexpr (std::is_same_v<R, void>) {
+					lua_call(L, nargs, 0);
+				} else {
+					lua_call(L, nargs, 1);
+				}
 			}
 
-			void operator()(Args&&... args) {
-				if (thread_id != std::this_thread::get_id()) {
-					// always copy args, being an rvalue or an lvalue
-					registerCallbackOnce(std::move([this, args_tuple = std::tuple<typename std::decay<Args>::type...>(std::forward<Args>(args)...)] (lua_State* L, void*) {
-						std::apply([this, L](auto&... args) {
-							invoke(L, args...);
-						}, args_tuple);
-					}));
+			R operator()(Args&&... args) {
+				if constexpr (std::is_same_v<R, void>) {
+					if (thread_id != std::this_thread::get_id()) {
+						// always copy args, being an rvalue or an lvalue
+						registerCallbackOnce(std::move([this, args_tuple = std::tuple<typename std::decay<Args>::type...>(std::forward<Args>(args)...)] (lua_State* L, void*) {
+							std::apply([this, L](auto&... args) {
+								invoke(fn, L, args...);
+							}, args_tuple);
+						}));
+					} else {
+						invoke(fn, fn.L, std::forward<Args>(args)...);
+					}
 				} else {
-					invoke(fn.L, std::forward<Args>(args)...);
+					invoke(fn, fn.L, std::forward<Args>(args)...);
+
+					lua_State* L = fn.L;
+					bool is_valid;
+					R res = lua_to(L, -1, static_cast<R*>(nullptr), is_valid);
+					if (!is_valid) {
+						luaL_typeerror(L, -1, internal::GetTypeName<R>());
+					}
+
+					lua_pop(L, 1);
+					return std::move(res);
 				}
 			}
 		};
@@ -811,23 +759,62 @@ namespace LUA_MODULE_NAME {
 
 	template<class R, class... Args>
 	inline std::function<R(Args...)> lua_to(lua_State* L, int index, std::function<R(Args...)>*, bool& is_valid) {
-		is_valid = lua_isfunction(L, index);
-		if (!is_valid) {
-			return detail::FunctionInvoker<R, Args...>();
-		}
-
-		detail::FunctionInvoker<R, Args...> fx(L, index);
+		detail::FunctionInvoker<R, Args...> fx(L, index, is_valid);
 		return fx;
 	}
 
 
+	// ================================
+	// misc functions
+	// ================================
+
 	template<typename T>
 	int lua_method_isinstance(lua_State* L) {
-		bool is_valid = lua_gettop(L) == 1 && lua_isuserdata(L, 1);
-		if (is_valid) {
-			lua_to(L, 1, static_cast<T*>(nullptr), is_valid);
-		}
+		bool is_valid;
+		lua_userdata_to(L, 1, static_cast<T*>(nullptr), is_valid);
 		return lua_push(L, is_valid);
+	}
+
+	template<typename T>
+	int lua_method__self(lua_State* L) {
+		auto vargc = lua_gettop(L);
+
+		if (vargc == 0) {
+			return luaL_error(L, "self is not defined");
+		}
+
+		if (vargc != 1) {
+			return luaL_error(L, "too many arguments");
+		}
+
+		bool is_valid;
+		const auto userdata = lua_userdata_to(L, 1, static_cast<T*>(nullptr), is_valid);
+		if (!is_valid) {
+			lua_pushnil(L);
+			return 1;
+		}
+
+		lua_pushlightuserdata(L, reinterpret_cast<void*>(userdata.get()));
+		return 1;
+	}
+
+	template<typename T>
+	int lua_method__cast(lua_State* L) {
+		auto vargc = lua_gettop(L);
+
+		if (vargc == 0) {
+			return luaL_error(L, "self is not defined");
+		}
+
+		if (vargc != 1) {
+			return luaL_error(L, "too many arguments");
+		}
+
+		if (!lua_isuserdata(L, 1) && !lua_islightuserdata(L, 1)) {
+			return luaL_typeerror(L, 1, "userdata or ligthuserdata");
+		}
+
+		return lua_push(L, static_cast<T*>(lua_touserdata(L, 1)));
 	}
 
 	template<typename T>
@@ -862,7 +849,7 @@ namespace LUA_MODULE_NAME {
 			usertype_push_metatable<T>(L); // push the metatable
 			lua_pushvalue(L, 2); // push the key
 			lua_rawget(L, -2);
-			lua_remove(L, -2); // remove metatable
+			lua_remove(L, -2); // remove the metatable
 
 			if (!lua_isnil(L, -1)) {
 				return 1; // return metatable[key]
@@ -882,13 +869,13 @@ namespace LUA_MODULE_NAME {
 				lua_pushnil(L);
 			}
 		}
-		else {
+		else if constexpr(is_basetype_v<T>) {
 			// for static classes: lookup in the porperties of the metatable
 			// =================================================
 			basetype_info<T>::push(L); // push the metatable
 			lua_pushvalue(L, 2); // push the key
 			lua_gettable(L, -2); // pop the key, push metatable[key]
-			lua_remove(L, -2); // remove metatable
+			lua_remove(L, -2); // remove the metatable
 
 			if (!lua_isnil(L, -1)) {
 				return 1; // return metatable[key]
@@ -1005,10 +992,10 @@ namespace LUA_MODULE_NAME {
 
 	template<typename T>
 	decltype(auto) lua_vector_method__index(lua_State* L, const std::vector<T>& vec, size_t index) {
-		if (index == 0 || index > vec.size()) {
-			luaL_error(L, "index out of range");
+		if (index >= vec.size()) {
+			luaL_error(L, "index %d is out of range. Expecting a number between 0 and %d.", index, vec.size() - 1);
 		}
-		return vec.at(index - 1);
+		return vec.at(index);
 	}
 
 	size_t atosize_t(lua_State* L, const std::string& s);
@@ -1021,10 +1008,15 @@ namespace LUA_MODULE_NAME {
 
 	template<typename T>
 	void lua_vector_method__newindex(lua_State* L, std::vector<T>& vec, size_t index, const T& value) {
-		if (index != vec.size() + 1) {
-			luaL_error(L, "index out of range");
+		if (index > vec.size()) {
+			luaL_error(L, "index %d is out of range. Expecting a number between 0 and %d.", index, vec.size());
 		}
-		vec.push_back(value);
+
+		if (index == vec.size()) {
+			vec.push_back(value);
+		} else {
+			vec.at(index) = value;
+		}
 	}
 
 	template<typename T>
@@ -1099,7 +1091,24 @@ namespace LUA_MODULE_NAME {
 			lua_pushfuncs(L, lua_tostring_methods);
 		}
 
-		// methods
+		if constexpr (requires(lua_State* L, int index, bool& is_valid) { usertype_info<T>::lua_userdata_to(L, index, is_valid); }) {
+			// class Garbage-Collection and introspection methods
+			const struct luaL_Reg lua_instance_misc_methods[] = {
+				{"__self", lua_method__self<T>}, // For ffi purpose
+				{"__cast", lua_method__cast<T>}, // For ffi purpose
+				{"isinstance", lua_method_isinstance<T>},
+				{"__gc", lua_method__gc<T>},
+				{NULL, NULL} // Sentinel
+			};
+			lua_pushfuncs(L, lua_instance_misc_methods);
+
+			// For ffi purpose
+			lua_pushliteral(L, "__sizeof");
+			lua_push(L, sizeof(T));
+			lua_rawset(L, -3);
+		}
+
+		// class registered methods
 		lua_pushfuncs(L, usertype_info<T>::methods);
 
 		// metatable = {}

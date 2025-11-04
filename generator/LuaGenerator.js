@@ -443,6 +443,12 @@ class LuaGenerator {
                     }
                 }
 
+                for (const modifier of modifiers) {
+                    if (modifier.startsWith("/Cast=")) {
+                        rexpr = `${ modifier.slice("/Cast=".length) }(${ rexpr })`;
+                    }
+                }
+
                 if (is_enum || isStatic && modifiers.includes("/C")) {
                     if (registeri === contentRegister.length) {
                         contentRegister.push(""); // new line
@@ -473,12 +479,6 @@ class LuaGenerator {
 
                     generatePropertyDoc(processor, coclass, name, propname, modifiers, cpptype, has_propget, has_propput);
                     continue;
-                }
-
-                for (const modifier of modifiers) {
-                    if (modifier.startsWith("/Cast=")) {
-                        rexpr = `${ modifier.slice("/Cast=".length) }(${ rexpr })`;
-                    }
                 }
 
                 rexpr = `lua_push(L, ${ rexpr });`;
@@ -516,7 +516,7 @@ class LuaGenerator {
 
                     if (o_expr) {
                         in_val = makeExpansion(o_expr, in_val);
-                        in_val = in_val.replaceAll(/\$(?:value\b|\{\s*value\s*\})/g, "value");
+                        in_val = in_val.replaceAll(/\$(?:value\b|\{[^\S\n]*value[^\S\n]*\})/g, "value");
                     } else {
                         const setter = o_setter ? `${ obj }${ o_setter }` : undefined;
                         in_val = setter ? `${ setter }(${ in_val })` : `${ obj }${ propname } = ${ in_val }`;
@@ -704,7 +704,8 @@ class LuaGenerator {
             for (const decl of overloads) {
                 overload_id++;
 
-                const [name, return_value_type, func_modifiers, list_of_arguments] = decl;
+                const [name, return_value_type, func_modifiers] = decl;
+                const list_of_arguments = decl[3].slice();
 
                 // http://lua-users.org/lists/lua-l/2010-01/msg00160.html
                 // The documentation at https://www.lua.org/manual/5.1/manual.html#2.8 states
@@ -1276,11 +1277,6 @@ class LuaGenerator {
             }
         }
 
-        if (!coclass.isStatic()) {
-            methods.unshift(["__gc", `lua_method__gc<${ fqn }>`]);
-            methods.unshift(["isinstance", `lua_method_isinstance<${ fqn }>`]);
-        }
-
         contentRegisterPrivate.push("", `
             const struct luaL_Reg methods[] = {
                 ${ methods.map(([ename, fname]) => `{"${ ename }", ${ fname }}`).concat(["{NULL, NULL} // Sentinel"]).join(`,\n${ " ".repeat(16) }`) }
@@ -1311,8 +1307,13 @@ class LuaGenerator {
         const isStatic = func_modifiers.includes("/S") || coclass.isStatic();
         const cppfqn = processor.typedefs.has(fqn) ? processor.typedefs.get(fqn) : fqn;
 
+        firstoptarg = Math.min(firstoptarg, list_of_arguments.length);
+
         // generate docs body
-        const argnamelist = indexes.map(j => list_of_arguments[j][1]);
+        const argnamelist = Array.from(new Array(list_of_arguments.length).keys()).map(i => {
+            const j = indexes[i];
+            return list_of_arguments[j][1];
+        });
 
         let argstr = argnamelist.slice(0, firstoptarg).join(", ");
         argstr = [argstr].concat(argnamelist.slice(firstoptarg)).join("[, ");
@@ -1413,7 +1414,33 @@ class LuaGenerator {
         const registrationsHdr = [];
         const registrations = [];
 
-        for (const fqn of Array.from(processor.classes.keys()).sort()) {
+        for (const fqn of Array.from(processor.classes.keys()).sort((a, b) => {
+            if (a.startsWith("VectorOf") !== b.startsWith("VectorOf")) {
+                return a.startsWith("VectorOf") ? 1 : -1;
+            }
+
+            if (a.startsWith("VariantOf") !== b.startsWith("VariantOf")) {
+                return a.startsWith("VariantOf") ? 1 : -1;
+            }
+
+            if (a.startsWith("SharedPtrOf") !== b.startsWith("SharedPtrOf")) {
+                return a.startsWith("SharedPtrOf") ? 1 : -1;
+            }
+
+            if (a.startsWith("PairOf") !== b.startsWith("PairOf")) {
+                return a.startsWith("PairOf") ? 1 : -1;
+            }
+
+            if (a.startsWith("MapOf") !== b.startsWith("MapOf")) {
+                return a.startsWith("MapOf") ? 1 : -1;
+            }
+
+            if (a.startsWith("CvVariantOf") !== b.startsWith("CvVariantOf")) {
+                return a.startsWith("CvVariantOf") ? 1 : -1;
+            }
+
+            return a > b ? 1 : a < b ? -1 : 0;
+        })) {
             const docid = processor.docs.length;
 
             const coclass = processor.classes.get(fqn);
@@ -1447,11 +1474,7 @@ class LuaGenerator {
                     const std::map<std::string, std::function<int(lua_State*)>> usertype_info<${ fqn }>::setters(std::move(::setters));
 
                     std::shared_ptr<${ fqn }> usertype_info<${ fqn }>::lua_userdata_to(lua_State* L, int index, bool& is_valid) {
-                        is_valid = lua_userdata_signature_is<::${ [fqn, ...coclass.parents].join(", ::") }>(L, index);
-                        if (!is_valid) {
-                            return std::shared_ptr<${ fqn }>();
-                        }
-                        return lua_userdata_signature_to<::${ [fqn, ...coclass.parents].join(", ::") }>(L, index);
+                        return lua_userdata_signature_to<::${ [fqn, ...coclass.parents].join(", ::") }>(L, index, is_valid);
                     }
                 `.replace(/^ {20}/mg, "").trim().split("\n");
 

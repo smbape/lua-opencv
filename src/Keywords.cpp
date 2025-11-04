@@ -13,19 +13,18 @@ namespace {
 
 		if (vargc == 0) {
 			lua_newtable(L);
-			return lua_push(L, static_cast<Keywords*>(nullptr));
-		}
-
-		if (vargc == 1) {
+		} else if (vargc == 1) {
 			if (!lua_istable(L, 1)) {
 				return luaL_typeerror(L, 1, "table");
 			}
 			lua_pushvalue(L, 1);
-			lua_push(L, static_cast<Keywords*>(nullptr));
-			return lua_gettop(L) - vargc;
+		} else {
+			return luaL_error(L, "0 or 1 table argument expected, got %d", vargc);
 		}
 
-		return luaL_error(L, "0 or 1 table argument expected, got %d", vargc);
+		usertype_push_metatable<Keywords>(L);
+		lua_setmetatable(L, -2);
+		return lua_gettop(L) - vargc;
 	}
 
 	int Keywords_has(lua_State* L) {
@@ -71,9 +70,7 @@ namespace {
 	}
 
 	int Keywords_size(lua_State* L) {
-		auto vargc = lua_gettop(L);
-
-		if (vargc == 1 && lua_istable(L, 1)) {
+		if (lua_gettop(L) == 1 && lua_istable(L, 1)) {
 			lua_pushnumber(L, static_cast<lua_Number>(Keywords::size(L, 1)));
 			return 1;
 		}
@@ -85,9 +82,8 @@ namespace {
 namespace LUA_MODULE_NAME {
 	int usertype_info<Keywords>::metatable = LUA_REFNIL;
 	const void* usertype_info<Keywords>::signature;
-	std::set<const void*> usertype_info<Keywords>::derives;
-	const std::map<std::variant<std::string, int>, std::function<int(lua_State*)>> usertype_info<Keywords>::getters({});
-	const std::map<std::variant<std::string, int>, std::function<int(lua_State*)>> usertype_info<Keywords>::setters({});
+	const std::map<std::string, std::function<int(lua_State*)>> usertype_info<Keywords>::getters({});
+	const std::map<std::string, std::function<int(lua_State*)>> usertype_info<Keywords>::setters({});
 
 	bool usertype_info<Keywords>::lua_userdata_is(lua_State* L, int index) {
 		if (!lua_istable(L, index) || !lua_getmetatable(L, index)) {
@@ -97,12 +93,7 @@ namespace LUA_MODULE_NAME {
 		auto signature = lua_topointer(L, -1);
 		lua_pop(L, 1);
 
-		return lua_userdata_signature_is<0, Keywords>(L, index, signature);
-	}
-
-	std::shared_ptr<Keywords> usertype_info<Keywords>::lua_userdata_to(lua_State* L, int index, bool& is_valid) {
-		is_valid = usertype_info<Keywords>::lua_userdata_is(L, index);
-		return lua_userdata_signature_to<Keywords>(L, index);
+		return signature == usertype_info<Keywords>::signature;
 	}
 
 	const struct luaL_Reg usertype_info<Keywords>::methods[] = {
@@ -171,11 +162,5 @@ namespace LUA_MODULE_NAME {
 
 	void register_Keywords(lua_State* L) {
 		lua_register_class<Keywords>(L, "kwargs");
-	}
-
-	int lua_push(lua_State* L, Keywords* raw_ptr) {
-		lua_rawgeti(L, LUA_REGISTRYINDEX, usertype_info<Keywords>::metatable);
-		lua_setmetatable(L, -2);
-		return 1; // return table
 	}
 }

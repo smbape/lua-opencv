@@ -30,7 +30,8 @@ function module.class(cls, base)
 
     cls.new = function(...)
         local self = setmetatable({}, cls)
-        cls.__init__(self, ...)
+        local __init__ = cls.__init__
+        if __init__ then __init__(self, ...) end
         return self
     end
 

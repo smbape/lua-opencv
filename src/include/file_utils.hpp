@@ -1,6 +1,6 @@
 #pragma once
 #include <filesystem>
-#include <opencv2/core.hpp>
+#include <luadef.hpp>
 
 namespace fs_utils {
 	enum class FindFilesKind : std::uint8_t

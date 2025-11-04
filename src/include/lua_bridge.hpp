@@ -4,10 +4,10 @@
 #include <lua_bridge.hdr.hpp>
 #include <lua_bridge_arrays.hdr.hpp>
 
-#include <lua_bridge_common.hpp>
 #include <lua_generated_include.hpp>
 #include <register_all.hpp>
 
+#include <lua_bridge_common.hpp>
 #include <lua_bridge_arrays.hpp>
 
 namespace LUA_MODULE_NAME {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <lua_bridge_common.hpp>
+#include <lua_bridge_common.hdr.hpp>
 #include <opencv2/opencv.hpp>
 
 /**

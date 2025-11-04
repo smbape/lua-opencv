@@ -312,7 +312,7 @@ More expamples can be found in the samples directory.
 
 ## Running examples
 
-All the examples in the samples directory can be run by folling theses instructions.
+All the examples in the samples directory can be run by following theses instructions.
 
 ### Prerequisites to run examples
 
@@ -368,6 +368,138 @@ cd lua-opencv
 npm ci
 node scripts/test.js --Release
 ```
+
+## Usage with LÖVE
+
+### Prerequisites
+
+  - Install [LÖVE - Free 2D Game Engine](https://love2d.org/)
+
+#### Windows
+
+With Git Bash, download and extract the library with the following commands
+
+```sh
+curl -L https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1/opencv_lua-4.12.0luajit2.1-1.win32-x86_64.rock -o opencv_lua-4.12.0luajit2.1-1.win32-x86_64.rock
+unzip -d third_party -o opencv_lua-4.12.0luajit2.1-1.win32-x86_64.rock 'lib/*'
+```
+
+#### Linux
+
+Download and extract the library with the following commands
+
+```sh
+curl -L https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1/opencv_lua-4.12.0luajit2.1-1.linux-x86_64.rock -o opencv_lua-4.12.0luajit2.1-1.linux-x86_64.rock
+unzip -d third_party -o opencv_lua-4.12.0luajit2.1-1.linux-x86_64.rock 'lib/*'
+```
+
+### Example
+
+```lua
+-- add lib directory to the search path of shared libraries modules
+local ext = jit.os == "Windows" and ".dll" or jit.os == "Linux" and ".so" or jit.os == "OSX" and ".dylib"
+local sep = package.config:sub(1, 1)
+package.cpath = arg[1] .. sep .. "third_party" .. sep .. "lib" .. sep .. "?" .. ext .. ";" .. package.cpath
+
+local opencv_lua = require("opencv_lua")
+local cv = opencv_lua.cv
+
+local function newMatView(imageData)
+    -- Conversion between LÖVE PixelFormat and OpenCV array type
+    -- see https://love2d.org/wiki/PixelFormat
+    local PIXEL_FORMAT_TO_OPENCV_ARRAY_TYPE = {
+        r8 = cv.CV_8UC1,
+        rg8 = cv.CV_8UC2,
+        rgba8 = cv.CV_8UC4,
+        srgba8 = cv.CV_8UC4,
+        r16 = cv.CV_16UC1,
+        rg16 = cv.CV_16UC2,
+        rgba16 = cv.CV_16UC4,
+        r16f = cv.CV_16FC1,
+        rg16f = cv.CV_16FC2,
+        rgba16f = cv.CV_16FC4,
+        r32f = cv.CV_32FC1,
+        rg32f = cv.CV_32FC2,
+        rgba32f = cv.CV_32FC4,
+    }
+
+    local arrayType = PIXEL_FORMAT_TO_OPENCV_ARRAY_TYPE[imageData:getFormat()]
+    if arrayType == nil then
+        error(string.format("Unsupported PixelFormat %s", imageData:getFormat()))
+    end
+
+    -- Matrix constructors that take data and step parameters do not allocate matrix data.
+    -- Instead, they just initialize the matrix header that points to the specified data, which means that no data is copied.
+    -- This operation is very efficient and can be used to process external data using OpenCV functions.
+    -- see https://docs.opencv.org/4.x/d3/d63/classcv_1_1Mat.html#a9fa74fb14362d87cb183453d2441948f
+    return cv.Mat(opencv_lua.kwargs({
+        ["size"] = { imageData:getWidth(), imageData:getHeight() },
+        ["type"] = arrayType,
+        ["data"] = imageData:getPointer(),
+    }))
+end
+
+local function newImageDataFromMat(mat)
+    -- Conversion between LÖVE PixelFormat and OpenCV array type
+    -- see https://love2d.org/wiki/PixelFormat
+    local OPENCV_ARRAY_TYPE_TO_PIXEL_FORMAT = {
+        [cv.CV_8UC1] = "r8",
+        [cv.CV_8UC2] = "rg8",
+        [cv.CV_8UC4] = "rgba8",
+        [cv.CV_16UC1] = "r16",
+        [cv.CV_16UC2] = "rg16",
+        [cv.CV_16UC4] = "rgba16",
+        [cv.CV_16FC1] = "r16f",
+        [cv.CV_16FC2] = "rg16f",
+        [cv.CV_16FC4] = "rgba16f",
+        [cv.CV_32FC1] = "r32f",
+        [cv.CV_32FC2] = "rg32f",
+        [cv.CV_32FC4] = "rgba32f",
+    }
+
+    local format = OPENCV_ARRAY_TYPE_TO_PIXEL_FORMAT[mat:type()]
+    if format == nil then
+        error(string.format("Unable get PixelFormat from cv::Mat array type from %i", mat:type()))
+    end
+
+    local imageData = love.image.newImageData(mat.width, mat.height, format)
+    mat:copyTo(newMatView(imageData))
+
+    return imageData
+end
+
+local image
+
+function love.load()
+    -- OpenCV uses BRG color space
+    -- LÖVE uses RGBA color space
+    -- local mat = cv.imread("opencv_data/pic1.png")
+    -- local imageData = newImageDataFromMat(cv.cvtColor(mat, cv.COLOR_BGR2RGBA))
+
+    -- Load a raw (decoded) image data.
+    -- LÖVE uses RGBA color space by default
+    local imageData = love.image.newImageData("opencv_data/pic1.png")
+
+    local img = newMatView(imageData)
+
+    -- Process the image with OpenCV
+    local img_grey = cv.cvtColor(img, cv.COLOR_RGBA2GRAY)
+    local ret, thresh = cv.threshold(img_grey, 100, 255, cv.THRESH_BINARY)
+    local contours, hierarchy = cv.findContours(thresh, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+
+    -- LÖVE uses RGBA color space
+    cv.drawContours(img, contours, -1, { 255, 0, 0, 255 }, 2)
+
+    -- Create a drawable image
+    image = love.graphics.newImage(imageData)
+end
+
+function love.draw()
+    love.graphics.draw(image, 10, 10)
+end
+
+```
+  
 
 ## Hosting you own binary rocks
 
@@ -560,16 +692,75 @@ end
 res = cv.Mat.createFromArray(res, type_)
 ```
 
-If you are using [LuaJIT](https://luajit.org/), there is even a way to get close to the c performance with the usage of the [FFI Library](https://luajit.org/ext_ffi.html);
+#### LuaJIT with jit enabled
+
+If you are using [LuaJIT](https://luajit.org/) and you matrix is isContinuous, there is a way to avoid the table conversion and get a performance boost (5x) with the usage of the [FFI Library](https://luajit.org/ext_ffi.html)
+
+See [samples/lua/perf.lua](samples/lua/perf.lua) for the benchmark.
+
+##### As a multi dimensional matrix
+
+More code for initialization, but easier to manipulate.
 
 ```lua
+local opencv_lua = require("opencv_lua")
+local cv = opencv_lua.cv
 local ffi = require("ffi")
 
 local rows = 512
 local cols = 512
 local channels = 3
 local mat = cv.Mat({ rows, cols, channels }, cv.CV_8U, 255.0)
-local bytes = ffi.cast("unsigned char*", mat.data)
+
+local ctypes = {
+    [cv.CV_8U] = "unsigned char",
+    [cv.CV_8S] = "char",
+    [cv.CV_16U] = "unsigned short",
+    [cv.CV_16S] = "short",
+    [cv.CV_32S] = "int",
+    [cv.CV_32F] = "float",
+    [cv.CV_64F] = "double",
+}
+
+local matrix_t = ffi.typeof("$[$][$][$]", ffi.typeof(ctypes[mat:depth()]), rows, cols, channels)
+local matrix_ptr = ffi.cast(ffi.typeof("$*", matrix_t), mat.data)
+local bytes = matrix_ptr[0]
+
+local sum = 0
+for i = 0, rows - 1 do
+    for j = 0, cols - 1 do
+        for k = 0, channels - 1 do
+            sum = sum + bytes[i][j][k]
+        end
+    end
+end
+```
+
+##### As a 1D matrix
+
+Slighlty faster (0% to 5%), but harder to manipulate due to coordinate calculation.
+
+```lua
+local opencv_lua = require("opencv_lua")
+local cv = opencv_lua.cv
+local ffi = require("ffi")
+
+local rows = 512
+local cols = 512
+local channels = 3
+local mat = cv.Mat({ rows, cols, channels }, cv.CV_8U, 255.0)
+
+local ctypes = {
+    [cv.CV_8U] = "unsigned char",
+    [cv.CV_8S] = "char",
+    [cv.CV_16U] = "unsigned short",
+    [cv.CV_16S] = "short",
+    [cv.CV_32S] = "int",
+    [cv.CV_32F] = "float",
+    [cv.CV_64F] = "double",
+}
+
+local bytes = ffi.cast(ctypes[mat:depth()] .. "*", mat.data)
 
 local sum = 0
 for i = 0, rows - 1 do

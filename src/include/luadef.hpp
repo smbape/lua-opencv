@@ -275,3 +275,25 @@ namespace LUA_MODULE_NAME {
 #ifndef CV_PROP_W
 #define CV_PROP_W
 #endif
+
+// https://github.com/opencv/opencv/blob/4.12.0/modules/core/include/opencv2/core/cvdef.h#L471-L486
+#ifndef CV_EXPORTS
+# define CV_EXPORTS
+
+/* special informative macros for wrapper generators */
+#define CV_EXPORTS_W CV_EXPORTS
+#define CV_EXPORTS_W_SIMPLE CV_EXPORTS
+#define CV_EXPORTS_AS(synonym) CV_EXPORTS
+#define CV_EXPORTS_W_MAP CV_EXPORTS
+#define CV_EXPORTS_W_PARAMS CV_EXPORTS
+#define CV_IN_OUT
+#define CV_OUT
+#define CV_PROP
+#define CV_PROP_RW
+#define CV_ND // Indicates that input data should be parsed into Mat without channels
+#define CV_WRAP
+#define CV_WRAP_AS(synonym)
+#define CV_WRAP_MAPPABLE(mappable)
+#define CV_WRAP_PHANTOM(phantom_header)
+#define CV_WRAP_DEFAULT(val)
+#endif

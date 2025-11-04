@@ -141,6 +141,7 @@ function new_version.command(args)
          -- add ffmpeg dll
          local opencv_videoio_ffmpeg = "opencv_videoio_ffmpeg4120_64.dll"
          local ffmpeg_fullpath = prefix .. "bin/" .. opencv_videoio_ffmpeg
+         local ffmpeg_relpath = "opencv_lua/bin/" .. opencv_videoio_ffmpeg
 
          local OpenCV_DIR = os.getenv("OpenCV_DIR")
          if OpenCV_DIR ~= nil then
@@ -151,7 +152,7 @@ function new_version.command(args)
             end
          end
 
-         out_rs.build.install.bin = { ffmpeg_fullpath }
+         install_lib[ffmpeg_relpath:sub(1, -5):gsub("/", ".")] = ffmpeg_fullpath -- :sub(1, -5) removes '.dll' extenxion to have the corresponding lua module name
       else
          local package_data = { "opencv_lua.so" }
 
@@ -250,12 +251,13 @@ function new_version.command(args)
          else
             local module_name = include:sub(#install_libdir + 2)
 
+            -- remove the extension
             local ext = module_name:match("(%..+)$")
             if ext ~= nil then
-               module_name = module_name:sub(1, -#ext - 1):gsub("/", ".") .. ext:gsub("%.", "#")
+               module_name = module_name:sub(1, -#ext - 1) .. ext:gsub("%.", "#")
             end
 
-            install_lib[module_name] = include
+            install_lib[module_name:gsub("/", ".")] = include
          end
       end
 

@@ -8,6 +8,7 @@ local int = opencv_lua.math.int
 
 local camId = 0
 local cap = cv.VideoCapture(camId)
+-- cap:set(cv.CAP_PROP_FOURCC, cv.VideoWriter.fourcc('M', 'J', 'P', 'G'))
 if not cap:isOpened() then error("!>Error: cannot open the camera " .. camId) end
 
 local CAP_FPS = 60

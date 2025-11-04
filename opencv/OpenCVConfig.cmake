@@ -40,16 +40,16 @@ if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
     # Linux lua expects shared libraries as modules (.so)
     # Windows lua exepects a .dll file, which can be a static or a shared library.
     # 
-    # For the opencv lua module to be used as a replcement of opencv,
+    # For the opencv lua module to be used as a replacement of opencv,
     # it needs to have all the exported opencv functions also exported.
     # 
     # One way to achieve that purpose is to build opencv as a static library
     # and then use target_link_libraries(shared_lib PRIVATE "$<LINK_LIBRARY:WHOLE_ARCHIVE,static_lib1;static_lib2>")
     # @see: https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html#genex:LINK_LIBRARY
     # However, on Windows, set(OPENCV_MODULE_TYPE "STATIC") will cause all dependent libraries to be also static.
-    # We do not want that because in other for opencv_lua to be linked against, it must be a shared library
+    # We do not want that because in order for opencv_lua to be linked against, it must be a shared library.
     # 
-    # The solution choosen is to directly embed the opencv objects in the opencv lua module.
+    # The choosen solution is to directly embed the opencv objects in the opencv lua module.
     # That will allow the opencv lua module shared library to have all the exported opencv functions.
     set(OPENCV_MODULE_TYPE "OBJECT")
 
@@ -67,6 +67,7 @@ if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
         list(APPEND OpenCV_SOURCE_OBJECTS "${__cmake_sources}")
         unset(__cmake_sources)
     endforeach()
+    list(REMOVE_DUPLICATES OpenCV_SOURCE_OBJECTS)
 else()
     macro(ocv_find_package_Qt4)
         find_package(Qt4 COMPONENTS QtCore QtGui QtTest ${ARGN})

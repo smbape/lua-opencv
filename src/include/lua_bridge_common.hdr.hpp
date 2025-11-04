@@ -2,6 +2,8 @@
 
 #include <luadef.hpp>
 #include <Keywords.hpp>
+#include <mutex>
+#include <shared_mutex>
 
 #ifdef _MSC_VER
 #pragma push_macro("NOMINMAX")
@@ -149,13 +151,16 @@ namespace LUA_MODULE_NAME {
 
 	lua_State* get_global_state();
 	void init_global_state(lua_State* L);
+	bool has_lua_jit();
 
 	using Callback = std::function<void(lua_State*, void*)>;
+	std::unique_lock<std::shared_timed_mutex> lock_callbacks();
 	int registerCallback(Callback callback, void* userdata = nullptr, std::optional<std::function<void(int)>> onRegistration = std::nullopt);
 	int registerCallbackOnce(Callback callback, void* userdata = nullptr, std::optional<std::function<void(int)>> onRegistration = std::nullopt);
 	bool unregisterCallback(int callback_id);
 	int notifyCallbacks(lua_State* L);
 
+	int __call_constructor(lua_State* L);
 
 	// ================================
 	// reference_internal generics
@@ -183,24 +188,58 @@ namespace LUA_MODULE_NAME {
 
 
 	// ================================
+	// extract_holder
+	// ================================
+
+	template<typename T, typename V>
+	struct has_extract_holder : std::integral_constant<bool, false> {};
+
+	template<typename T, typename V>
+	constexpr inline bool has_extract_holder_v = has_extract_holder<T, V>::value;
+
+	template<typename T, typename V>
+	struct extract_holder_info;
+
+
+	// ================================
 	// exxplicit: lua_to, lua_push
 	// ================================
 
 	template<typename T>
 	inline std::shared_ptr<T> lua_userdata_to(lua_State* L, int index, T*, bool& is_valid);
 
+	// ================================
+	// bool
+	// ================================
+
 	inline auto lua_to(lua_State* L, int index, bool*, bool& is_valid) {
 		is_valid = lua_isboolean(L, index);
 		return is_valid && !!lua_toboolean(L, index);
 	}
 
-	inline int lua_push(lua_State* L, bool value) {
+	inline int lua_push(lua_State* L, const bool& value) {
 		lua_pushboolean(L, value);
 		return 1;
 	}
 
+	// ================================
+	// std::integral
+	// ================================
+
 	inline auto lua_to(lua_State* L, int index, std::integral auto* ptr, bool& is_valid) {
 		using Integer = std::decay<decltype(*ptr)>::type;
+
+		// allow strings with only one character to be treated as char
+		if constexpr (std::is_same_v<char, Integer>) {
+			is_valid = lua_type(L, index) == LUA_TSTRING;
+			if (is_valid) {
+				size_t len;
+				auto c_str = lua_tolstring(L, index, &len);
+				if (len == 1) {
+					return static_cast<Integer>(c_str[0]);
+				}
+			}
+		}
 
 		is_valid = lua_type(L, index) == LUA_TNUMBER;
 		if (!is_valid) {
@@ -230,10 +269,14 @@ namespace LUA_MODULE_NAME {
 		// Lua 5.3 and greater checks for numeric precision
 		lua_pushinteger(L, n);
 #else
-		lua_pushnumber(L, (lua_Number)n);
+		lua_pushnumber(L, (lua_Number) n);
 #endif
 		return 1;
 	}
+
+	// ================================
+	// std::floating_point
+	// ================================
 
 	inline auto lua_to(lua_State* L, int index, std::floating_point auto* ptr, bool& is_valid) {
 		using Float = std::decay<decltype(*ptr)>::type;
@@ -249,7 +292,11 @@ namespace LUA_MODULE_NAME {
 		return 1;
 	}
 
-	inline std::string lua_to(lua_State* L, int index, std::string*, bool& is_valid) {
+	// ================================
+	// const char*
+	// ================================
+
+	inline std::string lua_to(lua_State* L, int index, const char**, bool& is_valid) {
 		is_valid = lua_isnil(L, index);
 		if (is_valid) {
 			return std::string();
@@ -263,6 +310,30 @@ namespace LUA_MODULE_NAME {
 		size_t len;
 		auto c_str = lua_tolstring(L, index, &len);
 		return std::string(c_str, len);
+	}
+
+	inline int lua_push(lua_State* L, const char* c_str) {
+		lua_pushstring(L, c_str);
+		return 1;
+	}
+
+	template<>
+	struct has_extract_holder<std::string, const char*> : std::integral_constant<bool, true> {};
+
+	template<>
+	struct extract_holder_info<std::string, const char*> {
+		template<typename H>
+		static inline decltype(auto) extract(H& holder) {
+			return holder.c_str();
+		}
+	};
+
+	// ================================
+	// std::string
+	// ================================
+
+	inline std::string lua_to(lua_State* L, int index, std::string*, bool& is_valid) {
+		return lua_to(L, index, static_cast<const char**>(nullptr), is_valid);
 	}
 
 	inline int lua_push(lua_State* L, const std::string& str) {
@@ -302,12 +373,7 @@ namespace LUA_MODULE_NAME {
 		return reinterpret_cast<unsigned char*>(lua_touserdata(L, index));
 	}
 
-	inline int lua_push(lua_State* L, unsigned char* ptr) {
-		lua_pushlightuserdata(L, ptr);
-		return 1;
-	}
-
-	inline int lua_push(lua_State* L, const unsigned char* ptr) {
+	inline int lua_push(lua_State* L, const unsigned char* &ptr) {
 		lua_pushlightuserdata(L, const_cast<unsigned char*>(ptr));
 		return 1;
 	}
@@ -320,18 +386,8 @@ namespace LUA_MODULE_NAME {
 		return reinterpret_cast<void*>(lua_touserdata(L, index));
 	}
 
-	inline int lua_push(lua_State* L, void* ptr) {
-		lua_pushlightuserdata(L, ptr);
-		return 1;
-	}
-
-	inline int lua_push(lua_State* L, const void* ptr) {
+	inline int lua_push(lua_State* L, const void* &ptr) {
 		lua_pushlightuserdata(L, const_cast<void*>(ptr));
-		return 1;
-	}
-
-	inline int lua_push(lua_State* L, const char* s) {
-		lua_pushstring(L, s);
 		return 1;
 	}
 
@@ -521,7 +577,9 @@ namespace LUA_MODULE_NAME {
 	inline typename std::enable_if<is_usertype_v<T>, std::shared_ptr<T>>::type lua_to(lua_State* L, int index, T* ptr, bool& is_valid);
 
 	template<typename T>
-	inline int lua_push(lua_State* L, T* ptr);
+	inline
+	typename std::enable_if<!std::is_function_v<T>, int>::type
+	lua_push(lua_State* L, const T* &ptr);
 
 	template<typename T>
 	inline typename std::enable_if<is_usertype_v<T>, int>::type lua_push(lua_State* L, T&& obj);

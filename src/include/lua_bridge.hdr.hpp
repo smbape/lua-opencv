@@ -1,6 +1,6 @@
 #pragma once
 
-#include <luadef.hpp>
+#include <lua_bridge_common.hdr.hpp>
 #include <opencv2/opencv.hpp>
 
 #ifdef HAVE_OPENCV_DNN

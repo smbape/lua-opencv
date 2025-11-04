@@ -234,6 +234,10 @@ namespace {
 	}
 }
 
+namespace fs = std::filesystem;
+
+#define _stringify(s) #s
+#define stringify(s) _stringify(s)
 
 #ifdef __linux__
 #ifndef _GNU_SOURCE
@@ -245,21 +249,58 @@ namespace {
 #include <cstdlib>
 #include <stdlib.h>
 
-namespace fs = std::filesystem;
-
-#define _stringify(s) #s
-#define stringify(s) _stringify(s)
-
 namespace {
-	void configure_qt_qpa() {
+	fs::path get_module_filename() {
 		Dl_info info;
 		auto res = dladdr((void const*)&LUA_MODULE_LUAOPEN, &info);
-		if (!res) {
+		if (res) {
+			return fs::absolute(info.dli_fname);
+		}
+
+		// Unable to get the path
+		return fs::path();
+	}
+}
+#elif defined(_WIN32)
+#include <Windows.h>
+
+namespace {
+	// https://github.com/opencv/opencv/blob/4.11.0/modules/core/src/utils/datafile.cpp#L165-L187
+	fs::path get_module_filename() {
+		void* addr = (void*)&LUA_MODULE_LUAOPEN; // using code address, doesn't work with static linkage!
+		HMODULE m = nullptr;
+#if _WIN32_WINNT >= 0x0501 && (!defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP))
+		::GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+			reinterpret_cast<LPCTSTR>(addr),
+			&m);
+#endif
+		if (m) {
+			wchar_t lpFilename[4096];
+			constexpr size_t nSize = sizeof(lpFilename) / sizeof(*lpFilename);
+
+			auto sz = GetModuleFileNameW(m, lpFilename, nSize);
+			if (sz > 0 && sz < nSize) {
+				lpFilename[sz] = '\0';
+				return fs::absolute(lpFilename);
+			}
+		}
+
+		// Unable to get the path
+		return fs::path();
+	}
+}
+#endif
+
+#ifdef __linux__
+namespace {
+	void configure_qt_qpa() {
+		auto module_filename = get_module_filename();
+		if (module_filename.empty()) {
+			// unable to get module path
 			return;
 		}
 
-		fs::path shared_object = fs::absolute(info.dli_fname);
-		auto rpath = shared_object.parent_path();
+		auto rpath = module_filename.parent_path();
 
 		auto plugins = rpath / stringify(LUA_MODULE_NAME) / "qt" / "plugins";
 		if (fs::exists(plugins)) {
@@ -270,6 +311,93 @@ namespace {
 		if (fs::exists(plugins)) {
 			setenv("QT_QPA_FONTDIR", fonts.native().c_str(), 0); // does not overwrite
 		}
+	}
+}
+#endif
+
+namespace {
+#ifdef _MSC_VER
+	template <typename char_type>
+	inline bool null_or_empty(const char_type* s) {
+		return s == nullptr || *s == 0;
+	}
+
+	/**
+	 * Maps a UTF-16 (wide character) string to a new character string. The new character string is not necessarily from a multibyte character set.
+	 *
+	 * @param  codePage Code page to use in performing the conversion.
+	 * @param  c_wstr   Pointer to the Unicode string to convert.
+	 * @param  length   Size, in characters, of the string indicated by c_wstr parameter.
+	 * @param  str      Pointer to a buffer that receives the converted string.
+	 * @return          The number of bytes written to the buffer pointed to by c_str.
+	 * @see             https://learn.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-widechartomultibyte
+	 */
+	inline int wcs_to_mbs(UINT codePage, const fs::path::value_type* c_wstr, size_t length, std::string& str) {
+		if (null_or_empty(c_wstr)) {
+			str.clear();
+			return 0;
+		}
+
+		int size = WideCharToMultiByte(codePage, 0, c_wstr, length, nullptr, 0, nullptr, nullptr);
+		str.assign(size, 0);
+		return WideCharToMultiByte(codePage, 0, c_wstr, length, &str[0], size + 1, nullptr, nullptr);
+	}
+
+	inline int wcs_to_utf8(const fs::path::value_type* c_wstr, size_t length, std::string& str) {
+		return wcs_to_mbs(CP_UTF8, c_wstr, length, str);
+	}
+#endif
+
+	inline std::string _string_type_to_string(const fs::path::string_type& match) {
+#ifdef _MSC_VER
+		std::string str; wcs_to_utf8(match.c_str(), match.length(), str);
+		return str;
+#else
+		return match;
+#endif
+	}
+}
+
+#ifdef _WIN32
+
+#ifndef UNICODE
+#define __getenv getenv_s
+#define __putenv _putenv_s
+#define OPENCV_FFMPEG_DLL_DIR "OPENCV_FFMPEG_DLL_DIR"
+#else
+#define __getenv _wgetenv_s
+#define __putenv _wputenv_s
+#define OPENCV_FFMPEG_DLL_DIR L"OPENCV_FFMPEG_DLL_DIR"
+#endif
+
+namespace {
+	void configure_ffmpeg_dll_dir() {
+		size_t size;
+		__getenv(&size, nullptr, 0, OPENCV_FFMPEG_DLL_DIR);
+		if (size != 0) {
+			// OPENCV_FFMPEG_DLL_DIR is already defined
+			return;
+		}
+
+		auto module_filename = get_module_filename();
+		if (module_filename.empty()) {
+			// unable to get module path
+			return;
+		}
+
+		auto base_directory = module_filename.parent_path() / stringify(LUA_MODULE_NAME) / "bin";
+		if (!fs::exists(base_directory)) {
+			// bin path does not exists
+			return;
+		}
+
+#ifndef UNICODE
+		const auto env = _string_type_to_string(base_directory.native());
+#else
+		const auto env = base_directory.native();
+#endif
+
+		__putenv(OPENCV_FFMPEG_DLL_DIR, env.c_str());
 	}
 }
 #endif
@@ -315,6 +443,9 @@ namespace LUA_MODULE_NAME {
 	void register_extensions(lua_State* L) {
 #ifdef __linux__
 		configure_qt_qpa();
+#endif
+#ifdef _WIN32
+		configure_ffmpeg_dll_dir();
 #endif
 		extend_Mat(L);
 	}
