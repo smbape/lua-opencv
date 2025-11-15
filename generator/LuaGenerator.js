@@ -164,6 +164,10 @@ const proto = {
             [cpptype, "other", "", []],
         ], "", ""], options);
 
+        if (vtype !== "bool") {
+            coclass.addMethod([`${ fqn }.data`, "void*", ["/WrapAs=static_cast<void*>"], [], "", ""], options);
+        }
+
         coclass.addMethod([`${ fqn }.table`, "void", ["/Call=lua_push", `/Expr=L, ${ self }`], [], "", ""], options);
 
         coclass.addMethod([`${ fqn }.size`, "size_t", ["=sol::meta_function::length"], [], "", ""], options);
@@ -255,16 +259,22 @@ const meta_binaries_op = new Map([
     ["sol::meta_function::bitwise_xor", "^"],
 ]);
 
-const generatePropertyDoc = (processor, coclass, name, propname, modifiers, cpptype, has_propget, has_propput) => {
+const writePropertyDoc = (processor, coclass, name, propname, modifiers, cpptype, has_propget, has_propput) => {
     const { fqn } = coclass;
 
     // generate docs header
     processor.docs.push(`### ${ coclass.name }.${ name }\n`.replaceAll("_", "\\_"));
 
     const cppsignature = [];
+
     if (modifiers.includes("/S") && !coclass.isStatic()) {
         cppsignature.push("static");
     }
+
+    if (modifiers.includes("/C")) {
+        cppsignature.push("const");
+    }
+
     cppsignature.push(cpptype);
 
     if (propname !== "this") {
@@ -454,7 +464,7 @@ class LuaGenerator {
                         contentRegister.push(""); // new line
                     }
                     contentRegister.push(`lua_pushliteral(L, "${ name }"); lua_push(L, ${ rexpr }); lua_rawset(L, -3);`);
-                    generatePropertyDoc(processor, coclass, name, propname, modifiers, cpptype, has_propget, has_propput);
+                    writePropertyDoc(processor, coclass, name, propname, modifiers, cpptype, has_propget, has_propput);
                     continue;
                 }
 
@@ -477,7 +487,7 @@ class LuaGenerator {
                     contentRegister.push(`lua_pop(L, 2); // pop ${ cpptype }, pop the module`);
                     contentRegister.push(""); // new line
 
-                    generatePropertyDoc(processor, coclass, name, propname, modifiers, cpptype, has_propget, has_propput);
+                    writePropertyDoc(processor, coclass, name, propname, modifiers, cpptype, has_propget, has_propput);
                     continue;
                 }
 
@@ -488,7 +498,7 @@ class LuaGenerator {
                 const overloads = [];
 
                 let c_setter;
-                let c_type = type;
+                let c_type = cpptype;
 
                 for (const modifier of modifiers) {
                     if (modifier.startsWith("/W=")) {
@@ -516,10 +526,18 @@ class LuaGenerator {
 
                     if (o_expr) {
                         in_val = makeExpansion(o_expr, in_val);
-                        in_val = in_val.replaceAll(/\$(?:value\b|\{[^\S\n]*value[^\S\n]*\})/g, "value");
+                        in_val = in_val.replace(/\$(?:value\b|\{[^\S\n]*value[^\S\n]*\})/g, "value");
+                    } else if (o_setter) {
+                        in_val = `${ obj }${ o_setter }(${ in_val })`;
                     } else {
-                        const setter = o_setter ? `${ obj }${ o_setter }` : undefined;
-                        in_val = setter ? `${ setter }(${ in_val })` : `${ obj }${ propname } = ${ in_val }`;
+                        const lvalue = `${ obj }${ propname }`;
+                        let rvalue = in_val;
+
+                        if (o_type !== cpptype) {
+                            rvalue = `static_cast<${ cpptype }>(${ rvalue })`;
+                        }
+
+                        in_val = `${ lvalue } = ${ rvalue }`;
                     }
 
                     wexpr.push(`
@@ -584,7 +602,7 @@ class LuaGenerator {
                 `.replace(/^ {20}/mg, "").trim().replace(/^[^\S\n]*\n/mg, ""));
             }
 
-            generatePropertyDoc(processor, coclass, name, propname, modifiers, cpptype, has_propget, has_propput);
+            writePropertyDoc(processor, coclass, name, propname, modifiers, cpptype, has_propget, has_propput);
         }
 
         if (!coclass.isStatic()) {
@@ -666,6 +684,10 @@ class LuaGenerator {
         }
     }
 
+    static isConstructor(func_modifiers) {
+        return func_modifiers.includes("/CO") && !func_modifiers.some(modifier => modifier[0] === "=");
+    }
+
     // eslint-disable-next-line complexity
     static writeMethods(processor, coclass, contentRegisterPrivate, contentRegister, options) {
         const { fqn } = coclass;
@@ -674,13 +696,16 @@ class LuaGenerator {
         const methods = [];
         const meta_methods = [];
         const cname = options.cname ? options.cname : "create";
+        const hasDC = coclass.modifiers?.includes("/DC");
+        const largc = options.largc || "__argc__";
+        const vargc = options.vargc || "__vargc__";
 
         for (const fname of Array.from(coclass.methods.keys()).sort((a, b) => {
-            if (a === "new") {
+            if (a === cname) {
                 return -1;
             }
 
-            if (b === "new") {
+            if (b === cname) {
                 return 1;
             }
 
@@ -691,10 +716,10 @@ class LuaGenerator {
             const contentFunction = [];
             const luaFn = `Lua_${ ename.replaceAll("::", "_") }`;
             const isProperty = contentRegisterPrivate.includes(`int ${ luaFn }(lua_State* L);`);
-            const hasConstructor = overloads.some(([, , func_modifiers]) => func_modifiers.includes("/CO") && !func_modifiers.some(modifier => modifier[0] === "="));
+            const hasConstructor = overloads.some(([, , func_modifiers]) => LuaGenerator.isConstructor(func_modifiers));
 
             // generate docs header
-            processor.docs.push(`### ${ fqn.replaceAll("::", ".") }.${ hasConstructor ? "new" : fname }\n`.replaceAll("_", "\\_"));
+            processor.docs.push(`### ${ fqn.replaceAll("::", ".") }.${ hasConstructor ? cname : fname }\n`.replaceAll("_", "\\_"));
 
             let isConstructor = false;
             let overload_id = 0;
@@ -706,6 +731,7 @@ class LuaGenerator {
 
                 const [name, return_value_type, func_modifiers] = decl;
                 const list_of_arguments = decl[3].slice();
+                const variadic = list_of_arguments.length !== 0 && list_of_arguments.at(-1)[0] === "...";
 
                 // http://lua-users.org/lists/lua-l/2010-01/msg00160.html
                 // The documentation at https://www.lua.org/manual/5.1/manual.html#2.8 states
@@ -717,8 +743,8 @@ class LuaGenerator {
                     list_of_arguments.push([AnyObject, "unused", `${ AnyObject }()`, ["/ignore"]]);
                 }
 
-                isConstructor = func_modifiers.includes("/CO") && !func_modifiers.some(modifier => modifier[0] === "=");
-                const argc = list_of_arguments.length;
+                isConstructor = LuaGenerator.isConstructor(func_modifiers);
+                const argc = list_of_arguments.length - (variadic ? 1 : 0);
                 argcMax = Math.max(argcMax, argc);
 
                 const in_args = new Array(argc).fill(false);
@@ -793,7 +819,12 @@ class LuaGenerator {
                     precondition.push("!self");
                 }
 
-                precondition.push(`argc + kwargc > ${ argc + offset }`);
+                if (variadic) {
+                    precondition.push(`has_kwargs`);
+                    precondition.push(`${ largc } < ${ argc + offset - 1 }`);
+                } else {
+                    precondition.push(`${ largc } + kwargc > ${ argc + offset }`);
+                }
 
                 overload.push(`
                     if (${ precondition.join(" || ") }) {
@@ -872,7 +903,7 @@ class LuaGenerator {
                     let callarg = argname;
                     let cpptype = processor.getCppType(argtype, coclass, options);
 
-                    if (is_out_arg && is_ptr && !PTR.has(argtype)) {
+                    if ((is_in_arg || is_out_arg) && is_ptr && !PTR.has(argtype)) {
                         callarg = `&${ callarg }`;
                         argtype = argtype.slice(0, -1);
                         defval = SIMPLE_ARGTYPE_DEFAULTS.has(argtype) ? SIMPLE_ARGTYPE_DEFAULTS.get(argtype) : "";
@@ -887,16 +918,16 @@ class LuaGenerator {
                     }
 
                     cpptype = processor.getCppType(argtype, coclass, options);
-
-                    if (cpptype === "char*") {
+                    if (/\bconst$/.test(cpptype)) {
+                        cpptype = cpptype.replace(/\s*const$/, "");
                         if (arg_modifiers.includes("/C")) {
-                            cpptype = "std::string";
-                            callarg = `${ callarg }.c_str()`;
-                        } else {
-                            console.log(`Warning: ${ name } - 'char* ${ argname }' will be treatead as a 'void* ${ argname }' pointer`);
-                            callarg = `static_cast<${ cpptype }>(${ callarg })`;
-                            cpptype = "void*";
+                            cpptype = `const ${ cpptype }`;
                         }
+
+                    }
+
+                    if (/^char\s*\*\s*$/.test(cpptype) && arg_modifiers.includes("/C")) {
+                        cpptype = `const ${ cpptype }`;
                     }
 
                     for (const modifier of arg_modifiers) {
@@ -918,7 +949,7 @@ class LuaGenerator {
                     const is_by_ref = !is_ptr && !is_shared_ptr && processor.classes.has(cpptype) && !processor.enums.has(cpptype);
                     const var_type = is_array ? arr_cpptype : cpptype;
                     const argi = i + offset;
-                    const argn = argi + 1;
+                    const argn = `${ argi + 1 } + __top__`;
                     const nd_mat = arg_modifiers.includes("/ND");
                     const defarg = `default_${ argname }_value`;
 
@@ -930,7 +961,24 @@ class LuaGenerator {
                         if (is_array) {
                             retval.push([j, `lua_push(L, ${ argname }_${ arrtype });`]);
                         } else {
-                            retval.push([j, `lua_push(L, ${ argname });`]);
+                            const lua_push_args = ["L", argname];
+
+                            let deleter;
+
+                            for (const modifier of arg_modifiers) {
+                                if (modifier.startsWith("/Deleter=")) {
+                                    deleter = modifier.slice("/Deleter=".length);
+                                } else if (modifier.startsWith("/OutCast=")) {
+                                    const cast = modifier.slice("/OutCast=".length);
+                                    lua_push_args[1] = `${ cast }(${ lua_push_args[1] })`;
+                                }
+                            }
+
+                            if (deleter) {
+                                lua_push_args.push(deleter);
+                            }
+
+                            retval.push([j, `lua_push(${ lua_push_args.join(", ") });`]);
                         }
                     }
 
@@ -953,7 +1001,7 @@ class LuaGenerator {
                         extractors.push(`
                             Optional${ arg_suffix[0].toUpperCase() + arg_suffix.slice(1) }<${ var_type }> ${ argname }_${ arrtype };
 
-                            if (argc > ${ argi }) {
+                            if (${ largc } > ${ argi }) {
                                 // positional parameter
                                 ${ argname }_${ arrtype } = lua_to${ arg_suffix }(L, ${ argn }, static_cast<${ var_type }*>(nullptr), is_valid${ arg_suffix === "arrays" && nd_mat ? ", true" : "" });
                                 if (!is_valid) {
@@ -961,13 +1009,13 @@ class LuaGenerator {
                                 }
 
                                 // should not be a named parameter
-                                if (has_kwargs && Keywords::has(L, vargc, "${ argname }")) {
+                                if (has_kwargs && Keywords::has(L, ${ vargc }, "${ argname }")) {
                                     goto overload${ overload_id };
                                 }
                             }
-                            else if (has_kwargs && Keywords::has(L, vargc, "${ argname }")) {
+                            else if (has_kwargs && Keywords::has(L, ${ vargc }, "${ argname }")) {
                                 // named parameter
-                                Keywords::push(L, vargc, "${ argname }");
+                                Keywords::push(L, ${ vargc }, "${ argname }");
                                 ${ argname }_${ arrtype } = lua_to${ arg_suffix }(L, -1, static_cast<${ var_type }*>(nullptr), is_valid${ arg_suffix === "arrays" && nd_mat ? ", true" : "" });
                                 lua_pop(L, 1);
                                 if (!is_valid) {
@@ -997,7 +1045,7 @@ class LuaGenerator {
                         extractors.push(`
                             ${ cpptype } ${ argname };
 
-                            if (argc > ${ argi }) {
+                            if (${ largc } > ${ argi }) {
                                 // positional parameter
                                 ${ argname } = lua_to(L, ${ argn }, static_cast<${ var_type }*>(nullptr), is_valid);
                                 if (!is_valid) {
@@ -1005,13 +1053,13 @@ class LuaGenerator {
                                 }
 
                                 // should not be a named parameter
-                                if (has_kwargs && Keywords::has(L, vargc, "${ argname }")) {
+                                if (has_kwargs && Keywords::has(L, ${ vargc }, "${ argname }")) {
                                     goto overload${ overload_id };
                                 }
                             }
-                            else if (has_kwargs && Keywords::has(L, vargc, "${ argname }")) {
+                            else if (has_kwargs && Keywords::has(L, ${ vargc }, "${ argname }")) {
                                 // named parameter
-                                Keywords::push(L, vargc, "${ argname }");
+                                Keywords::push(L, ${ vargc }, "${ argname }");
                                 ${ argname } = lua_to(L, -1, static_cast<${ var_type }*>(nullptr), is_valid);
                                 lua_pop(L, 1);
                                 if (!is_valid) {
@@ -1040,7 +1088,7 @@ class LuaGenerator {
                             using ${ toCamelCase(argname) }Holder = decltype(lua_to(L, ${ argn }, static_cast<${ var_type }*>(nullptr), is_valid));
                             ${ toCamelCase(argname) }Holder ${ argname }_holder;
 
-                            if (argc > ${ argi }) {
+                            if (${ largc } > ${ argi }) {
                                 // positional parameter
                                 ${ argname }_holder = lua_to(L, ${ argn }, static_cast<${ var_type }*>(nullptr), is_valid);
                                 if (!is_valid) {
@@ -1048,21 +1096,26 @@ class LuaGenerator {
                                 }
 
                                 // should not be a named parameter
-                                if (has_kwargs && Keywords::has(L, vargc, "${ argname }")) {
+                                if (has_kwargs && Keywords::has(L, ${ vargc }, "${ argname }")) {
                                     goto overload${ overload_id };
                                 }
-                            }
-                            else if (has_kwargs && Keywords::has(L, vargc, "${ argname }")) {
-                                // named parameter
-                                Keywords::push(L, vargc, "${ argname }");
-                                ${ argname }_holder = lua_to(L, -1, static_cast<${ var_type }*>(nullptr), is_valid);
-                                lua_pop(L, 1);
-                                if (!is_valid) {
-                                    goto overload${ overload_id };
-                                }
-                                usedkw++;
                             }
                         `.replace(/^ {28}/mg, "").trim());
+
+                        if (!variadic) {
+                            extractors.push(`
+                                else if (has_kwargs && Keywords::has(L, ${ vargc }, "${ argname }")) {
+                                    // named parameter
+                                    Keywords::push(L, ${ vargc }, "${ argname }");
+                                    ${ argname }_holder = lua_to(L, -1, static_cast<${ var_type }*>(nullptr), is_valid);
+                                    lua_pop(L, 1);
+                                    if (!is_valid) {
+                                        goto overload${ overload_id };
+                                    }
+                                    usedkw++;
+                                }
+                            `.replace(/^ {32}/mg, "").trim());
+                        }
 
                         if (!is_optional) {
                             extractors.push(`
@@ -1088,20 +1141,24 @@ class LuaGenerator {
                     // =========================
                     // call ${ name.replaceAll(".", "::") }
                     // =========================
-
-                    // unknown named parameters
-                    if (usedkw != kwargc) {
-                        goto overload${ overload_id };
-                    }
                 `.replace(/^ {20}/mg, "").trim());
+
+                if (!variadic) {
+                    overload.push(`
+                        // unknown named parameters
+                        if (usedkw != kwargc) {
+                            goto overload${ overload_id };
+                        }
+                    `.replace(/^ {24}/mg, "").trim());
+                }
 
                 let callee;
                 const path = name.split(isConstructor ? "::" : ".");
-                let is_operator = /^operator\s*(?:[+\-*/%^&|!=<>]=?|[~,]|(?:<<|>>)=?|&&|\|\||\+\+|--|->\*?)$/.test(path[path.length - 1]);
+                let is_operator = !variadic && /^operator\s*(?:[+\-*/%^&|!=<>]=?|[~,]|(?:<<|>>)=?|&&|\|\||\+\+|--|->\*?)$/.test(path[path.length - 1]);
                 const operator = is_operator ? path[path.length - 1].slice("operator".length).trim() : null;
 
                 if (isStatic) {
-                    callee = `::${ path.join("::") }`;
+                    callee = path.join("::");
                 } else {
                     callee = "self";
 
@@ -1129,7 +1186,7 @@ class LuaGenerator {
 
                 for (const modifier of func_modifiers) {
                     if (modifier.startsWith("/Expr=")) {
-                        expr = makeExpansion(modifier.slice("/Expr=".length), expr);
+                        expr = makeExpansion(modifier.slice("/Expr=".length), ...callargs);
                         has_expr = true;
                     } else if (modifier.startsWith("/Call=")) {
                         callee = makeExpansion(modifier.slice("/Call=".length), callee);
@@ -1137,8 +1194,10 @@ class LuaGenerator {
                     }
                 }
 
-                if (isStatic && is_operator && callargs.length === 2 && !has_expr && !has_call) {
-                    callee = `(${ callargs.join(`) ${operator} (`) })`;
+                if (variadic) {
+                    callee = options.variadic(return_value_type, callee, expr, offset, callargs);
+                } else if (isStatic && is_operator && callargs.length === 2 && !has_expr && !has_call) {
+                    callee = `(${ callargs.join(`) ${ operator } (`) })`;
                 } else if (!is_operator || expr) {
                     callee = `${ callee }(${ expr })`;
                 }
@@ -1181,14 +1240,40 @@ class LuaGenerator {
                         }
                     `.replace(/^ {24}/mg, "").trim());
 
-                    // body is responsible of return
+                    // body is responsible of pushing returned values
                     if (has_body) {
                         retval.length = 0;
                     }
                 } else {
+                    const lua_push_args = ["L", callee.trim()];
+
+                    let deleter;
+                    let default_constructor;
+                    for (const modifier of func_modifiers) {
+                        if (modifier.startsWith("/Deleter=")) {
+                            deleter = modifier.slice("/Deleter=".length);
+                        } else if (modifier.startsWith("/DC=")) {
+                            default_constructor = modifier.slice("/DC=".length);
+                        }
+                    }
+
+                    if (deleter) {
+                        lua_push_args.push(deleter);
+                    }
+
+                    const call = [];
+
+                    if (isConstructor && default_constructor) {
+                        callee = `auto self = ${ lua_push_args[1] };`
+                        call.push(...callee.split("\n"), ...default_constructor.trim().split("\n"));
+                        lua_push_args[1] = "self";
+                    }
+
+                    call.push(`lua_push(${ lua_push_args.join(", ") });`);
+
                     retval.push([-1, `
                         try {
-                            lua_push(L, ${ callee.trim().split("\n").join(`\n${ " ".repeat(28) }`) });
+                            ${ call.join("\n").split("\n").join(`\n${ " ".repeat(28) }`) }
                         } catch ( ${ exception }& e ) {
                             LUAL_MODULE_ERROR_RETURN(L, e.what());
                         }
@@ -1200,9 +1285,8 @@ class LuaGenerator {
                     overload.push("", retval.map(([, result]) => result).join("\n"));
                 }
 
-                // body is responsible of the return
-                if (!has_body) {
-                    overload.push("", "return lua_gettop(L) - vargc;");
+                if (!isConstructor || !hasDC) {
+                    overload.push("", `return lua_gettop(L) - ${ vargc };`);
                 }
 
                 contentFunction.push("");
@@ -1214,6 +1298,10 @@ class LuaGenerator {
                 contentFunction.push("}");
 
                 contentFunction.push(`overload${ overload_id }:`);
+
+                if (variadic) {
+                    indexes.push(argc);
+                }
 
                 LuaGenerator.writeMethodDocs(
                     processor,
@@ -1233,14 +1321,6 @@ class LuaGenerator {
                 start++;
             }
 
-            contentRegisterPrivate.push(`int ${ luaFn }(lua_State* L) {`);
-            contentRegisterPrivate.push("    bool is_valid;", "");
-
-            if (!coclass.isStatic()) {
-                contentRegisterPrivate.push(`    auto self = lua_to(L, 1, static_cast<${ fqn }*>(nullptr), is_valid);`, "");
-            }
-
-            // usertype_push_metatable<T>(L);
             let not_found = "LUAL_MODULE_ERROR_RETURN(L, \"Overload resolution failed\")";
             if (!coclass.isStatic()) {
                 if (ename === "__index" || ename === "sol::meta_function::index") {
@@ -1250,20 +1330,68 @@ class LuaGenerator {
                 }
             }
 
-            contentRegisterPrivate.push(`
-                    auto vargc = lua_gettop(L);
-                    auto has_kwargs = vargc != 0 && usertype_info<Keywords>::lua_userdata_is(L, vargc);
-                    auto kwargc = has_kwargs ? Keywords::size(L, vargc) : 0;
-                    const int argc = has_kwargs ? vargc - 1 : vargc;
+            const body = `
+                auto ${ vargc } = lua_gettop(L);
+                auto has_kwargs = ${ vargc } != 0 && usertype_info<Keywords>::lua_userdata_is(L, ${ vargc });
+                auto kwargc = has_kwargs ? Keywords::size(L, ${ vargc }) : 0;
+                const int ${ largc } = (has_kwargs ? ${ vargc } - 1 : ${ vargc }) - __top__;
 
-                    ${ contentFunction.slice(start).join("\n").split("\n").join(`\n${ " ".repeat(20) }`) }
+                ${ contentFunction.slice(start).join("\n").split("\n").join(`\n${ " ".repeat(16) }`) }
+            `.replace(/^ {12}/mg, "").replace(/(?:^\n|\s+$)/g, "");
 
-                    ${ not_found };
-                }
-            `.replace(/^ {16}/mg, "").replace(/(?:^\n|\s+$)/, ""));
+            // Reset function content
+            contentFunction.length = 0;
+
+            contentFunction.push(`int ${ luaFn }(lua_State* L) {`);
+
+            if ((isConstructor && hasDC) || /\b(?:is_valid|self)\b/.test(body)) {
+                contentFunction.push("    bool is_valid;", "");
+            }
+
+            if (!isConstructor && /\bself\b/.test(body)) {
+                contentFunction.push(`    auto self = lua_to(L, 1 + __top__, static_cast<${ fqn }*>(nullptr), is_valid);`, "");
+            }
+
+            if (isConstructor && hasDC) {
+                contentRegisterPrivate.push(`${ shared_ptr }<${ fqn }> Lua_new(lua_State* L, const size_t __top__, bool& is_valid) {`);
+                contentRegisterPrivate.push("    is_valid = true;", "");
+                contentRegisterPrivate.push(body
+                    .replace(/lua_push\(L, (.+)\);$/mg, "return $1;")
+                    .replace(/(?<indent>[^\S\n]+)LUAL_MODULE_ERROR_RETURN\((?<error>.+)\);$/mg, `$<indent>${ [
+                        "is_valid = false;",
+                        "LUAL_MODULE_ERROR($<error>);",
+                        `return ${ shared_ptr }<${ fqn }>();`,
+                    ].join("\n$<indent>") }`)
+                );
+                contentRegisterPrivate.push("    is_valid = false;");
+                contentRegisterPrivate.push(`    return ${ shared_ptr }<${ fqn }>();`);
+                contentRegisterPrivate.push("}", "");
+
+                contentFunction.push(`
+                    auto ${ vargc } = lua_gettop(L);
+                    auto ptr = Lua_new(L, 0, is_valid);
+                    if (!is_valid) {
+                        ${ not_found };
+                    }
+
+                    lua_push(L, ptr);
+                    return lua_gettop(L) - ${ vargc };
+                `.replace(/^ {16}/mg, "").replace(/(?:^\n|\s+$)/g, ""));
+            } else {
+                contentFunction.push(body);
+                contentFunction.push(`    ${ not_found };`);
+            }
+
+            contentFunction.push("}");
+
+            let expression = contentFunction.join("\n");
+
+            if (!isConstructor || !hasDC) {
+                expression = expression.replaceAll(" + __top__", "").replaceAll(" - __top__", "");
+            }
 
             // new line
-            contentRegisterPrivate.push("");
+            contentRegisterPrivate.push(expression, "");
 
             if (ename.startsWith("sol::meta_function::")) {
                 const meta_method = LuaGenerator.getMetaMethod(ename);
@@ -1306,13 +1434,15 @@ class LuaGenerator {
         const argc = list_of_arguments.length;
         const isStatic = func_modifiers.includes("/S") || coclass.isStatic();
         const cppfqn = processor.typedefs.has(fqn) ? processor.typedefs.get(fqn) : fqn;
+        const cname = options.cname ? options.cname : "create";
 
-        firstoptarg = Math.min(firstoptarg, list_of_arguments.length);
+        firstoptarg = Math.min(firstoptarg, argc);
 
         // generate docs body
-        const argnamelist = Array.from(new Array(list_of_arguments.length).keys()).map(i => {
+        const argnamelist = Array.from(new Array(argc).keys()).map(i => {
             const j = indexes[i];
-            return list_of_arguments[j][1];
+            const arg = list_of_arguments[j];
+            return arg[0] === "..." ? arg[0] : arg[1];
         });
 
         let argstr = argnamelist.slice(0, firstoptarg).join(", ");
@@ -1337,9 +1467,9 @@ class LuaGenerator {
 
         let description = is_call_fn ?
             `${ caller }( ${ argstr } ) -> ${ outstr }` :
-            `${ caller }${ isStatic ? "." : ":" }${ isConstructor ? "new" : meta_method }( ${ argstr } ) -> ${ outstr }`;
+            `${ caller }${ isStatic ? "." : ":" }${ isConstructor ? cname : meta_method }( ${ argstr } ) -> ${ outstr }`;
 
-        if (isConstructor || coclass.is_vector && fname === "new") {
+        if (isConstructor || coclass.is_vector && fname === cname) {
             description += `\n    ${ caller }( ${ argstr } ) -> ${ outstr }`;
         }
 
@@ -1352,11 +1482,17 @@ class LuaGenerator {
             description += `\n    ${ args.join(` ${ op } `) } -> ${ outstr }`;
         }
 
-        let cppsignature = `${ processor.typedefs.has(return_value_type) ? processor.typedefs.get(return_value_type) : processor.getCppType(return_value_type, coclass, options) } ${ name.replaceAll(".", "::") }`;
+        let cppsignature = `${ processor.getCppType(return_value_type, coclass, options) } ${ name.replaceAll(".", "::") }`;
 
         if (isConstructor) {
             cppsignature = cppfqn;
-        } else if (isStatic && !coclass.isStatic()) {
+        }
+
+        if (func_modifiers.includes("/C") && coclass.isStatic()) {
+            cppsignature = `const ${ cppsignature }`;
+        }
+
+        if (!isConstructor && isStatic && !coclass.isStatic()) {
             cppsignature = `static ${ cppsignature }`;
         }
 
@@ -1390,7 +1526,7 @@ class LuaGenerator {
             return str;
         }).join(`,\n${ " ".repeat(cppsignature.length + "( ".length) }`) } )`;
 
-        if (func_modifiers.includes("/C")) {
+        if (func_modifiers.includes("/C") && !coclass.isStatic()) {
             cppsignature = `${ cppsignature } const`;
         }
 
@@ -1447,12 +1583,16 @@ class LuaGenerator {
             const fileCpp = coclass.getCPPFileName(options);
             const fileHdr = `${ fileCpp.slice(0, -".cpp".length) }.hpp`;
             const registerFn = LuaGenerator.getRegisterFn(coclass);
+            const hasConstructor = Array.from(coclass.methods.values()).some(overloads => {
+                return overloads.some(([, , func_modifiers]) => LuaGenerator.isConstructor(func_modifiers));
+            });
 
             registrationsHdr.push(`#include <${ fileHdr }>`);
             registrations.push(`${ registerFn }(L);`);
 
             const registers = [`void ${ registerFn }(lua_State* L);`];
             const contentDecl = [];
+            const path = getProgId(coclass.path.join("."), options).split(".");
 
             if (!coclass.isStatic()) {
                 const decl = `
@@ -1477,6 +1617,18 @@ class LuaGenerator {
                         return lua_userdata_signature_to<::${ [fqn, ...coclass.parents].join(", ::") }>(L, index, is_valid);
                     }
                 `.replace(/^ {20}/mg, "").trim().split("\n");
+
+                if (hasConstructor && coclass.modifiers?.includes("/DC")) {
+                    decl.push(...`
+                        static std::shared_ptr<${ fqn }> Lua_new(lua_State* L, const size_t __top__, bool& is_valid);
+                    `.replace(/^ {24}/mg, "").trim().split("\n"));
+
+                    impl.push("", ...`
+                        std::shared_ptr<${ fqn }> usertype_info<${ fqn }>::Lua_new(lua_State* L, const size_t __top__, bool& is_valid) {
+                            return ::Lua_new(L, __top__, is_valid);
+                        }
+                    `.replace(/^ {24}/mg, "").trim().split("\n"));
+                }
 
                 if (processor.derives.has(fqn)) {
                     decl.push(...`
@@ -1514,7 +1666,7 @@ class LuaGenerator {
 
                 contentDecl.push(`
                     int basetype_info<${ fqn }>::push(lua_State* L) {
-                        return lua_rawget_create_if_nil(L, { ${ getProgId(coclass.path.join("."), options).split(".").map(part => JSON.stringify(part)).join(", ") } });
+                        return lua_rawget_create_if_nil(L, { ${ path.map(part => JSON.stringify(part)).join(", ") } });
                     }
                 `.replace(/^ {20}/mg, "").trim());
             }
@@ -1535,7 +1687,7 @@ class LuaGenerator {
 
             if (coclass.is_enum_class) {
                 contentRegister.push(`
-                    lua_rawget_create_if_nil(L, { ${ getProgId(coclass.path.join("."), options).split(".").map(part => JSON.stringify(part)).join(", ") } });
+                    lua_rawget_create_if_nil(L, { ${ path.map(part => JSON.stringify(part)).join(", ") } });
 
                     ${ Array.from(coclass.properties.keys()).map(name => `lua_pushliteral(L, "${ name }"); lua_push(L, ${ fqn }::${ name }); lua_rawset(L, -3);`).join(`\n${ " ".repeat(20) }`) }
 
@@ -1559,18 +1711,24 @@ class LuaGenerator {
 
             if (coclass.isStatic()) {
                 contentRegister.push(`
-                    lua_rawget_create_if_nil(L, { ${ getProgId(coclass.path.join("."), options).split(".").map(part => JSON.stringify(part)).join(", ") } });
+                    lua_rawget_create_if_nil(L, { ${ path.map(part => JSON.stringify(part)).join(", ") } });
                     lua_pushfuncs(L, methods);
 
-                    // metatable = {}
-                    lua_newtable(L);
-                    lua_pushfuncs(L, meta_methods);
+                    if (!lua_getmetatable(L, -1)) {
+                        // metatable = {}
+                        lua_newtable(L);
 
-                    // setmetatable(module, metatable)
-                    lua_setmetatable(L, -2);
+                        // setmetatable(module, metatable)
+                        lua_setmetatable(L, -2);
+
+                        // metatable = getmetatable(module)
+                        lua_getmetatable(L, -1);
+                    }
+
+                    lua_pushfuncs(L, meta_methods);
+                    lua_pop(L, 1);
                 `.replace(/^ {20}/mg, "").trim());
             } else {
-                const path = getProgId(coclass.path.join("."), options).split(".");
                 const name = path[path.length - 1];
 
                 if (path.length > 1) {
@@ -1632,7 +1790,7 @@ class LuaGenerator {
 
             contentRegister.push("lua_pop(L, 1);"); // pop metatable
 
-            if (coclass.path.length > 1 && !coclass.isStatic()) {
+            if (path.length > 1 && !coclass.isStatic()) {
                 contentRegister.push("lua_pop(L, 1);"); // pop parent metatable
             }
 

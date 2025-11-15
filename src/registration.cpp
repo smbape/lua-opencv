@@ -79,15 +79,6 @@ namespace {
 		lua_pop(L, 1);
 	}
 
-	const struct luaL_Reg funcs_callbacks[] = {
-		{ "notifyCallbacks",    notifyCallbacks },
-		{ NULL, NULL }
-	};
-
-	void regiter_callbacks(lua_State* L) {
-		lua_pushfuncs(L, funcs_callbacks);
-	}
-
 	const struct luaL_Reg no_funcs[] = {
 		{ NULL, NULL }
 	};
@@ -108,10 +99,8 @@ int LUA_MODULE_LUAOPEN(lua_State* L) {
 	init_global_state(L);
 
 	register_version(L);
-	register_Keywords(L);
 	register_bit(L);
 	register_math(L);
-	regiter_callbacks(L);
 	register_all(L);
 	register_extensions(L);
 

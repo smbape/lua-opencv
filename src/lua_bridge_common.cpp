@@ -1,6 +1,73 @@
 #include <lua_bridge_common.hpp>
 
+namespace LUA_MODULE_NAME {
+	// ================================
+	// misc
+	// ================================
+
+	bool lua_newkwargs_from_table(lua_State* L, int index, bool& is_valid) {
+		is_valid = lua_istable(L, index);
+		if (!is_valid) {
+			return is_valid;
+		}
+
+		if (index < 0) {
+			index += lua_gettop(L) + 1;
+		}
+
+		lua_newtable(L);
+		// stack now contains: -1 => kwargs
+
+		const auto kwargs_index = lua_gettop(L);
+		const auto __top__ = kwargs_index + 1;
+
+		// https://www.lua.org/manual/5.1/manual.html#lua_next
+
+		lua_pushnil(L);  /* first key */
+		// stack now contains: -2 => kwargs; -1 => nil
+
+		while (lua_next(L, index) != 0) {
+			// stack now contains: -3 => kwargs; -2 => key; -1 => value
+			const auto key = lua_to(L, -2, static_cast<std::string*>(nullptr), is_valid);
+
+			if (!is_valid) {
+				/* removes 'value'; keeps 'key' for the next iteration */
+				lua_pop(L, 1);
+				// stack now contains: -2 => kwargs; -1 => key
+
+				/* removes 'key'; break iteration */
+				lua_pop(L, 1);
+				// stack now contains: -1 => kwargs
+
+				break;
+			}
+
+			const auto k = __top__ - 2;
+			const auto v = __top__ - 1;
+			lua_pushvalue(L, k);
+			lua_pushvalue(L, v);
+			lua_rawset(L, kwargs_index);
+
+			/* removes 'value'; keeps 'key' for the next iteration */
+			lua_pop(L, 1);
+			// stack now contains: -2 => kwargs; -1 => key
+		}
+
+		if (is_valid) {
+			usertype_push_metatable<Keywords>(L);
+			lua_setmetatable(L, -2);
+		}
+		else {
+			lua_pop(L, 1);
+		}
+
+		return is_valid;
+	}
+}
+
 namespace {
+	using namespace LUA_MODULE_NAME;
+
 	lua_State* lua_globalState = nullptr;
 
 	bool _has_lua_jit = false;
@@ -18,14 +85,8 @@ namespace {
 		userdata_ptr->~StateGuard();
 		return 0;
 	}
-}
 
-namespace LUA_MODULE_NAME {
-	lua_State* get_global_state() {
-		return lua_globalState;
-	}
-
-	void init_global_state(lua_State* L) {
+	void register_Global_state(lua_State* L) {
 		lua_globalState = L;
 
 		// userdata = new StateGuard();
@@ -50,112 +111,81 @@ namespace LUA_MODULE_NAME {
 		lua_pop(L, 1);
 	}
 
+	void register_Callbacks(lua_State* L) {
+		const struct luaL_Reg funcs_callbacks[] = {
+			{ "notifyCallbacks", yield },
+			{ "yield", yield },
+			{ NULL, NULL }
+		};
+
+		lua_pushfuncs(L, funcs_callbacks);
+
+		// the main thread has the lock
+		acquire_gil();
+	}
+}
+
+namespace LUA_MODULE_NAME {
+	lua_State* get_global_state() {
+		return lua_globalState;
+	}
+
+	void init_global_state(lua_State* L) {
+		register_Global_state(L);
+		register_Keywords(L);
+		register_Callbacks(L);
+	}
+
 	bool has_lua_jit() {
 		return _has_lua_jit;
 	}
 }
 
 namespace {
-	struct CallbackHandler {
-		LUA_MODULE_NAME::Callback callback;
-		void* userdata = nullptr;
-	};
+	std::shared_timed_mutex gil_mutex;
+	std::unique_lock<std::shared_timed_mutex> gil{ gil_mutex, std::defer_lock };
 
-	std::map<int, CallbackHandler> registered_callbacks;
-	std::vector<int> once_ids;
-	int _callback_id = 0;
+	std::shared_timed_mutex yielder_mutex;
+	bool yielding = false;
 
-	std::shared_timed_mutex callback_mutex;
+	// avoid yielding while already yielding
+	bool should_yield() {
+		std::unique_lock<std::shared_timed_mutex> lock(yielder_mutex);
 
-	struct Notifier {
-		static std::shared_timed_mutex notifier_mutex;
-		static bool notifying;
-
-		bool notify;
-
-		Notifier() {
-			std::unique_lock lock(notifier_mutex);
-
-			notify = !notifying;
-
-			if (notify) {
-				notifying = true;
-			}
+		if (yielding) {
+			return false;
 		}
 
-		~Notifier() {
-			std::unique_lock lock(notifier_mutex);
+		yielding = true;
+		return true;
+	}
 
-			if (notify) {
-				notifying = false;
-			}
-		}
-
-		operator const bool() const {
-			return notify;
-		}
-	};
-
-	std::shared_timed_mutex Notifier::notifier_mutex;
-	bool Notifier::notifying = false;
+	void done_yielding() {
+		std::unique_lock<std::shared_timed_mutex> lock(yielder_mutex);
+		yielding = false;
+	}
 }
 
 namespace LUA_MODULE_NAME {
-	std::unique_lock<std::shared_timed_mutex> lock_callbacks() {
-		return std::unique_lock<std::shared_timed_mutex>(callback_mutex);
-	}
-
-	int registerCallback(Callback callback, void* userdata, std::optional<std::function<void(int)>> onRegistration) {
-		auto lock = lock_callbacks();
-
-		registered_callbacks.emplace(std::piecewise_construct,
-			std::forward_as_tuple(_callback_id),
-			std::forward_as_tuple(std::move(callback), userdata));
-
-		if (onRegistration) {
-			onRegistration.value()(_callback_id);
-		}
-
-		return _callback_id++;
-	}
-
-	int registerCallbackOnce(Callback callback, void* userdata, std::optional<std::function<void(int)>> onRegistration) {
-		return registerCallback(std::move(callback), userdata, std::move([onRegistration](int callback_id) {
-			once_ids.push_back(callback_id);
-			if (onRegistration) {
-				onRegistration.value()(callback_id);
+	int yield(lua_State* L) {
+		if (should_yield()) {
+			if (!gil.owns_lock()) {
+				LUAL_MODULE_ERROR_RETURN(L, "GIL is not locked.");
 			}
-			}));
+			release_gil();
+			acquire_gil();
+			done_yielding();
+		}
+		return 0;
 	}
 
-	bool unregisterCallback(int callback_id) {
-		auto lock = lock_callbacks();
-
-		if (registered_callbacks.count(callback_id)) {
-			registered_callbacks.erase(callback_id);
-			return true;
-		}
-
-		return false;
+	int acquire_gil() {
+		gil.lock();
+		return 0;
 	}
 
-	int notifyCallbacks(lua_State* L) {
-		Notifier notify;
-
-		// avoid notifyCallbacks while already in notifyCallbacks
-		if (notify) {
-			auto lock = lock_callbacks();
-
-			for (const auto& [callback_id, value] : registered_callbacks) {
-				const auto& [callback, userdata] = value;
-				callback(L, userdata);
-			}
-
-			for (const auto& callback_id : once_ids) {
-				registered_callbacks.erase(callback_id);
-			}
-		}
-
+	int release_gil() {
+		gil.unlock();
 		return 0;
 	}
 

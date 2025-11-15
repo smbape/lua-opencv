@@ -1,6 +1,7 @@
 #pragma once
 
 #include <lua_bridge_common.hdr.hpp>
+#include <Keywords.hpp>
 
 namespace LUA_MODULE_NAME {
 	// ================================
@@ -87,8 +88,9 @@ namespace LUA_MODULE_NAME {
 					return *static_cast<SharedPtr*>(lua_touserdata(L, index));
 				}
 			}
-		} else {
-			using Base = typename std::tuple_element<I - 1, _Tuple>::type;
+		}
+		else {
+			using Base = std::tuple_element_t<I - 1, _Tuple>;
 			if constexpr (is_usertype_v<Base>) {
 				if (signature == usertype_info<Base>::signature) {
 					is_valid = true;
@@ -104,7 +106,8 @@ namespace LUA_MODULE_NAME {
 
 		if constexpr (I != sizeof...(_Ts)) {
 			return lua_userdata_signature_to<I + 1, T, _Ts...>(L, index, signature, is_valid);
-		} else {
+		}
+		else {
 			is_valid = false;
 			return SharedPtr();
 		}
@@ -137,52 +140,76 @@ namespace LUA_MODULE_NAME {
 	inline std::shared_ptr<T> lua_userdata_to(lua_State* L, int index, T*, bool& is_valid) {
 		if constexpr (is_usertype_v<T>) {
 			return usertype_info<T>::lua_userdata_to(L, index, is_valid);
-		} else {
+		}
+		else {
 			is_valid = false;
 			return std::shared_ptr<T>();
 		}
 	}
 
 	template<typename T>
-	inline typename std::enable_if<std::is_enum_v<T>, int>::type lua_to(lua_State* L, int index, T* ptr, bool& is_valid) {
-		return lua_to(L, index, static_cast<int*>(nullptr), is_valid);
+	inline int lua_push(lua_State* L, T* ptr, void (*d)(T*)) {
+		return lua_push(L, std::make_shared<T>(ptr, CFunctionDeleter(d)));
+	}
+
+
+	// ================================
+	// T if is_usertype_v<T>
+	// ================================
+
+	template<typename T>
+	inline std::enable_if_t<is_usertype_v<T>, std::shared_ptr<T>> lua_to(lua_State* L, int index, T* ptr, bool& is_valid) {
+		if constexpr (requires(lua_State * L, const size_t __top__, bool& is_valid) { usertype_info<T>::Lua_new(L, __top__, is_valid); }) {
+			auto value = lua_userdata_to(L, index, ptr, is_valid);
+			if (is_valid) {
+				return value;
+			}
+
+			// Try implicit conversion
+			auto __top__ = lua_gettop(L);
+			lua_pushvalue(L, index);
+			value = usertype_info<T>::Lua_new(L, __top__, is_valid);
+			lua_pop(L, 1);
+
+			// Try as kwargs
+			if (!is_valid && lua_newkwargs_from_table(L, index, is_valid)) {
+				value = usertype_info<T>::Lua_new(L, __top__, is_valid);
+				lua_pop(L, 1);
+			}
+
+			return value;
+		}
+		else {
+			return lua_userdata_to(L, index, ptr, is_valid);
+		}
 	}
 
 	template<typename T>
-	inline typename std::enable_if<is_usertype_v<T>, std::shared_ptr<T>>::type lua_to(lua_State* L, int index, T* ptr, bool& is_valid) {
-		return lua_userdata_to(L, index, ptr, is_valid);
+	inline std::enable_if_t<is_usertype_v<T>, T*> lua_to(lua_State* L, int index, T**, bool& is_valid) {
+		is_valid = lua_isnil(L, index);
+		if (is_valid) {
+			return static_cast<T*>(nullptr);
+		}
+		return lua_to(L, index, static_cast<T*>(nullptr), is_valid).get();
 	}
 
 	template<typename T>
-	inline
-	typename std::enable_if<!std::is_function_v<T>, int>::type
-	lua_push(lua_State* L, const T* &ptr) {
+	inline std::enable_if_t<is_usertype_v<T>, int> lua_push(lua_State* L, T* ptr) {
+		if (!ptr) {
+			lua_pushnil(L);
+			return 1;
+		}
 		return lua_push(L, reference_internal(ptr));
 	}
 
 	template<typename T>
-	inline typename std::enable_if<is_usertype_v<T>, int>::type lua_push(lua_State* L, T&& obj) {
+	inline std::enable_if_t<is_usertype_v<T>, int> lua_push(lua_State* L, T&& obj) {
 		return lua_push(L, std::make_shared<T>(std::move(obj)));
 	}
 
 	template<typename T>
-	inline typename std::enable_if<is_usertype_v<T>, int>::type lua_push(lua_State* L, const T& obj) {
+	inline std::enable_if_t<is_usertype_v<T>, int> lua_push(lua_State* L, const T& obj) {
 		return lua_push(L, std::make_shared<T>(obj));
-	}
-
-	template<typename T>
-	inline typename std::enable_if<std::is_enum_v<T>, int>::type lua_push(lua_State* L, const T& value) {
-		return lua_push(L, static_cast<int>(value));
-	}
-
-
-	// ================================
-	// T*
-	// ================================
-
-	template<typename T>
-	inline typename std::enable_if<is_usertype_v<T>, T*>::type lua_to(lua_State* L, int index, T**, bool& is_valid) {
-		return lua_to(L, index, static_cast<T*>(nullptr), is_valid).get();
 	}
 
 
@@ -206,7 +233,7 @@ namespace LUA_MODULE_NAME {
 			return 1;
 		}
 
-		if constexpr (requires(const std::type_index& index) { usertype_info<T>::derives_pushers.count(index); }) {
+		if constexpr (requires(const std::type_index & index) { usertype_info<T>::derives_pushers.count(index); }) {
 			// Downcasting
 			if (auto search = usertype_info<T>::derives_pushers.find(std::type_index(typeid(*ptr))); search != usertype_info<T>::derives_pushers.end()) {
 				return search->second(L, ptr);
@@ -248,56 +275,44 @@ namespace LUA_MODULE_NAME {
 
 		out.clear();
 
-		// Push another reference to the table on top of the stack (so we know
-		// where it is, and this function can work for negative, positive and
-		// pseudo indices
-		lua_pushvalue(L, index);
-		// stack now contains: -1 => table
+		// https://www.lua.org/manual/5.1/manual.html#lua_next
 
-		lua_pushnil(L);
-		// stack now contains: -2 => table; -1 => nil
+		lua_pushnil(L);  /* first key */
+		// stack now contains: -1 => nil
 
-		while (lua_next(L, -2)) {
-			// stack now contains: -3 => table; -2 => key; -1 => value
+		while (lua_next(L, index) != 0) {
+			// stack now contains: -2 => key; -1 => value
 			const auto key = lua_to(L, -2, static_cast<K*>(nullptr), is_valid);
 
 			if (!is_valid) {
-				// pop value
+				/* removes 'value'; keeps 'key' for the next iteration */
 				lua_pop(L, 1);
-				// stack now contains: -2 => table; -1 => key
+				// stack now contains: -1 => key
 
-				// pop key
+				/* removes 'key'; break iteration */
 				lua_pop(L, 1);
-				// stack now contains: -1 => table
+				// stack is now the same as it was on entry to this function
 
 				break;
 			}
 
 			auto value_holder = lua_to(L, -1, static_cast<V*>(nullptr), is_valid);
 
-			// pop value
+			/* removes 'value'; keeps 'key' for the next iteration */
 			lua_pop(L, 1);
-			// stack now contains: -2 => table; -1 => key
+			// stack now contains: -1 => key
 
 			if (!is_valid) {
-				// pop key
+				/* removes 'key'; break iteration */
 				lua_pop(L, 1);
-				// stack now contains: -1 => table
+				// stack is now the same as it was on entry to this function
 
 				break;
 			}
 
 			decltype(auto) value = extract_holder(value_holder, static_cast<V*>(nullptr));
-
 			out.insert_or_assign(key, value);
-
 		}
-
-		// stack now contains: -1 => table (when lua_next returns 0 it pops the key
-		// but does not push anything.)
-		// Pop table
-		lua_pop(L, 1);
-		// Stack is now the same as it was on entry to this function
 	}
 
 	template<typename K, typename V>
@@ -433,7 +448,7 @@ namespace LUA_MODULE_NAME {
 	template<std::size_t I = 0, typename... _Ts>
 	inline void _lua_to(lua_State* L, int index, std::tuple<_Ts...>& out, bool& is_valid) {
 		using _Tuple = typename std::tuple<_Ts...>;
-		using T = typename std::tuple_element<I, _Tuple>::type;
+		using T = std::tuple_element_t<I, _Tuple>;
 
 		lua_pushnumber(L, I + 1);
 		lua_rawget(L, index);
@@ -478,7 +493,7 @@ namespace LUA_MODULE_NAME {
 	template<std::size_t I = 0, typename... _Ts>
 	inline void _lua_push(lua_State* L, int index, const std::tuple<_Ts...>& value) {
 		using _Tuple = typename std::tuple<_Ts...>;
-		using T = typename std::tuple_element<I, _Tuple>::type;
+		using T = std::tuple_element_t<I, _Tuple>;
 
 		lua_push(L, std::get<I>(value));
 		lua_rawseti(L, index, I + 1);
@@ -505,7 +520,7 @@ namespace LUA_MODULE_NAME {
 	inline std::variant<_Ts...> _lua_to(lua_State* L, int index, std::variant<_Ts...>* ptr, bool& is_valid) {
 		using Variant = typename std::variant<_Ts...>;
 		using _Tuple = typename std::tuple<_Ts...>;
-		using T = typename std::tuple_element<I, _Tuple>::type;
+		using T = std::tuple_element_t<I, _Tuple>;
 
 		if constexpr (!std::is_same_v<std::monostate, T>) {
 			auto holder = lua_to(L, index, static_cast<T*>(nullptr), is_valid);
@@ -531,7 +546,7 @@ namespace LUA_MODULE_NAME {
 	template<std::size_t I = 0, typename... _Ts>
 	inline int _lua_push(lua_State* L, const std::variant<_Ts...>& value) {
 		using _Tuple = typename std::tuple<_Ts...>;
-		using T = typename std::tuple_element<I, _Tuple>::type;
+		using T = std::tuple_element_t<I, _Tuple>;
 
 		if constexpr (!std::is_same_v<std::monostate, T>) {
 			if (std::holds_alternative<T>(value)) {
@@ -560,7 +575,7 @@ namespace LUA_MODULE_NAME {
 	template<template<typename> typename Container, typename... _Ts>
 	inline void _stl_container_lua_to(lua_State* L, int index, Container<_Ts...>& out, bool& is_valid, size_t len, bool loose) {
 		using _Tuple = typename std::tuple<_Ts...>;
-		using T = typename std::tuple_element<0, _Tuple>::type;
+		using T = std::tuple_element_t<0, _Tuple>;
 
 		if (lua_isuserdata(L, index)) {
 			out = *lua_userdata_to(L, index, static_cast<Container<_Ts...>*>(nullptr), is_valid);
@@ -711,7 +726,7 @@ namespace LUA_MODULE_NAME {
 			~FunctionInvoker() = default;
 
 			template <class... _Ts>
-			static void invoke(Function& fn, lua_State* L, _Ts&&... args) {
+			static void invoke(lua_State* L, Function& fn, _Ts&&... args) {
 				lua_push(L, fn);
 
 				// https://stackoverflow.com/questions/7230621/how-can-i-iterate-over-a-packed-variadic-template-argument-list/60136761#60136761
@@ -723,35 +738,55 @@ namespace LUA_MODULE_NAME {
 
 				if constexpr (std::is_same_v<R, void>) {
 					lua_call(L, nargs, 0);
-				} else {
+				}
+				else {
 					lua_call(L, nargs, 1);
 				}
 			}
 
 			R operator()(Args&&... args) {
-				if constexpr (std::is_same_v<R, void>) {
-					if (thread_id != std::this_thread::get_id()) {
-						// always copy args, being an rvalue or an lvalue
-						registerCallbackOnce(std::move([this, args_tuple = std::tuple<typename std::decay<Args>::type...>(std::forward<Args>(args)...)] (lua_State* L, void*) {
-							std::apply([this, L](auto&... args) {
-								invoke(fn, L, args...);
-							}, args_tuple);
-						}));
-					} else {
-						invoke(fn, fn.L, std::forward<Args>(args)...);
-					}
-				} else {
-					invoke(fn, fn.L, std::forward<Args>(args)...);
+				const auto async = thread_id != std::this_thread::get_id();
+				GilLock lock(async);
 
-					lua_State* L = fn.L;
-					bool is_valid;
-					R res = lua_to(L, -1, static_cast<R*>(nullptr), is_valid);
-					if (!is_valid) {
-						luaL_typeerror(L, -1, internal::GetTypeName<R>());
-					}
+				auto& L = fn.L;
 
-					lua_pop(L, 1);
-					return std::move(res);
+				invoke(L, fn, std::forward<Args>(args)...);
+
+				if constexpr (!std::is_same_v<R, void>) {
+					// I did not find a way to keep reference to pointers without memory leak
+					// Return the pointer hoping it will not be garbage collected
+					if constexpr (std::is_same_v<R, const char*>) {
+						bool is_valid = lua_type(L, -1) == LUA_TSTRING;
+						if (!is_valid) {
+							luaL_typeerror(L, -1, internal::GetTypeName<R>());
+						}
+
+						size_t len;
+						auto c_str = lua_tolstring(L, -1, &len);
+						lua_pop(L, 1);
+						return c_str;
+					}
+					else if constexpr (std::is_pointer_v<R>) {
+						bool is_valid = lua_islightuserdata(L, -1) || lua_isuserdata(L, -1);
+						if (!is_valid) {
+							luaL_typeerror(L, -1, internal::GetTypeName<R>());
+						}
+
+						auto ptr = static_cast<R*>(lua_touserdata(L, -1));
+						lua_pop(L, 1);
+						return ptr;
+					}
+					else {
+						bool is_valid;
+						auto value_holder = lua_to(L, -1, static_cast<R*>(nullptr), is_valid);
+						if (!is_valid) {
+							luaL_typeerror(L, -1, internal::GetTypeName<R>());
+						}
+
+						lua_pop(L, 1);
+						decltype(auto) value = extract_holder(value_holder, static_cast<R*>(nullptr));
+						return value;
+					}
 				}
 			}
 		};
@@ -794,7 +829,7 @@ namespace LUA_MODULE_NAME {
 			return 1;
 		}
 
-		lua_pushlightuserdata(L, reinterpret_cast<void*>(userdata.get()));
+		lua_pushlightuserdata(L, static_cast<void*>(userdata.get()));
 		return 1;
 	}
 
@@ -810,7 +845,7 @@ namespace LUA_MODULE_NAME {
 			return luaL_error(L, "too many arguments");
 		}
 
-		if (!lua_isuserdata(L, 1) && !lua_islightuserdata(L, 1)) {
+		if (!lua_islightuserdata(L, 1)) {
 			return luaL_typeerror(L, 1, "userdata or ligthuserdata");
 		}
 
@@ -832,7 +867,7 @@ namespace LUA_MODULE_NAME {
 		}
 
 		using _Tuple = typename std::tuple<_Ts...>;
-		using T = typename std::tuple_element<I, _Tuple>::type;
+		using T = std::tuple_element_t<I, _Tuple>;
 		if constexpr (I != 0 && is_usertype_v<T>) {
 			lua_pushfuncs(L, usertype_info<T>::methods);
 		}
@@ -841,7 +876,7 @@ namespace LUA_MODULE_NAME {
 	template<std::size_t I = 0, typename... _Ts>
 	int lua_class__index(lua_State* L) {
 		using _Tuple = typename std::tuple<_Ts...>;
-		using T = typename std::tuple_element<I, _Tuple>::type;
+		using T = std::tuple_element_t<I, _Tuple>;
 
 		if constexpr (is_usertype_v<T>) {
 			// for instantiable classes: lookup in the raw porperties of the metatable
@@ -869,7 +904,7 @@ namespace LUA_MODULE_NAME {
 				lua_pushnil(L);
 			}
 		}
-		else if constexpr(is_basetype_v<T>) {
+		else if constexpr (is_basetype_v<T>) {
 			// for static classes: lookup in the porperties of the metatable
 			// =================================================
 			basetype_info<T>::push(L); // push the metatable
@@ -901,7 +936,7 @@ namespace LUA_MODULE_NAME {
 	template<std::size_t I = 0, typename... _Ts>
 	int lua_class__newindex(lua_State* L) {
 		using _Tuple = typename std::tuple<_Ts...>;
-		using T = typename std::tuple_element<I, _Tuple>::type;
+		using T = std::tuple_element_t<I, _Tuple>;
 
 		if constexpr (is_usertype_v<T>) {
 			// call the setter if defined
@@ -1014,7 +1049,8 @@ namespace LUA_MODULE_NAME {
 
 		if (index == vec.size()) {
 			vec.push_back(value);
-		} else {
+		}
+		else {
 			vec.at(index) = value;
 		}
 	}
@@ -1091,7 +1127,7 @@ namespace LUA_MODULE_NAME {
 			lua_pushfuncs(L, lua_tostring_methods);
 		}
 
-		if constexpr (requires(lua_State* L, int index, bool& is_valid) { usertype_info<T>::lua_userdata_to(L, index, is_valid); }) {
+		if constexpr (requires(lua_State * L, int index, bool& is_valid) { usertype_info<T>::lua_userdata_to(L, index, is_valid); }) {
 			// class Garbage-Collection and introspection methods
 			const struct luaL_Reg lua_instance_misc_methods[] = {
 				{"__self", lua_method__self<T>}, // For ffi purpose
@@ -1103,9 +1139,11 @@ namespace LUA_MODULE_NAME {
 			lua_pushfuncs(L, lua_instance_misc_methods);
 
 			// For ffi purpose
-			lua_pushliteral(L, "__sizeof");
-			lua_push(L, sizeof(T));
-			lua_rawset(L, -3);
+			if constexpr (requires(lua_State * L) { lua_push(L, sizeof(T)); }) {
+				lua_pushliteral(L, "__sizeof");
+				lua_push(L, sizeof(T));
+				lua_rawset(L, -3);
+			}
 		}
 
 		// class registered methods

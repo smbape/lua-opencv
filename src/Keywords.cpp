@@ -13,12 +13,14 @@ namespace {
 
 		if (vargc == 0) {
 			lua_newtable(L);
-		} else if (vargc == 1) {
+		}
+		else if (vargc == 1) {
 			if (!lua_istable(L, 1)) {
 				return luaL_typeerror(L, 1, "table");
 			}
 			lua_pushvalue(L, 1);
-		} else {
+		}
+		else {
 			return luaL_error(L, "0 or 1 table argument expected, got %d", vargc);
 		}
 

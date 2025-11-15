@@ -8,14 +8,12 @@ exports.removeNamespaces = (str, options = {}) => {
     return str.replace(reg, "");
 };
 
-const MAX_ARGS = 10;
-const EXPANSION_REG = [...Array(MAX_ARGS).keys()].map(i => new RegExp(`\\$(?:${ i }\\b|\\{${ i }\\})`, "g"));
-
 exports.makeExpansion = (str, ...args) => {
-    str = str.replace(EXPANSION_REG[0], args.join(", "));
-    for (let i = 0; i < args.length && i + 1 < EXPANSION_REG.length; i++) {
-        str = str.replace(EXPANSION_REG[i + 1], args[i]);
-    }
+    str = str.replace(/\$(?:0\b|\{0\})/g, args.join(", "));
+    str = str.replace(/\$(?:(\d+)\b|\{(\d+)\})/g, (match, i1, i2) => {
+        const i = parseInt(i1 || i2, 10) - 1;
+        return i >= 0 && i < args.length ? args[i] : match;
+    })
     return str;
 };
 
@@ -66,6 +64,7 @@ exports.useNamespaces = (body, method, processor, coclass) => {
 exports.getTypeDef = (type, options) => {
     let type_def = type
         .replace(/\b(u?int(?:8|16|32|64))_t\b/g, "$1")
+        .replaceAll("*", "MapOPtr")
         .replaceAll("std::map", "MapOf")
         .replaceAll("std::pair", "PairOf")
         .replaceAll("std::vector", "VectorOf")
@@ -95,5 +94,5 @@ exports.getAlias = str => {
     }
 
     const sep = str.includes("::") ? "::" : ".";
-    return str.split(sep).map(item => ALIASES.has(item) ? ALIASES.get(item) : item).join(sep);
+    return str.split(sep).map(item => (ALIASES.has(item) ? ALIASES.get(item) : item)).join(sep);
 };

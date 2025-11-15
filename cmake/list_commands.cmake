@@ -196,6 +196,38 @@ function(list_double_quote __items_var)
     set(${__items_var} "${${__items_var}}" PARENT_SCOPE)
 endfunction()
 
+function(list_to_json_array list_NAME)
+    set(options)
+    set(oneValueArgs OUTPUT_VARIABLE INDENT)
+    set(multiValueArgs)
+    cmake_parse_arguments(PARSE_ARGV 1 list
+        "${options}" "${oneValueArgs}" "${multiValueArgs}"
+    )
+
+    if (list_UNPARSED_ARGUMENTS)
+        string(REPLACE ";" ", " list_UNPARSED_ARGUMENTS "${list_UNPARSED_ARGUMENTS}")
+        message(FATAL_ERROR "Unknown arguments [${list_UNPARSED_ARGUMENTS}]")
+    endif()
+
+    if (NOT list_OUTPUT_VARIABLE)
+        set(list_OUTPUT_VARIABLE ${list_NAME})
+    endif()
+
+    if (NOT list_INDENT)
+        string(REPLACE ";" "\", \"" list_OUTPUT "${${list_NAME}}")
+        set(${list_OUTPUT_VARIABLE} "[\"${list_OUTPUT}\"]" PARENT_SCOPE)
+        return()
+    endif()
+
+    list(TRANSFORM ${list_NAME} PREPEND "    ${list_INDENT}\"")
+    list(TRANSFORM ${list_NAME} APPEND "\",")
+    list(PREPEND ${list_NAME} "[")
+    list(APPEND ${list_NAME} "${list_INDENT}]")
+    string(REPLACE ";" "\n" list_OUTPUT "${${list_NAME}}")
+
+    set(${list_OUTPUT_VARIABLE} "${list_OUTPUT}" PARENT_SCOPE)
+endfunction()
+
 function(list_print __items_var)
     set(__title "${__items_var}")
     if (ARGC GREATER 1)

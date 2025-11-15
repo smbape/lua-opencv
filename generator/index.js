@@ -27,8 +27,10 @@ const getOptions = output => {
         shared_ptr: "cv::Ptr",
         make_shared: "cv::makePtr",
         exception: "cv::Exception",
-        Any: "Object",
-        AnyObject: "Object",
+        Any: "::LUA_MODULE_NAME::Object",
+        AnyObject: "::LUA_MODULE_NAME::Object",
+        argc: "__argc__",
+        vargc: "__vargc__",
         cname: "new",
 
         isCaseSensitive: true,
@@ -243,12 +245,18 @@ waterfall([
         const srcfiles = [];
 
         explore(SRC_DIR, async (path, stats, next) => {
-            if (path.endsWith(".h") || path.endsWith(".hpp")) {
-                const content = await fsPromises.readFile(path);
-                if (content.includes("CV_EXPORTS")) {
-                    srcfiles.push(path);
-                }
+            const relpath = path.slice(SRC_DIR.length + 1);
+            const parts = relpath.split(".");
+            const extname = parts.length === 0 ? "" : `.${ parts[parts.length - 1] }`;
+            const extnames = parts.length === 0 ? "" : `.${ parts.slice(-2).join(".") }`;
+            const isheader = [".h", ".hh", ".hpp", ".hxx"].includes(extname);
+
+            const content = await fsPromises.readFile(path);
+
+            if (isheader && ![".impl.h", ".impl.hh", ".impl.hpp", ".impl.hxx"].includes(extnames) && (content.includes("CV_EXPORTS") || /^contrib[\\/]/.test(relpath))) {
+                srcfiles.push(path);
             }
+
             next();
         }, {followSymlink: true}, async err => {
             const generated_include = (await fsPromises.readFile(pyopencv_generated_include))

@@ -772,7 +772,14 @@ for i = 0, rows - 1 do
 end
 ```
 
-## Switching from sol2 to plain-c
+## Breaking changes from 4.12.0-1
+
+Vector objects (objects created with opencv_lua.VectorOf*) are now 0-indexed.  
+It was initially 1-indexed to mimic [sol2] vectors.  
+However, the need of those objects, instead of tables, is usually to reflect the c/c++ code.  
+In those cases, translation to lua is more straight forward.
+
+## Switching from [sol2] to plain-c
 
 My aim was to create a binding that was at least as fast as the python alternative.
 

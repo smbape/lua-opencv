@@ -22,6 +22,7 @@ class DeclProcessor {
 
         this.classes = new Map();
         this.enums = new Map();
+        this.namespaces = new Set();
         this.typedefs = new Map();
 
         // for inheritance tree computation
@@ -41,11 +42,15 @@ class DeclProcessor {
     }
 
     process(config, options = {}) {
-        const {decls, namespaces} = config;
-
-        this.namespaces = new Set();
-
         this.namespace = options.namespace;
+
+        const {decls, namespaces, typedefs} = config;
+
+        if (typedefs) {
+            for (const [fqn, cpptype] of typedefs) {
+                this.typedefs.set(fqn, cpptype);
+            }
+        }
 
         if (options.typedefs) {
             for (const [fqn, cpptype] of options.typedefs) {
@@ -124,6 +129,7 @@ class DeclProcessor {
                 }
             }
 
+            this.addDefaultConstructor(coclass, options);
             this.addParentDefinition(coclass, options);
             this.addDependencies(coclass, options);
         }
@@ -151,7 +157,7 @@ class DeclProcessor {
 
         for (const fqn of ordered) {
             const coclass = this.classes.get(fqn);
-            const cpptype = this.getCppType(fqn, coclass, options);
+            const cpptype = this.typedefs.has(fqn) ? fqn : this.getCppType(fqn, coclass, options);
             const displayName = this.getTypeDisplayName(fqn, cpptype);
 
             // add __str__ method
@@ -249,6 +255,7 @@ class DeclProcessor {
 
         const coclass = this.getCoClass(fqn, options);
 
+        coclass.modifiers = list_of_modifiers;
         coclass.is_class = name.startsWith("class ");
         coclass.is_struct = name.startsWith("struct ");
         coclass.is_simple = list_of_modifiers.includes("/Simple");
@@ -256,12 +263,9 @@ class DeclProcessor {
         coclass.is_external = list_of_modifiers.includes("/External");
         coclass.is_cexternal = list_of_modifiers.includes("/CExternal");
         coclass.is_rexternal = list_of_modifiers.includes("/RExternal");
+
         if (list_of_modifiers.includes("/Ptr")) {
             coclass.is_ptr = true;
-        }
-
-        if ((coclass.is_map || coclass.is_struct && coclass.is_simple || list_of_modifiers.includes("/DC")) && !coclass.has_default_constructor) {
-            coclass.has_default_constructor = 0;
         }
 
         coclass.noidl = list_of_modifiers.includes("/noidl");
@@ -508,7 +512,11 @@ class DeclProcessor {
         }
 
         if (type.endsWith("*")) {
-            return `${ this.getCppType(type.slice(0, -1), coclass, options) }*`;
+            return `${ this.getCppType(type.slice(0, -1).trim(), coclass, options) }*`;
+        }
+
+        if (this.typedefs.has(type)) {
+            return this.getCppType(this.typedefs.get(type), coclass, options);
         }
 
         let type_ = type;
@@ -709,18 +717,66 @@ class DeclProcessor {
         this.dependencies.get(dependent).add(dependency);
     }
 
-    addParentDefinition(coclass, options) {
+    addDefaultConstructor(coclass, options) {
         const {fqn} = coclass;
+        const ctor = `${ fqn.split("::").join(".") }.${ coclass.name }`;
 
         // Add a default constructor
-        if (coclass.has_default_constructor === 0) {
-            coclass.addMethod([`${ fqn }.${ coclass.name }`, "", [], []], options);
+        if ((coclass.is_map || coclass.is_struct && coclass.is_simple) && !coclass.has_default_constructor) {
+            coclass.addMethod([ctor, "", [], []], options);
         }
 
+        if (coclass.modifiers?.includes("/DC")) {
+            const { shared_ptr } = options;
+
+            // https://en.cppreference.com/w/c/language/struct_initialization.html
+
+            const args = Array.from(coclass.properties.entries()).map(([argname, {type: argtype, value: defval, modifiers}]) => {
+                for (const modifier of modifiers) {
+                    if (modifier.startsWith("/WType=")) {
+                        argtype = modifier.slice("/WType=".length);
+                    }
+                }
+
+                return [argtype, argname, defval, modifiers];
+            });
+
+            // Initializer list with declared members
+            coclass.addMethod([ctor, "", ["/Expr=", `/DC=${ args.map(([, argname, , modifiers]) => {
+                let wexpr = `${ options.self_get(argname) } = $value`;
+                for (const modifier of modifiers) {
+                    if (modifier.startsWith("/WExpr=")) {
+                        wexpr = modifier.slice("/WExpr=".length);
+                    }
+                }
+
+                return `if (${ argname }) { ${ wexpr.replace(/\$(?:value\b|\{[^\S\n]*value[^\S\n]*\})/g, `*${ argname }`) }; }`;
+            }).join("\n") }`], args.map(([argtype, argname, defval, modifiers]) => {
+                return [`std::optional<${ argtype }>`, argname, defval ? defval : "std::nullopt", modifiers.concat(["/Ref", "/C"])];
+            })], options);
+
+            // Initializer with tuple
+            coclass.addMethod([ctor, "", ["/Expr=", `/DC=${ args.map(([, argname, , modifiers], i) => {
+                let wexpr = `${ options.self_get(argname) } = $value`;
+                for (const modifier of modifiers) {
+                    if (modifier.startsWith("/WExpr=")) {
+                        wexpr = modifier.slice("/WExpr=".length);
+                    }
+                }
+
+                return `${ wexpr.replace(/\$(?:value\b|\{[^\S\n]*value[^\S\n]*\})/g, `std::get<${ i }>(args)`) };`
+            }).join("\n") }`], [
+                [`std::tuple<${ args.map(([argtype]) => argtype) }>`, "args", "", []],
+            ]], options);
+        }
+    }
+
+    addParentDefinition(coclass, options) {
         if (options.hasInheritanceSupport) {
             return;
         }
 
+        const {fqn} = coclass;
         const parents = [...coclass.parents];
 
         // denormalize parents

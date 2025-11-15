@@ -532,8 +532,8 @@ while true do
     -- lua is not thread safe
     -- therefore, calling callbacks from another thread
     -- will certainly cause unwanted behaviour
-    -- for that reason, callbacks are registered and called from the main thread
-    opencv_lua.notifyCallbacks()
+    -- for that reason, callbacks are suspended and will be resumed when calling yield
+    opencv_lua.yield()
 
     if not read_frame() then break end
 end

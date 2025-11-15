@@ -2,11 +2,11 @@ local opencv_lua = require("opencv_lua")
 local cv = opencv_lua.cv
 
 local sysPath = {
-    basename = function (file)
+    basename = function(file)
         local index
 
-        for i=#file,1,-1 do
-            local c = file:sub(i,i)
+        for i = #file, 1, -1 do
+            local c = file:sub(i, i)
             if c == "/" or c == "\\" then
                 if i == 1 then return c end
                 return file:sub(i + 1, #file)
@@ -16,18 +16,18 @@ local sysPath = {
         return file
     end,
 
-    dirname = function (file)
+    dirname = function(file)
         local index
 
-        for i=#file,1,-1 do
-            local c = file:sub(i,i)
+        for i = #file, 1, -1 do
+            local c = file:sub(i, i)
             if c == "/" or c == "\\" then
                 if i == 1 then return c end
                 return file:sub(1, i - 1)
             end
         end
 
-        if #file == 0 or (file:find(":") == nil and file:sub(1,1) ~= "/") then
+        if #file == 0 or (file:find(":") == nil and file:sub(1, 1) ~= "/") then
             return "."
         end
 

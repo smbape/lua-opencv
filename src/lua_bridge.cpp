@@ -1,4 +1,4 @@
-#include <registration.hpp>
+#include <lua_bridge.hpp>
 
 namespace cvextra {
 	using namespace LUA_MODULE_NAME;
@@ -271,7 +271,7 @@ namespace {
 		HMODULE m = nullptr;
 #if _WIN32_WINNT >= 0x0501 && (!defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP))
 		::GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
-			reinterpret_cast<LPCTSTR>(addr),
+			static_cast<LPCTSTR>(addr),
 			&m);
 #endif
 		if (m) {

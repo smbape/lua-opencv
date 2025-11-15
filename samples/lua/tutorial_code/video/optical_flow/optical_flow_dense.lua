@@ -9,7 +9,6 @@ Sources:
 
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
-local INDEX_BASE = 1 -- lua is 1-based indexed
 
 local cap = cv.VideoCapture(cv.samples.findFile("vtest.avi"))
 local ret, frame1 = cap:read()
@@ -23,7 +22,7 @@ local prvs = cv.cvtColor(frame1, cv.COLOR_BGR2GRAY)
 local hsv = cv.Mat.zeros(frame1:size(), frame1:type())
 local hsv_parts = opencv_lua.VectorOfMat()
 cv.split(hsv, hsv_parts)
-hsv_parts[1 + INDEX_BASE]:setTo(255)
+hsv_parts[1]:setTo(255)
 
 local flow_parts = opencv_lua.VectorOfMat()
 
@@ -41,12 +40,12 @@ while true do
     local flow = cv.calcOpticalFlowFarneback(prvs, next, nil, 0.5, 3, 15, 3, 5, 1.2, 0)
 
     cv.split(flow, flow_parts)
-    local mag, ang = cv.cartToPolar(flow_parts[1], flow_parts[2])
+    local mag, ang = cv.cartToPolar(flow_parts[0], flow_parts[1])
 
     ang = ang * 180 / math.pi / 2
     mag = cv.normalize(mag, nil, 0, 255, cv.NORM_MINMAX)
-    ang:convertTo(hsv_parts[0 + INDEX_BASE]:type()):copyTo(hsv_parts[0 + INDEX_BASE])
-    mag:convertTo(hsv_parts[2 + INDEX_BASE]:type()):copyTo(hsv_parts[2 + INDEX_BASE])
+    ang:convertTo(hsv_parts[0]:type()):copyTo(hsv_parts[0])
+    mag:convertTo(hsv_parts[2]:type()):copyTo(hsv_parts[2])
 
     hsv = cv.merge(hsv_parts)
 

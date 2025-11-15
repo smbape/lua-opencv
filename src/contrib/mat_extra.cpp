@@ -275,7 +275,7 @@ namespace {
 		const auto cn = CV_MAT_CN(flags);
 		const auto depth = CV_MAT_DEPTH(flags);
 
-		cv::Mat data(sizes, CV_64F, reinterpret_cast<void*>(values.data()));
+		cv::Mat data(sizes, CV_64F, static_cast<void*>(values.data()));
 
 		data.convertTo(result, depth);
 

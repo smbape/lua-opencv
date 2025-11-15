@@ -348,7 +348,7 @@ local function shuffle(digits, labels)
     for i = 1, #digits do
         shuffled_indexes[i] = i - INDEX_BASE;
     end
-    shuffled_indexes = cv.randShuffle(opencv_lua.VectorOfInt(shuffled_indexes))
+    shuffled_indexes = cv.randShuffle(opencv_lua.VectorOfInt(shuffled_indexes)):table()
 
     local shuffled_digits = {}
     local shuffled_labels = {}

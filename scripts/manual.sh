@@ -14,8 +14,8 @@ bash -c 'source scripts/tasks.sh && tidy'
 # Update checks:
 #   - replace CMAKE_SOURCE_DIR with OPENCV_SOURCE_DIR
 #   - replace CMAKE_BINARY_DIR with OPENCV_BINARY_DIR
-#   - check modules/core/include/opencv2/core/mat.hpp changes
-#   - check python changes
+#   - check changes in modules/core/include/opencv2/core/mat.hpp
+#   - check changes in python
 
 
 # ================================

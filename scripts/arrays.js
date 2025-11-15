@@ -164,7 +164,7 @@ const hdr = `
 const hdr_impl = `
     #pragma once
 
-    #include <lua_bridge_common.hpp>
+    #include <lua_bridge_common.hdr.hpp>
     #include <opencv2/opencv.hpp>
 
     /**
@@ -311,10 +311,10 @@ const impl = `
                     ${ constexprWrap(type, 20, `
                         ${ !primitiveTypes.has(type) ? `
                             if (other.m_is_shared_ptr) {
-                                reset(*reinterpret_cast<std::shared_ptr<${ type }>*>(other.m_data));
+                                reset(*static_cast<std::shared_ptr<${ type }>*>(other.m_data));
                             }
                         `.replace(/^ {4}/mg, "").trim() : "" }
-                        reset(*reinterpret_cast<${ type }*>(other.m_data));
+                        reset(*static_cast<${ type }*>(other.m_data));
                     `.replace(/^ {4}/mg, "").trim()) }
                     break;
                 `.trim()).join(`\n${ " ".repeat(16) }`) }
@@ -402,11 +402,11 @@ const impl = `
                 case ${ i }:
                     ${ constexprWrap(type, 20, !primitiveTypes.has(type) ? `
                         if (m_is_shared_ptr) {
-                            delete reinterpret_cast<std::shared_ptr<${ type }>*>(m_data);
+                            delete static_cast<std::shared_ptr<${ type }>*>(m_data);
                         } else {
-                            delete reinterpret_cast<${ type }*>(m_data);
+                            delete static_cast<${ type }*>(m_data);
                         }
-                    `.replace(/^ {4}/mg, "").trim() : `delete reinterpret_cast<${ type }*>(m_data);`) }
+                    `.replace(/^ {4}/mg, "").trim() : `delete static_cast<${ type }*>(m_data);`) }
                     break;
                 `.trim()).join(`\n${ " ".repeat(16) }`) }
                 default:
@@ -508,10 +508,10 @@ const impl = `
                 case ${ i }:
                     ${ !primitiveTypes.has(type) ? `
                         if (opt_array.is_shared_ptr()) {
-                            return lua_push(L, *reinterpret_cast<const std::shared_ptr<${ type }>*>(opt_array.data()));
+                            return lua_push(L, *static_cast<const std::shared_ptr<${ type }>*>(opt_array.data()));
                         }
                     `.replace(/^ {4}/mg, "").trim() : "" }
-                    return lua_push(L, *reinterpret_cast<const ${ type }*>(opt_array.data()));
+                    return lua_push(L, *static_cast<const ${ type }*>(opt_array.data()));
                 `.trim()).join(`\n${ " ".repeat(16) }`) }
                 default:
                     lua_pushnil(L);

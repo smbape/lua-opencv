@@ -30,7 +30,8 @@ local feature_params = {
     qualityLevel = 0.3,
     minDistance = 7,
     blockSize = 7,
-    mask = nil
+    mask = nil,
+    corners = opencv_lua.VectorOfPoint2f(),
 }
 
 -- Parameters for lucas kanade optical flow
@@ -54,13 +55,8 @@ if not ret or old_frame:empty() then
     os.exit(0)
 end
 
-local p0 = opencv_lua.VectorOfPoint2f()
-local p1 = opencv_lua.VectorOfPoint2f()
-
 local old_gray = cv.cvtColor(old_frame, cv.COLOR_BGR2GRAY)
-
-feature_params.corners = p0
-cv.goodFeaturesToTrack(old_gray, kwargs(feature_params))
+local p0 = cv.goodFeaturesToTrack(old_gray, kwargs(feature_params))
 
 -- Create a mask image for drawing purposes
 local mask = cv.Mat.zeros(old_frame:size(), old_frame:type())
@@ -78,20 +74,23 @@ while true do
     local frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
 
     -- calculate optical flow
-    local _, st, err = cv.calcOpticalFlowPyrLK(old_gray, frame_gray, p0, p1, kwargs(lk_params))
-    local good_new = opencv_lua.VectorOfPoint2f()
+    local p1, st, err = cv.calcOpticalFlowPyrLK(old_gray, frame_gray, p0, p0.new(), kwargs(lk_params))
+    local good_new = p0.new()
 
-    for i = 1, #p0 do
+    for i = 0, #p0 - 1 do
         -- Select good points
-        if st[i - INDEX_BASE] == 1 then
-            good_new[#good_new + 1] = p1[i]
+        if st[i] == 1 then
+            local new = p1[i]
+            local old = p0[i]
 
-            local a, b = unpack(p1[i])
-            local c, d = unpack(p0[i])
+            good_new[#good_new] = new
+
+            local a, b = unpack(new)
+            local c, d = unpack(old)
 
             -- draw the tracks
-            cv.line(mask, { int(a), int(b) }, { int(c), int(d) }, colors[i], 2)
-            cv.circle(frame, { int(a), int(b) }, 5, colors[i], -1)
+            cv.line(mask, { int(a), int(b) }, { int(c), int(d) }, colors[i + INDEX_BASE], 2)
+            cv.circle(frame, { int(a), int(b) }, 5, colors[i + INDEX_BASE], -1)
         end
     end
 

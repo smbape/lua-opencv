@@ -1,7 +1,6 @@
 #pragma once
 
 #include <luadef.hpp>
-#include <set>
 
 namespace LUA_MODULE_NAME {
 	struct Keywords {
@@ -13,7 +12,7 @@ namespace LUA_MODULE_NAME {
 	void register_Keywords(lua_State* L);
 
 	template<>
-	struct is_usertype<Keywords> : std::true_type { };
+	struct is_usertype<Keywords> : std::true_type {};
 
 	template <>
 	struct usertype_info<Keywords> {

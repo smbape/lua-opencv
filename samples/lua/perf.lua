@@ -82,6 +82,7 @@ if type(jit) == "table" and package.config:sub(1, 1) ~= "/" then
     -- ffi limitations:
     -- ================================
     -- Function overloads
+    -- Custom function overloads (vec -> vec.size(), vec.data())
     -- Default values handling
     -- Inheritance handling
     -- Multi return handling

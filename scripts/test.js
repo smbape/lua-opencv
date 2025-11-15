@@ -61,6 +61,9 @@ const SAMPLES_PATH = sysPath.join(WORKSPACE_ROOT, "samples");
 const PYTHON_VENV_PATH = process.env.PYTHON_VENV_PATH ? sysPath.resolve(process.env.PYTHON_VENV_PATH) : sysPath.join(SAMPLES_PATH, ".venv");
 const PYTHON = sysPath.join(PYTHON_VENV_PATH, os.platform() === "win32" ? "Scripts" : "bin", `python${ exeSuffix }`);
 const PYTHONPATH = sysPath.join(opencv_SOURCE_DIR, "samples", "dnn");
+
+const LOVE = process.env.LOVE_BIN_PATH ? sysPath.resolve(process.env.LOVE_BIN_PATH) : "love";
+
 const OPENCV_SAMPLES_DATA_PATH = sysPath.join(opencv_SOURCE_DIR, "samples", "data");
 
 const config = {
@@ -192,6 +195,21 @@ const run = (file, env, options, next) => {
             argv.push("ssd_tf", "--input", "vtest.avi");
         }
         args.push(PYTHON, argv);
+    } else if (extname === ".love") {
+        const game = file.slice(0, -".love".length);
+
+        const local_data = sysPath.resolve(options.cwd, game, "local_data");
+        if (!fs.existsSync(local_data)) {
+            fs.symlinkSync(sysPath.join(SAMPLES_PATH, "data"), local_data, "junction");
+        }
+
+        const opencv_data = sysPath.resolve(options.cwd, game, "opencv_data");
+        if (!fs.existsSync(opencv_data)) {
+            fs.symlinkSync(OPENCV_SAMPLES_DATA_PATH, opencv_data, "junction");
+        }
+
+        const argv = [game, ...options.argv];
+        args.push(LOVE, argv);
     } else {
         throw new Error(`Unsupported extenstion ${ extname }`);
     }
@@ -243,6 +261,26 @@ const run = (file, env, options, next) => {
 
 const bash_init = "#!/usr/bin/env bash\n\nset -o pipefail\n";
 
+const run_file = (file, options, next) => {
+    waterfall([
+        next => {
+            run(file, {
+                BUILD_TYPE: "Release",
+                OPENCV_BUILD_TYPE: "Release",
+            }, options, next);
+        },
+
+        (signal, next) => {
+            run(file, {
+                BUILD_TYPE: "Debug",
+                OPENCV_BUILD_TYPE: "Debug",
+            }, options, next);
+        },
+    ], (code, signal) => {
+        next(code);
+    });
+};
+
 const main = (options, next) => {
     options = Object.assign({
         cwd: WORKSPACE_ROOT,
@@ -279,27 +317,19 @@ const main = (options, next) => {
             return;
         }
 
-        waterfall([
-            next => {
-                run(file, {
-                    BUILD_TYPE: "Release",
-                    OPENCV_BUILD_TYPE: "Release",
-                }, options, next);
-            },
-
-            (signal, next) => {
-                run(file, {
-                    BUILD_TYPE: "Debug",
-                    OPENCV_BUILD_TYPE: "Debug",
-                }, options, next);
-            },
-        ], (code, signal) => {
-            next(code);
-        });
+        run_file(file, options, next);
     }, (path, stats, files, state, next) => {
         const basename = sysPath.basename(path);
-        const skip = state === "begin" && (basename[0] === "." || basename === "BackUp");
-        next(null, skip);
+
+        if (state === "begin" && basename === "love2d" && (includes.length === 0 || includes.some(include => basename.includes(include)))) {
+            const file = sysPath.relative(cwd, path);
+            run_file(`${ file }.love`, options, err => {
+                next(err, true);
+            });
+        } else {
+            const skip = state === "begin" && (basename[0] === "." || basename === "BackUp");
+            next(null, skip);
+        }
     }, next);
 };
 

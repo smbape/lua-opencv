@@ -1,5 +1,4 @@
 #pragma once
-#include <lua_bridge.hdr.hpp>
 
 // CV_EXPORTS_W : include this file in lua_generated_include
 
