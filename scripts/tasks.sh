@@ -723,9 +723,20 @@ function fix_mounted_volumes_permission_docker() {
     # using that user allow full access to mounted volumes
     docker exec -it -u 0 "${name}" bash -c '
 if ! id 1000 &>/dev/null; then
-    useradd docker -m -s /bin/bash -G users,ci --uid=1000 && \
-    chmod 775 /io
+    echo useradd docker -m -s /bin/bash -G users,ci --uid=1000
+    useradd docker -m -s /bin/bash -G users,ci --uid=1000
 fi
+
+if id 1000 &>/dev/null; then
+    USER=$(id 1000 | sed -re "s/^uid=1000\(([[:alnum:]]+)\).+\$/\1/") || exit $?
+    for GROUP_NAME in users ci; do
+        echo usermod -a -G "${GROUP_NAME}" $USER
+        groups $USER | grep &>/dev/null "\\b${GROUP_NAME}\\b" || \
+        usermod -a -G "${GROUP_NAME}" $USER || exit $?
+    done
+fi
+
+chmod 775 /io
 '
 }
 
@@ -934,6 +945,8 @@ node --trace-uncaught --unhandled-rejections=strict scripts/prepublish.js \
 
 function install_build_essentials_debian_script() {
     echo '
+export DEBIAN_FRONTEND=noninteractive
+export TZ=Europe/Paris
 apt update && \
 apt install -y build-essential curl git libavcodec-dev libavformat-dev libdc1394-dev \
         libjpeg-dev libpng-dev libreadline-dev libswscale-dev libtbb-dev \
@@ -967,9 +980,8 @@ function install_build_essentials_fedora_script() {
 $cpm update -y && \
 $cpm install -y git \
         libjpeg-devel libpng-devel readline-devel make patch tbb-devel \
-        pkg-config python3.12-pip qt5-qtbase-devel unzip wget zip || \
+        pkg-config qt5-qtbase-devel unzip wget zip || \
 exit $?
-$cpm install -y python3.12-pip || $cpm install -y python3.11-pip || exit $?
 command -v curl &>/dev/null || $cpm install -y curl || exit $?
 
 ALMALINUX_VERSION=$(sed -rn "s/ALMALINUX_MANTISBT_PROJECT=\"AlmaLinux-([0-9])\"/\1/p" /etc/os-release)
@@ -988,12 +1000,12 @@ if [ ${#ALMALINUX_VERSION} -ne 0 ]; then
     $cpm update -y || exit $?
 
     if [ ${ALMALINUX_VERSION} -eq 8 ]; then
-        $cpm install -y gcc-toolset-12-gcc gcc-toolset-12-gcc-c++ ffmpeg-devel patchelf || exit $?
+        $cpm install -y gcc-toolset-12-gcc gcc-toolset-12-gcc-c++ ffmpeg-devel patchelf python3.12-pip || exit $?
     else
         $cpm install -y gcc gcc-c++ libavcodec-free-devel libavformat-free-devel libdc1394-devel libswscale-free-devel patchelf || exit $?
     fi
 else
-    $cpm install -y gcc gcc-c++ libavcodec-free-devel libavformat-free-devel libdc1394-devel libswscale-free-devel patchelf || exit $?
+    $cpm install -y gcc gcc-c++ libavcodec-free-devel libavformat-free-devel libdc1394-devel libswscale-free-devel patchelf python3-pip || exit $?
 fi'
 
     echo "$(get_current_package_manager); ${script}"
@@ -1426,8 +1438,14 @@ function install_test_essentials_docker_fedora() {
 $(get_current_package_manager)
 \$cpm update -y && \
 \$cpm install -y gcc gcc-c++ git glib2 readline-devel libglvnd-glx libSM libXext make patch unzip wget || exit \$?
-\$cpm install -y python3.12-pip || \$cpm install -y python3.11-pip || exit \$?
 command -v curl &>/dev/null || \$cpm install -y curl || exit \$?
+
+ALMALINUX_VERSION=\$(sed -rn \"s/ALMALINUX_MANTISBT_PROJECT=\\\"AlmaLinux-([0-9])\\\"/\\1/p\" /etc/os-release)
+if [ \"\${ALMALINUX_VERSION}\" == "8" ]; then
+    \$cpm install -y python3.12-pip || exit \$?
+else
+    \$cpm install -y python3-pip || exit \$?
+fi
 
 $(docker_init_script)"
 }

@@ -94,7 +94,7 @@ sudo dnf install -y curl gcc gcc-c++ git \
 ```sh
 sudo dnf install -y curl gcc-toolset-12-gcc gcc-toolset-12-gcc-c++ git \
         libjpeg-devel libpng-devel readline-devel make patch tbb-devel openssl-devel \
-        pkg-config python3.12-pip qt5-qtbase-devel unzip wget zip && \
+        pkg-config python3-pip qt5-qtbase-devel unzip wget zip && \
 sudo config-manager --set-enabled powertools && \
 sudo dnf install -y epel-release && \
 sudo dnf install -y https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm
@@ -143,9 +143,10 @@ Those prebuilt binaries should work on Windows and many linux distributions and 
   - Ubuntu 24.04
   - Debian 11
   - Debian 12
-  - Fedora 38
+  - Debian 13
   - Fedora 39
   - Fedora 40
+  - Fedora 41
   - Almalinux 8
   - Almalinux 9
   - Almalinux 10

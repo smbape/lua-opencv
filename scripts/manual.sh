@@ -70,9 +70,10 @@ bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-binary-
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-binary-ubuntu-24.04 ubuntu:24.04 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-binary-debian-11 debian:11 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-binary-debian-12 debian:12 -- object_detection.lua'
-bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-fedora-38 fedora:38 -- object_detection.lua'
+bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-binary-debian-13 debian:13 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-fedora-39 fedora:39 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-fedora-40 fedora:40 -- object_detection.lua'
+bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-fedora-41 fedora:41 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-almalinux-8 amd64/almalinux:8 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-almalinux-9 amd64/almalinux:9 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-almalinux-10 amd64/almalinux:10 -- object_detection.lua'
@@ -91,9 +92,9 @@ bash -c 'source scripts/tasks.sh && test_prepublished_source_wsl'
 # ================================
 # Docker images README.md install source rock
 # ================================
-bash -c 'source scripts/tasks.sh && test_prepublished_source_debian test-source-ubuntu-22.04 ubuntu:22.04 -- object_detection.lua'
+bash -c 'source scripts/tasks.sh && test_prepublished_source_debian test-source-ubuntu-24.04 ubuntu:24.04 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_source_debian test-source-debian-12 debian:12 -- object_detection.lua'
-bash -c 'source scripts/tasks.sh && test_prepublished_source_fedora test-source-fedora-39 fedora:39 -- object_detection.lua'
+bash -c 'source scripts/tasks.sh && test_prepublished_source_fedora test-source-fedora-41 fedora:41 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_source_fedora test-source-almalinux-9 amd64/almalinux:9 -- object_detection.lua'
 
 

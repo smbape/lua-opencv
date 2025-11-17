@@ -7,7 +7,7 @@ elseif(NOT DEFINED VIRTUAL_ENV_created)
     set(VIRTUAL_ENV_created FALSE)
 endif()
 
-find_package(Python3 "3.9...<3.13" COMPONENTS Interpreter REQUIRED)
+find_package(Python3 "3.9...<3.15" COMPONENTS Interpreter REQUIRED)
 execute_process (COMMAND "${Python3_EXECUTABLE}" -m venv "${VIRTUAL_ENV}")
 
 ## update the environment with VIRTUAL_ENV variable (mimic the activate script)

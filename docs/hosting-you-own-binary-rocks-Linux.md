@@ -34,7 +34,7 @@ Here we will build a custom opencv with the folling modifications:
   - Add NVIDIA CUDA support.
 
 The procedure has been tested on :
-  - [Ubuntu 22.04 (Jammy Jellyfish)](https://releases.ubuntu.com/jammy/)
+  - [Ubuntu 24.04 (Noble Numbat)](https://releases.ubuntu.com/noble/)
 
 ## Prerequisites
 

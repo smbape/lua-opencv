@@ -27,9 +27,10 @@ description = {
         - Ubuntu 24.04
         - Debian 11
         - Debian 12
-        - Fedora 38
+        - Debian 13
         - Fedora 39
         - Fedora 40
+        - Fedora 41
         - Almalinux 8
         - Almalinux 9
         - Almalinux 10
