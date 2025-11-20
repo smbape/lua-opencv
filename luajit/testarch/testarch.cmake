@@ -72,7 +72,7 @@ set(TARGET_ARCH "")
 set(HOST_XCFLAGS "")
 
 if (NOT TARGET_TESTARCH_COMPILED)
-        message(FATAL_ERROR "Unsupported target architecture:\n${TARGET_TESTARCH_COMPILE}")
+    message(FATAL_ERROR "Unsupported target architecture:\n${TARGET_TESTARCH_COMPILE}")
 else()
     if(TARGET_TESTARCH MATCHES " LJ_TARGET_X64 ")
         set(TARGET_LJARCH x64)

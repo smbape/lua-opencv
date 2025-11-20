@@ -203,6 +203,11 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename T>
+	inline std::enable_if_t<is_usertype_v<T>, int> lua_push(lua_State* L, const T* ptr) {
+		return lua_push(L, const_cast<T*>(ptr));
+	}
+
+	template<typename T>
 	inline std::enable_if_t<is_usertype_v<T>, int> lua_push(lua_State* L, T&& obj) {
 		return lua_push(L, std::make_shared<T>(std::move(obj)));
 	}

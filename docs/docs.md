@@ -5574,856 +5574,2320 @@
   - [MapOfStringAndVectorOfSize\_t.table](#mapofstringandvectorofsize%5C_ttable)
 - [VectorOfAruco\_Dictionary](#vectorofaruco%5C_dictionary)
   - [VectorOfAruco\_Dictionary.new](#vectorofaruco%5C_dictionarynew)
+  - [VectorOfAruco\_Dictionary.back](#vectorofaruco%5C_dictionaryback)
+  - [VectorOfAruco\_Dictionary.capacity](#vectorofaruco%5C_dictionarycapacity)
+  - [VectorOfAruco\_Dictionary.clear](#vectorofaruco%5C_dictionaryclear)
   - [VectorOfAruco\_Dictionary.data](#vectorofaruco%5C_dictionarydata)
+  - [VectorOfAruco\_Dictionary.empty](#vectorofaruco%5C_dictionaryempty)
+  - [VectorOfAruco\_Dictionary.front](#vectorofaruco%5C_dictionaryfront)
+  - [VectorOfAruco\_Dictionary.max\_size](#vectorofaruco%5C_dictionarymax%5C_size)
+  - [VectorOfAruco\_Dictionary.pop\_back](#vectorofaruco%5C_dictionarypop%5C_back)
+  - [VectorOfAruco\_Dictionary.reserve](#vectorofaruco%5C_dictionaryreserve)
+  - [VectorOfAruco\_Dictionary.resize](#vectorofaruco%5C_dictionaryresize)
+  - [VectorOfAruco\_Dictionary.shrink\_to\_fit](#vectorofaruco%5C_dictionaryshrink%5C_to%5C_fit)
+  - [VectorOfAruco\_Dictionary.sizeof](#vectorofaruco%5C_dictionarysizeof)
   - [VectorOfAruco\_Dictionary.sol::meta\_function::index](#vectorofaruco%5C_dictionarysolmeta%5C_functionindex)
   - [VectorOfAruco\_Dictionary.sol::meta\_function::length](#vectorofaruco%5C_dictionarysolmeta%5C_functionlength)
   - [VectorOfAruco\_Dictionary.sol::meta\_function::new\_index](#vectorofaruco%5C_dictionarysolmeta%5C_functionnew%5C_index)
+  - [VectorOfAruco\_Dictionary.swap](#vectorofaruco%5C_dictionaryswap)
   - [VectorOfAruco\_Dictionary.table](#vectorofaruco%5C_dictionarytable)
 - [VectorOfBool](#vectorofbool)
   - [VectorOfBool.new](#vectorofboolnew)
+  - [VectorOfBool.back](#vectorofboolback)
+  - [VectorOfBool.capacity](#vectorofboolcapacity)
+  - [VectorOfBool.clear](#vectorofboolclear)
+  - [VectorOfBool.empty](#vectorofboolempty)
+  - [VectorOfBool.front](#vectorofboolfront)
+  - [VectorOfBool.max\_size](#vectorofboolmax%5C_size)
+  - [VectorOfBool.pop\_back](#vectorofboolpop%5C_back)
+  - [VectorOfBool.reserve](#vectorofboolreserve)
+  - [VectorOfBool.resize](#vectorofboolresize)
+  - [VectorOfBool.shrink\_to\_fit](#vectorofboolshrink%5C_to%5C_fit)
+  - [VectorOfBool.sizeof](#vectorofboolsizeof)
   - [VectorOfBool.sol::meta\_function::index](#vectorofboolsolmeta%5C_functionindex)
   - [VectorOfBool.sol::meta\_function::length](#vectorofboolsolmeta%5C_functionlength)
   - [VectorOfBool.sol::meta\_function::new\_index](#vectorofboolsolmeta%5C_functionnew%5C_index)
+  - [VectorOfBool.swap](#vectorofboolswap)
   - [VectorOfBool.table](#vectorofbooltable)
 - [VectorOfChar](#vectorofchar)
   - [VectorOfChar.new](#vectorofcharnew)
+  - [VectorOfChar.back](#vectorofcharback)
+  - [VectorOfChar.capacity](#vectorofcharcapacity)
+  - [VectorOfChar.clear](#vectorofcharclear)
   - [VectorOfChar.data](#vectorofchardata)
+  - [VectorOfChar.empty](#vectorofcharempty)
+  - [VectorOfChar.front](#vectorofcharfront)
+  - [VectorOfChar.max\_size](#vectorofcharmax%5C_size)
+  - [VectorOfChar.pop\_back](#vectorofcharpop%5C_back)
+  - [VectorOfChar.reserve](#vectorofcharreserve)
+  - [VectorOfChar.resize](#vectorofcharresize)
+  - [VectorOfChar.shrink\_to\_fit](#vectorofcharshrink%5C_to%5C_fit)
+  - [VectorOfChar.sizeof](#vectorofcharsizeof)
   - [VectorOfChar.sol::meta\_function::index](#vectorofcharsolmeta%5C_functionindex)
   - [VectorOfChar.sol::meta\_function::length](#vectorofcharsolmeta%5C_functionlength)
   - [VectorOfChar.sol::meta\_function::new\_index](#vectorofcharsolmeta%5C_functionnew%5C_index)
+  - [VectorOfChar.swap](#vectorofcharswap)
   - [VectorOfChar.table](#vectorofchartable)
 - [VectorOfCvVariantOfIntAndRange](#vectorofcvvariantofintandrange)
   - [VectorOfCvVariantOfIntAndRange.new](#vectorofcvvariantofintandrangenew)
+  - [VectorOfCvVariantOfIntAndRange.back](#vectorofcvvariantofintandrangeback)
+  - [VectorOfCvVariantOfIntAndRange.capacity](#vectorofcvvariantofintandrangecapacity)
+  - [VectorOfCvVariantOfIntAndRange.clear](#vectorofcvvariantofintandrangeclear)
   - [VectorOfCvVariantOfIntAndRange.data](#vectorofcvvariantofintandrangedata)
+  - [VectorOfCvVariantOfIntAndRange.empty](#vectorofcvvariantofintandrangeempty)
+  - [VectorOfCvVariantOfIntAndRange.front](#vectorofcvvariantofintandrangefront)
+  - [VectorOfCvVariantOfIntAndRange.max\_size](#vectorofcvvariantofintandrangemax%5C_size)
+  - [VectorOfCvVariantOfIntAndRange.pop\_back](#vectorofcvvariantofintandrangepop%5C_back)
+  - [VectorOfCvVariantOfIntAndRange.reserve](#vectorofcvvariantofintandrangereserve)
+  - [VectorOfCvVariantOfIntAndRange.resize](#vectorofcvvariantofintandrangeresize)
+  - [VectorOfCvVariantOfIntAndRange.shrink\_to\_fit](#vectorofcvvariantofintandrangeshrink%5C_to%5C_fit)
+  - [VectorOfCvVariantOfIntAndRange.sizeof](#vectorofcvvariantofintandrangesizeof)
   - [VectorOfCvVariantOfIntAndRange.sol::meta\_function::index](#vectorofcvvariantofintandrangesolmeta%5C_functionindex)
   - [VectorOfCvVariantOfIntAndRange.sol::meta\_function::length](#vectorofcvvariantofintandrangesolmeta%5C_functionlength)
   - [VectorOfCvVariantOfIntAndRange.sol::meta\_function::new\_index](#vectorofcvvariantofintandrangesolmeta%5C_functionnew%5C_index)
+  - [VectorOfCvVariantOfIntAndRange.swap](#vectorofcvvariantofintandrangeswap)
   - [VectorOfCvVariantOfIntAndRange.table](#vectorofcvvariantofintandrangetable)
 - [VectorOfDMatch](#vectorofdmatch)
   - [VectorOfDMatch.new](#vectorofdmatchnew)
+  - [VectorOfDMatch.back](#vectorofdmatchback)
+  - [VectorOfDMatch.capacity](#vectorofdmatchcapacity)
+  - [VectorOfDMatch.clear](#vectorofdmatchclear)
   - [VectorOfDMatch.data](#vectorofdmatchdata)
+  - [VectorOfDMatch.empty](#vectorofdmatchempty)
+  - [VectorOfDMatch.front](#vectorofdmatchfront)
+  - [VectorOfDMatch.max\_size](#vectorofdmatchmax%5C_size)
+  - [VectorOfDMatch.pop\_back](#vectorofdmatchpop%5C_back)
+  - [VectorOfDMatch.reserve](#vectorofdmatchreserve)
+  - [VectorOfDMatch.resize](#vectorofdmatchresize)
+  - [VectorOfDMatch.shrink\_to\_fit](#vectorofdmatchshrink%5C_to%5C_fit)
+  - [VectorOfDMatch.sizeof](#vectorofdmatchsizeof)
   - [VectorOfDMatch.sol::meta\_function::index](#vectorofdmatchsolmeta%5C_functionindex)
   - [VectorOfDMatch.sol::meta\_function::length](#vectorofdmatchsolmeta%5C_functionlength)
   - [VectorOfDMatch.sol::meta\_function::new\_index](#vectorofdmatchsolmeta%5C_functionnew%5C_index)
+  - [VectorOfDMatch.swap](#vectorofdmatchswap)
   - [VectorOfDMatch.table](#vectorofdmatchtable)
 - [VectorOfDetail\_CameraParams](#vectorofdetail%5C_cameraparams)
   - [VectorOfDetail\_CameraParams.new](#vectorofdetail%5C_cameraparamsnew)
+  - [VectorOfDetail\_CameraParams.back](#vectorofdetail%5C_cameraparamsback)
+  - [VectorOfDetail\_CameraParams.capacity](#vectorofdetail%5C_cameraparamscapacity)
+  - [VectorOfDetail\_CameraParams.clear](#vectorofdetail%5C_cameraparamsclear)
   - [VectorOfDetail\_CameraParams.data](#vectorofdetail%5C_cameraparamsdata)
+  - [VectorOfDetail\_CameraParams.empty](#vectorofdetail%5C_cameraparamsempty)
+  - [VectorOfDetail\_CameraParams.front](#vectorofdetail%5C_cameraparamsfront)
+  - [VectorOfDetail\_CameraParams.max\_size](#vectorofdetail%5C_cameraparamsmax%5C_size)
+  - [VectorOfDetail\_CameraParams.pop\_back](#vectorofdetail%5C_cameraparamspop%5C_back)
+  - [VectorOfDetail\_CameraParams.reserve](#vectorofdetail%5C_cameraparamsreserve)
+  - [VectorOfDetail\_CameraParams.resize](#vectorofdetail%5C_cameraparamsresize)
+  - [VectorOfDetail\_CameraParams.shrink\_to\_fit](#vectorofdetail%5C_cameraparamsshrink%5C_to%5C_fit)
+  - [VectorOfDetail\_CameraParams.sizeof](#vectorofdetail%5C_cameraparamssizeof)
   - [VectorOfDetail\_CameraParams.sol::meta\_function::index](#vectorofdetail%5C_cameraparamssolmeta%5C_functionindex)
   - [VectorOfDetail\_CameraParams.sol::meta\_function::length](#vectorofdetail%5C_cameraparamssolmeta%5C_functionlength)
   - [VectorOfDetail\_CameraParams.sol::meta\_function::new\_index](#vectorofdetail%5C_cameraparamssolmeta%5C_functionnew%5C_index)
+  - [VectorOfDetail\_CameraParams.swap](#vectorofdetail%5C_cameraparamsswap)
   - [VectorOfDetail\_CameraParams.table](#vectorofdetail%5C_cameraparamstable)
 - [VectorOfDetail\_ImageFeatures](#vectorofdetail%5C_imagefeatures)
   - [VectorOfDetail\_ImageFeatures.new](#vectorofdetail%5C_imagefeaturesnew)
+  - [VectorOfDetail\_ImageFeatures.back](#vectorofdetail%5C_imagefeaturesback)
+  - [VectorOfDetail\_ImageFeatures.capacity](#vectorofdetail%5C_imagefeaturescapacity)
+  - [VectorOfDetail\_ImageFeatures.clear](#vectorofdetail%5C_imagefeaturesclear)
   - [VectorOfDetail\_ImageFeatures.data](#vectorofdetail%5C_imagefeaturesdata)
+  - [VectorOfDetail\_ImageFeatures.empty](#vectorofdetail%5C_imagefeaturesempty)
+  - [VectorOfDetail\_ImageFeatures.front](#vectorofdetail%5C_imagefeaturesfront)
+  - [VectorOfDetail\_ImageFeatures.max\_size](#vectorofdetail%5C_imagefeaturesmax%5C_size)
+  - [VectorOfDetail\_ImageFeatures.pop\_back](#vectorofdetail%5C_imagefeaturespop%5C_back)
+  - [VectorOfDetail\_ImageFeatures.reserve](#vectorofdetail%5C_imagefeaturesreserve)
+  - [VectorOfDetail\_ImageFeatures.resize](#vectorofdetail%5C_imagefeaturesresize)
+  - [VectorOfDetail\_ImageFeatures.shrink\_to\_fit](#vectorofdetail%5C_imagefeaturesshrink%5C_to%5C_fit)
+  - [VectorOfDetail\_ImageFeatures.sizeof](#vectorofdetail%5C_imagefeaturessizeof)
   - [VectorOfDetail\_ImageFeatures.sol::meta\_function::index](#vectorofdetail%5C_imagefeaturessolmeta%5C_functionindex)
   - [VectorOfDetail\_ImageFeatures.sol::meta\_function::length](#vectorofdetail%5C_imagefeaturessolmeta%5C_functionlength)
   - [VectorOfDetail\_ImageFeatures.sol::meta\_function::new\_index](#vectorofdetail%5C_imagefeaturessolmeta%5C_functionnew%5C_index)
+  - [VectorOfDetail\_ImageFeatures.swap](#vectorofdetail%5C_imagefeaturesswap)
   - [VectorOfDetail\_ImageFeatures.table](#vectorofdetail%5C_imagefeaturestable)
 - [VectorOfDetail\_MatchesInfo](#vectorofdetail%5C_matchesinfo)
   - [VectorOfDetail\_MatchesInfo.new](#vectorofdetail%5C_matchesinfonew)
+  - [VectorOfDetail\_MatchesInfo.back](#vectorofdetail%5C_matchesinfoback)
+  - [VectorOfDetail\_MatchesInfo.capacity](#vectorofdetail%5C_matchesinfocapacity)
+  - [VectorOfDetail\_MatchesInfo.clear](#vectorofdetail%5C_matchesinfoclear)
   - [VectorOfDetail\_MatchesInfo.data](#vectorofdetail%5C_matchesinfodata)
+  - [VectorOfDetail\_MatchesInfo.empty](#vectorofdetail%5C_matchesinfoempty)
+  - [VectorOfDetail\_MatchesInfo.front](#vectorofdetail%5C_matchesinfofront)
+  - [VectorOfDetail\_MatchesInfo.max\_size](#vectorofdetail%5C_matchesinfomax%5C_size)
+  - [VectorOfDetail\_MatchesInfo.pop\_back](#vectorofdetail%5C_matchesinfopop%5C_back)
+  - [VectorOfDetail\_MatchesInfo.reserve](#vectorofdetail%5C_matchesinforeserve)
+  - [VectorOfDetail\_MatchesInfo.resize](#vectorofdetail%5C_matchesinforesize)
+  - [VectorOfDetail\_MatchesInfo.shrink\_to\_fit](#vectorofdetail%5C_matchesinfoshrink%5C_to%5C_fit)
+  - [VectorOfDetail\_MatchesInfo.sizeof](#vectorofdetail%5C_matchesinfosizeof)
   - [VectorOfDetail\_MatchesInfo.sol::meta\_function::index](#vectorofdetail%5C_matchesinfosolmeta%5C_functionindex)
   - [VectorOfDetail\_MatchesInfo.sol::meta\_function::length](#vectorofdetail%5C_matchesinfosolmeta%5C_functionlength)
   - [VectorOfDetail\_MatchesInfo.sol::meta\_function::new\_index](#vectorofdetail%5C_matchesinfosolmeta%5C_functionnew%5C_index)
+  - [VectorOfDetail\_MatchesInfo.swap](#vectorofdetail%5C_matchesinfoswap)
   - [VectorOfDetail\_MatchesInfo.table](#vectorofdetail%5C_matchesinfotable)
 - [VectorOfDnn\_Target](#vectorofdnn%5C_target)
   - [VectorOfDnn\_Target.new](#vectorofdnn%5C_targetnew)
+  - [VectorOfDnn\_Target.back](#vectorofdnn%5C_targetback)
+  - [VectorOfDnn\_Target.capacity](#vectorofdnn%5C_targetcapacity)
+  - [VectorOfDnn\_Target.clear](#vectorofdnn%5C_targetclear)
   - [VectorOfDnn\_Target.data](#vectorofdnn%5C_targetdata)
+  - [VectorOfDnn\_Target.empty](#vectorofdnn%5C_targetempty)
+  - [VectorOfDnn\_Target.front](#vectorofdnn%5C_targetfront)
+  - [VectorOfDnn\_Target.max\_size](#vectorofdnn%5C_targetmax%5C_size)
+  - [VectorOfDnn\_Target.pop\_back](#vectorofdnn%5C_targetpop%5C_back)
+  - [VectorOfDnn\_Target.reserve](#vectorofdnn%5C_targetreserve)
+  - [VectorOfDnn\_Target.resize](#vectorofdnn%5C_targetresize)
+  - [VectorOfDnn\_Target.shrink\_to\_fit](#vectorofdnn%5C_targetshrink%5C_to%5C_fit)
+  - [VectorOfDnn\_Target.sizeof](#vectorofdnn%5C_targetsizeof)
   - [VectorOfDnn\_Target.sol::meta\_function::index](#vectorofdnn%5C_targetsolmeta%5C_functionindex)
   - [VectorOfDnn\_Target.sol::meta\_function::length](#vectorofdnn%5C_targetsolmeta%5C_functionlength)
   - [VectorOfDnn\_Target.sol::meta\_function::new\_index](#vectorofdnn%5C_targetsolmeta%5C_functionnew%5C_index)
+  - [VectorOfDnn\_Target.swap](#vectorofdnn%5C_targetswap)
   - [VectorOfDnn\_Target.table](#vectorofdnn%5C_targettable)
 - [VectorOfDouble](#vectorofdouble)
   - [VectorOfDouble.new](#vectorofdoublenew)
+  - [VectorOfDouble.back](#vectorofdoubleback)
+  - [VectorOfDouble.capacity](#vectorofdoublecapacity)
+  - [VectorOfDouble.clear](#vectorofdoubleclear)
   - [VectorOfDouble.data](#vectorofdoubledata)
+  - [VectorOfDouble.empty](#vectorofdoubleempty)
+  - [VectorOfDouble.front](#vectorofdoublefront)
+  - [VectorOfDouble.max\_size](#vectorofdoublemax%5C_size)
+  - [VectorOfDouble.pop\_back](#vectorofdoublepop%5C_back)
+  - [VectorOfDouble.reserve](#vectorofdoublereserve)
+  - [VectorOfDouble.resize](#vectorofdoubleresize)
+  - [VectorOfDouble.shrink\_to\_fit](#vectorofdoubleshrink%5C_to%5C_fit)
+  - [VectorOfDouble.sizeof](#vectorofdoublesizeof)
   - [VectorOfDouble.sol::meta\_function::index](#vectorofdoublesolmeta%5C_functionindex)
   - [VectorOfDouble.sol::meta\_function::length](#vectorofdoublesolmeta%5C_functionlength)
   - [VectorOfDouble.sol::meta\_function::new\_index](#vectorofdoublesolmeta%5C_functionnew%5C_index)
+  - [VectorOfDouble.swap](#vectorofdoubleswap)
   - [VectorOfDouble.table](#vectorofdoubletable)
 - [VectorOfFloat](#vectoroffloat)
   - [VectorOfFloat.new](#vectoroffloatnew)
+  - [VectorOfFloat.back](#vectoroffloatback)
+  - [VectorOfFloat.capacity](#vectoroffloatcapacity)
+  - [VectorOfFloat.clear](#vectoroffloatclear)
   - [VectorOfFloat.data](#vectoroffloatdata)
+  - [VectorOfFloat.empty](#vectoroffloatempty)
+  - [VectorOfFloat.front](#vectoroffloatfront)
+  - [VectorOfFloat.max\_size](#vectoroffloatmax%5C_size)
+  - [VectorOfFloat.pop\_back](#vectoroffloatpop%5C_back)
+  - [VectorOfFloat.reserve](#vectoroffloatreserve)
+  - [VectorOfFloat.resize](#vectoroffloatresize)
+  - [VectorOfFloat.shrink\_to\_fit](#vectoroffloatshrink%5C_to%5C_fit)
+  - [VectorOfFloat.sizeof](#vectoroffloatsizeof)
   - [VectorOfFloat.sol::meta\_function::index](#vectoroffloatsolmeta%5C_functionindex)
   - [VectorOfFloat.sol::meta\_function::length](#vectoroffloatsolmeta%5C_functionlength)
   - [VectorOfFloat.sol::meta\_function::new\_index](#vectoroffloatsolmeta%5C_functionnew%5C_index)
+  - [VectorOfFloat.swap](#vectoroffloatswap)
   - [VectorOfFloat.table](#vectoroffloattable)
 - [VectorOfGCompileArg](#vectorofgcompilearg)
   - [VectorOfGCompileArg.new](#vectorofgcompileargnew)
+  - [VectorOfGCompileArg.back](#vectorofgcompileargback)
+  - [VectorOfGCompileArg.capacity](#vectorofgcompileargcapacity)
+  - [VectorOfGCompileArg.clear](#vectorofgcompileargclear)
   - [VectorOfGCompileArg.data](#vectorofgcompileargdata)
+  - [VectorOfGCompileArg.empty](#vectorofgcompileargempty)
+  - [VectorOfGCompileArg.front](#vectorofgcompileargfront)
+  - [VectorOfGCompileArg.max\_size](#vectorofgcompileargmax%5C_size)
+  - [VectorOfGCompileArg.pop\_back](#vectorofgcompileargpop%5C_back)
+  - [VectorOfGCompileArg.reserve](#vectorofgcompileargreserve)
+  - [VectorOfGCompileArg.resize](#vectorofgcompileargresize)
+  - [VectorOfGCompileArg.shrink\_to\_fit](#vectorofgcompileargshrink%5C_to%5C_fit)
+  - [VectorOfGCompileArg.sizeof](#vectorofgcompileargsizeof)
   - [VectorOfGCompileArg.sol::meta\_function::index](#vectorofgcompileargsolmeta%5C_functionindex)
   - [VectorOfGCompileArg.sol::meta\_function::length](#vectorofgcompileargsolmeta%5C_functionlength)
   - [VectorOfGCompileArg.sol::meta\_function::new\_index](#vectorofgcompileargsolmeta%5C_functionnew%5C_index)
+  - [VectorOfGCompileArg.swap](#vectorofgcompileargswap)
   - [VectorOfGCompileArg.table](#vectorofgcompileargtable)
 - [VectorOfGMat](#vectorofgmat)
   - [VectorOfGMat.new](#vectorofgmatnew)
+  - [VectorOfGMat.back](#vectorofgmatback)
+  - [VectorOfGMat.capacity](#vectorofgmatcapacity)
+  - [VectorOfGMat.clear](#vectorofgmatclear)
   - [VectorOfGMat.data](#vectorofgmatdata)
+  - [VectorOfGMat.empty](#vectorofgmatempty)
+  - [VectorOfGMat.front](#vectorofgmatfront)
+  - [VectorOfGMat.max\_size](#vectorofgmatmax%5C_size)
+  - [VectorOfGMat.pop\_back](#vectorofgmatpop%5C_back)
+  - [VectorOfGMat.reserve](#vectorofgmatreserve)
+  - [VectorOfGMat.resize](#vectorofgmatresize)
+  - [VectorOfGMat.shrink\_to\_fit](#vectorofgmatshrink%5C_to%5C_fit)
+  - [VectorOfGMat.sizeof](#vectorofgmatsizeof)
   - [VectorOfGMat.sol::meta\_function::index](#vectorofgmatsolmeta%5C_functionindex)
   - [VectorOfGMat.sol::meta\_function::length](#vectorofgmatsolmeta%5C_functionlength)
   - [VectorOfGMat.sol::meta\_function::new\_index](#vectorofgmatsolmeta%5C_functionnew%5C_index)
+  - [VectorOfGMat.swap](#vectorofgmatswap)
   - [VectorOfGMat.table](#vectorofgmattable)
 - [VectorOfGMetaArg](#vectorofgmetaarg)
   - [VectorOfGMetaArg.new](#vectorofgmetaargnew)
+  - [VectorOfGMetaArg.back](#vectorofgmetaargback)
+  - [VectorOfGMetaArg.capacity](#vectorofgmetaargcapacity)
+  - [VectorOfGMetaArg.clear](#vectorofgmetaargclear)
   - [VectorOfGMetaArg.data](#vectorofgmetaargdata)
+  - [VectorOfGMetaArg.empty](#vectorofgmetaargempty)
+  - [VectorOfGMetaArg.front](#vectorofgmetaargfront)
+  - [VectorOfGMetaArg.max\_size](#vectorofgmetaargmax%5C_size)
+  - [VectorOfGMetaArg.pop\_back](#vectorofgmetaargpop%5C_back)
+  - [VectorOfGMetaArg.reserve](#vectorofgmetaargreserve)
+  - [VectorOfGMetaArg.resize](#vectorofgmetaargresize)
+  - [VectorOfGMetaArg.shrink\_to\_fit](#vectorofgmetaargshrink%5C_to%5C_fit)
+  - [VectorOfGMetaArg.sizeof](#vectorofgmetaargsizeof)
   - [VectorOfGMetaArg.sol::meta\_function::index](#vectorofgmetaargsolmeta%5C_functionindex)
   - [VectorOfGMetaArg.sol::meta\_function::length](#vectorofgmetaargsolmeta%5C_functionlength)
   - [VectorOfGMetaArg.sol::meta\_function::new\_index](#vectorofgmetaargsolmeta%5C_functionnew%5C_index)
+  - [VectorOfGMetaArg.swap](#vectorofgmetaargswap)
   - [VectorOfGMetaArg.table](#vectorofgmetaargtable)
 - [VectorOfGRunArg](#vectorofgrunarg)
   - [VectorOfGRunArg.new](#vectorofgrunargnew)
+  - [VectorOfGRunArg.back](#vectorofgrunargback)
+  - [VectorOfGRunArg.capacity](#vectorofgrunargcapacity)
+  - [VectorOfGRunArg.clear](#vectorofgrunargclear)
   - [VectorOfGRunArg.data](#vectorofgrunargdata)
+  - [VectorOfGRunArg.empty](#vectorofgrunargempty)
+  - [VectorOfGRunArg.front](#vectorofgrunargfront)
+  - [VectorOfGRunArg.max\_size](#vectorofgrunargmax%5C_size)
+  - [VectorOfGRunArg.pop\_back](#vectorofgrunargpop%5C_back)
+  - [VectorOfGRunArg.reserve](#vectorofgrunargreserve)
+  - [VectorOfGRunArg.resize](#vectorofgrunargresize)
+  - [VectorOfGRunArg.shrink\_to\_fit](#vectorofgrunargshrink%5C_to%5C_fit)
+  - [VectorOfGRunArg.sizeof](#vectorofgrunargsizeof)
   - [VectorOfGRunArg.sol::meta\_function::index](#vectorofgrunargsolmeta%5C_functionindex)
   - [VectorOfGRunArg.sol::meta\_function::length](#vectorofgrunargsolmeta%5C_functionlength)
   - [VectorOfGRunArg.sol::meta\_function::new\_index](#vectorofgrunargsolmeta%5C_functionnew%5C_index)
+  - [VectorOfGRunArg.swap](#vectorofgrunargswap)
   - [VectorOfGRunArg.table](#vectorofgrunargtable)
 - [VectorOfGapi\_GNetParam](#vectorofgapi%5C_gnetparam)
   - [VectorOfGapi\_GNetParam.new](#vectorofgapi%5C_gnetparamnew)
+  - [VectorOfGapi\_GNetParam.back](#vectorofgapi%5C_gnetparamback)
+  - [VectorOfGapi\_GNetParam.capacity](#vectorofgapi%5C_gnetparamcapacity)
+  - [VectorOfGapi\_GNetParam.clear](#vectorofgapi%5C_gnetparamclear)
   - [VectorOfGapi\_GNetParam.data](#vectorofgapi%5C_gnetparamdata)
+  - [VectorOfGapi\_GNetParam.empty](#vectorofgapi%5C_gnetparamempty)
+  - [VectorOfGapi\_GNetParam.front](#vectorofgapi%5C_gnetparamfront)
+  - [VectorOfGapi\_GNetParam.max\_size](#vectorofgapi%5C_gnetparammax%5C_size)
+  - [VectorOfGapi\_GNetParam.pop\_back](#vectorofgapi%5C_gnetparampop%5C_back)
+  - [VectorOfGapi\_GNetParam.reserve](#vectorofgapi%5C_gnetparamreserve)
+  - [VectorOfGapi\_GNetParam.resize](#vectorofgapi%5C_gnetparamresize)
+  - [VectorOfGapi\_GNetParam.shrink\_to\_fit](#vectorofgapi%5C_gnetparamshrink%5C_to%5C_fit)
+  - [VectorOfGapi\_GNetParam.sizeof](#vectorofgapi%5C_gnetparamsizeof)
   - [VectorOfGapi\_GNetParam.sol::meta\_function::index](#vectorofgapi%5C_gnetparamsolmeta%5C_functionindex)
   - [VectorOfGapi\_GNetParam.sol::meta\_function::length](#vectorofgapi%5C_gnetparamsolmeta%5C_functionlength)
   - [VectorOfGapi\_GNetParam.sol::meta\_function::new\_index](#vectorofgapi%5C_gnetparamsolmeta%5C_functionnew%5C_index)
+  - [VectorOfGapi\_GNetParam.swap](#vectorofgapi%5C_gnetparamswap)
   - [VectorOfGapi\_GNetParam.table](#vectorofgapi%5C_gnetparamtable)
 - [VectorOfGapi\_wip\_draw\_Prim](#vectorofgapi%5C_wip%5C_draw%5C_prim)
   - [VectorOfGapi\_wip\_draw\_Prim.new](#vectorofgapi%5C_wip%5C_draw%5C_primnew)
+  - [VectorOfGapi\_wip\_draw\_Prim.back](#vectorofgapi%5C_wip%5C_draw%5C_primback)
+  - [VectorOfGapi\_wip\_draw\_Prim.capacity](#vectorofgapi%5C_wip%5C_draw%5C_primcapacity)
+  - [VectorOfGapi\_wip\_draw\_Prim.clear](#vectorofgapi%5C_wip%5C_draw%5C_primclear)
   - [VectorOfGapi\_wip\_draw\_Prim.data](#vectorofgapi%5C_wip%5C_draw%5C_primdata)
+  - [VectorOfGapi\_wip\_draw\_Prim.empty](#vectorofgapi%5C_wip%5C_draw%5C_primempty)
+  - [VectorOfGapi\_wip\_draw\_Prim.front](#vectorofgapi%5C_wip%5C_draw%5C_primfront)
+  - [VectorOfGapi\_wip\_draw\_Prim.max\_size](#vectorofgapi%5C_wip%5C_draw%5C_primmax%5C_size)
+  - [VectorOfGapi\_wip\_draw\_Prim.pop\_back](#vectorofgapi%5C_wip%5C_draw%5C_primpop%5C_back)
+  - [VectorOfGapi\_wip\_draw\_Prim.reserve](#vectorofgapi%5C_wip%5C_draw%5C_primreserve)
+  - [VectorOfGapi\_wip\_draw\_Prim.resize](#vectorofgapi%5C_wip%5C_draw%5C_primresize)
+  - [VectorOfGapi\_wip\_draw\_Prim.shrink\_to\_fit](#vectorofgapi%5C_wip%5C_draw%5C_primshrink%5C_to%5C_fit)
+  - [VectorOfGapi\_wip\_draw\_Prim.sizeof](#vectorofgapi%5C_wip%5C_draw%5C_primsizeof)
   - [VectorOfGapi\_wip\_draw\_Prim.sol::meta\_function::index](#vectorofgapi%5C_wip%5C_draw%5C_primsolmeta%5C_functionindex)
   - [VectorOfGapi\_wip\_draw\_Prim.sol::meta\_function::length](#vectorofgapi%5C_wip%5C_draw%5C_primsolmeta%5C_functionlength)
   - [VectorOfGapi\_wip\_draw\_Prim.sol::meta\_function::new\_index](#vectorofgapi%5C_wip%5C_draw%5C_primsolmeta%5C_functionnew%5C_index)
+  - [VectorOfGapi\_wip\_draw\_Prim.swap](#vectorofgapi%5C_wip%5C_draw%5C_primswap)
   - [VectorOfGapi\_wip\_draw\_Prim.table](#vectorofgapi%5C_wip%5C_draw%5C_primtable)
 - [VectorOfInt](#vectorofint)
   - [VectorOfInt.new](#vectorofintnew)
+  - [VectorOfInt.back](#vectorofintback)
+  - [VectorOfInt.capacity](#vectorofintcapacity)
+  - [VectorOfInt.clear](#vectorofintclear)
   - [VectorOfInt.data](#vectorofintdata)
+  - [VectorOfInt.empty](#vectorofintempty)
+  - [VectorOfInt.front](#vectorofintfront)
+  - [VectorOfInt.max\_size](#vectorofintmax%5C_size)
+  - [VectorOfInt.pop\_back](#vectorofintpop%5C_back)
+  - [VectorOfInt.reserve](#vectorofintreserve)
+  - [VectorOfInt.resize](#vectorofintresize)
+  - [VectorOfInt.shrink\_to\_fit](#vectorofintshrink%5C_to%5C_fit)
+  - [VectorOfInt.sizeof](#vectorofintsizeof)
   - [VectorOfInt.sol::meta\_function::index](#vectorofintsolmeta%5C_functionindex)
   - [VectorOfInt.sol::meta\_function::length](#vectorofintsolmeta%5C_functionlength)
   - [VectorOfInt.sol::meta\_function::new\_index](#vectorofintsolmeta%5C_functionnew%5C_index)
+  - [VectorOfInt.swap](#vectorofintswap)
   - [VectorOfInt.table](#vectorofinttable)
 - [VectorOfKeyPoint](#vectorofkeypoint)
   - [VectorOfKeyPoint.new](#vectorofkeypointnew)
+  - [VectorOfKeyPoint.back](#vectorofkeypointback)
+  - [VectorOfKeyPoint.capacity](#vectorofkeypointcapacity)
+  - [VectorOfKeyPoint.clear](#vectorofkeypointclear)
   - [VectorOfKeyPoint.data](#vectorofkeypointdata)
+  - [VectorOfKeyPoint.empty](#vectorofkeypointempty)
+  - [VectorOfKeyPoint.front](#vectorofkeypointfront)
+  - [VectorOfKeyPoint.max\_size](#vectorofkeypointmax%5C_size)
+  - [VectorOfKeyPoint.pop\_back](#vectorofkeypointpop%5C_back)
+  - [VectorOfKeyPoint.reserve](#vectorofkeypointreserve)
+  - [VectorOfKeyPoint.resize](#vectorofkeypointresize)
+  - [VectorOfKeyPoint.shrink\_to\_fit](#vectorofkeypointshrink%5C_to%5C_fit)
+  - [VectorOfKeyPoint.sizeof](#vectorofkeypointsizeof)
   - [VectorOfKeyPoint.sol::meta\_function::index](#vectorofkeypointsolmeta%5C_functionindex)
   - [VectorOfKeyPoint.sol::meta\_function::length](#vectorofkeypointsolmeta%5C_functionlength)
   - [VectorOfKeyPoint.sol::meta\_function::new\_index](#vectorofkeypointsolmeta%5C_functionnew%5C_index)
+  - [VectorOfKeyPoint.swap](#vectorofkeypointswap)
   - [VectorOfKeyPoint.table](#vectorofkeypointtable)
 - [VectorOfMat](#vectorofmat)
   - [VectorOfMat.new](#vectorofmatnew)
+  - [VectorOfMat.back](#vectorofmatback)
+  - [VectorOfMat.capacity](#vectorofmatcapacity)
+  - [VectorOfMat.clear](#vectorofmatclear)
   - [VectorOfMat.data](#vectorofmatdata)
+  - [VectorOfMat.empty](#vectorofmatempty)
+  - [VectorOfMat.front](#vectorofmatfront)
+  - [VectorOfMat.max\_size](#vectorofmatmax%5C_size)
+  - [VectorOfMat.pop\_back](#vectorofmatpop%5C_back)
+  - [VectorOfMat.reserve](#vectorofmatreserve)
+  - [VectorOfMat.resize](#vectorofmatresize)
+  - [VectorOfMat.shrink\_to\_fit](#vectorofmatshrink%5C_to%5C_fit)
+  - [VectorOfMat.sizeof](#vectorofmatsizeof)
   - [VectorOfMat.sol::meta\_function::index](#vectorofmatsolmeta%5C_functionindex)
   - [VectorOfMat.sol::meta\_function::length](#vectorofmatsolmeta%5C_functionlength)
   - [VectorOfMat.sol::meta\_function::new\_index](#vectorofmatsolmeta%5C_functionnew%5C_index)
+  - [VectorOfMat.swap](#vectorofmatswap)
   - [VectorOfMat.table](#vectorofmattable)
 - [VectorOfMoments](#vectorofmoments)
   - [VectorOfMoments.new](#vectorofmomentsnew)
+  - [VectorOfMoments.back](#vectorofmomentsback)
+  - [VectorOfMoments.capacity](#vectorofmomentscapacity)
+  - [VectorOfMoments.clear](#vectorofmomentsclear)
   - [VectorOfMoments.data](#vectorofmomentsdata)
+  - [VectorOfMoments.empty](#vectorofmomentsempty)
+  - [VectorOfMoments.front](#vectorofmomentsfront)
+  - [VectorOfMoments.max\_size](#vectorofmomentsmax%5C_size)
+  - [VectorOfMoments.pop\_back](#vectorofmomentspop%5C_back)
+  - [VectorOfMoments.reserve](#vectorofmomentsreserve)
+  - [VectorOfMoments.resize](#vectorofmomentsresize)
+  - [VectorOfMoments.shrink\_to\_fit](#vectorofmomentsshrink%5C_to%5C_fit)
+  - [VectorOfMoments.sizeof](#vectorofmomentssizeof)
   - [VectorOfMoments.sol::meta\_function::index](#vectorofmomentssolmeta%5C_functionindex)
   - [VectorOfMoments.sol::meta\_function::length](#vectorofmomentssolmeta%5C_functionlength)
   - [VectorOfMoments.sol::meta\_function::new\_index](#vectorofmomentssolmeta%5C_functionnew%5C_index)
+  - [VectorOfMoments.swap](#vectorofmomentsswap)
   - [VectorOfMoments.table](#vectorofmomentstable)
 - [VectorOfPairOfIntAndDouble](#vectorofpairofintanddouble)
   - [VectorOfPairOfIntAndDouble.new](#vectorofpairofintanddoublenew)
+  - [VectorOfPairOfIntAndDouble.back](#vectorofpairofintanddoubleback)
+  - [VectorOfPairOfIntAndDouble.capacity](#vectorofpairofintanddoublecapacity)
+  - [VectorOfPairOfIntAndDouble.clear](#vectorofpairofintanddoubleclear)
   - [VectorOfPairOfIntAndDouble.data](#vectorofpairofintanddoubledata)
+  - [VectorOfPairOfIntAndDouble.empty](#vectorofpairofintanddoubleempty)
+  - [VectorOfPairOfIntAndDouble.front](#vectorofpairofintanddoublefront)
+  - [VectorOfPairOfIntAndDouble.max\_size](#vectorofpairofintanddoublemax%5C_size)
+  - [VectorOfPairOfIntAndDouble.pop\_back](#vectorofpairofintanddoublepop%5C_back)
+  - [VectorOfPairOfIntAndDouble.reserve](#vectorofpairofintanddoublereserve)
+  - [VectorOfPairOfIntAndDouble.resize](#vectorofpairofintanddoubleresize)
+  - [VectorOfPairOfIntAndDouble.shrink\_to\_fit](#vectorofpairofintanddoubleshrink%5C_to%5C_fit)
+  - [VectorOfPairOfIntAndDouble.sizeof](#vectorofpairofintanddoublesizeof)
   - [VectorOfPairOfIntAndDouble.sol::meta\_function::index](#vectorofpairofintanddoublesolmeta%5C_functionindex)
   - [VectorOfPairOfIntAndDouble.sol::meta\_function::length](#vectorofpairofintanddoublesolmeta%5C_functionlength)
   - [VectorOfPairOfIntAndDouble.sol::meta\_function::new\_index](#vectorofpairofintanddoublesolmeta%5C_functionnew%5C_index)
+  - [VectorOfPairOfIntAndDouble.swap](#vectorofpairofintanddoubleswap)
   - [VectorOfPairOfIntAndDouble.table](#vectorofpairofintanddoubletable)
 - [VectorOfPairOfStringAndInt](#vectorofpairofstringandint)
   - [VectorOfPairOfStringAndInt.new](#vectorofpairofstringandintnew)
+  - [VectorOfPairOfStringAndInt.back](#vectorofpairofstringandintback)
+  - [VectorOfPairOfStringAndInt.capacity](#vectorofpairofstringandintcapacity)
+  - [VectorOfPairOfStringAndInt.clear](#vectorofpairofstringandintclear)
   - [VectorOfPairOfStringAndInt.data](#vectorofpairofstringandintdata)
+  - [VectorOfPairOfStringAndInt.empty](#vectorofpairofstringandintempty)
+  - [VectorOfPairOfStringAndInt.front](#vectorofpairofstringandintfront)
+  - [VectorOfPairOfStringAndInt.max\_size](#vectorofpairofstringandintmax%5C_size)
+  - [VectorOfPairOfStringAndInt.pop\_back](#vectorofpairofstringandintpop%5C_back)
+  - [VectorOfPairOfStringAndInt.reserve](#vectorofpairofstringandintreserve)
+  - [VectorOfPairOfStringAndInt.resize](#vectorofpairofstringandintresize)
+  - [VectorOfPairOfStringAndInt.shrink\_to\_fit](#vectorofpairofstringandintshrink%5C_to%5C_fit)
+  - [VectorOfPairOfStringAndInt.sizeof](#vectorofpairofstringandintsizeof)
   - [VectorOfPairOfStringAndInt.sol::meta\_function::index](#vectorofpairofstringandintsolmeta%5C_functionindex)
   - [VectorOfPairOfStringAndInt.sol::meta\_function::length](#vectorofpairofstringandintsolmeta%5C_functionlength)
   - [VectorOfPairOfStringAndInt.sol::meta\_function::new\_index](#vectorofpairofstringandintsolmeta%5C_functionnew%5C_index)
+  - [VectorOfPairOfStringAndInt.swap](#vectorofpairofstringandintswap)
   - [VectorOfPairOfStringAndInt.table](#vectorofpairofstringandinttable)
 - [VectorOfPairOfStringAndString](#vectorofpairofstringandstring)
   - [VectorOfPairOfStringAndString.new](#vectorofpairofstringandstringnew)
+  - [VectorOfPairOfStringAndString.back](#vectorofpairofstringandstringback)
+  - [VectorOfPairOfStringAndString.capacity](#vectorofpairofstringandstringcapacity)
+  - [VectorOfPairOfStringAndString.clear](#vectorofpairofstringandstringclear)
   - [VectorOfPairOfStringAndString.data](#vectorofpairofstringandstringdata)
+  - [VectorOfPairOfStringAndString.empty](#vectorofpairofstringandstringempty)
+  - [VectorOfPairOfStringAndString.front](#vectorofpairofstringandstringfront)
+  - [VectorOfPairOfStringAndString.max\_size](#vectorofpairofstringandstringmax%5C_size)
+  - [VectorOfPairOfStringAndString.pop\_back](#vectorofpairofstringandstringpop%5C_back)
+  - [VectorOfPairOfStringAndString.reserve](#vectorofpairofstringandstringreserve)
+  - [VectorOfPairOfStringAndString.resize](#vectorofpairofstringandstringresize)
+  - [VectorOfPairOfStringAndString.shrink\_to\_fit](#vectorofpairofstringandstringshrink%5C_to%5C_fit)
+  - [VectorOfPairOfStringAndString.sizeof](#vectorofpairofstringandstringsizeof)
   - [VectorOfPairOfStringAndString.sol::meta\_function::index](#vectorofpairofstringandstringsolmeta%5C_functionindex)
   - [VectorOfPairOfStringAndString.sol::meta\_function::length](#vectorofpairofstringandstringsolmeta%5C_functionlength)
   - [VectorOfPairOfStringAndString.sol::meta\_function::new\_index](#vectorofpairofstringandstringsolmeta%5C_functionnew%5C_index)
+  - [VectorOfPairOfStringAndString.swap](#vectorofpairofstringandstringswap)
   - [VectorOfPairOfStringAndString.table](#vectorofpairofstringandstringtable)
 - [VectorOfPairOfStringAndVectorOfFloat](#vectorofpairofstringandvectoroffloat)
   - [VectorOfPairOfStringAndVectorOfFloat.new](#vectorofpairofstringandvectoroffloatnew)
+  - [VectorOfPairOfStringAndVectorOfFloat.back](#vectorofpairofstringandvectoroffloatback)
+  - [VectorOfPairOfStringAndVectorOfFloat.capacity](#vectorofpairofstringandvectoroffloatcapacity)
+  - [VectorOfPairOfStringAndVectorOfFloat.clear](#vectorofpairofstringandvectoroffloatclear)
   - [VectorOfPairOfStringAndVectorOfFloat.data](#vectorofpairofstringandvectoroffloatdata)
+  - [VectorOfPairOfStringAndVectorOfFloat.empty](#vectorofpairofstringandvectoroffloatempty)
+  - [VectorOfPairOfStringAndVectorOfFloat.front](#vectorofpairofstringandvectoroffloatfront)
+  - [VectorOfPairOfStringAndVectorOfFloat.max\_size](#vectorofpairofstringandvectoroffloatmax%5C_size)
+  - [VectorOfPairOfStringAndVectorOfFloat.pop\_back](#vectorofpairofstringandvectoroffloatpop%5C_back)
+  - [VectorOfPairOfStringAndVectorOfFloat.reserve](#vectorofpairofstringandvectoroffloatreserve)
+  - [VectorOfPairOfStringAndVectorOfFloat.resize](#vectorofpairofstringandvectoroffloatresize)
+  - [VectorOfPairOfStringAndVectorOfFloat.shrink\_to\_fit](#vectorofpairofstringandvectoroffloatshrink%5C_to%5C_fit)
+  - [VectorOfPairOfStringAndVectorOfFloat.sizeof](#vectorofpairofstringandvectoroffloatsizeof)
   - [VectorOfPairOfStringAndVectorOfFloat.sol::meta\_function::index](#vectorofpairofstringandvectoroffloatsolmeta%5C_functionindex)
   - [VectorOfPairOfStringAndVectorOfFloat.sol::meta\_function::length](#vectorofpairofstringandvectoroffloatsolmeta%5C_functionlength)
   - [VectorOfPairOfStringAndVectorOfFloat.sol::meta\_function::new\_index](#vectorofpairofstringandvectoroffloatsolmeta%5C_functionnew%5C_index)
+  - [VectorOfPairOfStringAndVectorOfFloat.swap](#vectorofpairofstringandvectoroffloatswap)
   - [VectorOfPairOfStringAndVectorOfFloat.table](#vectorofpairofstringandvectoroffloattable)
 - [VectorOfPairOfStringAndVectorOfSize\_t](#vectorofpairofstringandvectorofsize%5C_t)
   - [VectorOfPairOfStringAndVectorOfSize\_t.new](#vectorofpairofstringandvectorofsize%5C_tnew)
+  - [VectorOfPairOfStringAndVectorOfSize\_t.back](#vectorofpairofstringandvectorofsize%5C_tback)
+  - [VectorOfPairOfStringAndVectorOfSize\_t.capacity](#vectorofpairofstringandvectorofsize%5C_tcapacity)
+  - [VectorOfPairOfStringAndVectorOfSize\_t.clear](#vectorofpairofstringandvectorofsize%5C_tclear)
   - [VectorOfPairOfStringAndVectorOfSize\_t.data](#vectorofpairofstringandvectorofsize%5C_tdata)
+  - [VectorOfPairOfStringAndVectorOfSize\_t.empty](#vectorofpairofstringandvectorofsize%5C_tempty)
+  - [VectorOfPairOfStringAndVectorOfSize\_t.front](#vectorofpairofstringandvectorofsize%5C_tfront)
+  - [VectorOfPairOfStringAndVectorOfSize\_t.max\_size](#vectorofpairofstringandvectorofsize%5C_tmax%5C_size)
+  - [VectorOfPairOfStringAndVectorOfSize\_t.pop\_back](#vectorofpairofstringandvectorofsize%5C_tpop%5C_back)
+  - [VectorOfPairOfStringAndVectorOfSize\_t.reserve](#vectorofpairofstringandvectorofsize%5C_treserve)
+  - [VectorOfPairOfStringAndVectorOfSize\_t.resize](#vectorofpairofstringandvectorofsize%5C_tresize)
+  - [VectorOfPairOfStringAndVectorOfSize\_t.shrink\_to\_fit](#vectorofpairofstringandvectorofsize%5C_tshrink%5C_to%5C_fit)
+  - [VectorOfPairOfStringAndVectorOfSize\_t.sizeof](#vectorofpairofstringandvectorofsize%5C_tsizeof)
   - [VectorOfPairOfStringAndVectorOfSize\_t.sol::meta\_function::index](#vectorofpairofstringandvectorofsize%5C_tsolmeta%5C_functionindex)
   - [VectorOfPairOfStringAndVectorOfSize\_t.sol::meta\_function::length](#vectorofpairofstringandvectorofsize%5C_tsolmeta%5C_functionlength)
   - [VectorOfPairOfStringAndVectorOfSize\_t.sol::meta\_function::new\_index](#vectorofpairofstringandvectorofsize%5C_tsolmeta%5C_functionnew%5C_index)
+  - [VectorOfPairOfStringAndVectorOfSize\_t.swap](#vectorofpairofstringandvectorofsize%5C_tswap)
   - [VectorOfPairOfStringAndVectorOfSize\_t.table](#vectorofpairofstringandvectorofsize%5C_ttable)
 - [VectorOfPoint](#vectorofpoint)
   - [VectorOfPoint.new](#vectorofpointnew)
+  - [VectorOfPoint.back](#vectorofpointback)
+  - [VectorOfPoint.capacity](#vectorofpointcapacity)
+  - [VectorOfPoint.clear](#vectorofpointclear)
   - [VectorOfPoint.data](#vectorofpointdata)
+  - [VectorOfPoint.empty](#vectorofpointempty)
+  - [VectorOfPoint.front](#vectorofpointfront)
+  - [VectorOfPoint.max\_size](#vectorofpointmax%5C_size)
+  - [VectorOfPoint.pop\_back](#vectorofpointpop%5C_back)
+  - [VectorOfPoint.reserve](#vectorofpointreserve)
+  - [VectorOfPoint.resize](#vectorofpointresize)
+  - [VectorOfPoint.shrink\_to\_fit](#vectorofpointshrink%5C_to%5C_fit)
+  - [VectorOfPoint.sizeof](#vectorofpointsizeof)
   - [VectorOfPoint.sol::meta\_function::index](#vectorofpointsolmeta%5C_functionindex)
   - [VectorOfPoint.sol::meta\_function::length](#vectorofpointsolmeta%5C_functionlength)
   - [VectorOfPoint.sol::meta\_function::new\_index](#vectorofpointsolmeta%5C_functionnew%5C_index)
+  - [VectorOfPoint.swap](#vectorofpointswap)
   - [VectorOfPoint.table](#vectorofpointtable)
 - [VectorOfPoint2d](#vectorofpoint2d)
   - [VectorOfPoint2d.new](#vectorofpoint2dnew)
+  - [VectorOfPoint2d.back](#vectorofpoint2dback)
+  - [VectorOfPoint2d.capacity](#vectorofpoint2dcapacity)
+  - [VectorOfPoint2d.clear](#vectorofpoint2dclear)
   - [VectorOfPoint2d.data](#vectorofpoint2ddata)
+  - [VectorOfPoint2d.empty](#vectorofpoint2dempty)
+  - [VectorOfPoint2d.front](#vectorofpoint2dfront)
+  - [VectorOfPoint2d.max\_size](#vectorofpoint2dmax%5C_size)
+  - [VectorOfPoint2d.pop\_back](#vectorofpoint2dpop%5C_back)
+  - [VectorOfPoint2d.reserve](#vectorofpoint2dreserve)
+  - [VectorOfPoint2d.resize](#vectorofpoint2dresize)
+  - [VectorOfPoint2d.shrink\_to\_fit](#vectorofpoint2dshrink%5C_to%5C_fit)
+  - [VectorOfPoint2d.sizeof](#vectorofpoint2dsizeof)
   - [VectorOfPoint2d.sol::meta\_function::index](#vectorofpoint2dsolmeta%5C_functionindex)
   - [VectorOfPoint2d.sol::meta\_function::length](#vectorofpoint2dsolmeta%5C_functionlength)
   - [VectorOfPoint2d.sol::meta\_function::new\_index](#vectorofpoint2dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfPoint2d.swap](#vectorofpoint2dswap)
   - [VectorOfPoint2d.table](#vectorofpoint2dtable)
 - [VectorOfPoint2f](#vectorofpoint2f)
   - [VectorOfPoint2f.new](#vectorofpoint2fnew)
+  - [VectorOfPoint2f.back](#vectorofpoint2fback)
+  - [VectorOfPoint2f.capacity](#vectorofpoint2fcapacity)
+  - [VectorOfPoint2f.clear](#vectorofpoint2fclear)
   - [VectorOfPoint2f.data](#vectorofpoint2fdata)
+  - [VectorOfPoint2f.empty](#vectorofpoint2fempty)
+  - [VectorOfPoint2f.front](#vectorofpoint2ffront)
+  - [VectorOfPoint2f.max\_size](#vectorofpoint2fmax%5C_size)
+  - [VectorOfPoint2f.pop\_back](#vectorofpoint2fpop%5C_back)
+  - [VectorOfPoint2f.reserve](#vectorofpoint2freserve)
+  - [VectorOfPoint2f.resize](#vectorofpoint2fresize)
+  - [VectorOfPoint2f.shrink\_to\_fit](#vectorofpoint2fshrink%5C_to%5C_fit)
+  - [VectorOfPoint2f.sizeof](#vectorofpoint2fsizeof)
   - [VectorOfPoint2f.sol::meta\_function::index](#vectorofpoint2fsolmeta%5C_functionindex)
   - [VectorOfPoint2f.sol::meta\_function::length](#vectorofpoint2fsolmeta%5C_functionlength)
   - [VectorOfPoint2f.sol::meta\_function::new\_index](#vectorofpoint2fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfPoint2f.swap](#vectorofpoint2fswap)
   - [VectorOfPoint2f.table](#vectorofpoint2ftable)
 - [VectorOfPoint3d](#vectorofpoint3d)
   - [VectorOfPoint3d.new](#vectorofpoint3dnew)
+  - [VectorOfPoint3d.back](#vectorofpoint3dback)
+  - [VectorOfPoint3d.capacity](#vectorofpoint3dcapacity)
+  - [VectorOfPoint3d.clear](#vectorofpoint3dclear)
   - [VectorOfPoint3d.data](#vectorofpoint3ddata)
+  - [VectorOfPoint3d.empty](#vectorofpoint3dempty)
+  - [VectorOfPoint3d.front](#vectorofpoint3dfront)
+  - [VectorOfPoint3d.max\_size](#vectorofpoint3dmax%5C_size)
+  - [VectorOfPoint3d.pop\_back](#vectorofpoint3dpop%5C_back)
+  - [VectorOfPoint3d.reserve](#vectorofpoint3dreserve)
+  - [VectorOfPoint3d.resize](#vectorofpoint3dresize)
+  - [VectorOfPoint3d.shrink\_to\_fit](#vectorofpoint3dshrink%5C_to%5C_fit)
+  - [VectorOfPoint3d.sizeof](#vectorofpoint3dsizeof)
   - [VectorOfPoint3d.sol::meta\_function::index](#vectorofpoint3dsolmeta%5C_functionindex)
   - [VectorOfPoint3d.sol::meta\_function::length](#vectorofpoint3dsolmeta%5C_functionlength)
   - [VectorOfPoint3d.sol::meta\_function::new\_index](#vectorofpoint3dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfPoint3d.swap](#vectorofpoint3dswap)
   - [VectorOfPoint3d.table](#vectorofpoint3dtable)
 - [VectorOfPoint3f](#vectorofpoint3f)
   - [VectorOfPoint3f.new](#vectorofpoint3fnew)
+  - [VectorOfPoint3f.back](#vectorofpoint3fback)
+  - [VectorOfPoint3f.capacity](#vectorofpoint3fcapacity)
+  - [VectorOfPoint3f.clear](#vectorofpoint3fclear)
   - [VectorOfPoint3f.data](#vectorofpoint3fdata)
+  - [VectorOfPoint3f.empty](#vectorofpoint3fempty)
+  - [VectorOfPoint3f.front](#vectorofpoint3ffront)
+  - [VectorOfPoint3f.max\_size](#vectorofpoint3fmax%5C_size)
+  - [VectorOfPoint3f.pop\_back](#vectorofpoint3fpop%5C_back)
+  - [VectorOfPoint3f.reserve](#vectorofpoint3freserve)
+  - [VectorOfPoint3f.resize](#vectorofpoint3fresize)
+  - [VectorOfPoint3f.shrink\_to\_fit](#vectorofpoint3fshrink%5C_to%5C_fit)
+  - [VectorOfPoint3f.sizeof](#vectorofpoint3fsizeof)
   - [VectorOfPoint3f.sol::meta\_function::index](#vectorofpoint3fsolmeta%5C_functionindex)
   - [VectorOfPoint3f.sol::meta\_function::length](#vectorofpoint3fsolmeta%5C_functionlength)
   - [VectorOfPoint3f.sol::meta\_function::new\_index](#vectorofpoint3fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfPoint3f.swap](#vectorofpoint3fswap)
   - [VectorOfPoint3f.table](#vectorofpoint3ftable)
 - [VectorOfPoint3i](#vectorofpoint3i)
   - [VectorOfPoint3i.new](#vectorofpoint3inew)
+  - [VectorOfPoint3i.back](#vectorofpoint3iback)
+  - [VectorOfPoint3i.capacity](#vectorofpoint3icapacity)
+  - [VectorOfPoint3i.clear](#vectorofpoint3iclear)
   - [VectorOfPoint3i.data](#vectorofpoint3idata)
+  - [VectorOfPoint3i.empty](#vectorofpoint3iempty)
+  - [VectorOfPoint3i.front](#vectorofpoint3ifront)
+  - [VectorOfPoint3i.max\_size](#vectorofpoint3imax%5C_size)
+  - [VectorOfPoint3i.pop\_back](#vectorofpoint3ipop%5C_back)
+  - [VectorOfPoint3i.reserve](#vectorofpoint3ireserve)
+  - [VectorOfPoint3i.resize](#vectorofpoint3iresize)
+  - [VectorOfPoint3i.shrink\_to\_fit](#vectorofpoint3ishrink%5C_to%5C_fit)
+  - [VectorOfPoint3i.sizeof](#vectorofpoint3isizeof)
   - [VectorOfPoint3i.sol::meta\_function::index](#vectorofpoint3isolmeta%5C_functionindex)
   - [VectorOfPoint3i.sol::meta\_function::length](#vectorofpoint3isolmeta%5C_functionlength)
   - [VectorOfPoint3i.sol::meta\_function::new\_index](#vectorofpoint3isolmeta%5C_functionnew%5C_index)
+  - [VectorOfPoint3i.swap](#vectorofpoint3iswap)
   - [VectorOfPoint3i.table](#vectorofpoint3itable)
 - [VectorOfRange](#vectorofrange)
   - [VectorOfRange.new](#vectorofrangenew)
+  - [VectorOfRange.back](#vectorofrangeback)
+  - [VectorOfRange.capacity](#vectorofrangecapacity)
+  - [VectorOfRange.clear](#vectorofrangeclear)
   - [VectorOfRange.data](#vectorofrangedata)
+  - [VectorOfRange.empty](#vectorofrangeempty)
+  - [VectorOfRange.front](#vectorofrangefront)
+  - [VectorOfRange.max\_size](#vectorofrangemax%5C_size)
+  - [VectorOfRange.pop\_back](#vectorofrangepop%5C_back)
+  - [VectorOfRange.reserve](#vectorofrangereserve)
+  - [VectorOfRange.resize](#vectorofrangeresize)
+  - [VectorOfRange.shrink\_to\_fit](#vectorofrangeshrink%5C_to%5C_fit)
+  - [VectorOfRange.sizeof](#vectorofrangesizeof)
   - [VectorOfRange.sol::meta\_function::index](#vectorofrangesolmeta%5C_functionindex)
   - [VectorOfRange.sol::meta\_function::length](#vectorofrangesolmeta%5C_functionlength)
   - [VectorOfRange.sol::meta\_function::new\_index](#vectorofrangesolmeta%5C_functionnew%5C_index)
+  - [VectorOfRange.swap](#vectorofrangeswap)
   - [VectorOfRange.table](#vectorofrangetable)
 - [VectorOfRect](#vectorofrect)
   - [VectorOfRect.new](#vectorofrectnew)
+  - [VectorOfRect.back](#vectorofrectback)
+  - [VectorOfRect.capacity](#vectorofrectcapacity)
+  - [VectorOfRect.clear](#vectorofrectclear)
   - [VectorOfRect.data](#vectorofrectdata)
+  - [VectorOfRect.empty](#vectorofrectempty)
+  - [VectorOfRect.front](#vectorofrectfront)
+  - [VectorOfRect.max\_size](#vectorofrectmax%5C_size)
+  - [VectorOfRect.pop\_back](#vectorofrectpop%5C_back)
+  - [VectorOfRect.reserve](#vectorofrectreserve)
+  - [VectorOfRect.resize](#vectorofrectresize)
+  - [VectorOfRect.shrink\_to\_fit](#vectorofrectshrink%5C_to%5C_fit)
+  - [VectorOfRect.sizeof](#vectorofrectsizeof)
   - [VectorOfRect.sol::meta\_function::index](#vectorofrectsolmeta%5C_functionindex)
   - [VectorOfRect.sol::meta\_function::length](#vectorofrectsolmeta%5C_functionlength)
   - [VectorOfRect.sol::meta\_function::new\_index](#vectorofrectsolmeta%5C_functionnew%5C_index)
+  - [VectorOfRect.swap](#vectorofrectswap)
   - [VectorOfRect.table](#vectorofrecttable)
 - [VectorOfRect2d](#vectorofrect2d)
   - [VectorOfRect2d.new](#vectorofrect2dnew)
+  - [VectorOfRect2d.back](#vectorofrect2dback)
+  - [VectorOfRect2d.capacity](#vectorofrect2dcapacity)
+  - [VectorOfRect2d.clear](#vectorofrect2dclear)
   - [VectorOfRect2d.data](#vectorofrect2ddata)
+  - [VectorOfRect2d.empty](#vectorofrect2dempty)
+  - [VectorOfRect2d.front](#vectorofrect2dfront)
+  - [VectorOfRect2d.max\_size](#vectorofrect2dmax%5C_size)
+  - [VectorOfRect2d.pop\_back](#vectorofrect2dpop%5C_back)
+  - [VectorOfRect2d.reserve](#vectorofrect2dreserve)
+  - [VectorOfRect2d.resize](#vectorofrect2dresize)
+  - [VectorOfRect2d.shrink\_to\_fit](#vectorofrect2dshrink%5C_to%5C_fit)
+  - [VectorOfRect2d.sizeof](#vectorofrect2dsizeof)
   - [VectorOfRect2d.sol::meta\_function::index](#vectorofrect2dsolmeta%5C_functionindex)
   - [VectorOfRect2d.sol::meta\_function::length](#vectorofrect2dsolmeta%5C_functionlength)
   - [VectorOfRect2d.sol::meta\_function::new\_index](#vectorofrect2dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfRect2d.swap](#vectorofrect2dswap)
   - [VectorOfRect2d.table](#vectorofrect2dtable)
 - [VectorOfRect2f](#vectorofrect2f)
   - [VectorOfRect2f.new](#vectorofrect2fnew)
+  - [VectorOfRect2f.back](#vectorofrect2fback)
+  - [VectorOfRect2f.capacity](#vectorofrect2fcapacity)
+  - [VectorOfRect2f.clear](#vectorofrect2fclear)
   - [VectorOfRect2f.data](#vectorofrect2fdata)
+  - [VectorOfRect2f.empty](#vectorofrect2fempty)
+  - [VectorOfRect2f.front](#vectorofrect2ffront)
+  - [VectorOfRect2f.max\_size](#vectorofrect2fmax%5C_size)
+  - [VectorOfRect2f.pop\_back](#vectorofrect2fpop%5C_back)
+  - [VectorOfRect2f.reserve](#vectorofrect2freserve)
+  - [VectorOfRect2f.resize](#vectorofrect2fresize)
+  - [VectorOfRect2f.shrink\_to\_fit](#vectorofrect2fshrink%5C_to%5C_fit)
+  - [VectorOfRect2f.sizeof](#vectorofrect2fsizeof)
   - [VectorOfRect2f.sol::meta\_function::index](#vectorofrect2fsolmeta%5C_functionindex)
   - [VectorOfRect2f.sol::meta\_function::length](#vectorofrect2fsolmeta%5C_functionlength)
   - [VectorOfRect2f.sol::meta\_function::new\_index](#vectorofrect2fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfRect2f.swap](#vectorofrect2fswap)
   - [VectorOfRect2f.table](#vectorofrect2ftable)
 - [VectorOfRotatedRect](#vectorofrotatedrect)
   - [VectorOfRotatedRect.new](#vectorofrotatedrectnew)
+  - [VectorOfRotatedRect.back](#vectorofrotatedrectback)
+  - [VectorOfRotatedRect.capacity](#vectorofrotatedrectcapacity)
+  - [VectorOfRotatedRect.clear](#vectorofrotatedrectclear)
   - [VectorOfRotatedRect.data](#vectorofrotatedrectdata)
+  - [VectorOfRotatedRect.empty](#vectorofrotatedrectempty)
+  - [VectorOfRotatedRect.front](#vectorofrotatedrectfront)
+  - [VectorOfRotatedRect.max\_size](#vectorofrotatedrectmax%5C_size)
+  - [VectorOfRotatedRect.pop\_back](#vectorofrotatedrectpop%5C_back)
+  - [VectorOfRotatedRect.reserve](#vectorofrotatedrectreserve)
+  - [VectorOfRotatedRect.resize](#vectorofrotatedrectresize)
+  - [VectorOfRotatedRect.shrink\_to\_fit](#vectorofrotatedrectshrink%5C_to%5C_fit)
+  - [VectorOfRotatedRect.sizeof](#vectorofrotatedrectsizeof)
   - [VectorOfRotatedRect.sol::meta\_function::index](#vectorofrotatedrectsolmeta%5C_functionindex)
   - [VectorOfRotatedRect.sol::meta\_function::length](#vectorofrotatedrectsolmeta%5C_functionlength)
   - [VectorOfRotatedRect.sol::meta\_function::new\_index](#vectorofrotatedrectsolmeta%5C_functionnew%5C_index)
+  - [VectorOfRotatedRect.swap](#vectorofrotatedrectswap)
   - [VectorOfRotatedRect.table](#vectorofrotatedrecttable)
 - [VectorOfSchar](#vectorofschar)
   - [VectorOfSchar.new](#vectorofscharnew)
+  - [VectorOfSchar.back](#vectorofscharback)
+  - [VectorOfSchar.capacity](#vectorofscharcapacity)
+  - [VectorOfSchar.clear](#vectorofscharclear)
   - [VectorOfSchar.data](#vectorofschardata)
+  - [VectorOfSchar.empty](#vectorofscharempty)
+  - [VectorOfSchar.front](#vectorofscharfront)
+  - [VectorOfSchar.max\_size](#vectorofscharmax%5C_size)
+  - [VectorOfSchar.pop\_back](#vectorofscharpop%5C_back)
+  - [VectorOfSchar.reserve](#vectorofscharreserve)
+  - [VectorOfSchar.resize](#vectorofscharresize)
+  - [VectorOfSchar.shrink\_to\_fit](#vectorofscharshrink%5C_to%5C_fit)
+  - [VectorOfSchar.sizeof](#vectorofscharsizeof)
   - [VectorOfSchar.sol::meta\_function::index](#vectorofscharsolmeta%5C_functionindex)
   - [VectorOfSchar.sol::meta\_function::length](#vectorofscharsolmeta%5C_functionlength)
   - [VectorOfSchar.sol::meta\_function::new\_index](#vectorofscharsolmeta%5C_functionnew%5C_index)
+  - [VectorOfSchar.swap](#vectorofscharswap)
   - [VectorOfSchar.table](#vectorofschartable)
 - [VectorOfShort](#vectorofshort)
   - [VectorOfShort.new](#vectorofshortnew)
+  - [VectorOfShort.back](#vectorofshortback)
+  - [VectorOfShort.capacity](#vectorofshortcapacity)
+  - [VectorOfShort.clear](#vectorofshortclear)
   - [VectorOfShort.data](#vectorofshortdata)
+  - [VectorOfShort.empty](#vectorofshortempty)
+  - [VectorOfShort.front](#vectorofshortfront)
+  - [VectorOfShort.max\_size](#vectorofshortmax%5C_size)
+  - [VectorOfShort.pop\_back](#vectorofshortpop%5C_back)
+  - [VectorOfShort.reserve](#vectorofshortreserve)
+  - [VectorOfShort.resize](#vectorofshortresize)
+  - [VectorOfShort.shrink\_to\_fit](#vectorofshortshrink%5C_to%5C_fit)
+  - [VectorOfShort.sizeof](#vectorofshortsizeof)
   - [VectorOfShort.sol::meta\_function::index](#vectorofshortsolmeta%5C_functionindex)
   - [VectorOfShort.sol::meta\_function::length](#vectorofshortsolmeta%5C_functionlength)
   - [VectorOfShort.sol::meta\_function::new\_index](#vectorofshortsolmeta%5C_functionnew%5C_index)
+  - [VectorOfShort.swap](#vectorofshortswap)
   - [VectorOfShort.table](#vectorofshorttable)
 - [VectorOfSize](#vectorofsize)
   - [VectorOfSize.new](#vectorofsizenew)
+  - [VectorOfSize.back](#vectorofsizeback)
+  - [VectorOfSize.capacity](#vectorofsizecapacity)
+  - [VectorOfSize.clear](#vectorofsizeclear)
   - [VectorOfSize.data](#vectorofsizedata)
+  - [VectorOfSize.empty](#vectorofsizeempty)
+  - [VectorOfSize.front](#vectorofsizefront)
+  - [VectorOfSize.max\_size](#vectorofsizemax%5C_size)
+  - [VectorOfSize.pop\_back](#vectorofsizepop%5C_back)
+  - [VectorOfSize.reserve](#vectorofsizereserve)
+  - [VectorOfSize.resize](#vectorofsizeresize)
+  - [VectorOfSize.shrink\_to\_fit](#vectorofsizeshrink%5C_to%5C_fit)
+  - [VectorOfSize.sizeof](#vectorofsizesizeof)
   - [VectorOfSize.sol::meta\_function::index](#vectorofsizesolmeta%5C_functionindex)
   - [VectorOfSize.sol::meta\_function::length](#vectorofsizesolmeta%5C_functionlength)
   - [VectorOfSize.sol::meta\_function::new\_index](#vectorofsizesolmeta%5C_functionnew%5C_index)
+  - [VectorOfSize.swap](#vectorofsizeswap)
   - [VectorOfSize.table](#vectorofsizetable)
 - [VectorOfSize2d](#vectorofsize2d)
   - [VectorOfSize2d.new](#vectorofsize2dnew)
+  - [VectorOfSize2d.back](#vectorofsize2dback)
+  - [VectorOfSize2d.capacity](#vectorofsize2dcapacity)
+  - [VectorOfSize2d.clear](#vectorofsize2dclear)
   - [VectorOfSize2d.data](#vectorofsize2ddata)
+  - [VectorOfSize2d.empty](#vectorofsize2dempty)
+  - [VectorOfSize2d.front](#vectorofsize2dfront)
+  - [VectorOfSize2d.max\_size](#vectorofsize2dmax%5C_size)
+  - [VectorOfSize2d.pop\_back](#vectorofsize2dpop%5C_back)
+  - [VectorOfSize2d.reserve](#vectorofsize2dreserve)
+  - [VectorOfSize2d.resize](#vectorofsize2dresize)
+  - [VectorOfSize2d.shrink\_to\_fit](#vectorofsize2dshrink%5C_to%5C_fit)
+  - [VectorOfSize2d.sizeof](#vectorofsize2dsizeof)
   - [VectorOfSize2d.sol::meta\_function::index](#vectorofsize2dsolmeta%5C_functionindex)
   - [VectorOfSize2d.sol::meta\_function::length](#vectorofsize2dsolmeta%5C_functionlength)
   - [VectorOfSize2d.sol::meta\_function::new\_index](#vectorofsize2dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfSize2d.swap](#vectorofsize2dswap)
   - [VectorOfSize2d.table](#vectorofsize2dtable)
 - [VectorOfSize2f](#vectorofsize2f)
   - [VectorOfSize2f.new](#vectorofsize2fnew)
+  - [VectorOfSize2f.back](#vectorofsize2fback)
+  - [VectorOfSize2f.capacity](#vectorofsize2fcapacity)
+  - [VectorOfSize2f.clear](#vectorofsize2fclear)
   - [VectorOfSize2f.data](#vectorofsize2fdata)
+  - [VectorOfSize2f.empty](#vectorofsize2fempty)
+  - [VectorOfSize2f.front](#vectorofsize2ffront)
+  - [VectorOfSize2f.max\_size](#vectorofsize2fmax%5C_size)
+  - [VectorOfSize2f.pop\_back](#vectorofsize2fpop%5C_back)
+  - [VectorOfSize2f.reserve](#vectorofsize2freserve)
+  - [VectorOfSize2f.resize](#vectorofsize2fresize)
+  - [VectorOfSize2f.shrink\_to\_fit](#vectorofsize2fshrink%5C_to%5C_fit)
+  - [VectorOfSize2f.sizeof](#vectorofsize2fsizeof)
   - [VectorOfSize2f.sol::meta\_function::index](#vectorofsize2fsolmeta%5C_functionindex)
   - [VectorOfSize2f.sol::meta\_function::length](#vectorofsize2fsolmeta%5C_functionlength)
   - [VectorOfSize2f.sol::meta\_function::new\_index](#vectorofsize2fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfSize2f.swap](#vectorofsize2fswap)
   - [VectorOfSize2f.table](#vectorofsize2ftable)
 - [VectorOfSize\_t](#vectorofsize%5C_t)
   - [VectorOfSize\_t.new](#vectorofsize%5C_tnew)
+  - [VectorOfSize\_t.back](#vectorofsize%5C_tback)
+  - [VectorOfSize\_t.capacity](#vectorofsize%5C_tcapacity)
+  - [VectorOfSize\_t.clear](#vectorofsize%5C_tclear)
   - [VectorOfSize\_t.data](#vectorofsize%5C_tdata)
+  - [VectorOfSize\_t.empty](#vectorofsize%5C_tempty)
+  - [VectorOfSize\_t.front](#vectorofsize%5C_tfront)
+  - [VectorOfSize\_t.max\_size](#vectorofsize%5C_tmax%5C_size)
+  - [VectorOfSize\_t.pop\_back](#vectorofsize%5C_tpop%5C_back)
+  - [VectorOfSize\_t.reserve](#vectorofsize%5C_treserve)
+  - [VectorOfSize\_t.resize](#vectorofsize%5C_tresize)
+  - [VectorOfSize\_t.shrink\_to\_fit](#vectorofsize%5C_tshrink%5C_to%5C_fit)
+  - [VectorOfSize\_t.sizeof](#vectorofsize%5C_tsizeof)
   - [VectorOfSize\_t.sol::meta\_function::index](#vectorofsize%5C_tsolmeta%5C_functionindex)
   - [VectorOfSize\_t.sol::meta\_function::length](#vectorofsize%5C_tsolmeta%5C_functionlength)
   - [VectorOfSize\_t.sol::meta\_function::new\_index](#vectorofsize%5C_tsolmeta%5C_functionnew%5C_index)
+  - [VectorOfSize\_t.swap](#vectorofsize%5C_tswap)
   - [VectorOfSize\_t.table](#vectorofsize%5C_ttable)
 - [VectorOfString](#vectorofstring)
   - [VectorOfString.new](#vectorofstringnew)
+  - [VectorOfString.back](#vectorofstringback)
+  - [VectorOfString.capacity](#vectorofstringcapacity)
+  - [VectorOfString.clear](#vectorofstringclear)
   - [VectorOfString.data](#vectorofstringdata)
+  - [VectorOfString.empty](#vectorofstringempty)
+  - [VectorOfString.front](#vectorofstringfront)
+  - [VectorOfString.max\_size](#vectorofstringmax%5C_size)
+  - [VectorOfString.pop\_back](#vectorofstringpop%5C_back)
+  - [VectorOfString.reserve](#vectorofstringreserve)
+  - [VectorOfString.resize](#vectorofstringresize)
+  - [VectorOfString.shrink\_to\_fit](#vectorofstringshrink%5C_to%5C_fit)
+  - [VectorOfString.sizeof](#vectorofstringsizeof)
   - [VectorOfString.sol::meta\_function::index](#vectorofstringsolmeta%5C_functionindex)
   - [VectorOfString.sol::meta\_function::length](#vectorofstringsolmeta%5C_functionlength)
   - [VectorOfString.sol::meta\_function::new\_index](#vectorofstringsolmeta%5C_functionnew%5C_index)
+  - [VectorOfString.swap](#vectorofstringswap)
   - [VectorOfString.table](#vectorofstringtable)
 - [VectorOfTuplePointAndDouble](#vectoroftuplepointanddouble)
   - [VectorOfTuplePointAndDouble.new](#vectoroftuplepointanddoublenew)
+  - [VectorOfTuplePointAndDouble.back](#vectoroftuplepointanddoubleback)
+  - [VectorOfTuplePointAndDouble.capacity](#vectoroftuplepointanddoublecapacity)
+  - [VectorOfTuplePointAndDouble.clear](#vectoroftuplepointanddoubleclear)
   - [VectorOfTuplePointAndDouble.data](#vectoroftuplepointanddoubledata)
+  - [VectorOfTuplePointAndDouble.empty](#vectoroftuplepointanddoubleempty)
+  - [VectorOfTuplePointAndDouble.front](#vectoroftuplepointanddoublefront)
+  - [VectorOfTuplePointAndDouble.max\_size](#vectoroftuplepointanddoublemax%5C_size)
+  - [VectorOfTuplePointAndDouble.pop\_back](#vectoroftuplepointanddoublepop%5C_back)
+  - [VectorOfTuplePointAndDouble.reserve](#vectoroftuplepointanddoublereserve)
+  - [VectorOfTuplePointAndDouble.resize](#vectoroftuplepointanddoubleresize)
+  - [VectorOfTuplePointAndDouble.shrink\_to\_fit](#vectoroftuplepointanddoubleshrink%5C_to%5C_fit)
+  - [VectorOfTuplePointAndDouble.sizeof](#vectoroftuplepointanddoublesizeof)
   - [VectorOfTuplePointAndDouble.sol::meta\_function::index](#vectoroftuplepointanddoublesolmeta%5C_functionindex)
   - [VectorOfTuplePointAndDouble.sol::meta\_function::length](#vectoroftuplepointanddoublesolmeta%5C_functionlength)
   - [VectorOfTuplePointAndDouble.sol::meta\_function::new\_index](#vectoroftuplepointanddoublesolmeta%5C_functionnew%5C_index)
+  - [VectorOfTuplePointAndDouble.swap](#vectoroftuplepointanddoubleswap)
   - [VectorOfTuplePointAndDouble.table](#vectoroftuplepointanddoubletable)
 - [VectorOfUMat](#vectorofumat)
   - [VectorOfUMat.new](#vectorofumatnew)
+  - [VectorOfUMat.back](#vectorofumatback)
+  - [VectorOfUMat.capacity](#vectorofumatcapacity)
+  - [VectorOfUMat.clear](#vectorofumatclear)
   - [VectorOfUMat.data](#vectorofumatdata)
+  - [VectorOfUMat.empty](#vectorofumatempty)
+  - [VectorOfUMat.front](#vectorofumatfront)
+  - [VectorOfUMat.max\_size](#vectorofumatmax%5C_size)
+  - [VectorOfUMat.pop\_back](#vectorofumatpop%5C_back)
+  - [VectorOfUMat.reserve](#vectorofumatreserve)
+  - [VectorOfUMat.resize](#vectorofumatresize)
+  - [VectorOfUMat.shrink\_to\_fit](#vectorofumatshrink%5C_to%5C_fit)
+  - [VectorOfUMat.sizeof](#vectorofumatsizeof)
   - [VectorOfUMat.sol::meta\_function::index](#vectorofumatsolmeta%5C_functionindex)
   - [VectorOfUMat.sol::meta\_function::length](#vectorofumatsolmeta%5C_functionlength)
   - [VectorOfUMat.sol::meta\_function::new\_index](#vectorofumatsolmeta%5C_functionnew%5C_index)
+  - [VectorOfUMat.swap](#vectorofumatswap)
   - [VectorOfUMat.table](#vectorofumattable)
 - [VectorOfUchar](#vectorofuchar)
   - [VectorOfUchar.new](#vectorofucharnew)
+  - [VectorOfUchar.back](#vectorofucharback)
+  - [VectorOfUchar.capacity](#vectorofucharcapacity)
+  - [VectorOfUchar.clear](#vectorofucharclear)
   - [VectorOfUchar.data](#vectorofuchardata)
+  - [VectorOfUchar.empty](#vectorofucharempty)
+  - [VectorOfUchar.front](#vectorofucharfront)
+  - [VectorOfUchar.max\_size](#vectorofucharmax%5C_size)
+  - [VectorOfUchar.pop\_back](#vectorofucharpop%5C_back)
+  - [VectorOfUchar.reserve](#vectorofucharreserve)
+  - [VectorOfUchar.resize](#vectorofucharresize)
+  - [VectorOfUchar.shrink\_to\_fit](#vectorofucharshrink%5C_to%5C_fit)
+  - [VectorOfUchar.sizeof](#vectorofucharsizeof)
   - [VectorOfUchar.sol::meta\_function::index](#vectorofucharsolmeta%5C_functionindex)
   - [VectorOfUchar.sol::meta\_function::length](#vectorofucharsolmeta%5C_functionlength)
   - [VectorOfUchar.sol::meta\_function::new\_index](#vectorofucharsolmeta%5C_functionnew%5C_index)
+  - [VectorOfUchar.swap](#vectorofucharswap)
   - [VectorOfUchar.table](#vectorofuchartable)
 - [VectorOfUshort](#vectorofushort)
   - [VectorOfUshort.new](#vectorofushortnew)
+  - [VectorOfUshort.back](#vectorofushortback)
+  - [VectorOfUshort.capacity](#vectorofushortcapacity)
+  - [VectorOfUshort.clear](#vectorofushortclear)
   - [VectorOfUshort.data](#vectorofushortdata)
+  - [VectorOfUshort.empty](#vectorofushortempty)
+  - [VectorOfUshort.front](#vectorofushortfront)
+  - [VectorOfUshort.max\_size](#vectorofushortmax%5C_size)
+  - [VectorOfUshort.pop\_back](#vectorofushortpop%5C_back)
+  - [VectorOfUshort.reserve](#vectorofushortreserve)
+  - [VectorOfUshort.resize](#vectorofushortresize)
+  - [VectorOfUshort.shrink\_to\_fit](#vectorofushortshrink%5C_to%5C_fit)
+  - [VectorOfUshort.sizeof](#vectorofushortsizeof)
   - [VectorOfUshort.sol::meta\_function::index](#vectorofushortsolmeta%5C_functionindex)
   - [VectorOfUshort.sol::meta\_function::length](#vectorofushortsolmeta%5C_functionlength)
   - [VectorOfUshort.sol::meta\_function::new\_index](#vectorofushortsolmeta%5C_functionnew%5C_index)
+  - [VectorOfUshort.swap](#vectorofushortswap)
   - [VectorOfUshort.table](#vectorofushorttable)
 - [VectorOfVec2b](#vectorofvec2b)
   - [VectorOfVec2b.new](#vectorofvec2bnew)
+  - [VectorOfVec2b.back](#vectorofvec2bback)
+  - [VectorOfVec2b.capacity](#vectorofvec2bcapacity)
+  - [VectorOfVec2b.clear](#vectorofvec2bclear)
   - [VectorOfVec2b.data](#vectorofvec2bdata)
+  - [VectorOfVec2b.empty](#vectorofvec2bempty)
+  - [VectorOfVec2b.front](#vectorofvec2bfront)
+  - [VectorOfVec2b.max\_size](#vectorofvec2bmax%5C_size)
+  - [VectorOfVec2b.pop\_back](#vectorofvec2bpop%5C_back)
+  - [VectorOfVec2b.reserve](#vectorofvec2breserve)
+  - [VectorOfVec2b.resize](#vectorofvec2bresize)
+  - [VectorOfVec2b.shrink\_to\_fit](#vectorofvec2bshrink%5C_to%5C_fit)
+  - [VectorOfVec2b.sizeof](#vectorofvec2bsizeof)
   - [VectorOfVec2b.sol::meta\_function::index](#vectorofvec2bsolmeta%5C_functionindex)
   - [VectorOfVec2b.sol::meta\_function::length](#vectorofvec2bsolmeta%5C_functionlength)
   - [VectorOfVec2b.sol::meta\_function::new\_index](#vectorofvec2bsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec2b.swap](#vectorofvec2bswap)
   - [VectorOfVec2b.table](#vectorofvec2btable)
 - [VectorOfVec2d](#vectorofvec2d)
   - [VectorOfVec2d.new](#vectorofvec2dnew)
+  - [VectorOfVec2d.back](#vectorofvec2dback)
+  - [VectorOfVec2d.capacity](#vectorofvec2dcapacity)
+  - [VectorOfVec2d.clear](#vectorofvec2dclear)
   - [VectorOfVec2d.data](#vectorofvec2ddata)
+  - [VectorOfVec2d.empty](#vectorofvec2dempty)
+  - [VectorOfVec2d.front](#vectorofvec2dfront)
+  - [VectorOfVec2d.max\_size](#vectorofvec2dmax%5C_size)
+  - [VectorOfVec2d.pop\_back](#vectorofvec2dpop%5C_back)
+  - [VectorOfVec2d.reserve](#vectorofvec2dreserve)
+  - [VectorOfVec2d.resize](#vectorofvec2dresize)
+  - [VectorOfVec2d.shrink\_to\_fit](#vectorofvec2dshrink%5C_to%5C_fit)
+  - [VectorOfVec2d.sizeof](#vectorofvec2dsizeof)
   - [VectorOfVec2d.sol::meta\_function::index](#vectorofvec2dsolmeta%5C_functionindex)
   - [VectorOfVec2d.sol::meta\_function::length](#vectorofvec2dsolmeta%5C_functionlength)
   - [VectorOfVec2d.sol::meta\_function::new\_index](#vectorofvec2dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec2d.swap](#vectorofvec2dswap)
   - [VectorOfVec2d.table](#vectorofvec2dtable)
 - [VectorOfVec2f](#vectorofvec2f)
   - [VectorOfVec2f.new](#vectorofvec2fnew)
+  - [VectorOfVec2f.back](#vectorofvec2fback)
+  - [VectorOfVec2f.capacity](#vectorofvec2fcapacity)
+  - [VectorOfVec2f.clear](#vectorofvec2fclear)
   - [VectorOfVec2f.data](#vectorofvec2fdata)
+  - [VectorOfVec2f.empty](#vectorofvec2fempty)
+  - [VectorOfVec2f.front](#vectorofvec2ffront)
+  - [VectorOfVec2f.max\_size](#vectorofvec2fmax%5C_size)
+  - [VectorOfVec2f.pop\_back](#vectorofvec2fpop%5C_back)
+  - [VectorOfVec2f.reserve](#vectorofvec2freserve)
+  - [VectorOfVec2f.resize](#vectorofvec2fresize)
+  - [VectorOfVec2f.shrink\_to\_fit](#vectorofvec2fshrink%5C_to%5C_fit)
+  - [VectorOfVec2f.sizeof](#vectorofvec2fsizeof)
   - [VectorOfVec2f.sol::meta\_function::index](#vectorofvec2fsolmeta%5C_functionindex)
   - [VectorOfVec2f.sol::meta\_function::length](#vectorofvec2fsolmeta%5C_functionlength)
   - [VectorOfVec2f.sol::meta\_function::new\_index](#vectorofvec2fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec2f.swap](#vectorofvec2fswap)
   - [VectorOfVec2f.table](#vectorofvec2ftable)
 - [VectorOfVec2i](#vectorofvec2i)
   - [VectorOfVec2i.new](#vectorofvec2inew)
+  - [VectorOfVec2i.back](#vectorofvec2iback)
+  - [VectorOfVec2i.capacity](#vectorofvec2icapacity)
+  - [VectorOfVec2i.clear](#vectorofvec2iclear)
   - [VectorOfVec2i.data](#vectorofvec2idata)
+  - [VectorOfVec2i.empty](#vectorofvec2iempty)
+  - [VectorOfVec2i.front](#vectorofvec2ifront)
+  - [VectorOfVec2i.max\_size](#vectorofvec2imax%5C_size)
+  - [VectorOfVec2i.pop\_back](#vectorofvec2ipop%5C_back)
+  - [VectorOfVec2i.reserve](#vectorofvec2ireserve)
+  - [VectorOfVec2i.resize](#vectorofvec2iresize)
+  - [VectorOfVec2i.shrink\_to\_fit](#vectorofvec2ishrink%5C_to%5C_fit)
+  - [VectorOfVec2i.sizeof](#vectorofvec2isizeof)
   - [VectorOfVec2i.sol::meta\_function::index](#vectorofvec2isolmeta%5C_functionindex)
   - [VectorOfVec2i.sol::meta\_function::length](#vectorofvec2isolmeta%5C_functionlength)
   - [VectorOfVec2i.sol::meta\_function::new\_index](#vectorofvec2isolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec2i.swap](#vectorofvec2iswap)
   - [VectorOfVec2i.table](#vectorofvec2itable)
 - [VectorOfVec2s](#vectorofvec2s)
   - [VectorOfVec2s.new](#vectorofvec2snew)
+  - [VectorOfVec2s.back](#vectorofvec2sback)
+  - [VectorOfVec2s.capacity](#vectorofvec2scapacity)
+  - [VectorOfVec2s.clear](#vectorofvec2sclear)
   - [VectorOfVec2s.data](#vectorofvec2sdata)
+  - [VectorOfVec2s.empty](#vectorofvec2sempty)
+  - [VectorOfVec2s.front](#vectorofvec2sfront)
+  - [VectorOfVec2s.max\_size](#vectorofvec2smax%5C_size)
+  - [VectorOfVec2s.pop\_back](#vectorofvec2spop%5C_back)
+  - [VectorOfVec2s.reserve](#vectorofvec2sreserve)
+  - [VectorOfVec2s.resize](#vectorofvec2sresize)
+  - [VectorOfVec2s.shrink\_to\_fit](#vectorofvec2sshrink%5C_to%5C_fit)
+  - [VectorOfVec2s.sizeof](#vectorofvec2ssizeof)
   - [VectorOfVec2s.sol::meta\_function::index](#vectorofvec2ssolmeta%5C_functionindex)
   - [VectorOfVec2s.sol::meta\_function::length](#vectorofvec2ssolmeta%5C_functionlength)
   - [VectorOfVec2s.sol::meta\_function::new\_index](#vectorofvec2ssolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec2s.swap](#vectorofvec2sswap)
   - [VectorOfVec2s.table](#vectorofvec2stable)
 - [VectorOfVec2w](#vectorofvec2w)
   - [VectorOfVec2w.new](#vectorofvec2wnew)
+  - [VectorOfVec2w.back](#vectorofvec2wback)
+  - [VectorOfVec2w.capacity](#vectorofvec2wcapacity)
+  - [VectorOfVec2w.clear](#vectorofvec2wclear)
   - [VectorOfVec2w.data](#vectorofvec2wdata)
+  - [VectorOfVec2w.empty](#vectorofvec2wempty)
+  - [VectorOfVec2w.front](#vectorofvec2wfront)
+  - [VectorOfVec2w.max\_size](#vectorofvec2wmax%5C_size)
+  - [VectorOfVec2w.pop\_back](#vectorofvec2wpop%5C_back)
+  - [VectorOfVec2w.reserve](#vectorofvec2wreserve)
+  - [VectorOfVec2w.resize](#vectorofvec2wresize)
+  - [VectorOfVec2w.shrink\_to\_fit](#vectorofvec2wshrink%5C_to%5C_fit)
+  - [VectorOfVec2w.sizeof](#vectorofvec2wsizeof)
   - [VectorOfVec2w.sol::meta\_function::index](#vectorofvec2wsolmeta%5C_functionindex)
   - [VectorOfVec2w.sol::meta\_function::length](#vectorofvec2wsolmeta%5C_functionlength)
   - [VectorOfVec2w.sol::meta\_function::new\_index](#vectorofvec2wsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec2w.swap](#vectorofvec2wswap)
   - [VectorOfVec2w.table](#vectorofvec2wtable)
 - [VectorOfVec3b](#vectorofvec3b)
   - [VectorOfVec3b.new](#vectorofvec3bnew)
+  - [VectorOfVec3b.back](#vectorofvec3bback)
+  - [VectorOfVec3b.capacity](#vectorofvec3bcapacity)
+  - [VectorOfVec3b.clear](#vectorofvec3bclear)
   - [VectorOfVec3b.data](#vectorofvec3bdata)
+  - [VectorOfVec3b.empty](#vectorofvec3bempty)
+  - [VectorOfVec3b.front](#vectorofvec3bfront)
+  - [VectorOfVec3b.max\_size](#vectorofvec3bmax%5C_size)
+  - [VectorOfVec3b.pop\_back](#vectorofvec3bpop%5C_back)
+  - [VectorOfVec3b.reserve](#vectorofvec3breserve)
+  - [VectorOfVec3b.resize](#vectorofvec3bresize)
+  - [VectorOfVec3b.shrink\_to\_fit](#vectorofvec3bshrink%5C_to%5C_fit)
+  - [VectorOfVec3b.sizeof](#vectorofvec3bsizeof)
   - [VectorOfVec3b.sol::meta\_function::index](#vectorofvec3bsolmeta%5C_functionindex)
   - [VectorOfVec3b.sol::meta\_function::length](#vectorofvec3bsolmeta%5C_functionlength)
   - [VectorOfVec3b.sol::meta\_function::new\_index](#vectorofvec3bsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec3b.swap](#vectorofvec3bswap)
   - [VectorOfVec3b.table](#vectorofvec3btable)
 - [VectorOfVec3d](#vectorofvec3d)
   - [VectorOfVec3d.new](#vectorofvec3dnew)
+  - [VectorOfVec3d.back](#vectorofvec3dback)
+  - [VectorOfVec3d.capacity](#vectorofvec3dcapacity)
+  - [VectorOfVec3d.clear](#vectorofvec3dclear)
   - [VectorOfVec3d.data](#vectorofvec3ddata)
+  - [VectorOfVec3d.empty](#vectorofvec3dempty)
+  - [VectorOfVec3d.front](#vectorofvec3dfront)
+  - [VectorOfVec3d.max\_size](#vectorofvec3dmax%5C_size)
+  - [VectorOfVec3d.pop\_back](#vectorofvec3dpop%5C_back)
+  - [VectorOfVec3d.reserve](#vectorofvec3dreserve)
+  - [VectorOfVec3d.resize](#vectorofvec3dresize)
+  - [VectorOfVec3d.shrink\_to\_fit](#vectorofvec3dshrink%5C_to%5C_fit)
+  - [VectorOfVec3d.sizeof](#vectorofvec3dsizeof)
   - [VectorOfVec3d.sol::meta\_function::index](#vectorofvec3dsolmeta%5C_functionindex)
   - [VectorOfVec3d.sol::meta\_function::length](#vectorofvec3dsolmeta%5C_functionlength)
   - [VectorOfVec3d.sol::meta\_function::new\_index](#vectorofvec3dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec3d.swap](#vectorofvec3dswap)
   - [VectorOfVec3d.table](#vectorofvec3dtable)
 - [VectorOfVec3f](#vectorofvec3f)
   - [VectorOfVec3f.new](#vectorofvec3fnew)
+  - [VectorOfVec3f.back](#vectorofvec3fback)
+  - [VectorOfVec3f.capacity](#vectorofvec3fcapacity)
+  - [VectorOfVec3f.clear](#vectorofvec3fclear)
   - [VectorOfVec3f.data](#vectorofvec3fdata)
+  - [VectorOfVec3f.empty](#vectorofvec3fempty)
+  - [VectorOfVec3f.front](#vectorofvec3ffront)
+  - [VectorOfVec3f.max\_size](#vectorofvec3fmax%5C_size)
+  - [VectorOfVec3f.pop\_back](#vectorofvec3fpop%5C_back)
+  - [VectorOfVec3f.reserve](#vectorofvec3freserve)
+  - [VectorOfVec3f.resize](#vectorofvec3fresize)
+  - [VectorOfVec3f.shrink\_to\_fit](#vectorofvec3fshrink%5C_to%5C_fit)
+  - [VectorOfVec3f.sizeof](#vectorofvec3fsizeof)
   - [VectorOfVec3f.sol::meta\_function::index](#vectorofvec3fsolmeta%5C_functionindex)
   - [VectorOfVec3f.sol::meta\_function::length](#vectorofvec3fsolmeta%5C_functionlength)
   - [VectorOfVec3f.sol::meta\_function::new\_index](#vectorofvec3fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec3f.swap](#vectorofvec3fswap)
   - [VectorOfVec3f.table](#vectorofvec3ftable)
 - [VectorOfVec3i](#vectorofvec3i)
   - [VectorOfVec3i.new](#vectorofvec3inew)
+  - [VectorOfVec3i.back](#vectorofvec3iback)
+  - [VectorOfVec3i.capacity](#vectorofvec3icapacity)
+  - [VectorOfVec3i.clear](#vectorofvec3iclear)
   - [VectorOfVec3i.data](#vectorofvec3idata)
+  - [VectorOfVec3i.empty](#vectorofvec3iempty)
+  - [VectorOfVec3i.front](#vectorofvec3ifront)
+  - [VectorOfVec3i.max\_size](#vectorofvec3imax%5C_size)
+  - [VectorOfVec3i.pop\_back](#vectorofvec3ipop%5C_back)
+  - [VectorOfVec3i.reserve](#vectorofvec3ireserve)
+  - [VectorOfVec3i.resize](#vectorofvec3iresize)
+  - [VectorOfVec3i.shrink\_to\_fit](#vectorofvec3ishrink%5C_to%5C_fit)
+  - [VectorOfVec3i.sizeof](#vectorofvec3isizeof)
   - [VectorOfVec3i.sol::meta\_function::index](#vectorofvec3isolmeta%5C_functionindex)
   - [VectorOfVec3i.sol::meta\_function::length](#vectorofvec3isolmeta%5C_functionlength)
   - [VectorOfVec3i.sol::meta\_function::new\_index](#vectorofvec3isolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec3i.swap](#vectorofvec3iswap)
   - [VectorOfVec3i.table](#vectorofvec3itable)
 - [VectorOfVec3s](#vectorofvec3s)
   - [VectorOfVec3s.new](#vectorofvec3snew)
+  - [VectorOfVec3s.back](#vectorofvec3sback)
+  - [VectorOfVec3s.capacity](#vectorofvec3scapacity)
+  - [VectorOfVec3s.clear](#vectorofvec3sclear)
   - [VectorOfVec3s.data](#vectorofvec3sdata)
+  - [VectorOfVec3s.empty](#vectorofvec3sempty)
+  - [VectorOfVec3s.front](#vectorofvec3sfront)
+  - [VectorOfVec3s.max\_size](#vectorofvec3smax%5C_size)
+  - [VectorOfVec3s.pop\_back](#vectorofvec3spop%5C_back)
+  - [VectorOfVec3s.reserve](#vectorofvec3sreserve)
+  - [VectorOfVec3s.resize](#vectorofvec3sresize)
+  - [VectorOfVec3s.shrink\_to\_fit](#vectorofvec3sshrink%5C_to%5C_fit)
+  - [VectorOfVec3s.sizeof](#vectorofvec3ssizeof)
   - [VectorOfVec3s.sol::meta\_function::index](#vectorofvec3ssolmeta%5C_functionindex)
   - [VectorOfVec3s.sol::meta\_function::length](#vectorofvec3ssolmeta%5C_functionlength)
   - [VectorOfVec3s.sol::meta\_function::new\_index](#vectorofvec3ssolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec3s.swap](#vectorofvec3sswap)
   - [VectorOfVec3s.table](#vectorofvec3stable)
 - [VectorOfVec3w](#vectorofvec3w)
   - [VectorOfVec3w.new](#vectorofvec3wnew)
+  - [VectorOfVec3w.back](#vectorofvec3wback)
+  - [VectorOfVec3w.capacity](#vectorofvec3wcapacity)
+  - [VectorOfVec3w.clear](#vectorofvec3wclear)
   - [VectorOfVec3w.data](#vectorofvec3wdata)
+  - [VectorOfVec3w.empty](#vectorofvec3wempty)
+  - [VectorOfVec3w.front](#vectorofvec3wfront)
+  - [VectorOfVec3w.max\_size](#vectorofvec3wmax%5C_size)
+  - [VectorOfVec3w.pop\_back](#vectorofvec3wpop%5C_back)
+  - [VectorOfVec3w.reserve](#vectorofvec3wreserve)
+  - [VectorOfVec3w.resize](#vectorofvec3wresize)
+  - [VectorOfVec3w.shrink\_to\_fit](#vectorofvec3wshrink%5C_to%5C_fit)
+  - [VectorOfVec3w.sizeof](#vectorofvec3wsizeof)
   - [VectorOfVec3w.sol::meta\_function::index](#vectorofvec3wsolmeta%5C_functionindex)
   - [VectorOfVec3w.sol::meta\_function::length](#vectorofvec3wsolmeta%5C_functionlength)
   - [VectorOfVec3w.sol::meta\_function::new\_index](#vectorofvec3wsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec3w.swap](#vectorofvec3wswap)
   - [VectorOfVec3w.table](#vectorofvec3wtable)
 - [VectorOfVec4b](#vectorofvec4b)
   - [VectorOfVec4b.new](#vectorofvec4bnew)
+  - [VectorOfVec4b.back](#vectorofvec4bback)
+  - [VectorOfVec4b.capacity](#vectorofvec4bcapacity)
+  - [VectorOfVec4b.clear](#vectorofvec4bclear)
   - [VectorOfVec4b.data](#vectorofvec4bdata)
+  - [VectorOfVec4b.empty](#vectorofvec4bempty)
+  - [VectorOfVec4b.front](#vectorofvec4bfront)
+  - [VectorOfVec4b.max\_size](#vectorofvec4bmax%5C_size)
+  - [VectorOfVec4b.pop\_back](#vectorofvec4bpop%5C_back)
+  - [VectorOfVec4b.reserve](#vectorofvec4breserve)
+  - [VectorOfVec4b.resize](#vectorofvec4bresize)
+  - [VectorOfVec4b.shrink\_to\_fit](#vectorofvec4bshrink%5C_to%5C_fit)
+  - [VectorOfVec4b.sizeof](#vectorofvec4bsizeof)
   - [VectorOfVec4b.sol::meta\_function::index](#vectorofvec4bsolmeta%5C_functionindex)
   - [VectorOfVec4b.sol::meta\_function::length](#vectorofvec4bsolmeta%5C_functionlength)
   - [VectorOfVec4b.sol::meta\_function::new\_index](#vectorofvec4bsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec4b.swap](#vectorofvec4bswap)
   - [VectorOfVec4b.table](#vectorofvec4btable)
 - [VectorOfVec4d](#vectorofvec4d)
   - [VectorOfVec4d.new](#vectorofvec4dnew)
+  - [VectorOfVec4d.back](#vectorofvec4dback)
+  - [VectorOfVec4d.capacity](#vectorofvec4dcapacity)
+  - [VectorOfVec4d.clear](#vectorofvec4dclear)
   - [VectorOfVec4d.data](#vectorofvec4ddata)
+  - [VectorOfVec4d.empty](#vectorofvec4dempty)
+  - [VectorOfVec4d.front](#vectorofvec4dfront)
+  - [VectorOfVec4d.max\_size](#vectorofvec4dmax%5C_size)
+  - [VectorOfVec4d.pop\_back](#vectorofvec4dpop%5C_back)
+  - [VectorOfVec4d.reserve](#vectorofvec4dreserve)
+  - [VectorOfVec4d.resize](#vectorofvec4dresize)
+  - [VectorOfVec4d.shrink\_to\_fit](#vectorofvec4dshrink%5C_to%5C_fit)
+  - [VectorOfVec4d.sizeof](#vectorofvec4dsizeof)
   - [VectorOfVec4d.sol::meta\_function::index](#vectorofvec4dsolmeta%5C_functionindex)
   - [VectorOfVec4d.sol::meta\_function::length](#vectorofvec4dsolmeta%5C_functionlength)
   - [VectorOfVec4d.sol::meta\_function::new\_index](#vectorofvec4dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec4d.swap](#vectorofvec4dswap)
   - [VectorOfVec4d.table](#vectorofvec4dtable)
 - [VectorOfVec4f](#vectorofvec4f)
   - [VectorOfVec4f.new](#vectorofvec4fnew)
+  - [VectorOfVec4f.back](#vectorofvec4fback)
+  - [VectorOfVec4f.capacity](#vectorofvec4fcapacity)
+  - [VectorOfVec4f.clear](#vectorofvec4fclear)
   - [VectorOfVec4f.data](#vectorofvec4fdata)
+  - [VectorOfVec4f.empty](#vectorofvec4fempty)
+  - [VectorOfVec4f.front](#vectorofvec4ffront)
+  - [VectorOfVec4f.max\_size](#vectorofvec4fmax%5C_size)
+  - [VectorOfVec4f.pop\_back](#vectorofvec4fpop%5C_back)
+  - [VectorOfVec4f.reserve](#vectorofvec4freserve)
+  - [VectorOfVec4f.resize](#vectorofvec4fresize)
+  - [VectorOfVec4f.shrink\_to\_fit](#vectorofvec4fshrink%5C_to%5C_fit)
+  - [VectorOfVec4f.sizeof](#vectorofvec4fsizeof)
   - [VectorOfVec4f.sol::meta\_function::index](#vectorofvec4fsolmeta%5C_functionindex)
   - [VectorOfVec4f.sol::meta\_function::length](#vectorofvec4fsolmeta%5C_functionlength)
   - [VectorOfVec4f.sol::meta\_function::new\_index](#vectorofvec4fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec4f.swap](#vectorofvec4fswap)
   - [VectorOfVec4f.table](#vectorofvec4ftable)
 - [VectorOfVec4i](#vectorofvec4i)
   - [VectorOfVec4i.new](#vectorofvec4inew)
+  - [VectorOfVec4i.back](#vectorofvec4iback)
+  - [VectorOfVec4i.capacity](#vectorofvec4icapacity)
+  - [VectorOfVec4i.clear](#vectorofvec4iclear)
   - [VectorOfVec4i.data](#vectorofvec4idata)
+  - [VectorOfVec4i.empty](#vectorofvec4iempty)
+  - [VectorOfVec4i.front](#vectorofvec4ifront)
+  - [VectorOfVec4i.max\_size](#vectorofvec4imax%5C_size)
+  - [VectorOfVec4i.pop\_back](#vectorofvec4ipop%5C_back)
+  - [VectorOfVec4i.reserve](#vectorofvec4ireserve)
+  - [VectorOfVec4i.resize](#vectorofvec4iresize)
+  - [VectorOfVec4i.shrink\_to\_fit](#vectorofvec4ishrink%5C_to%5C_fit)
+  - [VectorOfVec4i.sizeof](#vectorofvec4isizeof)
   - [VectorOfVec4i.sol::meta\_function::index](#vectorofvec4isolmeta%5C_functionindex)
   - [VectorOfVec4i.sol::meta\_function::length](#vectorofvec4isolmeta%5C_functionlength)
   - [VectorOfVec4i.sol::meta\_function::new\_index](#vectorofvec4isolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec4i.swap](#vectorofvec4iswap)
   - [VectorOfVec4i.table](#vectorofvec4itable)
 - [VectorOfVec4s](#vectorofvec4s)
   - [VectorOfVec4s.new](#vectorofvec4snew)
+  - [VectorOfVec4s.back](#vectorofvec4sback)
+  - [VectorOfVec4s.capacity](#vectorofvec4scapacity)
+  - [VectorOfVec4s.clear](#vectorofvec4sclear)
   - [VectorOfVec4s.data](#vectorofvec4sdata)
+  - [VectorOfVec4s.empty](#vectorofvec4sempty)
+  - [VectorOfVec4s.front](#vectorofvec4sfront)
+  - [VectorOfVec4s.max\_size](#vectorofvec4smax%5C_size)
+  - [VectorOfVec4s.pop\_back](#vectorofvec4spop%5C_back)
+  - [VectorOfVec4s.reserve](#vectorofvec4sreserve)
+  - [VectorOfVec4s.resize](#vectorofvec4sresize)
+  - [VectorOfVec4s.shrink\_to\_fit](#vectorofvec4sshrink%5C_to%5C_fit)
+  - [VectorOfVec4s.sizeof](#vectorofvec4ssizeof)
   - [VectorOfVec4s.sol::meta\_function::index](#vectorofvec4ssolmeta%5C_functionindex)
   - [VectorOfVec4s.sol::meta\_function::length](#vectorofvec4ssolmeta%5C_functionlength)
   - [VectorOfVec4s.sol::meta\_function::new\_index](#vectorofvec4ssolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec4s.swap](#vectorofvec4sswap)
   - [VectorOfVec4s.table](#vectorofvec4stable)
 - [VectorOfVec4w](#vectorofvec4w)
   - [VectorOfVec4w.new](#vectorofvec4wnew)
+  - [VectorOfVec4w.back](#vectorofvec4wback)
+  - [VectorOfVec4w.capacity](#vectorofvec4wcapacity)
+  - [VectorOfVec4w.clear](#vectorofvec4wclear)
   - [VectorOfVec4w.data](#vectorofvec4wdata)
+  - [VectorOfVec4w.empty](#vectorofvec4wempty)
+  - [VectorOfVec4w.front](#vectorofvec4wfront)
+  - [VectorOfVec4w.max\_size](#vectorofvec4wmax%5C_size)
+  - [VectorOfVec4w.pop\_back](#vectorofvec4wpop%5C_back)
+  - [VectorOfVec4w.reserve](#vectorofvec4wreserve)
+  - [VectorOfVec4w.resize](#vectorofvec4wresize)
+  - [VectorOfVec4w.shrink\_to\_fit](#vectorofvec4wshrink%5C_to%5C_fit)
+  - [VectorOfVec4w.sizeof](#vectorofvec4wsizeof)
   - [VectorOfVec4w.sol::meta\_function::index](#vectorofvec4wsolmeta%5C_functionindex)
   - [VectorOfVec4w.sol::meta\_function::length](#vectorofvec4wsolmeta%5C_functionlength)
   - [VectorOfVec4w.sol::meta\_function::new\_index](#vectorofvec4wsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec4w.swap](#vectorofvec4wswap)
   - [VectorOfVec4w.table](#vectorofvec4wtable)
 - [VectorOfVec6d](#vectorofvec6d)
   - [VectorOfVec6d.new](#vectorofvec6dnew)
+  - [VectorOfVec6d.back](#vectorofvec6dback)
+  - [VectorOfVec6d.capacity](#vectorofvec6dcapacity)
+  - [VectorOfVec6d.clear](#vectorofvec6dclear)
   - [VectorOfVec6d.data](#vectorofvec6ddata)
+  - [VectorOfVec6d.empty](#vectorofvec6dempty)
+  - [VectorOfVec6d.front](#vectorofvec6dfront)
+  - [VectorOfVec6d.max\_size](#vectorofvec6dmax%5C_size)
+  - [VectorOfVec6d.pop\_back](#vectorofvec6dpop%5C_back)
+  - [VectorOfVec6d.reserve](#vectorofvec6dreserve)
+  - [VectorOfVec6d.resize](#vectorofvec6dresize)
+  - [VectorOfVec6d.shrink\_to\_fit](#vectorofvec6dshrink%5C_to%5C_fit)
+  - [VectorOfVec6d.sizeof](#vectorofvec6dsizeof)
   - [VectorOfVec6d.sol::meta\_function::index](#vectorofvec6dsolmeta%5C_functionindex)
   - [VectorOfVec6d.sol::meta\_function::length](#vectorofvec6dsolmeta%5C_functionlength)
   - [VectorOfVec6d.sol::meta\_function::new\_index](#vectorofvec6dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec6d.swap](#vectorofvec6dswap)
   - [VectorOfVec6d.table](#vectorofvec6dtable)
 - [VectorOfVec6f](#vectorofvec6f)
   - [VectorOfVec6f.new](#vectorofvec6fnew)
+  - [VectorOfVec6f.back](#vectorofvec6fback)
+  - [VectorOfVec6f.capacity](#vectorofvec6fcapacity)
+  - [VectorOfVec6f.clear](#vectorofvec6fclear)
   - [VectorOfVec6f.data](#vectorofvec6fdata)
+  - [VectorOfVec6f.empty](#vectorofvec6fempty)
+  - [VectorOfVec6f.front](#vectorofvec6ffront)
+  - [VectorOfVec6f.max\_size](#vectorofvec6fmax%5C_size)
+  - [VectorOfVec6f.pop\_back](#vectorofvec6fpop%5C_back)
+  - [VectorOfVec6f.reserve](#vectorofvec6freserve)
+  - [VectorOfVec6f.resize](#vectorofvec6fresize)
+  - [VectorOfVec6f.shrink\_to\_fit](#vectorofvec6fshrink%5C_to%5C_fit)
+  - [VectorOfVec6f.sizeof](#vectorofvec6fsizeof)
   - [VectorOfVec6f.sol::meta\_function::index](#vectorofvec6fsolmeta%5C_functionindex)
   - [VectorOfVec6f.sol::meta\_function::length](#vectorofvec6fsolmeta%5C_functionlength)
   - [VectorOfVec6f.sol::meta\_function::new\_index](#vectorofvec6fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec6f.swap](#vectorofvec6fswap)
   - [VectorOfVec6f.table](#vectorofvec6ftable)
 - [VectorOfVec6i](#vectorofvec6i)
   - [VectorOfVec6i.new](#vectorofvec6inew)
+  - [VectorOfVec6i.back](#vectorofvec6iback)
+  - [VectorOfVec6i.capacity](#vectorofvec6icapacity)
+  - [VectorOfVec6i.clear](#vectorofvec6iclear)
   - [VectorOfVec6i.data](#vectorofvec6idata)
+  - [VectorOfVec6i.empty](#vectorofvec6iempty)
+  - [VectorOfVec6i.front](#vectorofvec6ifront)
+  - [VectorOfVec6i.max\_size](#vectorofvec6imax%5C_size)
+  - [VectorOfVec6i.pop\_back](#vectorofvec6ipop%5C_back)
+  - [VectorOfVec6i.reserve](#vectorofvec6ireserve)
+  - [VectorOfVec6i.resize](#vectorofvec6iresize)
+  - [VectorOfVec6i.shrink\_to\_fit](#vectorofvec6ishrink%5C_to%5C_fit)
+  - [VectorOfVec6i.sizeof](#vectorofvec6isizeof)
   - [VectorOfVec6i.sol::meta\_function::index](#vectorofvec6isolmeta%5C_functionindex)
   - [VectorOfVec6i.sol::meta\_function::length](#vectorofvec6isolmeta%5C_functionlength)
   - [VectorOfVec6i.sol::meta\_function::new\_index](#vectorofvec6isolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec6i.swap](#vectorofvec6iswap)
   - [VectorOfVec6i.table](#vectorofvec6itable)
 - [VectorOfVec8i](#vectorofvec8i)
   - [VectorOfVec8i.new](#vectorofvec8inew)
+  - [VectorOfVec8i.back](#vectorofvec8iback)
+  - [VectorOfVec8i.capacity](#vectorofvec8icapacity)
+  - [VectorOfVec8i.clear](#vectorofvec8iclear)
   - [VectorOfVec8i.data](#vectorofvec8idata)
+  - [VectorOfVec8i.empty](#vectorofvec8iempty)
+  - [VectorOfVec8i.front](#vectorofvec8ifront)
+  - [VectorOfVec8i.max\_size](#vectorofvec8imax%5C_size)
+  - [VectorOfVec8i.pop\_back](#vectorofvec8ipop%5C_back)
+  - [VectorOfVec8i.reserve](#vectorofvec8ireserve)
+  - [VectorOfVec8i.resize](#vectorofvec8iresize)
+  - [VectorOfVec8i.shrink\_to\_fit](#vectorofvec8ishrink%5C_to%5C_fit)
+  - [VectorOfVec8i.sizeof](#vectorofvec8isizeof)
   - [VectorOfVec8i.sol::meta\_function::index](#vectorofvec8isolmeta%5C_functionindex)
   - [VectorOfVec8i.sol::meta\_function::length](#vectorofvec8isolmeta%5C_functionlength)
   - [VectorOfVec8i.sol::meta\_function::new\_index](#vectorofvec8isolmeta%5C_functionnew%5C_index)
+  - [VectorOfVec8i.swap](#vectorofvec8iswap)
   - [VectorOfVec8i.table](#vectorofvec8itable)
 - [VectorOfVectorOfBool](#vectorofvectorofbool)
   - [VectorOfVectorOfBool.new](#vectorofvectorofboolnew)
+  - [VectorOfVectorOfBool.back](#vectorofvectorofboolback)
+  - [VectorOfVectorOfBool.capacity](#vectorofvectorofboolcapacity)
+  - [VectorOfVectorOfBool.clear](#vectorofvectorofboolclear)
   - [VectorOfVectorOfBool.data](#vectorofvectorofbooldata)
+  - [VectorOfVectorOfBool.empty](#vectorofvectorofboolempty)
+  - [VectorOfVectorOfBool.front](#vectorofvectorofboolfront)
+  - [VectorOfVectorOfBool.max\_size](#vectorofvectorofboolmax%5C_size)
+  - [VectorOfVectorOfBool.pop\_back](#vectorofvectorofboolpop%5C_back)
+  - [VectorOfVectorOfBool.reserve](#vectorofvectorofboolreserve)
+  - [VectorOfVectorOfBool.resize](#vectorofvectorofboolresize)
+  - [VectorOfVectorOfBool.shrink\_to\_fit](#vectorofvectorofboolshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfBool.sizeof](#vectorofvectorofboolsizeof)
   - [VectorOfVectorOfBool.sol::meta\_function::index](#vectorofvectorofboolsolmeta%5C_functionindex)
   - [VectorOfVectorOfBool.sol::meta\_function::length](#vectorofvectorofboolsolmeta%5C_functionlength)
   - [VectorOfVectorOfBool.sol::meta\_function::new\_index](#vectorofvectorofboolsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfBool.swap](#vectorofvectorofboolswap)
   - [VectorOfVectorOfBool.table](#vectorofvectorofbooltable)
 - [VectorOfVectorOfChar](#vectorofvectorofchar)
   - [VectorOfVectorOfChar.new](#vectorofvectorofcharnew)
+  - [VectorOfVectorOfChar.back](#vectorofvectorofcharback)
+  - [VectorOfVectorOfChar.capacity](#vectorofvectorofcharcapacity)
+  - [VectorOfVectorOfChar.clear](#vectorofvectorofcharclear)
   - [VectorOfVectorOfChar.data](#vectorofvectorofchardata)
+  - [VectorOfVectorOfChar.empty](#vectorofvectorofcharempty)
+  - [VectorOfVectorOfChar.front](#vectorofvectorofcharfront)
+  - [VectorOfVectorOfChar.max\_size](#vectorofvectorofcharmax%5C_size)
+  - [VectorOfVectorOfChar.pop\_back](#vectorofvectorofcharpop%5C_back)
+  - [VectorOfVectorOfChar.reserve](#vectorofvectorofcharreserve)
+  - [VectorOfVectorOfChar.resize](#vectorofvectorofcharresize)
+  - [VectorOfVectorOfChar.shrink\_to\_fit](#vectorofvectorofcharshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfChar.sizeof](#vectorofvectorofcharsizeof)
   - [VectorOfVectorOfChar.sol::meta\_function::index](#vectorofvectorofcharsolmeta%5C_functionindex)
   - [VectorOfVectorOfChar.sol::meta\_function::length](#vectorofvectorofcharsolmeta%5C_functionlength)
   - [VectorOfVectorOfChar.sol::meta\_function::new\_index](#vectorofvectorofcharsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfChar.swap](#vectorofvectorofcharswap)
   - [VectorOfVectorOfChar.table](#vectorofvectorofchartable)
 - [VectorOfVectorOfDMatch](#vectorofvectorofdmatch)
   - [VectorOfVectorOfDMatch.new](#vectorofvectorofdmatchnew)
+  - [VectorOfVectorOfDMatch.back](#vectorofvectorofdmatchback)
+  - [VectorOfVectorOfDMatch.capacity](#vectorofvectorofdmatchcapacity)
+  - [VectorOfVectorOfDMatch.clear](#vectorofvectorofdmatchclear)
   - [VectorOfVectorOfDMatch.data](#vectorofvectorofdmatchdata)
+  - [VectorOfVectorOfDMatch.empty](#vectorofvectorofdmatchempty)
+  - [VectorOfVectorOfDMatch.front](#vectorofvectorofdmatchfront)
+  - [VectorOfVectorOfDMatch.max\_size](#vectorofvectorofdmatchmax%5C_size)
+  - [VectorOfVectorOfDMatch.pop\_back](#vectorofvectorofdmatchpop%5C_back)
+  - [VectorOfVectorOfDMatch.reserve](#vectorofvectorofdmatchreserve)
+  - [VectorOfVectorOfDMatch.resize](#vectorofvectorofdmatchresize)
+  - [VectorOfVectorOfDMatch.shrink\_to\_fit](#vectorofvectorofdmatchshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfDMatch.sizeof](#vectorofvectorofdmatchsizeof)
   - [VectorOfVectorOfDMatch.sol::meta\_function::index](#vectorofvectorofdmatchsolmeta%5C_functionindex)
   - [VectorOfVectorOfDMatch.sol::meta\_function::length](#vectorofvectorofdmatchsolmeta%5C_functionlength)
   - [VectorOfVectorOfDMatch.sol::meta\_function::new\_index](#vectorofvectorofdmatchsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfDMatch.swap](#vectorofvectorofdmatchswap)
   - [VectorOfVectorOfDMatch.table](#vectorofvectorofdmatchtable)
 - [VectorOfVectorOfDouble](#vectorofvectorofdouble)
   - [VectorOfVectorOfDouble.new](#vectorofvectorofdoublenew)
+  - [VectorOfVectorOfDouble.back](#vectorofvectorofdoubleback)
+  - [VectorOfVectorOfDouble.capacity](#vectorofvectorofdoublecapacity)
+  - [VectorOfVectorOfDouble.clear](#vectorofvectorofdoubleclear)
   - [VectorOfVectorOfDouble.data](#vectorofvectorofdoubledata)
+  - [VectorOfVectorOfDouble.empty](#vectorofvectorofdoubleempty)
+  - [VectorOfVectorOfDouble.front](#vectorofvectorofdoublefront)
+  - [VectorOfVectorOfDouble.max\_size](#vectorofvectorofdoublemax%5C_size)
+  - [VectorOfVectorOfDouble.pop\_back](#vectorofvectorofdoublepop%5C_back)
+  - [VectorOfVectorOfDouble.reserve](#vectorofvectorofdoublereserve)
+  - [VectorOfVectorOfDouble.resize](#vectorofvectorofdoubleresize)
+  - [VectorOfVectorOfDouble.shrink\_to\_fit](#vectorofvectorofdoubleshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfDouble.sizeof](#vectorofvectorofdoublesizeof)
   - [VectorOfVectorOfDouble.sol::meta\_function::index](#vectorofvectorofdoublesolmeta%5C_functionindex)
   - [VectorOfVectorOfDouble.sol::meta\_function::length](#vectorofvectorofdoublesolmeta%5C_functionlength)
   - [VectorOfVectorOfDouble.sol::meta\_function::new\_index](#vectorofvectorofdoublesolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfDouble.swap](#vectorofvectorofdoubleswap)
   - [VectorOfVectorOfDouble.table](#vectorofvectorofdoubletable)
 - [VectorOfVectorOfFloat](#vectorofvectoroffloat)
   - [VectorOfVectorOfFloat.new](#vectorofvectoroffloatnew)
+  - [VectorOfVectorOfFloat.back](#vectorofvectoroffloatback)
+  - [VectorOfVectorOfFloat.capacity](#vectorofvectoroffloatcapacity)
+  - [VectorOfVectorOfFloat.clear](#vectorofvectoroffloatclear)
   - [VectorOfVectorOfFloat.data](#vectorofvectoroffloatdata)
+  - [VectorOfVectorOfFloat.empty](#vectorofvectoroffloatempty)
+  - [VectorOfVectorOfFloat.front](#vectorofvectoroffloatfront)
+  - [VectorOfVectorOfFloat.max\_size](#vectorofvectoroffloatmax%5C_size)
+  - [VectorOfVectorOfFloat.pop\_back](#vectorofvectoroffloatpop%5C_back)
+  - [VectorOfVectorOfFloat.reserve](#vectorofvectoroffloatreserve)
+  - [VectorOfVectorOfFloat.resize](#vectorofvectoroffloatresize)
+  - [VectorOfVectorOfFloat.shrink\_to\_fit](#vectorofvectoroffloatshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfFloat.sizeof](#vectorofvectoroffloatsizeof)
   - [VectorOfVectorOfFloat.sol::meta\_function::index](#vectorofvectoroffloatsolmeta%5C_functionindex)
   - [VectorOfVectorOfFloat.sol::meta\_function::length](#vectorofvectoroffloatsolmeta%5C_functionlength)
   - [VectorOfVectorOfFloat.sol::meta\_function::new\_index](#vectorofvectoroffloatsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfFloat.swap](#vectorofvectoroffloatswap)
   - [VectorOfVectorOfFloat.table](#vectorofvectoroffloattable)
 - [VectorOfVectorOfInt](#vectorofvectorofint)
   - [VectorOfVectorOfInt.new](#vectorofvectorofintnew)
+  - [VectorOfVectorOfInt.back](#vectorofvectorofintback)
+  - [VectorOfVectorOfInt.capacity](#vectorofvectorofintcapacity)
+  - [VectorOfVectorOfInt.clear](#vectorofvectorofintclear)
   - [VectorOfVectorOfInt.data](#vectorofvectorofintdata)
+  - [VectorOfVectorOfInt.empty](#vectorofvectorofintempty)
+  - [VectorOfVectorOfInt.front](#vectorofvectorofintfront)
+  - [VectorOfVectorOfInt.max\_size](#vectorofvectorofintmax%5C_size)
+  - [VectorOfVectorOfInt.pop\_back](#vectorofvectorofintpop%5C_back)
+  - [VectorOfVectorOfInt.reserve](#vectorofvectorofintreserve)
+  - [VectorOfVectorOfInt.resize](#vectorofvectorofintresize)
+  - [VectorOfVectorOfInt.shrink\_to\_fit](#vectorofvectorofintshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfInt.sizeof](#vectorofvectorofintsizeof)
   - [VectorOfVectorOfInt.sol::meta\_function::index](#vectorofvectorofintsolmeta%5C_functionindex)
   - [VectorOfVectorOfInt.sol::meta\_function::length](#vectorofvectorofintsolmeta%5C_functionlength)
   - [VectorOfVectorOfInt.sol::meta\_function::new\_index](#vectorofvectorofintsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfInt.swap](#vectorofvectorofintswap)
   - [VectorOfVectorOfInt.table](#vectorofvectorofinttable)
 - [VectorOfVectorOfKeyPoint](#vectorofvectorofkeypoint)
   - [VectorOfVectorOfKeyPoint.new](#vectorofvectorofkeypointnew)
+  - [VectorOfVectorOfKeyPoint.back](#vectorofvectorofkeypointback)
+  - [VectorOfVectorOfKeyPoint.capacity](#vectorofvectorofkeypointcapacity)
+  - [VectorOfVectorOfKeyPoint.clear](#vectorofvectorofkeypointclear)
   - [VectorOfVectorOfKeyPoint.data](#vectorofvectorofkeypointdata)
+  - [VectorOfVectorOfKeyPoint.empty](#vectorofvectorofkeypointempty)
+  - [VectorOfVectorOfKeyPoint.front](#vectorofvectorofkeypointfront)
+  - [VectorOfVectorOfKeyPoint.max\_size](#vectorofvectorofkeypointmax%5C_size)
+  - [VectorOfVectorOfKeyPoint.pop\_back](#vectorofvectorofkeypointpop%5C_back)
+  - [VectorOfVectorOfKeyPoint.reserve](#vectorofvectorofkeypointreserve)
+  - [VectorOfVectorOfKeyPoint.resize](#vectorofvectorofkeypointresize)
+  - [VectorOfVectorOfKeyPoint.shrink\_to\_fit](#vectorofvectorofkeypointshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfKeyPoint.sizeof](#vectorofvectorofkeypointsizeof)
   - [VectorOfVectorOfKeyPoint.sol::meta\_function::index](#vectorofvectorofkeypointsolmeta%5C_functionindex)
   - [VectorOfVectorOfKeyPoint.sol::meta\_function::length](#vectorofvectorofkeypointsolmeta%5C_functionlength)
   - [VectorOfVectorOfKeyPoint.sol::meta\_function::new\_index](#vectorofvectorofkeypointsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfKeyPoint.swap](#vectorofvectorofkeypointswap)
   - [VectorOfVectorOfKeyPoint.table](#vectorofvectorofkeypointtable)
 - [VectorOfVectorOfMat](#vectorofvectorofmat)
   - [VectorOfVectorOfMat.new](#vectorofvectorofmatnew)
+  - [VectorOfVectorOfMat.back](#vectorofvectorofmatback)
+  - [VectorOfVectorOfMat.capacity](#vectorofvectorofmatcapacity)
+  - [VectorOfVectorOfMat.clear](#vectorofvectorofmatclear)
   - [VectorOfVectorOfMat.data](#vectorofvectorofmatdata)
+  - [VectorOfVectorOfMat.empty](#vectorofvectorofmatempty)
+  - [VectorOfVectorOfMat.front](#vectorofvectorofmatfront)
+  - [VectorOfVectorOfMat.max\_size](#vectorofvectorofmatmax%5C_size)
+  - [VectorOfVectorOfMat.pop\_back](#vectorofvectorofmatpop%5C_back)
+  - [VectorOfVectorOfMat.reserve](#vectorofvectorofmatreserve)
+  - [VectorOfVectorOfMat.resize](#vectorofvectorofmatresize)
+  - [VectorOfVectorOfMat.shrink\_to\_fit](#vectorofvectorofmatshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfMat.sizeof](#vectorofvectorofmatsizeof)
   - [VectorOfVectorOfMat.sol::meta\_function::index](#vectorofvectorofmatsolmeta%5C_functionindex)
   - [VectorOfVectorOfMat.sol::meta\_function::length](#vectorofvectorofmatsolmeta%5C_functionlength)
   - [VectorOfVectorOfMat.sol::meta\_function::new\_index](#vectorofvectorofmatsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfMat.swap](#vectorofvectorofmatswap)
   - [VectorOfVectorOfMat.table](#vectorofvectorofmattable)
 - [VectorOfVectorOfMoments](#vectorofvectorofmoments)
   - [VectorOfVectorOfMoments.new](#vectorofvectorofmomentsnew)
+  - [VectorOfVectorOfMoments.back](#vectorofvectorofmomentsback)
+  - [VectorOfVectorOfMoments.capacity](#vectorofvectorofmomentscapacity)
+  - [VectorOfVectorOfMoments.clear](#vectorofvectorofmomentsclear)
   - [VectorOfVectorOfMoments.data](#vectorofvectorofmomentsdata)
+  - [VectorOfVectorOfMoments.empty](#vectorofvectorofmomentsempty)
+  - [VectorOfVectorOfMoments.front](#vectorofvectorofmomentsfront)
+  - [VectorOfVectorOfMoments.max\_size](#vectorofvectorofmomentsmax%5C_size)
+  - [VectorOfVectorOfMoments.pop\_back](#vectorofvectorofmomentspop%5C_back)
+  - [VectorOfVectorOfMoments.reserve](#vectorofvectorofmomentsreserve)
+  - [VectorOfVectorOfMoments.resize](#vectorofvectorofmomentsresize)
+  - [VectorOfVectorOfMoments.shrink\_to\_fit](#vectorofvectorofmomentsshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfMoments.sizeof](#vectorofvectorofmomentssizeof)
   - [VectorOfVectorOfMoments.sol::meta\_function::index](#vectorofvectorofmomentssolmeta%5C_functionindex)
   - [VectorOfVectorOfMoments.sol::meta\_function::length](#vectorofvectorofmomentssolmeta%5C_functionlength)
   - [VectorOfVectorOfMoments.sol::meta\_function::new\_index](#vectorofvectorofmomentssolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfMoments.swap](#vectorofvectorofmomentsswap)
   - [VectorOfVectorOfMoments.table](#vectorofvectorofmomentstable)
 - [VectorOfVectorOfPoint](#vectorofvectorofpoint)
   - [VectorOfVectorOfPoint.new](#vectorofvectorofpointnew)
+  - [VectorOfVectorOfPoint.back](#vectorofvectorofpointback)
+  - [VectorOfVectorOfPoint.capacity](#vectorofvectorofpointcapacity)
+  - [VectorOfVectorOfPoint.clear](#vectorofvectorofpointclear)
   - [VectorOfVectorOfPoint.data](#vectorofvectorofpointdata)
+  - [VectorOfVectorOfPoint.empty](#vectorofvectorofpointempty)
+  - [VectorOfVectorOfPoint.front](#vectorofvectorofpointfront)
+  - [VectorOfVectorOfPoint.max\_size](#vectorofvectorofpointmax%5C_size)
+  - [VectorOfVectorOfPoint.pop\_back](#vectorofvectorofpointpop%5C_back)
+  - [VectorOfVectorOfPoint.reserve](#vectorofvectorofpointreserve)
+  - [VectorOfVectorOfPoint.resize](#vectorofvectorofpointresize)
+  - [VectorOfVectorOfPoint.shrink\_to\_fit](#vectorofvectorofpointshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfPoint.sizeof](#vectorofvectorofpointsizeof)
   - [VectorOfVectorOfPoint.sol::meta\_function::index](#vectorofvectorofpointsolmeta%5C_functionindex)
   - [VectorOfVectorOfPoint.sol::meta\_function::length](#vectorofvectorofpointsolmeta%5C_functionlength)
   - [VectorOfVectorOfPoint.sol::meta\_function::new\_index](#vectorofvectorofpointsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfPoint.swap](#vectorofvectorofpointswap)
   - [VectorOfVectorOfPoint.table](#vectorofvectorofpointtable)
 - [VectorOfVectorOfPoint2d](#vectorofvectorofpoint2d)
   - [VectorOfVectorOfPoint2d.new](#vectorofvectorofpoint2dnew)
+  - [VectorOfVectorOfPoint2d.back](#vectorofvectorofpoint2dback)
+  - [VectorOfVectorOfPoint2d.capacity](#vectorofvectorofpoint2dcapacity)
+  - [VectorOfVectorOfPoint2d.clear](#vectorofvectorofpoint2dclear)
   - [VectorOfVectorOfPoint2d.data](#vectorofvectorofpoint2ddata)
+  - [VectorOfVectorOfPoint2d.empty](#vectorofvectorofpoint2dempty)
+  - [VectorOfVectorOfPoint2d.front](#vectorofvectorofpoint2dfront)
+  - [VectorOfVectorOfPoint2d.max\_size](#vectorofvectorofpoint2dmax%5C_size)
+  - [VectorOfVectorOfPoint2d.pop\_back](#vectorofvectorofpoint2dpop%5C_back)
+  - [VectorOfVectorOfPoint2d.reserve](#vectorofvectorofpoint2dreserve)
+  - [VectorOfVectorOfPoint2d.resize](#vectorofvectorofpoint2dresize)
+  - [VectorOfVectorOfPoint2d.shrink\_to\_fit](#vectorofvectorofpoint2dshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfPoint2d.sizeof](#vectorofvectorofpoint2dsizeof)
   - [VectorOfVectorOfPoint2d.sol::meta\_function::index](#vectorofvectorofpoint2dsolmeta%5C_functionindex)
   - [VectorOfVectorOfPoint2d.sol::meta\_function::length](#vectorofvectorofpoint2dsolmeta%5C_functionlength)
   - [VectorOfVectorOfPoint2d.sol::meta\_function::new\_index](#vectorofvectorofpoint2dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfPoint2d.swap](#vectorofvectorofpoint2dswap)
   - [VectorOfVectorOfPoint2d.table](#vectorofvectorofpoint2dtable)
 - [VectorOfVectorOfPoint2f](#vectorofvectorofpoint2f)
   - [VectorOfVectorOfPoint2f.new](#vectorofvectorofpoint2fnew)
+  - [VectorOfVectorOfPoint2f.back](#vectorofvectorofpoint2fback)
+  - [VectorOfVectorOfPoint2f.capacity](#vectorofvectorofpoint2fcapacity)
+  - [VectorOfVectorOfPoint2f.clear](#vectorofvectorofpoint2fclear)
   - [VectorOfVectorOfPoint2f.data](#vectorofvectorofpoint2fdata)
+  - [VectorOfVectorOfPoint2f.empty](#vectorofvectorofpoint2fempty)
+  - [VectorOfVectorOfPoint2f.front](#vectorofvectorofpoint2ffront)
+  - [VectorOfVectorOfPoint2f.max\_size](#vectorofvectorofpoint2fmax%5C_size)
+  - [VectorOfVectorOfPoint2f.pop\_back](#vectorofvectorofpoint2fpop%5C_back)
+  - [VectorOfVectorOfPoint2f.reserve](#vectorofvectorofpoint2freserve)
+  - [VectorOfVectorOfPoint2f.resize](#vectorofvectorofpoint2fresize)
+  - [VectorOfVectorOfPoint2f.shrink\_to\_fit](#vectorofvectorofpoint2fshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfPoint2f.sizeof](#vectorofvectorofpoint2fsizeof)
   - [VectorOfVectorOfPoint2f.sol::meta\_function::index](#vectorofvectorofpoint2fsolmeta%5C_functionindex)
   - [VectorOfVectorOfPoint2f.sol::meta\_function::length](#vectorofvectorofpoint2fsolmeta%5C_functionlength)
   - [VectorOfVectorOfPoint2f.sol::meta\_function::new\_index](#vectorofvectorofpoint2fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfPoint2f.swap](#vectorofvectorofpoint2fswap)
   - [VectorOfVectorOfPoint2f.table](#vectorofvectorofpoint2ftable)
 - [VectorOfVectorOfPoint3d](#vectorofvectorofpoint3d)
   - [VectorOfVectorOfPoint3d.new](#vectorofvectorofpoint3dnew)
+  - [VectorOfVectorOfPoint3d.back](#vectorofvectorofpoint3dback)
+  - [VectorOfVectorOfPoint3d.capacity](#vectorofvectorofpoint3dcapacity)
+  - [VectorOfVectorOfPoint3d.clear](#vectorofvectorofpoint3dclear)
   - [VectorOfVectorOfPoint3d.data](#vectorofvectorofpoint3ddata)
+  - [VectorOfVectorOfPoint3d.empty](#vectorofvectorofpoint3dempty)
+  - [VectorOfVectorOfPoint3d.front](#vectorofvectorofpoint3dfront)
+  - [VectorOfVectorOfPoint3d.max\_size](#vectorofvectorofpoint3dmax%5C_size)
+  - [VectorOfVectorOfPoint3d.pop\_back](#vectorofvectorofpoint3dpop%5C_back)
+  - [VectorOfVectorOfPoint3d.reserve](#vectorofvectorofpoint3dreserve)
+  - [VectorOfVectorOfPoint3d.resize](#vectorofvectorofpoint3dresize)
+  - [VectorOfVectorOfPoint3d.shrink\_to\_fit](#vectorofvectorofpoint3dshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfPoint3d.sizeof](#vectorofvectorofpoint3dsizeof)
   - [VectorOfVectorOfPoint3d.sol::meta\_function::index](#vectorofvectorofpoint3dsolmeta%5C_functionindex)
   - [VectorOfVectorOfPoint3d.sol::meta\_function::length](#vectorofvectorofpoint3dsolmeta%5C_functionlength)
   - [VectorOfVectorOfPoint3d.sol::meta\_function::new\_index](#vectorofvectorofpoint3dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfPoint3d.swap](#vectorofvectorofpoint3dswap)
   - [VectorOfVectorOfPoint3d.table](#vectorofvectorofpoint3dtable)
 - [VectorOfVectorOfPoint3f](#vectorofvectorofpoint3f)
   - [VectorOfVectorOfPoint3f.new](#vectorofvectorofpoint3fnew)
+  - [VectorOfVectorOfPoint3f.back](#vectorofvectorofpoint3fback)
+  - [VectorOfVectorOfPoint3f.capacity](#vectorofvectorofpoint3fcapacity)
+  - [VectorOfVectorOfPoint3f.clear](#vectorofvectorofpoint3fclear)
   - [VectorOfVectorOfPoint3f.data](#vectorofvectorofpoint3fdata)
+  - [VectorOfVectorOfPoint3f.empty](#vectorofvectorofpoint3fempty)
+  - [VectorOfVectorOfPoint3f.front](#vectorofvectorofpoint3ffront)
+  - [VectorOfVectorOfPoint3f.max\_size](#vectorofvectorofpoint3fmax%5C_size)
+  - [VectorOfVectorOfPoint3f.pop\_back](#vectorofvectorofpoint3fpop%5C_back)
+  - [VectorOfVectorOfPoint3f.reserve](#vectorofvectorofpoint3freserve)
+  - [VectorOfVectorOfPoint3f.resize](#vectorofvectorofpoint3fresize)
+  - [VectorOfVectorOfPoint3f.shrink\_to\_fit](#vectorofvectorofpoint3fshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfPoint3f.sizeof](#vectorofvectorofpoint3fsizeof)
   - [VectorOfVectorOfPoint3f.sol::meta\_function::index](#vectorofvectorofpoint3fsolmeta%5C_functionindex)
   - [VectorOfVectorOfPoint3f.sol::meta\_function::length](#vectorofvectorofpoint3fsolmeta%5C_functionlength)
   - [VectorOfVectorOfPoint3f.sol::meta\_function::new\_index](#vectorofvectorofpoint3fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfPoint3f.swap](#vectorofvectorofpoint3fswap)
   - [VectorOfVectorOfPoint3f.table](#vectorofvectorofpoint3ftable)
 - [VectorOfVectorOfPoint3i](#vectorofvectorofpoint3i)
   - [VectorOfVectorOfPoint3i.new](#vectorofvectorofpoint3inew)
+  - [VectorOfVectorOfPoint3i.back](#vectorofvectorofpoint3iback)
+  - [VectorOfVectorOfPoint3i.capacity](#vectorofvectorofpoint3icapacity)
+  - [VectorOfVectorOfPoint3i.clear](#vectorofvectorofpoint3iclear)
   - [VectorOfVectorOfPoint3i.data](#vectorofvectorofpoint3idata)
+  - [VectorOfVectorOfPoint3i.empty](#vectorofvectorofpoint3iempty)
+  - [VectorOfVectorOfPoint3i.front](#vectorofvectorofpoint3ifront)
+  - [VectorOfVectorOfPoint3i.max\_size](#vectorofvectorofpoint3imax%5C_size)
+  - [VectorOfVectorOfPoint3i.pop\_back](#vectorofvectorofpoint3ipop%5C_back)
+  - [VectorOfVectorOfPoint3i.reserve](#vectorofvectorofpoint3ireserve)
+  - [VectorOfVectorOfPoint3i.resize](#vectorofvectorofpoint3iresize)
+  - [VectorOfVectorOfPoint3i.shrink\_to\_fit](#vectorofvectorofpoint3ishrink%5C_to%5C_fit)
+  - [VectorOfVectorOfPoint3i.sizeof](#vectorofvectorofpoint3isizeof)
   - [VectorOfVectorOfPoint3i.sol::meta\_function::index](#vectorofvectorofpoint3isolmeta%5C_functionindex)
   - [VectorOfVectorOfPoint3i.sol::meta\_function::length](#vectorofvectorofpoint3isolmeta%5C_functionlength)
   - [VectorOfVectorOfPoint3i.sol::meta\_function::new\_index](#vectorofvectorofpoint3isolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfPoint3i.swap](#vectorofvectorofpoint3iswap)
   - [VectorOfVectorOfPoint3i.table](#vectorofvectorofpoint3itable)
 - [VectorOfVectorOfRange](#vectorofvectorofrange)
   - [VectorOfVectorOfRange.new](#vectorofvectorofrangenew)
+  - [VectorOfVectorOfRange.back](#vectorofvectorofrangeback)
+  - [VectorOfVectorOfRange.capacity](#vectorofvectorofrangecapacity)
+  - [VectorOfVectorOfRange.clear](#vectorofvectorofrangeclear)
   - [VectorOfVectorOfRange.data](#vectorofvectorofrangedata)
+  - [VectorOfVectorOfRange.empty](#vectorofvectorofrangeempty)
+  - [VectorOfVectorOfRange.front](#vectorofvectorofrangefront)
+  - [VectorOfVectorOfRange.max\_size](#vectorofvectorofrangemax%5C_size)
+  - [VectorOfVectorOfRange.pop\_back](#vectorofvectorofrangepop%5C_back)
+  - [VectorOfVectorOfRange.reserve](#vectorofvectorofrangereserve)
+  - [VectorOfVectorOfRange.resize](#vectorofvectorofrangeresize)
+  - [VectorOfVectorOfRange.shrink\_to\_fit](#vectorofvectorofrangeshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfRange.sizeof](#vectorofvectorofrangesizeof)
   - [VectorOfVectorOfRange.sol::meta\_function::index](#vectorofvectorofrangesolmeta%5C_functionindex)
   - [VectorOfVectorOfRange.sol::meta\_function::length](#vectorofvectorofrangesolmeta%5C_functionlength)
   - [VectorOfVectorOfRange.sol::meta\_function::new\_index](#vectorofvectorofrangesolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfRange.swap](#vectorofvectorofrangeswap)
   - [VectorOfVectorOfRange.table](#vectorofvectorofrangetable)
 - [VectorOfVectorOfRect](#vectorofvectorofrect)
   - [VectorOfVectorOfRect.new](#vectorofvectorofrectnew)
+  - [VectorOfVectorOfRect.back](#vectorofvectorofrectback)
+  - [VectorOfVectorOfRect.capacity](#vectorofvectorofrectcapacity)
+  - [VectorOfVectorOfRect.clear](#vectorofvectorofrectclear)
   - [VectorOfVectorOfRect.data](#vectorofvectorofrectdata)
+  - [VectorOfVectorOfRect.empty](#vectorofvectorofrectempty)
+  - [VectorOfVectorOfRect.front](#vectorofvectorofrectfront)
+  - [VectorOfVectorOfRect.max\_size](#vectorofvectorofrectmax%5C_size)
+  - [VectorOfVectorOfRect.pop\_back](#vectorofvectorofrectpop%5C_back)
+  - [VectorOfVectorOfRect.reserve](#vectorofvectorofrectreserve)
+  - [VectorOfVectorOfRect.resize](#vectorofvectorofrectresize)
+  - [VectorOfVectorOfRect.shrink\_to\_fit](#vectorofvectorofrectshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfRect.sizeof](#vectorofvectorofrectsizeof)
   - [VectorOfVectorOfRect.sol::meta\_function::index](#vectorofvectorofrectsolmeta%5C_functionindex)
   - [VectorOfVectorOfRect.sol::meta\_function::length](#vectorofvectorofrectsolmeta%5C_functionlength)
   - [VectorOfVectorOfRect.sol::meta\_function::new\_index](#vectorofvectorofrectsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfRect.swap](#vectorofvectorofrectswap)
   - [VectorOfVectorOfRect.table](#vectorofvectorofrecttable)
 - [VectorOfVectorOfRect2d](#vectorofvectorofrect2d)
   - [VectorOfVectorOfRect2d.new](#vectorofvectorofrect2dnew)
+  - [VectorOfVectorOfRect2d.back](#vectorofvectorofrect2dback)
+  - [VectorOfVectorOfRect2d.capacity](#vectorofvectorofrect2dcapacity)
+  - [VectorOfVectorOfRect2d.clear](#vectorofvectorofrect2dclear)
   - [VectorOfVectorOfRect2d.data](#vectorofvectorofrect2ddata)
+  - [VectorOfVectorOfRect2d.empty](#vectorofvectorofrect2dempty)
+  - [VectorOfVectorOfRect2d.front](#vectorofvectorofrect2dfront)
+  - [VectorOfVectorOfRect2d.max\_size](#vectorofvectorofrect2dmax%5C_size)
+  - [VectorOfVectorOfRect2d.pop\_back](#vectorofvectorofrect2dpop%5C_back)
+  - [VectorOfVectorOfRect2d.reserve](#vectorofvectorofrect2dreserve)
+  - [VectorOfVectorOfRect2d.resize](#vectorofvectorofrect2dresize)
+  - [VectorOfVectorOfRect2d.shrink\_to\_fit](#vectorofvectorofrect2dshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfRect2d.sizeof](#vectorofvectorofrect2dsizeof)
   - [VectorOfVectorOfRect2d.sol::meta\_function::index](#vectorofvectorofrect2dsolmeta%5C_functionindex)
   - [VectorOfVectorOfRect2d.sol::meta\_function::length](#vectorofvectorofrect2dsolmeta%5C_functionlength)
   - [VectorOfVectorOfRect2d.sol::meta\_function::new\_index](#vectorofvectorofrect2dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfRect2d.swap](#vectorofvectorofrect2dswap)
   - [VectorOfVectorOfRect2d.table](#vectorofvectorofrect2dtable)
 - [VectorOfVectorOfRect2f](#vectorofvectorofrect2f)
   - [VectorOfVectorOfRect2f.new](#vectorofvectorofrect2fnew)
+  - [VectorOfVectorOfRect2f.back](#vectorofvectorofrect2fback)
+  - [VectorOfVectorOfRect2f.capacity](#vectorofvectorofrect2fcapacity)
+  - [VectorOfVectorOfRect2f.clear](#vectorofvectorofrect2fclear)
   - [VectorOfVectorOfRect2f.data](#vectorofvectorofrect2fdata)
+  - [VectorOfVectorOfRect2f.empty](#vectorofvectorofrect2fempty)
+  - [VectorOfVectorOfRect2f.front](#vectorofvectorofrect2ffront)
+  - [VectorOfVectorOfRect2f.max\_size](#vectorofvectorofrect2fmax%5C_size)
+  - [VectorOfVectorOfRect2f.pop\_back](#vectorofvectorofrect2fpop%5C_back)
+  - [VectorOfVectorOfRect2f.reserve](#vectorofvectorofrect2freserve)
+  - [VectorOfVectorOfRect2f.resize](#vectorofvectorofrect2fresize)
+  - [VectorOfVectorOfRect2f.shrink\_to\_fit](#vectorofvectorofrect2fshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfRect2f.sizeof](#vectorofvectorofrect2fsizeof)
   - [VectorOfVectorOfRect2f.sol::meta\_function::index](#vectorofvectorofrect2fsolmeta%5C_functionindex)
   - [VectorOfVectorOfRect2f.sol::meta\_function::length](#vectorofvectorofrect2fsolmeta%5C_functionlength)
   - [VectorOfVectorOfRect2f.sol::meta\_function::new\_index](#vectorofvectorofrect2fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfRect2f.swap](#vectorofvectorofrect2fswap)
   - [VectorOfVectorOfRect2f.table](#vectorofvectorofrect2ftable)
 - [VectorOfVectorOfRotatedRect](#vectorofvectorofrotatedrect)
   - [VectorOfVectorOfRotatedRect.new](#vectorofvectorofrotatedrectnew)
+  - [VectorOfVectorOfRotatedRect.back](#vectorofvectorofrotatedrectback)
+  - [VectorOfVectorOfRotatedRect.capacity](#vectorofvectorofrotatedrectcapacity)
+  - [VectorOfVectorOfRotatedRect.clear](#vectorofvectorofrotatedrectclear)
   - [VectorOfVectorOfRotatedRect.data](#vectorofvectorofrotatedrectdata)
+  - [VectorOfVectorOfRotatedRect.empty](#vectorofvectorofrotatedrectempty)
+  - [VectorOfVectorOfRotatedRect.front](#vectorofvectorofrotatedrectfront)
+  - [VectorOfVectorOfRotatedRect.max\_size](#vectorofvectorofrotatedrectmax%5C_size)
+  - [VectorOfVectorOfRotatedRect.pop\_back](#vectorofvectorofrotatedrectpop%5C_back)
+  - [VectorOfVectorOfRotatedRect.reserve](#vectorofvectorofrotatedrectreserve)
+  - [VectorOfVectorOfRotatedRect.resize](#vectorofvectorofrotatedrectresize)
+  - [VectorOfVectorOfRotatedRect.shrink\_to\_fit](#vectorofvectorofrotatedrectshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfRotatedRect.sizeof](#vectorofvectorofrotatedrectsizeof)
   - [VectorOfVectorOfRotatedRect.sol::meta\_function::index](#vectorofvectorofrotatedrectsolmeta%5C_functionindex)
   - [VectorOfVectorOfRotatedRect.sol::meta\_function::length](#vectorofvectorofrotatedrectsolmeta%5C_functionlength)
   - [VectorOfVectorOfRotatedRect.sol::meta\_function::new\_index](#vectorofvectorofrotatedrectsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfRotatedRect.swap](#vectorofvectorofrotatedrectswap)
   - [VectorOfVectorOfRotatedRect.table](#vectorofvectorofrotatedrecttable)
 - [VectorOfVectorOfSchar](#vectorofvectorofschar)
   - [VectorOfVectorOfSchar.new](#vectorofvectorofscharnew)
+  - [VectorOfVectorOfSchar.back](#vectorofvectorofscharback)
+  - [VectorOfVectorOfSchar.capacity](#vectorofvectorofscharcapacity)
+  - [VectorOfVectorOfSchar.clear](#vectorofvectorofscharclear)
   - [VectorOfVectorOfSchar.data](#vectorofvectorofschardata)
+  - [VectorOfVectorOfSchar.empty](#vectorofvectorofscharempty)
+  - [VectorOfVectorOfSchar.front](#vectorofvectorofscharfront)
+  - [VectorOfVectorOfSchar.max\_size](#vectorofvectorofscharmax%5C_size)
+  - [VectorOfVectorOfSchar.pop\_back](#vectorofvectorofscharpop%5C_back)
+  - [VectorOfVectorOfSchar.reserve](#vectorofvectorofscharreserve)
+  - [VectorOfVectorOfSchar.resize](#vectorofvectorofscharresize)
+  - [VectorOfVectorOfSchar.shrink\_to\_fit](#vectorofvectorofscharshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfSchar.sizeof](#vectorofvectorofscharsizeof)
   - [VectorOfVectorOfSchar.sol::meta\_function::index](#vectorofvectorofscharsolmeta%5C_functionindex)
   - [VectorOfVectorOfSchar.sol::meta\_function::length](#vectorofvectorofscharsolmeta%5C_functionlength)
   - [VectorOfVectorOfSchar.sol::meta\_function::new\_index](#vectorofvectorofscharsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfSchar.swap](#vectorofvectorofscharswap)
   - [VectorOfVectorOfSchar.table](#vectorofvectorofschartable)
 - [VectorOfVectorOfShort](#vectorofvectorofshort)
   - [VectorOfVectorOfShort.new](#vectorofvectorofshortnew)
+  - [VectorOfVectorOfShort.back](#vectorofvectorofshortback)
+  - [VectorOfVectorOfShort.capacity](#vectorofvectorofshortcapacity)
+  - [VectorOfVectorOfShort.clear](#vectorofvectorofshortclear)
   - [VectorOfVectorOfShort.data](#vectorofvectorofshortdata)
+  - [VectorOfVectorOfShort.empty](#vectorofvectorofshortempty)
+  - [VectorOfVectorOfShort.front](#vectorofvectorofshortfront)
+  - [VectorOfVectorOfShort.max\_size](#vectorofvectorofshortmax%5C_size)
+  - [VectorOfVectorOfShort.pop\_back](#vectorofvectorofshortpop%5C_back)
+  - [VectorOfVectorOfShort.reserve](#vectorofvectorofshortreserve)
+  - [VectorOfVectorOfShort.resize](#vectorofvectorofshortresize)
+  - [VectorOfVectorOfShort.shrink\_to\_fit](#vectorofvectorofshortshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfShort.sizeof](#vectorofvectorofshortsizeof)
   - [VectorOfVectorOfShort.sol::meta\_function::index](#vectorofvectorofshortsolmeta%5C_functionindex)
   - [VectorOfVectorOfShort.sol::meta\_function::length](#vectorofvectorofshortsolmeta%5C_functionlength)
   - [VectorOfVectorOfShort.sol::meta\_function::new\_index](#vectorofvectorofshortsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfShort.swap](#vectorofvectorofshortswap)
   - [VectorOfVectorOfShort.table](#vectorofvectorofshorttable)
 - [VectorOfVectorOfSize](#vectorofvectorofsize)
   - [VectorOfVectorOfSize.new](#vectorofvectorofsizenew)
+  - [VectorOfVectorOfSize.back](#vectorofvectorofsizeback)
+  - [VectorOfVectorOfSize.capacity](#vectorofvectorofsizecapacity)
+  - [VectorOfVectorOfSize.clear](#vectorofvectorofsizeclear)
   - [VectorOfVectorOfSize.data](#vectorofvectorofsizedata)
+  - [VectorOfVectorOfSize.empty](#vectorofvectorofsizeempty)
+  - [VectorOfVectorOfSize.front](#vectorofvectorofsizefront)
+  - [VectorOfVectorOfSize.max\_size](#vectorofvectorofsizemax%5C_size)
+  - [VectorOfVectorOfSize.pop\_back](#vectorofvectorofsizepop%5C_back)
+  - [VectorOfVectorOfSize.reserve](#vectorofvectorofsizereserve)
+  - [VectorOfVectorOfSize.resize](#vectorofvectorofsizeresize)
+  - [VectorOfVectorOfSize.shrink\_to\_fit](#vectorofvectorofsizeshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfSize.sizeof](#vectorofvectorofsizesizeof)
   - [VectorOfVectorOfSize.sol::meta\_function::index](#vectorofvectorofsizesolmeta%5C_functionindex)
   - [VectorOfVectorOfSize.sol::meta\_function::length](#vectorofvectorofsizesolmeta%5C_functionlength)
   - [VectorOfVectorOfSize.sol::meta\_function::new\_index](#vectorofvectorofsizesolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfSize.swap](#vectorofvectorofsizeswap)
   - [VectorOfVectorOfSize.table](#vectorofvectorofsizetable)
 - [VectorOfVectorOfSize2d](#vectorofvectorofsize2d)
   - [VectorOfVectorOfSize2d.new](#vectorofvectorofsize2dnew)
+  - [VectorOfVectorOfSize2d.back](#vectorofvectorofsize2dback)
+  - [VectorOfVectorOfSize2d.capacity](#vectorofvectorofsize2dcapacity)
+  - [VectorOfVectorOfSize2d.clear](#vectorofvectorofsize2dclear)
   - [VectorOfVectorOfSize2d.data](#vectorofvectorofsize2ddata)
+  - [VectorOfVectorOfSize2d.empty](#vectorofvectorofsize2dempty)
+  - [VectorOfVectorOfSize2d.front](#vectorofvectorofsize2dfront)
+  - [VectorOfVectorOfSize2d.max\_size](#vectorofvectorofsize2dmax%5C_size)
+  - [VectorOfVectorOfSize2d.pop\_back](#vectorofvectorofsize2dpop%5C_back)
+  - [VectorOfVectorOfSize2d.reserve](#vectorofvectorofsize2dreserve)
+  - [VectorOfVectorOfSize2d.resize](#vectorofvectorofsize2dresize)
+  - [VectorOfVectorOfSize2d.shrink\_to\_fit](#vectorofvectorofsize2dshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfSize2d.sizeof](#vectorofvectorofsize2dsizeof)
   - [VectorOfVectorOfSize2d.sol::meta\_function::index](#vectorofvectorofsize2dsolmeta%5C_functionindex)
   - [VectorOfVectorOfSize2d.sol::meta\_function::length](#vectorofvectorofsize2dsolmeta%5C_functionlength)
   - [VectorOfVectorOfSize2d.sol::meta\_function::new\_index](#vectorofvectorofsize2dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfSize2d.swap](#vectorofvectorofsize2dswap)
   - [VectorOfVectorOfSize2d.table](#vectorofvectorofsize2dtable)
 - [VectorOfVectorOfSize2f](#vectorofvectorofsize2f)
   - [VectorOfVectorOfSize2f.new](#vectorofvectorofsize2fnew)
+  - [VectorOfVectorOfSize2f.back](#vectorofvectorofsize2fback)
+  - [VectorOfVectorOfSize2f.capacity](#vectorofvectorofsize2fcapacity)
+  - [VectorOfVectorOfSize2f.clear](#vectorofvectorofsize2fclear)
   - [VectorOfVectorOfSize2f.data](#vectorofvectorofsize2fdata)
+  - [VectorOfVectorOfSize2f.empty](#vectorofvectorofsize2fempty)
+  - [VectorOfVectorOfSize2f.front](#vectorofvectorofsize2ffront)
+  - [VectorOfVectorOfSize2f.max\_size](#vectorofvectorofsize2fmax%5C_size)
+  - [VectorOfVectorOfSize2f.pop\_back](#vectorofvectorofsize2fpop%5C_back)
+  - [VectorOfVectorOfSize2f.reserve](#vectorofvectorofsize2freserve)
+  - [VectorOfVectorOfSize2f.resize](#vectorofvectorofsize2fresize)
+  - [VectorOfVectorOfSize2f.shrink\_to\_fit](#vectorofvectorofsize2fshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfSize2f.sizeof](#vectorofvectorofsize2fsizeof)
   - [VectorOfVectorOfSize2f.sol::meta\_function::index](#vectorofvectorofsize2fsolmeta%5C_functionindex)
   - [VectorOfVectorOfSize2f.sol::meta\_function::length](#vectorofvectorofsize2fsolmeta%5C_functionlength)
   - [VectorOfVectorOfSize2f.sol::meta\_function::new\_index](#vectorofvectorofsize2fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfSize2f.swap](#vectorofvectorofsize2fswap)
   - [VectorOfVectorOfSize2f.table](#vectorofvectorofsize2ftable)
 - [VectorOfVectorOfUchar](#vectorofvectorofuchar)
   - [VectorOfVectorOfUchar.new](#vectorofvectorofucharnew)
+  - [VectorOfVectorOfUchar.back](#vectorofvectorofucharback)
+  - [VectorOfVectorOfUchar.capacity](#vectorofvectorofucharcapacity)
+  - [VectorOfVectorOfUchar.clear](#vectorofvectorofucharclear)
   - [VectorOfVectorOfUchar.data](#vectorofvectorofuchardata)
+  - [VectorOfVectorOfUchar.empty](#vectorofvectorofucharempty)
+  - [VectorOfVectorOfUchar.front](#vectorofvectorofucharfront)
+  - [VectorOfVectorOfUchar.max\_size](#vectorofvectorofucharmax%5C_size)
+  - [VectorOfVectorOfUchar.pop\_back](#vectorofvectorofucharpop%5C_back)
+  - [VectorOfVectorOfUchar.reserve](#vectorofvectorofucharreserve)
+  - [VectorOfVectorOfUchar.resize](#vectorofvectorofucharresize)
+  - [VectorOfVectorOfUchar.shrink\_to\_fit](#vectorofvectorofucharshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfUchar.sizeof](#vectorofvectorofucharsizeof)
   - [VectorOfVectorOfUchar.sol::meta\_function::index](#vectorofvectorofucharsolmeta%5C_functionindex)
   - [VectorOfVectorOfUchar.sol::meta\_function::length](#vectorofvectorofucharsolmeta%5C_functionlength)
   - [VectorOfVectorOfUchar.sol::meta\_function::new\_index](#vectorofvectorofucharsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfUchar.swap](#vectorofvectorofucharswap)
   - [VectorOfVectorOfUchar.table](#vectorofvectorofuchartable)
 - [VectorOfVectorOfUshort](#vectorofvectorofushort)
   - [VectorOfVectorOfUshort.new](#vectorofvectorofushortnew)
+  - [VectorOfVectorOfUshort.back](#vectorofvectorofushortback)
+  - [VectorOfVectorOfUshort.capacity](#vectorofvectorofushortcapacity)
+  - [VectorOfVectorOfUshort.clear](#vectorofvectorofushortclear)
   - [VectorOfVectorOfUshort.data](#vectorofvectorofushortdata)
+  - [VectorOfVectorOfUshort.empty](#vectorofvectorofushortempty)
+  - [VectorOfVectorOfUshort.front](#vectorofvectorofushortfront)
+  - [VectorOfVectorOfUshort.max\_size](#vectorofvectorofushortmax%5C_size)
+  - [VectorOfVectorOfUshort.pop\_back](#vectorofvectorofushortpop%5C_back)
+  - [VectorOfVectorOfUshort.reserve](#vectorofvectorofushortreserve)
+  - [VectorOfVectorOfUshort.resize](#vectorofvectorofushortresize)
+  - [VectorOfVectorOfUshort.shrink\_to\_fit](#vectorofvectorofushortshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfUshort.sizeof](#vectorofvectorofushortsizeof)
   - [VectorOfVectorOfUshort.sol::meta\_function::index](#vectorofvectorofushortsolmeta%5C_functionindex)
   - [VectorOfVectorOfUshort.sol::meta\_function::length](#vectorofvectorofushortsolmeta%5C_functionlength)
   - [VectorOfVectorOfUshort.sol::meta\_function::new\_index](#vectorofvectorofushortsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfUshort.swap](#vectorofvectorofushortswap)
   - [VectorOfVectorOfUshort.table](#vectorofvectorofushorttable)
 - [VectorOfVectorOfVec2b](#vectorofvectorofvec2b)
   - [VectorOfVectorOfVec2b.new](#vectorofvectorofvec2bnew)
+  - [VectorOfVectorOfVec2b.back](#vectorofvectorofvec2bback)
+  - [VectorOfVectorOfVec2b.capacity](#vectorofvectorofvec2bcapacity)
+  - [VectorOfVectorOfVec2b.clear](#vectorofvectorofvec2bclear)
   - [VectorOfVectorOfVec2b.data](#vectorofvectorofvec2bdata)
+  - [VectorOfVectorOfVec2b.empty](#vectorofvectorofvec2bempty)
+  - [VectorOfVectorOfVec2b.front](#vectorofvectorofvec2bfront)
+  - [VectorOfVectorOfVec2b.max\_size](#vectorofvectorofvec2bmax%5C_size)
+  - [VectorOfVectorOfVec2b.pop\_back](#vectorofvectorofvec2bpop%5C_back)
+  - [VectorOfVectorOfVec2b.reserve](#vectorofvectorofvec2breserve)
+  - [VectorOfVectorOfVec2b.resize](#vectorofvectorofvec2bresize)
+  - [VectorOfVectorOfVec2b.shrink\_to\_fit](#vectorofvectorofvec2bshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfVec2b.sizeof](#vectorofvectorofvec2bsizeof)
   - [VectorOfVectorOfVec2b.sol::meta\_function::index](#vectorofvectorofvec2bsolmeta%5C_functionindex)
   - [VectorOfVectorOfVec2b.sol::meta\_function::length](#vectorofvectorofvec2bsolmeta%5C_functionlength)
   - [VectorOfVectorOfVec2b.sol::meta\_function::new\_index](#vectorofvectorofvec2bsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec2b.swap](#vectorofvectorofvec2bswap)
   - [VectorOfVectorOfVec2b.table](#vectorofvectorofvec2btable)
 - [VectorOfVectorOfVec2d](#vectorofvectorofvec2d)
   - [VectorOfVectorOfVec2d.new](#vectorofvectorofvec2dnew)
+  - [VectorOfVectorOfVec2d.back](#vectorofvectorofvec2dback)
+  - [VectorOfVectorOfVec2d.capacity](#vectorofvectorofvec2dcapacity)
+  - [VectorOfVectorOfVec2d.clear](#vectorofvectorofvec2dclear)
   - [VectorOfVectorOfVec2d.data](#vectorofvectorofvec2ddata)
+  - [VectorOfVectorOfVec2d.empty](#vectorofvectorofvec2dempty)
+  - [VectorOfVectorOfVec2d.front](#vectorofvectorofvec2dfront)
+  - [VectorOfVectorOfVec2d.max\_size](#vectorofvectorofvec2dmax%5C_size)
+  - [VectorOfVectorOfVec2d.pop\_back](#vectorofvectorofvec2dpop%5C_back)
+  - [VectorOfVectorOfVec2d.reserve](#vectorofvectorofvec2dreserve)
+  - [VectorOfVectorOfVec2d.resize](#vectorofvectorofvec2dresize)
+  - [VectorOfVectorOfVec2d.shrink\_to\_fit](#vectorofvectorofvec2dshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfVec2d.sizeof](#vectorofvectorofvec2dsizeof)
   - [VectorOfVectorOfVec2d.sol::meta\_function::index](#vectorofvectorofvec2dsolmeta%5C_functionindex)
   - [VectorOfVectorOfVec2d.sol::meta\_function::length](#vectorofvectorofvec2dsolmeta%5C_functionlength)
   - [VectorOfVectorOfVec2d.sol::meta\_function::new\_index](#vectorofvectorofvec2dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec2d.swap](#vectorofvectorofvec2dswap)
   - [VectorOfVectorOfVec2d.table](#vectorofvectorofvec2dtable)
 - [VectorOfVectorOfVec2f](#vectorofvectorofvec2f)
   - [VectorOfVectorOfVec2f.new](#vectorofvectorofvec2fnew)
+  - [VectorOfVectorOfVec2f.back](#vectorofvectorofvec2fback)
+  - [VectorOfVectorOfVec2f.capacity](#vectorofvectorofvec2fcapacity)
+  - [VectorOfVectorOfVec2f.clear](#vectorofvectorofvec2fclear)
   - [VectorOfVectorOfVec2f.data](#vectorofvectorofvec2fdata)
+  - [VectorOfVectorOfVec2f.empty](#vectorofvectorofvec2fempty)
+  - [VectorOfVectorOfVec2f.front](#vectorofvectorofvec2ffront)
+  - [VectorOfVectorOfVec2f.max\_size](#vectorofvectorofvec2fmax%5C_size)
+  - [VectorOfVectorOfVec2f.pop\_back](#vectorofvectorofvec2fpop%5C_back)
+  - [VectorOfVectorOfVec2f.reserve](#vectorofvectorofvec2freserve)
+  - [VectorOfVectorOfVec2f.resize](#vectorofvectorofvec2fresize)
+  - [VectorOfVectorOfVec2f.shrink\_to\_fit](#vectorofvectorofvec2fshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfVec2f.sizeof](#vectorofvectorofvec2fsizeof)
   - [VectorOfVectorOfVec2f.sol::meta\_function::index](#vectorofvectorofvec2fsolmeta%5C_functionindex)
   - [VectorOfVectorOfVec2f.sol::meta\_function::length](#vectorofvectorofvec2fsolmeta%5C_functionlength)
   - [VectorOfVectorOfVec2f.sol::meta\_function::new\_index](#vectorofvectorofvec2fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec2f.swap](#vectorofvectorofvec2fswap)
   - [VectorOfVectorOfVec2f.table](#vectorofvectorofvec2ftable)
 - [VectorOfVectorOfVec2i](#vectorofvectorofvec2i)
   - [VectorOfVectorOfVec2i.new](#vectorofvectorofvec2inew)
+  - [VectorOfVectorOfVec2i.back](#vectorofvectorofvec2iback)
+  - [VectorOfVectorOfVec2i.capacity](#vectorofvectorofvec2icapacity)
+  - [VectorOfVectorOfVec2i.clear](#vectorofvectorofvec2iclear)
   - [VectorOfVectorOfVec2i.data](#vectorofvectorofvec2idata)
+  - [VectorOfVectorOfVec2i.empty](#vectorofvectorofvec2iempty)
+  - [VectorOfVectorOfVec2i.front](#vectorofvectorofvec2ifront)
+  - [VectorOfVectorOfVec2i.max\_size](#vectorofvectorofvec2imax%5C_size)
+  - [VectorOfVectorOfVec2i.pop\_back](#vectorofvectorofvec2ipop%5C_back)
+  - [VectorOfVectorOfVec2i.reserve](#vectorofvectorofvec2ireserve)
+  - [VectorOfVectorOfVec2i.resize](#vectorofvectorofvec2iresize)
+  - [VectorOfVectorOfVec2i.shrink\_to\_fit](#vectorofvectorofvec2ishrink%5C_to%5C_fit)
+  - [VectorOfVectorOfVec2i.sizeof](#vectorofvectorofvec2isizeof)
   - [VectorOfVectorOfVec2i.sol::meta\_function::index](#vectorofvectorofvec2isolmeta%5C_functionindex)
   - [VectorOfVectorOfVec2i.sol::meta\_function::length](#vectorofvectorofvec2isolmeta%5C_functionlength)
   - [VectorOfVectorOfVec2i.sol::meta\_function::new\_index](#vectorofvectorofvec2isolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec2i.swap](#vectorofvectorofvec2iswap)
   - [VectorOfVectorOfVec2i.table](#vectorofvectorofvec2itable)
 - [VectorOfVectorOfVec2s](#vectorofvectorofvec2s)
   - [VectorOfVectorOfVec2s.new](#vectorofvectorofvec2snew)
+  - [VectorOfVectorOfVec2s.back](#vectorofvectorofvec2sback)
+  - [VectorOfVectorOfVec2s.capacity](#vectorofvectorofvec2scapacity)
+  - [VectorOfVectorOfVec2s.clear](#vectorofvectorofvec2sclear)
   - [VectorOfVectorOfVec2s.data](#vectorofvectorofvec2sdata)
+  - [VectorOfVectorOfVec2s.empty](#vectorofvectorofvec2sempty)
+  - [VectorOfVectorOfVec2s.front](#vectorofvectorofvec2sfront)
+  - [VectorOfVectorOfVec2s.max\_size](#vectorofvectorofvec2smax%5C_size)
+  - [VectorOfVectorOfVec2s.pop\_back](#vectorofvectorofvec2spop%5C_back)
+  - [VectorOfVectorOfVec2s.reserve](#vectorofvectorofvec2sreserve)
+  - [VectorOfVectorOfVec2s.resize](#vectorofvectorofvec2sresize)
+  - [VectorOfVectorOfVec2s.shrink\_to\_fit](#vectorofvectorofvec2sshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfVec2s.sizeof](#vectorofvectorofvec2ssizeof)
   - [VectorOfVectorOfVec2s.sol::meta\_function::index](#vectorofvectorofvec2ssolmeta%5C_functionindex)
   - [VectorOfVectorOfVec2s.sol::meta\_function::length](#vectorofvectorofvec2ssolmeta%5C_functionlength)
   - [VectorOfVectorOfVec2s.sol::meta\_function::new\_index](#vectorofvectorofvec2ssolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec2s.swap](#vectorofvectorofvec2sswap)
   - [VectorOfVectorOfVec2s.table](#vectorofvectorofvec2stable)
 - [VectorOfVectorOfVec2w](#vectorofvectorofvec2w)
   - [VectorOfVectorOfVec2w.new](#vectorofvectorofvec2wnew)
+  - [VectorOfVectorOfVec2w.back](#vectorofvectorofvec2wback)
+  - [VectorOfVectorOfVec2w.capacity](#vectorofvectorofvec2wcapacity)
+  - [VectorOfVectorOfVec2w.clear](#vectorofvectorofvec2wclear)
   - [VectorOfVectorOfVec2w.data](#vectorofvectorofvec2wdata)
+  - [VectorOfVectorOfVec2w.empty](#vectorofvectorofvec2wempty)
+  - [VectorOfVectorOfVec2w.front](#vectorofvectorofvec2wfront)
+  - [VectorOfVectorOfVec2w.max\_size](#vectorofvectorofvec2wmax%5C_size)
+  - [VectorOfVectorOfVec2w.pop\_back](#vectorofvectorofvec2wpop%5C_back)
+  - [VectorOfVectorOfVec2w.reserve](#vectorofvectorofvec2wreserve)
+  - [VectorOfVectorOfVec2w.resize](#vectorofvectorofvec2wresize)
+  - [VectorOfVectorOfVec2w.shrink\_to\_fit](#vectorofvectorofvec2wshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfVec2w.sizeof](#vectorofvectorofvec2wsizeof)
   - [VectorOfVectorOfVec2w.sol::meta\_function::index](#vectorofvectorofvec2wsolmeta%5C_functionindex)
   - [VectorOfVectorOfVec2w.sol::meta\_function::length](#vectorofvectorofvec2wsolmeta%5C_functionlength)
   - [VectorOfVectorOfVec2w.sol::meta\_function::new\_index](#vectorofvectorofvec2wsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec2w.swap](#vectorofvectorofvec2wswap)
   - [VectorOfVectorOfVec2w.table](#vectorofvectorofvec2wtable)
 - [VectorOfVectorOfVec3b](#vectorofvectorofvec3b)
   - [VectorOfVectorOfVec3b.new](#vectorofvectorofvec3bnew)
+  - [VectorOfVectorOfVec3b.back](#vectorofvectorofvec3bback)
+  - [VectorOfVectorOfVec3b.capacity](#vectorofvectorofvec3bcapacity)
+  - [VectorOfVectorOfVec3b.clear](#vectorofvectorofvec3bclear)
   - [VectorOfVectorOfVec3b.data](#vectorofvectorofvec3bdata)
+  - [VectorOfVectorOfVec3b.empty](#vectorofvectorofvec3bempty)
+  - [VectorOfVectorOfVec3b.front](#vectorofvectorofvec3bfront)
+  - [VectorOfVectorOfVec3b.max\_size](#vectorofvectorofvec3bmax%5C_size)
+  - [VectorOfVectorOfVec3b.pop\_back](#vectorofvectorofvec3bpop%5C_back)
+  - [VectorOfVectorOfVec3b.reserve](#vectorofvectorofvec3breserve)
+  - [VectorOfVectorOfVec3b.resize](#vectorofvectorofvec3bresize)
+  - [VectorOfVectorOfVec3b.shrink\_to\_fit](#vectorofvectorofvec3bshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfVec3b.sizeof](#vectorofvectorofvec3bsizeof)
   - [VectorOfVectorOfVec3b.sol::meta\_function::index](#vectorofvectorofvec3bsolmeta%5C_functionindex)
   - [VectorOfVectorOfVec3b.sol::meta\_function::length](#vectorofvectorofvec3bsolmeta%5C_functionlength)
   - [VectorOfVectorOfVec3b.sol::meta\_function::new\_index](#vectorofvectorofvec3bsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec3b.swap](#vectorofvectorofvec3bswap)
   - [VectorOfVectorOfVec3b.table](#vectorofvectorofvec3btable)
 - [VectorOfVectorOfVec3d](#vectorofvectorofvec3d)
   - [VectorOfVectorOfVec3d.new](#vectorofvectorofvec3dnew)
+  - [VectorOfVectorOfVec3d.back](#vectorofvectorofvec3dback)
+  - [VectorOfVectorOfVec3d.capacity](#vectorofvectorofvec3dcapacity)
+  - [VectorOfVectorOfVec3d.clear](#vectorofvectorofvec3dclear)
   - [VectorOfVectorOfVec3d.data](#vectorofvectorofvec3ddata)
+  - [VectorOfVectorOfVec3d.empty](#vectorofvectorofvec3dempty)
+  - [VectorOfVectorOfVec3d.front](#vectorofvectorofvec3dfront)
+  - [VectorOfVectorOfVec3d.max\_size](#vectorofvectorofvec3dmax%5C_size)
+  - [VectorOfVectorOfVec3d.pop\_back](#vectorofvectorofvec3dpop%5C_back)
+  - [VectorOfVectorOfVec3d.reserve](#vectorofvectorofvec3dreserve)
+  - [VectorOfVectorOfVec3d.resize](#vectorofvectorofvec3dresize)
+  - [VectorOfVectorOfVec3d.shrink\_to\_fit](#vectorofvectorofvec3dshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfVec3d.sizeof](#vectorofvectorofvec3dsizeof)
   - [VectorOfVectorOfVec3d.sol::meta\_function::index](#vectorofvectorofvec3dsolmeta%5C_functionindex)
   - [VectorOfVectorOfVec3d.sol::meta\_function::length](#vectorofvectorofvec3dsolmeta%5C_functionlength)
   - [VectorOfVectorOfVec3d.sol::meta\_function::new\_index](#vectorofvectorofvec3dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec3d.swap](#vectorofvectorofvec3dswap)
   - [VectorOfVectorOfVec3d.table](#vectorofvectorofvec3dtable)
 - [VectorOfVectorOfVec3f](#vectorofvectorofvec3f)
   - [VectorOfVectorOfVec3f.new](#vectorofvectorofvec3fnew)
+  - [VectorOfVectorOfVec3f.back](#vectorofvectorofvec3fback)
+  - [VectorOfVectorOfVec3f.capacity](#vectorofvectorofvec3fcapacity)
+  - [VectorOfVectorOfVec3f.clear](#vectorofvectorofvec3fclear)
   - [VectorOfVectorOfVec3f.data](#vectorofvectorofvec3fdata)
+  - [VectorOfVectorOfVec3f.empty](#vectorofvectorofvec3fempty)
+  - [VectorOfVectorOfVec3f.front](#vectorofvectorofvec3ffront)
+  - [VectorOfVectorOfVec3f.max\_size](#vectorofvectorofvec3fmax%5C_size)
+  - [VectorOfVectorOfVec3f.pop\_back](#vectorofvectorofvec3fpop%5C_back)
+  - [VectorOfVectorOfVec3f.reserve](#vectorofvectorofvec3freserve)
+  - [VectorOfVectorOfVec3f.resize](#vectorofvectorofvec3fresize)
+  - [VectorOfVectorOfVec3f.shrink\_to\_fit](#vectorofvectorofvec3fshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfVec3f.sizeof](#vectorofvectorofvec3fsizeof)
   - [VectorOfVectorOfVec3f.sol::meta\_function::index](#vectorofvectorofvec3fsolmeta%5C_functionindex)
   - [VectorOfVectorOfVec3f.sol::meta\_function::length](#vectorofvectorofvec3fsolmeta%5C_functionlength)
   - [VectorOfVectorOfVec3f.sol::meta\_function::new\_index](#vectorofvectorofvec3fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec3f.swap](#vectorofvectorofvec3fswap)
   - [VectorOfVectorOfVec3f.table](#vectorofvectorofvec3ftable)
 - [VectorOfVectorOfVec3i](#vectorofvectorofvec3i)
   - [VectorOfVectorOfVec3i.new](#vectorofvectorofvec3inew)
+  - [VectorOfVectorOfVec3i.back](#vectorofvectorofvec3iback)
+  - [VectorOfVectorOfVec3i.capacity](#vectorofvectorofvec3icapacity)
+  - [VectorOfVectorOfVec3i.clear](#vectorofvectorofvec3iclear)
   - [VectorOfVectorOfVec3i.data](#vectorofvectorofvec3idata)
+  - [VectorOfVectorOfVec3i.empty](#vectorofvectorofvec3iempty)
+  - [VectorOfVectorOfVec3i.front](#vectorofvectorofvec3ifront)
+  - [VectorOfVectorOfVec3i.max\_size](#vectorofvectorofvec3imax%5C_size)
+  - [VectorOfVectorOfVec3i.pop\_back](#vectorofvectorofvec3ipop%5C_back)
+  - [VectorOfVectorOfVec3i.reserve](#vectorofvectorofvec3ireserve)
+  - [VectorOfVectorOfVec3i.resize](#vectorofvectorofvec3iresize)
+  - [VectorOfVectorOfVec3i.shrink\_to\_fit](#vectorofvectorofvec3ishrink%5C_to%5C_fit)
+  - [VectorOfVectorOfVec3i.sizeof](#vectorofvectorofvec3isizeof)
   - [VectorOfVectorOfVec3i.sol::meta\_function::index](#vectorofvectorofvec3isolmeta%5C_functionindex)
   - [VectorOfVectorOfVec3i.sol::meta\_function::length](#vectorofvectorofvec3isolmeta%5C_functionlength)
   - [VectorOfVectorOfVec3i.sol::meta\_function::new\_index](#vectorofvectorofvec3isolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec3i.swap](#vectorofvectorofvec3iswap)
   - [VectorOfVectorOfVec3i.table](#vectorofvectorofvec3itable)
 - [VectorOfVectorOfVec3s](#vectorofvectorofvec3s)
   - [VectorOfVectorOfVec3s.new](#vectorofvectorofvec3snew)
+  - [VectorOfVectorOfVec3s.back](#vectorofvectorofvec3sback)
+  - [VectorOfVectorOfVec3s.capacity](#vectorofvectorofvec3scapacity)
+  - [VectorOfVectorOfVec3s.clear](#vectorofvectorofvec3sclear)
   - [VectorOfVectorOfVec3s.data](#vectorofvectorofvec3sdata)
+  - [VectorOfVectorOfVec3s.empty](#vectorofvectorofvec3sempty)
+  - [VectorOfVectorOfVec3s.front](#vectorofvectorofvec3sfront)
+  - [VectorOfVectorOfVec3s.max\_size](#vectorofvectorofvec3smax%5C_size)
+  - [VectorOfVectorOfVec3s.pop\_back](#vectorofvectorofvec3spop%5C_back)
+  - [VectorOfVectorOfVec3s.reserve](#vectorofvectorofvec3sreserve)
+  - [VectorOfVectorOfVec3s.resize](#vectorofvectorofvec3sresize)
+  - [VectorOfVectorOfVec3s.shrink\_to\_fit](#vectorofvectorofvec3sshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfVec3s.sizeof](#vectorofvectorofvec3ssizeof)
   - [VectorOfVectorOfVec3s.sol::meta\_function::index](#vectorofvectorofvec3ssolmeta%5C_functionindex)
   - [VectorOfVectorOfVec3s.sol::meta\_function::length](#vectorofvectorofvec3ssolmeta%5C_functionlength)
   - [VectorOfVectorOfVec3s.sol::meta\_function::new\_index](#vectorofvectorofvec3ssolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec3s.swap](#vectorofvectorofvec3sswap)
   - [VectorOfVectorOfVec3s.table](#vectorofvectorofvec3stable)
 - [VectorOfVectorOfVec3w](#vectorofvectorofvec3w)
   - [VectorOfVectorOfVec3w.new](#vectorofvectorofvec3wnew)
+  - [VectorOfVectorOfVec3w.back](#vectorofvectorofvec3wback)
+  - [VectorOfVectorOfVec3w.capacity](#vectorofvectorofvec3wcapacity)
+  - [VectorOfVectorOfVec3w.clear](#vectorofvectorofvec3wclear)
   - [VectorOfVectorOfVec3w.data](#vectorofvectorofvec3wdata)
+  - [VectorOfVectorOfVec3w.empty](#vectorofvectorofvec3wempty)
+  - [VectorOfVectorOfVec3w.front](#vectorofvectorofvec3wfront)
+  - [VectorOfVectorOfVec3w.max\_size](#vectorofvectorofvec3wmax%5C_size)
+  - [VectorOfVectorOfVec3w.pop\_back](#vectorofvectorofvec3wpop%5C_back)
+  - [VectorOfVectorOfVec3w.reserve](#vectorofvectorofvec3wreserve)
+  - [VectorOfVectorOfVec3w.resize](#vectorofvectorofvec3wresize)
+  - [VectorOfVectorOfVec3w.shrink\_to\_fit](#vectorofvectorofvec3wshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfVec3w.sizeof](#vectorofvectorofvec3wsizeof)
   - [VectorOfVectorOfVec3w.sol::meta\_function::index](#vectorofvectorofvec3wsolmeta%5C_functionindex)
   - [VectorOfVectorOfVec3w.sol::meta\_function::length](#vectorofvectorofvec3wsolmeta%5C_functionlength)
   - [VectorOfVectorOfVec3w.sol::meta\_function::new\_index](#vectorofvectorofvec3wsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec3w.swap](#vectorofvectorofvec3wswap)
   - [VectorOfVectorOfVec3w.table](#vectorofvectorofvec3wtable)
 - [VectorOfVectorOfVec4b](#vectorofvectorofvec4b)
   - [VectorOfVectorOfVec4b.new](#vectorofvectorofvec4bnew)
+  - [VectorOfVectorOfVec4b.back](#vectorofvectorofvec4bback)
+  - [VectorOfVectorOfVec4b.capacity](#vectorofvectorofvec4bcapacity)
+  - [VectorOfVectorOfVec4b.clear](#vectorofvectorofvec4bclear)
   - [VectorOfVectorOfVec4b.data](#vectorofvectorofvec4bdata)
+  - [VectorOfVectorOfVec4b.empty](#vectorofvectorofvec4bempty)
+  - [VectorOfVectorOfVec4b.front](#vectorofvectorofvec4bfront)
+  - [VectorOfVectorOfVec4b.max\_size](#vectorofvectorofvec4bmax%5C_size)
+  - [VectorOfVectorOfVec4b.pop\_back](#vectorofvectorofvec4bpop%5C_back)
+  - [VectorOfVectorOfVec4b.reserve](#vectorofvectorofvec4breserve)
+  - [VectorOfVectorOfVec4b.resize](#vectorofvectorofvec4bresize)
+  - [VectorOfVectorOfVec4b.shrink\_to\_fit](#vectorofvectorofvec4bshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfVec4b.sizeof](#vectorofvectorofvec4bsizeof)
   - [VectorOfVectorOfVec4b.sol::meta\_function::index](#vectorofvectorofvec4bsolmeta%5C_functionindex)
   - [VectorOfVectorOfVec4b.sol::meta\_function::length](#vectorofvectorofvec4bsolmeta%5C_functionlength)
   - [VectorOfVectorOfVec4b.sol::meta\_function::new\_index](#vectorofvectorofvec4bsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec4b.swap](#vectorofvectorofvec4bswap)
   - [VectorOfVectorOfVec4b.table](#vectorofvectorofvec4btable)
 - [VectorOfVectorOfVec4d](#vectorofvectorofvec4d)
   - [VectorOfVectorOfVec4d.new](#vectorofvectorofvec4dnew)
+  - [VectorOfVectorOfVec4d.back](#vectorofvectorofvec4dback)
+  - [VectorOfVectorOfVec4d.capacity](#vectorofvectorofvec4dcapacity)
+  - [VectorOfVectorOfVec4d.clear](#vectorofvectorofvec4dclear)
   - [VectorOfVectorOfVec4d.data](#vectorofvectorofvec4ddata)
+  - [VectorOfVectorOfVec4d.empty](#vectorofvectorofvec4dempty)
+  - [VectorOfVectorOfVec4d.front](#vectorofvectorofvec4dfront)
+  - [VectorOfVectorOfVec4d.max\_size](#vectorofvectorofvec4dmax%5C_size)
+  - [VectorOfVectorOfVec4d.pop\_back](#vectorofvectorofvec4dpop%5C_back)
+  - [VectorOfVectorOfVec4d.reserve](#vectorofvectorofvec4dreserve)
+  - [VectorOfVectorOfVec4d.resize](#vectorofvectorofvec4dresize)
+  - [VectorOfVectorOfVec4d.shrink\_to\_fit](#vectorofvectorofvec4dshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfVec4d.sizeof](#vectorofvectorofvec4dsizeof)
   - [VectorOfVectorOfVec4d.sol::meta\_function::index](#vectorofvectorofvec4dsolmeta%5C_functionindex)
   - [VectorOfVectorOfVec4d.sol::meta\_function::length](#vectorofvectorofvec4dsolmeta%5C_functionlength)
   - [VectorOfVectorOfVec4d.sol::meta\_function::new\_index](#vectorofvectorofvec4dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec4d.swap](#vectorofvectorofvec4dswap)
   - [VectorOfVectorOfVec4d.table](#vectorofvectorofvec4dtable)
 - [VectorOfVectorOfVec4f](#vectorofvectorofvec4f)
   - [VectorOfVectorOfVec4f.new](#vectorofvectorofvec4fnew)
+  - [VectorOfVectorOfVec4f.back](#vectorofvectorofvec4fback)
+  - [VectorOfVectorOfVec4f.capacity](#vectorofvectorofvec4fcapacity)
+  - [VectorOfVectorOfVec4f.clear](#vectorofvectorofvec4fclear)
   - [VectorOfVectorOfVec4f.data](#vectorofvectorofvec4fdata)
+  - [VectorOfVectorOfVec4f.empty](#vectorofvectorofvec4fempty)
+  - [VectorOfVectorOfVec4f.front](#vectorofvectorofvec4ffront)
+  - [VectorOfVectorOfVec4f.max\_size](#vectorofvectorofvec4fmax%5C_size)
+  - [VectorOfVectorOfVec4f.pop\_back](#vectorofvectorofvec4fpop%5C_back)
+  - [VectorOfVectorOfVec4f.reserve](#vectorofvectorofvec4freserve)
+  - [VectorOfVectorOfVec4f.resize](#vectorofvectorofvec4fresize)
+  - [VectorOfVectorOfVec4f.shrink\_to\_fit](#vectorofvectorofvec4fshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfVec4f.sizeof](#vectorofvectorofvec4fsizeof)
   - [VectorOfVectorOfVec4f.sol::meta\_function::index](#vectorofvectorofvec4fsolmeta%5C_functionindex)
   - [VectorOfVectorOfVec4f.sol::meta\_function::length](#vectorofvectorofvec4fsolmeta%5C_functionlength)
   - [VectorOfVectorOfVec4f.sol::meta\_function::new\_index](#vectorofvectorofvec4fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec4f.swap](#vectorofvectorofvec4fswap)
   - [VectorOfVectorOfVec4f.table](#vectorofvectorofvec4ftable)
 - [VectorOfVectorOfVec4i](#vectorofvectorofvec4i)
   - [VectorOfVectorOfVec4i.new](#vectorofvectorofvec4inew)
+  - [VectorOfVectorOfVec4i.back](#vectorofvectorofvec4iback)
+  - [VectorOfVectorOfVec4i.capacity](#vectorofvectorofvec4icapacity)
+  - [VectorOfVectorOfVec4i.clear](#vectorofvectorofvec4iclear)
   - [VectorOfVectorOfVec4i.data](#vectorofvectorofvec4idata)
+  - [VectorOfVectorOfVec4i.empty](#vectorofvectorofvec4iempty)
+  - [VectorOfVectorOfVec4i.front](#vectorofvectorofvec4ifront)
+  - [VectorOfVectorOfVec4i.max\_size](#vectorofvectorofvec4imax%5C_size)
+  - [VectorOfVectorOfVec4i.pop\_back](#vectorofvectorofvec4ipop%5C_back)
+  - [VectorOfVectorOfVec4i.reserve](#vectorofvectorofvec4ireserve)
+  - [VectorOfVectorOfVec4i.resize](#vectorofvectorofvec4iresize)
+  - [VectorOfVectorOfVec4i.shrink\_to\_fit](#vectorofvectorofvec4ishrink%5C_to%5C_fit)
+  - [VectorOfVectorOfVec4i.sizeof](#vectorofvectorofvec4isizeof)
   - [VectorOfVectorOfVec4i.sol::meta\_function::index](#vectorofvectorofvec4isolmeta%5C_functionindex)
   - [VectorOfVectorOfVec4i.sol::meta\_function::length](#vectorofvectorofvec4isolmeta%5C_functionlength)
   - [VectorOfVectorOfVec4i.sol::meta\_function::new\_index](#vectorofvectorofvec4isolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec4i.swap](#vectorofvectorofvec4iswap)
   - [VectorOfVectorOfVec4i.table](#vectorofvectorofvec4itable)
 - [VectorOfVectorOfVec4s](#vectorofvectorofvec4s)
   - [VectorOfVectorOfVec4s.new](#vectorofvectorofvec4snew)
+  - [VectorOfVectorOfVec4s.back](#vectorofvectorofvec4sback)
+  - [VectorOfVectorOfVec4s.capacity](#vectorofvectorofvec4scapacity)
+  - [VectorOfVectorOfVec4s.clear](#vectorofvectorofvec4sclear)
   - [VectorOfVectorOfVec4s.data](#vectorofvectorofvec4sdata)
+  - [VectorOfVectorOfVec4s.empty](#vectorofvectorofvec4sempty)
+  - [VectorOfVectorOfVec4s.front](#vectorofvectorofvec4sfront)
+  - [VectorOfVectorOfVec4s.max\_size](#vectorofvectorofvec4smax%5C_size)
+  - [VectorOfVectorOfVec4s.pop\_back](#vectorofvectorofvec4spop%5C_back)
+  - [VectorOfVectorOfVec4s.reserve](#vectorofvectorofvec4sreserve)
+  - [VectorOfVectorOfVec4s.resize](#vectorofvectorofvec4sresize)
+  - [VectorOfVectorOfVec4s.shrink\_to\_fit](#vectorofvectorofvec4sshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfVec4s.sizeof](#vectorofvectorofvec4ssizeof)
   - [VectorOfVectorOfVec4s.sol::meta\_function::index](#vectorofvectorofvec4ssolmeta%5C_functionindex)
   - [VectorOfVectorOfVec4s.sol::meta\_function::length](#vectorofvectorofvec4ssolmeta%5C_functionlength)
   - [VectorOfVectorOfVec4s.sol::meta\_function::new\_index](#vectorofvectorofvec4ssolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec4s.swap](#vectorofvectorofvec4sswap)
   - [VectorOfVectorOfVec4s.table](#vectorofvectorofvec4stable)
 - [VectorOfVectorOfVec4w](#vectorofvectorofvec4w)
   - [VectorOfVectorOfVec4w.new](#vectorofvectorofvec4wnew)
+  - [VectorOfVectorOfVec4w.back](#vectorofvectorofvec4wback)
+  - [VectorOfVectorOfVec4w.capacity](#vectorofvectorofvec4wcapacity)
+  - [VectorOfVectorOfVec4w.clear](#vectorofvectorofvec4wclear)
   - [VectorOfVectorOfVec4w.data](#vectorofvectorofvec4wdata)
+  - [VectorOfVectorOfVec4w.empty](#vectorofvectorofvec4wempty)
+  - [VectorOfVectorOfVec4w.front](#vectorofvectorofvec4wfront)
+  - [VectorOfVectorOfVec4w.max\_size](#vectorofvectorofvec4wmax%5C_size)
+  - [VectorOfVectorOfVec4w.pop\_back](#vectorofvectorofvec4wpop%5C_back)
+  - [VectorOfVectorOfVec4w.reserve](#vectorofvectorofvec4wreserve)
+  - [VectorOfVectorOfVec4w.resize](#vectorofvectorofvec4wresize)
+  - [VectorOfVectorOfVec4w.shrink\_to\_fit](#vectorofvectorofvec4wshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfVec4w.sizeof](#vectorofvectorofvec4wsizeof)
   - [VectorOfVectorOfVec4w.sol::meta\_function::index](#vectorofvectorofvec4wsolmeta%5C_functionindex)
   - [VectorOfVectorOfVec4w.sol::meta\_function::length](#vectorofvectorofvec4wsolmeta%5C_functionlength)
   - [VectorOfVectorOfVec4w.sol::meta\_function::new\_index](#vectorofvectorofvec4wsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec4w.swap](#vectorofvectorofvec4wswap)
   - [VectorOfVectorOfVec4w.table](#vectorofvectorofvec4wtable)
 - [VectorOfVectorOfVec6d](#vectorofvectorofvec6d)
   - [VectorOfVectorOfVec6d.new](#vectorofvectorofvec6dnew)
+  - [VectorOfVectorOfVec6d.back](#vectorofvectorofvec6dback)
+  - [VectorOfVectorOfVec6d.capacity](#vectorofvectorofvec6dcapacity)
+  - [VectorOfVectorOfVec6d.clear](#vectorofvectorofvec6dclear)
   - [VectorOfVectorOfVec6d.data](#vectorofvectorofvec6ddata)
+  - [VectorOfVectorOfVec6d.empty](#vectorofvectorofvec6dempty)
+  - [VectorOfVectorOfVec6d.front](#vectorofvectorofvec6dfront)
+  - [VectorOfVectorOfVec6d.max\_size](#vectorofvectorofvec6dmax%5C_size)
+  - [VectorOfVectorOfVec6d.pop\_back](#vectorofvectorofvec6dpop%5C_back)
+  - [VectorOfVectorOfVec6d.reserve](#vectorofvectorofvec6dreserve)
+  - [VectorOfVectorOfVec6d.resize](#vectorofvectorofvec6dresize)
+  - [VectorOfVectorOfVec6d.shrink\_to\_fit](#vectorofvectorofvec6dshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfVec6d.sizeof](#vectorofvectorofvec6dsizeof)
   - [VectorOfVectorOfVec6d.sol::meta\_function::index](#vectorofvectorofvec6dsolmeta%5C_functionindex)
   - [VectorOfVectorOfVec6d.sol::meta\_function::length](#vectorofvectorofvec6dsolmeta%5C_functionlength)
   - [VectorOfVectorOfVec6d.sol::meta\_function::new\_index](#vectorofvectorofvec6dsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec6d.swap](#vectorofvectorofvec6dswap)
   - [VectorOfVectorOfVec6d.table](#vectorofvectorofvec6dtable)
 - [VectorOfVectorOfVec6f](#vectorofvectorofvec6f)
   - [VectorOfVectorOfVec6f.new](#vectorofvectorofvec6fnew)
+  - [VectorOfVectorOfVec6f.back](#vectorofvectorofvec6fback)
+  - [VectorOfVectorOfVec6f.capacity](#vectorofvectorofvec6fcapacity)
+  - [VectorOfVectorOfVec6f.clear](#vectorofvectorofvec6fclear)
   - [VectorOfVectorOfVec6f.data](#vectorofvectorofvec6fdata)
+  - [VectorOfVectorOfVec6f.empty](#vectorofvectorofvec6fempty)
+  - [VectorOfVectorOfVec6f.front](#vectorofvectorofvec6ffront)
+  - [VectorOfVectorOfVec6f.max\_size](#vectorofvectorofvec6fmax%5C_size)
+  - [VectorOfVectorOfVec6f.pop\_back](#vectorofvectorofvec6fpop%5C_back)
+  - [VectorOfVectorOfVec6f.reserve](#vectorofvectorofvec6freserve)
+  - [VectorOfVectorOfVec6f.resize](#vectorofvectorofvec6fresize)
+  - [VectorOfVectorOfVec6f.shrink\_to\_fit](#vectorofvectorofvec6fshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfVec6f.sizeof](#vectorofvectorofvec6fsizeof)
   - [VectorOfVectorOfVec6f.sol::meta\_function::index](#vectorofvectorofvec6fsolmeta%5C_functionindex)
   - [VectorOfVectorOfVec6f.sol::meta\_function::length](#vectorofvectorofvec6fsolmeta%5C_functionlength)
   - [VectorOfVectorOfVec6f.sol::meta\_function::new\_index](#vectorofvectorofvec6fsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec6f.swap](#vectorofvectorofvec6fswap)
   - [VectorOfVectorOfVec6f.table](#vectorofvectorofvec6ftable)
 - [VectorOfVectorOfVec6i](#vectorofvectorofvec6i)
   - [VectorOfVectorOfVec6i.new](#vectorofvectorofvec6inew)
+  - [VectorOfVectorOfVec6i.back](#vectorofvectorofvec6iback)
+  - [VectorOfVectorOfVec6i.capacity](#vectorofvectorofvec6icapacity)
+  - [VectorOfVectorOfVec6i.clear](#vectorofvectorofvec6iclear)
   - [VectorOfVectorOfVec6i.data](#vectorofvectorofvec6idata)
+  - [VectorOfVectorOfVec6i.empty](#vectorofvectorofvec6iempty)
+  - [VectorOfVectorOfVec6i.front](#vectorofvectorofvec6ifront)
+  - [VectorOfVectorOfVec6i.max\_size](#vectorofvectorofvec6imax%5C_size)
+  - [VectorOfVectorOfVec6i.pop\_back](#vectorofvectorofvec6ipop%5C_back)
+  - [VectorOfVectorOfVec6i.reserve](#vectorofvectorofvec6ireserve)
+  - [VectorOfVectorOfVec6i.resize](#vectorofvectorofvec6iresize)
+  - [VectorOfVectorOfVec6i.shrink\_to\_fit](#vectorofvectorofvec6ishrink%5C_to%5C_fit)
+  - [VectorOfVectorOfVec6i.sizeof](#vectorofvectorofvec6isizeof)
   - [VectorOfVectorOfVec6i.sol::meta\_function::index](#vectorofvectorofvec6isolmeta%5C_functionindex)
   - [VectorOfVectorOfVec6i.sol::meta\_function::length](#vectorofvectorofvec6isolmeta%5C_functionlength)
   - [VectorOfVectorOfVec6i.sol::meta\_function::new\_index](#vectorofvectorofvec6isolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec6i.swap](#vectorofvectorofvec6iswap)
   - [VectorOfVectorOfVec6i.table](#vectorofvectorofvec6itable)
 - [VectorOfVectorOfVec8i](#vectorofvectorofvec8i)
   - [VectorOfVectorOfVec8i.new](#vectorofvectorofvec8inew)
+  - [VectorOfVectorOfVec8i.back](#vectorofvectorofvec8iback)
+  - [VectorOfVectorOfVec8i.capacity](#vectorofvectorofvec8icapacity)
+  - [VectorOfVectorOfVec8i.clear](#vectorofvectorofvec8iclear)
   - [VectorOfVectorOfVec8i.data](#vectorofvectorofvec8idata)
+  - [VectorOfVectorOfVec8i.empty](#vectorofvectorofvec8iempty)
+  - [VectorOfVectorOfVec8i.front](#vectorofvectorofvec8ifront)
+  - [VectorOfVectorOfVec8i.max\_size](#vectorofvectorofvec8imax%5C_size)
+  - [VectorOfVectorOfVec8i.pop\_back](#vectorofvectorofvec8ipop%5C_back)
+  - [VectorOfVectorOfVec8i.reserve](#vectorofvectorofvec8ireserve)
+  - [VectorOfVectorOfVec8i.resize](#vectorofvectorofvec8iresize)
+  - [VectorOfVectorOfVec8i.shrink\_to\_fit](#vectorofvectorofvec8ishrink%5C_to%5C_fit)
+  - [VectorOfVectorOfVec8i.sizeof](#vectorofvectorofvec8isizeof)
   - [VectorOfVectorOfVec8i.sol::meta\_function::index](#vectorofvectorofvec8isolmeta%5C_functionindex)
   - [VectorOfVectorOfVec8i.sol::meta\_function::length](#vectorofvectorofvec8isolmeta%5C_functionlength)
   - [VectorOfVectorOfVec8i.sol::meta\_function::new\_index](#vectorofvectorofvec8isolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVec8i.swap](#vectorofvectorofvec8iswap)
   - [VectorOfVectorOfVec8i.table](#vectorofvectorofvec8itable)
 - [VectorOfVectorOfVectorOfInt](#vectorofvectorofvectorofint)
   - [VectorOfVectorOfVectorOfInt.new](#vectorofvectorofvectorofintnew)
+  - [VectorOfVectorOfVectorOfInt.back](#vectorofvectorofvectorofintback)
+  - [VectorOfVectorOfVectorOfInt.capacity](#vectorofvectorofvectorofintcapacity)
+  - [VectorOfVectorOfVectorOfInt.clear](#vectorofvectorofvectorofintclear)
   - [VectorOfVectorOfVectorOfInt.data](#vectorofvectorofvectorofintdata)
+  - [VectorOfVectorOfVectorOfInt.empty](#vectorofvectorofvectorofintempty)
+  - [VectorOfVectorOfVectorOfInt.front](#vectorofvectorofvectorofintfront)
+  - [VectorOfVectorOfVectorOfInt.max\_size](#vectorofvectorofvectorofintmax%5C_size)
+  - [VectorOfVectorOfVectorOfInt.pop\_back](#vectorofvectorofvectorofintpop%5C_back)
+  - [VectorOfVectorOfVectorOfInt.reserve](#vectorofvectorofvectorofintreserve)
+  - [VectorOfVectorOfVectorOfInt.resize](#vectorofvectorofvectorofintresize)
+  - [VectorOfVectorOfVectorOfInt.shrink\_to\_fit](#vectorofvectorofvectorofintshrink%5C_to%5C_fit)
+  - [VectorOfVectorOfVectorOfInt.sizeof](#vectorofvectorofvectorofintsizeof)
   - [VectorOfVectorOfVectorOfInt.sol::meta\_function::index](#vectorofvectorofvectorofintsolmeta%5C_functionindex)
   - [VectorOfVectorOfVectorOfInt.sol::meta\_function::length](#vectorofvectorofvectorofintsolmeta%5C_functionlength)
   - [VectorOfVectorOfVectorOfInt.sol::meta\_function::new\_index](#vectorofvectorofvectorofintsolmeta%5C_functionnew%5C_index)
+  - [VectorOfVectorOfVectorOfInt.swap](#vectorofvectorofvectorofintswap)
   - [VectorOfVectorOfVectorOfInt.table](#vectorofvectorofvectorofinttable)
 - [VectorOfVideoCapture](#vectorofvideocapture)
   - [VectorOfVideoCapture.new](#vectorofvideocapturenew)
+  - [VectorOfVideoCapture.back](#vectorofvideocaptureback)
+  - [VectorOfVideoCapture.capacity](#vectorofvideocapturecapacity)
+  - [VectorOfVideoCapture.clear](#vectorofvideocaptureclear)
   - [VectorOfVideoCapture.data](#vectorofvideocapturedata)
+  - [VectorOfVideoCapture.empty](#vectorofvideocaptureempty)
+  - [VectorOfVideoCapture.front](#vectorofvideocapturefront)
+  - [VectorOfVideoCapture.max\_size](#vectorofvideocapturemax%5C_size)
+  - [VectorOfVideoCapture.pop\_back](#vectorofvideocapturepop%5C_back)
+  - [VectorOfVideoCapture.reserve](#vectorofvideocapturereserve)
+  - [VectorOfVideoCapture.resize](#vectorofvideocaptureresize)
+  - [VectorOfVideoCapture.shrink\_to\_fit](#vectorofvideocaptureshrink%5C_to%5C_fit)
+  - [VectorOfVideoCapture.sizeof](#vectorofvideocapturesizeof)
   - [VectorOfVideoCapture.sol::meta\_function::index](#vectorofvideocapturesolmeta%5C_functionindex)
   - [VectorOfVideoCapture.sol::meta\_function::length](#vectorofvideocapturesolmeta%5C_functionlength)
   - [VectorOfVideoCapture.sol::meta\_function::new\_index](#vectorofvideocapturesolmeta%5C_functionnew%5C_index)
+  - [VectorOfVideoCapture.swap](#vectorofvideocaptureswap)
   - [VectorOfVideoCapture.table](#vectorofvideocapturetable)
 - [VectorOfVideoCaptureAPIs](#vectorofvideocaptureapis)
   - [VectorOfVideoCaptureAPIs.new](#vectorofvideocaptureapisnew)
+  - [VectorOfVideoCaptureAPIs.back](#vectorofvideocaptureapisback)
+  - [VectorOfVideoCaptureAPIs.capacity](#vectorofvideocaptureapiscapacity)
+  - [VectorOfVideoCaptureAPIs.clear](#vectorofvideocaptureapisclear)
   - [VectorOfVideoCaptureAPIs.data](#vectorofvideocaptureapisdata)
+  - [VectorOfVideoCaptureAPIs.empty](#vectorofvideocaptureapisempty)
+  - [VectorOfVideoCaptureAPIs.front](#vectorofvideocaptureapisfront)
+  - [VectorOfVideoCaptureAPIs.max\_size](#vectorofvideocaptureapismax%5C_size)
+  - [VectorOfVideoCaptureAPIs.pop\_back](#vectorofvideocaptureapispop%5C_back)
+  - [VectorOfVideoCaptureAPIs.reserve](#vectorofvideocaptureapisreserve)
+  - [VectorOfVideoCaptureAPIs.resize](#vectorofvideocaptureapisresize)
+  - [VectorOfVideoCaptureAPIs.shrink\_to\_fit](#vectorofvideocaptureapisshrink%5C_to%5C_fit)
+  - [VectorOfVideoCaptureAPIs.sizeof](#vectorofvideocaptureapissizeof)
   - [VectorOfVideoCaptureAPIs.sol::meta\_function::index](#vectorofvideocaptureapissolmeta%5C_functionindex)
   - [VectorOfVideoCaptureAPIs.sol::meta\_function::length](#vectorofvideocaptureapissolmeta%5C_functionlength)
   - [VectorOfVideoCaptureAPIs.sol::meta\_function::new\_index](#vectorofvideocaptureapissolmeta%5C_functionnew%5C_index)
+  - [VectorOfVideoCaptureAPIs.swap](#vectorofvideocaptureapisswap)
   - [VectorOfVideoCaptureAPIs.table](#vectorofvideocaptureapistable)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -53122,7 +54586,7 @@ void cv::ml::TrainData::getSample( InputArray varIdx,
                                    int        sidx,
                                    float*     buf ) const;
 lua:
-    oTrainData:getSample( varIdx, sidx[, buf] ) -> buf
+    oTrainData:getSample( varIdx, sidx, buf ) -> None
 ```
 
 ### cv.ml.TrainData.getSampleWeights
@@ -53249,7 +54713,7 @@ void cv::ml::TrainData::getValues( int        vi,
                                    InputArray sidx,
                                    float*     values ) const;
 lua:
-    oTrainData:getValues( vi, sidx[, values] ) -> values
+    oTrainData:getValues( vi, sidx, values ) -> None
 ```
 
 ### cv.ml.TrainData.getVarIdx
@@ -61821,12 +63285,123 @@ lua:
     VectorOfAruco_Dictionary( other ) -> <std::vector<cv::aruco::Dictionary> object>
 ```
 
+```cpp
+std::vector<cv::aruco::Dictionary>( cv::aruco::Dictionary* data,
+                                    size_t                 count );
+lua:
+    VectorOfAruco_Dictionary.new( data, count ) -> <std::vector<cv::aruco::Dictionary> object>
+    VectorOfAruco_Dictionary( data, count ) -> <std::vector<cv::aruco::Dictionary> object>
+```
+
+```cpp
+std::vector<cv::aruco::Dictionary>( cv::aruco::Dictionary* first,
+                                    cv::aruco::Dictionary* last );
+lua:
+    VectorOfAruco_Dictionary.new( first, last ) -> <std::vector<cv::aruco::Dictionary> object>
+    VectorOfAruco_Dictionary( first, last ) -> <std::vector<cv::aruco::Dictionary> object>
+```
+
+### VectorOfAruco\_Dictionary.back
+
+```cpp
+cv::aruco::Dictionary VectorOfAruco_Dictionary::back();
+lua:
+    oVectorOfAruco_Dictionary:back() -> retval
+```
+
+### VectorOfAruco\_Dictionary.capacity
+
+```cpp
+size_t VectorOfAruco_Dictionary::capacity();
+lua:
+    oVectorOfAruco_Dictionary:capacity() -> retval
+```
+
+### VectorOfAruco\_Dictionary.clear
+
+```cpp
+void VectorOfAruco_Dictionary::clear();
+lua:
+    oVectorOfAruco_Dictionary:clear() -> None
+```
+
 ### VectorOfAruco\_Dictionary.data
 
 ```cpp
 void* VectorOfAruco_Dictionary::data();
 lua:
     oVectorOfAruco_Dictionary:data() -> retval
+```
+
+### VectorOfAruco\_Dictionary.empty
+
+```cpp
+bool VectorOfAruco_Dictionary::empty() const;
+lua:
+    oVectorOfAruco_Dictionary:empty() -> retval
+```
+
+### VectorOfAruco\_Dictionary.front
+
+```cpp
+cv::aruco::Dictionary VectorOfAruco_Dictionary::front();
+lua:
+    oVectorOfAruco_Dictionary:front() -> retval
+```
+
+### VectorOfAruco\_Dictionary.max\_size
+
+```cpp
+size_t VectorOfAruco_Dictionary::max_size();
+lua:
+    oVectorOfAruco_Dictionary:max_size() -> retval
+```
+
+### VectorOfAruco\_Dictionary.pop\_back
+
+```cpp
+void VectorOfAruco_Dictionary::pop_back();
+lua:
+    oVectorOfAruco_Dictionary:pop_back() -> None
+```
+
+### VectorOfAruco\_Dictionary.reserve
+
+```cpp
+void VectorOfAruco_Dictionary::reserve( size_t new_cap );
+lua:
+    oVectorOfAruco_Dictionary:reserve( new_cap ) -> None
+```
+
+### VectorOfAruco\_Dictionary.resize
+
+```cpp
+void VectorOfAruco_Dictionary::resize( size_t count );
+lua:
+    oVectorOfAruco_Dictionary:resize( count ) -> None
+```
+
+```cpp
+void VectorOfAruco_Dictionary::resize( size_t                       count,
+                                       const cv::aruco::Dictionary& value );
+lua:
+    oVectorOfAruco_Dictionary:resize( count, value ) -> None
+```
+
+### VectorOfAruco\_Dictionary.shrink\_to\_fit
+
+```cpp
+void VectorOfAruco_Dictionary::shrink_to_fit();
+lua:
+    oVectorOfAruco_Dictionary:shrink_to_fit() -> None
+```
+
+### VectorOfAruco\_Dictionary.sizeof
+
+```cpp
+size_t VectorOfAruco_Dictionary::size();
+lua:
+    oVectorOfAruco_Dictionary:sizeof() -> retval
 ```
 
 ### VectorOfAruco\_Dictionary.sol::meta\_function::index
@@ -61852,6 +63427,14 @@ void VectorOfAruco_Dictionary::sol::meta_function::new_index( size_t            
                                                               cv::aruco::Dictionary value );
 lua:
     oVectorOfAruco_Dictionary:__newindex( index, value ) -> None
+```
+
+### VectorOfAruco\_Dictionary.swap
+
+```cpp
+void VectorOfAruco_Dictionary::swap( std::vector<cv::aruco::Dictionary>& other );
+lua:
+    oVectorOfAruco_Dictionary:swap( other ) -> None
 ```
 
 ### VectorOfAruco\_Dictionary.table
@@ -61887,6 +63470,117 @@ lua:
     VectorOfBool( other ) -> <std::vector<bool> object>
 ```
 
+```cpp
+std::vector<bool>( bool*  data,
+                   size_t count );
+lua:
+    VectorOfBool.new( data, count ) -> <std::vector<bool> object>
+    VectorOfBool( data, count ) -> <std::vector<bool> object>
+```
+
+```cpp
+std::vector<bool>( bool* first,
+                   bool* last );
+lua:
+    VectorOfBool.new( first, last ) -> <std::vector<bool> object>
+    VectorOfBool( first, last ) -> <std::vector<bool> object>
+```
+
+### VectorOfBool.back
+
+```cpp
+bool VectorOfBool::back();
+lua:
+    oVectorOfBool:back() -> retval
+```
+
+### VectorOfBool.capacity
+
+```cpp
+size_t VectorOfBool::capacity();
+lua:
+    oVectorOfBool:capacity() -> retval
+```
+
+### VectorOfBool.clear
+
+```cpp
+void VectorOfBool::clear();
+lua:
+    oVectorOfBool:clear() -> None
+```
+
+### VectorOfBool.empty
+
+```cpp
+bool VectorOfBool::empty() const;
+lua:
+    oVectorOfBool:empty() -> retval
+```
+
+### VectorOfBool.front
+
+```cpp
+bool VectorOfBool::front();
+lua:
+    oVectorOfBool:front() -> retval
+```
+
+### VectorOfBool.max\_size
+
+```cpp
+size_t VectorOfBool::max_size();
+lua:
+    oVectorOfBool:max_size() -> retval
+```
+
+### VectorOfBool.pop\_back
+
+```cpp
+void VectorOfBool::pop_back();
+lua:
+    oVectorOfBool:pop_back() -> None
+```
+
+### VectorOfBool.reserve
+
+```cpp
+void VectorOfBool::reserve( size_t new_cap );
+lua:
+    oVectorOfBool:reserve( new_cap ) -> None
+```
+
+### VectorOfBool.resize
+
+```cpp
+void VectorOfBool::resize( size_t count );
+lua:
+    oVectorOfBool:resize( count ) -> None
+```
+
+```cpp
+void VectorOfBool::resize( size_t      count,
+                           const bool& value );
+lua:
+    oVectorOfBool:resize( count, value ) -> None
+```
+
+### VectorOfBool.shrink\_to\_fit
+
+```cpp
+void VectorOfBool::shrink_to_fit();
+lua:
+    oVectorOfBool:shrink_to_fit() -> None
+```
+
+### VectorOfBool.sizeof
+
+```cpp
+size_t VectorOfBool::size();
+lua:
+    oVectorOfBool:sizeof() -> retval
+```
+
 ### VectorOfBool.sol::meta\_function::index
 
 ```cpp
@@ -61910,6 +63604,14 @@ void VectorOfBool::sol::meta_function::new_index( size_t index,
                                                   bool   value );
 lua:
     oVectorOfBool:__newindex( index, value ) -> None
+```
+
+### VectorOfBool.swap
+
+```cpp
+void VectorOfBool::swap( std::vector<bool>& other );
+lua:
+    oVectorOfBool:swap( other ) -> None
 ```
 
 ### VectorOfBool.table
@@ -61945,12 +63647,123 @@ lua:
     VectorOfChar( other ) -> <std::vector<char> object>
 ```
 
+```cpp
+std::vector<char>( char*  data,
+                   size_t count );
+lua:
+    VectorOfChar.new( data, count ) -> <std::vector<char> object>
+    VectorOfChar( data, count ) -> <std::vector<char> object>
+```
+
+```cpp
+std::vector<char>( char* first,
+                   char* last );
+lua:
+    VectorOfChar.new( first, last ) -> <std::vector<char> object>
+    VectorOfChar( first, last ) -> <std::vector<char> object>
+```
+
+### VectorOfChar.back
+
+```cpp
+char VectorOfChar::back();
+lua:
+    oVectorOfChar:back() -> retval
+```
+
+### VectorOfChar.capacity
+
+```cpp
+size_t VectorOfChar::capacity();
+lua:
+    oVectorOfChar:capacity() -> retval
+```
+
+### VectorOfChar.clear
+
+```cpp
+void VectorOfChar::clear();
+lua:
+    oVectorOfChar:clear() -> None
+```
+
 ### VectorOfChar.data
 
 ```cpp
 void* VectorOfChar::data();
 lua:
     oVectorOfChar:data() -> retval
+```
+
+### VectorOfChar.empty
+
+```cpp
+bool VectorOfChar::empty() const;
+lua:
+    oVectorOfChar:empty() -> retval
+```
+
+### VectorOfChar.front
+
+```cpp
+char VectorOfChar::front();
+lua:
+    oVectorOfChar:front() -> retval
+```
+
+### VectorOfChar.max\_size
+
+```cpp
+size_t VectorOfChar::max_size();
+lua:
+    oVectorOfChar:max_size() -> retval
+```
+
+### VectorOfChar.pop\_back
+
+```cpp
+void VectorOfChar::pop_back();
+lua:
+    oVectorOfChar:pop_back() -> None
+```
+
+### VectorOfChar.reserve
+
+```cpp
+void VectorOfChar::reserve( size_t new_cap );
+lua:
+    oVectorOfChar:reserve( new_cap ) -> None
+```
+
+### VectorOfChar.resize
+
+```cpp
+void VectorOfChar::resize( size_t count );
+lua:
+    oVectorOfChar:resize( count ) -> None
+```
+
+```cpp
+void VectorOfChar::resize( size_t      count,
+                           const char& value );
+lua:
+    oVectorOfChar:resize( count, value ) -> None
+```
+
+### VectorOfChar.shrink\_to\_fit
+
+```cpp
+void VectorOfChar::shrink_to_fit();
+lua:
+    oVectorOfChar:shrink_to_fit() -> None
+```
+
+### VectorOfChar.sizeof
+
+```cpp
+size_t VectorOfChar::size();
+lua:
+    oVectorOfChar:sizeof() -> retval
 ```
 
 ### VectorOfChar.sol::meta\_function::index
@@ -61976,6 +63789,14 @@ void VectorOfChar::sol::meta_function::new_index( size_t index,
                                                   char   value );
 lua:
     oVectorOfChar:__newindex( index, value ) -> None
+```
+
+### VectorOfChar.swap
+
+```cpp
+void VectorOfChar::swap( std::vector<char>& other );
+lua:
+    oVectorOfChar:swap( other ) -> None
 ```
 
 ### VectorOfChar.table
@@ -62011,12 +63832,123 @@ lua:
     VectorOfCvVariantOfIntAndRange( other ) -> <std::vector<cv::util::variant<int, cv::Range>> object>
 ```
 
+```cpp
+std::vector<cv::util::variant<int, cv::Range>>( cv::util::variant<int, cv::Range>* data,
+                                                size_t                             count );
+lua:
+    VectorOfCvVariantOfIntAndRange.new( data, count ) -> <std::vector<cv::util::variant<int, cv::Range>> object>
+    VectorOfCvVariantOfIntAndRange( data, count ) -> <std::vector<cv::util::variant<int, cv::Range>> object>
+```
+
+```cpp
+std::vector<cv::util::variant<int, cv::Range>>( cv::util::variant<int, cv::Range>* first,
+                                                cv::util::variant<int, cv::Range>* last );
+lua:
+    VectorOfCvVariantOfIntAndRange.new( first, last ) -> <std::vector<cv::util::variant<int, cv::Range>> object>
+    VectorOfCvVariantOfIntAndRange( first, last ) -> <std::vector<cv::util::variant<int, cv::Range>> object>
+```
+
+### VectorOfCvVariantOfIntAndRange.back
+
+```cpp
+cv::util::variant<int, cv::Range> VectorOfCvVariantOfIntAndRange::back();
+lua:
+    oVectorOfCvVariantOfIntAndRange:back() -> retval
+```
+
+### VectorOfCvVariantOfIntAndRange.capacity
+
+```cpp
+size_t VectorOfCvVariantOfIntAndRange::capacity();
+lua:
+    oVectorOfCvVariantOfIntAndRange:capacity() -> retval
+```
+
+### VectorOfCvVariantOfIntAndRange.clear
+
+```cpp
+void VectorOfCvVariantOfIntAndRange::clear();
+lua:
+    oVectorOfCvVariantOfIntAndRange:clear() -> None
+```
+
 ### VectorOfCvVariantOfIntAndRange.data
 
 ```cpp
 void* VectorOfCvVariantOfIntAndRange::data();
 lua:
     oVectorOfCvVariantOfIntAndRange:data() -> retval
+```
+
+### VectorOfCvVariantOfIntAndRange.empty
+
+```cpp
+bool VectorOfCvVariantOfIntAndRange::empty() const;
+lua:
+    oVectorOfCvVariantOfIntAndRange:empty() -> retval
+```
+
+### VectorOfCvVariantOfIntAndRange.front
+
+```cpp
+cv::util::variant<int, cv::Range> VectorOfCvVariantOfIntAndRange::front();
+lua:
+    oVectorOfCvVariantOfIntAndRange:front() -> retval
+```
+
+### VectorOfCvVariantOfIntAndRange.max\_size
+
+```cpp
+size_t VectorOfCvVariantOfIntAndRange::max_size();
+lua:
+    oVectorOfCvVariantOfIntAndRange:max_size() -> retval
+```
+
+### VectorOfCvVariantOfIntAndRange.pop\_back
+
+```cpp
+void VectorOfCvVariantOfIntAndRange::pop_back();
+lua:
+    oVectorOfCvVariantOfIntAndRange:pop_back() -> None
+```
+
+### VectorOfCvVariantOfIntAndRange.reserve
+
+```cpp
+void VectorOfCvVariantOfIntAndRange::reserve( size_t new_cap );
+lua:
+    oVectorOfCvVariantOfIntAndRange:reserve( new_cap ) -> None
+```
+
+### VectorOfCvVariantOfIntAndRange.resize
+
+```cpp
+void VectorOfCvVariantOfIntAndRange::resize( size_t count );
+lua:
+    oVectorOfCvVariantOfIntAndRange:resize( count ) -> None
+```
+
+```cpp
+void VectorOfCvVariantOfIntAndRange::resize( size_t                                   count,
+                                             const cv::util::variant<int, cv::Range>& value );
+lua:
+    oVectorOfCvVariantOfIntAndRange:resize( count, value ) -> None
+```
+
+### VectorOfCvVariantOfIntAndRange.shrink\_to\_fit
+
+```cpp
+void VectorOfCvVariantOfIntAndRange::shrink_to_fit();
+lua:
+    oVectorOfCvVariantOfIntAndRange:shrink_to_fit() -> None
+```
+
+### VectorOfCvVariantOfIntAndRange.sizeof
+
+```cpp
+size_t VectorOfCvVariantOfIntAndRange::size();
+lua:
+    oVectorOfCvVariantOfIntAndRange:sizeof() -> retval
 ```
 
 ### VectorOfCvVariantOfIntAndRange.sol::meta\_function::index
@@ -62042,6 +63974,14 @@ void VectorOfCvVariantOfIntAndRange::sol::meta_function::new_index( size_t      
                                                                     cv::util::variant<int, cv::Range> value );
 lua:
     oVectorOfCvVariantOfIntAndRange:__newindex( index, value ) -> None
+```
+
+### VectorOfCvVariantOfIntAndRange.swap
+
+```cpp
+void VectorOfCvVariantOfIntAndRange::swap( std::vector<cv::util::variant<int, cv::Range>>& other );
+lua:
+    oVectorOfCvVariantOfIntAndRange:swap( other ) -> None
 ```
 
 ### VectorOfCvVariantOfIntAndRange.table
@@ -62077,12 +64017,123 @@ lua:
     VectorOfDMatch( other ) -> <std::vector<cv::DMatch> object>
 ```
 
+```cpp
+std::vector<cv::DMatch>( cv::DMatch* data,
+                         size_t      count );
+lua:
+    VectorOfDMatch.new( data, count ) -> <std::vector<cv::DMatch> object>
+    VectorOfDMatch( data, count ) -> <std::vector<cv::DMatch> object>
+```
+
+```cpp
+std::vector<cv::DMatch>( cv::DMatch* first,
+                         cv::DMatch* last );
+lua:
+    VectorOfDMatch.new( first, last ) -> <std::vector<cv::DMatch> object>
+    VectorOfDMatch( first, last ) -> <std::vector<cv::DMatch> object>
+```
+
+### VectorOfDMatch.back
+
+```cpp
+cv::DMatch VectorOfDMatch::back();
+lua:
+    oVectorOfDMatch:back() -> retval
+```
+
+### VectorOfDMatch.capacity
+
+```cpp
+size_t VectorOfDMatch::capacity();
+lua:
+    oVectorOfDMatch:capacity() -> retval
+```
+
+### VectorOfDMatch.clear
+
+```cpp
+void VectorOfDMatch::clear();
+lua:
+    oVectorOfDMatch:clear() -> None
+```
+
 ### VectorOfDMatch.data
 
 ```cpp
 void* VectorOfDMatch::data();
 lua:
     oVectorOfDMatch:data() -> retval
+```
+
+### VectorOfDMatch.empty
+
+```cpp
+bool VectorOfDMatch::empty() const;
+lua:
+    oVectorOfDMatch:empty() -> retval
+```
+
+### VectorOfDMatch.front
+
+```cpp
+cv::DMatch VectorOfDMatch::front();
+lua:
+    oVectorOfDMatch:front() -> retval
+```
+
+### VectorOfDMatch.max\_size
+
+```cpp
+size_t VectorOfDMatch::max_size();
+lua:
+    oVectorOfDMatch:max_size() -> retval
+```
+
+### VectorOfDMatch.pop\_back
+
+```cpp
+void VectorOfDMatch::pop_back();
+lua:
+    oVectorOfDMatch:pop_back() -> None
+```
+
+### VectorOfDMatch.reserve
+
+```cpp
+void VectorOfDMatch::reserve( size_t new_cap );
+lua:
+    oVectorOfDMatch:reserve( new_cap ) -> None
+```
+
+### VectorOfDMatch.resize
+
+```cpp
+void VectorOfDMatch::resize( size_t count );
+lua:
+    oVectorOfDMatch:resize( count ) -> None
+```
+
+```cpp
+void VectorOfDMatch::resize( size_t            count,
+                             const cv::DMatch& value );
+lua:
+    oVectorOfDMatch:resize( count, value ) -> None
+```
+
+### VectorOfDMatch.shrink\_to\_fit
+
+```cpp
+void VectorOfDMatch::shrink_to_fit();
+lua:
+    oVectorOfDMatch:shrink_to_fit() -> None
+```
+
+### VectorOfDMatch.sizeof
+
+```cpp
+size_t VectorOfDMatch::size();
+lua:
+    oVectorOfDMatch:sizeof() -> retval
 ```
 
 ### VectorOfDMatch.sol::meta\_function::index
@@ -62108,6 +64159,14 @@ void VectorOfDMatch::sol::meta_function::new_index( size_t     index,
                                                     cv::DMatch value );
 lua:
     oVectorOfDMatch:__newindex( index, value ) -> None
+```
+
+### VectorOfDMatch.swap
+
+```cpp
+void VectorOfDMatch::swap( std::vector<cv::DMatch>& other );
+lua:
+    oVectorOfDMatch:swap( other ) -> None
 ```
 
 ### VectorOfDMatch.table
@@ -62143,12 +64202,123 @@ lua:
     VectorOfDetail_CameraParams( other ) -> <std::vector<cv::detail::CameraParams> object>
 ```
 
+```cpp
+std::vector<cv::detail::CameraParams>( cv::detail::CameraParams* data,
+                                       size_t                    count );
+lua:
+    VectorOfDetail_CameraParams.new( data, count ) -> <std::vector<cv::detail::CameraParams> object>
+    VectorOfDetail_CameraParams( data, count ) -> <std::vector<cv::detail::CameraParams> object>
+```
+
+```cpp
+std::vector<cv::detail::CameraParams>( cv::detail::CameraParams* first,
+                                       cv::detail::CameraParams* last );
+lua:
+    VectorOfDetail_CameraParams.new( first, last ) -> <std::vector<cv::detail::CameraParams> object>
+    VectorOfDetail_CameraParams( first, last ) -> <std::vector<cv::detail::CameraParams> object>
+```
+
+### VectorOfDetail\_CameraParams.back
+
+```cpp
+cv::detail::CameraParams VectorOfDetail_CameraParams::back();
+lua:
+    oVectorOfDetail_CameraParams:back() -> retval
+```
+
+### VectorOfDetail\_CameraParams.capacity
+
+```cpp
+size_t VectorOfDetail_CameraParams::capacity();
+lua:
+    oVectorOfDetail_CameraParams:capacity() -> retval
+```
+
+### VectorOfDetail\_CameraParams.clear
+
+```cpp
+void VectorOfDetail_CameraParams::clear();
+lua:
+    oVectorOfDetail_CameraParams:clear() -> None
+```
+
 ### VectorOfDetail\_CameraParams.data
 
 ```cpp
 void* VectorOfDetail_CameraParams::data();
 lua:
     oVectorOfDetail_CameraParams:data() -> retval
+```
+
+### VectorOfDetail\_CameraParams.empty
+
+```cpp
+bool VectorOfDetail_CameraParams::empty() const;
+lua:
+    oVectorOfDetail_CameraParams:empty() -> retval
+```
+
+### VectorOfDetail\_CameraParams.front
+
+```cpp
+cv::detail::CameraParams VectorOfDetail_CameraParams::front();
+lua:
+    oVectorOfDetail_CameraParams:front() -> retval
+```
+
+### VectorOfDetail\_CameraParams.max\_size
+
+```cpp
+size_t VectorOfDetail_CameraParams::max_size();
+lua:
+    oVectorOfDetail_CameraParams:max_size() -> retval
+```
+
+### VectorOfDetail\_CameraParams.pop\_back
+
+```cpp
+void VectorOfDetail_CameraParams::pop_back();
+lua:
+    oVectorOfDetail_CameraParams:pop_back() -> None
+```
+
+### VectorOfDetail\_CameraParams.reserve
+
+```cpp
+void VectorOfDetail_CameraParams::reserve( size_t new_cap );
+lua:
+    oVectorOfDetail_CameraParams:reserve( new_cap ) -> None
+```
+
+### VectorOfDetail\_CameraParams.resize
+
+```cpp
+void VectorOfDetail_CameraParams::resize( size_t count );
+lua:
+    oVectorOfDetail_CameraParams:resize( count ) -> None
+```
+
+```cpp
+void VectorOfDetail_CameraParams::resize( size_t                          count,
+                                          const cv::detail::CameraParams& value );
+lua:
+    oVectorOfDetail_CameraParams:resize( count, value ) -> None
+```
+
+### VectorOfDetail\_CameraParams.shrink\_to\_fit
+
+```cpp
+void VectorOfDetail_CameraParams::shrink_to_fit();
+lua:
+    oVectorOfDetail_CameraParams:shrink_to_fit() -> None
+```
+
+### VectorOfDetail\_CameraParams.sizeof
+
+```cpp
+size_t VectorOfDetail_CameraParams::size();
+lua:
+    oVectorOfDetail_CameraParams:sizeof() -> retval
 ```
 
 ### VectorOfDetail\_CameraParams.sol::meta\_function::index
@@ -62174,6 +64344,14 @@ void VectorOfDetail_CameraParams::sol::meta_function::new_index( size_t         
                                                                  cv::detail::CameraParams value );
 lua:
     oVectorOfDetail_CameraParams:__newindex( index, value ) -> None
+```
+
+### VectorOfDetail\_CameraParams.swap
+
+```cpp
+void VectorOfDetail_CameraParams::swap( std::vector<cv::detail::CameraParams>& other );
+lua:
+    oVectorOfDetail_CameraParams:swap( other ) -> None
 ```
 
 ### VectorOfDetail\_CameraParams.table
@@ -62209,12 +64387,123 @@ lua:
     VectorOfDetail_ImageFeatures( other ) -> <std::vector<cv::detail::ImageFeatures> object>
 ```
 
+```cpp
+std::vector<cv::detail::ImageFeatures>( cv::detail::ImageFeatures* data,
+                                        size_t                     count );
+lua:
+    VectorOfDetail_ImageFeatures.new( data, count ) -> <std::vector<cv::detail::ImageFeatures> object>
+    VectorOfDetail_ImageFeatures( data, count ) -> <std::vector<cv::detail::ImageFeatures> object>
+```
+
+```cpp
+std::vector<cv::detail::ImageFeatures>( cv::detail::ImageFeatures* first,
+                                        cv::detail::ImageFeatures* last );
+lua:
+    VectorOfDetail_ImageFeatures.new( first, last ) -> <std::vector<cv::detail::ImageFeatures> object>
+    VectorOfDetail_ImageFeatures( first, last ) -> <std::vector<cv::detail::ImageFeatures> object>
+```
+
+### VectorOfDetail\_ImageFeatures.back
+
+```cpp
+cv::detail::ImageFeatures VectorOfDetail_ImageFeatures::back();
+lua:
+    oVectorOfDetail_ImageFeatures:back() -> retval
+```
+
+### VectorOfDetail\_ImageFeatures.capacity
+
+```cpp
+size_t VectorOfDetail_ImageFeatures::capacity();
+lua:
+    oVectorOfDetail_ImageFeatures:capacity() -> retval
+```
+
+### VectorOfDetail\_ImageFeatures.clear
+
+```cpp
+void VectorOfDetail_ImageFeatures::clear();
+lua:
+    oVectorOfDetail_ImageFeatures:clear() -> None
+```
+
 ### VectorOfDetail\_ImageFeatures.data
 
 ```cpp
 void* VectorOfDetail_ImageFeatures::data();
 lua:
     oVectorOfDetail_ImageFeatures:data() -> retval
+```
+
+### VectorOfDetail\_ImageFeatures.empty
+
+```cpp
+bool VectorOfDetail_ImageFeatures::empty() const;
+lua:
+    oVectorOfDetail_ImageFeatures:empty() -> retval
+```
+
+### VectorOfDetail\_ImageFeatures.front
+
+```cpp
+cv::detail::ImageFeatures VectorOfDetail_ImageFeatures::front();
+lua:
+    oVectorOfDetail_ImageFeatures:front() -> retval
+```
+
+### VectorOfDetail\_ImageFeatures.max\_size
+
+```cpp
+size_t VectorOfDetail_ImageFeatures::max_size();
+lua:
+    oVectorOfDetail_ImageFeatures:max_size() -> retval
+```
+
+### VectorOfDetail\_ImageFeatures.pop\_back
+
+```cpp
+void VectorOfDetail_ImageFeatures::pop_back();
+lua:
+    oVectorOfDetail_ImageFeatures:pop_back() -> None
+```
+
+### VectorOfDetail\_ImageFeatures.reserve
+
+```cpp
+void VectorOfDetail_ImageFeatures::reserve( size_t new_cap );
+lua:
+    oVectorOfDetail_ImageFeatures:reserve( new_cap ) -> None
+```
+
+### VectorOfDetail\_ImageFeatures.resize
+
+```cpp
+void VectorOfDetail_ImageFeatures::resize( size_t count );
+lua:
+    oVectorOfDetail_ImageFeatures:resize( count ) -> None
+```
+
+```cpp
+void VectorOfDetail_ImageFeatures::resize( size_t                           count,
+                                           const cv::detail::ImageFeatures& value );
+lua:
+    oVectorOfDetail_ImageFeatures:resize( count, value ) -> None
+```
+
+### VectorOfDetail\_ImageFeatures.shrink\_to\_fit
+
+```cpp
+void VectorOfDetail_ImageFeatures::shrink_to_fit();
+lua:
+    oVectorOfDetail_ImageFeatures:shrink_to_fit() -> None
+```
+
+### VectorOfDetail\_ImageFeatures.sizeof
+
+```cpp
+size_t VectorOfDetail_ImageFeatures::size();
+lua:
+    oVectorOfDetail_ImageFeatures:sizeof() -> retval
 ```
 
 ### VectorOfDetail\_ImageFeatures.sol::meta\_function::index
@@ -62240,6 +64529,14 @@ void VectorOfDetail_ImageFeatures::sol::meta_function::new_index( size_t        
                                                                   cv::detail::ImageFeatures value );
 lua:
     oVectorOfDetail_ImageFeatures:__newindex( index, value ) -> None
+```
+
+### VectorOfDetail\_ImageFeatures.swap
+
+```cpp
+void VectorOfDetail_ImageFeatures::swap( std::vector<cv::detail::ImageFeatures>& other );
+lua:
+    oVectorOfDetail_ImageFeatures:swap( other ) -> None
 ```
 
 ### VectorOfDetail\_ImageFeatures.table
@@ -62275,12 +64572,123 @@ lua:
     VectorOfDetail_MatchesInfo( other ) -> <std::vector<cv::detail::MatchesInfo> object>
 ```
 
+```cpp
+std::vector<cv::detail::MatchesInfo>( cv::detail::MatchesInfo* data,
+                                      size_t                   count );
+lua:
+    VectorOfDetail_MatchesInfo.new( data, count ) -> <std::vector<cv::detail::MatchesInfo> object>
+    VectorOfDetail_MatchesInfo( data, count ) -> <std::vector<cv::detail::MatchesInfo> object>
+```
+
+```cpp
+std::vector<cv::detail::MatchesInfo>( cv::detail::MatchesInfo* first,
+                                      cv::detail::MatchesInfo* last );
+lua:
+    VectorOfDetail_MatchesInfo.new( first, last ) -> <std::vector<cv::detail::MatchesInfo> object>
+    VectorOfDetail_MatchesInfo( first, last ) -> <std::vector<cv::detail::MatchesInfo> object>
+```
+
+### VectorOfDetail\_MatchesInfo.back
+
+```cpp
+cv::detail::MatchesInfo VectorOfDetail_MatchesInfo::back();
+lua:
+    oVectorOfDetail_MatchesInfo:back() -> retval
+```
+
+### VectorOfDetail\_MatchesInfo.capacity
+
+```cpp
+size_t VectorOfDetail_MatchesInfo::capacity();
+lua:
+    oVectorOfDetail_MatchesInfo:capacity() -> retval
+```
+
+### VectorOfDetail\_MatchesInfo.clear
+
+```cpp
+void VectorOfDetail_MatchesInfo::clear();
+lua:
+    oVectorOfDetail_MatchesInfo:clear() -> None
+```
+
 ### VectorOfDetail\_MatchesInfo.data
 
 ```cpp
 void* VectorOfDetail_MatchesInfo::data();
 lua:
     oVectorOfDetail_MatchesInfo:data() -> retval
+```
+
+### VectorOfDetail\_MatchesInfo.empty
+
+```cpp
+bool VectorOfDetail_MatchesInfo::empty() const;
+lua:
+    oVectorOfDetail_MatchesInfo:empty() -> retval
+```
+
+### VectorOfDetail\_MatchesInfo.front
+
+```cpp
+cv::detail::MatchesInfo VectorOfDetail_MatchesInfo::front();
+lua:
+    oVectorOfDetail_MatchesInfo:front() -> retval
+```
+
+### VectorOfDetail\_MatchesInfo.max\_size
+
+```cpp
+size_t VectorOfDetail_MatchesInfo::max_size();
+lua:
+    oVectorOfDetail_MatchesInfo:max_size() -> retval
+```
+
+### VectorOfDetail\_MatchesInfo.pop\_back
+
+```cpp
+void VectorOfDetail_MatchesInfo::pop_back();
+lua:
+    oVectorOfDetail_MatchesInfo:pop_back() -> None
+```
+
+### VectorOfDetail\_MatchesInfo.reserve
+
+```cpp
+void VectorOfDetail_MatchesInfo::reserve( size_t new_cap );
+lua:
+    oVectorOfDetail_MatchesInfo:reserve( new_cap ) -> None
+```
+
+### VectorOfDetail\_MatchesInfo.resize
+
+```cpp
+void VectorOfDetail_MatchesInfo::resize( size_t count );
+lua:
+    oVectorOfDetail_MatchesInfo:resize( count ) -> None
+```
+
+```cpp
+void VectorOfDetail_MatchesInfo::resize( size_t                         count,
+                                         const cv::detail::MatchesInfo& value );
+lua:
+    oVectorOfDetail_MatchesInfo:resize( count, value ) -> None
+```
+
+### VectorOfDetail\_MatchesInfo.shrink\_to\_fit
+
+```cpp
+void VectorOfDetail_MatchesInfo::shrink_to_fit();
+lua:
+    oVectorOfDetail_MatchesInfo:shrink_to_fit() -> None
+```
+
+### VectorOfDetail\_MatchesInfo.sizeof
+
+```cpp
+size_t VectorOfDetail_MatchesInfo::size();
+lua:
+    oVectorOfDetail_MatchesInfo:sizeof() -> retval
 ```
 
 ### VectorOfDetail\_MatchesInfo.sol::meta\_function::index
@@ -62306,6 +64714,14 @@ void VectorOfDetail_MatchesInfo::sol::meta_function::new_index( size_t          
                                                                 cv::detail::MatchesInfo value );
 lua:
     oVectorOfDetail_MatchesInfo:__newindex( index, value ) -> None
+```
+
+### VectorOfDetail\_MatchesInfo.swap
+
+```cpp
+void VectorOfDetail_MatchesInfo::swap( std::vector<cv::detail::MatchesInfo>& other );
+lua:
+    oVectorOfDetail_MatchesInfo:swap( other ) -> None
 ```
 
 ### VectorOfDetail\_MatchesInfo.table
@@ -62341,12 +64757,123 @@ lua:
     VectorOfDnn_Target( other ) -> <std::vector<cv::dnn::Target> object>
 ```
 
+```cpp
+std::vector<cv::dnn::Target>( cv::dnn::Target* data,
+                              size_t           count );
+lua:
+    VectorOfDnn_Target.new( data, count ) -> <std::vector<cv::dnn::Target> object>
+    VectorOfDnn_Target( data, count ) -> <std::vector<cv::dnn::Target> object>
+```
+
+```cpp
+std::vector<cv::dnn::Target>( cv::dnn::Target* first,
+                              cv::dnn::Target* last );
+lua:
+    VectorOfDnn_Target.new( first, last ) -> <std::vector<cv::dnn::Target> object>
+    VectorOfDnn_Target( first, last ) -> <std::vector<cv::dnn::Target> object>
+```
+
+### VectorOfDnn\_Target.back
+
+```cpp
+cv::dnn::Target VectorOfDnn_Target::back();
+lua:
+    oVectorOfDnn_Target:back() -> retval
+```
+
+### VectorOfDnn\_Target.capacity
+
+```cpp
+size_t VectorOfDnn_Target::capacity();
+lua:
+    oVectorOfDnn_Target:capacity() -> retval
+```
+
+### VectorOfDnn\_Target.clear
+
+```cpp
+void VectorOfDnn_Target::clear();
+lua:
+    oVectorOfDnn_Target:clear() -> None
+```
+
 ### VectorOfDnn\_Target.data
 
 ```cpp
 void* VectorOfDnn_Target::data();
 lua:
     oVectorOfDnn_Target:data() -> retval
+```
+
+### VectorOfDnn\_Target.empty
+
+```cpp
+bool VectorOfDnn_Target::empty() const;
+lua:
+    oVectorOfDnn_Target:empty() -> retval
+```
+
+### VectorOfDnn\_Target.front
+
+```cpp
+cv::dnn::Target VectorOfDnn_Target::front();
+lua:
+    oVectorOfDnn_Target:front() -> retval
+```
+
+### VectorOfDnn\_Target.max\_size
+
+```cpp
+size_t VectorOfDnn_Target::max_size();
+lua:
+    oVectorOfDnn_Target:max_size() -> retval
+```
+
+### VectorOfDnn\_Target.pop\_back
+
+```cpp
+void VectorOfDnn_Target::pop_back();
+lua:
+    oVectorOfDnn_Target:pop_back() -> None
+```
+
+### VectorOfDnn\_Target.reserve
+
+```cpp
+void VectorOfDnn_Target::reserve( size_t new_cap );
+lua:
+    oVectorOfDnn_Target:reserve( new_cap ) -> None
+```
+
+### VectorOfDnn\_Target.resize
+
+```cpp
+void VectorOfDnn_Target::resize( size_t count );
+lua:
+    oVectorOfDnn_Target:resize( count ) -> None
+```
+
+```cpp
+void VectorOfDnn_Target::resize( size_t                 count,
+                                 const cv::dnn::Target& value );
+lua:
+    oVectorOfDnn_Target:resize( count, value ) -> None
+```
+
+### VectorOfDnn\_Target.shrink\_to\_fit
+
+```cpp
+void VectorOfDnn_Target::shrink_to_fit();
+lua:
+    oVectorOfDnn_Target:shrink_to_fit() -> None
+```
+
+### VectorOfDnn\_Target.sizeof
+
+```cpp
+size_t VectorOfDnn_Target::size();
+lua:
+    oVectorOfDnn_Target:sizeof() -> retval
 ```
 
 ### VectorOfDnn\_Target.sol::meta\_function::index
@@ -62372,6 +64899,14 @@ void VectorOfDnn_Target::sol::meta_function::new_index( size_t          index,
                                                         cv::dnn::Target value );
 lua:
     oVectorOfDnn_Target:__newindex( index, value ) -> None
+```
+
+### VectorOfDnn\_Target.swap
+
+```cpp
+void VectorOfDnn_Target::swap( std::vector<cv::dnn::Target>& other );
+lua:
+    oVectorOfDnn_Target:swap( other ) -> None
 ```
 
 ### VectorOfDnn\_Target.table
@@ -62407,12 +64942,123 @@ lua:
     VectorOfDouble( other ) -> <std::vector<double> object>
 ```
 
+```cpp
+std::vector<double>( double* data,
+                     size_t  count );
+lua:
+    VectorOfDouble.new( data, count ) -> <std::vector<double> object>
+    VectorOfDouble( data, count ) -> <std::vector<double> object>
+```
+
+```cpp
+std::vector<double>( double* first,
+                     double* last );
+lua:
+    VectorOfDouble.new( first, last ) -> <std::vector<double> object>
+    VectorOfDouble( first, last ) -> <std::vector<double> object>
+```
+
+### VectorOfDouble.back
+
+```cpp
+double VectorOfDouble::back();
+lua:
+    oVectorOfDouble:back() -> retval
+```
+
+### VectorOfDouble.capacity
+
+```cpp
+size_t VectorOfDouble::capacity();
+lua:
+    oVectorOfDouble:capacity() -> retval
+```
+
+### VectorOfDouble.clear
+
+```cpp
+void VectorOfDouble::clear();
+lua:
+    oVectorOfDouble:clear() -> None
+```
+
 ### VectorOfDouble.data
 
 ```cpp
 void* VectorOfDouble::data();
 lua:
     oVectorOfDouble:data() -> retval
+```
+
+### VectorOfDouble.empty
+
+```cpp
+bool VectorOfDouble::empty() const;
+lua:
+    oVectorOfDouble:empty() -> retval
+```
+
+### VectorOfDouble.front
+
+```cpp
+double VectorOfDouble::front();
+lua:
+    oVectorOfDouble:front() -> retval
+```
+
+### VectorOfDouble.max\_size
+
+```cpp
+size_t VectorOfDouble::max_size();
+lua:
+    oVectorOfDouble:max_size() -> retval
+```
+
+### VectorOfDouble.pop\_back
+
+```cpp
+void VectorOfDouble::pop_back();
+lua:
+    oVectorOfDouble:pop_back() -> None
+```
+
+### VectorOfDouble.reserve
+
+```cpp
+void VectorOfDouble::reserve( size_t new_cap );
+lua:
+    oVectorOfDouble:reserve( new_cap ) -> None
+```
+
+### VectorOfDouble.resize
+
+```cpp
+void VectorOfDouble::resize( size_t count );
+lua:
+    oVectorOfDouble:resize( count ) -> None
+```
+
+```cpp
+void VectorOfDouble::resize( size_t        count,
+                             const double& value );
+lua:
+    oVectorOfDouble:resize( count, value ) -> None
+```
+
+### VectorOfDouble.shrink\_to\_fit
+
+```cpp
+void VectorOfDouble::shrink_to_fit();
+lua:
+    oVectorOfDouble:shrink_to_fit() -> None
+```
+
+### VectorOfDouble.sizeof
+
+```cpp
+size_t VectorOfDouble::size();
+lua:
+    oVectorOfDouble:sizeof() -> retval
 ```
 
 ### VectorOfDouble.sol::meta\_function::index
@@ -62438,6 +65084,14 @@ void VectorOfDouble::sol::meta_function::new_index( size_t index,
                                                     double value );
 lua:
     oVectorOfDouble:__newindex( index, value ) -> None
+```
+
+### VectorOfDouble.swap
+
+```cpp
+void VectorOfDouble::swap( std::vector<double>& other );
+lua:
+    oVectorOfDouble:swap( other ) -> None
 ```
 
 ### VectorOfDouble.table
@@ -62473,12 +65127,123 @@ lua:
     VectorOfFloat( other ) -> <std::vector<float> object>
 ```
 
+```cpp
+std::vector<float>( float* data,
+                    size_t count );
+lua:
+    VectorOfFloat.new( data, count ) -> <std::vector<float> object>
+    VectorOfFloat( data, count ) -> <std::vector<float> object>
+```
+
+```cpp
+std::vector<float>( float* first,
+                    float* last );
+lua:
+    VectorOfFloat.new( first, last ) -> <std::vector<float> object>
+    VectorOfFloat( first, last ) -> <std::vector<float> object>
+```
+
+### VectorOfFloat.back
+
+```cpp
+float VectorOfFloat::back();
+lua:
+    oVectorOfFloat:back() -> retval
+```
+
+### VectorOfFloat.capacity
+
+```cpp
+size_t VectorOfFloat::capacity();
+lua:
+    oVectorOfFloat:capacity() -> retval
+```
+
+### VectorOfFloat.clear
+
+```cpp
+void VectorOfFloat::clear();
+lua:
+    oVectorOfFloat:clear() -> None
+```
+
 ### VectorOfFloat.data
 
 ```cpp
 void* VectorOfFloat::data();
 lua:
     oVectorOfFloat:data() -> retval
+```
+
+### VectorOfFloat.empty
+
+```cpp
+bool VectorOfFloat::empty() const;
+lua:
+    oVectorOfFloat:empty() -> retval
+```
+
+### VectorOfFloat.front
+
+```cpp
+float VectorOfFloat::front();
+lua:
+    oVectorOfFloat:front() -> retval
+```
+
+### VectorOfFloat.max\_size
+
+```cpp
+size_t VectorOfFloat::max_size();
+lua:
+    oVectorOfFloat:max_size() -> retval
+```
+
+### VectorOfFloat.pop\_back
+
+```cpp
+void VectorOfFloat::pop_back();
+lua:
+    oVectorOfFloat:pop_back() -> None
+```
+
+### VectorOfFloat.reserve
+
+```cpp
+void VectorOfFloat::reserve( size_t new_cap );
+lua:
+    oVectorOfFloat:reserve( new_cap ) -> None
+```
+
+### VectorOfFloat.resize
+
+```cpp
+void VectorOfFloat::resize( size_t count );
+lua:
+    oVectorOfFloat:resize( count ) -> None
+```
+
+```cpp
+void VectorOfFloat::resize( size_t       count,
+                            const float& value );
+lua:
+    oVectorOfFloat:resize( count, value ) -> None
+```
+
+### VectorOfFloat.shrink\_to\_fit
+
+```cpp
+void VectorOfFloat::shrink_to_fit();
+lua:
+    oVectorOfFloat:shrink_to_fit() -> None
+```
+
+### VectorOfFloat.sizeof
+
+```cpp
+size_t VectorOfFloat::size();
+lua:
+    oVectorOfFloat:sizeof() -> retval
 ```
 
 ### VectorOfFloat.sol::meta\_function::index
@@ -62504,6 +65269,14 @@ void VectorOfFloat::sol::meta_function::new_index( size_t index,
                                                    float  value );
 lua:
     oVectorOfFloat:__newindex( index, value ) -> None
+```
+
+### VectorOfFloat.swap
+
+```cpp
+void VectorOfFloat::swap( std::vector<float>& other );
+lua:
+    oVectorOfFloat:swap( other ) -> None
 ```
 
 ### VectorOfFloat.table
@@ -62539,12 +65312,123 @@ lua:
     VectorOfGCompileArg( other ) -> <std::vector<cv::GCompileArg> object>
 ```
 
+```cpp
+std::vector<cv::GCompileArg>( cv::GCompileArg* data,
+                              size_t           count );
+lua:
+    VectorOfGCompileArg.new( data, count ) -> <std::vector<cv::GCompileArg> object>
+    VectorOfGCompileArg( data, count ) -> <std::vector<cv::GCompileArg> object>
+```
+
+```cpp
+std::vector<cv::GCompileArg>( cv::GCompileArg* first,
+                              cv::GCompileArg* last );
+lua:
+    VectorOfGCompileArg.new( first, last ) -> <std::vector<cv::GCompileArg> object>
+    VectorOfGCompileArg( first, last ) -> <std::vector<cv::GCompileArg> object>
+```
+
+### VectorOfGCompileArg.back
+
+```cpp
+cv::GCompileArg VectorOfGCompileArg::back();
+lua:
+    oVectorOfGCompileArg:back() -> retval
+```
+
+### VectorOfGCompileArg.capacity
+
+```cpp
+size_t VectorOfGCompileArg::capacity();
+lua:
+    oVectorOfGCompileArg:capacity() -> retval
+```
+
+### VectorOfGCompileArg.clear
+
+```cpp
+void VectorOfGCompileArg::clear();
+lua:
+    oVectorOfGCompileArg:clear() -> None
+```
+
 ### VectorOfGCompileArg.data
 
 ```cpp
 void* VectorOfGCompileArg::data();
 lua:
     oVectorOfGCompileArg:data() -> retval
+```
+
+### VectorOfGCompileArg.empty
+
+```cpp
+bool VectorOfGCompileArg::empty() const;
+lua:
+    oVectorOfGCompileArg:empty() -> retval
+```
+
+### VectorOfGCompileArg.front
+
+```cpp
+cv::GCompileArg VectorOfGCompileArg::front();
+lua:
+    oVectorOfGCompileArg:front() -> retval
+```
+
+### VectorOfGCompileArg.max\_size
+
+```cpp
+size_t VectorOfGCompileArg::max_size();
+lua:
+    oVectorOfGCompileArg:max_size() -> retval
+```
+
+### VectorOfGCompileArg.pop\_back
+
+```cpp
+void VectorOfGCompileArg::pop_back();
+lua:
+    oVectorOfGCompileArg:pop_back() -> None
+```
+
+### VectorOfGCompileArg.reserve
+
+```cpp
+void VectorOfGCompileArg::reserve( size_t new_cap );
+lua:
+    oVectorOfGCompileArg:reserve( new_cap ) -> None
+```
+
+### VectorOfGCompileArg.resize
+
+```cpp
+void VectorOfGCompileArg::resize( size_t count );
+lua:
+    oVectorOfGCompileArg:resize( count ) -> None
+```
+
+```cpp
+void VectorOfGCompileArg::resize( size_t                 count,
+                                  const cv::GCompileArg& value );
+lua:
+    oVectorOfGCompileArg:resize( count, value ) -> None
+```
+
+### VectorOfGCompileArg.shrink\_to\_fit
+
+```cpp
+void VectorOfGCompileArg::shrink_to_fit();
+lua:
+    oVectorOfGCompileArg:shrink_to_fit() -> None
+```
+
+### VectorOfGCompileArg.sizeof
+
+```cpp
+size_t VectorOfGCompileArg::size();
+lua:
+    oVectorOfGCompileArg:sizeof() -> retval
 ```
 
 ### VectorOfGCompileArg.sol::meta\_function::index
@@ -62570,6 +65454,14 @@ void VectorOfGCompileArg::sol::meta_function::new_index( size_t          index,
                                                          cv::GCompileArg value );
 lua:
     oVectorOfGCompileArg:__newindex( index, value ) -> None
+```
+
+### VectorOfGCompileArg.swap
+
+```cpp
+void VectorOfGCompileArg::swap( std::vector<cv::GCompileArg>& other );
+lua:
+    oVectorOfGCompileArg:swap( other ) -> None
 ```
 
 ### VectorOfGCompileArg.table
@@ -62605,12 +65497,123 @@ lua:
     VectorOfGMat( other ) -> <std::vector<cv::GMat> object>
 ```
 
+```cpp
+std::vector<cv::GMat>( cv::GMat* data,
+                       size_t    count );
+lua:
+    VectorOfGMat.new( data, count ) -> <std::vector<cv::GMat> object>
+    VectorOfGMat( data, count ) -> <std::vector<cv::GMat> object>
+```
+
+```cpp
+std::vector<cv::GMat>( cv::GMat* first,
+                       cv::GMat* last );
+lua:
+    VectorOfGMat.new( first, last ) -> <std::vector<cv::GMat> object>
+    VectorOfGMat( first, last ) -> <std::vector<cv::GMat> object>
+```
+
+### VectorOfGMat.back
+
+```cpp
+cv::GMat VectorOfGMat::back();
+lua:
+    oVectorOfGMat:back() -> retval
+```
+
+### VectorOfGMat.capacity
+
+```cpp
+size_t VectorOfGMat::capacity();
+lua:
+    oVectorOfGMat:capacity() -> retval
+```
+
+### VectorOfGMat.clear
+
+```cpp
+void VectorOfGMat::clear();
+lua:
+    oVectorOfGMat:clear() -> None
+```
+
 ### VectorOfGMat.data
 
 ```cpp
 void* VectorOfGMat::data();
 lua:
     oVectorOfGMat:data() -> retval
+```
+
+### VectorOfGMat.empty
+
+```cpp
+bool VectorOfGMat::empty() const;
+lua:
+    oVectorOfGMat:empty() -> retval
+```
+
+### VectorOfGMat.front
+
+```cpp
+cv::GMat VectorOfGMat::front();
+lua:
+    oVectorOfGMat:front() -> retval
+```
+
+### VectorOfGMat.max\_size
+
+```cpp
+size_t VectorOfGMat::max_size();
+lua:
+    oVectorOfGMat:max_size() -> retval
+```
+
+### VectorOfGMat.pop\_back
+
+```cpp
+void VectorOfGMat::pop_back();
+lua:
+    oVectorOfGMat:pop_back() -> None
+```
+
+### VectorOfGMat.reserve
+
+```cpp
+void VectorOfGMat::reserve( size_t new_cap );
+lua:
+    oVectorOfGMat:reserve( new_cap ) -> None
+```
+
+### VectorOfGMat.resize
+
+```cpp
+void VectorOfGMat::resize( size_t count );
+lua:
+    oVectorOfGMat:resize( count ) -> None
+```
+
+```cpp
+void VectorOfGMat::resize( size_t          count,
+                           const cv::GMat& value );
+lua:
+    oVectorOfGMat:resize( count, value ) -> None
+```
+
+### VectorOfGMat.shrink\_to\_fit
+
+```cpp
+void VectorOfGMat::shrink_to_fit();
+lua:
+    oVectorOfGMat:shrink_to_fit() -> None
+```
+
+### VectorOfGMat.sizeof
+
+```cpp
+size_t VectorOfGMat::size();
+lua:
+    oVectorOfGMat:sizeof() -> retval
 ```
 
 ### VectorOfGMat.sol::meta\_function::index
@@ -62636,6 +65639,14 @@ void VectorOfGMat::sol::meta_function::new_index( size_t   index,
                                                   cv::GMat value );
 lua:
     oVectorOfGMat:__newindex( index, value ) -> None
+```
+
+### VectorOfGMat.swap
+
+```cpp
+void VectorOfGMat::swap( std::vector<cv::GMat>& other );
+lua:
+    oVectorOfGMat:swap( other ) -> None
 ```
 
 ### VectorOfGMat.table
@@ -62671,12 +65682,123 @@ lua:
     VectorOfGMetaArg( other ) -> <std::vector<cv::GMetaArg> object>
 ```
 
+```cpp
+std::vector<cv::GMetaArg>( cv::GMetaArg* data,
+                           size_t        count );
+lua:
+    VectorOfGMetaArg.new( data, count ) -> <std::vector<cv::GMetaArg> object>
+    VectorOfGMetaArg( data, count ) -> <std::vector<cv::GMetaArg> object>
+```
+
+```cpp
+std::vector<cv::GMetaArg>( cv::GMetaArg* first,
+                           cv::GMetaArg* last );
+lua:
+    VectorOfGMetaArg.new( first, last ) -> <std::vector<cv::GMetaArg> object>
+    VectorOfGMetaArg( first, last ) -> <std::vector<cv::GMetaArg> object>
+```
+
+### VectorOfGMetaArg.back
+
+```cpp
+cv::GMetaArg VectorOfGMetaArg::back();
+lua:
+    oVectorOfGMetaArg:back() -> retval
+```
+
+### VectorOfGMetaArg.capacity
+
+```cpp
+size_t VectorOfGMetaArg::capacity();
+lua:
+    oVectorOfGMetaArg:capacity() -> retval
+```
+
+### VectorOfGMetaArg.clear
+
+```cpp
+void VectorOfGMetaArg::clear();
+lua:
+    oVectorOfGMetaArg:clear() -> None
+```
+
 ### VectorOfGMetaArg.data
 
 ```cpp
 void* VectorOfGMetaArg::data();
 lua:
     oVectorOfGMetaArg:data() -> retval
+```
+
+### VectorOfGMetaArg.empty
+
+```cpp
+bool VectorOfGMetaArg::empty() const;
+lua:
+    oVectorOfGMetaArg:empty() -> retval
+```
+
+### VectorOfGMetaArg.front
+
+```cpp
+cv::GMetaArg VectorOfGMetaArg::front();
+lua:
+    oVectorOfGMetaArg:front() -> retval
+```
+
+### VectorOfGMetaArg.max\_size
+
+```cpp
+size_t VectorOfGMetaArg::max_size();
+lua:
+    oVectorOfGMetaArg:max_size() -> retval
+```
+
+### VectorOfGMetaArg.pop\_back
+
+```cpp
+void VectorOfGMetaArg::pop_back();
+lua:
+    oVectorOfGMetaArg:pop_back() -> None
+```
+
+### VectorOfGMetaArg.reserve
+
+```cpp
+void VectorOfGMetaArg::reserve( size_t new_cap );
+lua:
+    oVectorOfGMetaArg:reserve( new_cap ) -> None
+```
+
+### VectorOfGMetaArg.resize
+
+```cpp
+void VectorOfGMetaArg::resize( size_t count );
+lua:
+    oVectorOfGMetaArg:resize( count ) -> None
+```
+
+```cpp
+void VectorOfGMetaArg::resize( size_t              count,
+                               const cv::GMetaArg& value );
+lua:
+    oVectorOfGMetaArg:resize( count, value ) -> None
+```
+
+### VectorOfGMetaArg.shrink\_to\_fit
+
+```cpp
+void VectorOfGMetaArg::shrink_to_fit();
+lua:
+    oVectorOfGMetaArg:shrink_to_fit() -> None
+```
+
+### VectorOfGMetaArg.sizeof
+
+```cpp
+size_t VectorOfGMetaArg::size();
+lua:
+    oVectorOfGMetaArg:sizeof() -> retval
 ```
 
 ### VectorOfGMetaArg.sol::meta\_function::index
@@ -62702,6 +65824,14 @@ void VectorOfGMetaArg::sol::meta_function::new_index( size_t       index,
                                                       cv::GMetaArg value );
 lua:
     oVectorOfGMetaArg:__newindex( index, value ) -> None
+```
+
+### VectorOfGMetaArg.swap
+
+```cpp
+void VectorOfGMetaArg::swap( std::vector<cv::GMetaArg>& other );
+lua:
+    oVectorOfGMetaArg:swap( other ) -> None
 ```
 
 ### VectorOfGMetaArg.table
@@ -62737,12 +65867,123 @@ lua:
     VectorOfGRunArg( other ) -> <std::vector<cv::GRunArg> object>
 ```
 
+```cpp
+std::vector<cv::GRunArg>( cv::GRunArg* data,
+                          size_t       count );
+lua:
+    VectorOfGRunArg.new( data, count ) -> <std::vector<cv::GRunArg> object>
+    VectorOfGRunArg( data, count ) -> <std::vector<cv::GRunArg> object>
+```
+
+```cpp
+std::vector<cv::GRunArg>( cv::GRunArg* first,
+                          cv::GRunArg* last );
+lua:
+    VectorOfGRunArg.new( first, last ) -> <std::vector<cv::GRunArg> object>
+    VectorOfGRunArg( first, last ) -> <std::vector<cv::GRunArg> object>
+```
+
+### VectorOfGRunArg.back
+
+```cpp
+cv::GRunArg VectorOfGRunArg::back();
+lua:
+    oVectorOfGRunArg:back() -> retval
+```
+
+### VectorOfGRunArg.capacity
+
+```cpp
+size_t VectorOfGRunArg::capacity();
+lua:
+    oVectorOfGRunArg:capacity() -> retval
+```
+
+### VectorOfGRunArg.clear
+
+```cpp
+void VectorOfGRunArg::clear();
+lua:
+    oVectorOfGRunArg:clear() -> None
+```
+
 ### VectorOfGRunArg.data
 
 ```cpp
 void* VectorOfGRunArg::data();
 lua:
     oVectorOfGRunArg:data() -> retval
+```
+
+### VectorOfGRunArg.empty
+
+```cpp
+bool VectorOfGRunArg::empty() const;
+lua:
+    oVectorOfGRunArg:empty() -> retval
+```
+
+### VectorOfGRunArg.front
+
+```cpp
+cv::GRunArg VectorOfGRunArg::front();
+lua:
+    oVectorOfGRunArg:front() -> retval
+```
+
+### VectorOfGRunArg.max\_size
+
+```cpp
+size_t VectorOfGRunArg::max_size();
+lua:
+    oVectorOfGRunArg:max_size() -> retval
+```
+
+### VectorOfGRunArg.pop\_back
+
+```cpp
+void VectorOfGRunArg::pop_back();
+lua:
+    oVectorOfGRunArg:pop_back() -> None
+```
+
+### VectorOfGRunArg.reserve
+
+```cpp
+void VectorOfGRunArg::reserve( size_t new_cap );
+lua:
+    oVectorOfGRunArg:reserve( new_cap ) -> None
+```
+
+### VectorOfGRunArg.resize
+
+```cpp
+void VectorOfGRunArg::resize( size_t count );
+lua:
+    oVectorOfGRunArg:resize( count ) -> None
+```
+
+```cpp
+void VectorOfGRunArg::resize( size_t             count,
+                              const cv::GRunArg& value );
+lua:
+    oVectorOfGRunArg:resize( count, value ) -> None
+```
+
+### VectorOfGRunArg.shrink\_to\_fit
+
+```cpp
+void VectorOfGRunArg::shrink_to_fit();
+lua:
+    oVectorOfGRunArg:shrink_to_fit() -> None
+```
+
+### VectorOfGRunArg.sizeof
+
+```cpp
+size_t VectorOfGRunArg::size();
+lua:
+    oVectorOfGRunArg:sizeof() -> retval
 ```
 
 ### VectorOfGRunArg.sol::meta\_function::index
@@ -62768,6 +66009,14 @@ void VectorOfGRunArg::sol::meta_function::new_index( size_t      index,
                                                      cv::GRunArg value );
 lua:
     oVectorOfGRunArg:__newindex( index, value ) -> None
+```
+
+### VectorOfGRunArg.swap
+
+```cpp
+void VectorOfGRunArg::swap( std::vector<cv::GRunArg>& other );
+lua:
+    oVectorOfGRunArg:swap( other ) -> None
 ```
 
 ### VectorOfGRunArg.table
@@ -62803,12 +66052,123 @@ lua:
     VectorOfGapi_GNetParam( other ) -> <std::vector<cv::gapi::GNetParam> object>
 ```
 
+```cpp
+std::vector<cv::gapi::GNetParam>( cv::gapi::GNetParam* data,
+                                  size_t               count );
+lua:
+    VectorOfGapi_GNetParam.new( data, count ) -> <std::vector<cv::gapi::GNetParam> object>
+    VectorOfGapi_GNetParam( data, count ) -> <std::vector<cv::gapi::GNetParam> object>
+```
+
+```cpp
+std::vector<cv::gapi::GNetParam>( cv::gapi::GNetParam* first,
+                                  cv::gapi::GNetParam* last );
+lua:
+    VectorOfGapi_GNetParam.new( first, last ) -> <std::vector<cv::gapi::GNetParam> object>
+    VectorOfGapi_GNetParam( first, last ) -> <std::vector<cv::gapi::GNetParam> object>
+```
+
+### VectorOfGapi\_GNetParam.back
+
+```cpp
+cv::gapi::GNetParam VectorOfGapi_GNetParam::back();
+lua:
+    oVectorOfGapi_GNetParam:back() -> retval
+```
+
+### VectorOfGapi\_GNetParam.capacity
+
+```cpp
+size_t VectorOfGapi_GNetParam::capacity();
+lua:
+    oVectorOfGapi_GNetParam:capacity() -> retval
+```
+
+### VectorOfGapi\_GNetParam.clear
+
+```cpp
+void VectorOfGapi_GNetParam::clear();
+lua:
+    oVectorOfGapi_GNetParam:clear() -> None
+```
+
 ### VectorOfGapi\_GNetParam.data
 
 ```cpp
 void* VectorOfGapi_GNetParam::data();
 lua:
     oVectorOfGapi_GNetParam:data() -> retval
+```
+
+### VectorOfGapi\_GNetParam.empty
+
+```cpp
+bool VectorOfGapi_GNetParam::empty() const;
+lua:
+    oVectorOfGapi_GNetParam:empty() -> retval
+```
+
+### VectorOfGapi\_GNetParam.front
+
+```cpp
+cv::gapi::GNetParam VectorOfGapi_GNetParam::front();
+lua:
+    oVectorOfGapi_GNetParam:front() -> retval
+```
+
+### VectorOfGapi\_GNetParam.max\_size
+
+```cpp
+size_t VectorOfGapi_GNetParam::max_size();
+lua:
+    oVectorOfGapi_GNetParam:max_size() -> retval
+```
+
+### VectorOfGapi\_GNetParam.pop\_back
+
+```cpp
+void VectorOfGapi_GNetParam::pop_back();
+lua:
+    oVectorOfGapi_GNetParam:pop_back() -> None
+```
+
+### VectorOfGapi\_GNetParam.reserve
+
+```cpp
+void VectorOfGapi_GNetParam::reserve( size_t new_cap );
+lua:
+    oVectorOfGapi_GNetParam:reserve( new_cap ) -> None
+```
+
+### VectorOfGapi\_GNetParam.resize
+
+```cpp
+void VectorOfGapi_GNetParam::resize( size_t count );
+lua:
+    oVectorOfGapi_GNetParam:resize( count ) -> None
+```
+
+```cpp
+void VectorOfGapi_GNetParam::resize( size_t                     count,
+                                     const cv::gapi::GNetParam& value );
+lua:
+    oVectorOfGapi_GNetParam:resize( count, value ) -> None
+```
+
+### VectorOfGapi\_GNetParam.shrink\_to\_fit
+
+```cpp
+void VectorOfGapi_GNetParam::shrink_to_fit();
+lua:
+    oVectorOfGapi_GNetParam:shrink_to_fit() -> None
+```
+
+### VectorOfGapi\_GNetParam.sizeof
+
+```cpp
+size_t VectorOfGapi_GNetParam::size();
+lua:
+    oVectorOfGapi_GNetParam:sizeof() -> retval
 ```
 
 ### VectorOfGapi\_GNetParam.sol::meta\_function::index
@@ -62834,6 +66194,14 @@ void VectorOfGapi_GNetParam::sol::meta_function::new_index( size_t              
                                                             cv::gapi::GNetParam value );
 lua:
     oVectorOfGapi_GNetParam:__newindex( index, value ) -> None
+```
+
+### VectorOfGapi\_GNetParam.swap
+
+```cpp
+void VectorOfGapi_GNetParam::swap( std::vector<cv::gapi::GNetParam>& other );
+lua:
+    oVectorOfGapi_GNetParam:swap( other ) -> None
 ```
 
 ### VectorOfGapi\_GNetParam.table
@@ -62869,12 +66237,123 @@ lua:
     VectorOfGapi_wip_draw_Prim( other ) -> <std::vector<cv::gapi::wip::draw::Prim> object>
 ```
 
+```cpp
+std::vector<cv::gapi::wip::draw::Prim>( cv::gapi::wip::draw::Prim* data,
+                                        size_t                     count );
+lua:
+    VectorOfGapi_wip_draw_Prim.new( data, count ) -> <std::vector<cv::gapi::wip::draw::Prim> object>
+    VectorOfGapi_wip_draw_Prim( data, count ) -> <std::vector<cv::gapi::wip::draw::Prim> object>
+```
+
+```cpp
+std::vector<cv::gapi::wip::draw::Prim>( cv::gapi::wip::draw::Prim* first,
+                                        cv::gapi::wip::draw::Prim* last );
+lua:
+    VectorOfGapi_wip_draw_Prim.new( first, last ) -> <std::vector<cv::gapi::wip::draw::Prim> object>
+    VectorOfGapi_wip_draw_Prim( first, last ) -> <std::vector<cv::gapi::wip::draw::Prim> object>
+```
+
+### VectorOfGapi\_wip\_draw\_Prim.back
+
+```cpp
+cv::gapi::wip::draw::Prim VectorOfGapi_wip_draw_Prim::back();
+lua:
+    oVectorOfGapi_wip_draw_Prim:back() -> retval
+```
+
+### VectorOfGapi\_wip\_draw\_Prim.capacity
+
+```cpp
+size_t VectorOfGapi_wip_draw_Prim::capacity();
+lua:
+    oVectorOfGapi_wip_draw_Prim:capacity() -> retval
+```
+
+### VectorOfGapi\_wip\_draw\_Prim.clear
+
+```cpp
+void VectorOfGapi_wip_draw_Prim::clear();
+lua:
+    oVectorOfGapi_wip_draw_Prim:clear() -> None
+```
+
 ### VectorOfGapi\_wip\_draw\_Prim.data
 
 ```cpp
 void* VectorOfGapi_wip_draw_Prim::data();
 lua:
     oVectorOfGapi_wip_draw_Prim:data() -> retval
+```
+
+### VectorOfGapi\_wip\_draw\_Prim.empty
+
+```cpp
+bool VectorOfGapi_wip_draw_Prim::empty() const;
+lua:
+    oVectorOfGapi_wip_draw_Prim:empty() -> retval
+```
+
+### VectorOfGapi\_wip\_draw\_Prim.front
+
+```cpp
+cv::gapi::wip::draw::Prim VectorOfGapi_wip_draw_Prim::front();
+lua:
+    oVectorOfGapi_wip_draw_Prim:front() -> retval
+```
+
+### VectorOfGapi\_wip\_draw\_Prim.max\_size
+
+```cpp
+size_t VectorOfGapi_wip_draw_Prim::max_size();
+lua:
+    oVectorOfGapi_wip_draw_Prim:max_size() -> retval
+```
+
+### VectorOfGapi\_wip\_draw\_Prim.pop\_back
+
+```cpp
+void VectorOfGapi_wip_draw_Prim::pop_back();
+lua:
+    oVectorOfGapi_wip_draw_Prim:pop_back() -> None
+```
+
+### VectorOfGapi\_wip\_draw\_Prim.reserve
+
+```cpp
+void VectorOfGapi_wip_draw_Prim::reserve( size_t new_cap );
+lua:
+    oVectorOfGapi_wip_draw_Prim:reserve( new_cap ) -> None
+```
+
+### VectorOfGapi\_wip\_draw\_Prim.resize
+
+```cpp
+void VectorOfGapi_wip_draw_Prim::resize( size_t count );
+lua:
+    oVectorOfGapi_wip_draw_Prim:resize( count ) -> None
+```
+
+```cpp
+void VectorOfGapi_wip_draw_Prim::resize( size_t                           count,
+                                         const cv::gapi::wip::draw::Prim& value );
+lua:
+    oVectorOfGapi_wip_draw_Prim:resize( count, value ) -> None
+```
+
+### VectorOfGapi\_wip\_draw\_Prim.shrink\_to\_fit
+
+```cpp
+void VectorOfGapi_wip_draw_Prim::shrink_to_fit();
+lua:
+    oVectorOfGapi_wip_draw_Prim:shrink_to_fit() -> None
+```
+
+### VectorOfGapi\_wip\_draw\_Prim.sizeof
+
+```cpp
+size_t VectorOfGapi_wip_draw_Prim::size();
+lua:
+    oVectorOfGapi_wip_draw_Prim:sizeof() -> retval
 ```
 
 ### VectorOfGapi\_wip\_draw\_Prim.sol::meta\_function::index
@@ -62900,6 +66379,14 @@ void VectorOfGapi_wip_draw_Prim::sol::meta_function::new_index( size_t          
                                                                 cv::gapi::wip::draw::Prim value );
 lua:
     oVectorOfGapi_wip_draw_Prim:__newindex( index, value ) -> None
+```
+
+### VectorOfGapi\_wip\_draw\_Prim.swap
+
+```cpp
+void VectorOfGapi_wip_draw_Prim::swap( std::vector<cv::gapi::wip::draw::Prim>& other );
+lua:
+    oVectorOfGapi_wip_draw_Prim:swap( other ) -> None
 ```
 
 ### VectorOfGapi\_wip\_draw\_Prim.table
@@ -62935,12 +66422,123 @@ lua:
     VectorOfInt( other ) -> <std::vector<int> object>
 ```
 
+```cpp
+std::vector<int>( int*   data,
+                  size_t count );
+lua:
+    VectorOfInt.new( data, count ) -> <std::vector<int> object>
+    VectorOfInt( data, count ) -> <std::vector<int> object>
+```
+
+```cpp
+std::vector<int>( int* first,
+                  int* last );
+lua:
+    VectorOfInt.new( first, last ) -> <std::vector<int> object>
+    VectorOfInt( first, last ) -> <std::vector<int> object>
+```
+
+### VectorOfInt.back
+
+```cpp
+int VectorOfInt::back();
+lua:
+    oVectorOfInt:back() -> retval
+```
+
+### VectorOfInt.capacity
+
+```cpp
+size_t VectorOfInt::capacity();
+lua:
+    oVectorOfInt:capacity() -> retval
+```
+
+### VectorOfInt.clear
+
+```cpp
+void VectorOfInt::clear();
+lua:
+    oVectorOfInt:clear() -> None
+```
+
 ### VectorOfInt.data
 
 ```cpp
 void* VectorOfInt::data();
 lua:
     oVectorOfInt:data() -> retval
+```
+
+### VectorOfInt.empty
+
+```cpp
+bool VectorOfInt::empty() const;
+lua:
+    oVectorOfInt:empty() -> retval
+```
+
+### VectorOfInt.front
+
+```cpp
+int VectorOfInt::front();
+lua:
+    oVectorOfInt:front() -> retval
+```
+
+### VectorOfInt.max\_size
+
+```cpp
+size_t VectorOfInt::max_size();
+lua:
+    oVectorOfInt:max_size() -> retval
+```
+
+### VectorOfInt.pop\_back
+
+```cpp
+void VectorOfInt::pop_back();
+lua:
+    oVectorOfInt:pop_back() -> None
+```
+
+### VectorOfInt.reserve
+
+```cpp
+void VectorOfInt::reserve( size_t new_cap );
+lua:
+    oVectorOfInt:reserve( new_cap ) -> None
+```
+
+### VectorOfInt.resize
+
+```cpp
+void VectorOfInt::resize( size_t count );
+lua:
+    oVectorOfInt:resize( count ) -> None
+```
+
+```cpp
+void VectorOfInt::resize( size_t     count,
+                          const int& value );
+lua:
+    oVectorOfInt:resize( count, value ) -> None
+```
+
+### VectorOfInt.shrink\_to\_fit
+
+```cpp
+void VectorOfInt::shrink_to_fit();
+lua:
+    oVectorOfInt:shrink_to_fit() -> None
+```
+
+### VectorOfInt.sizeof
+
+```cpp
+size_t VectorOfInt::size();
+lua:
+    oVectorOfInt:sizeof() -> retval
 ```
 
 ### VectorOfInt.sol::meta\_function::index
@@ -62966,6 +66564,14 @@ void VectorOfInt::sol::meta_function::new_index( size_t index,
                                                  int    value );
 lua:
     oVectorOfInt:__newindex( index, value ) -> None
+```
+
+### VectorOfInt.swap
+
+```cpp
+void VectorOfInt::swap( std::vector<int>& other );
+lua:
+    oVectorOfInt:swap( other ) -> None
 ```
 
 ### VectorOfInt.table
@@ -63001,12 +66607,123 @@ lua:
     VectorOfKeyPoint( other ) -> <std::vector<cv::KeyPoint> object>
 ```
 
+```cpp
+std::vector<cv::KeyPoint>( cv::KeyPoint* data,
+                           size_t        count );
+lua:
+    VectorOfKeyPoint.new( data, count ) -> <std::vector<cv::KeyPoint> object>
+    VectorOfKeyPoint( data, count ) -> <std::vector<cv::KeyPoint> object>
+```
+
+```cpp
+std::vector<cv::KeyPoint>( cv::KeyPoint* first,
+                           cv::KeyPoint* last );
+lua:
+    VectorOfKeyPoint.new( first, last ) -> <std::vector<cv::KeyPoint> object>
+    VectorOfKeyPoint( first, last ) -> <std::vector<cv::KeyPoint> object>
+```
+
+### VectorOfKeyPoint.back
+
+```cpp
+cv::KeyPoint VectorOfKeyPoint::back();
+lua:
+    oVectorOfKeyPoint:back() -> retval
+```
+
+### VectorOfKeyPoint.capacity
+
+```cpp
+size_t VectorOfKeyPoint::capacity();
+lua:
+    oVectorOfKeyPoint:capacity() -> retval
+```
+
+### VectorOfKeyPoint.clear
+
+```cpp
+void VectorOfKeyPoint::clear();
+lua:
+    oVectorOfKeyPoint:clear() -> None
+```
+
 ### VectorOfKeyPoint.data
 
 ```cpp
 void* VectorOfKeyPoint::data();
 lua:
     oVectorOfKeyPoint:data() -> retval
+```
+
+### VectorOfKeyPoint.empty
+
+```cpp
+bool VectorOfKeyPoint::empty() const;
+lua:
+    oVectorOfKeyPoint:empty() -> retval
+```
+
+### VectorOfKeyPoint.front
+
+```cpp
+cv::KeyPoint VectorOfKeyPoint::front();
+lua:
+    oVectorOfKeyPoint:front() -> retval
+```
+
+### VectorOfKeyPoint.max\_size
+
+```cpp
+size_t VectorOfKeyPoint::max_size();
+lua:
+    oVectorOfKeyPoint:max_size() -> retval
+```
+
+### VectorOfKeyPoint.pop\_back
+
+```cpp
+void VectorOfKeyPoint::pop_back();
+lua:
+    oVectorOfKeyPoint:pop_back() -> None
+```
+
+### VectorOfKeyPoint.reserve
+
+```cpp
+void VectorOfKeyPoint::reserve( size_t new_cap );
+lua:
+    oVectorOfKeyPoint:reserve( new_cap ) -> None
+```
+
+### VectorOfKeyPoint.resize
+
+```cpp
+void VectorOfKeyPoint::resize( size_t count );
+lua:
+    oVectorOfKeyPoint:resize( count ) -> None
+```
+
+```cpp
+void VectorOfKeyPoint::resize( size_t              count,
+                               const cv::KeyPoint& value );
+lua:
+    oVectorOfKeyPoint:resize( count, value ) -> None
+```
+
+### VectorOfKeyPoint.shrink\_to\_fit
+
+```cpp
+void VectorOfKeyPoint::shrink_to_fit();
+lua:
+    oVectorOfKeyPoint:shrink_to_fit() -> None
+```
+
+### VectorOfKeyPoint.sizeof
+
+```cpp
+size_t VectorOfKeyPoint::size();
+lua:
+    oVectorOfKeyPoint:sizeof() -> retval
 ```
 
 ### VectorOfKeyPoint.sol::meta\_function::index
@@ -63032,6 +66749,14 @@ void VectorOfKeyPoint::sol::meta_function::new_index( size_t       index,
                                                       cv::KeyPoint value );
 lua:
     oVectorOfKeyPoint:__newindex( index, value ) -> None
+```
+
+### VectorOfKeyPoint.swap
+
+```cpp
+void VectorOfKeyPoint::swap( std::vector<cv::KeyPoint>& other );
+lua:
+    oVectorOfKeyPoint:swap( other ) -> None
 ```
 
 ### VectorOfKeyPoint.table
@@ -63067,12 +66792,123 @@ lua:
     VectorOfMat( other ) -> <std::vector<cv::Mat> object>
 ```
 
+```cpp
+std::vector<cv::Mat>( cv::Mat* data,
+                      size_t   count );
+lua:
+    VectorOfMat.new( data, count ) -> <std::vector<cv::Mat> object>
+    VectorOfMat( data, count ) -> <std::vector<cv::Mat> object>
+```
+
+```cpp
+std::vector<cv::Mat>( cv::Mat* first,
+                      cv::Mat* last );
+lua:
+    VectorOfMat.new( first, last ) -> <std::vector<cv::Mat> object>
+    VectorOfMat( first, last ) -> <std::vector<cv::Mat> object>
+```
+
+### VectorOfMat.back
+
+```cpp
+cv::Mat VectorOfMat::back();
+lua:
+    oVectorOfMat:back() -> retval
+```
+
+### VectorOfMat.capacity
+
+```cpp
+size_t VectorOfMat::capacity();
+lua:
+    oVectorOfMat:capacity() -> retval
+```
+
+### VectorOfMat.clear
+
+```cpp
+void VectorOfMat::clear();
+lua:
+    oVectorOfMat:clear() -> None
+```
+
 ### VectorOfMat.data
 
 ```cpp
 void* VectorOfMat::data();
 lua:
     oVectorOfMat:data() -> retval
+```
+
+### VectorOfMat.empty
+
+```cpp
+bool VectorOfMat::empty() const;
+lua:
+    oVectorOfMat:empty() -> retval
+```
+
+### VectorOfMat.front
+
+```cpp
+cv::Mat VectorOfMat::front();
+lua:
+    oVectorOfMat:front() -> retval
+```
+
+### VectorOfMat.max\_size
+
+```cpp
+size_t VectorOfMat::max_size();
+lua:
+    oVectorOfMat:max_size() -> retval
+```
+
+### VectorOfMat.pop\_back
+
+```cpp
+void VectorOfMat::pop_back();
+lua:
+    oVectorOfMat:pop_back() -> None
+```
+
+### VectorOfMat.reserve
+
+```cpp
+void VectorOfMat::reserve( size_t new_cap );
+lua:
+    oVectorOfMat:reserve( new_cap ) -> None
+```
+
+### VectorOfMat.resize
+
+```cpp
+void VectorOfMat::resize( size_t count );
+lua:
+    oVectorOfMat:resize( count ) -> None
+```
+
+```cpp
+void VectorOfMat::resize( size_t         count,
+                          const cv::Mat& value );
+lua:
+    oVectorOfMat:resize( count, value ) -> None
+```
+
+### VectorOfMat.shrink\_to\_fit
+
+```cpp
+void VectorOfMat::shrink_to_fit();
+lua:
+    oVectorOfMat:shrink_to_fit() -> None
+```
+
+### VectorOfMat.sizeof
+
+```cpp
+size_t VectorOfMat::size();
+lua:
+    oVectorOfMat:sizeof() -> retval
 ```
 
 ### VectorOfMat.sol::meta\_function::index
@@ -63098,6 +66934,14 @@ void VectorOfMat::sol::meta_function::new_index( size_t  index,
                                                  cv::Mat value );
 lua:
     oVectorOfMat:__newindex( index, value ) -> None
+```
+
+### VectorOfMat.swap
+
+```cpp
+void VectorOfMat::swap( std::vector<cv::Mat>& other );
+lua:
+    oVectorOfMat:swap( other ) -> None
 ```
 
 ### VectorOfMat.table
@@ -63133,12 +66977,123 @@ lua:
     VectorOfMoments( other ) -> <std::vector<cv::Moments> object>
 ```
 
+```cpp
+std::vector<cv::Moments>( cv::Moments* data,
+                          size_t       count );
+lua:
+    VectorOfMoments.new( data, count ) -> <std::vector<cv::Moments> object>
+    VectorOfMoments( data, count ) -> <std::vector<cv::Moments> object>
+```
+
+```cpp
+std::vector<cv::Moments>( cv::Moments* first,
+                          cv::Moments* last );
+lua:
+    VectorOfMoments.new( first, last ) -> <std::vector<cv::Moments> object>
+    VectorOfMoments( first, last ) -> <std::vector<cv::Moments> object>
+```
+
+### VectorOfMoments.back
+
+```cpp
+cv::Moments VectorOfMoments::back();
+lua:
+    oVectorOfMoments:back() -> retval
+```
+
+### VectorOfMoments.capacity
+
+```cpp
+size_t VectorOfMoments::capacity();
+lua:
+    oVectorOfMoments:capacity() -> retval
+```
+
+### VectorOfMoments.clear
+
+```cpp
+void VectorOfMoments::clear();
+lua:
+    oVectorOfMoments:clear() -> None
+```
+
 ### VectorOfMoments.data
 
 ```cpp
 void* VectorOfMoments::data();
 lua:
     oVectorOfMoments:data() -> retval
+```
+
+### VectorOfMoments.empty
+
+```cpp
+bool VectorOfMoments::empty() const;
+lua:
+    oVectorOfMoments:empty() -> retval
+```
+
+### VectorOfMoments.front
+
+```cpp
+cv::Moments VectorOfMoments::front();
+lua:
+    oVectorOfMoments:front() -> retval
+```
+
+### VectorOfMoments.max\_size
+
+```cpp
+size_t VectorOfMoments::max_size();
+lua:
+    oVectorOfMoments:max_size() -> retval
+```
+
+### VectorOfMoments.pop\_back
+
+```cpp
+void VectorOfMoments::pop_back();
+lua:
+    oVectorOfMoments:pop_back() -> None
+```
+
+### VectorOfMoments.reserve
+
+```cpp
+void VectorOfMoments::reserve( size_t new_cap );
+lua:
+    oVectorOfMoments:reserve( new_cap ) -> None
+```
+
+### VectorOfMoments.resize
+
+```cpp
+void VectorOfMoments::resize( size_t count );
+lua:
+    oVectorOfMoments:resize( count ) -> None
+```
+
+```cpp
+void VectorOfMoments::resize( size_t             count,
+                              const cv::Moments& value );
+lua:
+    oVectorOfMoments:resize( count, value ) -> None
+```
+
+### VectorOfMoments.shrink\_to\_fit
+
+```cpp
+void VectorOfMoments::shrink_to_fit();
+lua:
+    oVectorOfMoments:shrink_to_fit() -> None
+```
+
+### VectorOfMoments.sizeof
+
+```cpp
+size_t VectorOfMoments::size();
+lua:
+    oVectorOfMoments:sizeof() -> retval
 ```
 
 ### VectorOfMoments.sol::meta\_function::index
@@ -63164,6 +67119,14 @@ void VectorOfMoments::sol::meta_function::new_index( size_t      index,
                                                      cv::Moments value );
 lua:
     oVectorOfMoments:__newindex( index, value ) -> None
+```
+
+### VectorOfMoments.swap
+
+```cpp
+void VectorOfMoments::swap( std::vector<cv::Moments>& other );
+lua:
+    oVectorOfMoments:swap( other ) -> None
 ```
 
 ### VectorOfMoments.table
@@ -63199,12 +67162,123 @@ lua:
     VectorOfPairOfIntAndDouble( other ) -> <std::vector<std::pair<int, double>> object>
 ```
 
+```cpp
+std::vector<std::pair<int, double>>( std::pair<int, double>* data,
+                                     size_t                  count );
+lua:
+    VectorOfPairOfIntAndDouble.new( data, count ) -> <std::vector<std::pair<int, double>> object>
+    VectorOfPairOfIntAndDouble( data, count ) -> <std::vector<std::pair<int, double>> object>
+```
+
+```cpp
+std::vector<std::pair<int, double>>( std::pair<int, double>* first,
+                                     std::pair<int, double>* last );
+lua:
+    VectorOfPairOfIntAndDouble.new( first, last ) -> <std::vector<std::pair<int, double>> object>
+    VectorOfPairOfIntAndDouble( first, last ) -> <std::vector<std::pair<int, double>> object>
+```
+
+### VectorOfPairOfIntAndDouble.back
+
+```cpp
+std::pair<int, double> VectorOfPairOfIntAndDouble::back();
+lua:
+    oVectorOfPairOfIntAndDouble:back() -> retval
+```
+
+### VectorOfPairOfIntAndDouble.capacity
+
+```cpp
+size_t VectorOfPairOfIntAndDouble::capacity();
+lua:
+    oVectorOfPairOfIntAndDouble:capacity() -> retval
+```
+
+### VectorOfPairOfIntAndDouble.clear
+
+```cpp
+void VectorOfPairOfIntAndDouble::clear();
+lua:
+    oVectorOfPairOfIntAndDouble:clear() -> None
+```
+
 ### VectorOfPairOfIntAndDouble.data
 
 ```cpp
 void* VectorOfPairOfIntAndDouble::data();
 lua:
     oVectorOfPairOfIntAndDouble:data() -> retval
+```
+
+### VectorOfPairOfIntAndDouble.empty
+
+```cpp
+bool VectorOfPairOfIntAndDouble::empty() const;
+lua:
+    oVectorOfPairOfIntAndDouble:empty() -> retval
+```
+
+### VectorOfPairOfIntAndDouble.front
+
+```cpp
+std::pair<int, double> VectorOfPairOfIntAndDouble::front();
+lua:
+    oVectorOfPairOfIntAndDouble:front() -> retval
+```
+
+### VectorOfPairOfIntAndDouble.max\_size
+
+```cpp
+size_t VectorOfPairOfIntAndDouble::max_size();
+lua:
+    oVectorOfPairOfIntAndDouble:max_size() -> retval
+```
+
+### VectorOfPairOfIntAndDouble.pop\_back
+
+```cpp
+void VectorOfPairOfIntAndDouble::pop_back();
+lua:
+    oVectorOfPairOfIntAndDouble:pop_back() -> None
+```
+
+### VectorOfPairOfIntAndDouble.reserve
+
+```cpp
+void VectorOfPairOfIntAndDouble::reserve( size_t new_cap );
+lua:
+    oVectorOfPairOfIntAndDouble:reserve( new_cap ) -> None
+```
+
+### VectorOfPairOfIntAndDouble.resize
+
+```cpp
+void VectorOfPairOfIntAndDouble::resize( size_t count );
+lua:
+    oVectorOfPairOfIntAndDouble:resize( count ) -> None
+```
+
+```cpp
+void VectorOfPairOfIntAndDouble::resize( size_t                        count,
+                                         const std::pair<int, double>& value );
+lua:
+    oVectorOfPairOfIntAndDouble:resize( count, value ) -> None
+```
+
+### VectorOfPairOfIntAndDouble.shrink\_to\_fit
+
+```cpp
+void VectorOfPairOfIntAndDouble::shrink_to_fit();
+lua:
+    oVectorOfPairOfIntAndDouble:shrink_to_fit() -> None
+```
+
+### VectorOfPairOfIntAndDouble.sizeof
+
+```cpp
+size_t VectorOfPairOfIntAndDouble::size();
+lua:
+    oVectorOfPairOfIntAndDouble:sizeof() -> retval
 ```
 
 ### VectorOfPairOfIntAndDouble.sol::meta\_function::index
@@ -63230,6 +67304,14 @@ void VectorOfPairOfIntAndDouble::sol::meta_function::new_index( size_t          
                                                                 std::pair<int, double> value );
 lua:
     oVectorOfPairOfIntAndDouble:__newindex( index, value ) -> None
+```
+
+### VectorOfPairOfIntAndDouble.swap
+
+```cpp
+void VectorOfPairOfIntAndDouble::swap( std::vector<std::pair<int, double>>& other );
+lua:
+    oVectorOfPairOfIntAndDouble:swap( other ) -> None
 ```
 
 ### VectorOfPairOfIntAndDouble.table
@@ -63265,12 +67347,123 @@ lua:
     VectorOfPairOfStringAndInt( other ) -> <std::vector<std::pair<std::string, int>> object>
 ```
 
+```cpp
+std::vector<std::pair<std::string, int>>( std::pair<std::string, int>* data,
+                                          size_t                       count );
+lua:
+    VectorOfPairOfStringAndInt.new( data, count ) -> <std::vector<std::pair<std::string, int>> object>
+    VectorOfPairOfStringAndInt( data, count ) -> <std::vector<std::pair<std::string, int>> object>
+```
+
+```cpp
+std::vector<std::pair<std::string, int>>( std::pair<std::string, int>* first,
+                                          std::pair<std::string, int>* last );
+lua:
+    VectorOfPairOfStringAndInt.new( first, last ) -> <std::vector<std::pair<std::string, int>> object>
+    VectorOfPairOfStringAndInt( first, last ) -> <std::vector<std::pair<std::string, int>> object>
+```
+
+### VectorOfPairOfStringAndInt.back
+
+```cpp
+std::pair<std::string, int> VectorOfPairOfStringAndInt::back();
+lua:
+    oVectorOfPairOfStringAndInt:back() -> retval
+```
+
+### VectorOfPairOfStringAndInt.capacity
+
+```cpp
+size_t VectorOfPairOfStringAndInt::capacity();
+lua:
+    oVectorOfPairOfStringAndInt:capacity() -> retval
+```
+
+### VectorOfPairOfStringAndInt.clear
+
+```cpp
+void VectorOfPairOfStringAndInt::clear();
+lua:
+    oVectorOfPairOfStringAndInt:clear() -> None
+```
+
 ### VectorOfPairOfStringAndInt.data
 
 ```cpp
 void* VectorOfPairOfStringAndInt::data();
 lua:
     oVectorOfPairOfStringAndInt:data() -> retval
+```
+
+### VectorOfPairOfStringAndInt.empty
+
+```cpp
+bool VectorOfPairOfStringAndInt::empty() const;
+lua:
+    oVectorOfPairOfStringAndInt:empty() -> retval
+```
+
+### VectorOfPairOfStringAndInt.front
+
+```cpp
+std::pair<std::string, int> VectorOfPairOfStringAndInt::front();
+lua:
+    oVectorOfPairOfStringAndInt:front() -> retval
+```
+
+### VectorOfPairOfStringAndInt.max\_size
+
+```cpp
+size_t VectorOfPairOfStringAndInt::max_size();
+lua:
+    oVectorOfPairOfStringAndInt:max_size() -> retval
+```
+
+### VectorOfPairOfStringAndInt.pop\_back
+
+```cpp
+void VectorOfPairOfStringAndInt::pop_back();
+lua:
+    oVectorOfPairOfStringAndInt:pop_back() -> None
+```
+
+### VectorOfPairOfStringAndInt.reserve
+
+```cpp
+void VectorOfPairOfStringAndInt::reserve( size_t new_cap );
+lua:
+    oVectorOfPairOfStringAndInt:reserve( new_cap ) -> None
+```
+
+### VectorOfPairOfStringAndInt.resize
+
+```cpp
+void VectorOfPairOfStringAndInt::resize( size_t count );
+lua:
+    oVectorOfPairOfStringAndInt:resize( count ) -> None
+```
+
+```cpp
+void VectorOfPairOfStringAndInt::resize( size_t                             count,
+                                         const std::pair<std::string, int>& value );
+lua:
+    oVectorOfPairOfStringAndInt:resize( count, value ) -> None
+```
+
+### VectorOfPairOfStringAndInt.shrink\_to\_fit
+
+```cpp
+void VectorOfPairOfStringAndInt::shrink_to_fit();
+lua:
+    oVectorOfPairOfStringAndInt:shrink_to_fit() -> None
+```
+
+### VectorOfPairOfStringAndInt.sizeof
+
+```cpp
+size_t VectorOfPairOfStringAndInt::size();
+lua:
+    oVectorOfPairOfStringAndInt:sizeof() -> retval
 ```
 
 ### VectorOfPairOfStringAndInt.sol::meta\_function::index
@@ -63296,6 +67489,14 @@ void VectorOfPairOfStringAndInt::sol::meta_function::new_index( size_t          
                                                                 std::pair<std::string, int> value );
 lua:
     oVectorOfPairOfStringAndInt:__newindex( index, value ) -> None
+```
+
+### VectorOfPairOfStringAndInt.swap
+
+```cpp
+void VectorOfPairOfStringAndInt::swap( std::vector<std::pair<std::string, int>>& other );
+lua:
+    oVectorOfPairOfStringAndInt:swap( other ) -> None
 ```
 
 ### VectorOfPairOfStringAndInt.table
@@ -63331,12 +67532,123 @@ lua:
     VectorOfPairOfStringAndString( other ) -> <std::vector<std::pair<std::string, std::string>> object>
 ```
 
+```cpp
+std::vector<std::pair<std::string, std::string>>( std::pair<std::string, std::string>* data,
+                                                  size_t                               count );
+lua:
+    VectorOfPairOfStringAndString.new( data, count ) -> <std::vector<std::pair<std::string, std::string>> object>
+    VectorOfPairOfStringAndString( data, count ) -> <std::vector<std::pair<std::string, std::string>> object>
+```
+
+```cpp
+std::vector<std::pair<std::string, std::string>>( std::pair<std::string, std::string>* first,
+                                                  std::pair<std::string, std::string>* last );
+lua:
+    VectorOfPairOfStringAndString.new( first, last ) -> <std::vector<std::pair<std::string, std::string>> object>
+    VectorOfPairOfStringAndString( first, last ) -> <std::vector<std::pair<std::string, std::string>> object>
+```
+
+### VectorOfPairOfStringAndString.back
+
+```cpp
+std::pair<std::string, std::string> VectorOfPairOfStringAndString::back();
+lua:
+    oVectorOfPairOfStringAndString:back() -> retval
+```
+
+### VectorOfPairOfStringAndString.capacity
+
+```cpp
+size_t VectorOfPairOfStringAndString::capacity();
+lua:
+    oVectorOfPairOfStringAndString:capacity() -> retval
+```
+
+### VectorOfPairOfStringAndString.clear
+
+```cpp
+void VectorOfPairOfStringAndString::clear();
+lua:
+    oVectorOfPairOfStringAndString:clear() -> None
+```
+
 ### VectorOfPairOfStringAndString.data
 
 ```cpp
 void* VectorOfPairOfStringAndString::data();
 lua:
     oVectorOfPairOfStringAndString:data() -> retval
+```
+
+### VectorOfPairOfStringAndString.empty
+
+```cpp
+bool VectorOfPairOfStringAndString::empty() const;
+lua:
+    oVectorOfPairOfStringAndString:empty() -> retval
+```
+
+### VectorOfPairOfStringAndString.front
+
+```cpp
+std::pair<std::string, std::string> VectorOfPairOfStringAndString::front();
+lua:
+    oVectorOfPairOfStringAndString:front() -> retval
+```
+
+### VectorOfPairOfStringAndString.max\_size
+
+```cpp
+size_t VectorOfPairOfStringAndString::max_size();
+lua:
+    oVectorOfPairOfStringAndString:max_size() -> retval
+```
+
+### VectorOfPairOfStringAndString.pop\_back
+
+```cpp
+void VectorOfPairOfStringAndString::pop_back();
+lua:
+    oVectorOfPairOfStringAndString:pop_back() -> None
+```
+
+### VectorOfPairOfStringAndString.reserve
+
+```cpp
+void VectorOfPairOfStringAndString::reserve( size_t new_cap );
+lua:
+    oVectorOfPairOfStringAndString:reserve( new_cap ) -> None
+```
+
+### VectorOfPairOfStringAndString.resize
+
+```cpp
+void VectorOfPairOfStringAndString::resize( size_t count );
+lua:
+    oVectorOfPairOfStringAndString:resize( count ) -> None
+```
+
+```cpp
+void VectorOfPairOfStringAndString::resize( size_t                                     count,
+                                            const std::pair<std::string, std::string>& value );
+lua:
+    oVectorOfPairOfStringAndString:resize( count, value ) -> None
+```
+
+### VectorOfPairOfStringAndString.shrink\_to\_fit
+
+```cpp
+void VectorOfPairOfStringAndString::shrink_to_fit();
+lua:
+    oVectorOfPairOfStringAndString:shrink_to_fit() -> None
+```
+
+### VectorOfPairOfStringAndString.sizeof
+
+```cpp
+size_t VectorOfPairOfStringAndString::size();
+lua:
+    oVectorOfPairOfStringAndString:sizeof() -> retval
 ```
 
 ### VectorOfPairOfStringAndString.sol::meta\_function::index
@@ -63362,6 +67674,14 @@ void VectorOfPairOfStringAndString::sol::meta_function::new_index( size_t       
                                                                    std::pair<std::string, std::string> value );
 lua:
     oVectorOfPairOfStringAndString:__newindex( index, value ) -> None
+```
+
+### VectorOfPairOfStringAndString.swap
+
+```cpp
+void VectorOfPairOfStringAndString::swap( std::vector<std::pair<std::string, std::string>>& other );
+lua:
+    oVectorOfPairOfStringAndString:swap( other ) -> None
 ```
 
 ### VectorOfPairOfStringAndString.table
@@ -63397,12 +67717,123 @@ lua:
     VectorOfPairOfStringAndVectorOfFloat( other ) -> <std::vector<std::pair<std::string, std::vector<float>>> object>
 ```
 
+```cpp
+std::vector<std::pair<std::string, std::vector<float>>>( std::pair<std::string, std::vector<float>>* data,
+                                                         size_t                                      count );
+lua:
+    VectorOfPairOfStringAndVectorOfFloat.new( data, count ) -> <std::vector<std::pair<std::string, std::vector<float>>> object>
+    VectorOfPairOfStringAndVectorOfFloat( data, count ) -> <std::vector<std::pair<std::string, std::vector<float>>> object>
+```
+
+```cpp
+std::vector<std::pair<std::string, std::vector<float>>>( std::pair<std::string, std::vector<float>>* first,
+                                                         std::pair<std::string, std::vector<float>>* last );
+lua:
+    VectorOfPairOfStringAndVectorOfFloat.new( first, last ) -> <std::vector<std::pair<std::string, std::vector<float>>> object>
+    VectorOfPairOfStringAndVectorOfFloat( first, last ) -> <std::vector<std::pair<std::string, std::vector<float>>> object>
+```
+
+### VectorOfPairOfStringAndVectorOfFloat.back
+
+```cpp
+std::pair<std::string, std::vector<float>> VectorOfPairOfStringAndVectorOfFloat::back();
+lua:
+    oVectorOfPairOfStringAndVectorOfFloat:back() -> retval
+```
+
+### VectorOfPairOfStringAndVectorOfFloat.capacity
+
+```cpp
+size_t VectorOfPairOfStringAndVectorOfFloat::capacity();
+lua:
+    oVectorOfPairOfStringAndVectorOfFloat:capacity() -> retval
+```
+
+### VectorOfPairOfStringAndVectorOfFloat.clear
+
+```cpp
+void VectorOfPairOfStringAndVectorOfFloat::clear();
+lua:
+    oVectorOfPairOfStringAndVectorOfFloat:clear() -> None
+```
+
 ### VectorOfPairOfStringAndVectorOfFloat.data
 
 ```cpp
 void* VectorOfPairOfStringAndVectorOfFloat::data();
 lua:
     oVectorOfPairOfStringAndVectorOfFloat:data() -> retval
+```
+
+### VectorOfPairOfStringAndVectorOfFloat.empty
+
+```cpp
+bool VectorOfPairOfStringAndVectorOfFloat::empty() const;
+lua:
+    oVectorOfPairOfStringAndVectorOfFloat:empty() -> retval
+```
+
+### VectorOfPairOfStringAndVectorOfFloat.front
+
+```cpp
+std::pair<std::string, std::vector<float>> VectorOfPairOfStringAndVectorOfFloat::front();
+lua:
+    oVectorOfPairOfStringAndVectorOfFloat:front() -> retval
+```
+
+### VectorOfPairOfStringAndVectorOfFloat.max\_size
+
+```cpp
+size_t VectorOfPairOfStringAndVectorOfFloat::max_size();
+lua:
+    oVectorOfPairOfStringAndVectorOfFloat:max_size() -> retval
+```
+
+### VectorOfPairOfStringAndVectorOfFloat.pop\_back
+
+```cpp
+void VectorOfPairOfStringAndVectorOfFloat::pop_back();
+lua:
+    oVectorOfPairOfStringAndVectorOfFloat:pop_back() -> None
+```
+
+### VectorOfPairOfStringAndVectorOfFloat.reserve
+
+```cpp
+void VectorOfPairOfStringAndVectorOfFloat::reserve( size_t new_cap );
+lua:
+    oVectorOfPairOfStringAndVectorOfFloat:reserve( new_cap ) -> None
+```
+
+### VectorOfPairOfStringAndVectorOfFloat.resize
+
+```cpp
+void VectorOfPairOfStringAndVectorOfFloat::resize( size_t count );
+lua:
+    oVectorOfPairOfStringAndVectorOfFloat:resize( count ) -> None
+```
+
+```cpp
+void VectorOfPairOfStringAndVectorOfFloat::resize( size_t                                            count,
+                                                   const std::pair<std::string, std::vector<float>>& value );
+lua:
+    oVectorOfPairOfStringAndVectorOfFloat:resize( count, value ) -> None
+```
+
+### VectorOfPairOfStringAndVectorOfFloat.shrink\_to\_fit
+
+```cpp
+void VectorOfPairOfStringAndVectorOfFloat::shrink_to_fit();
+lua:
+    oVectorOfPairOfStringAndVectorOfFloat:shrink_to_fit() -> None
+```
+
+### VectorOfPairOfStringAndVectorOfFloat.sizeof
+
+```cpp
+size_t VectorOfPairOfStringAndVectorOfFloat::size();
+lua:
+    oVectorOfPairOfStringAndVectorOfFloat:sizeof() -> retval
 ```
 
 ### VectorOfPairOfStringAndVectorOfFloat.sol::meta\_function::index
@@ -63428,6 +67859,14 @@ void VectorOfPairOfStringAndVectorOfFloat::sol::meta_function::new_index( size_t
                                                                           std::pair<std::string, std::vector<float>> value );
 lua:
     oVectorOfPairOfStringAndVectorOfFloat:__newindex( index, value ) -> None
+```
+
+### VectorOfPairOfStringAndVectorOfFloat.swap
+
+```cpp
+void VectorOfPairOfStringAndVectorOfFloat::swap( std::vector<std::pair<std::string, std::vector<float>>>& other );
+lua:
+    oVectorOfPairOfStringAndVectorOfFloat:swap( other ) -> None
 ```
 
 ### VectorOfPairOfStringAndVectorOfFloat.table
@@ -63463,12 +67902,123 @@ lua:
     VectorOfPairOfStringAndVectorOfSize_t( other ) -> <std::vector<std::pair<std::string, std::vector<size_t>>> object>
 ```
 
+```cpp
+std::vector<std::pair<std::string, std::vector<size_t>>>( std::pair<std::string, std::vector<size_t>>* data,
+                                                          size_t                                       count );
+lua:
+    VectorOfPairOfStringAndVectorOfSize_t.new( data, count ) -> <std::vector<std::pair<std::string, std::vector<size_t>>> object>
+    VectorOfPairOfStringAndVectorOfSize_t( data, count ) -> <std::vector<std::pair<std::string, std::vector<size_t>>> object>
+```
+
+```cpp
+std::vector<std::pair<std::string, std::vector<size_t>>>( std::pair<std::string, std::vector<size_t>>* first,
+                                                          std::pair<std::string, std::vector<size_t>>* last );
+lua:
+    VectorOfPairOfStringAndVectorOfSize_t.new( first, last ) -> <std::vector<std::pair<std::string, std::vector<size_t>>> object>
+    VectorOfPairOfStringAndVectorOfSize_t( first, last ) -> <std::vector<std::pair<std::string, std::vector<size_t>>> object>
+```
+
+### VectorOfPairOfStringAndVectorOfSize\_t.back
+
+```cpp
+std::pair<std::string, std::vector<size_t>> VectorOfPairOfStringAndVectorOfSize_t::back();
+lua:
+    oVectorOfPairOfStringAndVectorOfSize_t:back() -> retval
+```
+
+### VectorOfPairOfStringAndVectorOfSize\_t.capacity
+
+```cpp
+size_t VectorOfPairOfStringAndVectorOfSize_t::capacity();
+lua:
+    oVectorOfPairOfStringAndVectorOfSize_t:capacity() -> retval
+```
+
+### VectorOfPairOfStringAndVectorOfSize\_t.clear
+
+```cpp
+void VectorOfPairOfStringAndVectorOfSize_t::clear();
+lua:
+    oVectorOfPairOfStringAndVectorOfSize_t:clear() -> None
+```
+
 ### VectorOfPairOfStringAndVectorOfSize\_t.data
 
 ```cpp
 void* VectorOfPairOfStringAndVectorOfSize_t::data();
 lua:
     oVectorOfPairOfStringAndVectorOfSize_t:data() -> retval
+```
+
+### VectorOfPairOfStringAndVectorOfSize\_t.empty
+
+```cpp
+bool VectorOfPairOfStringAndVectorOfSize_t::empty() const;
+lua:
+    oVectorOfPairOfStringAndVectorOfSize_t:empty() -> retval
+```
+
+### VectorOfPairOfStringAndVectorOfSize\_t.front
+
+```cpp
+std::pair<std::string, std::vector<size_t>> VectorOfPairOfStringAndVectorOfSize_t::front();
+lua:
+    oVectorOfPairOfStringAndVectorOfSize_t:front() -> retval
+```
+
+### VectorOfPairOfStringAndVectorOfSize\_t.max\_size
+
+```cpp
+size_t VectorOfPairOfStringAndVectorOfSize_t::max_size();
+lua:
+    oVectorOfPairOfStringAndVectorOfSize_t:max_size() -> retval
+```
+
+### VectorOfPairOfStringAndVectorOfSize\_t.pop\_back
+
+```cpp
+void VectorOfPairOfStringAndVectorOfSize_t::pop_back();
+lua:
+    oVectorOfPairOfStringAndVectorOfSize_t:pop_back() -> None
+```
+
+### VectorOfPairOfStringAndVectorOfSize\_t.reserve
+
+```cpp
+void VectorOfPairOfStringAndVectorOfSize_t::reserve( size_t new_cap );
+lua:
+    oVectorOfPairOfStringAndVectorOfSize_t:reserve( new_cap ) -> None
+```
+
+### VectorOfPairOfStringAndVectorOfSize\_t.resize
+
+```cpp
+void VectorOfPairOfStringAndVectorOfSize_t::resize( size_t count );
+lua:
+    oVectorOfPairOfStringAndVectorOfSize_t:resize( count ) -> None
+```
+
+```cpp
+void VectorOfPairOfStringAndVectorOfSize_t::resize( size_t                                             count,
+                                                    const std::pair<std::string, std::vector<size_t>>& value );
+lua:
+    oVectorOfPairOfStringAndVectorOfSize_t:resize( count, value ) -> None
+```
+
+### VectorOfPairOfStringAndVectorOfSize\_t.shrink\_to\_fit
+
+```cpp
+void VectorOfPairOfStringAndVectorOfSize_t::shrink_to_fit();
+lua:
+    oVectorOfPairOfStringAndVectorOfSize_t:shrink_to_fit() -> None
+```
+
+### VectorOfPairOfStringAndVectorOfSize\_t.sizeof
+
+```cpp
+size_t VectorOfPairOfStringAndVectorOfSize_t::size();
+lua:
+    oVectorOfPairOfStringAndVectorOfSize_t:sizeof() -> retval
 ```
 
 ### VectorOfPairOfStringAndVectorOfSize\_t.sol::meta\_function::index
@@ -63494,6 +68044,14 @@ void VectorOfPairOfStringAndVectorOfSize_t::sol::meta_function::new_index( size_
                                                                            std::pair<std::string, std::vector<size_t>> value );
 lua:
     oVectorOfPairOfStringAndVectorOfSize_t:__newindex( index, value ) -> None
+```
+
+### VectorOfPairOfStringAndVectorOfSize\_t.swap
+
+```cpp
+void VectorOfPairOfStringAndVectorOfSize_t::swap( std::vector<std::pair<std::string, std::vector<size_t>>>& other );
+lua:
+    oVectorOfPairOfStringAndVectorOfSize_t:swap( other ) -> None
 ```
 
 ### VectorOfPairOfStringAndVectorOfSize\_t.table
@@ -63529,12 +68087,123 @@ lua:
     VectorOfPoint( other ) -> <std::vector<cv::Point> object>
 ```
 
+```cpp
+std::vector<cv::Point>( cv::Point* data,
+                        size_t     count );
+lua:
+    VectorOfPoint.new( data, count ) -> <std::vector<cv::Point> object>
+    VectorOfPoint( data, count ) -> <std::vector<cv::Point> object>
+```
+
+```cpp
+std::vector<cv::Point>( cv::Point* first,
+                        cv::Point* last );
+lua:
+    VectorOfPoint.new( first, last ) -> <std::vector<cv::Point> object>
+    VectorOfPoint( first, last ) -> <std::vector<cv::Point> object>
+```
+
+### VectorOfPoint.back
+
+```cpp
+cv::Point VectorOfPoint::back();
+lua:
+    oVectorOfPoint:back() -> retval
+```
+
+### VectorOfPoint.capacity
+
+```cpp
+size_t VectorOfPoint::capacity();
+lua:
+    oVectorOfPoint:capacity() -> retval
+```
+
+### VectorOfPoint.clear
+
+```cpp
+void VectorOfPoint::clear();
+lua:
+    oVectorOfPoint:clear() -> None
+```
+
 ### VectorOfPoint.data
 
 ```cpp
 void* VectorOfPoint::data();
 lua:
     oVectorOfPoint:data() -> retval
+```
+
+### VectorOfPoint.empty
+
+```cpp
+bool VectorOfPoint::empty() const;
+lua:
+    oVectorOfPoint:empty() -> retval
+```
+
+### VectorOfPoint.front
+
+```cpp
+cv::Point VectorOfPoint::front();
+lua:
+    oVectorOfPoint:front() -> retval
+```
+
+### VectorOfPoint.max\_size
+
+```cpp
+size_t VectorOfPoint::max_size();
+lua:
+    oVectorOfPoint:max_size() -> retval
+```
+
+### VectorOfPoint.pop\_back
+
+```cpp
+void VectorOfPoint::pop_back();
+lua:
+    oVectorOfPoint:pop_back() -> None
+```
+
+### VectorOfPoint.reserve
+
+```cpp
+void VectorOfPoint::reserve( size_t new_cap );
+lua:
+    oVectorOfPoint:reserve( new_cap ) -> None
+```
+
+### VectorOfPoint.resize
+
+```cpp
+void VectorOfPoint::resize( size_t count );
+lua:
+    oVectorOfPoint:resize( count ) -> None
+```
+
+```cpp
+void VectorOfPoint::resize( size_t           count,
+                            const cv::Point& value );
+lua:
+    oVectorOfPoint:resize( count, value ) -> None
+```
+
+### VectorOfPoint.shrink\_to\_fit
+
+```cpp
+void VectorOfPoint::shrink_to_fit();
+lua:
+    oVectorOfPoint:shrink_to_fit() -> None
+```
+
+### VectorOfPoint.sizeof
+
+```cpp
+size_t VectorOfPoint::size();
+lua:
+    oVectorOfPoint:sizeof() -> retval
 ```
 
 ### VectorOfPoint.sol::meta\_function::index
@@ -63560,6 +68229,14 @@ void VectorOfPoint::sol::meta_function::new_index( size_t    index,
                                                    cv::Point value );
 lua:
     oVectorOfPoint:__newindex( index, value ) -> None
+```
+
+### VectorOfPoint.swap
+
+```cpp
+void VectorOfPoint::swap( std::vector<cv::Point>& other );
+lua:
+    oVectorOfPoint:swap( other ) -> None
 ```
 
 ### VectorOfPoint.table
@@ -63595,12 +68272,123 @@ lua:
     VectorOfPoint2d( other ) -> <std::vector<cv::Point2d> object>
 ```
 
+```cpp
+std::vector<cv::Point2d>( cv::Point2d* data,
+                          size_t       count );
+lua:
+    VectorOfPoint2d.new( data, count ) -> <std::vector<cv::Point2d> object>
+    VectorOfPoint2d( data, count ) -> <std::vector<cv::Point2d> object>
+```
+
+```cpp
+std::vector<cv::Point2d>( cv::Point2d* first,
+                          cv::Point2d* last );
+lua:
+    VectorOfPoint2d.new( first, last ) -> <std::vector<cv::Point2d> object>
+    VectorOfPoint2d( first, last ) -> <std::vector<cv::Point2d> object>
+```
+
+### VectorOfPoint2d.back
+
+```cpp
+cv::Point2d VectorOfPoint2d::back();
+lua:
+    oVectorOfPoint2d:back() -> retval
+```
+
+### VectorOfPoint2d.capacity
+
+```cpp
+size_t VectorOfPoint2d::capacity();
+lua:
+    oVectorOfPoint2d:capacity() -> retval
+```
+
+### VectorOfPoint2d.clear
+
+```cpp
+void VectorOfPoint2d::clear();
+lua:
+    oVectorOfPoint2d:clear() -> None
+```
+
 ### VectorOfPoint2d.data
 
 ```cpp
 void* VectorOfPoint2d::data();
 lua:
     oVectorOfPoint2d:data() -> retval
+```
+
+### VectorOfPoint2d.empty
+
+```cpp
+bool VectorOfPoint2d::empty() const;
+lua:
+    oVectorOfPoint2d:empty() -> retval
+```
+
+### VectorOfPoint2d.front
+
+```cpp
+cv::Point2d VectorOfPoint2d::front();
+lua:
+    oVectorOfPoint2d:front() -> retval
+```
+
+### VectorOfPoint2d.max\_size
+
+```cpp
+size_t VectorOfPoint2d::max_size();
+lua:
+    oVectorOfPoint2d:max_size() -> retval
+```
+
+### VectorOfPoint2d.pop\_back
+
+```cpp
+void VectorOfPoint2d::pop_back();
+lua:
+    oVectorOfPoint2d:pop_back() -> None
+```
+
+### VectorOfPoint2d.reserve
+
+```cpp
+void VectorOfPoint2d::reserve( size_t new_cap );
+lua:
+    oVectorOfPoint2d:reserve( new_cap ) -> None
+```
+
+### VectorOfPoint2d.resize
+
+```cpp
+void VectorOfPoint2d::resize( size_t count );
+lua:
+    oVectorOfPoint2d:resize( count ) -> None
+```
+
+```cpp
+void VectorOfPoint2d::resize( size_t             count,
+                              const cv::Point2d& value );
+lua:
+    oVectorOfPoint2d:resize( count, value ) -> None
+```
+
+### VectorOfPoint2d.shrink\_to\_fit
+
+```cpp
+void VectorOfPoint2d::shrink_to_fit();
+lua:
+    oVectorOfPoint2d:shrink_to_fit() -> None
+```
+
+### VectorOfPoint2d.sizeof
+
+```cpp
+size_t VectorOfPoint2d::size();
+lua:
+    oVectorOfPoint2d:sizeof() -> retval
 ```
 
 ### VectorOfPoint2d.sol::meta\_function::index
@@ -63626,6 +68414,14 @@ void VectorOfPoint2d::sol::meta_function::new_index( size_t      index,
                                                      cv::Point2d value );
 lua:
     oVectorOfPoint2d:__newindex( index, value ) -> None
+```
+
+### VectorOfPoint2d.swap
+
+```cpp
+void VectorOfPoint2d::swap( std::vector<cv::Point2d>& other );
+lua:
+    oVectorOfPoint2d:swap( other ) -> None
 ```
 
 ### VectorOfPoint2d.table
@@ -63661,12 +68457,123 @@ lua:
     VectorOfPoint2f( other ) -> <std::vector<cv::Point2f> object>
 ```
 
+```cpp
+std::vector<cv::Point2f>( cv::Point2f* data,
+                          size_t       count );
+lua:
+    VectorOfPoint2f.new( data, count ) -> <std::vector<cv::Point2f> object>
+    VectorOfPoint2f( data, count ) -> <std::vector<cv::Point2f> object>
+```
+
+```cpp
+std::vector<cv::Point2f>( cv::Point2f* first,
+                          cv::Point2f* last );
+lua:
+    VectorOfPoint2f.new( first, last ) -> <std::vector<cv::Point2f> object>
+    VectorOfPoint2f( first, last ) -> <std::vector<cv::Point2f> object>
+```
+
+### VectorOfPoint2f.back
+
+```cpp
+cv::Point2f VectorOfPoint2f::back();
+lua:
+    oVectorOfPoint2f:back() -> retval
+```
+
+### VectorOfPoint2f.capacity
+
+```cpp
+size_t VectorOfPoint2f::capacity();
+lua:
+    oVectorOfPoint2f:capacity() -> retval
+```
+
+### VectorOfPoint2f.clear
+
+```cpp
+void VectorOfPoint2f::clear();
+lua:
+    oVectorOfPoint2f:clear() -> None
+```
+
 ### VectorOfPoint2f.data
 
 ```cpp
 void* VectorOfPoint2f::data();
 lua:
     oVectorOfPoint2f:data() -> retval
+```
+
+### VectorOfPoint2f.empty
+
+```cpp
+bool VectorOfPoint2f::empty() const;
+lua:
+    oVectorOfPoint2f:empty() -> retval
+```
+
+### VectorOfPoint2f.front
+
+```cpp
+cv::Point2f VectorOfPoint2f::front();
+lua:
+    oVectorOfPoint2f:front() -> retval
+```
+
+### VectorOfPoint2f.max\_size
+
+```cpp
+size_t VectorOfPoint2f::max_size();
+lua:
+    oVectorOfPoint2f:max_size() -> retval
+```
+
+### VectorOfPoint2f.pop\_back
+
+```cpp
+void VectorOfPoint2f::pop_back();
+lua:
+    oVectorOfPoint2f:pop_back() -> None
+```
+
+### VectorOfPoint2f.reserve
+
+```cpp
+void VectorOfPoint2f::reserve( size_t new_cap );
+lua:
+    oVectorOfPoint2f:reserve( new_cap ) -> None
+```
+
+### VectorOfPoint2f.resize
+
+```cpp
+void VectorOfPoint2f::resize( size_t count );
+lua:
+    oVectorOfPoint2f:resize( count ) -> None
+```
+
+```cpp
+void VectorOfPoint2f::resize( size_t             count,
+                              const cv::Point2f& value );
+lua:
+    oVectorOfPoint2f:resize( count, value ) -> None
+```
+
+### VectorOfPoint2f.shrink\_to\_fit
+
+```cpp
+void VectorOfPoint2f::shrink_to_fit();
+lua:
+    oVectorOfPoint2f:shrink_to_fit() -> None
+```
+
+### VectorOfPoint2f.sizeof
+
+```cpp
+size_t VectorOfPoint2f::size();
+lua:
+    oVectorOfPoint2f:sizeof() -> retval
 ```
 
 ### VectorOfPoint2f.sol::meta\_function::index
@@ -63692,6 +68599,14 @@ void VectorOfPoint2f::sol::meta_function::new_index( size_t      index,
                                                      cv::Point2f value );
 lua:
     oVectorOfPoint2f:__newindex( index, value ) -> None
+```
+
+### VectorOfPoint2f.swap
+
+```cpp
+void VectorOfPoint2f::swap( std::vector<cv::Point2f>& other );
+lua:
+    oVectorOfPoint2f:swap( other ) -> None
 ```
 
 ### VectorOfPoint2f.table
@@ -63727,12 +68642,123 @@ lua:
     VectorOfPoint3d( other ) -> <std::vector<cv::Point3d> object>
 ```
 
+```cpp
+std::vector<cv::Point3d>( cv::Point3d* data,
+                          size_t       count );
+lua:
+    VectorOfPoint3d.new( data, count ) -> <std::vector<cv::Point3d> object>
+    VectorOfPoint3d( data, count ) -> <std::vector<cv::Point3d> object>
+```
+
+```cpp
+std::vector<cv::Point3d>( cv::Point3d* first,
+                          cv::Point3d* last );
+lua:
+    VectorOfPoint3d.new( first, last ) -> <std::vector<cv::Point3d> object>
+    VectorOfPoint3d( first, last ) -> <std::vector<cv::Point3d> object>
+```
+
+### VectorOfPoint3d.back
+
+```cpp
+cv::Point3d VectorOfPoint3d::back();
+lua:
+    oVectorOfPoint3d:back() -> retval
+```
+
+### VectorOfPoint3d.capacity
+
+```cpp
+size_t VectorOfPoint3d::capacity();
+lua:
+    oVectorOfPoint3d:capacity() -> retval
+```
+
+### VectorOfPoint3d.clear
+
+```cpp
+void VectorOfPoint3d::clear();
+lua:
+    oVectorOfPoint3d:clear() -> None
+```
+
 ### VectorOfPoint3d.data
 
 ```cpp
 void* VectorOfPoint3d::data();
 lua:
     oVectorOfPoint3d:data() -> retval
+```
+
+### VectorOfPoint3d.empty
+
+```cpp
+bool VectorOfPoint3d::empty() const;
+lua:
+    oVectorOfPoint3d:empty() -> retval
+```
+
+### VectorOfPoint3d.front
+
+```cpp
+cv::Point3d VectorOfPoint3d::front();
+lua:
+    oVectorOfPoint3d:front() -> retval
+```
+
+### VectorOfPoint3d.max\_size
+
+```cpp
+size_t VectorOfPoint3d::max_size();
+lua:
+    oVectorOfPoint3d:max_size() -> retval
+```
+
+### VectorOfPoint3d.pop\_back
+
+```cpp
+void VectorOfPoint3d::pop_back();
+lua:
+    oVectorOfPoint3d:pop_back() -> None
+```
+
+### VectorOfPoint3d.reserve
+
+```cpp
+void VectorOfPoint3d::reserve( size_t new_cap );
+lua:
+    oVectorOfPoint3d:reserve( new_cap ) -> None
+```
+
+### VectorOfPoint3d.resize
+
+```cpp
+void VectorOfPoint3d::resize( size_t count );
+lua:
+    oVectorOfPoint3d:resize( count ) -> None
+```
+
+```cpp
+void VectorOfPoint3d::resize( size_t             count,
+                              const cv::Point3d& value );
+lua:
+    oVectorOfPoint3d:resize( count, value ) -> None
+```
+
+### VectorOfPoint3d.shrink\_to\_fit
+
+```cpp
+void VectorOfPoint3d::shrink_to_fit();
+lua:
+    oVectorOfPoint3d:shrink_to_fit() -> None
+```
+
+### VectorOfPoint3d.sizeof
+
+```cpp
+size_t VectorOfPoint3d::size();
+lua:
+    oVectorOfPoint3d:sizeof() -> retval
 ```
 
 ### VectorOfPoint3d.sol::meta\_function::index
@@ -63758,6 +68784,14 @@ void VectorOfPoint3d::sol::meta_function::new_index( size_t      index,
                                                      cv::Point3d value );
 lua:
     oVectorOfPoint3d:__newindex( index, value ) -> None
+```
+
+### VectorOfPoint3d.swap
+
+```cpp
+void VectorOfPoint3d::swap( std::vector<cv::Point3d>& other );
+lua:
+    oVectorOfPoint3d:swap( other ) -> None
 ```
 
 ### VectorOfPoint3d.table
@@ -63793,12 +68827,123 @@ lua:
     VectorOfPoint3f( other ) -> <std::vector<cv::Point3f> object>
 ```
 
+```cpp
+std::vector<cv::Point3f>( cv::Point3f* data,
+                          size_t       count );
+lua:
+    VectorOfPoint3f.new( data, count ) -> <std::vector<cv::Point3f> object>
+    VectorOfPoint3f( data, count ) -> <std::vector<cv::Point3f> object>
+```
+
+```cpp
+std::vector<cv::Point3f>( cv::Point3f* first,
+                          cv::Point3f* last );
+lua:
+    VectorOfPoint3f.new( first, last ) -> <std::vector<cv::Point3f> object>
+    VectorOfPoint3f( first, last ) -> <std::vector<cv::Point3f> object>
+```
+
+### VectorOfPoint3f.back
+
+```cpp
+cv::Point3f VectorOfPoint3f::back();
+lua:
+    oVectorOfPoint3f:back() -> retval
+```
+
+### VectorOfPoint3f.capacity
+
+```cpp
+size_t VectorOfPoint3f::capacity();
+lua:
+    oVectorOfPoint3f:capacity() -> retval
+```
+
+### VectorOfPoint3f.clear
+
+```cpp
+void VectorOfPoint3f::clear();
+lua:
+    oVectorOfPoint3f:clear() -> None
+```
+
 ### VectorOfPoint3f.data
 
 ```cpp
 void* VectorOfPoint3f::data();
 lua:
     oVectorOfPoint3f:data() -> retval
+```
+
+### VectorOfPoint3f.empty
+
+```cpp
+bool VectorOfPoint3f::empty() const;
+lua:
+    oVectorOfPoint3f:empty() -> retval
+```
+
+### VectorOfPoint3f.front
+
+```cpp
+cv::Point3f VectorOfPoint3f::front();
+lua:
+    oVectorOfPoint3f:front() -> retval
+```
+
+### VectorOfPoint3f.max\_size
+
+```cpp
+size_t VectorOfPoint3f::max_size();
+lua:
+    oVectorOfPoint3f:max_size() -> retval
+```
+
+### VectorOfPoint3f.pop\_back
+
+```cpp
+void VectorOfPoint3f::pop_back();
+lua:
+    oVectorOfPoint3f:pop_back() -> None
+```
+
+### VectorOfPoint3f.reserve
+
+```cpp
+void VectorOfPoint3f::reserve( size_t new_cap );
+lua:
+    oVectorOfPoint3f:reserve( new_cap ) -> None
+```
+
+### VectorOfPoint3f.resize
+
+```cpp
+void VectorOfPoint3f::resize( size_t count );
+lua:
+    oVectorOfPoint3f:resize( count ) -> None
+```
+
+```cpp
+void VectorOfPoint3f::resize( size_t             count,
+                              const cv::Point3f& value );
+lua:
+    oVectorOfPoint3f:resize( count, value ) -> None
+```
+
+### VectorOfPoint3f.shrink\_to\_fit
+
+```cpp
+void VectorOfPoint3f::shrink_to_fit();
+lua:
+    oVectorOfPoint3f:shrink_to_fit() -> None
+```
+
+### VectorOfPoint3f.sizeof
+
+```cpp
+size_t VectorOfPoint3f::size();
+lua:
+    oVectorOfPoint3f:sizeof() -> retval
 ```
 
 ### VectorOfPoint3f.sol::meta\_function::index
@@ -63824,6 +68969,14 @@ void VectorOfPoint3f::sol::meta_function::new_index( size_t      index,
                                                      cv::Point3f value );
 lua:
     oVectorOfPoint3f:__newindex( index, value ) -> None
+```
+
+### VectorOfPoint3f.swap
+
+```cpp
+void VectorOfPoint3f::swap( std::vector<cv::Point3f>& other );
+lua:
+    oVectorOfPoint3f:swap( other ) -> None
 ```
 
 ### VectorOfPoint3f.table
@@ -63859,12 +69012,123 @@ lua:
     VectorOfPoint3i( other ) -> <std::vector<cv::Point3i> object>
 ```
 
+```cpp
+std::vector<cv::Point3i>( cv::Point3i* data,
+                          size_t       count );
+lua:
+    VectorOfPoint3i.new( data, count ) -> <std::vector<cv::Point3i> object>
+    VectorOfPoint3i( data, count ) -> <std::vector<cv::Point3i> object>
+```
+
+```cpp
+std::vector<cv::Point3i>( cv::Point3i* first,
+                          cv::Point3i* last );
+lua:
+    VectorOfPoint3i.new( first, last ) -> <std::vector<cv::Point3i> object>
+    VectorOfPoint3i( first, last ) -> <std::vector<cv::Point3i> object>
+```
+
+### VectorOfPoint3i.back
+
+```cpp
+cv::Point3i VectorOfPoint3i::back();
+lua:
+    oVectorOfPoint3i:back() -> retval
+```
+
+### VectorOfPoint3i.capacity
+
+```cpp
+size_t VectorOfPoint3i::capacity();
+lua:
+    oVectorOfPoint3i:capacity() -> retval
+```
+
+### VectorOfPoint3i.clear
+
+```cpp
+void VectorOfPoint3i::clear();
+lua:
+    oVectorOfPoint3i:clear() -> None
+```
+
 ### VectorOfPoint3i.data
 
 ```cpp
 void* VectorOfPoint3i::data();
 lua:
     oVectorOfPoint3i:data() -> retval
+```
+
+### VectorOfPoint3i.empty
+
+```cpp
+bool VectorOfPoint3i::empty() const;
+lua:
+    oVectorOfPoint3i:empty() -> retval
+```
+
+### VectorOfPoint3i.front
+
+```cpp
+cv::Point3i VectorOfPoint3i::front();
+lua:
+    oVectorOfPoint3i:front() -> retval
+```
+
+### VectorOfPoint3i.max\_size
+
+```cpp
+size_t VectorOfPoint3i::max_size();
+lua:
+    oVectorOfPoint3i:max_size() -> retval
+```
+
+### VectorOfPoint3i.pop\_back
+
+```cpp
+void VectorOfPoint3i::pop_back();
+lua:
+    oVectorOfPoint3i:pop_back() -> None
+```
+
+### VectorOfPoint3i.reserve
+
+```cpp
+void VectorOfPoint3i::reserve( size_t new_cap );
+lua:
+    oVectorOfPoint3i:reserve( new_cap ) -> None
+```
+
+### VectorOfPoint3i.resize
+
+```cpp
+void VectorOfPoint3i::resize( size_t count );
+lua:
+    oVectorOfPoint3i:resize( count ) -> None
+```
+
+```cpp
+void VectorOfPoint3i::resize( size_t             count,
+                              const cv::Point3i& value );
+lua:
+    oVectorOfPoint3i:resize( count, value ) -> None
+```
+
+### VectorOfPoint3i.shrink\_to\_fit
+
+```cpp
+void VectorOfPoint3i::shrink_to_fit();
+lua:
+    oVectorOfPoint3i:shrink_to_fit() -> None
+```
+
+### VectorOfPoint3i.sizeof
+
+```cpp
+size_t VectorOfPoint3i::size();
+lua:
+    oVectorOfPoint3i:sizeof() -> retval
 ```
 
 ### VectorOfPoint3i.sol::meta\_function::index
@@ -63890,6 +69154,14 @@ void VectorOfPoint3i::sol::meta_function::new_index( size_t      index,
                                                      cv::Point3i value );
 lua:
     oVectorOfPoint3i:__newindex( index, value ) -> None
+```
+
+### VectorOfPoint3i.swap
+
+```cpp
+void VectorOfPoint3i::swap( std::vector<cv::Point3i>& other );
+lua:
+    oVectorOfPoint3i:swap( other ) -> None
 ```
 
 ### VectorOfPoint3i.table
@@ -63925,12 +69197,123 @@ lua:
     VectorOfRange( other ) -> <std::vector<cv::Range> object>
 ```
 
+```cpp
+std::vector<cv::Range>( cv::Range* data,
+                        size_t     count );
+lua:
+    VectorOfRange.new( data, count ) -> <std::vector<cv::Range> object>
+    VectorOfRange( data, count ) -> <std::vector<cv::Range> object>
+```
+
+```cpp
+std::vector<cv::Range>( cv::Range* first,
+                        cv::Range* last );
+lua:
+    VectorOfRange.new( first, last ) -> <std::vector<cv::Range> object>
+    VectorOfRange( first, last ) -> <std::vector<cv::Range> object>
+```
+
+### VectorOfRange.back
+
+```cpp
+cv::Range VectorOfRange::back();
+lua:
+    oVectorOfRange:back() -> retval
+```
+
+### VectorOfRange.capacity
+
+```cpp
+size_t VectorOfRange::capacity();
+lua:
+    oVectorOfRange:capacity() -> retval
+```
+
+### VectorOfRange.clear
+
+```cpp
+void VectorOfRange::clear();
+lua:
+    oVectorOfRange:clear() -> None
+```
+
 ### VectorOfRange.data
 
 ```cpp
 void* VectorOfRange::data();
 lua:
     oVectorOfRange:data() -> retval
+```
+
+### VectorOfRange.empty
+
+```cpp
+bool VectorOfRange::empty() const;
+lua:
+    oVectorOfRange:empty() -> retval
+```
+
+### VectorOfRange.front
+
+```cpp
+cv::Range VectorOfRange::front();
+lua:
+    oVectorOfRange:front() -> retval
+```
+
+### VectorOfRange.max\_size
+
+```cpp
+size_t VectorOfRange::max_size();
+lua:
+    oVectorOfRange:max_size() -> retval
+```
+
+### VectorOfRange.pop\_back
+
+```cpp
+void VectorOfRange::pop_back();
+lua:
+    oVectorOfRange:pop_back() -> None
+```
+
+### VectorOfRange.reserve
+
+```cpp
+void VectorOfRange::reserve( size_t new_cap );
+lua:
+    oVectorOfRange:reserve( new_cap ) -> None
+```
+
+### VectorOfRange.resize
+
+```cpp
+void VectorOfRange::resize( size_t count );
+lua:
+    oVectorOfRange:resize( count ) -> None
+```
+
+```cpp
+void VectorOfRange::resize( size_t           count,
+                            const cv::Range& value );
+lua:
+    oVectorOfRange:resize( count, value ) -> None
+```
+
+### VectorOfRange.shrink\_to\_fit
+
+```cpp
+void VectorOfRange::shrink_to_fit();
+lua:
+    oVectorOfRange:shrink_to_fit() -> None
+```
+
+### VectorOfRange.sizeof
+
+```cpp
+size_t VectorOfRange::size();
+lua:
+    oVectorOfRange:sizeof() -> retval
 ```
 
 ### VectorOfRange.sol::meta\_function::index
@@ -63956,6 +69339,14 @@ void VectorOfRange::sol::meta_function::new_index( size_t    index,
                                                    cv::Range value );
 lua:
     oVectorOfRange:__newindex( index, value ) -> None
+```
+
+### VectorOfRange.swap
+
+```cpp
+void VectorOfRange::swap( std::vector<cv::Range>& other );
+lua:
+    oVectorOfRange:swap( other ) -> None
 ```
 
 ### VectorOfRange.table
@@ -63991,12 +69382,123 @@ lua:
     VectorOfRect( other ) -> <std::vector<cv::Rect> object>
 ```
 
+```cpp
+std::vector<cv::Rect>( cv::Rect* data,
+                       size_t    count );
+lua:
+    VectorOfRect.new( data, count ) -> <std::vector<cv::Rect> object>
+    VectorOfRect( data, count ) -> <std::vector<cv::Rect> object>
+```
+
+```cpp
+std::vector<cv::Rect>( cv::Rect* first,
+                       cv::Rect* last );
+lua:
+    VectorOfRect.new( first, last ) -> <std::vector<cv::Rect> object>
+    VectorOfRect( first, last ) -> <std::vector<cv::Rect> object>
+```
+
+### VectorOfRect.back
+
+```cpp
+cv::Rect VectorOfRect::back();
+lua:
+    oVectorOfRect:back() -> retval
+```
+
+### VectorOfRect.capacity
+
+```cpp
+size_t VectorOfRect::capacity();
+lua:
+    oVectorOfRect:capacity() -> retval
+```
+
+### VectorOfRect.clear
+
+```cpp
+void VectorOfRect::clear();
+lua:
+    oVectorOfRect:clear() -> None
+```
+
 ### VectorOfRect.data
 
 ```cpp
 void* VectorOfRect::data();
 lua:
     oVectorOfRect:data() -> retval
+```
+
+### VectorOfRect.empty
+
+```cpp
+bool VectorOfRect::empty() const;
+lua:
+    oVectorOfRect:empty() -> retval
+```
+
+### VectorOfRect.front
+
+```cpp
+cv::Rect VectorOfRect::front();
+lua:
+    oVectorOfRect:front() -> retval
+```
+
+### VectorOfRect.max\_size
+
+```cpp
+size_t VectorOfRect::max_size();
+lua:
+    oVectorOfRect:max_size() -> retval
+```
+
+### VectorOfRect.pop\_back
+
+```cpp
+void VectorOfRect::pop_back();
+lua:
+    oVectorOfRect:pop_back() -> None
+```
+
+### VectorOfRect.reserve
+
+```cpp
+void VectorOfRect::reserve( size_t new_cap );
+lua:
+    oVectorOfRect:reserve( new_cap ) -> None
+```
+
+### VectorOfRect.resize
+
+```cpp
+void VectorOfRect::resize( size_t count );
+lua:
+    oVectorOfRect:resize( count ) -> None
+```
+
+```cpp
+void VectorOfRect::resize( size_t          count,
+                           const cv::Rect& value );
+lua:
+    oVectorOfRect:resize( count, value ) -> None
+```
+
+### VectorOfRect.shrink\_to\_fit
+
+```cpp
+void VectorOfRect::shrink_to_fit();
+lua:
+    oVectorOfRect:shrink_to_fit() -> None
+```
+
+### VectorOfRect.sizeof
+
+```cpp
+size_t VectorOfRect::size();
+lua:
+    oVectorOfRect:sizeof() -> retval
 ```
 
 ### VectorOfRect.sol::meta\_function::index
@@ -64022,6 +69524,14 @@ void VectorOfRect::sol::meta_function::new_index( size_t   index,
                                                   cv::Rect value );
 lua:
     oVectorOfRect:__newindex( index, value ) -> None
+```
+
+### VectorOfRect.swap
+
+```cpp
+void VectorOfRect::swap( std::vector<cv::Rect>& other );
+lua:
+    oVectorOfRect:swap( other ) -> None
 ```
 
 ### VectorOfRect.table
@@ -64057,12 +69567,123 @@ lua:
     VectorOfRect2d( other ) -> <std::vector<cv::Rect2d> object>
 ```
 
+```cpp
+std::vector<cv::Rect2d>( cv::Rect2d* data,
+                         size_t      count );
+lua:
+    VectorOfRect2d.new( data, count ) -> <std::vector<cv::Rect2d> object>
+    VectorOfRect2d( data, count ) -> <std::vector<cv::Rect2d> object>
+```
+
+```cpp
+std::vector<cv::Rect2d>( cv::Rect2d* first,
+                         cv::Rect2d* last );
+lua:
+    VectorOfRect2d.new( first, last ) -> <std::vector<cv::Rect2d> object>
+    VectorOfRect2d( first, last ) -> <std::vector<cv::Rect2d> object>
+```
+
+### VectorOfRect2d.back
+
+```cpp
+cv::Rect2d VectorOfRect2d::back();
+lua:
+    oVectorOfRect2d:back() -> retval
+```
+
+### VectorOfRect2d.capacity
+
+```cpp
+size_t VectorOfRect2d::capacity();
+lua:
+    oVectorOfRect2d:capacity() -> retval
+```
+
+### VectorOfRect2d.clear
+
+```cpp
+void VectorOfRect2d::clear();
+lua:
+    oVectorOfRect2d:clear() -> None
+```
+
 ### VectorOfRect2d.data
 
 ```cpp
 void* VectorOfRect2d::data();
 lua:
     oVectorOfRect2d:data() -> retval
+```
+
+### VectorOfRect2d.empty
+
+```cpp
+bool VectorOfRect2d::empty() const;
+lua:
+    oVectorOfRect2d:empty() -> retval
+```
+
+### VectorOfRect2d.front
+
+```cpp
+cv::Rect2d VectorOfRect2d::front();
+lua:
+    oVectorOfRect2d:front() -> retval
+```
+
+### VectorOfRect2d.max\_size
+
+```cpp
+size_t VectorOfRect2d::max_size();
+lua:
+    oVectorOfRect2d:max_size() -> retval
+```
+
+### VectorOfRect2d.pop\_back
+
+```cpp
+void VectorOfRect2d::pop_back();
+lua:
+    oVectorOfRect2d:pop_back() -> None
+```
+
+### VectorOfRect2d.reserve
+
+```cpp
+void VectorOfRect2d::reserve( size_t new_cap );
+lua:
+    oVectorOfRect2d:reserve( new_cap ) -> None
+```
+
+### VectorOfRect2d.resize
+
+```cpp
+void VectorOfRect2d::resize( size_t count );
+lua:
+    oVectorOfRect2d:resize( count ) -> None
+```
+
+```cpp
+void VectorOfRect2d::resize( size_t            count,
+                             const cv::Rect2d& value );
+lua:
+    oVectorOfRect2d:resize( count, value ) -> None
+```
+
+### VectorOfRect2d.shrink\_to\_fit
+
+```cpp
+void VectorOfRect2d::shrink_to_fit();
+lua:
+    oVectorOfRect2d:shrink_to_fit() -> None
+```
+
+### VectorOfRect2d.sizeof
+
+```cpp
+size_t VectorOfRect2d::size();
+lua:
+    oVectorOfRect2d:sizeof() -> retval
 ```
 
 ### VectorOfRect2d.sol::meta\_function::index
@@ -64088,6 +69709,14 @@ void VectorOfRect2d::sol::meta_function::new_index( size_t     index,
                                                     cv::Rect2d value );
 lua:
     oVectorOfRect2d:__newindex( index, value ) -> None
+```
+
+### VectorOfRect2d.swap
+
+```cpp
+void VectorOfRect2d::swap( std::vector<cv::Rect2d>& other );
+lua:
+    oVectorOfRect2d:swap( other ) -> None
 ```
 
 ### VectorOfRect2d.table
@@ -64123,12 +69752,123 @@ lua:
     VectorOfRect2f( other ) -> <std::vector<cv::Rect2f> object>
 ```
 
+```cpp
+std::vector<cv::Rect2f>( cv::Rect2f* data,
+                         size_t      count );
+lua:
+    VectorOfRect2f.new( data, count ) -> <std::vector<cv::Rect2f> object>
+    VectorOfRect2f( data, count ) -> <std::vector<cv::Rect2f> object>
+```
+
+```cpp
+std::vector<cv::Rect2f>( cv::Rect2f* first,
+                         cv::Rect2f* last );
+lua:
+    VectorOfRect2f.new( first, last ) -> <std::vector<cv::Rect2f> object>
+    VectorOfRect2f( first, last ) -> <std::vector<cv::Rect2f> object>
+```
+
+### VectorOfRect2f.back
+
+```cpp
+cv::Rect2f VectorOfRect2f::back();
+lua:
+    oVectorOfRect2f:back() -> retval
+```
+
+### VectorOfRect2f.capacity
+
+```cpp
+size_t VectorOfRect2f::capacity();
+lua:
+    oVectorOfRect2f:capacity() -> retval
+```
+
+### VectorOfRect2f.clear
+
+```cpp
+void VectorOfRect2f::clear();
+lua:
+    oVectorOfRect2f:clear() -> None
+```
+
 ### VectorOfRect2f.data
 
 ```cpp
 void* VectorOfRect2f::data();
 lua:
     oVectorOfRect2f:data() -> retval
+```
+
+### VectorOfRect2f.empty
+
+```cpp
+bool VectorOfRect2f::empty() const;
+lua:
+    oVectorOfRect2f:empty() -> retval
+```
+
+### VectorOfRect2f.front
+
+```cpp
+cv::Rect2f VectorOfRect2f::front();
+lua:
+    oVectorOfRect2f:front() -> retval
+```
+
+### VectorOfRect2f.max\_size
+
+```cpp
+size_t VectorOfRect2f::max_size();
+lua:
+    oVectorOfRect2f:max_size() -> retval
+```
+
+### VectorOfRect2f.pop\_back
+
+```cpp
+void VectorOfRect2f::pop_back();
+lua:
+    oVectorOfRect2f:pop_back() -> None
+```
+
+### VectorOfRect2f.reserve
+
+```cpp
+void VectorOfRect2f::reserve( size_t new_cap );
+lua:
+    oVectorOfRect2f:reserve( new_cap ) -> None
+```
+
+### VectorOfRect2f.resize
+
+```cpp
+void VectorOfRect2f::resize( size_t count );
+lua:
+    oVectorOfRect2f:resize( count ) -> None
+```
+
+```cpp
+void VectorOfRect2f::resize( size_t            count,
+                             const cv::Rect2f& value );
+lua:
+    oVectorOfRect2f:resize( count, value ) -> None
+```
+
+### VectorOfRect2f.shrink\_to\_fit
+
+```cpp
+void VectorOfRect2f::shrink_to_fit();
+lua:
+    oVectorOfRect2f:shrink_to_fit() -> None
+```
+
+### VectorOfRect2f.sizeof
+
+```cpp
+size_t VectorOfRect2f::size();
+lua:
+    oVectorOfRect2f:sizeof() -> retval
 ```
 
 ### VectorOfRect2f.sol::meta\_function::index
@@ -64154,6 +69894,14 @@ void VectorOfRect2f::sol::meta_function::new_index( size_t     index,
                                                     cv::Rect2f value );
 lua:
     oVectorOfRect2f:__newindex( index, value ) -> None
+```
+
+### VectorOfRect2f.swap
+
+```cpp
+void VectorOfRect2f::swap( std::vector<cv::Rect2f>& other );
+lua:
+    oVectorOfRect2f:swap( other ) -> None
 ```
 
 ### VectorOfRect2f.table
@@ -64189,12 +69937,123 @@ lua:
     VectorOfRotatedRect( other ) -> <std::vector<cv::RotatedRect> object>
 ```
 
+```cpp
+std::vector<cv::RotatedRect>( cv::RotatedRect* data,
+                              size_t           count );
+lua:
+    VectorOfRotatedRect.new( data, count ) -> <std::vector<cv::RotatedRect> object>
+    VectorOfRotatedRect( data, count ) -> <std::vector<cv::RotatedRect> object>
+```
+
+```cpp
+std::vector<cv::RotatedRect>( cv::RotatedRect* first,
+                              cv::RotatedRect* last );
+lua:
+    VectorOfRotatedRect.new( first, last ) -> <std::vector<cv::RotatedRect> object>
+    VectorOfRotatedRect( first, last ) -> <std::vector<cv::RotatedRect> object>
+```
+
+### VectorOfRotatedRect.back
+
+```cpp
+cv::RotatedRect VectorOfRotatedRect::back();
+lua:
+    oVectorOfRotatedRect:back() -> retval
+```
+
+### VectorOfRotatedRect.capacity
+
+```cpp
+size_t VectorOfRotatedRect::capacity();
+lua:
+    oVectorOfRotatedRect:capacity() -> retval
+```
+
+### VectorOfRotatedRect.clear
+
+```cpp
+void VectorOfRotatedRect::clear();
+lua:
+    oVectorOfRotatedRect:clear() -> None
+```
+
 ### VectorOfRotatedRect.data
 
 ```cpp
 void* VectorOfRotatedRect::data();
 lua:
     oVectorOfRotatedRect:data() -> retval
+```
+
+### VectorOfRotatedRect.empty
+
+```cpp
+bool VectorOfRotatedRect::empty() const;
+lua:
+    oVectorOfRotatedRect:empty() -> retval
+```
+
+### VectorOfRotatedRect.front
+
+```cpp
+cv::RotatedRect VectorOfRotatedRect::front();
+lua:
+    oVectorOfRotatedRect:front() -> retval
+```
+
+### VectorOfRotatedRect.max\_size
+
+```cpp
+size_t VectorOfRotatedRect::max_size();
+lua:
+    oVectorOfRotatedRect:max_size() -> retval
+```
+
+### VectorOfRotatedRect.pop\_back
+
+```cpp
+void VectorOfRotatedRect::pop_back();
+lua:
+    oVectorOfRotatedRect:pop_back() -> None
+```
+
+### VectorOfRotatedRect.reserve
+
+```cpp
+void VectorOfRotatedRect::reserve( size_t new_cap );
+lua:
+    oVectorOfRotatedRect:reserve( new_cap ) -> None
+```
+
+### VectorOfRotatedRect.resize
+
+```cpp
+void VectorOfRotatedRect::resize( size_t count );
+lua:
+    oVectorOfRotatedRect:resize( count ) -> None
+```
+
+```cpp
+void VectorOfRotatedRect::resize( size_t                 count,
+                                  const cv::RotatedRect& value );
+lua:
+    oVectorOfRotatedRect:resize( count, value ) -> None
+```
+
+### VectorOfRotatedRect.shrink\_to\_fit
+
+```cpp
+void VectorOfRotatedRect::shrink_to_fit();
+lua:
+    oVectorOfRotatedRect:shrink_to_fit() -> None
+```
+
+### VectorOfRotatedRect.sizeof
+
+```cpp
+size_t VectorOfRotatedRect::size();
+lua:
+    oVectorOfRotatedRect:sizeof() -> retval
 ```
 
 ### VectorOfRotatedRect.sol::meta\_function::index
@@ -64220,6 +70079,14 @@ void VectorOfRotatedRect::sol::meta_function::new_index( size_t          index,
                                                          cv::RotatedRect value );
 lua:
     oVectorOfRotatedRect:__newindex( index, value ) -> None
+```
+
+### VectorOfRotatedRect.swap
+
+```cpp
+void VectorOfRotatedRect::swap( std::vector<cv::RotatedRect>& other );
+lua:
+    oVectorOfRotatedRect:swap( other ) -> None
 ```
 
 ### VectorOfRotatedRect.table
@@ -64255,12 +70122,123 @@ lua:
     VectorOfSchar( other ) -> <std::vector<schar> object>
 ```
 
+```cpp
+std::vector<schar>( schar* data,
+                    size_t count );
+lua:
+    VectorOfSchar.new( data, count ) -> <std::vector<schar> object>
+    VectorOfSchar( data, count ) -> <std::vector<schar> object>
+```
+
+```cpp
+std::vector<schar>( schar* first,
+                    schar* last );
+lua:
+    VectorOfSchar.new( first, last ) -> <std::vector<schar> object>
+    VectorOfSchar( first, last ) -> <std::vector<schar> object>
+```
+
+### VectorOfSchar.back
+
+```cpp
+schar VectorOfSchar::back();
+lua:
+    oVectorOfSchar:back() -> retval
+```
+
+### VectorOfSchar.capacity
+
+```cpp
+size_t VectorOfSchar::capacity();
+lua:
+    oVectorOfSchar:capacity() -> retval
+```
+
+### VectorOfSchar.clear
+
+```cpp
+void VectorOfSchar::clear();
+lua:
+    oVectorOfSchar:clear() -> None
+```
+
 ### VectorOfSchar.data
 
 ```cpp
 void* VectorOfSchar::data();
 lua:
     oVectorOfSchar:data() -> retval
+```
+
+### VectorOfSchar.empty
+
+```cpp
+bool VectorOfSchar::empty() const;
+lua:
+    oVectorOfSchar:empty() -> retval
+```
+
+### VectorOfSchar.front
+
+```cpp
+schar VectorOfSchar::front();
+lua:
+    oVectorOfSchar:front() -> retval
+```
+
+### VectorOfSchar.max\_size
+
+```cpp
+size_t VectorOfSchar::max_size();
+lua:
+    oVectorOfSchar:max_size() -> retval
+```
+
+### VectorOfSchar.pop\_back
+
+```cpp
+void VectorOfSchar::pop_back();
+lua:
+    oVectorOfSchar:pop_back() -> None
+```
+
+### VectorOfSchar.reserve
+
+```cpp
+void VectorOfSchar::reserve( size_t new_cap );
+lua:
+    oVectorOfSchar:reserve( new_cap ) -> None
+```
+
+### VectorOfSchar.resize
+
+```cpp
+void VectorOfSchar::resize( size_t count );
+lua:
+    oVectorOfSchar:resize( count ) -> None
+```
+
+```cpp
+void VectorOfSchar::resize( size_t       count,
+                            const schar& value );
+lua:
+    oVectorOfSchar:resize( count, value ) -> None
+```
+
+### VectorOfSchar.shrink\_to\_fit
+
+```cpp
+void VectorOfSchar::shrink_to_fit();
+lua:
+    oVectorOfSchar:shrink_to_fit() -> None
+```
+
+### VectorOfSchar.sizeof
+
+```cpp
+size_t VectorOfSchar::size();
+lua:
+    oVectorOfSchar:sizeof() -> retval
 ```
 
 ### VectorOfSchar.sol::meta\_function::index
@@ -64286,6 +70264,14 @@ void VectorOfSchar::sol::meta_function::new_index( size_t index,
                                                    schar  value );
 lua:
     oVectorOfSchar:__newindex( index, value ) -> None
+```
+
+### VectorOfSchar.swap
+
+```cpp
+void VectorOfSchar::swap( std::vector<schar>& other );
+lua:
+    oVectorOfSchar:swap( other ) -> None
 ```
 
 ### VectorOfSchar.table
@@ -64321,12 +70307,123 @@ lua:
     VectorOfShort( other ) -> <std::vector<short> object>
 ```
 
+```cpp
+std::vector<short>( short* data,
+                    size_t count );
+lua:
+    VectorOfShort.new( data, count ) -> <std::vector<short> object>
+    VectorOfShort( data, count ) -> <std::vector<short> object>
+```
+
+```cpp
+std::vector<short>( short* first,
+                    short* last );
+lua:
+    VectorOfShort.new( first, last ) -> <std::vector<short> object>
+    VectorOfShort( first, last ) -> <std::vector<short> object>
+```
+
+### VectorOfShort.back
+
+```cpp
+short VectorOfShort::back();
+lua:
+    oVectorOfShort:back() -> retval
+```
+
+### VectorOfShort.capacity
+
+```cpp
+size_t VectorOfShort::capacity();
+lua:
+    oVectorOfShort:capacity() -> retval
+```
+
+### VectorOfShort.clear
+
+```cpp
+void VectorOfShort::clear();
+lua:
+    oVectorOfShort:clear() -> None
+```
+
 ### VectorOfShort.data
 
 ```cpp
 void* VectorOfShort::data();
 lua:
     oVectorOfShort:data() -> retval
+```
+
+### VectorOfShort.empty
+
+```cpp
+bool VectorOfShort::empty() const;
+lua:
+    oVectorOfShort:empty() -> retval
+```
+
+### VectorOfShort.front
+
+```cpp
+short VectorOfShort::front();
+lua:
+    oVectorOfShort:front() -> retval
+```
+
+### VectorOfShort.max\_size
+
+```cpp
+size_t VectorOfShort::max_size();
+lua:
+    oVectorOfShort:max_size() -> retval
+```
+
+### VectorOfShort.pop\_back
+
+```cpp
+void VectorOfShort::pop_back();
+lua:
+    oVectorOfShort:pop_back() -> None
+```
+
+### VectorOfShort.reserve
+
+```cpp
+void VectorOfShort::reserve( size_t new_cap );
+lua:
+    oVectorOfShort:reserve( new_cap ) -> None
+```
+
+### VectorOfShort.resize
+
+```cpp
+void VectorOfShort::resize( size_t count );
+lua:
+    oVectorOfShort:resize( count ) -> None
+```
+
+```cpp
+void VectorOfShort::resize( size_t       count,
+                            const short& value );
+lua:
+    oVectorOfShort:resize( count, value ) -> None
+```
+
+### VectorOfShort.shrink\_to\_fit
+
+```cpp
+void VectorOfShort::shrink_to_fit();
+lua:
+    oVectorOfShort:shrink_to_fit() -> None
+```
+
+### VectorOfShort.sizeof
+
+```cpp
+size_t VectorOfShort::size();
+lua:
+    oVectorOfShort:sizeof() -> retval
 ```
 
 ### VectorOfShort.sol::meta\_function::index
@@ -64352,6 +70449,14 @@ void VectorOfShort::sol::meta_function::new_index( size_t index,
                                                    short  value );
 lua:
     oVectorOfShort:__newindex( index, value ) -> None
+```
+
+### VectorOfShort.swap
+
+```cpp
+void VectorOfShort::swap( std::vector<short>& other );
+lua:
+    oVectorOfShort:swap( other ) -> None
 ```
 
 ### VectorOfShort.table
@@ -64387,12 +70492,123 @@ lua:
     VectorOfSize( other ) -> <std::vector<cv::Size> object>
 ```
 
+```cpp
+std::vector<cv::Size>( cv::Size* data,
+                       size_t    count );
+lua:
+    VectorOfSize.new( data, count ) -> <std::vector<cv::Size> object>
+    VectorOfSize( data, count ) -> <std::vector<cv::Size> object>
+```
+
+```cpp
+std::vector<cv::Size>( cv::Size* first,
+                       cv::Size* last );
+lua:
+    VectorOfSize.new( first, last ) -> <std::vector<cv::Size> object>
+    VectorOfSize( first, last ) -> <std::vector<cv::Size> object>
+```
+
+### VectorOfSize.back
+
+```cpp
+cv::Size VectorOfSize::back();
+lua:
+    oVectorOfSize:back() -> retval
+```
+
+### VectorOfSize.capacity
+
+```cpp
+size_t VectorOfSize::capacity();
+lua:
+    oVectorOfSize:capacity() -> retval
+```
+
+### VectorOfSize.clear
+
+```cpp
+void VectorOfSize::clear();
+lua:
+    oVectorOfSize:clear() -> None
+```
+
 ### VectorOfSize.data
 
 ```cpp
 void* VectorOfSize::data();
 lua:
     oVectorOfSize:data() -> retval
+```
+
+### VectorOfSize.empty
+
+```cpp
+bool VectorOfSize::empty() const;
+lua:
+    oVectorOfSize:empty() -> retval
+```
+
+### VectorOfSize.front
+
+```cpp
+cv::Size VectorOfSize::front();
+lua:
+    oVectorOfSize:front() -> retval
+```
+
+### VectorOfSize.max\_size
+
+```cpp
+size_t VectorOfSize::max_size();
+lua:
+    oVectorOfSize:max_size() -> retval
+```
+
+### VectorOfSize.pop\_back
+
+```cpp
+void VectorOfSize::pop_back();
+lua:
+    oVectorOfSize:pop_back() -> None
+```
+
+### VectorOfSize.reserve
+
+```cpp
+void VectorOfSize::reserve( size_t new_cap );
+lua:
+    oVectorOfSize:reserve( new_cap ) -> None
+```
+
+### VectorOfSize.resize
+
+```cpp
+void VectorOfSize::resize( size_t count );
+lua:
+    oVectorOfSize:resize( count ) -> None
+```
+
+```cpp
+void VectorOfSize::resize( size_t          count,
+                           const cv::Size& value );
+lua:
+    oVectorOfSize:resize( count, value ) -> None
+```
+
+### VectorOfSize.shrink\_to\_fit
+
+```cpp
+void VectorOfSize::shrink_to_fit();
+lua:
+    oVectorOfSize:shrink_to_fit() -> None
+```
+
+### VectorOfSize.sizeof
+
+```cpp
+size_t VectorOfSize::size();
+lua:
+    oVectorOfSize:sizeof() -> retval
 ```
 
 ### VectorOfSize.sol::meta\_function::index
@@ -64418,6 +70634,14 @@ void VectorOfSize::sol::meta_function::new_index( size_t   index,
                                                   cv::Size value );
 lua:
     oVectorOfSize:__newindex( index, value ) -> None
+```
+
+### VectorOfSize.swap
+
+```cpp
+void VectorOfSize::swap( std::vector<cv::Size>& other );
+lua:
+    oVectorOfSize:swap( other ) -> None
 ```
 
 ### VectorOfSize.table
@@ -64453,12 +70677,123 @@ lua:
     VectorOfSize2d( other ) -> <std::vector<cv::Size2d> object>
 ```
 
+```cpp
+std::vector<cv::Size2d>( cv::Size2d* data,
+                         size_t      count );
+lua:
+    VectorOfSize2d.new( data, count ) -> <std::vector<cv::Size2d> object>
+    VectorOfSize2d( data, count ) -> <std::vector<cv::Size2d> object>
+```
+
+```cpp
+std::vector<cv::Size2d>( cv::Size2d* first,
+                         cv::Size2d* last );
+lua:
+    VectorOfSize2d.new( first, last ) -> <std::vector<cv::Size2d> object>
+    VectorOfSize2d( first, last ) -> <std::vector<cv::Size2d> object>
+```
+
+### VectorOfSize2d.back
+
+```cpp
+cv::Size2d VectorOfSize2d::back();
+lua:
+    oVectorOfSize2d:back() -> retval
+```
+
+### VectorOfSize2d.capacity
+
+```cpp
+size_t VectorOfSize2d::capacity();
+lua:
+    oVectorOfSize2d:capacity() -> retval
+```
+
+### VectorOfSize2d.clear
+
+```cpp
+void VectorOfSize2d::clear();
+lua:
+    oVectorOfSize2d:clear() -> None
+```
+
 ### VectorOfSize2d.data
 
 ```cpp
 void* VectorOfSize2d::data();
 lua:
     oVectorOfSize2d:data() -> retval
+```
+
+### VectorOfSize2d.empty
+
+```cpp
+bool VectorOfSize2d::empty() const;
+lua:
+    oVectorOfSize2d:empty() -> retval
+```
+
+### VectorOfSize2d.front
+
+```cpp
+cv::Size2d VectorOfSize2d::front();
+lua:
+    oVectorOfSize2d:front() -> retval
+```
+
+### VectorOfSize2d.max\_size
+
+```cpp
+size_t VectorOfSize2d::max_size();
+lua:
+    oVectorOfSize2d:max_size() -> retval
+```
+
+### VectorOfSize2d.pop\_back
+
+```cpp
+void VectorOfSize2d::pop_back();
+lua:
+    oVectorOfSize2d:pop_back() -> None
+```
+
+### VectorOfSize2d.reserve
+
+```cpp
+void VectorOfSize2d::reserve( size_t new_cap );
+lua:
+    oVectorOfSize2d:reserve( new_cap ) -> None
+```
+
+### VectorOfSize2d.resize
+
+```cpp
+void VectorOfSize2d::resize( size_t count );
+lua:
+    oVectorOfSize2d:resize( count ) -> None
+```
+
+```cpp
+void VectorOfSize2d::resize( size_t            count,
+                             const cv::Size2d& value );
+lua:
+    oVectorOfSize2d:resize( count, value ) -> None
+```
+
+### VectorOfSize2d.shrink\_to\_fit
+
+```cpp
+void VectorOfSize2d::shrink_to_fit();
+lua:
+    oVectorOfSize2d:shrink_to_fit() -> None
+```
+
+### VectorOfSize2d.sizeof
+
+```cpp
+size_t VectorOfSize2d::size();
+lua:
+    oVectorOfSize2d:sizeof() -> retval
 ```
 
 ### VectorOfSize2d.sol::meta\_function::index
@@ -64484,6 +70819,14 @@ void VectorOfSize2d::sol::meta_function::new_index( size_t     index,
                                                     cv::Size2d value );
 lua:
     oVectorOfSize2d:__newindex( index, value ) -> None
+```
+
+### VectorOfSize2d.swap
+
+```cpp
+void VectorOfSize2d::swap( std::vector<cv::Size2d>& other );
+lua:
+    oVectorOfSize2d:swap( other ) -> None
 ```
 
 ### VectorOfSize2d.table
@@ -64519,12 +70862,123 @@ lua:
     VectorOfSize2f( other ) -> <std::vector<cv::Size2f> object>
 ```
 
+```cpp
+std::vector<cv::Size2f>( cv::Size2f* data,
+                         size_t      count );
+lua:
+    VectorOfSize2f.new( data, count ) -> <std::vector<cv::Size2f> object>
+    VectorOfSize2f( data, count ) -> <std::vector<cv::Size2f> object>
+```
+
+```cpp
+std::vector<cv::Size2f>( cv::Size2f* first,
+                         cv::Size2f* last );
+lua:
+    VectorOfSize2f.new( first, last ) -> <std::vector<cv::Size2f> object>
+    VectorOfSize2f( first, last ) -> <std::vector<cv::Size2f> object>
+```
+
+### VectorOfSize2f.back
+
+```cpp
+cv::Size2f VectorOfSize2f::back();
+lua:
+    oVectorOfSize2f:back() -> retval
+```
+
+### VectorOfSize2f.capacity
+
+```cpp
+size_t VectorOfSize2f::capacity();
+lua:
+    oVectorOfSize2f:capacity() -> retval
+```
+
+### VectorOfSize2f.clear
+
+```cpp
+void VectorOfSize2f::clear();
+lua:
+    oVectorOfSize2f:clear() -> None
+```
+
 ### VectorOfSize2f.data
 
 ```cpp
 void* VectorOfSize2f::data();
 lua:
     oVectorOfSize2f:data() -> retval
+```
+
+### VectorOfSize2f.empty
+
+```cpp
+bool VectorOfSize2f::empty() const;
+lua:
+    oVectorOfSize2f:empty() -> retval
+```
+
+### VectorOfSize2f.front
+
+```cpp
+cv::Size2f VectorOfSize2f::front();
+lua:
+    oVectorOfSize2f:front() -> retval
+```
+
+### VectorOfSize2f.max\_size
+
+```cpp
+size_t VectorOfSize2f::max_size();
+lua:
+    oVectorOfSize2f:max_size() -> retval
+```
+
+### VectorOfSize2f.pop\_back
+
+```cpp
+void VectorOfSize2f::pop_back();
+lua:
+    oVectorOfSize2f:pop_back() -> None
+```
+
+### VectorOfSize2f.reserve
+
+```cpp
+void VectorOfSize2f::reserve( size_t new_cap );
+lua:
+    oVectorOfSize2f:reserve( new_cap ) -> None
+```
+
+### VectorOfSize2f.resize
+
+```cpp
+void VectorOfSize2f::resize( size_t count );
+lua:
+    oVectorOfSize2f:resize( count ) -> None
+```
+
+```cpp
+void VectorOfSize2f::resize( size_t            count,
+                             const cv::Size2f& value );
+lua:
+    oVectorOfSize2f:resize( count, value ) -> None
+```
+
+### VectorOfSize2f.shrink\_to\_fit
+
+```cpp
+void VectorOfSize2f::shrink_to_fit();
+lua:
+    oVectorOfSize2f:shrink_to_fit() -> None
+```
+
+### VectorOfSize2f.sizeof
+
+```cpp
+size_t VectorOfSize2f::size();
+lua:
+    oVectorOfSize2f:sizeof() -> retval
 ```
 
 ### VectorOfSize2f.sol::meta\_function::index
@@ -64550,6 +71004,14 @@ void VectorOfSize2f::sol::meta_function::new_index( size_t     index,
                                                     cv::Size2f value );
 lua:
     oVectorOfSize2f:__newindex( index, value ) -> None
+```
+
+### VectorOfSize2f.swap
+
+```cpp
+void VectorOfSize2f::swap( std::vector<cv::Size2f>& other );
+lua:
+    oVectorOfSize2f:swap( other ) -> None
 ```
 
 ### VectorOfSize2f.table
@@ -64585,12 +71047,123 @@ lua:
     VectorOfSize_t( other ) -> <std::vector<size_t> object>
 ```
 
+```cpp
+std::vector<size_t>( size_t* data,
+                     size_t  count );
+lua:
+    VectorOfSize_t.new( data, count ) -> <std::vector<size_t> object>
+    VectorOfSize_t( data, count ) -> <std::vector<size_t> object>
+```
+
+```cpp
+std::vector<size_t>( size_t* first,
+                     size_t* last );
+lua:
+    VectorOfSize_t.new( first, last ) -> <std::vector<size_t> object>
+    VectorOfSize_t( first, last ) -> <std::vector<size_t> object>
+```
+
+### VectorOfSize\_t.back
+
+```cpp
+size_t VectorOfSize_t::back();
+lua:
+    oVectorOfSize_t:back() -> retval
+```
+
+### VectorOfSize\_t.capacity
+
+```cpp
+size_t VectorOfSize_t::capacity();
+lua:
+    oVectorOfSize_t:capacity() -> retval
+```
+
+### VectorOfSize\_t.clear
+
+```cpp
+void VectorOfSize_t::clear();
+lua:
+    oVectorOfSize_t:clear() -> None
+```
+
 ### VectorOfSize\_t.data
 
 ```cpp
 void* VectorOfSize_t::data();
 lua:
     oVectorOfSize_t:data() -> retval
+```
+
+### VectorOfSize\_t.empty
+
+```cpp
+bool VectorOfSize_t::empty() const;
+lua:
+    oVectorOfSize_t:empty() -> retval
+```
+
+### VectorOfSize\_t.front
+
+```cpp
+size_t VectorOfSize_t::front();
+lua:
+    oVectorOfSize_t:front() -> retval
+```
+
+### VectorOfSize\_t.max\_size
+
+```cpp
+size_t VectorOfSize_t::max_size();
+lua:
+    oVectorOfSize_t:max_size() -> retval
+```
+
+### VectorOfSize\_t.pop\_back
+
+```cpp
+void VectorOfSize_t::pop_back();
+lua:
+    oVectorOfSize_t:pop_back() -> None
+```
+
+### VectorOfSize\_t.reserve
+
+```cpp
+void VectorOfSize_t::reserve( size_t new_cap );
+lua:
+    oVectorOfSize_t:reserve( new_cap ) -> None
+```
+
+### VectorOfSize\_t.resize
+
+```cpp
+void VectorOfSize_t::resize( size_t count );
+lua:
+    oVectorOfSize_t:resize( count ) -> None
+```
+
+```cpp
+void VectorOfSize_t::resize( size_t        count,
+                             const size_t& value );
+lua:
+    oVectorOfSize_t:resize( count, value ) -> None
+```
+
+### VectorOfSize\_t.shrink\_to\_fit
+
+```cpp
+void VectorOfSize_t::shrink_to_fit();
+lua:
+    oVectorOfSize_t:shrink_to_fit() -> None
+```
+
+### VectorOfSize\_t.sizeof
+
+```cpp
+size_t VectorOfSize_t::size();
+lua:
+    oVectorOfSize_t:sizeof() -> retval
 ```
 
 ### VectorOfSize\_t.sol::meta\_function::index
@@ -64616,6 +71189,14 @@ void VectorOfSize_t::sol::meta_function::new_index( size_t index,
                                                     size_t value );
 lua:
     oVectorOfSize_t:__newindex( index, value ) -> None
+```
+
+### VectorOfSize\_t.swap
+
+```cpp
+void VectorOfSize_t::swap( std::vector<size_t>& other );
+lua:
+    oVectorOfSize_t:swap( other ) -> None
 ```
 
 ### VectorOfSize\_t.table
@@ -64651,12 +71232,123 @@ lua:
     VectorOfString( other ) -> <std::vector<std::string> object>
 ```
 
+```cpp
+std::vector<std::string>( std::string* data,
+                          size_t       count );
+lua:
+    VectorOfString.new( data, count ) -> <std::vector<std::string> object>
+    VectorOfString( data, count ) -> <std::vector<std::string> object>
+```
+
+```cpp
+std::vector<std::string>( std::string* first,
+                          std::string* last );
+lua:
+    VectorOfString.new( first, last ) -> <std::vector<std::string> object>
+    VectorOfString( first, last ) -> <std::vector<std::string> object>
+```
+
+### VectorOfString.back
+
+```cpp
+std::string VectorOfString::back();
+lua:
+    oVectorOfString:back() -> retval
+```
+
+### VectorOfString.capacity
+
+```cpp
+size_t VectorOfString::capacity();
+lua:
+    oVectorOfString:capacity() -> retval
+```
+
+### VectorOfString.clear
+
+```cpp
+void VectorOfString::clear();
+lua:
+    oVectorOfString:clear() -> None
+```
+
 ### VectorOfString.data
 
 ```cpp
 void* VectorOfString::data();
 lua:
     oVectorOfString:data() -> retval
+```
+
+### VectorOfString.empty
+
+```cpp
+bool VectorOfString::empty() const;
+lua:
+    oVectorOfString:empty() -> retval
+```
+
+### VectorOfString.front
+
+```cpp
+std::string VectorOfString::front();
+lua:
+    oVectorOfString:front() -> retval
+```
+
+### VectorOfString.max\_size
+
+```cpp
+size_t VectorOfString::max_size();
+lua:
+    oVectorOfString:max_size() -> retval
+```
+
+### VectorOfString.pop\_back
+
+```cpp
+void VectorOfString::pop_back();
+lua:
+    oVectorOfString:pop_back() -> None
+```
+
+### VectorOfString.reserve
+
+```cpp
+void VectorOfString::reserve( size_t new_cap );
+lua:
+    oVectorOfString:reserve( new_cap ) -> None
+```
+
+### VectorOfString.resize
+
+```cpp
+void VectorOfString::resize( size_t count );
+lua:
+    oVectorOfString:resize( count ) -> None
+```
+
+```cpp
+void VectorOfString::resize( size_t             count,
+                             const std::string& value );
+lua:
+    oVectorOfString:resize( count, value ) -> None
+```
+
+### VectorOfString.shrink\_to\_fit
+
+```cpp
+void VectorOfString::shrink_to_fit();
+lua:
+    oVectorOfString:shrink_to_fit() -> None
+```
+
+### VectorOfString.sizeof
+
+```cpp
+size_t VectorOfString::size();
+lua:
+    oVectorOfString:sizeof() -> retval
 ```
 
 ### VectorOfString.sol::meta\_function::index
@@ -64682,6 +71374,14 @@ void VectorOfString::sol::meta_function::new_index( size_t      index,
                                                     std::string value );
 lua:
     oVectorOfString:__newindex( index, value ) -> None
+```
+
+### VectorOfString.swap
+
+```cpp
+void VectorOfString::swap( std::vector<std::string>& other );
+lua:
+    oVectorOfString:swap( other ) -> None
 ```
 
 ### VectorOfString.table
@@ -64717,12 +71417,123 @@ lua:
     VectorOfTuplePointAndDouble( other ) -> <std::vector<std::tuple<cv::Point, double>> object>
 ```
 
+```cpp
+std::vector<std::tuple<cv::Point, double>>( std::tuple<cv::Point, double>* data,
+                                            size_t                         count );
+lua:
+    VectorOfTuplePointAndDouble.new( data, count ) -> <std::vector<std::tuple<cv::Point, double>> object>
+    VectorOfTuplePointAndDouble( data, count ) -> <std::vector<std::tuple<cv::Point, double>> object>
+```
+
+```cpp
+std::vector<std::tuple<cv::Point, double>>( std::tuple<cv::Point, double>* first,
+                                            std::tuple<cv::Point, double>* last );
+lua:
+    VectorOfTuplePointAndDouble.new( first, last ) -> <std::vector<std::tuple<cv::Point, double>> object>
+    VectorOfTuplePointAndDouble( first, last ) -> <std::vector<std::tuple<cv::Point, double>> object>
+```
+
+### VectorOfTuplePointAndDouble.back
+
+```cpp
+std::tuple<cv::Point, double> VectorOfTuplePointAndDouble::back();
+lua:
+    oVectorOfTuplePointAndDouble:back() -> retval
+```
+
+### VectorOfTuplePointAndDouble.capacity
+
+```cpp
+size_t VectorOfTuplePointAndDouble::capacity();
+lua:
+    oVectorOfTuplePointAndDouble:capacity() -> retval
+```
+
+### VectorOfTuplePointAndDouble.clear
+
+```cpp
+void VectorOfTuplePointAndDouble::clear();
+lua:
+    oVectorOfTuplePointAndDouble:clear() -> None
+```
+
 ### VectorOfTuplePointAndDouble.data
 
 ```cpp
 void* VectorOfTuplePointAndDouble::data();
 lua:
     oVectorOfTuplePointAndDouble:data() -> retval
+```
+
+### VectorOfTuplePointAndDouble.empty
+
+```cpp
+bool VectorOfTuplePointAndDouble::empty() const;
+lua:
+    oVectorOfTuplePointAndDouble:empty() -> retval
+```
+
+### VectorOfTuplePointAndDouble.front
+
+```cpp
+std::tuple<cv::Point, double> VectorOfTuplePointAndDouble::front();
+lua:
+    oVectorOfTuplePointAndDouble:front() -> retval
+```
+
+### VectorOfTuplePointAndDouble.max\_size
+
+```cpp
+size_t VectorOfTuplePointAndDouble::max_size();
+lua:
+    oVectorOfTuplePointAndDouble:max_size() -> retval
+```
+
+### VectorOfTuplePointAndDouble.pop\_back
+
+```cpp
+void VectorOfTuplePointAndDouble::pop_back();
+lua:
+    oVectorOfTuplePointAndDouble:pop_back() -> None
+```
+
+### VectorOfTuplePointAndDouble.reserve
+
+```cpp
+void VectorOfTuplePointAndDouble::reserve( size_t new_cap );
+lua:
+    oVectorOfTuplePointAndDouble:reserve( new_cap ) -> None
+```
+
+### VectorOfTuplePointAndDouble.resize
+
+```cpp
+void VectorOfTuplePointAndDouble::resize( size_t count );
+lua:
+    oVectorOfTuplePointAndDouble:resize( count ) -> None
+```
+
+```cpp
+void VectorOfTuplePointAndDouble::resize( size_t                               count,
+                                          const std::tuple<cv::Point, double>& value );
+lua:
+    oVectorOfTuplePointAndDouble:resize( count, value ) -> None
+```
+
+### VectorOfTuplePointAndDouble.shrink\_to\_fit
+
+```cpp
+void VectorOfTuplePointAndDouble::shrink_to_fit();
+lua:
+    oVectorOfTuplePointAndDouble:shrink_to_fit() -> None
+```
+
+### VectorOfTuplePointAndDouble.sizeof
+
+```cpp
+size_t VectorOfTuplePointAndDouble::size();
+lua:
+    oVectorOfTuplePointAndDouble:sizeof() -> retval
 ```
 
 ### VectorOfTuplePointAndDouble.sol::meta\_function::index
@@ -64748,6 +71559,14 @@ void VectorOfTuplePointAndDouble::sol::meta_function::new_index( size_t         
                                                                  std::tuple<cv::Point, double> value );
 lua:
     oVectorOfTuplePointAndDouble:__newindex( index, value ) -> None
+```
+
+### VectorOfTuplePointAndDouble.swap
+
+```cpp
+void VectorOfTuplePointAndDouble::swap( std::vector<std::tuple<cv::Point, double>>& other );
+lua:
+    oVectorOfTuplePointAndDouble:swap( other ) -> None
 ```
 
 ### VectorOfTuplePointAndDouble.table
@@ -64783,12 +71602,123 @@ lua:
     VectorOfUMat( other ) -> <std::vector<cv::UMat> object>
 ```
 
+```cpp
+std::vector<cv::UMat>( cv::UMat* data,
+                       size_t    count );
+lua:
+    VectorOfUMat.new( data, count ) -> <std::vector<cv::UMat> object>
+    VectorOfUMat( data, count ) -> <std::vector<cv::UMat> object>
+```
+
+```cpp
+std::vector<cv::UMat>( cv::UMat* first,
+                       cv::UMat* last );
+lua:
+    VectorOfUMat.new( first, last ) -> <std::vector<cv::UMat> object>
+    VectorOfUMat( first, last ) -> <std::vector<cv::UMat> object>
+```
+
+### VectorOfUMat.back
+
+```cpp
+cv::UMat VectorOfUMat::back();
+lua:
+    oVectorOfUMat:back() -> retval
+```
+
+### VectorOfUMat.capacity
+
+```cpp
+size_t VectorOfUMat::capacity();
+lua:
+    oVectorOfUMat:capacity() -> retval
+```
+
+### VectorOfUMat.clear
+
+```cpp
+void VectorOfUMat::clear();
+lua:
+    oVectorOfUMat:clear() -> None
+```
+
 ### VectorOfUMat.data
 
 ```cpp
 void* VectorOfUMat::data();
 lua:
     oVectorOfUMat:data() -> retval
+```
+
+### VectorOfUMat.empty
+
+```cpp
+bool VectorOfUMat::empty() const;
+lua:
+    oVectorOfUMat:empty() -> retval
+```
+
+### VectorOfUMat.front
+
+```cpp
+cv::UMat VectorOfUMat::front();
+lua:
+    oVectorOfUMat:front() -> retval
+```
+
+### VectorOfUMat.max\_size
+
+```cpp
+size_t VectorOfUMat::max_size();
+lua:
+    oVectorOfUMat:max_size() -> retval
+```
+
+### VectorOfUMat.pop\_back
+
+```cpp
+void VectorOfUMat::pop_back();
+lua:
+    oVectorOfUMat:pop_back() -> None
+```
+
+### VectorOfUMat.reserve
+
+```cpp
+void VectorOfUMat::reserve( size_t new_cap );
+lua:
+    oVectorOfUMat:reserve( new_cap ) -> None
+```
+
+### VectorOfUMat.resize
+
+```cpp
+void VectorOfUMat::resize( size_t count );
+lua:
+    oVectorOfUMat:resize( count ) -> None
+```
+
+```cpp
+void VectorOfUMat::resize( size_t          count,
+                           const cv::UMat& value );
+lua:
+    oVectorOfUMat:resize( count, value ) -> None
+```
+
+### VectorOfUMat.shrink\_to\_fit
+
+```cpp
+void VectorOfUMat::shrink_to_fit();
+lua:
+    oVectorOfUMat:shrink_to_fit() -> None
+```
+
+### VectorOfUMat.sizeof
+
+```cpp
+size_t VectorOfUMat::size();
+lua:
+    oVectorOfUMat:sizeof() -> retval
 ```
 
 ### VectorOfUMat.sol::meta\_function::index
@@ -64814,6 +71744,14 @@ void VectorOfUMat::sol::meta_function::new_index( size_t   index,
                                                   cv::UMat value );
 lua:
     oVectorOfUMat:__newindex( index, value ) -> None
+```
+
+### VectorOfUMat.swap
+
+```cpp
+void VectorOfUMat::swap( std::vector<cv::UMat>& other );
+lua:
+    oVectorOfUMat:swap( other ) -> None
 ```
 
 ### VectorOfUMat.table
@@ -64849,12 +71787,123 @@ lua:
     VectorOfUchar( other ) -> <std::vector<uchar> object>
 ```
 
+```cpp
+std::vector<uchar>( uchar* data,
+                    size_t count );
+lua:
+    VectorOfUchar.new( data, count ) -> <std::vector<uchar> object>
+    VectorOfUchar( data, count ) -> <std::vector<uchar> object>
+```
+
+```cpp
+std::vector<uchar>( uchar* first,
+                    uchar* last );
+lua:
+    VectorOfUchar.new( first, last ) -> <std::vector<uchar> object>
+    VectorOfUchar( first, last ) -> <std::vector<uchar> object>
+```
+
+### VectorOfUchar.back
+
+```cpp
+uchar VectorOfUchar::back();
+lua:
+    oVectorOfUchar:back() -> retval
+```
+
+### VectorOfUchar.capacity
+
+```cpp
+size_t VectorOfUchar::capacity();
+lua:
+    oVectorOfUchar:capacity() -> retval
+```
+
+### VectorOfUchar.clear
+
+```cpp
+void VectorOfUchar::clear();
+lua:
+    oVectorOfUchar:clear() -> None
+```
+
 ### VectorOfUchar.data
 
 ```cpp
 void* VectorOfUchar::data();
 lua:
     oVectorOfUchar:data() -> retval
+```
+
+### VectorOfUchar.empty
+
+```cpp
+bool VectorOfUchar::empty() const;
+lua:
+    oVectorOfUchar:empty() -> retval
+```
+
+### VectorOfUchar.front
+
+```cpp
+uchar VectorOfUchar::front();
+lua:
+    oVectorOfUchar:front() -> retval
+```
+
+### VectorOfUchar.max\_size
+
+```cpp
+size_t VectorOfUchar::max_size();
+lua:
+    oVectorOfUchar:max_size() -> retval
+```
+
+### VectorOfUchar.pop\_back
+
+```cpp
+void VectorOfUchar::pop_back();
+lua:
+    oVectorOfUchar:pop_back() -> None
+```
+
+### VectorOfUchar.reserve
+
+```cpp
+void VectorOfUchar::reserve( size_t new_cap );
+lua:
+    oVectorOfUchar:reserve( new_cap ) -> None
+```
+
+### VectorOfUchar.resize
+
+```cpp
+void VectorOfUchar::resize( size_t count );
+lua:
+    oVectorOfUchar:resize( count ) -> None
+```
+
+```cpp
+void VectorOfUchar::resize( size_t       count,
+                            const uchar& value );
+lua:
+    oVectorOfUchar:resize( count, value ) -> None
+```
+
+### VectorOfUchar.shrink\_to\_fit
+
+```cpp
+void VectorOfUchar::shrink_to_fit();
+lua:
+    oVectorOfUchar:shrink_to_fit() -> None
+```
+
+### VectorOfUchar.sizeof
+
+```cpp
+size_t VectorOfUchar::size();
+lua:
+    oVectorOfUchar:sizeof() -> retval
 ```
 
 ### VectorOfUchar.sol::meta\_function::index
@@ -64880,6 +71929,14 @@ void VectorOfUchar::sol::meta_function::new_index( size_t index,
                                                    uchar  value );
 lua:
     oVectorOfUchar:__newindex( index, value ) -> None
+```
+
+### VectorOfUchar.swap
+
+```cpp
+void VectorOfUchar::swap( std::vector<uchar>& other );
+lua:
+    oVectorOfUchar:swap( other ) -> None
 ```
 
 ### VectorOfUchar.table
@@ -64915,12 +71972,123 @@ lua:
     VectorOfUshort( other ) -> <std::vector<ushort> object>
 ```
 
+```cpp
+std::vector<ushort>( ushort* data,
+                     size_t  count );
+lua:
+    VectorOfUshort.new( data, count ) -> <std::vector<ushort> object>
+    VectorOfUshort( data, count ) -> <std::vector<ushort> object>
+```
+
+```cpp
+std::vector<ushort>( ushort* first,
+                     ushort* last );
+lua:
+    VectorOfUshort.new( first, last ) -> <std::vector<ushort> object>
+    VectorOfUshort( first, last ) -> <std::vector<ushort> object>
+```
+
+### VectorOfUshort.back
+
+```cpp
+ushort VectorOfUshort::back();
+lua:
+    oVectorOfUshort:back() -> retval
+```
+
+### VectorOfUshort.capacity
+
+```cpp
+size_t VectorOfUshort::capacity();
+lua:
+    oVectorOfUshort:capacity() -> retval
+```
+
+### VectorOfUshort.clear
+
+```cpp
+void VectorOfUshort::clear();
+lua:
+    oVectorOfUshort:clear() -> None
+```
+
 ### VectorOfUshort.data
 
 ```cpp
 void* VectorOfUshort::data();
 lua:
     oVectorOfUshort:data() -> retval
+```
+
+### VectorOfUshort.empty
+
+```cpp
+bool VectorOfUshort::empty() const;
+lua:
+    oVectorOfUshort:empty() -> retval
+```
+
+### VectorOfUshort.front
+
+```cpp
+ushort VectorOfUshort::front();
+lua:
+    oVectorOfUshort:front() -> retval
+```
+
+### VectorOfUshort.max\_size
+
+```cpp
+size_t VectorOfUshort::max_size();
+lua:
+    oVectorOfUshort:max_size() -> retval
+```
+
+### VectorOfUshort.pop\_back
+
+```cpp
+void VectorOfUshort::pop_back();
+lua:
+    oVectorOfUshort:pop_back() -> None
+```
+
+### VectorOfUshort.reserve
+
+```cpp
+void VectorOfUshort::reserve( size_t new_cap );
+lua:
+    oVectorOfUshort:reserve( new_cap ) -> None
+```
+
+### VectorOfUshort.resize
+
+```cpp
+void VectorOfUshort::resize( size_t count );
+lua:
+    oVectorOfUshort:resize( count ) -> None
+```
+
+```cpp
+void VectorOfUshort::resize( size_t        count,
+                             const ushort& value );
+lua:
+    oVectorOfUshort:resize( count, value ) -> None
+```
+
+### VectorOfUshort.shrink\_to\_fit
+
+```cpp
+void VectorOfUshort::shrink_to_fit();
+lua:
+    oVectorOfUshort:shrink_to_fit() -> None
+```
+
+### VectorOfUshort.sizeof
+
+```cpp
+size_t VectorOfUshort::size();
+lua:
+    oVectorOfUshort:sizeof() -> retval
 ```
 
 ### VectorOfUshort.sol::meta\_function::index
@@ -64946,6 +72114,14 @@ void VectorOfUshort::sol::meta_function::new_index( size_t index,
                                                     ushort value );
 lua:
     oVectorOfUshort:__newindex( index, value ) -> None
+```
+
+### VectorOfUshort.swap
+
+```cpp
+void VectorOfUshort::swap( std::vector<ushort>& other );
+lua:
+    oVectorOfUshort:swap( other ) -> None
 ```
 
 ### VectorOfUshort.table
@@ -64981,12 +72157,123 @@ lua:
     VectorOfVec2b( other ) -> <std::vector<cv::Vec2b> object>
 ```
 
+```cpp
+std::vector<cv::Vec2b>( cv::Vec2b* data,
+                        size_t     count );
+lua:
+    VectorOfVec2b.new( data, count ) -> <std::vector<cv::Vec2b> object>
+    VectorOfVec2b( data, count ) -> <std::vector<cv::Vec2b> object>
+```
+
+```cpp
+std::vector<cv::Vec2b>( cv::Vec2b* first,
+                        cv::Vec2b* last );
+lua:
+    VectorOfVec2b.new( first, last ) -> <std::vector<cv::Vec2b> object>
+    VectorOfVec2b( first, last ) -> <std::vector<cv::Vec2b> object>
+```
+
+### VectorOfVec2b.back
+
+```cpp
+cv::Vec2b VectorOfVec2b::back();
+lua:
+    oVectorOfVec2b:back() -> retval
+```
+
+### VectorOfVec2b.capacity
+
+```cpp
+size_t VectorOfVec2b::capacity();
+lua:
+    oVectorOfVec2b:capacity() -> retval
+```
+
+### VectorOfVec2b.clear
+
+```cpp
+void VectorOfVec2b::clear();
+lua:
+    oVectorOfVec2b:clear() -> None
+```
+
 ### VectorOfVec2b.data
 
 ```cpp
 void* VectorOfVec2b::data();
 lua:
     oVectorOfVec2b:data() -> retval
+```
+
+### VectorOfVec2b.empty
+
+```cpp
+bool VectorOfVec2b::empty() const;
+lua:
+    oVectorOfVec2b:empty() -> retval
+```
+
+### VectorOfVec2b.front
+
+```cpp
+cv::Vec2b VectorOfVec2b::front();
+lua:
+    oVectorOfVec2b:front() -> retval
+```
+
+### VectorOfVec2b.max\_size
+
+```cpp
+size_t VectorOfVec2b::max_size();
+lua:
+    oVectorOfVec2b:max_size() -> retval
+```
+
+### VectorOfVec2b.pop\_back
+
+```cpp
+void VectorOfVec2b::pop_back();
+lua:
+    oVectorOfVec2b:pop_back() -> None
+```
+
+### VectorOfVec2b.reserve
+
+```cpp
+void VectorOfVec2b::reserve( size_t new_cap );
+lua:
+    oVectorOfVec2b:reserve( new_cap ) -> None
+```
+
+### VectorOfVec2b.resize
+
+```cpp
+void VectorOfVec2b::resize( size_t count );
+lua:
+    oVectorOfVec2b:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVec2b::resize( size_t           count,
+                            const cv::Vec2b& value );
+lua:
+    oVectorOfVec2b:resize( count, value ) -> None
+```
+
+### VectorOfVec2b.shrink\_to\_fit
+
+```cpp
+void VectorOfVec2b::shrink_to_fit();
+lua:
+    oVectorOfVec2b:shrink_to_fit() -> None
+```
+
+### VectorOfVec2b.sizeof
+
+```cpp
+size_t VectorOfVec2b::size();
+lua:
+    oVectorOfVec2b:sizeof() -> retval
 ```
 
 ### VectorOfVec2b.sol::meta\_function::index
@@ -65012,6 +72299,14 @@ void VectorOfVec2b::sol::meta_function::new_index( size_t    index,
                                                    cv::Vec2b value );
 lua:
     oVectorOfVec2b:__newindex( index, value ) -> None
+```
+
+### VectorOfVec2b.swap
+
+```cpp
+void VectorOfVec2b::swap( std::vector<cv::Vec2b>& other );
+lua:
+    oVectorOfVec2b:swap( other ) -> None
 ```
 
 ### VectorOfVec2b.table
@@ -65047,12 +72342,123 @@ lua:
     VectorOfVec2d( other ) -> <std::vector<cv::Vec2d> object>
 ```
 
+```cpp
+std::vector<cv::Vec2d>( cv::Vec2d* data,
+                        size_t     count );
+lua:
+    VectorOfVec2d.new( data, count ) -> <std::vector<cv::Vec2d> object>
+    VectorOfVec2d( data, count ) -> <std::vector<cv::Vec2d> object>
+```
+
+```cpp
+std::vector<cv::Vec2d>( cv::Vec2d* first,
+                        cv::Vec2d* last );
+lua:
+    VectorOfVec2d.new( first, last ) -> <std::vector<cv::Vec2d> object>
+    VectorOfVec2d( first, last ) -> <std::vector<cv::Vec2d> object>
+```
+
+### VectorOfVec2d.back
+
+```cpp
+cv::Vec2d VectorOfVec2d::back();
+lua:
+    oVectorOfVec2d:back() -> retval
+```
+
+### VectorOfVec2d.capacity
+
+```cpp
+size_t VectorOfVec2d::capacity();
+lua:
+    oVectorOfVec2d:capacity() -> retval
+```
+
+### VectorOfVec2d.clear
+
+```cpp
+void VectorOfVec2d::clear();
+lua:
+    oVectorOfVec2d:clear() -> None
+```
+
 ### VectorOfVec2d.data
 
 ```cpp
 void* VectorOfVec2d::data();
 lua:
     oVectorOfVec2d:data() -> retval
+```
+
+### VectorOfVec2d.empty
+
+```cpp
+bool VectorOfVec2d::empty() const;
+lua:
+    oVectorOfVec2d:empty() -> retval
+```
+
+### VectorOfVec2d.front
+
+```cpp
+cv::Vec2d VectorOfVec2d::front();
+lua:
+    oVectorOfVec2d:front() -> retval
+```
+
+### VectorOfVec2d.max\_size
+
+```cpp
+size_t VectorOfVec2d::max_size();
+lua:
+    oVectorOfVec2d:max_size() -> retval
+```
+
+### VectorOfVec2d.pop\_back
+
+```cpp
+void VectorOfVec2d::pop_back();
+lua:
+    oVectorOfVec2d:pop_back() -> None
+```
+
+### VectorOfVec2d.reserve
+
+```cpp
+void VectorOfVec2d::reserve( size_t new_cap );
+lua:
+    oVectorOfVec2d:reserve( new_cap ) -> None
+```
+
+### VectorOfVec2d.resize
+
+```cpp
+void VectorOfVec2d::resize( size_t count );
+lua:
+    oVectorOfVec2d:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVec2d::resize( size_t           count,
+                            const cv::Vec2d& value );
+lua:
+    oVectorOfVec2d:resize( count, value ) -> None
+```
+
+### VectorOfVec2d.shrink\_to\_fit
+
+```cpp
+void VectorOfVec2d::shrink_to_fit();
+lua:
+    oVectorOfVec2d:shrink_to_fit() -> None
+```
+
+### VectorOfVec2d.sizeof
+
+```cpp
+size_t VectorOfVec2d::size();
+lua:
+    oVectorOfVec2d:sizeof() -> retval
 ```
 
 ### VectorOfVec2d.sol::meta\_function::index
@@ -65078,6 +72484,14 @@ void VectorOfVec2d::sol::meta_function::new_index( size_t    index,
                                                    cv::Vec2d value );
 lua:
     oVectorOfVec2d:__newindex( index, value ) -> None
+```
+
+### VectorOfVec2d.swap
+
+```cpp
+void VectorOfVec2d::swap( std::vector<cv::Vec2d>& other );
+lua:
+    oVectorOfVec2d:swap( other ) -> None
 ```
 
 ### VectorOfVec2d.table
@@ -65113,12 +72527,123 @@ lua:
     VectorOfVec2f( other ) -> <std::vector<cv::Vec2f> object>
 ```
 
+```cpp
+std::vector<cv::Vec2f>( cv::Vec2f* data,
+                        size_t     count );
+lua:
+    VectorOfVec2f.new( data, count ) -> <std::vector<cv::Vec2f> object>
+    VectorOfVec2f( data, count ) -> <std::vector<cv::Vec2f> object>
+```
+
+```cpp
+std::vector<cv::Vec2f>( cv::Vec2f* first,
+                        cv::Vec2f* last );
+lua:
+    VectorOfVec2f.new( first, last ) -> <std::vector<cv::Vec2f> object>
+    VectorOfVec2f( first, last ) -> <std::vector<cv::Vec2f> object>
+```
+
+### VectorOfVec2f.back
+
+```cpp
+cv::Vec2f VectorOfVec2f::back();
+lua:
+    oVectorOfVec2f:back() -> retval
+```
+
+### VectorOfVec2f.capacity
+
+```cpp
+size_t VectorOfVec2f::capacity();
+lua:
+    oVectorOfVec2f:capacity() -> retval
+```
+
+### VectorOfVec2f.clear
+
+```cpp
+void VectorOfVec2f::clear();
+lua:
+    oVectorOfVec2f:clear() -> None
+```
+
 ### VectorOfVec2f.data
 
 ```cpp
 void* VectorOfVec2f::data();
 lua:
     oVectorOfVec2f:data() -> retval
+```
+
+### VectorOfVec2f.empty
+
+```cpp
+bool VectorOfVec2f::empty() const;
+lua:
+    oVectorOfVec2f:empty() -> retval
+```
+
+### VectorOfVec2f.front
+
+```cpp
+cv::Vec2f VectorOfVec2f::front();
+lua:
+    oVectorOfVec2f:front() -> retval
+```
+
+### VectorOfVec2f.max\_size
+
+```cpp
+size_t VectorOfVec2f::max_size();
+lua:
+    oVectorOfVec2f:max_size() -> retval
+```
+
+### VectorOfVec2f.pop\_back
+
+```cpp
+void VectorOfVec2f::pop_back();
+lua:
+    oVectorOfVec2f:pop_back() -> None
+```
+
+### VectorOfVec2f.reserve
+
+```cpp
+void VectorOfVec2f::reserve( size_t new_cap );
+lua:
+    oVectorOfVec2f:reserve( new_cap ) -> None
+```
+
+### VectorOfVec2f.resize
+
+```cpp
+void VectorOfVec2f::resize( size_t count );
+lua:
+    oVectorOfVec2f:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVec2f::resize( size_t           count,
+                            const cv::Vec2f& value );
+lua:
+    oVectorOfVec2f:resize( count, value ) -> None
+```
+
+### VectorOfVec2f.shrink\_to\_fit
+
+```cpp
+void VectorOfVec2f::shrink_to_fit();
+lua:
+    oVectorOfVec2f:shrink_to_fit() -> None
+```
+
+### VectorOfVec2f.sizeof
+
+```cpp
+size_t VectorOfVec2f::size();
+lua:
+    oVectorOfVec2f:sizeof() -> retval
 ```
 
 ### VectorOfVec2f.sol::meta\_function::index
@@ -65144,6 +72669,14 @@ void VectorOfVec2f::sol::meta_function::new_index( size_t    index,
                                                    cv::Vec2f value );
 lua:
     oVectorOfVec2f:__newindex( index, value ) -> None
+```
+
+### VectorOfVec2f.swap
+
+```cpp
+void VectorOfVec2f::swap( std::vector<cv::Vec2f>& other );
+lua:
+    oVectorOfVec2f:swap( other ) -> None
 ```
 
 ### VectorOfVec2f.table
@@ -65179,12 +72712,123 @@ lua:
     VectorOfVec2i( other ) -> <std::vector<cv::Vec2i> object>
 ```
 
+```cpp
+std::vector<cv::Vec2i>( cv::Vec2i* data,
+                        size_t     count );
+lua:
+    VectorOfVec2i.new( data, count ) -> <std::vector<cv::Vec2i> object>
+    VectorOfVec2i( data, count ) -> <std::vector<cv::Vec2i> object>
+```
+
+```cpp
+std::vector<cv::Vec2i>( cv::Vec2i* first,
+                        cv::Vec2i* last );
+lua:
+    VectorOfVec2i.new( first, last ) -> <std::vector<cv::Vec2i> object>
+    VectorOfVec2i( first, last ) -> <std::vector<cv::Vec2i> object>
+```
+
+### VectorOfVec2i.back
+
+```cpp
+cv::Vec2i VectorOfVec2i::back();
+lua:
+    oVectorOfVec2i:back() -> retval
+```
+
+### VectorOfVec2i.capacity
+
+```cpp
+size_t VectorOfVec2i::capacity();
+lua:
+    oVectorOfVec2i:capacity() -> retval
+```
+
+### VectorOfVec2i.clear
+
+```cpp
+void VectorOfVec2i::clear();
+lua:
+    oVectorOfVec2i:clear() -> None
+```
+
 ### VectorOfVec2i.data
 
 ```cpp
 void* VectorOfVec2i::data();
 lua:
     oVectorOfVec2i:data() -> retval
+```
+
+### VectorOfVec2i.empty
+
+```cpp
+bool VectorOfVec2i::empty() const;
+lua:
+    oVectorOfVec2i:empty() -> retval
+```
+
+### VectorOfVec2i.front
+
+```cpp
+cv::Vec2i VectorOfVec2i::front();
+lua:
+    oVectorOfVec2i:front() -> retval
+```
+
+### VectorOfVec2i.max\_size
+
+```cpp
+size_t VectorOfVec2i::max_size();
+lua:
+    oVectorOfVec2i:max_size() -> retval
+```
+
+### VectorOfVec2i.pop\_back
+
+```cpp
+void VectorOfVec2i::pop_back();
+lua:
+    oVectorOfVec2i:pop_back() -> None
+```
+
+### VectorOfVec2i.reserve
+
+```cpp
+void VectorOfVec2i::reserve( size_t new_cap );
+lua:
+    oVectorOfVec2i:reserve( new_cap ) -> None
+```
+
+### VectorOfVec2i.resize
+
+```cpp
+void VectorOfVec2i::resize( size_t count );
+lua:
+    oVectorOfVec2i:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVec2i::resize( size_t           count,
+                            const cv::Vec2i& value );
+lua:
+    oVectorOfVec2i:resize( count, value ) -> None
+```
+
+### VectorOfVec2i.shrink\_to\_fit
+
+```cpp
+void VectorOfVec2i::shrink_to_fit();
+lua:
+    oVectorOfVec2i:shrink_to_fit() -> None
+```
+
+### VectorOfVec2i.sizeof
+
+```cpp
+size_t VectorOfVec2i::size();
+lua:
+    oVectorOfVec2i:sizeof() -> retval
 ```
 
 ### VectorOfVec2i.sol::meta\_function::index
@@ -65210,6 +72854,14 @@ void VectorOfVec2i::sol::meta_function::new_index( size_t    index,
                                                    cv::Vec2i value );
 lua:
     oVectorOfVec2i:__newindex( index, value ) -> None
+```
+
+### VectorOfVec2i.swap
+
+```cpp
+void VectorOfVec2i::swap( std::vector<cv::Vec2i>& other );
+lua:
+    oVectorOfVec2i:swap( other ) -> None
 ```
 
 ### VectorOfVec2i.table
@@ -65245,12 +72897,123 @@ lua:
     VectorOfVec2s( other ) -> <std::vector<cv::Vec2s> object>
 ```
 
+```cpp
+std::vector<cv::Vec2s>( cv::Vec2s* data,
+                        size_t     count );
+lua:
+    VectorOfVec2s.new( data, count ) -> <std::vector<cv::Vec2s> object>
+    VectorOfVec2s( data, count ) -> <std::vector<cv::Vec2s> object>
+```
+
+```cpp
+std::vector<cv::Vec2s>( cv::Vec2s* first,
+                        cv::Vec2s* last );
+lua:
+    VectorOfVec2s.new( first, last ) -> <std::vector<cv::Vec2s> object>
+    VectorOfVec2s( first, last ) -> <std::vector<cv::Vec2s> object>
+```
+
+### VectorOfVec2s.back
+
+```cpp
+cv::Vec2s VectorOfVec2s::back();
+lua:
+    oVectorOfVec2s:back() -> retval
+```
+
+### VectorOfVec2s.capacity
+
+```cpp
+size_t VectorOfVec2s::capacity();
+lua:
+    oVectorOfVec2s:capacity() -> retval
+```
+
+### VectorOfVec2s.clear
+
+```cpp
+void VectorOfVec2s::clear();
+lua:
+    oVectorOfVec2s:clear() -> None
+```
+
 ### VectorOfVec2s.data
 
 ```cpp
 void* VectorOfVec2s::data();
 lua:
     oVectorOfVec2s:data() -> retval
+```
+
+### VectorOfVec2s.empty
+
+```cpp
+bool VectorOfVec2s::empty() const;
+lua:
+    oVectorOfVec2s:empty() -> retval
+```
+
+### VectorOfVec2s.front
+
+```cpp
+cv::Vec2s VectorOfVec2s::front();
+lua:
+    oVectorOfVec2s:front() -> retval
+```
+
+### VectorOfVec2s.max\_size
+
+```cpp
+size_t VectorOfVec2s::max_size();
+lua:
+    oVectorOfVec2s:max_size() -> retval
+```
+
+### VectorOfVec2s.pop\_back
+
+```cpp
+void VectorOfVec2s::pop_back();
+lua:
+    oVectorOfVec2s:pop_back() -> None
+```
+
+### VectorOfVec2s.reserve
+
+```cpp
+void VectorOfVec2s::reserve( size_t new_cap );
+lua:
+    oVectorOfVec2s:reserve( new_cap ) -> None
+```
+
+### VectorOfVec2s.resize
+
+```cpp
+void VectorOfVec2s::resize( size_t count );
+lua:
+    oVectorOfVec2s:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVec2s::resize( size_t           count,
+                            const cv::Vec2s& value );
+lua:
+    oVectorOfVec2s:resize( count, value ) -> None
+```
+
+### VectorOfVec2s.shrink\_to\_fit
+
+```cpp
+void VectorOfVec2s::shrink_to_fit();
+lua:
+    oVectorOfVec2s:shrink_to_fit() -> None
+```
+
+### VectorOfVec2s.sizeof
+
+```cpp
+size_t VectorOfVec2s::size();
+lua:
+    oVectorOfVec2s:sizeof() -> retval
 ```
 
 ### VectorOfVec2s.sol::meta\_function::index
@@ -65276,6 +73039,14 @@ void VectorOfVec2s::sol::meta_function::new_index( size_t    index,
                                                    cv::Vec2s value );
 lua:
     oVectorOfVec2s:__newindex( index, value ) -> None
+```
+
+### VectorOfVec2s.swap
+
+```cpp
+void VectorOfVec2s::swap( std::vector<cv::Vec2s>& other );
+lua:
+    oVectorOfVec2s:swap( other ) -> None
 ```
 
 ### VectorOfVec2s.table
@@ -65311,12 +73082,123 @@ lua:
     VectorOfVec2w( other ) -> <std::vector<cv::Vec2w> object>
 ```
 
+```cpp
+std::vector<cv::Vec2w>( cv::Vec2w* data,
+                        size_t     count );
+lua:
+    VectorOfVec2w.new( data, count ) -> <std::vector<cv::Vec2w> object>
+    VectorOfVec2w( data, count ) -> <std::vector<cv::Vec2w> object>
+```
+
+```cpp
+std::vector<cv::Vec2w>( cv::Vec2w* first,
+                        cv::Vec2w* last );
+lua:
+    VectorOfVec2w.new( first, last ) -> <std::vector<cv::Vec2w> object>
+    VectorOfVec2w( first, last ) -> <std::vector<cv::Vec2w> object>
+```
+
+### VectorOfVec2w.back
+
+```cpp
+cv::Vec2w VectorOfVec2w::back();
+lua:
+    oVectorOfVec2w:back() -> retval
+```
+
+### VectorOfVec2w.capacity
+
+```cpp
+size_t VectorOfVec2w::capacity();
+lua:
+    oVectorOfVec2w:capacity() -> retval
+```
+
+### VectorOfVec2w.clear
+
+```cpp
+void VectorOfVec2w::clear();
+lua:
+    oVectorOfVec2w:clear() -> None
+```
+
 ### VectorOfVec2w.data
 
 ```cpp
 void* VectorOfVec2w::data();
 lua:
     oVectorOfVec2w:data() -> retval
+```
+
+### VectorOfVec2w.empty
+
+```cpp
+bool VectorOfVec2w::empty() const;
+lua:
+    oVectorOfVec2w:empty() -> retval
+```
+
+### VectorOfVec2w.front
+
+```cpp
+cv::Vec2w VectorOfVec2w::front();
+lua:
+    oVectorOfVec2w:front() -> retval
+```
+
+### VectorOfVec2w.max\_size
+
+```cpp
+size_t VectorOfVec2w::max_size();
+lua:
+    oVectorOfVec2w:max_size() -> retval
+```
+
+### VectorOfVec2w.pop\_back
+
+```cpp
+void VectorOfVec2w::pop_back();
+lua:
+    oVectorOfVec2w:pop_back() -> None
+```
+
+### VectorOfVec2w.reserve
+
+```cpp
+void VectorOfVec2w::reserve( size_t new_cap );
+lua:
+    oVectorOfVec2w:reserve( new_cap ) -> None
+```
+
+### VectorOfVec2w.resize
+
+```cpp
+void VectorOfVec2w::resize( size_t count );
+lua:
+    oVectorOfVec2w:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVec2w::resize( size_t           count,
+                            const cv::Vec2w& value );
+lua:
+    oVectorOfVec2w:resize( count, value ) -> None
+```
+
+### VectorOfVec2w.shrink\_to\_fit
+
+```cpp
+void VectorOfVec2w::shrink_to_fit();
+lua:
+    oVectorOfVec2w:shrink_to_fit() -> None
+```
+
+### VectorOfVec2w.sizeof
+
+```cpp
+size_t VectorOfVec2w::size();
+lua:
+    oVectorOfVec2w:sizeof() -> retval
 ```
 
 ### VectorOfVec2w.sol::meta\_function::index
@@ -65342,6 +73224,14 @@ void VectorOfVec2w::sol::meta_function::new_index( size_t    index,
                                                    cv::Vec2w value );
 lua:
     oVectorOfVec2w:__newindex( index, value ) -> None
+```
+
+### VectorOfVec2w.swap
+
+```cpp
+void VectorOfVec2w::swap( std::vector<cv::Vec2w>& other );
+lua:
+    oVectorOfVec2w:swap( other ) -> None
 ```
 
 ### VectorOfVec2w.table
@@ -65377,12 +73267,123 @@ lua:
     VectorOfVec3b( other ) -> <std::vector<cv::Vec3b> object>
 ```
 
+```cpp
+std::vector<cv::Vec3b>( cv::Vec3b* data,
+                        size_t     count );
+lua:
+    VectorOfVec3b.new( data, count ) -> <std::vector<cv::Vec3b> object>
+    VectorOfVec3b( data, count ) -> <std::vector<cv::Vec3b> object>
+```
+
+```cpp
+std::vector<cv::Vec3b>( cv::Vec3b* first,
+                        cv::Vec3b* last );
+lua:
+    VectorOfVec3b.new( first, last ) -> <std::vector<cv::Vec3b> object>
+    VectorOfVec3b( first, last ) -> <std::vector<cv::Vec3b> object>
+```
+
+### VectorOfVec3b.back
+
+```cpp
+cv::Vec3b VectorOfVec3b::back();
+lua:
+    oVectorOfVec3b:back() -> retval
+```
+
+### VectorOfVec3b.capacity
+
+```cpp
+size_t VectorOfVec3b::capacity();
+lua:
+    oVectorOfVec3b:capacity() -> retval
+```
+
+### VectorOfVec3b.clear
+
+```cpp
+void VectorOfVec3b::clear();
+lua:
+    oVectorOfVec3b:clear() -> None
+```
+
 ### VectorOfVec3b.data
 
 ```cpp
 void* VectorOfVec3b::data();
 lua:
     oVectorOfVec3b:data() -> retval
+```
+
+### VectorOfVec3b.empty
+
+```cpp
+bool VectorOfVec3b::empty() const;
+lua:
+    oVectorOfVec3b:empty() -> retval
+```
+
+### VectorOfVec3b.front
+
+```cpp
+cv::Vec3b VectorOfVec3b::front();
+lua:
+    oVectorOfVec3b:front() -> retval
+```
+
+### VectorOfVec3b.max\_size
+
+```cpp
+size_t VectorOfVec3b::max_size();
+lua:
+    oVectorOfVec3b:max_size() -> retval
+```
+
+### VectorOfVec3b.pop\_back
+
+```cpp
+void VectorOfVec3b::pop_back();
+lua:
+    oVectorOfVec3b:pop_back() -> None
+```
+
+### VectorOfVec3b.reserve
+
+```cpp
+void VectorOfVec3b::reserve( size_t new_cap );
+lua:
+    oVectorOfVec3b:reserve( new_cap ) -> None
+```
+
+### VectorOfVec3b.resize
+
+```cpp
+void VectorOfVec3b::resize( size_t count );
+lua:
+    oVectorOfVec3b:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVec3b::resize( size_t           count,
+                            const cv::Vec3b& value );
+lua:
+    oVectorOfVec3b:resize( count, value ) -> None
+```
+
+### VectorOfVec3b.shrink\_to\_fit
+
+```cpp
+void VectorOfVec3b::shrink_to_fit();
+lua:
+    oVectorOfVec3b:shrink_to_fit() -> None
+```
+
+### VectorOfVec3b.sizeof
+
+```cpp
+size_t VectorOfVec3b::size();
+lua:
+    oVectorOfVec3b:sizeof() -> retval
 ```
 
 ### VectorOfVec3b.sol::meta\_function::index
@@ -65408,6 +73409,14 @@ void VectorOfVec3b::sol::meta_function::new_index( size_t    index,
                                                    cv::Vec3b value );
 lua:
     oVectorOfVec3b:__newindex( index, value ) -> None
+```
+
+### VectorOfVec3b.swap
+
+```cpp
+void VectorOfVec3b::swap( std::vector<cv::Vec3b>& other );
+lua:
+    oVectorOfVec3b:swap( other ) -> None
 ```
 
 ### VectorOfVec3b.table
@@ -65443,12 +73452,123 @@ lua:
     VectorOfVec3d( other ) -> <std::vector<cv::Vec3d> object>
 ```
 
+```cpp
+std::vector<cv::Vec3d>( cv::Vec3d* data,
+                        size_t     count );
+lua:
+    VectorOfVec3d.new( data, count ) -> <std::vector<cv::Vec3d> object>
+    VectorOfVec3d( data, count ) -> <std::vector<cv::Vec3d> object>
+```
+
+```cpp
+std::vector<cv::Vec3d>( cv::Vec3d* first,
+                        cv::Vec3d* last );
+lua:
+    VectorOfVec3d.new( first, last ) -> <std::vector<cv::Vec3d> object>
+    VectorOfVec3d( first, last ) -> <std::vector<cv::Vec3d> object>
+```
+
+### VectorOfVec3d.back
+
+```cpp
+cv::Vec3d VectorOfVec3d::back();
+lua:
+    oVectorOfVec3d:back() -> retval
+```
+
+### VectorOfVec3d.capacity
+
+```cpp
+size_t VectorOfVec3d::capacity();
+lua:
+    oVectorOfVec3d:capacity() -> retval
+```
+
+### VectorOfVec3d.clear
+
+```cpp
+void VectorOfVec3d::clear();
+lua:
+    oVectorOfVec3d:clear() -> None
+```
+
 ### VectorOfVec3d.data
 
 ```cpp
 void* VectorOfVec3d::data();
 lua:
     oVectorOfVec3d:data() -> retval
+```
+
+### VectorOfVec3d.empty
+
+```cpp
+bool VectorOfVec3d::empty() const;
+lua:
+    oVectorOfVec3d:empty() -> retval
+```
+
+### VectorOfVec3d.front
+
+```cpp
+cv::Vec3d VectorOfVec3d::front();
+lua:
+    oVectorOfVec3d:front() -> retval
+```
+
+### VectorOfVec3d.max\_size
+
+```cpp
+size_t VectorOfVec3d::max_size();
+lua:
+    oVectorOfVec3d:max_size() -> retval
+```
+
+### VectorOfVec3d.pop\_back
+
+```cpp
+void VectorOfVec3d::pop_back();
+lua:
+    oVectorOfVec3d:pop_back() -> None
+```
+
+### VectorOfVec3d.reserve
+
+```cpp
+void VectorOfVec3d::reserve( size_t new_cap );
+lua:
+    oVectorOfVec3d:reserve( new_cap ) -> None
+```
+
+### VectorOfVec3d.resize
+
+```cpp
+void VectorOfVec3d::resize( size_t count );
+lua:
+    oVectorOfVec3d:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVec3d::resize( size_t           count,
+                            const cv::Vec3d& value );
+lua:
+    oVectorOfVec3d:resize( count, value ) -> None
+```
+
+### VectorOfVec3d.shrink\_to\_fit
+
+```cpp
+void VectorOfVec3d::shrink_to_fit();
+lua:
+    oVectorOfVec3d:shrink_to_fit() -> None
+```
+
+### VectorOfVec3d.sizeof
+
+```cpp
+size_t VectorOfVec3d::size();
+lua:
+    oVectorOfVec3d:sizeof() -> retval
 ```
 
 ### VectorOfVec3d.sol::meta\_function::index
@@ -65474,6 +73594,14 @@ void VectorOfVec3d::sol::meta_function::new_index( size_t    index,
                                                    cv::Vec3d value );
 lua:
     oVectorOfVec3d:__newindex( index, value ) -> None
+```
+
+### VectorOfVec3d.swap
+
+```cpp
+void VectorOfVec3d::swap( std::vector<cv::Vec3d>& other );
+lua:
+    oVectorOfVec3d:swap( other ) -> None
 ```
 
 ### VectorOfVec3d.table
@@ -65509,12 +73637,123 @@ lua:
     VectorOfVec3f( other ) -> <std::vector<cv::Vec3f> object>
 ```
 
+```cpp
+std::vector<cv::Vec3f>( cv::Vec3f* data,
+                        size_t     count );
+lua:
+    VectorOfVec3f.new( data, count ) -> <std::vector<cv::Vec3f> object>
+    VectorOfVec3f( data, count ) -> <std::vector<cv::Vec3f> object>
+```
+
+```cpp
+std::vector<cv::Vec3f>( cv::Vec3f* first,
+                        cv::Vec3f* last );
+lua:
+    VectorOfVec3f.new( first, last ) -> <std::vector<cv::Vec3f> object>
+    VectorOfVec3f( first, last ) -> <std::vector<cv::Vec3f> object>
+```
+
+### VectorOfVec3f.back
+
+```cpp
+cv::Vec3f VectorOfVec3f::back();
+lua:
+    oVectorOfVec3f:back() -> retval
+```
+
+### VectorOfVec3f.capacity
+
+```cpp
+size_t VectorOfVec3f::capacity();
+lua:
+    oVectorOfVec3f:capacity() -> retval
+```
+
+### VectorOfVec3f.clear
+
+```cpp
+void VectorOfVec3f::clear();
+lua:
+    oVectorOfVec3f:clear() -> None
+```
+
 ### VectorOfVec3f.data
 
 ```cpp
 void* VectorOfVec3f::data();
 lua:
     oVectorOfVec3f:data() -> retval
+```
+
+### VectorOfVec3f.empty
+
+```cpp
+bool VectorOfVec3f::empty() const;
+lua:
+    oVectorOfVec3f:empty() -> retval
+```
+
+### VectorOfVec3f.front
+
+```cpp
+cv::Vec3f VectorOfVec3f::front();
+lua:
+    oVectorOfVec3f:front() -> retval
+```
+
+### VectorOfVec3f.max\_size
+
+```cpp
+size_t VectorOfVec3f::max_size();
+lua:
+    oVectorOfVec3f:max_size() -> retval
+```
+
+### VectorOfVec3f.pop\_back
+
+```cpp
+void VectorOfVec3f::pop_back();
+lua:
+    oVectorOfVec3f:pop_back() -> None
+```
+
+### VectorOfVec3f.reserve
+
+```cpp
+void VectorOfVec3f::reserve( size_t new_cap );
+lua:
+    oVectorOfVec3f:reserve( new_cap ) -> None
+```
+
+### VectorOfVec3f.resize
+
+```cpp
+void VectorOfVec3f::resize( size_t count );
+lua:
+    oVectorOfVec3f:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVec3f::resize( size_t           count,
+                            const cv::Vec3f& value );
+lua:
+    oVectorOfVec3f:resize( count, value ) -> None
+```
+
+### VectorOfVec3f.shrink\_to\_fit
+
+```cpp
+void VectorOfVec3f::shrink_to_fit();
+lua:
+    oVectorOfVec3f:shrink_to_fit() -> None
+```
+
+### VectorOfVec3f.sizeof
+
+```cpp
+size_t VectorOfVec3f::size();
+lua:
+    oVectorOfVec3f:sizeof() -> retval
 ```
 
 ### VectorOfVec3f.sol::meta\_function::index
@@ -65540,6 +73779,14 @@ void VectorOfVec3f::sol::meta_function::new_index( size_t    index,
                                                    cv::Vec3f value );
 lua:
     oVectorOfVec3f:__newindex( index, value ) -> None
+```
+
+### VectorOfVec3f.swap
+
+```cpp
+void VectorOfVec3f::swap( std::vector<cv::Vec3f>& other );
+lua:
+    oVectorOfVec3f:swap( other ) -> None
 ```
 
 ### VectorOfVec3f.table
@@ -65575,12 +73822,123 @@ lua:
     VectorOfVec3i( other ) -> <std::vector<cv::Vec3i> object>
 ```
 
+```cpp
+std::vector<cv::Vec3i>( cv::Vec3i* data,
+                        size_t     count );
+lua:
+    VectorOfVec3i.new( data, count ) -> <std::vector<cv::Vec3i> object>
+    VectorOfVec3i( data, count ) -> <std::vector<cv::Vec3i> object>
+```
+
+```cpp
+std::vector<cv::Vec3i>( cv::Vec3i* first,
+                        cv::Vec3i* last );
+lua:
+    VectorOfVec3i.new( first, last ) -> <std::vector<cv::Vec3i> object>
+    VectorOfVec3i( first, last ) -> <std::vector<cv::Vec3i> object>
+```
+
+### VectorOfVec3i.back
+
+```cpp
+cv::Vec3i VectorOfVec3i::back();
+lua:
+    oVectorOfVec3i:back() -> retval
+```
+
+### VectorOfVec3i.capacity
+
+```cpp
+size_t VectorOfVec3i::capacity();
+lua:
+    oVectorOfVec3i:capacity() -> retval
+```
+
+### VectorOfVec3i.clear
+
+```cpp
+void VectorOfVec3i::clear();
+lua:
+    oVectorOfVec3i:clear() -> None
+```
+
 ### VectorOfVec3i.data
 
 ```cpp
 void* VectorOfVec3i::data();
 lua:
     oVectorOfVec3i:data() -> retval
+```
+
+### VectorOfVec3i.empty
+
+```cpp
+bool VectorOfVec3i::empty() const;
+lua:
+    oVectorOfVec3i:empty() -> retval
+```
+
+### VectorOfVec3i.front
+
+```cpp
+cv::Vec3i VectorOfVec3i::front();
+lua:
+    oVectorOfVec3i:front() -> retval
+```
+
+### VectorOfVec3i.max\_size
+
+```cpp
+size_t VectorOfVec3i::max_size();
+lua:
+    oVectorOfVec3i:max_size() -> retval
+```
+
+### VectorOfVec3i.pop\_back
+
+```cpp
+void VectorOfVec3i::pop_back();
+lua:
+    oVectorOfVec3i:pop_back() -> None
+```
+
+### VectorOfVec3i.reserve
+
+```cpp
+void VectorOfVec3i::reserve( size_t new_cap );
+lua:
+    oVectorOfVec3i:reserve( new_cap ) -> None
+```
+
+### VectorOfVec3i.resize
+
+```cpp
+void VectorOfVec3i::resize( size_t count );
+lua:
+    oVectorOfVec3i:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVec3i::resize( size_t           count,
+                            const cv::Vec3i& value );
+lua:
+    oVectorOfVec3i:resize( count, value ) -> None
+```
+
+### VectorOfVec3i.shrink\_to\_fit
+
+```cpp
+void VectorOfVec3i::shrink_to_fit();
+lua:
+    oVectorOfVec3i:shrink_to_fit() -> None
+```
+
+### VectorOfVec3i.sizeof
+
+```cpp
+size_t VectorOfVec3i::size();
+lua:
+    oVectorOfVec3i:sizeof() -> retval
 ```
 
 ### VectorOfVec3i.sol::meta\_function::index
@@ -65606,6 +73964,14 @@ void VectorOfVec3i::sol::meta_function::new_index( size_t    index,
                                                    cv::Vec3i value );
 lua:
     oVectorOfVec3i:__newindex( index, value ) -> None
+```
+
+### VectorOfVec3i.swap
+
+```cpp
+void VectorOfVec3i::swap( std::vector<cv::Vec3i>& other );
+lua:
+    oVectorOfVec3i:swap( other ) -> None
 ```
 
 ### VectorOfVec3i.table
@@ -65641,12 +74007,123 @@ lua:
     VectorOfVec3s( other ) -> <std::vector<cv::Vec3s> object>
 ```
 
+```cpp
+std::vector<cv::Vec3s>( cv::Vec3s* data,
+                        size_t     count );
+lua:
+    VectorOfVec3s.new( data, count ) -> <std::vector<cv::Vec3s> object>
+    VectorOfVec3s( data, count ) -> <std::vector<cv::Vec3s> object>
+```
+
+```cpp
+std::vector<cv::Vec3s>( cv::Vec3s* first,
+                        cv::Vec3s* last );
+lua:
+    VectorOfVec3s.new( first, last ) -> <std::vector<cv::Vec3s> object>
+    VectorOfVec3s( first, last ) -> <std::vector<cv::Vec3s> object>
+```
+
+### VectorOfVec3s.back
+
+```cpp
+cv::Vec3s VectorOfVec3s::back();
+lua:
+    oVectorOfVec3s:back() -> retval
+```
+
+### VectorOfVec3s.capacity
+
+```cpp
+size_t VectorOfVec3s::capacity();
+lua:
+    oVectorOfVec3s:capacity() -> retval
+```
+
+### VectorOfVec3s.clear
+
+```cpp
+void VectorOfVec3s::clear();
+lua:
+    oVectorOfVec3s:clear() -> None
+```
+
 ### VectorOfVec3s.data
 
 ```cpp
 void* VectorOfVec3s::data();
 lua:
     oVectorOfVec3s:data() -> retval
+```
+
+### VectorOfVec3s.empty
+
+```cpp
+bool VectorOfVec3s::empty() const;
+lua:
+    oVectorOfVec3s:empty() -> retval
+```
+
+### VectorOfVec3s.front
+
+```cpp
+cv::Vec3s VectorOfVec3s::front();
+lua:
+    oVectorOfVec3s:front() -> retval
+```
+
+### VectorOfVec3s.max\_size
+
+```cpp
+size_t VectorOfVec3s::max_size();
+lua:
+    oVectorOfVec3s:max_size() -> retval
+```
+
+### VectorOfVec3s.pop\_back
+
+```cpp
+void VectorOfVec3s::pop_back();
+lua:
+    oVectorOfVec3s:pop_back() -> None
+```
+
+### VectorOfVec3s.reserve
+
+```cpp
+void VectorOfVec3s::reserve( size_t new_cap );
+lua:
+    oVectorOfVec3s:reserve( new_cap ) -> None
+```
+
+### VectorOfVec3s.resize
+
+```cpp
+void VectorOfVec3s::resize( size_t count );
+lua:
+    oVectorOfVec3s:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVec3s::resize( size_t           count,
+                            const cv::Vec3s& value );
+lua:
+    oVectorOfVec3s:resize( count, value ) -> None
+```
+
+### VectorOfVec3s.shrink\_to\_fit
+
+```cpp
+void VectorOfVec3s::shrink_to_fit();
+lua:
+    oVectorOfVec3s:shrink_to_fit() -> None
+```
+
+### VectorOfVec3s.sizeof
+
+```cpp
+size_t VectorOfVec3s::size();
+lua:
+    oVectorOfVec3s:sizeof() -> retval
 ```
 
 ### VectorOfVec3s.sol::meta\_function::index
@@ -65672,6 +74149,14 @@ void VectorOfVec3s::sol::meta_function::new_index( size_t    index,
                                                    cv::Vec3s value );
 lua:
     oVectorOfVec3s:__newindex( index, value ) -> None
+```
+
+### VectorOfVec3s.swap
+
+```cpp
+void VectorOfVec3s::swap( std::vector<cv::Vec3s>& other );
+lua:
+    oVectorOfVec3s:swap( other ) -> None
 ```
 
 ### VectorOfVec3s.table
@@ -65707,12 +74192,123 @@ lua:
     VectorOfVec3w( other ) -> <std::vector<cv::Vec3w> object>
 ```
 
+```cpp
+std::vector<cv::Vec3w>( cv::Vec3w* data,
+                        size_t     count );
+lua:
+    VectorOfVec3w.new( data, count ) -> <std::vector<cv::Vec3w> object>
+    VectorOfVec3w( data, count ) -> <std::vector<cv::Vec3w> object>
+```
+
+```cpp
+std::vector<cv::Vec3w>( cv::Vec3w* first,
+                        cv::Vec3w* last );
+lua:
+    VectorOfVec3w.new( first, last ) -> <std::vector<cv::Vec3w> object>
+    VectorOfVec3w( first, last ) -> <std::vector<cv::Vec3w> object>
+```
+
+### VectorOfVec3w.back
+
+```cpp
+cv::Vec3w VectorOfVec3w::back();
+lua:
+    oVectorOfVec3w:back() -> retval
+```
+
+### VectorOfVec3w.capacity
+
+```cpp
+size_t VectorOfVec3w::capacity();
+lua:
+    oVectorOfVec3w:capacity() -> retval
+```
+
+### VectorOfVec3w.clear
+
+```cpp
+void VectorOfVec3w::clear();
+lua:
+    oVectorOfVec3w:clear() -> None
+```
+
 ### VectorOfVec3w.data
 
 ```cpp
 void* VectorOfVec3w::data();
 lua:
     oVectorOfVec3w:data() -> retval
+```
+
+### VectorOfVec3w.empty
+
+```cpp
+bool VectorOfVec3w::empty() const;
+lua:
+    oVectorOfVec3w:empty() -> retval
+```
+
+### VectorOfVec3w.front
+
+```cpp
+cv::Vec3w VectorOfVec3w::front();
+lua:
+    oVectorOfVec3w:front() -> retval
+```
+
+### VectorOfVec3w.max\_size
+
+```cpp
+size_t VectorOfVec3w::max_size();
+lua:
+    oVectorOfVec3w:max_size() -> retval
+```
+
+### VectorOfVec3w.pop\_back
+
+```cpp
+void VectorOfVec3w::pop_back();
+lua:
+    oVectorOfVec3w:pop_back() -> None
+```
+
+### VectorOfVec3w.reserve
+
+```cpp
+void VectorOfVec3w::reserve( size_t new_cap );
+lua:
+    oVectorOfVec3w:reserve( new_cap ) -> None
+```
+
+### VectorOfVec3w.resize
+
+```cpp
+void VectorOfVec3w::resize( size_t count );
+lua:
+    oVectorOfVec3w:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVec3w::resize( size_t           count,
+                            const cv::Vec3w& value );
+lua:
+    oVectorOfVec3w:resize( count, value ) -> None
+```
+
+### VectorOfVec3w.shrink\_to\_fit
+
+```cpp
+void VectorOfVec3w::shrink_to_fit();
+lua:
+    oVectorOfVec3w:shrink_to_fit() -> None
+```
+
+### VectorOfVec3w.sizeof
+
+```cpp
+size_t VectorOfVec3w::size();
+lua:
+    oVectorOfVec3w:sizeof() -> retval
 ```
 
 ### VectorOfVec3w.sol::meta\_function::index
@@ -65738,6 +74334,14 @@ void VectorOfVec3w::sol::meta_function::new_index( size_t    index,
                                                    cv::Vec3w value );
 lua:
     oVectorOfVec3w:__newindex( index, value ) -> None
+```
+
+### VectorOfVec3w.swap
+
+```cpp
+void VectorOfVec3w::swap( std::vector<cv::Vec3w>& other );
+lua:
+    oVectorOfVec3w:swap( other ) -> None
 ```
 
 ### VectorOfVec3w.table
@@ -65773,12 +74377,123 @@ lua:
     VectorOfVec4b( other ) -> <std::vector<cv::Vec4b> object>
 ```
 
+```cpp
+std::vector<cv::Vec4b>( cv::Vec4b* data,
+                        size_t     count );
+lua:
+    VectorOfVec4b.new( data, count ) -> <std::vector<cv::Vec4b> object>
+    VectorOfVec4b( data, count ) -> <std::vector<cv::Vec4b> object>
+```
+
+```cpp
+std::vector<cv::Vec4b>( cv::Vec4b* first,
+                        cv::Vec4b* last );
+lua:
+    VectorOfVec4b.new( first, last ) -> <std::vector<cv::Vec4b> object>
+    VectorOfVec4b( first, last ) -> <std::vector<cv::Vec4b> object>
+```
+
+### VectorOfVec4b.back
+
+```cpp
+cv::Vec4b VectorOfVec4b::back();
+lua:
+    oVectorOfVec4b:back() -> retval
+```
+
+### VectorOfVec4b.capacity
+
+```cpp
+size_t VectorOfVec4b::capacity();
+lua:
+    oVectorOfVec4b:capacity() -> retval
+```
+
+### VectorOfVec4b.clear
+
+```cpp
+void VectorOfVec4b::clear();
+lua:
+    oVectorOfVec4b:clear() -> None
+```
+
 ### VectorOfVec4b.data
 
 ```cpp
 void* VectorOfVec4b::data();
 lua:
     oVectorOfVec4b:data() -> retval
+```
+
+### VectorOfVec4b.empty
+
+```cpp
+bool VectorOfVec4b::empty() const;
+lua:
+    oVectorOfVec4b:empty() -> retval
+```
+
+### VectorOfVec4b.front
+
+```cpp
+cv::Vec4b VectorOfVec4b::front();
+lua:
+    oVectorOfVec4b:front() -> retval
+```
+
+### VectorOfVec4b.max\_size
+
+```cpp
+size_t VectorOfVec4b::max_size();
+lua:
+    oVectorOfVec4b:max_size() -> retval
+```
+
+### VectorOfVec4b.pop\_back
+
+```cpp
+void VectorOfVec4b::pop_back();
+lua:
+    oVectorOfVec4b:pop_back() -> None
+```
+
+### VectorOfVec4b.reserve
+
+```cpp
+void VectorOfVec4b::reserve( size_t new_cap );
+lua:
+    oVectorOfVec4b:reserve( new_cap ) -> None
+```
+
+### VectorOfVec4b.resize
+
+```cpp
+void VectorOfVec4b::resize( size_t count );
+lua:
+    oVectorOfVec4b:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVec4b::resize( size_t           count,
+                            const cv::Vec4b& value );
+lua:
+    oVectorOfVec4b:resize( count, value ) -> None
+```
+
+### VectorOfVec4b.shrink\_to\_fit
+
+```cpp
+void VectorOfVec4b::shrink_to_fit();
+lua:
+    oVectorOfVec4b:shrink_to_fit() -> None
+```
+
+### VectorOfVec4b.sizeof
+
+```cpp
+size_t VectorOfVec4b::size();
+lua:
+    oVectorOfVec4b:sizeof() -> retval
 ```
 
 ### VectorOfVec4b.sol::meta\_function::index
@@ -65804,6 +74519,14 @@ void VectorOfVec4b::sol::meta_function::new_index( size_t    index,
                                                    cv::Vec4b value );
 lua:
     oVectorOfVec4b:__newindex( index, value ) -> None
+```
+
+### VectorOfVec4b.swap
+
+```cpp
+void VectorOfVec4b::swap( std::vector<cv::Vec4b>& other );
+lua:
+    oVectorOfVec4b:swap( other ) -> None
 ```
 
 ### VectorOfVec4b.table
@@ -65839,12 +74562,123 @@ lua:
     VectorOfVec4d( other ) -> <std::vector<cv::Vec4d> object>
 ```
 
+```cpp
+std::vector<cv::Vec4d>( cv::Vec4d* data,
+                        size_t     count );
+lua:
+    VectorOfVec4d.new( data, count ) -> <std::vector<cv::Vec4d> object>
+    VectorOfVec4d( data, count ) -> <std::vector<cv::Vec4d> object>
+```
+
+```cpp
+std::vector<cv::Vec4d>( cv::Vec4d* first,
+                        cv::Vec4d* last );
+lua:
+    VectorOfVec4d.new( first, last ) -> <std::vector<cv::Vec4d> object>
+    VectorOfVec4d( first, last ) -> <std::vector<cv::Vec4d> object>
+```
+
+### VectorOfVec4d.back
+
+```cpp
+cv::Vec4d VectorOfVec4d::back();
+lua:
+    oVectorOfVec4d:back() -> retval
+```
+
+### VectorOfVec4d.capacity
+
+```cpp
+size_t VectorOfVec4d::capacity();
+lua:
+    oVectorOfVec4d:capacity() -> retval
+```
+
+### VectorOfVec4d.clear
+
+```cpp
+void VectorOfVec4d::clear();
+lua:
+    oVectorOfVec4d:clear() -> None
+```
+
 ### VectorOfVec4d.data
 
 ```cpp
 void* VectorOfVec4d::data();
 lua:
     oVectorOfVec4d:data() -> retval
+```
+
+### VectorOfVec4d.empty
+
+```cpp
+bool VectorOfVec4d::empty() const;
+lua:
+    oVectorOfVec4d:empty() -> retval
+```
+
+### VectorOfVec4d.front
+
+```cpp
+cv::Vec4d VectorOfVec4d::front();
+lua:
+    oVectorOfVec4d:front() -> retval
+```
+
+### VectorOfVec4d.max\_size
+
+```cpp
+size_t VectorOfVec4d::max_size();
+lua:
+    oVectorOfVec4d:max_size() -> retval
+```
+
+### VectorOfVec4d.pop\_back
+
+```cpp
+void VectorOfVec4d::pop_back();
+lua:
+    oVectorOfVec4d:pop_back() -> None
+```
+
+### VectorOfVec4d.reserve
+
+```cpp
+void VectorOfVec4d::reserve( size_t new_cap );
+lua:
+    oVectorOfVec4d:reserve( new_cap ) -> None
+```
+
+### VectorOfVec4d.resize
+
+```cpp
+void VectorOfVec4d::resize( size_t count );
+lua:
+    oVectorOfVec4d:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVec4d::resize( size_t           count,
+                            const cv::Vec4d& value );
+lua:
+    oVectorOfVec4d:resize( count, value ) -> None
+```
+
+### VectorOfVec4d.shrink\_to\_fit
+
+```cpp
+void VectorOfVec4d::shrink_to_fit();
+lua:
+    oVectorOfVec4d:shrink_to_fit() -> None
+```
+
+### VectorOfVec4d.sizeof
+
+```cpp
+size_t VectorOfVec4d::size();
+lua:
+    oVectorOfVec4d:sizeof() -> retval
 ```
 
 ### VectorOfVec4d.sol::meta\_function::index
@@ -65870,6 +74704,14 @@ void VectorOfVec4d::sol::meta_function::new_index( size_t    index,
                                                    cv::Vec4d value );
 lua:
     oVectorOfVec4d:__newindex( index, value ) -> None
+```
+
+### VectorOfVec4d.swap
+
+```cpp
+void VectorOfVec4d::swap( std::vector<cv::Vec4d>& other );
+lua:
+    oVectorOfVec4d:swap( other ) -> None
 ```
 
 ### VectorOfVec4d.table
@@ -65905,12 +74747,123 @@ lua:
     VectorOfVec4f( other ) -> <std::vector<cv::Vec4f> object>
 ```
 
+```cpp
+std::vector<cv::Vec4f>( cv::Vec4f* data,
+                        size_t     count );
+lua:
+    VectorOfVec4f.new( data, count ) -> <std::vector<cv::Vec4f> object>
+    VectorOfVec4f( data, count ) -> <std::vector<cv::Vec4f> object>
+```
+
+```cpp
+std::vector<cv::Vec4f>( cv::Vec4f* first,
+                        cv::Vec4f* last );
+lua:
+    VectorOfVec4f.new( first, last ) -> <std::vector<cv::Vec4f> object>
+    VectorOfVec4f( first, last ) -> <std::vector<cv::Vec4f> object>
+```
+
+### VectorOfVec4f.back
+
+```cpp
+cv::Vec4f VectorOfVec4f::back();
+lua:
+    oVectorOfVec4f:back() -> retval
+```
+
+### VectorOfVec4f.capacity
+
+```cpp
+size_t VectorOfVec4f::capacity();
+lua:
+    oVectorOfVec4f:capacity() -> retval
+```
+
+### VectorOfVec4f.clear
+
+```cpp
+void VectorOfVec4f::clear();
+lua:
+    oVectorOfVec4f:clear() -> None
+```
+
 ### VectorOfVec4f.data
 
 ```cpp
 void* VectorOfVec4f::data();
 lua:
     oVectorOfVec4f:data() -> retval
+```
+
+### VectorOfVec4f.empty
+
+```cpp
+bool VectorOfVec4f::empty() const;
+lua:
+    oVectorOfVec4f:empty() -> retval
+```
+
+### VectorOfVec4f.front
+
+```cpp
+cv::Vec4f VectorOfVec4f::front();
+lua:
+    oVectorOfVec4f:front() -> retval
+```
+
+### VectorOfVec4f.max\_size
+
+```cpp
+size_t VectorOfVec4f::max_size();
+lua:
+    oVectorOfVec4f:max_size() -> retval
+```
+
+### VectorOfVec4f.pop\_back
+
+```cpp
+void VectorOfVec4f::pop_back();
+lua:
+    oVectorOfVec4f:pop_back() -> None
+```
+
+### VectorOfVec4f.reserve
+
+```cpp
+void VectorOfVec4f::reserve( size_t new_cap );
+lua:
+    oVectorOfVec4f:reserve( new_cap ) -> None
+```
+
+### VectorOfVec4f.resize
+
+```cpp
+void VectorOfVec4f::resize( size_t count );
+lua:
+    oVectorOfVec4f:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVec4f::resize( size_t           count,
+                            const cv::Vec4f& value );
+lua:
+    oVectorOfVec4f:resize( count, value ) -> None
+```
+
+### VectorOfVec4f.shrink\_to\_fit
+
+```cpp
+void VectorOfVec4f::shrink_to_fit();
+lua:
+    oVectorOfVec4f:shrink_to_fit() -> None
+```
+
+### VectorOfVec4f.sizeof
+
+```cpp
+size_t VectorOfVec4f::size();
+lua:
+    oVectorOfVec4f:sizeof() -> retval
 ```
 
 ### VectorOfVec4f.sol::meta\_function::index
@@ -65936,6 +74889,14 @@ void VectorOfVec4f::sol::meta_function::new_index( size_t    index,
                                                    cv::Vec4f value );
 lua:
     oVectorOfVec4f:__newindex( index, value ) -> None
+```
+
+### VectorOfVec4f.swap
+
+```cpp
+void VectorOfVec4f::swap( std::vector<cv::Vec4f>& other );
+lua:
+    oVectorOfVec4f:swap( other ) -> None
 ```
 
 ### VectorOfVec4f.table
@@ -65971,12 +74932,123 @@ lua:
     VectorOfVec4i( other ) -> <std::vector<cv::Vec4i> object>
 ```
 
+```cpp
+std::vector<cv::Vec4i>( cv::Vec4i* data,
+                        size_t     count );
+lua:
+    VectorOfVec4i.new( data, count ) -> <std::vector<cv::Vec4i> object>
+    VectorOfVec4i( data, count ) -> <std::vector<cv::Vec4i> object>
+```
+
+```cpp
+std::vector<cv::Vec4i>( cv::Vec4i* first,
+                        cv::Vec4i* last );
+lua:
+    VectorOfVec4i.new( first, last ) -> <std::vector<cv::Vec4i> object>
+    VectorOfVec4i( first, last ) -> <std::vector<cv::Vec4i> object>
+```
+
+### VectorOfVec4i.back
+
+```cpp
+cv::Vec4i VectorOfVec4i::back();
+lua:
+    oVectorOfVec4i:back() -> retval
+```
+
+### VectorOfVec4i.capacity
+
+```cpp
+size_t VectorOfVec4i::capacity();
+lua:
+    oVectorOfVec4i:capacity() -> retval
+```
+
+### VectorOfVec4i.clear
+
+```cpp
+void VectorOfVec4i::clear();
+lua:
+    oVectorOfVec4i:clear() -> None
+```
+
 ### VectorOfVec4i.data
 
 ```cpp
 void* VectorOfVec4i::data();
 lua:
     oVectorOfVec4i:data() -> retval
+```
+
+### VectorOfVec4i.empty
+
+```cpp
+bool VectorOfVec4i::empty() const;
+lua:
+    oVectorOfVec4i:empty() -> retval
+```
+
+### VectorOfVec4i.front
+
+```cpp
+cv::Vec4i VectorOfVec4i::front();
+lua:
+    oVectorOfVec4i:front() -> retval
+```
+
+### VectorOfVec4i.max\_size
+
+```cpp
+size_t VectorOfVec4i::max_size();
+lua:
+    oVectorOfVec4i:max_size() -> retval
+```
+
+### VectorOfVec4i.pop\_back
+
+```cpp
+void VectorOfVec4i::pop_back();
+lua:
+    oVectorOfVec4i:pop_back() -> None
+```
+
+### VectorOfVec4i.reserve
+
+```cpp
+void VectorOfVec4i::reserve( size_t new_cap );
+lua:
+    oVectorOfVec4i:reserve( new_cap ) -> None
+```
+
+### VectorOfVec4i.resize
+
+```cpp
+void VectorOfVec4i::resize( size_t count );
+lua:
+    oVectorOfVec4i:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVec4i::resize( size_t           count,
+                            const cv::Vec4i& value );
+lua:
+    oVectorOfVec4i:resize( count, value ) -> None
+```
+
+### VectorOfVec4i.shrink\_to\_fit
+
+```cpp
+void VectorOfVec4i::shrink_to_fit();
+lua:
+    oVectorOfVec4i:shrink_to_fit() -> None
+```
+
+### VectorOfVec4i.sizeof
+
+```cpp
+size_t VectorOfVec4i::size();
+lua:
+    oVectorOfVec4i:sizeof() -> retval
 ```
 
 ### VectorOfVec4i.sol::meta\_function::index
@@ -66002,6 +75074,14 @@ void VectorOfVec4i::sol::meta_function::new_index( size_t    index,
                                                    cv::Vec4i value );
 lua:
     oVectorOfVec4i:__newindex( index, value ) -> None
+```
+
+### VectorOfVec4i.swap
+
+```cpp
+void VectorOfVec4i::swap( std::vector<cv::Vec4i>& other );
+lua:
+    oVectorOfVec4i:swap( other ) -> None
 ```
 
 ### VectorOfVec4i.table
@@ -66037,12 +75117,123 @@ lua:
     VectorOfVec4s( other ) -> <std::vector<cv::Vec4s> object>
 ```
 
+```cpp
+std::vector<cv::Vec4s>( cv::Vec4s* data,
+                        size_t     count );
+lua:
+    VectorOfVec4s.new( data, count ) -> <std::vector<cv::Vec4s> object>
+    VectorOfVec4s( data, count ) -> <std::vector<cv::Vec4s> object>
+```
+
+```cpp
+std::vector<cv::Vec4s>( cv::Vec4s* first,
+                        cv::Vec4s* last );
+lua:
+    VectorOfVec4s.new( first, last ) -> <std::vector<cv::Vec4s> object>
+    VectorOfVec4s( first, last ) -> <std::vector<cv::Vec4s> object>
+```
+
+### VectorOfVec4s.back
+
+```cpp
+cv::Vec4s VectorOfVec4s::back();
+lua:
+    oVectorOfVec4s:back() -> retval
+```
+
+### VectorOfVec4s.capacity
+
+```cpp
+size_t VectorOfVec4s::capacity();
+lua:
+    oVectorOfVec4s:capacity() -> retval
+```
+
+### VectorOfVec4s.clear
+
+```cpp
+void VectorOfVec4s::clear();
+lua:
+    oVectorOfVec4s:clear() -> None
+```
+
 ### VectorOfVec4s.data
 
 ```cpp
 void* VectorOfVec4s::data();
 lua:
     oVectorOfVec4s:data() -> retval
+```
+
+### VectorOfVec4s.empty
+
+```cpp
+bool VectorOfVec4s::empty() const;
+lua:
+    oVectorOfVec4s:empty() -> retval
+```
+
+### VectorOfVec4s.front
+
+```cpp
+cv::Vec4s VectorOfVec4s::front();
+lua:
+    oVectorOfVec4s:front() -> retval
+```
+
+### VectorOfVec4s.max\_size
+
+```cpp
+size_t VectorOfVec4s::max_size();
+lua:
+    oVectorOfVec4s:max_size() -> retval
+```
+
+### VectorOfVec4s.pop\_back
+
+```cpp
+void VectorOfVec4s::pop_back();
+lua:
+    oVectorOfVec4s:pop_back() -> None
+```
+
+### VectorOfVec4s.reserve
+
+```cpp
+void VectorOfVec4s::reserve( size_t new_cap );
+lua:
+    oVectorOfVec4s:reserve( new_cap ) -> None
+```
+
+### VectorOfVec4s.resize
+
+```cpp
+void VectorOfVec4s::resize( size_t count );
+lua:
+    oVectorOfVec4s:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVec4s::resize( size_t           count,
+                            const cv::Vec4s& value );
+lua:
+    oVectorOfVec4s:resize( count, value ) -> None
+```
+
+### VectorOfVec4s.shrink\_to\_fit
+
+```cpp
+void VectorOfVec4s::shrink_to_fit();
+lua:
+    oVectorOfVec4s:shrink_to_fit() -> None
+```
+
+### VectorOfVec4s.sizeof
+
+```cpp
+size_t VectorOfVec4s::size();
+lua:
+    oVectorOfVec4s:sizeof() -> retval
 ```
 
 ### VectorOfVec4s.sol::meta\_function::index
@@ -66068,6 +75259,14 @@ void VectorOfVec4s::sol::meta_function::new_index( size_t    index,
                                                    cv::Vec4s value );
 lua:
     oVectorOfVec4s:__newindex( index, value ) -> None
+```
+
+### VectorOfVec4s.swap
+
+```cpp
+void VectorOfVec4s::swap( std::vector<cv::Vec4s>& other );
+lua:
+    oVectorOfVec4s:swap( other ) -> None
 ```
 
 ### VectorOfVec4s.table
@@ -66103,12 +75302,123 @@ lua:
     VectorOfVec4w( other ) -> <std::vector<cv::Vec4w> object>
 ```
 
+```cpp
+std::vector<cv::Vec4w>( cv::Vec4w* data,
+                        size_t     count );
+lua:
+    VectorOfVec4w.new( data, count ) -> <std::vector<cv::Vec4w> object>
+    VectorOfVec4w( data, count ) -> <std::vector<cv::Vec4w> object>
+```
+
+```cpp
+std::vector<cv::Vec4w>( cv::Vec4w* first,
+                        cv::Vec4w* last );
+lua:
+    VectorOfVec4w.new( first, last ) -> <std::vector<cv::Vec4w> object>
+    VectorOfVec4w( first, last ) -> <std::vector<cv::Vec4w> object>
+```
+
+### VectorOfVec4w.back
+
+```cpp
+cv::Vec4w VectorOfVec4w::back();
+lua:
+    oVectorOfVec4w:back() -> retval
+```
+
+### VectorOfVec4w.capacity
+
+```cpp
+size_t VectorOfVec4w::capacity();
+lua:
+    oVectorOfVec4w:capacity() -> retval
+```
+
+### VectorOfVec4w.clear
+
+```cpp
+void VectorOfVec4w::clear();
+lua:
+    oVectorOfVec4w:clear() -> None
+```
+
 ### VectorOfVec4w.data
 
 ```cpp
 void* VectorOfVec4w::data();
 lua:
     oVectorOfVec4w:data() -> retval
+```
+
+### VectorOfVec4w.empty
+
+```cpp
+bool VectorOfVec4w::empty() const;
+lua:
+    oVectorOfVec4w:empty() -> retval
+```
+
+### VectorOfVec4w.front
+
+```cpp
+cv::Vec4w VectorOfVec4w::front();
+lua:
+    oVectorOfVec4w:front() -> retval
+```
+
+### VectorOfVec4w.max\_size
+
+```cpp
+size_t VectorOfVec4w::max_size();
+lua:
+    oVectorOfVec4w:max_size() -> retval
+```
+
+### VectorOfVec4w.pop\_back
+
+```cpp
+void VectorOfVec4w::pop_back();
+lua:
+    oVectorOfVec4w:pop_back() -> None
+```
+
+### VectorOfVec4w.reserve
+
+```cpp
+void VectorOfVec4w::reserve( size_t new_cap );
+lua:
+    oVectorOfVec4w:reserve( new_cap ) -> None
+```
+
+### VectorOfVec4w.resize
+
+```cpp
+void VectorOfVec4w::resize( size_t count );
+lua:
+    oVectorOfVec4w:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVec4w::resize( size_t           count,
+                            const cv::Vec4w& value );
+lua:
+    oVectorOfVec4w:resize( count, value ) -> None
+```
+
+### VectorOfVec4w.shrink\_to\_fit
+
+```cpp
+void VectorOfVec4w::shrink_to_fit();
+lua:
+    oVectorOfVec4w:shrink_to_fit() -> None
+```
+
+### VectorOfVec4w.sizeof
+
+```cpp
+size_t VectorOfVec4w::size();
+lua:
+    oVectorOfVec4w:sizeof() -> retval
 ```
 
 ### VectorOfVec4w.sol::meta\_function::index
@@ -66134,6 +75444,14 @@ void VectorOfVec4w::sol::meta_function::new_index( size_t    index,
                                                    cv::Vec4w value );
 lua:
     oVectorOfVec4w:__newindex( index, value ) -> None
+```
+
+### VectorOfVec4w.swap
+
+```cpp
+void VectorOfVec4w::swap( std::vector<cv::Vec4w>& other );
+lua:
+    oVectorOfVec4w:swap( other ) -> None
 ```
 
 ### VectorOfVec4w.table
@@ -66169,12 +75487,123 @@ lua:
     VectorOfVec6d( other ) -> <std::vector<cv::Vec6d> object>
 ```
 
+```cpp
+std::vector<cv::Vec6d>( cv::Vec6d* data,
+                        size_t     count );
+lua:
+    VectorOfVec6d.new( data, count ) -> <std::vector<cv::Vec6d> object>
+    VectorOfVec6d( data, count ) -> <std::vector<cv::Vec6d> object>
+```
+
+```cpp
+std::vector<cv::Vec6d>( cv::Vec6d* first,
+                        cv::Vec6d* last );
+lua:
+    VectorOfVec6d.new( first, last ) -> <std::vector<cv::Vec6d> object>
+    VectorOfVec6d( first, last ) -> <std::vector<cv::Vec6d> object>
+```
+
+### VectorOfVec6d.back
+
+```cpp
+cv::Vec6d VectorOfVec6d::back();
+lua:
+    oVectorOfVec6d:back() -> retval
+```
+
+### VectorOfVec6d.capacity
+
+```cpp
+size_t VectorOfVec6d::capacity();
+lua:
+    oVectorOfVec6d:capacity() -> retval
+```
+
+### VectorOfVec6d.clear
+
+```cpp
+void VectorOfVec6d::clear();
+lua:
+    oVectorOfVec6d:clear() -> None
+```
+
 ### VectorOfVec6d.data
 
 ```cpp
 void* VectorOfVec6d::data();
 lua:
     oVectorOfVec6d:data() -> retval
+```
+
+### VectorOfVec6d.empty
+
+```cpp
+bool VectorOfVec6d::empty() const;
+lua:
+    oVectorOfVec6d:empty() -> retval
+```
+
+### VectorOfVec6d.front
+
+```cpp
+cv::Vec6d VectorOfVec6d::front();
+lua:
+    oVectorOfVec6d:front() -> retval
+```
+
+### VectorOfVec6d.max\_size
+
+```cpp
+size_t VectorOfVec6d::max_size();
+lua:
+    oVectorOfVec6d:max_size() -> retval
+```
+
+### VectorOfVec6d.pop\_back
+
+```cpp
+void VectorOfVec6d::pop_back();
+lua:
+    oVectorOfVec6d:pop_back() -> None
+```
+
+### VectorOfVec6d.reserve
+
+```cpp
+void VectorOfVec6d::reserve( size_t new_cap );
+lua:
+    oVectorOfVec6d:reserve( new_cap ) -> None
+```
+
+### VectorOfVec6d.resize
+
+```cpp
+void VectorOfVec6d::resize( size_t count );
+lua:
+    oVectorOfVec6d:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVec6d::resize( size_t           count,
+                            const cv::Vec6d& value );
+lua:
+    oVectorOfVec6d:resize( count, value ) -> None
+```
+
+### VectorOfVec6d.shrink\_to\_fit
+
+```cpp
+void VectorOfVec6d::shrink_to_fit();
+lua:
+    oVectorOfVec6d:shrink_to_fit() -> None
+```
+
+### VectorOfVec6d.sizeof
+
+```cpp
+size_t VectorOfVec6d::size();
+lua:
+    oVectorOfVec6d:sizeof() -> retval
 ```
 
 ### VectorOfVec6d.sol::meta\_function::index
@@ -66200,6 +75629,14 @@ void VectorOfVec6d::sol::meta_function::new_index( size_t    index,
                                                    cv::Vec6d value );
 lua:
     oVectorOfVec6d:__newindex( index, value ) -> None
+```
+
+### VectorOfVec6d.swap
+
+```cpp
+void VectorOfVec6d::swap( std::vector<cv::Vec6d>& other );
+lua:
+    oVectorOfVec6d:swap( other ) -> None
 ```
 
 ### VectorOfVec6d.table
@@ -66235,12 +75672,123 @@ lua:
     VectorOfVec6f( other ) -> <std::vector<cv::Vec6f> object>
 ```
 
+```cpp
+std::vector<cv::Vec6f>( cv::Vec6f* data,
+                        size_t     count );
+lua:
+    VectorOfVec6f.new( data, count ) -> <std::vector<cv::Vec6f> object>
+    VectorOfVec6f( data, count ) -> <std::vector<cv::Vec6f> object>
+```
+
+```cpp
+std::vector<cv::Vec6f>( cv::Vec6f* first,
+                        cv::Vec6f* last );
+lua:
+    VectorOfVec6f.new( first, last ) -> <std::vector<cv::Vec6f> object>
+    VectorOfVec6f( first, last ) -> <std::vector<cv::Vec6f> object>
+```
+
+### VectorOfVec6f.back
+
+```cpp
+cv::Vec6f VectorOfVec6f::back();
+lua:
+    oVectorOfVec6f:back() -> retval
+```
+
+### VectorOfVec6f.capacity
+
+```cpp
+size_t VectorOfVec6f::capacity();
+lua:
+    oVectorOfVec6f:capacity() -> retval
+```
+
+### VectorOfVec6f.clear
+
+```cpp
+void VectorOfVec6f::clear();
+lua:
+    oVectorOfVec6f:clear() -> None
+```
+
 ### VectorOfVec6f.data
 
 ```cpp
 void* VectorOfVec6f::data();
 lua:
     oVectorOfVec6f:data() -> retval
+```
+
+### VectorOfVec6f.empty
+
+```cpp
+bool VectorOfVec6f::empty() const;
+lua:
+    oVectorOfVec6f:empty() -> retval
+```
+
+### VectorOfVec6f.front
+
+```cpp
+cv::Vec6f VectorOfVec6f::front();
+lua:
+    oVectorOfVec6f:front() -> retval
+```
+
+### VectorOfVec6f.max\_size
+
+```cpp
+size_t VectorOfVec6f::max_size();
+lua:
+    oVectorOfVec6f:max_size() -> retval
+```
+
+### VectorOfVec6f.pop\_back
+
+```cpp
+void VectorOfVec6f::pop_back();
+lua:
+    oVectorOfVec6f:pop_back() -> None
+```
+
+### VectorOfVec6f.reserve
+
+```cpp
+void VectorOfVec6f::reserve( size_t new_cap );
+lua:
+    oVectorOfVec6f:reserve( new_cap ) -> None
+```
+
+### VectorOfVec6f.resize
+
+```cpp
+void VectorOfVec6f::resize( size_t count );
+lua:
+    oVectorOfVec6f:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVec6f::resize( size_t           count,
+                            const cv::Vec6f& value );
+lua:
+    oVectorOfVec6f:resize( count, value ) -> None
+```
+
+### VectorOfVec6f.shrink\_to\_fit
+
+```cpp
+void VectorOfVec6f::shrink_to_fit();
+lua:
+    oVectorOfVec6f:shrink_to_fit() -> None
+```
+
+### VectorOfVec6f.sizeof
+
+```cpp
+size_t VectorOfVec6f::size();
+lua:
+    oVectorOfVec6f:sizeof() -> retval
 ```
 
 ### VectorOfVec6f.sol::meta\_function::index
@@ -66266,6 +75814,14 @@ void VectorOfVec6f::sol::meta_function::new_index( size_t    index,
                                                    cv::Vec6f value );
 lua:
     oVectorOfVec6f:__newindex( index, value ) -> None
+```
+
+### VectorOfVec6f.swap
+
+```cpp
+void VectorOfVec6f::swap( std::vector<cv::Vec6f>& other );
+lua:
+    oVectorOfVec6f:swap( other ) -> None
 ```
 
 ### VectorOfVec6f.table
@@ -66301,12 +75857,123 @@ lua:
     VectorOfVec6i( other ) -> <std::vector<cv::Vec6i> object>
 ```
 
+```cpp
+std::vector<cv::Vec6i>( cv::Vec6i* data,
+                        size_t     count );
+lua:
+    VectorOfVec6i.new( data, count ) -> <std::vector<cv::Vec6i> object>
+    VectorOfVec6i( data, count ) -> <std::vector<cv::Vec6i> object>
+```
+
+```cpp
+std::vector<cv::Vec6i>( cv::Vec6i* first,
+                        cv::Vec6i* last );
+lua:
+    VectorOfVec6i.new( first, last ) -> <std::vector<cv::Vec6i> object>
+    VectorOfVec6i( first, last ) -> <std::vector<cv::Vec6i> object>
+```
+
+### VectorOfVec6i.back
+
+```cpp
+cv::Vec6i VectorOfVec6i::back();
+lua:
+    oVectorOfVec6i:back() -> retval
+```
+
+### VectorOfVec6i.capacity
+
+```cpp
+size_t VectorOfVec6i::capacity();
+lua:
+    oVectorOfVec6i:capacity() -> retval
+```
+
+### VectorOfVec6i.clear
+
+```cpp
+void VectorOfVec6i::clear();
+lua:
+    oVectorOfVec6i:clear() -> None
+```
+
 ### VectorOfVec6i.data
 
 ```cpp
 void* VectorOfVec6i::data();
 lua:
     oVectorOfVec6i:data() -> retval
+```
+
+### VectorOfVec6i.empty
+
+```cpp
+bool VectorOfVec6i::empty() const;
+lua:
+    oVectorOfVec6i:empty() -> retval
+```
+
+### VectorOfVec6i.front
+
+```cpp
+cv::Vec6i VectorOfVec6i::front();
+lua:
+    oVectorOfVec6i:front() -> retval
+```
+
+### VectorOfVec6i.max\_size
+
+```cpp
+size_t VectorOfVec6i::max_size();
+lua:
+    oVectorOfVec6i:max_size() -> retval
+```
+
+### VectorOfVec6i.pop\_back
+
+```cpp
+void VectorOfVec6i::pop_back();
+lua:
+    oVectorOfVec6i:pop_back() -> None
+```
+
+### VectorOfVec6i.reserve
+
+```cpp
+void VectorOfVec6i::reserve( size_t new_cap );
+lua:
+    oVectorOfVec6i:reserve( new_cap ) -> None
+```
+
+### VectorOfVec6i.resize
+
+```cpp
+void VectorOfVec6i::resize( size_t count );
+lua:
+    oVectorOfVec6i:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVec6i::resize( size_t           count,
+                            const cv::Vec6i& value );
+lua:
+    oVectorOfVec6i:resize( count, value ) -> None
+```
+
+### VectorOfVec6i.shrink\_to\_fit
+
+```cpp
+void VectorOfVec6i::shrink_to_fit();
+lua:
+    oVectorOfVec6i:shrink_to_fit() -> None
+```
+
+### VectorOfVec6i.sizeof
+
+```cpp
+size_t VectorOfVec6i::size();
+lua:
+    oVectorOfVec6i:sizeof() -> retval
 ```
 
 ### VectorOfVec6i.sol::meta\_function::index
@@ -66332,6 +75999,14 @@ void VectorOfVec6i::sol::meta_function::new_index( size_t    index,
                                                    cv::Vec6i value );
 lua:
     oVectorOfVec6i:__newindex( index, value ) -> None
+```
+
+### VectorOfVec6i.swap
+
+```cpp
+void VectorOfVec6i::swap( std::vector<cv::Vec6i>& other );
+lua:
+    oVectorOfVec6i:swap( other ) -> None
 ```
 
 ### VectorOfVec6i.table
@@ -66367,12 +76042,123 @@ lua:
     VectorOfVec8i( other ) -> <std::vector<cv::Vec8i> object>
 ```
 
+```cpp
+std::vector<cv::Vec8i>( cv::Vec8i* data,
+                        size_t     count );
+lua:
+    VectorOfVec8i.new( data, count ) -> <std::vector<cv::Vec8i> object>
+    VectorOfVec8i( data, count ) -> <std::vector<cv::Vec8i> object>
+```
+
+```cpp
+std::vector<cv::Vec8i>( cv::Vec8i* first,
+                        cv::Vec8i* last );
+lua:
+    VectorOfVec8i.new( first, last ) -> <std::vector<cv::Vec8i> object>
+    VectorOfVec8i( first, last ) -> <std::vector<cv::Vec8i> object>
+```
+
+### VectorOfVec8i.back
+
+```cpp
+cv::Vec8i VectorOfVec8i::back();
+lua:
+    oVectorOfVec8i:back() -> retval
+```
+
+### VectorOfVec8i.capacity
+
+```cpp
+size_t VectorOfVec8i::capacity();
+lua:
+    oVectorOfVec8i:capacity() -> retval
+```
+
+### VectorOfVec8i.clear
+
+```cpp
+void VectorOfVec8i::clear();
+lua:
+    oVectorOfVec8i:clear() -> None
+```
+
 ### VectorOfVec8i.data
 
 ```cpp
 void* VectorOfVec8i::data();
 lua:
     oVectorOfVec8i:data() -> retval
+```
+
+### VectorOfVec8i.empty
+
+```cpp
+bool VectorOfVec8i::empty() const;
+lua:
+    oVectorOfVec8i:empty() -> retval
+```
+
+### VectorOfVec8i.front
+
+```cpp
+cv::Vec8i VectorOfVec8i::front();
+lua:
+    oVectorOfVec8i:front() -> retval
+```
+
+### VectorOfVec8i.max\_size
+
+```cpp
+size_t VectorOfVec8i::max_size();
+lua:
+    oVectorOfVec8i:max_size() -> retval
+```
+
+### VectorOfVec8i.pop\_back
+
+```cpp
+void VectorOfVec8i::pop_back();
+lua:
+    oVectorOfVec8i:pop_back() -> None
+```
+
+### VectorOfVec8i.reserve
+
+```cpp
+void VectorOfVec8i::reserve( size_t new_cap );
+lua:
+    oVectorOfVec8i:reserve( new_cap ) -> None
+```
+
+### VectorOfVec8i.resize
+
+```cpp
+void VectorOfVec8i::resize( size_t count );
+lua:
+    oVectorOfVec8i:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVec8i::resize( size_t           count,
+                            const cv::Vec8i& value );
+lua:
+    oVectorOfVec8i:resize( count, value ) -> None
+```
+
+### VectorOfVec8i.shrink\_to\_fit
+
+```cpp
+void VectorOfVec8i::shrink_to_fit();
+lua:
+    oVectorOfVec8i:shrink_to_fit() -> None
+```
+
+### VectorOfVec8i.sizeof
+
+```cpp
+size_t VectorOfVec8i::size();
+lua:
+    oVectorOfVec8i:sizeof() -> retval
 ```
 
 ### VectorOfVec8i.sol::meta\_function::index
@@ -66398,6 +76184,14 @@ void VectorOfVec8i::sol::meta_function::new_index( size_t    index,
                                                    cv::Vec8i value );
 lua:
     oVectorOfVec8i:__newindex( index, value ) -> None
+```
+
+### VectorOfVec8i.swap
+
+```cpp
+void VectorOfVec8i::swap( std::vector<cv::Vec8i>& other );
+lua:
+    oVectorOfVec8i:swap( other ) -> None
 ```
 
 ### VectorOfVec8i.table
@@ -66433,12 +76227,123 @@ lua:
     VectorOfVectorOfBool( other ) -> <std::vector<std::vector<bool>> object>
 ```
 
+```cpp
+std::vector<std::vector<bool>>( std::vector<bool>* data,
+                                size_t             count );
+lua:
+    VectorOfVectorOfBool.new( data, count ) -> <std::vector<std::vector<bool>> object>
+    VectorOfVectorOfBool( data, count ) -> <std::vector<std::vector<bool>> object>
+```
+
+```cpp
+std::vector<std::vector<bool>>( std::vector<bool>* first,
+                                std::vector<bool>* last );
+lua:
+    VectorOfVectorOfBool.new( first, last ) -> <std::vector<std::vector<bool>> object>
+    VectorOfVectorOfBool( first, last ) -> <std::vector<std::vector<bool>> object>
+```
+
+### VectorOfVectorOfBool.back
+
+```cpp
+std::vector<bool> VectorOfVectorOfBool::back();
+lua:
+    oVectorOfVectorOfBool:back() -> retval
+```
+
+### VectorOfVectorOfBool.capacity
+
+```cpp
+size_t VectorOfVectorOfBool::capacity();
+lua:
+    oVectorOfVectorOfBool:capacity() -> retval
+```
+
+### VectorOfVectorOfBool.clear
+
+```cpp
+void VectorOfVectorOfBool::clear();
+lua:
+    oVectorOfVectorOfBool:clear() -> None
+```
+
 ### VectorOfVectorOfBool.data
 
 ```cpp
 void* VectorOfVectorOfBool::data();
 lua:
     oVectorOfVectorOfBool:data() -> retval
+```
+
+### VectorOfVectorOfBool.empty
+
+```cpp
+bool VectorOfVectorOfBool::empty() const;
+lua:
+    oVectorOfVectorOfBool:empty() -> retval
+```
+
+### VectorOfVectorOfBool.front
+
+```cpp
+std::vector<bool> VectorOfVectorOfBool::front();
+lua:
+    oVectorOfVectorOfBool:front() -> retval
+```
+
+### VectorOfVectorOfBool.max\_size
+
+```cpp
+size_t VectorOfVectorOfBool::max_size();
+lua:
+    oVectorOfVectorOfBool:max_size() -> retval
+```
+
+### VectorOfVectorOfBool.pop\_back
+
+```cpp
+void VectorOfVectorOfBool::pop_back();
+lua:
+    oVectorOfVectorOfBool:pop_back() -> None
+```
+
+### VectorOfVectorOfBool.reserve
+
+```cpp
+void VectorOfVectorOfBool::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfBool:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfBool.resize
+
+```cpp
+void VectorOfVectorOfBool::resize( size_t count );
+lua:
+    oVectorOfVectorOfBool:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfBool::resize( size_t                   count,
+                                   const std::vector<bool>& value );
+lua:
+    oVectorOfVectorOfBool:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfBool.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfBool::shrink_to_fit();
+lua:
+    oVectorOfVectorOfBool:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfBool.sizeof
+
+```cpp
+size_t VectorOfVectorOfBool::size();
+lua:
+    oVectorOfVectorOfBool:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfBool.sol::meta\_function::index
@@ -66464,6 +76369,14 @@ void VectorOfVectorOfBool::sol::meta_function::new_index( size_t            inde
                                                           std::vector<bool> value );
 lua:
     oVectorOfVectorOfBool:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfBool.swap
+
+```cpp
+void VectorOfVectorOfBool::swap( std::vector<std::vector<bool>>& other );
+lua:
+    oVectorOfVectorOfBool:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfBool.table
@@ -66499,12 +76412,123 @@ lua:
     VectorOfVectorOfChar( other ) -> <std::vector<std::vector<char>> object>
 ```
 
+```cpp
+std::vector<std::vector<char>>( std::vector<char>* data,
+                                size_t             count );
+lua:
+    VectorOfVectorOfChar.new( data, count ) -> <std::vector<std::vector<char>> object>
+    VectorOfVectorOfChar( data, count ) -> <std::vector<std::vector<char>> object>
+```
+
+```cpp
+std::vector<std::vector<char>>( std::vector<char>* first,
+                                std::vector<char>* last );
+lua:
+    VectorOfVectorOfChar.new( first, last ) -> <std::vector<std::vector<char>> object>
+    VectorOfVectorOfChar( first, last ) -> <std::vector<std::vector<char>> object>
+```
+
+### VectorOfVectorOfChar.back
+
+```cpp
+std::vector<char> VectorOfVectorOfChar::back();
+lua:
+    oVectorOfVectorOfChar:back() -> retval
+```
+
+### VectorOfVectorOfChar.capacity
+
+```cpp
+size_t VectorOfVectorOfChar::capacity();
+lua:
+    oVectorOfVectorOfChar:capacity() -> retval
+```
+
+### VectorOfVectorOfChar.clear
+
+```cpp
+void VectorOfVectorOfChar::clear();
+lua:
+    oVectorOfVectorOfChar:clear() -> None
+```
+
 ### VectorOfVectorOfChar.data
 
 ```cpp
 void* VectorOfVectorOfChar::data();
 lua:
     oVectorOfVectorOfChar:data() -> retval
+```
+
+### VectorOfVectorOfChar.empty
+
+```cpp
+bool VectorOfVectorOfChar::empty() const;
+lua:
+    oVectorOfVectorOfChar:empty() -> retval
+```
+
+### VectorOfVectorOfChar.front
+
+```cpp
+std::vector<char> VectorOfVectorOfChar::front();
+lua:
+    oVectorOfVectorOfChar:front() -> retval
+```
+
+### VectorOfVectorOfChar.max\_size
+
+```cpp
+size_t VectorOfVectorOfChar::max_size();
+lua:
+    oVectorOfVectorOfChar:max_size() -> retval
+```
+
+### VectorOfVectorOfChar.pop\_back
+
+```cpp
+void VectorOfVectorOfChar::pop_back();
+lua:
+    oVectorOfVectorOfChar:pop_back() -> None
+```
+
+### VectorOfVectorOfChar.reserve
+
+```cpp
+void VectorOfVectorOfChar::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfChar:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfChar.resize
+
+```cpp
+void VectorOfVectorOfChar::resize( size_t count );
+lua:
+    oVectorOfVectorOfChar:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfChar::resize( size_t                   count,
+                                   const std::vector<char>& value );
+lua:
+    oVectorOfVectorOfChar:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfChar.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfChar::shrink_to_fit();
+lua:
+    oVectorOfVectorOfChar:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfChar.sizeof
+
+```cpp
+size_t VectorOfVectorOfChar::size();
+lua:
+    oVectorOfVectorOfChar:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfChar.sol::meta\_function::index
@@ -66530,6 +76554,14 @@ void VectorOfVectorOfChar::sol::meta_function::new_index( size_t            inde
                                                           std::vector<char> value );
 lua:
     oVectorOfVectorOfChar:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfChar.swap
+
+```cpp
+void VectorOfVectorOfChar::swap( std::vector<std::vector<char>>& other );
+lua:
+    oVectorOfVectorOfChar:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfChar.table
@@ -66565,12 +76597,123 @@ lua:
     VectorOfVectorOfDMatch( other ) -> <std::vector<std::vector<cv::DMatch>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::DMatch>>( std::vector<cv::DMatch>* data,
+                                      size_t                   count );
+lua:
+    VectorOfVectorOfDMatch.new( data, count ) -> <std::vector<std::vector<cv::DMatch>> object>
+    VectorOfVectorOfDMatch( data, count ) -> <std::vector<std::vector<cv::DMatch>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::DMatch>>( std::vector<cv::DMatch>* first,
+                                      std::vector<cv::DMatch>* last );
+lua:
+    VectorOfVectorOfDMatch.new( first, last ) -> <std::vector<std::vector<cv::DMatch>> object>
+    VectorOfVectorOfDMatch( first, last ) -> <std::vector<std::vector<cv::DMatch>> object>
+```
+
+### VectorOfVectorOfDMatch.back
+
+```cpp
+std::vector<cv::DMatch> VectorOfVectorOfDMatch::back();
+lua:
+    oVectorOfVectorOfDMatch:back() -> retval
+```
+
+### VectorOfVectorOfDMatch.capacity
+
+```cpp
+size_t VectorOfVectorOfDMatch::capacity();
+lua:
+    oVectorOfVectorOfDMatch:capacity() -> retval
+```
+
+### VectorOfVectorOfDMatch.clear
+
+```cpp
+void VectorOfVectorOfDMatch::clear();
+lua:
+    oVectorOfVectorOfDMatch:clear() -> None
+```
+
 ### VectorOfVectorOfDMatch.data
 
 ```cpp
 void* VectorOfVectorOfDMatch::data();
 lua:
     oVectorOfVectorOfDMatch:data() -> retval
+```
+
+### VectorOfVectorOfDMatch.empty
+
+```cpp
+bool VectorOfVectorOfDMatch::empty() const;
+lua:
+    oVectorOfVectorOfDMatch:empty() -> retval
+```
+
+### VectorOfVectorOfDMatch.front
+
+```cpp
+std::vector<cv::DMatch> VectorOfVectorOfDMatch::front();
+lua:
+    oVectorOfVectorOfDMatch:front() -> retval
+```
+
+### VectorOfVectorOfDMatch.max\_size
+
+```cpp
+size_t VectorOfVectorOfDMatch::max_size();
+lua:
+    oVectorOfVectorOfDMatch:max_size() -> retval
+```
+
+### VectorOfVectorOfDMatch.pop\_back
+
+```cpp
+void VectorOfVectorOfDMatch::pop_back();
+lua:
+    oVectorOfVectorOfDMatch:pop_back() -> None
+```
+
+### VectorOfVectorOfDMatch.reserve
+
+```cpp
+void VectorOfVectorOfDMatch::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfDMatch:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfDMatch.resize
+
+```cpp
+void VectorOfVectorOfDMatch::resize( size_t count );
+lua:
+    oVectorOfVectorOfDMatch:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfDMatch::resize( size_t                         count,
+                                     const std::vector<cv::DMatch>& value );
+lua:
+    oVectorOfVectorOfDMatch:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfDMatch.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfDMatch::shrink_to_fit();
+lua:
+    oVectorOfVectorOfDMatch:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfDMatch.sizeof
+
+```cpp
+size_t VectorOfVectorOfDMatch::size();
+lua:
+    oVectorOfVectorOfDMatch:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfDMatch.sol::meta\_function::index
@@ -66596,6 +76739,14 @@ void VectorOfVectorOfDMatch::sol::meta_function::new_index( size_t              
                                                             std::vector<cv::DMatch> value );
 lua:
     oVectorOfVectorOfDMatch:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfDMatch.swap
+
+```cpp
+void VectorOfVectorOfDMatch::swap( std::vector<std::vector<cv::DMatch>>& other );
+lua:
+    oVectorOfVectorOfDMatch:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfDMatch.table
@@ -66631,12 +76782,123 @@ lua:
     VectorOfVectorOfDouble( other ) -> <std::vector<std::vector<double>> object>
 ```
 
+```cpp
+std::vector<std::vector<double>>( std::vector<double>* data,
+                                  size_t               count );
+lua:
+    VectorOfVectorOfDouble.new( data, count ) -> <std::vector<std::vector<double>> object>
+    VectorOfVectorOfDouble( data, count ) -> <std::vector<std::vector<double>> object>
+```
+
+```cpp
+std::vector<std::vector<double>>( std::vector<double>* first,
+                                  std::vector<double>* last );
+lua:
+    VectorOfVectorOfDouble.new( first, last ) -> <std::vector<std::vector<double>> object>
+    VectorOfVectorOfDouble( first, last ) -> <std::vector<std::vector<double>> object>
+```
+
+### VectorOfVectorOfDouble.back
+
+```cpp
+std::vector<double> VectorOfVectorOfDouble::back();
+lua:
+    oVectorOfVectorOfDouble:back() -> retval
+```
+
+### VectorOfVectorOfDouble.capacity
+
+```cpp
+size_t VectorOfVectorOfDouble::capacity();
+lua:
+    oVectorOfVectorOfDouble:capacity() -> retval
+```
+
+### VectorOfVectorOfDouble.clear
+
+```cpp
+void VectorOfVectorOfDouble::clear();
+lua:
+    oVectorOfVectorOfDouble:clear() -> None
+```
+
 ### VectorOfVectorOfDouble.data
 
 ```cpp
 void* VectorOfVectorOfDouble::data();
 lua:
     oVectorOfVectorOfDouble:data() -> retval
+```
+
+### VectorOfVectorOfDouble.empty
+
+```cpp
+bool VectorOfVectorOfDouble::empty() const;
+lua:
+    oVectorOfVectorOfDouble:empty() -> retval
+```
+
+### VectorOfVectorOfDouble.front
+
+```cpp
+std::vector<double> VectorOfVectorOfDouble::front();
+lua:
+    oVectorOfVectorOfDouble:front() -> retval
+```
+
+### VectorOfVectorOfDouble.max\_size
+
+```cpp
+size_t VectorOfVectorOfDouble::max_size();
+lua:
+    oVectorOfVectorOfDouble:max_size() -> retval
+```
+
+### VectorOfVectorOfDouble.pop\_back
+
+```cpp
+void VectorOfVectorOfDouble::pop_back();
+lua:
+    oVectorOfVectorOfDouble:pop_back() -> None
+```
+
+### VectorOfVectorOfDouble.reserve
+
+```cpp
+void VectorOfVectorOfDouble::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfDouble:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfDouble.resize
+
+```cpp
+void VectorOfVectorOfDouble::resize( size_t count );
+lua:
+    oVectorOfVectorOfDouble:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfDouble::resize( size_t                     count,
+                                     const std::vector<double>& value );
+lua:
+    oVectorOfVectorOfDouble:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfDouble.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfDouble::shrink_to_fit();
+lua:
+    oVectorOfVectorOfDouble:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfDouble.sizeof
+
+```cpp
+size_t VectorOfVectorOfDouble::size();
+lua:
+    oVectorOfVectorOfDouble:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfDouble.sol::meta\_function::index
@@ -66662,6 +76924,14 @@ void VectorOfVectorOfDouble::sol::meta_function::new_index( size_t              
                                                             std::vector<double> value );
 lua:
     oVectorOfVectorOfDouble:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfDouble.swap
+
+```cpp
+void VectorOfVectorOfDouble::swap( std::vector<std::vector<double>>& other );
+lua:
+    oVectorOfVectorOfDouble:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfDouble.table
@@ -66697,12 +76967,123 @@ lua:
     VectorOfVectorOfFloat( other ) -> <std::vector<std::vector<float>> object>
 ```
 
+```cpp
+std::vector<std::vector<float>>( std::vector<float>* data,
+                                 size_t              count );
+lua:
+    VectorOfVectorOfFloat.new( data, count ) -> <std::vector<std::vector<float>> object>
+    VectorOfVectorOfFloat( data, count ) -> <std::vector<std::vector<float>> object>
+```
+
+```cpp
+std::vector<std::vector<float>>( std::vector<float>* first,
+                                 std::vector<float>* last );
+lua:
+    VectorOfVectorOfFloat.new( first, last ) -> <std::vector<std::vector<float>> object>
+    VectorOfVectorOfFloat( first, last ) -> <std::vector<std::vector<float>> object>
+```
+
+### VectorOfVectorOfFloat.back
+
+```cpp
+std::vector<float> VectorOfVectorOfFloat::back();
+lua:
+    oVectorOfVectorOfFloat:back() -> retval
+```
+
+### VectorOfVectorOfFloat.capacity
+
+```cpp
+size_t VectorOfVectorOfFloat::capacity();
+lua:
+    oVectorOfVectorOfFloat:capacity() -> retval
+```
+
+### VectorOfVectorOfFloat.clear
+
+```cpp
+void VectorOfVectorOfFloat::clear();
+lua:
+    oVectorOfVectorOfFloat:clear() -> None
+```
+
 ### VectorOfVectorOfFloat.data
 
 ```cpp
 void* VectorOfVectorOfFloat::data();
 lua:
     oVectorOfVectorOfFloat:data() -> retval
+```
+
+### VectorOfVectorOfFloat.empty
+
+```cpp
+bool VectorOfVectorOfFloat::empty() const;
+lua:
+    oVectorOfVectorOfFloat:empty() -> retval
+```
+
+### VectorOfVectorOfFloat.front
+
+```cpp
+std::vector<float> VectorOfVectorOfFloat::front();
+lua:
+    oVectorOfVectorOfFloat:front() -> retval
+```
+
+### VectorOfVectorOfFloat.max\_size
+
+```cpp
+size_t VectorOfVectorOfFloat::max_size();
+lua:
+    oVectorOfVectorOfFloat:max_size() -> retval
+```
+
+### VectorOfVectorOfFloat.pop\_back
+
+```cpp
+void VectorOfVectorOfFloat::pop_back();
+lua:
+    oVectorOfVectorOfFloat:pop_back() -> None
+```
+
+### VectorOfVectorOfFloat.reserve
+
+```cpp
+void VectorOfVectorOfFloat::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfFloat:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfFloat.resize
+
+```cpp
+void VectorOfVectorOfFloat::resize( size_t count );
+lua:
+    oVectorOfVectorOfFloat:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfFloat::resize( size_t                    count,
+                                    const std::vector<float>& value );
+lua:
+    oVectorOfVectorOfFloat:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfFloat.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfFloat::shrink_to_fit();
+lua:
+    oVectorOfVectorOfFloat:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfFloat.sizeof
+
+```cpp
+size_t VectorOfVectorOfFloat::size();
+lua:
+    oVectorOfVectorOfFloat:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfFloat.sol::meta\_function::index
@@ -66728,6 +77109,14 @@ void VectorOfVectorOfFloat::sol::meta_function::new_index( size_t             in
                                                            std::vector<float> value );
 lua:
     oVectorOfVectorOfFloat:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfFloat.swap
+
+```cpp
+void VectorOfVectorOfFloat::swap( std::vector<std::vector<float>>& other );
+lua:
+    oVectorOfVectorOfFloat:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfFloat.table
@@ -66763,12 +77152,123 @@ lua:
     VectorOfVectorOfInt( other ) -> <std::vector<std::vector<int>> object>
 ```
 
+```cpp
+std::vector<std::vector<int>>( std::vector<int>* data,
+                               size_t            count );
+lua:
+    VectorOfVectorOfInt.new( data, count ) -> <std::vector<std::vector<int>> object>
+    VectorOfVectorOfInt( data, count ) -> <std::vector<std::vector<int>> object>
+```
+
+```cpp
+std::vector<std::vector<int>>( std::vector<int>* first,
+                               std::vector<int>* last );
+lua:
+    VectorOfVectorOfInt.new( first, last ) -> <std::vector<std::vector<int>> object>
+    VectorOfVectorOfInt( first, last ) -> <std::vector<std::vector<int>> object>
+```
+
+### VectorOfVectorOfInt.back
+
+```cpp
+std::vector<int> VectorOfVectorOfInt::back();
+lua:
+    oVectorOfVectorOfInt:back() -> retval
+```
+
+### VectorOfVectorOfInt.capacity
+
+```cpp
+size_t VectorOfVectorOfInt::capacity();
+lua:
+    oVectorOfVectorOfInt:capacity() -> retval
+```
+
+### VectorOfVectorOfInt.clear
+
+```cpp
+void VectorOfVectorOfInt::clear();
+lua:
+    oVectorOfVectorOfInt:clear() -> None
+```
+
 ### VectorOfVectorOfInt.data
 
 ```cpp
 void* VectorOfVectorOfInt::data();
 lua:
     oVectorOfVectorOfInt:data() -> retval
+```
+
+### VectorOfVectorOfInt.empty
+
+```cpp
+bool VectorOfVectorOfInt::empty() const;
+lua:
+    oVectorOfVectorOfInt:empty() -> retval
+```
+
+### VectorOfVectorOfInt.front
+
+```cpp
+std::vector<int> VectorOfVectorOfInt::front();
+lua:
+    oVectorOfVectorOfInt:front() -> retval
+```
+
+### VectorOfVectorOfInt.max\_size
+
+```cpp
+size_t VectorOfVectorOfInt::max_size();
+lua:
+    oVectorOfVectorOfInt:max_size() -> retval
+```
+
+### VectorOfVectorOfInt.pop\_back
+
+```cpp
+void VectorOfVectorOfInt::pop_back();
+lua:
+    oVectorOfVectorOfInt:pop_back() -> None
+```
+
+### VectorOfVectorOfInt.reserve
+
+```cpp
+void VectorOfVectorOfInt::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfInt:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfInt.resize
+
+```cpp
+void VectorOfVectorOfInt::resize( size_t count );
+lua:
+    oVectorOfVectorOfInt:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfInt::resize( size_t                  count,
+                                  const std::vector<int>& value );
+lua:
+    oVectorOfVectorOfInt:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfInt.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfInt::shrink_to_fit();
+lua:
+    oVectorOfVectorOfInt:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfInt.sizeof
+
+```cpp
+size_t VectorOfVectorOfInt::size();
+lua:
+    oVectorOfVectorOfInt:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfInt.sol::meta\_function::index
@@ -66794,6 +77294,14 @@ void VectorOfVectorOfInt::sol::meta_function::new_index( size_t           index,
                                                          std::vector<int> value );
 lua:
     oVectorOfVectorOfInt:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfInt.swap
+
+```cpp
+void VectorOfVectorOfInt::swap( std::vector<std::vector<int>>& other );
+lua:
+    oVectorOfVectorOfInt:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfInt.table
@@ -66829,12 +77337,123 @@ lua:
     VectorOfVectorOfKeyPoint( other ) -> <std::vector<std::vector<cv::KeyPoint>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::KeyPoint>>( std::vector<cv::KeyPoint>* data,
+                                        size_t                     count );
+lua:
+    VectorOfVectorOfKeyPoint.new( data, count ) -> <std::vector<std::vector<cv::KeyPoint>> object>
+    VectorOfVectorOfKeyPoint( data, count ) -> <std::vector<std::vector<cv::KeyPoint>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::KeyPoint>>( std::vector<cv::KeyPoint>* first,
+                                        std::vector<cv::KeyPoint>* last );
+lua:
+    VectorOfVectorOfKeyPoint.new( first, last ) -> <std::vector<std::vector<cv::KeyPoint>> object>
+    VectorOfVectorOfKeyPoint( first, last ) -> <std::vector<std::vector<cv::KeyPoint>> object>
+```
+
+### VectorOfVectorOfKeyPoint.back
+
+```cpp
+std::vector<cv::KeyPoint> VectorOfVectorOfKeyPoint::back();
+lua:
+    oVectorOfVectorOfKeyPoint:back() -> retval
+```
+
+### VectorOfVectorOfKeyPoint.capacity
+
+```cpp
+size_t VectorOfVectorOfKeyPoint::capacity();
+lua:
+    oVectorOfVectorOfKeyPoint:capacity() -> retval
+```
+
+### VectorOfVectorOfKeyPoint.clear
+
+```cpp
+void VectorOfVectorOfKeyPoint::clear();
+lua:
+    oVectorOfVectorOfKeyPoint:clear() -> None
+```
+
 ### VectorOfVectorOfKeyPoint.data
 
 ```cpp
 void* VectorOfVectorOfKeyPoint::data();
 lua:
     oVectorOfVectorOfKeyPoint:data() -> retval
+```
+
+### VectorOfVectorOfKeyPoint.empty
+
+```cpp
+bool VectorOfVectorOfKeyPoint::empty() const;
+lua:
+    oVectorOfVectorOfKeyPoint:empty() -> retval
+```
+
+### VectorOfVectorOfKeyPoint.front
+
+```cpp
+std::vector<cv::KeyPoint> VectorOfVectorOfKeyPoint::front();
+lua:
+    oVectorOfVectorOfKeyPoint:front() -> retval
+```
+
+### VectorOfVectorOfKeyPoint.max\_size
+
+```cpp
+size_t VectorOfVectorOfKeyPoint::max_size();
+lua:
+    oVectorOfVectorOfKeyPoint:max_size() -> retval
+```
+
+### VectorOfVectorOfKeyPoint.pop\_back
+
+```cpp
+void VectorOfVectorOfKeyPoint::pop_back();
+lua:
+    oVectorOfVectorOfKeyPoint:pop_back() -> None
+```
+
+### VectorOfVectorOfKeyPoint.reserve
+
+```cpp
+void VectorOfVectorOfKeyPoint::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfKeyPoint:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfKeyPoint.resize
+
+```cpp
+void VectorOfVectorOfKeyPoint::resize( size_t count );
+lua:
+    oVectorOfVectorOfKeyPoint:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfKeyPoint::resize( size_t                           count,
+                                       const std::vector<cv::KeyPoint>& value );
+lua:
+    oVectorOfVectorOfKeyPoint:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfKeyPoint.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfKeyPoint::shrink_to_fit();
+lua:
+    oVectorOfVectorOfKeyPoint:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfKeyPoint.sizeof
+
+```cpp
+size_t VectorOfVectorOfKeyPoint::size();
+lua:
+    oVectorOfVectorOfKeyPoint:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfKeyPoint.sol::meta\_function::index
@@ -66860,6 +77479,14 @@ void VectorOfVectorOfKeyPoint::sol::meta_function::new_index( size_t            
                                                               std::vector<cv::KeyPoint> value );
 lua:
     oVectorOfVectorOfKeyPoint:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfKeyPoint.swap
+
+```cpp
+void VectorOfVectorOfKeyPoint::swap( std::vector<std::vector<cv::KeyPoint>>& other );
+lua:
+    oVectorOfVectorOfKeyPoint:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfKeyPoint.table
@@ -66895,12 +77522,123 @@ lua:
     VectorOfVectorOfMat( other ) -> <std::vector<std::vector<cv::Mat>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Mat>>( std::vector<cv::Mat>* data,
+                                   size_t                count );
+lua:
+    VectorOfVectorOfMat.new( data, count ) -> <std::vector<std::vector<cv::Mat>> object>
+    VectorOfVectorOfMat( data, count ) -> <std::vector<std::vector<cv::Mat>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Mat>>( std::vector<cv::Mat>* first,
+                                   std::vector<cv::Mat>* last );
+lua:
+    VectorOfVectorOfMat.new( first, last ) -> <std::vector<std::vector<cv::Mat>> object>
+    VectorOfVectorOfMat( first, last ) -> <std::vector<std::vector<cv::Mat>> object>
+```
+
+### VectorOfVectorOfMat.back
+
+```cpp
+std::vector<cv::Mat> VectorOfVectorOfMat::back();
+lua:
+    oVectorOfVectorOfMat:back() -> retval
+```
+
+### VectorOfVectorOfMat.capacity
+
+```cpp
+size_t VectorOfVectorOfMat::capacity();
+lua:
+    oVectorOfVectorOfMat:capacity() -> retval
+```
+
+### VectorOfVectorOfMat.clear
+
+```cpp
+void VectorOfVectorOfMat::clear();
+lua:
+    oVectorOfVectorOfMat:clear() -> None
+```
+
 ### VectorOfVectorOfMat.data
 
 ```cpp
 void* VectorOfVectorOfMat::data();
 lua:
     oVectorOfVectorOfMat:data() -> retval
+```
+
+### VectorOfVectorOfMat.empty
+
+```cpp
+bool VectorOfVectorOfMat::empty() const;
+lua:
+    oVectorOfVectorOfMat:empty() -> retval
+```
+
+### VectorOfVectorOfMat.front
+
+```cpp
+std::vector<cv::Mat> VectorOfVectorOfMat::front();
+lua:
+    oVectorOfVectorOfMat:front() -> retval
+```
+
+### VectorOfVectorOfMat.max\_size
+
+```cpp
+size_t VectorOfVectorOfMat::max_size();
+lua:
+    oVectorOfVectorOfMat:max_size() -> retval
+```
+
+### VectorOfVectorOfMat.pop\_back
+
+```cpp
+void VectorOfVectorOfMat::pop_back();
+lua:
+    oVectorOfVectorOfMat:pop_back() -> None
+```
+
+### VectorOfVectorOfMat.reserve
+
+```cpp
+void VectorOfVectorOfMat::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfMat:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfMat.resize
+
+```cpp
+void VectorOfVectorOfMat::resize( size_t count );
+lua:
+    oVectorOfVectorOfMat:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfMat::resize( size_t                      count,
+                                  const std::vector<cv::Mat>& value );
+lua:
+    oVectorOfVectorOfMat:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfMat.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfMat::shrink_to_fit();
+lua:
+    oVectorOfVectorOfMat:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfMat.sizeof
+
+```cpp
+size_t VectorOfVectorOfMat::size();
+lua:
+    oVectorOfVectorOfMat:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfMat.sol::meta\_function::index
@@ -66926,6 +77664,14 @@ void VectorOfVectorOfMat::sol::meta_function::new_index( size_t               in
                                                          std::vector<cv::Mat> value );
 lua:
     oVectorOfVectorOfMat:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfMat.swap
+
+```cpp
+void VectorOfVectorOfMat::swap( std::vector<std::vector<cv::Mat>>& other );
+lua:
+    oVectorOfVectorOfMat:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfMat.table
@@ -66961,12 +77707,123 @@ lua:
     VectorOfVectorOfMoments( other ) -> <std::vector<std::vector<cv::Moments>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Moments>>( std::vector<cv::Moments>* data,
+                                       size_t                    count );
+lua:
+    VectorOfVectorOfMoments.new( data, count ) -> <std::vector<std::vector<cv::Moments>> object>
+    VectorOfVectorOfMoments( data, count ) -> <std::vector<std::vector<cv::Moments>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Moments>>( std::vector<cv::Moments>* first,
+                                       std::vector<cv::Moments>* last );
+lua:
+    VectorOfVectorOfMoments.new( first, last ) -> <std::vector<std::vector<cv::Moments>> object>
+    VectorOfVectorOfMoments( first, last ) -> <std::vector<std::vector<cv::Moments>> object>
+```
+
+### VectorOfVectorOfMoments.back
+
+```cpp
+std::vector<cv::Moments> VectorOfVectorOfMoments::back();
+lua:
+    oVectorOfVectorOfMoments:back() -> retval
+```
+
+### VectorOfVectorOfMoments.capacity
+
+```cpp
+size_t VectorOfVectorOfMoments::capacity();
+lua:
+    oVectorOfVectorOfMoments:capacity() -> retval
+```
+
+### VectorOfVectorOfMoments.clear
+
+```cpp
+void VectorOfVectorOfMoments::clear();
+lua:
+    oVectorOfVectorOfMoments:clear() -> None
+```
+
 ### VectorOfVectorOfMoments.data
 
 ```cpp
 void* VectorOfVectorOfMoments::data();
 lua:
     oVectorOfVectorOfMoments:data() -> retval
+```
+
+### VectorOfVectorOfMoments.empty
+
+```cpp
+bool VectorOfVectorOfMoments::empty() const;
+lua:
+    oVectorOfVectorOfMoments:empty() -> retval
+```
+
+### VectorOfVectorOfMoments.front
+
+```cpp
+std::vector<cv::Moments> VectorOfVectorOfMoments::front();
+lua:
+    oVectorOfVectorOfMoments:front() -> retval
+```
+
+### VectorOfVectorOfMoments.max\_size
+
+```cpp
+size_t VectorOfVectorOfMoments::max_size();
+lua:
+    oVectorOfVectorOfMoments:max_size() -> retval
+```
+
+### VectorOfVectorOfMoments.pop\_back
+
+```cpp
+void VectorOfVectorOfMoments::pop_back();
+lua:
+    oVectorOfVectorOfMoments:pop_back() -> None
+```
+
+### VectorOfVectorOfMoments.reserve
+
+```cpp
+void VectorOfVectorOfMoments::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfMoments:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfMoments.resize
+
+```cpp
+void VectorOfVectorOfMoments::resize( size_t count );
+lua:
+    oVectorOfVectorOfMoments:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfMoments::resize( size_t                          count,
+                                      const std::vector<cv::Moments>& value );
+lua:
+    oVectorOfVectorOfMoments:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfMoments.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfMoments::shrink_to_fit();
+lua:
+    oVectorOfVectorOfMoments:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfMoments.sizeof
+
+```cpp
+size_t VectorOfVectorOfMoments::size();
+lua:
+    oVectorOfVectorOfMoments:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfMoments.sol::meta\_function::index
@@ -66992,6 +77849,14 @@ void VectorOfVectorOfMoments::sol::meta_function::new_index( size_t             
                                                              std::vector<cv::Moments> value );
 lua:
     oVectorOfVectorOfMoments:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfMoments.swap
+
+```cpp
+void VectorOfVectorOfMoments::swap( std::vector<std::vector<cv::Moments>>& other );
+lua:
+    oVectorOfVectorOfMoments:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfMoments.table
@@ -67027,12 +77892,123 @@ lua:
     VectorOfVectorOfPoint( other ) -> <std::vector<std::vector<cv::Point>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Point>>( std::vector<cv::Point>* data,
+                                     size_t                  count );
+lua:
+    VectorOfVectorOfPoint.new( data, count ) -> <std::vector<std::vector<cv::Point>> object>
+    VectorOfVectorOfPoint( data, count ) -> <std::vector<std::vector<cv::Point>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Point>>( std::vector<cv::Point>* first,
+                                     std::vector<cv::Point>* last );
+lua:
+    VectorOfVectorOfPoint.new( first, last ) -> <std::vector<std::vector<cv::Point>> object>
+    VectorOfVectorOfPoint( first, last ) -> <std::vector<std::vector<cv::Point>> object>
+```
+
+### VectorOfVectorOfPoint.back
+
+```cpp
+std::vector<cv::Point> VectorOfVectorOfPoint::back();
+lua:
+    oVectorOfVectorOfPoint:back() -> retval
+```
+
+### VectorOfVectorOfPoint.capacity
+
+```cpp
+size_t VectorOfVectorOfPoint::capacity();
+lua:
+    oVectorOfVectorOfPoint:capacity() -> retval
+```
+
+### VectorOfVectorOfPoint.clear
+
+```cpp
+void VectorOfVectorOfPoint::clear();
+lua:
+    oVectorOfVectorOfPoint:clear() -> None
+```
+
 ### VectorOfVectorOfPoint.data
 
 ```cpp
 void* VectorOfVectorOfPoint::data();
 lua:
     oVectorOfVectorOfPoint:data() -> retval
+```
+
+### VectorOfVectorOfPoint.empty
+
+```cpp
+bool VectorOfVectorOfPoint::empty() const;
+lua:
+    oVectorOfVectorOfPoint:empty() -> retval
+```
+
+### VectorOfVectorOfPoint.front
+
+```cpp
+std::vector<cv::Point> VectorOfVectorOfPoint::front();
+lua:
+    oVectorOfVectorOfPoint:front() -> retval
+```
+
+### VectorOfVectorOfPoint.max\_size
+
+```cpp
+size_t VectorOfVectorOfPoint::max_size();
+lua:
+    oVectorOfVectorOfPoint:max_size() -> retval
+```
+
+### VectorOfVectorOfPoint.pop\_back
+
+```cpp
+void VectorOfVectorOfPoint::pop_back();
+lua:
+    oVectorOfVectorOfPoint:pop_back() -> None
+```
+
+### VectorOfVectorOfPoint.reserve
+
+```cpp
+void VectorOfVectorOfPoint::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfPoint:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfPoint.resize
+
+```cpp
+void VectorOfVectorOfPoint::resize( size_t count );
+lua:
+    oVectorOfVectorOfPoint:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfPoint::resize( size_t                        count,
+                                    const std::vector<cv::Point>& value );
+lua:
+    oVectorOfVectorOfPoint:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfPoint.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfPoint::shrink_to_fit();
+lua:
+    oVectorOfVectorOfPoint:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfPoint.sizeof
+
+```cpp
+size_t VectorOfVectorOfPoint::size();
+lua:
+    oVectorOfVectorOfPoint:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfPoint.sol::meta\_function::index
@@ -67058,6 +78034,14 @@ void VectorOfVectorOfPoint::sol::meta_function::new_index( size_t               
                                                            std::vector<cv::Point> value );
 lua:
     oVectorOfVectorOfPoint:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfPoint.swap
+
+```cpp
+void VectorOfVectorOfPoint::swap( std::vector<std::vector<cv::Point>>& other );
+lua:
+    oVectorOfVectorOfPoint:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfPoint.table
@@ -67093,12 +78077,123 @@ lua:
     VectorOfVectorOfPoint2d( other ) -> <std::vector<std::vector<cv::Point2d>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Point2d>>( std::vector<cv::Point2d>* data,
+                                       size_t                    count );
+lua:
+    VectorOfVectorOfPoint2d.new( data, count ) -> <std::vector<std::vector<cv::Point2d>> object>
+    VectorOfVectorOfPoint2d( data, count ) -> <std::vector<std::vector<cv::Point2d>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Point2d>>( std::vector<cv::Point2d>* first,
+                                       std::vector<cv::Point2d>* last );
+lua:
+    VectorOfVectorOfPoint2d.new( first, last ) -> <std::vector<std::vector<cv::Point2d>> object>
+    VectorOfVectorOfPoint2d( first, last ) -> <std::vector<std::vector<cv::Point2d>> object>
+```
+
+### VectorOfVectorOfPoint2d.back
+
+```cpp
+std::vector<cv::Point2d> VectorOfVectorOfPoint2d::back();
+lua:
+    oVectorOfVectorOfPoint2d:back() -> retval
+```
+
+### VectorOfVectorOfPoint2d.capacity
+
+```cpp
+size_t VectorOfVectorOfPoint2d::capacity();
+lua:
+    oVectorOfVectorOfPoint2d:capacity() -> retval
+```
+
+### VectorOfVectorOfPoint2d.clear
+
+```cpp
+void VectorOfVectorOfPoint2d::clear();
+lua:
+    oVectorOfVectorOfPoint2d:clear() -> None
+```
+
 ### VectorOfVectorOfPoint2d.data
 
 ```cpp
 void* VectorOfVectorOfPoint2d::data();
 lua:
     oVectorOfVectorOfPoint2d:data() -> retval
+```
+
+### VectorOfVectorOfPoint2d.empty
+
+```cpp
+bool VectorOfVectorOfPoint2d::empty() const;
+lua:
+    oVectorOfVectorOfPoint2d:empty() -> retval
+```
+
+### VectorOfVectorOfPoint2d.front
+
+```cpp
+std::vector<cv::Point2d> VectorOfVectorOfPoint2d::front();
+lua:
+    oVectorOfVectorOfPoint2d:front() -> retval
+```
+
+### VectorOfVectorOfPoint2d.max\_size
+
+```cpp
+size_t VectorOfVectorOfPoint2d::max_size();
+lua:
+    oVectorOfVectorOfPoint2d:max_size() -> retval
+```
+
+### VectorOfVectorOfPoint2d.pop\_back
+
+```cpp
+void VectorOfVectorOfPoint2d::pop_back();
+lua:
+    oVectorOfVectorOfPoint2d:pop_back() -> None
+```
+
+### VectorOfVectorOfPoint2d.reserve
+
+```cpp
+void VectorOfVectorOfPoint2d::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfPoint2d:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfPoint2d.resize
+
+```cpp
+void VectorOfVectorOfPoint2d::resize( size_t count );
+lua:
+    oVectorOfVectorOfPoint2d:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfPoint2d::resize( size_t                          count,
+                                      const std::vector<cv::Point2d>& value );
+lua:
+    oVectorOfVectorOfPoint2d:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfPoint2d.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfPoint2d::shrink_to_fit();
+lua:
+    oVectorOfVectorOfPoint2d:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfPoint2d.sizeof
+
+```cpp
+size_t VectorOfVectorOfPoint2d::size();
+lua:
+    oVectorOfVectorOfPoint2d:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfPoint2d.sol::meta\_function::index
@@ -67124,6 +78219,14 @@ void VectorOfVectorOfPoint2d::sol::meta_function::new_index( size_t             
                                                              std::vector<cv::Point2d> value );
 lua:
     oVectorOfVectorOfPoint2d:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfPoint2d.swap
+
+```cpp
+void VectorOfVectorOfPoint2d::swap( std::vector<std::vector<cv::Point2d>>& other );
+lua:
+    oVectorOfVectorOfPoint2d:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfPoint2d.table
@@ -67159,12 +78262,123 @@ lua:
     VectorOfVectorOfPoint2f( other ) -> <std::vector<std::vector<cv::Point2f>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Point2f>>( std::vector<cv::Point2f>* data,
+                                       size_t                    count );
+lua:
+    VectorOfVectorOfPoint2f.new( data, count ) -> <std::vector<std::vector<cv::Point2f>> object>
+    VectorOfVectorOfPoint2f( data, count ) -> <std::vector<std::vector<cv::Point2f>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Point2f>>( std::vector<cv::Point2f>* first,
+                                       std::vector<cv::Point2f>* last );
+lua:
+    VectorOfVectorOfPoint2f.new( first, last ) -> <std::vector<std::vector<cv::Point2f>> object>
+    VectorOfVectorOfPoint2f( first, last ) -> <std::vector<std::vector<cv::Point2f>> object>
+```
+
+### VectorOfVectorOfPoint2f.back
+
+```cpp
+std::vector<cv::Point2f> VectorOfVectorOfPoint2f::back();
+lua:
+    oVectorOfVectorOfPoint2f:back() -> retval
+```
+
+### VectorOfVectorOfPoint2f.capacity
+
+```cpp
+size_t VectorOfVectorOfPoint2f::capacity();
+lua:
+    oVectorOfVectorOfPoint2f:capacity() -> retval
+```
+
+### VectorOfVectorOfPoint2f.clear
+
+```cpp
+void VectorOfVectorOfPoint2f::clear();
+lua:
+    oVectorOfVectorOfPoint2f:clear() -> None
+```
+
 ### VectorOfVectorOfPoint2f.data
 
 ```cpp
 void* VectorOfVectorOfPoint2f::data();
 lua:
     oVectorOfVectorOfPoint2f:data() -> retval
+```
+
+### VectorOfVectorOfPoint2f.empty
+
+```cpp
+bool VectorOfVectorOfPoint2f::empty() const;
+lua:
+    oVectorOfVectorOfPoint2f:empty() -> retval
+```
+
+### VectorOfVectorOfPoint2f.front
+
+```cpp
+std::vector<cv::Point2f> VectorOfVectorOfPoint2f::front();
+lua:
+    oVectorOfVectorOfPoint2f:front() -> retval
+```
+
+### VectorOfVectorOfPoint2f.max\_size
+
+```cpp
+size_t VectorOfVectorOfPoint2f::max_size();
+lua:
+    oVectorOfVectorOfPoint2f:max_size() -> retval
+```
+
+### VectorOfVectorOfPoint2f.pop\_back
+
+```cpp
+void VectorOfVectorOfPoint2f::pop_back();
+lua:
+    oVectorOfVectorOfPoint2f:pop_back() -> None
+```
+
+### VectorOfVectorOfPoint2f.reserve
+
+```cpp
+void VectorOfVectorOfPoint2f::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfPoint2f:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfPoint2f.resize
+
+```cpp
+void VectorOfVectorOfPoint2f::resize( size_t count );
+lua:
+    oVectorOfVectorOfPoint2f:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfPoint2f::resize( size_t                          count,
+                                      const std::vector<cv::Point2f>& value );
+lua:
+    oVectorOfVectorOfPoint2f:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfPoint2f.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfPoint2f::shrink_to_fit();
+lua:
+    oVectorOfVectorOfPoint2f:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfPoint2f.sizeof
+
+```cpp
+size_t VectorOfVectorOfPoint2f::size();
+lua:
+    oVectorOfVectorOfPoint2f:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfPoint2f.sol::meta\_function::index
@@ -67190,6 +78404,14 @@ void VectorOfVectorOfPoint2f::sol::meta_function::new_index( size_t             
                                                              std::vector<cv::Point2f> value );
 lua:
     oVectorOfVectorOfPoint2f:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfPoint2f.swap
+
+```cpp
+void VectorOfVectorOfPoint2f::swap( std::vector<std::vector<cv::Point2f>>& other );
+lua:
+    oVectorOfVectorOfPoint2f:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfPoint2f.table
@@ -67225,12 +78447,123 @@ lua:
     VectorOfVectorOfPoint3d( other ) -> <std::vector<std::vector<cv::Point3d>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Point3d>>( std::vector<cv::Point3d>* data,
+                                       size_t                    count );
+lua:
+    VectorOfVectorOfPoint3d.new( data, count ) -> <std::vector<std::vector<cv::Point3d>> object>
+    VectorOfVectorOfPoint3d( data, count ) -> <std::vector<std::vector<cv::Point3d>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Point3d>>( std::vector<cv::Point3d>* first,
+                                       std::vector<cv::Point3d>* last );
+lua:
+    VectorOfVectorOfPoint3d.new( first, last ) -> <std::vector<std::vector<cv::Point3d>> object>
+    VectorOfVectorOfPoint3d( first, last ) -> <std::vector<std::vector<cv::Point3d>> object>
+```
+
+### VectorOfVectorOfPoint3d.back
+
+```cpp
+std::vector<cv::Point3d> VectorOfVectorOfPoint3d::back();
+lua:
+    oVectorOfVectorOfPoint3d:back() -> retval
+```
+
+### VectorOfVectorOfPoint3d.capacity
+
+```cpp
+size_t VectorOfVectorOfPoint3d::capacity();
+lua:
+    oVectorOfVectorOfPoint3d:capacity() -> retval
+```
+
+### VectorOfVectorOfPoint3d.clear
+
+```cpp
+void VectorOfVectorOfPoint3d::clear();
+lua:
+    oVectorOfVectorOfPoint3d:clear() -> None
+```
+
 ### VectorOfVectorOfPoint3d.data
 
 ```cpp
 void* VectorOfVectorOfPoint3d::data();
 lua:
     oVectorOfVectorOfPoint3d:data() -> retval
+```
+
+### VectorOfVectorOfPoint3d.empty
+
+```cpp
+bool VectorOfVectorOfPoint3d::empty() const;
+lua:
+    oVectorOfVectorOfPoint3d:empty() -> retval
+```
+
+### VectorOfVectorOfPoint3d.front
+
+```cpp
+std::vector<cv::Point3d> VectorOfVectorOfPoint3d::front();
+lua:
+    oVectorOfVectorOfPoint3d:front() -> retval
+```
+
+### VectorOfVectorOfPoint3d.max\_size
+
+```cpp
+size_t VectorOfVectorOfPoint3d::max_size();
+lua:
+    oVectorOfVectorOfPoint3d:max_size() -> retval
+```
+
+### VectorOfVectorOfPoint3d.pop\_back
+
+```cpp
+void VectorOfVectorOfPoint3d::pop_back();
+lua:
+    oVectorOfVectorOfPoint3d:pop_back() -> None
+```
+
+### VectorOfVectorOfPoint3d.reserve
+
+```cpp
+void VectorOfVectorOfPoint3d::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfPoint3d:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfPoint3d.resize
+
+```cpp
+void VectorOfVectorOfPoint3d::resize( size_t count );
+lua:
+    oVectorOfVectorOfPoint3d:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfPoint3d::resize( size_t                          count,
+                                      const std::vector<cv::Point3d>& value );
+lua:
+    oVectorOfVectorOfPoint3d:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfPoint3d.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfPoint3d::shrink_to_fit();
+lua:
+    oVectorOfVectorOfPoint3d:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfPoint3d.sizeof
+
+```cpp
+size_t VectorOfVectorOfPoint3d::size();
+lua:
+    oVectorOfVectorOfPoint3d:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfPoint3d.sol::meta\_function::index
@@ -67256,6 +78589,14 @@ void VectorOfVectorOfPoint3d::sol::meta_function::new_index( size_t             
                                                              std::vector<cv::Point3d> value );
 lua:
     oVectorOfVectorOfPoint3d:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfPoint3d.swap
+
+```cpp
+void VectorOfVectorOfPoint3d::swap( std::vector<std::vector<cv::Point3d>>& other );
+lua:
+    oVectorOfVectorOfPoint3d:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfPoint3d.table
@@ -67291,12 +78632,123 @@ lua:
     VectorOfVectorOfPoint3f( other ) -> <std::vector<std::vector<cv::Point3f>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Point3f>>( std::vector<cv::Point3f>* data,
+                                       size_t                    count );
+lua:
+    VectorOfVectorOfPoint3f.new( data, count ) -> <std::vector<std::vector<cv::Point3f>> object>
+    VectorOfVectorOfPoint3f( data, count ) -> <std::vector<std::vector<cv::Point3f>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Point3f>>( std::vector<cv::Point3f>* first,
+                                       std::vector<cv::Point3f>* last );
+lua:
+    VectorOfVectorOfPoint3f.new( first, last ) -> <std::vector<std::vector<cv::Point3f>> object>
+    VectorOfVectorOfPoint3f( first, last ) -> <std::vector<std::vector<cv::Point3f>> object>
+```
+
+### VectorOfVectorOfPoint3f.back
+
+```cpp
+std::vector<cv::Point3f> VectorOfVectorOfPoint3f::back();
+lua:
+    oVectorOfVectorOfPoint3f:back() -> retval
+```
+
+### VectorOfVectorOfPoint3f.capacity
+
+```cpp
+size_t VectorOfVectorOfPoint3f::capacity();
+lua:
+    oVectorOfVectorOfPoint3f:capacity() -> retval
+```
+
+### VectorOfVectorOfPoint3f.clear
+
+```cpp
+void VectorOfVectorOfPoint3f::clear();
+lua:
+    oVectorOfVectorOfPoint3f:clear() -> None
+```
+
 ### VectorOfVectorOfPoint3f.data
 
 ```cpp
 void* VectorOfVectorOfPoint3f::data();
 lua:
     oVectorOfVectorOfPoint3f:data() -> retval
+```
+
+### VectorOfVectorOfPoint3f.empty
+
+```cpp
+bool VectorOfVectorOfPoint3f::empty() const;
+lua:
+    oVectorOfVectorOfPoint3f:empty() -> retval
+```
+
+### VectorOfVectorOfPoint3f.front
+
+```cpp
+std::vector<cv::Point3f> VectorOfVectorOfPoint3f::front();
+lua:
+    oVectorOfVectorOfPoint3f:front() -> retval
+```
+
+### VectorOfVectorOfPoint3f.max\_size
+
+```cpp
+size_t VectorOfVectorOfPoint3f::max_size();
+lua:
+    oVectorOfVectorOfPoint3f:max_size() -> retval
+```
+
+### VectorOfVectorOfPoint3f.pop\_back
+
+```cpp
+void VectorOfVectorOfPoint3f::pop_back();
+lua:
+    oVectorOfVectorOfPoint3f:pop_back() -> None
+```
+
+### VectorOfVectorOfPoint3f.reserve
+
+```cpp
+void VectorOfVectorOfPoint3f::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfPoint3f:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfPoint3f.resize
+
+```cpp
+void VectorOfVectorOfPoint3f::resize( size_t count );
+lua:
+    oVectorOfVectorOfPoint3f:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfPoint3f::resize( size_t                          count,
+                                      const std::vector<cv::Point3f>& value );
+lua:
+    oVectorOfVectorOfPoint3f:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfPoint3f.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfPoint3f::shrink_to_fit();
+lua:
+    oVectorOfVectorOfPoint3f:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfPoint3f.sizeof
+
+```cpp
+size_t VectorOfVectorOfPoint3f::size();
+lua:
+    oVectorOfVectorOfPoint3f:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfPoint3f.sol::meta\_function::index
@@ -67322,6 +78774,14 @@ void VectorOfVectorOfPoint3f::sol::meta_function::new_index( size_t             
                                                              std::vector<cv::Point3f> value );
 lua:
     oVectorOfVectorOfPoint3f:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfPoint3f.swap
+
+```cpp
+void VectorOfVectorOfPoint3f::swap( std::vector<std::vector<cv::Point3f>>& other );
+lua:
+    oVectorOfVectorOfPoint3f:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfPoint3f.table
@@ -67357,12 +78817,123 @@ lua:
     VectorOfVectorOfPoint3i( other ) -> <std::vector<std::vector<cv::Point3i>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Point3i>>( std::vector<cv::Point3i>* data,
+                                       size_t                    count );
+lua:
+    VectorOfVectorOfPoint3i.new( data, count ) -> <std::vector<std::vector<cv::Point3i>> object>
+    VectorOfVectorOfPoint3i( data, count ) -> <std::vector<std::vector<cv::Point3i>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Point3i>>( std::vector<cv::Point3i>* first,
+                                       std::vector<cv::Point3i>* last );
+lua:
+    VectorOfVectorOfPoint3i.new( first, last ) -> <std::vector<std::vector<cv::Point3i>> object>
+    VectorOfVectorOfPoint3i( first, last ) -> <std::vector<std::vector<cv::Point3i>> object>
+```
+
+### VectorOfVectorOfPoint3i.back
+
+```cpp
+std::vector<cv::Point3i> VectorOfVectorOfPoint3i::back();
+lua:
+    oVectorOfVectorOfPoint3i:back() -> retval
+```
+
+### VectorOfVectorOfPoint3i.capacity
+
+```cpp
+size_t VectorOfVectorOfPoint3i::capacity();
+lua:
+    oVectorOfVectorOfPoint3i:capacity() -> retval
+```
+
+### VectorOfVectorOfPoint3i.clear
+
+```cpp
+void VectorOfVectorOfPoint3i::clear();
+lua:
+    oVectorOfVectorOfPoint3i:clear() -> None
+```
+
 ### VectorOfVectorOfPoint3i.data
 
 ```cpp
 void* VectorOfVectorOfPoint3i::data();
 lua:
     oVectorOfVectorOfPoint3i:data() -> retval
+```
+
+### VectorOfVectorOfPoint3i.empty
+
+```cpp
+bool VectorOfVectorOfPoint3i::empty() const;
+lua:
+    oVectorOfVectorOfPoint3i:empty() -> retval
+```
+
+### VectorOfVectorOfPoint3i.front
+
+```cpp
+std::vector<cv::Point3i> VectorOfVectorOfPoint3i::front();
+lua:
+    oVectorOfVectorOfPoint3i:front() -> retval
+```
+
+### VectorOfVectorOfPoint3i.max\_size
+
+```cpp
+size_t VectorOfVectorOfPoint3i::max_size();
+lua:
+    oVectorOfVectorOfPoint3i:max_size() -> retval
+```
+
+### VectorOfVectorOfPoint3i.pop\_back
+
+```cpp
+void VectorOfVectorOfPoint3i::pop_back();
+lua:
+    oVectorOfVectorOfPoint3i:pop_back() -> None
+```
+
+### VectorOfVectorOfPoint3i.reserve
+
+```cpp
+void VectorOfVectorOfPoint3i::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfPoint3i:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfPoint3i.resize
+
+```cpp
+void VectorOfVectorOfPoint3i::resize( size_t count );
+lua:
+    oVectorOfVectorOfPoint3i:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfPoint3i::resize( size_t                          count,
+                                      const std::vector<cv::Point3i>& value );
+lua:
+    oVectorOfVectorOfPoint3i:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfPoint3i.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfPoint3i::shrink_to_fit();
+lua:
+    oVectorOfVectorOfPoint3i:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfPoint3i.sizeof
+
+```cpp
+size_t VectorOfVectorOfPoint3i::size();
+lua:
+    oVectorOfVectorOfPoint3i:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfPoint3i.sol::meta\_function::index
@@ -67388,6 +78959,14 @@ void VectorOfVectorOfPoint3i::sol::meta_function::new_index( size_t             
                                                              std::vector<cv::Point3i> value );
 lua:
     oVectorOfVectorOfPoint3i:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfPoint3i.swap
+
+```cpp
+void VectorOfVectorOfPoint3i::swap( std::vector<std::vector<cv::Point3i>>& other );
+lua:
+    oVectorOfVectorOfPoint3i:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfPoint3i.table
@@ -67423,12 +79002,123 @@ lua:
     VectorOfVectorOfRange( other ) -> <std::vector<std::vector<cv::Range>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Range>>( std::vector<cv::Range>* data,
+                                     size_t                  count );
+lua:
+    VectorOfVectorOfRange.new( data, count ) -> <std::vector<std::vector<cv::Range>> object>
+    VectorOfVectorOfRange( data, count ) -> <std::vector<std::vector<cv::Range>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Range>>( std::vector<cv::Range>* first,
+                                     std::vector<cv::Range>* last );
+lua:
+    VectorOfVectorOfRange.new( first, last ) -> <std::vector<std::vector<cv::Range>> object>
+    VectorOfVectorOfRange( first, last ) -> <std::vector<std::vector<cv::Range>> object>
+```
+
+### VectorOfVectorOfRange.back
+
+```cpp
+std::vector<cv::Range> VectorOfVectorOfRange::back();
+lua:
+    oVectorOfVectorOfRange:back() -> retval
+```
+
+### VectorOfVectorOfRange.capacity
+
+```cpp
+size_t VectorOfVectorOfRange::capacity();
+lua:
+    oVectorOfVectorOfRange:capacity() -> retval
+```
+
+### VectorOfVectorOfRange.clear
+
+```cpp
+void VectorOfVectorOfRange::clear();
+lua:
+    oVectorOfVectorOfRange:clear() -> None
+```
+
 ### VectorOfVectorOfRange.data
 
 ```cpp
 void* VectorOfVectorOfRange::data();
 lua:
     oVectorOfVectorOfRange:data() -> retval
+```
+
+### VectorOfVectorOfRange.empty
+
+```cpp
+bool VectorOfVectorOfRange::empty() const;
+lua:
+    oVectorOfVectorOfRange:empty() -> retval
+```
+
+### VectorOfVectorOfRange.front
+
+```cpp
+std::vector<cv::Range> VectorOfVectorOfRange::front();
+lua:
+    oVectorOfVectorOfRange:front() -> retval
+```
+
+### VectorOfVectorOfRange.max\_size
+
+```cpp
+size_t VectorOfVectorOfRange::max_size();
+lua:
+    oVectorOfVectorOfRange:max_size() -> retval
+```
+
+### VectorOfVectorOfRange.pop\_back
+
+```cpp
+void VectorOfVectorOfRange::pop_back();
+lua:
+    oVectorOfVectorOfRange:pop_back() -> None
+```
+
+### VectorOfVectorOfRange.reserve
+
+```cpp
+void VectorOfVectorOfRange::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfRange:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfRange.resize
+
+```cpp
+void VectorOfVectorOfRange::resize( size_t count );
+lua:
+    oVectorOfVectorOfRange:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfRange::resize( size_t                        count,
+                                    const std::vector<cv::Range>& value );
+lua:
+    oVectorOfVectorOfRange:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfRange.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfRange::shrink_to_fit();
+lua:
+    oVectorOfVectorOfRange:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfRange.sizeof
+
+```cpp
+size_t VectorOfVectorOfRange::size();
+lua:
+    oVectorOfVectorOfRange:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfRange.sol::meta\_function::index
@@ -67454,6 +79144,14 @@ void VectorOfVectorOfRange::sol::meta_function::new_index( size_t               
                                                            std::vector<cv::Range> value );
 lua:
     oVectorOfVectorOfRange:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfRange.swap
+
+```cpp
+void VectorOfVectorOfRange::swap( std::vector<std::vector<cv::Range>>& other );
+lua:
+    oVectorOfVectorOfRange:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfRange.table
@@ -67489,12 +79187,123 @@ lua:
     VectorOfVectorOfRect( other ) -> <std::vector<std::vector<cv::Rect>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Rect>>( std::vector<cv::Rect>* data,
+                                    size_t                 count );
+lua:
+    VectorOfVectorOfRect.new( data, count ) -> <std::vector<std::vector<cv::Rect>> object>
+    VectorOfVectorOfRect( data, count ) -> <std::vector<std::vector<cv::Rect>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Rect>>( std::vector<cv::Rect>* first,
+                                    std::vector<cv::Rect>* last );
+lua:
+    VectorOfVectorOfRect.new( first, last ) -> <std::vector<std::vector<cv::Rect>> object>
+    VectorOfVectorOfRect( first, last ) -> <std::vector<std::vector<cv::Rect>> object>
+```
+
+### VectorOfVectorOfRect.back
+
+```cpp
+std::vector<cv::Rect> VectorOfVectorOfRect::back();
+lua:
+    oVectorOfVectorOfRect:back() -> retval
+```
+
+### VectorOfVectorOfRect.capacity
+
+```cpp
+size_t VectorOfVectorOfRect::capacity();
+lua:
+    oVectorOfVectorOfRect:capacity() -> retval
+```
+
+### VectorOfVectorOfRect.clear
+
+```cpp
+void VectorOfVectorOfRect::clear();
+lua:
+    oVectorOfVectorOfRect:clear() -> None
+```
+
 ### VectorOfVectorOfRect.data
 
 ```cpp
 void* VectorOfVectorOfRect::data();
 lua:
     oVectorOfVectorOfRect:data() -> retval
+```
+
+### VectorOfVectorOfRect.empty
+
+```cpp
+bool VectorOfVectorOfRect::empty() const;
+lua:
+    oVectorOfVectorOfRect:empty() -> retval
+```
+
+### VectorOfVectorOfRect.front
+
+```cpp
+std::vector<cv::Rect> VectorOfVectorOfRect::front();
+lua:
+    oVectorOfVectorOfRect:front() -> retval
+```
+
+### VectorOfVectorOfRect.max\_size
+
+```cpp
+size_t VectorOfVectorOfRect::max_size();
+lua:
+    oVectorOfVectorOfRect:max_size() -> retval
+```
+
+### VectorOfVectorOfRect.pop\_back
+
+```cpp
+void VectorOfVectorOfRect::pop_back();
+lua:
+    oVectorOfVectorOfRect:pop_back() -> None
+```
+
+### VectorOfVectorOfRect.reserve
+
+```cpp
+void VectorOfVectorOfRect::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfRect:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfRect.resize
+
+```cpp
+void VectorOfVectorOfRect::resize( size_t count );
+lua:
+    oVectorOfVectorOfRect:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfRect::resize( size_t                       count,
+                                   const std::vector<cv::Rect>& value );
+lua:
+    oVectorOfVectorOfRect:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfRect.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfRect::shrink_to_fit();
+lua:
+    oVectorOfVectorOfRect:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfRect.sizeof
+
+```cpp
+size_t VectorOfVectorOfRect::size();
+lua:
+    oVectorOfVectorOfRect:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfRect.sol::meta\_function::index
@@ -67520,6 +79329,14 @@ void VectorOfVectorOfRect::sol::meta_function::new_index( size_t                
                                                           std::vector<cv::Rect> value );
 lua:
     oVectorOfVectorOfRect:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfRect.swap
+
+```cpp
+void VectorOfVectorOfRect::swap( std::vector<std::vector<cv::Rect>>& other );
+lua:
+    oVectorOfVectorOfRect:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfRect.table
@@ -67555,12 +79372,123 @@ lua:
     VectorOfVectorOfRect2d( other ) -> <std::vector<std::vector<cv::Rect2d>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Rect2d>>( std::vector<cv::Rect2d>* data,
+                                      size_t                   count );
+lua:
+    VectorOfVectorOfRect2d.new( data, count ) -> <std::vector<std::vector<cv::Rect2d>> object>
+    VectorOfVectorOfRect2d( data, count ) -> <std::vector<std::vector<cv::Rect2d>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Rect2d>>( std::vector<cv::Rect2d>* first,
+                                      std::vector<cv::Rect2d>* last );
+lua:
+    VectorOfVectorOfRect2d.new( first, last ) -> <std::vector<std::vector<cv::Rect2d>> object>
+    VectorOfVectorOfRect2d( first, last ) -> <std::vector<std::vector<cv::Rect2d>> object>
+```
+
+### VectorOfVectorOfRect2d.back
+
+```cpp
+std::vector<cv::Rect2d> VectorOfVectorOfRect2d::back();
+lua:
+    oVectorOfVectorOfRect2d:back() -> retval
+```
+
+### VectorOfVectorOfRect2d.capacity
+
+```cpp
+size_t VectorOfVectorOfRect2d::capacity();
+lua:
+    oVectorOfVectorOfRect2d:capacity() -> retval
+```
+
+### VectorOfVectorOfRect2d.clear
+
+```cpp
+void VectorOfVectorOfRect2d::clear();
+lua:
+    oVectorOfVectorOfRect2d:clear() -> None
+```
+
 ### VectorOfVectorOfRect2d.data
 
 ```cpp
 void* VectorOfVectorOfRect2d::data();
 lua:
     oVectorOfVectorOfRect2d:data() -> retval
+```
+
+### VectorOfVectorOfRect2d.empty
+
+```cpp
+bool VectorOfVectorOfRect2d::empty() const;
+lua:
+    oVectorOfVectorOfRect2d:empty() -> retval
+```
+
+### VectorOfVectorOfRect2d.front
+
+```cpp
+std::vector<cv::Rect2d> VectorOfVectorOfRect2d::front();
+lua:
+    oVectorOfVectorOfRect2d:front() -> retval
+```
+
+### VectorOfVectorOfRect2d.max\_size
+
+```cpp
+size_t VectorOfVectorOfRect2d::max_size();
+lua:
+    oVectorOfVectorOfRect2d:max_size() -> retval
+```
+
+### VectorOfVectorOfRect2d.pop\_back
+
+```cpp
+void VectorOfVectorOfRect2d::pop_back();
+lua:
+    oVectorOfVectorOfRect2d:pop_back() -> None
+```
+
+### VectorOfVectorOfRect2d.reserve
+
+```cpp
+void VectorOfVectorOfRect2d::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfRect2d:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfRect2d.resize
+
+```cpp
+void VectorOfVectorOfRect2d::resize( size_t count );
+lua:
+    oVectorOfVectorOfRect2d:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfRect2d::resize( size_t                         count,
+                                     const std::vector<cv::Rect2d>& value );
+lua:
+    oVectorOfVectorOfRect2d:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfRect2d.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfRect2d::shrink_to_fit();
+lua:
+    oVectorOfVectorOfRect2d:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfRect2d.sizeof
+
+```cpp
+size_t VectorOfVectorOfRect2d::size();
+lua:
+    oVectorOfVectorOfRect2d:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfRect2d.sol::meta\_function::index
@@ -67586,6 +79514,14 @@ void VectorOfVectorOfRect2d::sol::meta_function::new_index( size_t              
                                                             std::vector<cv::Rect2d> value );
 lua:
     oVectorOfVectorOfRect2d:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfRect2d.swap
+
+```cpp
+void VectorOfVectorOfRect2d::swap( std::vector<std::vector<cv::Rect2d>>& other );
+lua:
+    oVectorOfVectorOfRect2d:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfRect2d.table
@@ -67621,12 +79557,123 @@ lua:
     VectorOfVectorOfRect2f( other ) -> <std::vector<std::vector<cv::Rect2f>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Rect2f>>( std::vector<cv::Rect2f>* data,
+                                      size_t                   count );
+lua:
+    VectorOfVectorOfRect2f.new( data, count ) -> <std::vector<std::vector<cv::Rect2f>> object>
+    VectorOfVectorOfRect2f( data, count ) -> <std::vector<std::vector<cv::Rect2f>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Rect2f>>( std::vector<cv::Rect2f>* first,
+                                      std::vector<cv::Rect2f>* last );
+lua:
+    VectorOfVectorOfRect2f.new( first, last ) -> <std::vector<std::vector<cv::Rect2f>> object>
+    VectorOfVectorOfRect2f( first, last ) -> <std::vector<std::vector<cv::Rect2f>> object>
+```
+
+### VectorOfVectorOfRect2f.back
+
+```cpp
+std::vector<cv::Rect2f> VectorOfVectorOfRect2f::back();
+lua:
+    oVectorOfVectorOfRect2f:back() -> retval
+```
+
+### VectorOfVectorOfRect2f.capacity
+
+```cpp
+size_t VectorOfVectorOfRect2f::capacity();
+lua:
+    oVectorOfVectorOfRect2f:capacity() -> retval
+```
+
+### VectorOfVectorOfRect2f.clear
+
+```cpp
+void VectorOfVectorOfRect2f::clear();
+lua:
+    oVectorOfVectorOfRect2f:clear() -> None
+```
+
 ### VectorOfVectorOfRect2f.data
 
 ```cpp
 void* VectorOfVectorOfRect2f::data();
 lua:
     oVectorOfVectorOfRect2f:data() -> retval
+```
+
+### VectorOfVectorOfRect2f.empty
+
+```cpp
+bool VectorOfVectorOfRect2f::empty() const;
+lua:
+    oVectorOfVectorOfRect2f:empty() -> retval
+```
+
+### VectorOfVectorOfRect2f.front
+
+```cpp
+std::vector<cv::Rect2f> VectorOfVectorOfRect2f::front();
+lua:
+    oVectorOfVectorOfRect2f:front() -> retval
+```
+
+### VectorOfVectorOfRect2f.max\_size
+
+```cpp
+size_t VectorOfVectorOfRect2f::max_size();
+lua:
+    oVectorOfVectorOfRect2f:max_size() -> retval
+```
+
+### VectorOfVectorOfRect2f.pop\_back
+
+```cpp
+void VectorOfVectorOfRect2f::pop_back();
+lua:
+    oVectorOfVectorOfRect2f:pop_back() -> None
+```
+
+### VectorOfVectorOfRect2f.reserve
+
+```cpp
+void VectorOfVectorOfRect2f::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfRect2f:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfRect2f.resize
+
+```cpp
+void VectorOfVectorOfRect2f::resize( size_t count );
+lua:
+    oVectorOfVectorOfRect2f:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfRect2f::resize( size_t                         count,
+                                     const std::vector<cv::Rect2f>& value );
+lua:
+    oVectorOfVectorOfRect2f:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfRect2f.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfRect2f::shrink_to_fit();
+lua:
+    oVectorOfVectorOfRect2f:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfRect2f.sizeof
+
+```cpp
+size_t VectorOfVectorOfRect2f::size();
+lua:
+    oVectorOfVectorOfRect2f:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfRect2f.sol::meta\_function::index
@@ -67652,6 +79699,14 @@ void VectorOfVectorOfRect2f::sol::meta_function::new_index( size_t              
                                                             std::vector<cv::Rect2f> value );
 lua:
     oVectorOfVectorOfRect2f:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfRect2f.swap
+
+```cpp
+void VectorOfVectorOfRect2f::swap( std::vector<std::vector<cv::Rect2f>>& other );
+lua:
+    oVectorOfVectorOfRect2f:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfRect2f.table
@@ -67687,12 +79742,123 @@ lua:
     VectorOfVectorOfRotatedRect( other ) -> <std::vector<std::vector<cv::RotatedRect>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::RotatedRect>>( std::vector<cv::RotatedRect>* data,
+                                           size_t                        count );
+lua:
+    VectorOfVectorOfRotatedRect.new( data, count ) -> <std::vector<std::vector<cv::RotatedRect>> object>
+    VectorOfVectorOfRotatedRect( data, count ) -> <std::vector<std::vector<cv::RotatedRect>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::RotatedRect>>( std::vector<cv::RotatedRect>* first,
+                                           std::vector<cv::RotatedRect>* last );
+lua:
+    VectorOfVectorOfRotatedRect.new( first, last ) -> <std::vector<std::vector<cv::RotatedRect>> object>
+    VectorOfVectorOfRotatedRect( first, last ) -> <std::vector<std::vector<cv::RotatedRect>> object>
+```
+
+### VectorOfVectorOfRotatedRect.back
+
+```cpp
+std::vector<cv::RotatedRect> VectorOfVectorOfRotatedRect::back();
+lua:
+    oVectorOfVectorOfRotatedRect:back() -> retval
+```
+
+### VectorOfVectorOfRotatedRect.capacity
+
+```cpp
+size_t VectorOfVectorOfRotatedRect::capacity();
+lua:
+    oVectorOfVectorOfRotatedRect:capacity() -> retval
+```
+
+### VectorOfVectorOfRotatedRect.clear
+
+```cpp
+void VectorOfVectorOfRotatedRect::clear();
+lua:
+    oVectorOfVectorOfRotatedRect:clear() -> None
+```
+
 ### VectorOfVectorOfRotatedRect.data
 
 ```cpp
 void* VectorOfVectorOfRotatedRect::data();
 lua:
     oVectorOfVectorOfRotatedRect:data() -> retval
+```
+
+### VectorOfVectorOfRotatedRect.empty
+
+```cpp
+bool VectorOfVectorOfRotatedRect::empty() const;
+lua:
+    oVectorOfVectorOfRotatedRect:empty() -> retval
+```
+
+### VectorOfVectorOfRotatedRect.front
+
+```cpp
+std::vector<cv::RotatedRect> VectorOfVectorOfRotatedRect::front();
+lua:
+    oVectorOfVectorOfRotatedRect:front() -> retval
+```
+
+### VectorOfVectorOfRotatedRect.max\_size
+
+```cpp
+size_t VectorOfVectorOfRotatedRect::max_size();
+lua:
+    oVectorOfVectorOfRotatedRect:max_size() -> retval
+```
+
+### VectorOfVectorOfRotatedRect.pop\_back
+
+```cpp
+void VectorOfVectorOfRotatedRect::pop_back();
+lua:
+    oVectorOfVectorOfRotatedRect:pop_back() -> None
+```
+
+### VectorOfVectorOfRotatedRect.reserve
+
+```cpp
+void VectorOfVectorOfRotatedRect::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfRotatedRect:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfRotatedRect.resize
+
+```cpp
+void VectorOfVectorOfRotatedRect::resize( size_t count );
+lua:
+    oVectorOfVectorOfRotatedRect:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfRotatedRect::resize( size_t                              count,
+                                          const std::vector<cv::RotatedRect>& value );
+lua:
+    oVectorOfVectorOfRotatedRect:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfRotatedRect.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfRotatedRect::shrink_to_fit();
+lua:
+    oVectorOfVectorOfRotatedRect:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfRotatedRect.sizeof
+
+```cpp
+size_t VectorOfVectorOfRotatedRect::size();
+lua:
+    oVectorOfVectorOfRotatedRect:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfRotatedRect.sol::meta\_function::index
@@ -67718,6 +79884,14 @@ void VectorOfVectorOfRotatedRect::sol::meta_function::new_index( size_t         
                                                                  std::vector<cv::RotatedRect> value );
 lua:
     oVectorOfVectorOfRotatedRect:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfRotatedRect.swap
+
+```cpp
+void VectorOfVectorOfRotatedRect::swap( std::vector<std::vector<cv::RotatedRect>>& other );
+lua:
+    oVectorOfVectorOfRotatedRect:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfRotatedRect.table
@@ -67753,12 +79927,123 @@ lua:
     VectorOfVectorOfSchar( other ) -> <std::vector<std::vector<schar>> object>
 ```
 
+```cpp
+std::vector<std::vector<schar>>( std::vector<schar>* data,
+                                 size_t              count );
+lua:
+    VectorOfVectorOfSchar.new( data, count ) -> <std::vector<std::vector<schar>> object>
+    VectorOfVectorOfSchar( data, count ) -> <std::vector<std::vector<schar>> object>
+```
+
+```cpp
+std::vector<std::vector<schar>>( std::vector<schar>* first,
+                                 std::vector<schar>* last );
+lua:
+    VectorOfVectorOfSchar.new( first, last ) -> <std::vector<std::vector<schar>> object>
+    VectorOfVectorOfSchar( first, last ) -> <std::vector<std::vector<schar>> object>
+```
+
+### VectorOfVectorOfSchar.back
+
+```cpp
+std::vector<schar> VectorOfVectorOfSchar::back();
+lua:
+    oVectorOfVectorOfSchar:back() -> retval
+```
+
+### VectorOfVectorOfSchar.capacity
+
+```cpp
+size_t VectorOfVectorOfSchar::capacity();
+lua:
+    oVectorOfVectorOfSchar:capacity() -> retval
+```
+
+### VectorOfVectorOfSchar.clear
+
+```cpp
+void VectorOfVectorOfSchar::clear();
+lua:
+    oVectorOfVectorOfSchar:clear() -> None
+```
+
 ### VectorOfVectorOfSchar.data
 
 ```cpp
 void* VectorOfVectorOfSchar::data();
 lua:
     oVectorOfVectorOfSchar:data() -> retval
+```
+
+### VectorOfVectorOfSchar.empty
+
+```cpp
+bool VectorOfVectorOfSchar::empty() const;
+lua:
+    oVectorOfVectorOfSchar:empty() -> retval
+```
+
+### VectorOfVectorOfSchar.front
+
+```cpp
+std::vector<schar> VectorOfVectorOfSchar::front();
+lua:
+    oVectorOfVectorOfSchar:front() -> retval
+```
+
+### VectorOfVectorOfSchar.max\_size
+
+```cpp
+size_t VectorOfVectorOfSchar::max_size();
+lua:
+    oVectorOfVectorOfSchar:max_size() -> retval
+```
+
+### VectorOfVectorOfSchar.pop\_back
+
+```cpp
+void VectorOfVectorOfSchar::pop_back();
+lua:
+    oVectorOfVectorOfSchar:pop_back() -> None
+```
+
+### VectorOfVectorOfSchar.reserve
+
+```cpp
+void VectorOfVectorOfSchar::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfSchar:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfSchar.resize
+
+```cpp
+void VectorOfVectorOfSchar::resize( size_t count );
+lua:
+    oVectorOfVectorOfSchar:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfSchar::resize( size_t                    count,
+                                    const std::vector<schar>& value );
+lua:
+    oVectorOfVectorOfSchar:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfSchar.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfSchar::shrink_to_fit();
+lua:
+    oVectorOfVectorOfSchar:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfSchar.sizeof
+
+```cpp
+size_t VectorOfVectorOfSchar::size();
+lua:
+    oVectorOfVectorOfSchar:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfSchar.sol::meta\_function::index
@@ -67784,6 +80069,14 @@ void VectorOfVectorOfSchar::sol::meta_function::new_index( size_t             in
                                                            std::vector<schar> value );
 lua:
     oVectorOfVectorOfSchar:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfSchar.swap
+
+```cpp
+void VectorOfVectorOfSchar::swap( std::vector<std::vector<schar>>& other );
+lua:
+    oVectorOfVectorOfSchar:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfSchar.table
@@ -67819,12 +80112,123 @@ lua:
     VectorOfVectorOfShort( other ) -> <std::vector<std::vector<short>> object>
 ```
 
+```cpp
+std::vector<std::vector<short>>( std::vector<short>* data,
+                                 size_t              count );
+lua:
+    VectorOfVectorOfShort.new( data, count ) -> <std::vector<std::vector<short>> object>
+    VectorOfVectorOfShort( data, count ) -> <std::vector<std::vector<short>> object>
+```
+
+```cpp
+std::vector<std::vector<short>>( std::vector<short>* first,
+                                 std::vector<short>* last );
+lua:
+    VectorOfVectorOfShort.new( first, last ) -> <std::vector<std::vector<short>> object>
+    VectorOfVectorOfShort( first, last ) -> <std::vector<std::vector<short>> object>
+```
+
+### VectorOfVectorOfShort.back
+
+```cpp
+std::vector<short> VectorOfVectorOfShort::back();
+lua:
+    oVectorOfVectorOfShort:back() -> retval
+```
+
+### VectorOfVectorOfShort.capacity
+
+```cpp
+size_t VectorOfVectorOfShort::capacity();
+lua:
+    oVectorOfVectorOfShort:capacity() -> retval
+```
+
+### VectorOfVectorOfShort.clear
+
+```cpp
+void VectorOfVectorOfShort::clear();
+lua:
+    oVectorOfVectorOfShort:clear() -> None
+```
+
 ### VectorOfVectorOfShort.data
 
 ```cpp
 void* VectorOfVectorOfShort::data();
 lua:
     oVectorOfVectorOfShort:data() -> retval
+```
+
+### VectorOfVectorOfShort.empty
+
+```cpp
+bool VectorOfVectorOfShort::empty() const;
+lua:
+    oVectorOfVectorOfShort:empty() -> retval
+```
+
+### VectorOfVectorOfShort.front
+
+```cpp
+std::vector<short> VectorOfVectorOfShort::front();
+lua:
+    oVectorOfVectorOfShort:front() -> retval
+```
+
+### VectorOfVectorOfShort.max\_size
+
+```cpp
+size_t VectorOfVectorOfShort::max_size();
+lua:
+    oVectorOfVectorOfShort:max_size() -> retval
+```
+
+### VectorOfVectorOfShort.pop\_back
+
+```cpp
+void VectorOfVectorOfShort::pop_back();
+lua:
+    oVectorOfVectorOfShort:pop_back() -> None
+```
+
+### VectorOfVectorOfShort.reserve
+
+```cpp
+void VectorOfVectorOfShort::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfShort:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfShort.resize
+
+```cpp
+void VectorOfVectorOfShort::resize( size_t count );
+lua:
+    oVectorOfVectorOfShort:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfShort::resize( size_t                    count,
+                                    const std::vector<short>& value );
+lua:
+    oVectorOfVectorOfShort:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfShort.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfShort::shrink_to_fit();
+lua:
+    oVectorOfVectorOfShort:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfShort.sizeof
+
+```cpp
+size_t VectorOfVectorOfShort::size();
+lua:
+    oVectorOfVectorOfShort:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfShort.sol::meta\_function::index
@@ -67850,6 +80254,14 @@ void VectorOfVectorOfShort::sol::meta_function::new_index( size_t             in
                                                            std::vector<short> value );
 lua:
     oVectorOfVectorOfShort:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfShort.swap
+
+```cpp
+void VectorOfVectorOfShort::swap( std::vector<std::vector<short>>& other );
+lua:
+    oVectorOfVectorOfShort:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfShort.table
@@ -67885,12 +80297,123 @@ lua:
     VectorOfVectorOfSize( other ) -> <std::vector<std::vector<cv::Size>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Size>>( std::vector<cv::Size>* data,
+                                    size_t                 count );
+lua:
+    VectorOfVectorOfSize.new( data, count ) -> <std::vector<std::vector<cv::Size>> object>
+    VectorOfVectorOfSize( data, count ) -> <std::vector<std::vector<cv::Size>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Size>>( std::vector<cv::Size>* first,
+                                    std::vector<cv::Size>* last );
+lua:
+    VectorOfVectorOfSize.new( first, last ) -> <std::vector<std::vector<cv::Size>> object>
+    VectorOfVectorOfSize( first, last ) -> <std::vector<std::vector<cv::Size>> object>
+```
+
+### VectorOfVectorOfSize.back
+
+```cpp
+std::vector<cv::Size> VectorOfVectorOfSize::back();
+lua:
+    oVectorOfVectorOfSize:back() -> retval
+```
+
+### VectorOfVectorOfSize.capacity
+
+```cpp
+size_t VectorOfVectorOfSize::capacity();
+lua:
+    oVectorOfVectorOfSize:capacity() -> retval
+```
+
+### VectorOfVectorOfSize.clear
+
+```cpp
+void VectorOfVectorOfSize::clear();
+lua:
+    oVectorOfVectorOfSize:clear() -> None
+```
+
 ### VectorOfVectorOfSize.data
 
 ```cpp
 void* VectorOfVectorOfSize::data();
 lua:
     oVectorOfVectorOfSize:data() -> retval
+```
+
+### VectorOfVectorOfSize.empty
+
+```cpp
+bool VectorOfVectorOfSize::empty() const;
+lua:
+    oVectorOfVectorOfSize:empty() -> retval
+```
+
+### VectorOfVectorOfSize.front
+
+```cpp
+std::vector<cv::Size> VectorOfVectorOfSize::front();
+lua:
+    oVectorOfVectorOfSize:front() -> retval
+```
+
+### VectorOfVectorOfSize.max\_size
+
+```cpp
+size_t VectorOfVectorOfSize::max_size();
+lua:
+    oVectorOfVectorOfSize:max_size() -> retval
+```
+
+### VectorOfVectorOfSize.pop\_back
+
+```cpp
+void VectorOfVectorOfSize::pop_back();
+lua:
+    oVectorOfVectorOfSize:pop_back() -> None
+```
+
+### VectorOfVectorOfSize.reserve
+
+```cpp
+void VectorOfVectorOfSize::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfSize:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfSize.resize
+
+```cpp
+void VectorOfVectorOfSize::resize( size_t count );
+lua:
+    oVectorOfVectorOfSize:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfSize::resize( size_t                       count,
+                                   const std::vector<cv::Size>& value );
+lua:
+    oVectorOfVectorOfSize:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfSize.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfSize::shrink_to_fit();
+lua:
+    oVectorOfVectorOfSize:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfSize.sizeof
+
+```cpp
+size_t VectorOfVectorOfSize::size();
+lua:
+    oVectorOfVectorOfSize:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfSize.sol::meta\_function::index
@@ -67916,6 +80439,14 @@ void VectorOfVectorOfSize::sol::meta_function::new_index( size_t                
                                                           std::vector<cv::Size> value );
 lua:
     oVectorOfVectorOfSize:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfSize.swap
+
+```cpp
+void VectorOfVectorOfSize::swap( std::vector<std::vector<cv::Size>>& other );
+lua:
+    oVectorOfVectorOfSize:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfSize.table
@@ -67951,12 +80482,123 @@ lua:
     VectorOfVectorOfSize2d( other ) -> <std::vector<std::vector<cv::Size2d>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Size2d>>( std::vector<cv::Size2d>* data,
+                                      size_t                   count );
+lua:
+    VectorOfVectorOfSize2d.new( data, count ) -> <std::vector<std::vector<cv::Size2d>> object>
+    VectorOfVectorOfSize2d( data, count ) -> <std::vector<std::vector<cv::Size2d>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Size2d>>( std::vector<cv::Size2d>* first,
+                                      std::vector<cv::Size2d>* last );
+lua:
+    VectorOfVectorOfSize2d.new( first, last ) -> <std::vector<std::vector<cv::Size2d>> object>
+    VectorOfVectorOfSize2d( first, last ) -> <std::vector<std::vector<cv::Size2d>> object>
+```
+
+### VectorOfVectorOfSize2d.back
+
+```cpp
+std::vector<cv::Size2d> VectorOfVectorOfSize2d::back();
+lua:
+    oVectorOfVectorOfSize2d:back() -> retval
+```
+
+### VectorOfVectorOfSize2d.capacity
+
+```cpp
+size_t VectorOfVectorOfSize2d::capacity();
+lua:
+    oVectorOfVectorOfSize2d:capacity() -> retval
+```
+
+### VectorOfVectorOfSize2d.clear
+
+```cpp
+void VectorOfVectorOfSize2d::clear();
+lua:
+    oVectorOfVectorOfSize2d:clear() -> None
+```
+
 ### VectorOfVectorOfSize2d.data
 
 ```cpp
 void* VectorOfVectorOfSize2d::data();
 lua:
     oVectorOfVectorOfSize2d:data() -> retval
+```
+
+### VectorOfVectorOfSize2d.empty
+
+```cpp
+bool VectorOfVectorOfSize2d::empty() const;
+lua:
+    oVectorOfVectorOfSize2d:empty() -> retval
+```
+
+### VectorOfVectorOfSize2d.front
+
+```cpp
+std::vector<cv::Size2d> VectorOfVectorOfSize2d::front();
+lua:
+    oVectorOfVectorOfSize2d:front() -> retval
+```
+
+### VectorOfVectorOfSize2d.max\_size
+
+```cpp
+size_t VectorOfVectorOfSize2d::max_size();
+lua:
+    oVectorOfVectorOfSize2d:max_size() -> retval
+```
+
+### VectorOfVectorOfSize2d.pop\_back
+
+```cpp
+void VectorOfVectorOfSize2d::pop_back();
+lua:
+    oVectorOfVectorOfSize2d:pop_back() -> None
+```
+
+### VectorOfVectorOfSize2d.reserve
+
+```cpp
+void VectorOfVectorOfSize2d::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfSize2d:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfSize2d.resize
+
+```cpp
+void VectorOfVectorOfSize2d::resize( size_t count );
+lua:
+    oVectorOfVectorOfSize2d:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfSize2d::resize( size_t                         count,
+                                     const std::vector<cv::Size2d>& value );
+lua:
+    oVectorOfVectorOfSize2d:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfSize2d.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfSize2d::shrink_to_fit();
+lua:
+    oVectorOfVectorOfSize2d:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfSize2d.sizeof
+
+```cpp
+size_t VectorOfVectorOfSize2d::size();
+lua:
+    oVectorOfVectorOfSize2d:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfSize2d.sol::meta\_function::index
@@ -67982,6 +80624,14 @@ void VectorOfVectorOfSize2d::sol::meta_function::new_index( size_t              
                                                             std::vector<cv::Size2d> value );
 lua:
     oVectorOfVectorOfSize2d:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfSize2d.swap
+
+```cpp
+void VectorOfVectorOfSize2d::swap( std::vector<std::vector<cv::Size2d>>& other );
+lua:
+    oVectorOfVectorOfSize2d:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfSize2d.table
@@ -68017,12 +80667,123 @@ lua:
     VectorOfVectorOfSize2f( other ) -> <std::vector<std::vector<cv::Size2f>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Size2f>>( std::vector<cv::Size2f>* data,
+                                      size_t                   count );
+lua:
+    VectorOfVectorOfSize2f.new( data, count ) -> <std::vector<std::vector<cv::Size2f>> object>
+    VectorOfVectorOfSize2f( data, count ) -> <std::vector<std::vector<cv::Size2f>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Size2f>>( std::vector<cv::Size2f>* first,
+                                      std::vector<cv::Size2f>* last );
+lua:
+    VectorOfVectorOfSize2f.new( first, last ) -> <std::vector<std::vector<cv::Size2f>> object>
+    VectorOfVectorOfSize2f( first, last ) -> <std::vector<std::vector<cv::Size2f>> object>
+```
+
+### VectorOfVectorOfSize2f.back
+
+```cpp
+std::vector<cv::Size2f> VectorOfVectorOfSize2f::back();
+lua:
+    oVectorOfVectorOfSize2f:back() -> retval
+```
+
+### VectorOfVectorOfSize2f.capacity
+
+```cpp
+size_t VectorOfVectorOfSize2f::capacity();
+lua:
+    oVectorOfVectorOfSize2f:capacity() -> retval
+```
+
+### VectorOfVectorOfSize2f.clear
+
+```cpp
+void VectorOfVectorOfSize2f::clear();
+lua:
+    oVectorOfVectorOfSize2f:clear() -> None
+```
+
 ### VectorOfVectorOfSize2f.data
 
 ```cpp
 void* VectorOfVectorOfSize2f::data();
 lua:
     oVectorOfVectorOfSize2f:data() -> retval
+```
+
+### VectorOfVectorOfSize2f.empty
+
+```cpp
+bool VectorOfVectorOfSize2f::empty() const;
+lua:
+    oVectorOfVectorOfSize2f:empty() -> retval
+```
+
+### VectorOfVectorOfSize2f.front
+
+```cpp
+std::vector<cv::Size2f> VectorOfVectorOfSize2f::front();
+lua:
+    oVectorOfVectorOfSize2f:front() -> retval
+```
+
+### VectorOfVectorOfSize2f.max\_size
+
+```cpp
+size_t VectorOfVectorOfSize2f::max_size();
+lua:
+    oVectorOfVectorOfSize2f:max_size() -> retval
+```
+
+### VectorOfVectorOfSize2f.pop\_back
+
+```cpp
+void VectorOfVectorOfSize2f::pop_back();
+lua:
+    oVectorOfVectorOfSize2f:pop_back() -> None
+```
+
+### VectorOfVectorOfSize2f.reserve
+
+```cpp
+void VectorOfVectorOfSize2f::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfSize2f:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfSize2f.resize
+
+```cpp
+void VectorOfVectorOfSize2f::resize( size_t count );
+lua:
+    oVectorOfVectorOfSize2f:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfSize2f::resize( size_t                         count,
+                                     const std::vector<cv::Size2f>& value );
+lua:
+    oVectorOfVectorOfSize2f:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfSize2f.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfSize2f::shrink_to_fit();
+lua:
+    oVectorOfVectorOfSize2f:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfSize2f.sizeof
+
+```cpp
+size_t VectorOfVectorOfSize2f::size();
+lua:
+    oVectorOfVectorOfSize2f:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfSize2f.sol::meta\_function::index
@@ -68048,6 +80809,14 @@ void VectorOfVectorOfSize2f::sol::meta_function::new_index( size_t              
                                                             std::vector<cv::Size2f> value );
 lua:
     oVectorOfVectorOfSize2f:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfSize2f.swap
+
+```cpp
+void VectorOfVectorOfSize2f::swap( std::vector<std::vector<cv::Size2f>>& other );
+lua:
+    oVectorOfVectorOfSize2f:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfSize2f.table
@@ -68083,12 +80852,123 @@ lua:
     VectorOfVectorOfUchar( other ) -> <std::vector<std::vector<uchar>> object>
 ```
 
+```cpp
+std::vector<std::vector<uchar>>( std::vector<uchar>* data,
+                                 size_t              count );
+lua:
+    VectorOfVectorOfUchar.new( data, count ) -> <std::vector<std::vector<uchar>> object>
+    VectorOfVectorOfUchar( data, count ) -> <std::vector<std::vector<uchar>> object>
+```
+
+```cpp
+std::vector<std::vector<uchar>>( std::vector<uchar>* first,
+                                 std::vector<uchar>* last );
+lua:
+    VectorOfVectorOfUchar.new( first, last ) -> <std::vector<std::vector<uchar>> object>
+    VectorOfVectorOfUchar( first, last ) -> <std::vector<std::vector<uchar>> object>
+```
+
+### VectorOfVectorOfUchar.back
+
+```cpp
+std::vector<uchar> VectorOfVectorOfUchar::back();
+lua:
+    oVectorOfVectorOfUchar:back() -> retval
+```
+
+### VectorOfVectorOfUchar.capacity
+
+```cpp
+size_t VectorOfVectorOfUchar::capacity();
+lua:
+    oVectorOfVectorOfUchar:capacity() -> retval
+```
+
+### VectorOfVectorOfUchar.clear
+
+```cpp
+void VectorOfVectorOfUchar::clear();
+lua:
+    oVectorOfVectorOfUchar:clear() -> None
+```
+
 ### VectorOfVectorOfUchar.data
 
 ```cpp
 void* VectorOfVectorOfUchar::data();
 lua:
     oVectorOfVectorOfUchar:data() -> retval
+```
+
+### VectorOfVectorOfUchar.empty
+
+```cpp
+bool VectorOfVectorOfUchar::empty() const;
+lua:
+    oVectorOfVectorOfUchar:empty() -> retval
+```
+
+### VectorOfVectorOfUchar.front
+
+```cpp
+std::vector<uchar> VectorOfVectorOfUchar::front();
+lua:
+    oVectorOfVectorOfUchar:front() -> retval
+```
+
+### VectorOfVectorOfUchar.max\_size
+
+```cpp
+size_t VectorOfVectorOfUchar::max_size();
+lua:
+    oVectorOfVectorOfUchar:max_size() -> retval
+```
+
+### VectorOfVectorOfUchar.pop\_back
+
+```cpp
+void VectorOfVectorOfUchar::pop_back();
+lua:
+    oVectorOfVectorOfUchar:pop_back() -> None
+```
+
+### VectorOfVectorOfUchar.reserve
+
+```cpp
+void VectorOfVectorOfUchar::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfUchar:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfUchar.resize
+
+```cpp
+void VectorOfVectorOfUchar::resize( size_t count );
+lua:
+    oVectorOfVectorOfUchar:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfUchar::resize( size_t                    count,
+                                    const std::vector<uchar>& value );
+lua:
+    oVectorOfVectorOfUchar:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfUchar.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfUchar::shrink_to_fit();
+lua:
+    oVectorOfVectorOfUchar:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfUchar.sizeof
+
+```cpp
+size_t VectorOfVectorOfUchar::size();
+lua:
+    oVectorOfVectorOfUchar:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfUchar.sol::meta\_function::index
@@ -68114,6 +80994,14 @@ void VectorOfVectorOfUchar::sol::meta_function::new_index( size_t             in
                                                            std::vector<uchar> value );
 lua:
     oVectorOfVectorOfUchar:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfUchar.swap
+
+```cpp
+void VectorOfVectorOfUchar::swap( std::vector<std::vector<uchar>>& other );
+lua:
+    oVectorOfVectorOfUchar:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfUchar.table
@@ -68149,12 +81037,123 @@ lua:
     VectorOfVectorOfUshort( other ) -> <std::vector<std::vector<ushort>> object>
 ```
 
+```cpp
+std::vector<std::vector<ushort>>( std::vector<ushort>* data,
+                                  size_t               count );
+lua:
+    VectorOfVectorOfUshort.new( data, count ) -> <std::vector<std::vector<ushort>> object>
+    VectorOfVectorOfUshort( data, count ) -> <std::vector<std::vector<ushort>> object>
+```
+
+```cpp
+std::vector<std::vector<ushort>>( std::vector<ushort>* first,
+                                  std::vector<ushort>* last );
+lua:
+    VectorOfVectorOfUshort.new( first, last ) -> <std::vector<std::vector<ushort>> object>
+    VectorOfVectorOfUshort( first, last ) -> <std::vector<std::vector<ushort>> object>
+```
+
+### VectorOfVectorOfUshort.back
+
+```cpp
+std::vector<ushort> VectorOfVectorOfUshort::back();
+lua:
+    oVectorOfVectorOfUshort:back() -> retval
+```
+
+### VectorOfVectorOfUshort.capacity
+
+```cpp
+size_t VectorOfVectorOfUshort::capacity();
+lua:
+    oVectorOfVectorOfUshort:capacity() -> retval
+```
+
+### VectorOfVectorOfUshort.clear
+
+```cpp
+void VectorOfVectorOfUshort::clear();
+lua:
+    oVectorOfVectorOfUshort:clear() -> None
+```
+
 ### VectorOfVectorOfUshort.data
 
 ```cpp
 void* VectorOfVectorOfUshort::data();
 lua:
     oVectorOfVectorOfUshort:data() -> retval
+```
+
+### VectorOfVectorOfUshort.empty
+
+```cpp
+bool VectorOfVectorOfUshort::empty() const;
+lua:
+    oVectorOfVectorOfUshort:empty() -> retval
+```
+
+### VectorOfVectorOfUshort.front
+
+```cpp
+std::vector<ushort> VectorOfVectorOfUshort::front();
+lua:
+    oVectorOfVectorOfUshort:front() -> retval
+```
+
+### VectorOfVectorOfUshort.max\_size
+
+```cpp
+size_t VectorOfVectorOfUshort::max_size();
+lua:
+    oVectorOfVectorOfUshort:max_size() -> retval
+```
+
+### VectorOfVectorOfUshort.pop\_back
+
+```cpp
+void VectorOfVectorOfUshort::pop_back();
+lua:
+    oVectorOfVectorOfUshort:pop_back() -> None
+```
+
+### VectorOfVectorOfUshort.reserve
+
+```cpp
+void VectorOfVectorOfUshort::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfUshort:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfUshort.resize
+
+```cpp
+void VectorOfVectorOfUshort::resize( size_t count );
+lua:
+    oVectorOfVectorOfUshort:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfUshort::resize( size_t                     count,
+                                     const std::vector<ushort>& value );
+lua:
+    oVectorOfVectorOfUshort:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfUshort.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfUshort::shrink_to_fit();
+lua:
+    oVectorOfVectorOfUshort:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfUshort.sizeof
+
+```cpp
+size_t VectorOfVectorOfUshort::size();
+lua:
+    oVectorOfVectorOfUshort:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfUshort.sol::meta\_function::index
@@ -68180,6 +81179,14 @@ void VectorOfVectorOfUshort::sol::meta_function::new_index( size_t              
                                                             std::vector<ushort> value );
 lua:
     oVectorOfVectorOfUshort:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfUshort.swap
+
+```cpp
+void VectorOfVectorOfUshort::swap( std::vector<std::vector<ushort>>& other );
+lua:
+    oVectorOfVectorOfUshort:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfUshort.table
@@ -68215,12 +81222,123 @@ lua:
     VectorOfVectorOfVec2b( other ) -> <std::vector<std::vector<cv::Vec2b>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Vec2b>>( std::vector<cv::Vec2b>* data,
+                                     size_t                  count );
+lua:
+    VectorOfVectorOfVec2b.new( data, count ) -> <std::vector<std::vector<cv::Vec2b>> object>
+    VectorOfVectorOfVec2b( data, count ) -> <std::vector<std::vector<cv::Vec2b>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec2b>>( std::vector<cv::Vec2b>* first,
+                                     std::vector<cv::Vec2b>* last );
+lua:
+    VectorOfVectorOfVec2b.new( first, last ) -> <std::vector<std::vector<cv::Vec2b>> object>
+    VectorOfVectorOfVec2b( first, last ) -> <std::vector<std::vector<cv::Vec2b>> object>
+```
+
+### VectorOfVectorOfVec2b.back
+
+```cpp
+std::vector<cv::Vec2b> VectorOfVectorOfVec2b::back();
+lua:
+    oVectorOfVectorOfVec2b:back() -> retval
+```
+
+### VectorOfVectorOfVec2b.capacity
+
+```cpp
+size_t VectorOfVectorOfVec2b::capacity();
+lua:
+    oVectorOfVectorOfVec2b:capacity() -> retval
+```
+
+### VectorOfVectorOfVec2b.clear
+
+```cpp
+void VectorOfVectorOfVec2b::clear();
+lua:
+    oVectorOfVectorOfVec2b:clear() -> None
+```
+
 ### VectorOfVectorOfVec2b.data
 
 ```cpp
 void* VectorOfVectorOfVec2b::data();
 lua:
     oVectorOfVectorOfVec2b:data() -> retval
+```
+
+### VectorOfVectorOfVec2b.empty
+
+```cpp
+bool VectorOfVectorOfVec2b::empty() const;
+lua:
+    oVectorOfVectorOfVec2b:empty() -> retval
+```
+
+### VectorOfVectorOfVec2b.front
+
+```cpp
+std::vector<cv::Vec2b> VectorOfVectorOfVec2b::front();
+lua:
+    oVectorOfVectorOfVec2b:front() -> retval
+```
+
+### VectorOfVectorOfVec2b.max\_size
+
+```cpp
+size_t VectorOfVectorOfVec2b::max_size();
+lua:
+    oVectorOfVectorOfVec2b:max_size() -> retval
+```
+
+### VectorOfVectorOfVec2b.pop\_back
+
+```cpp
+void VectorOfVectorOfVec2b::pop_back();
+lua:
+    oVectorOfVectorOfVec2b:pop_back() -> None
+```
+
+### VectorOfVectorOfVec2b.reserve
+
+```cpp
+void VectorOfVectorOfVec2b::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfVec2b:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfVec2b.resize
+
+```cpp
+void VectorOfVectorOfVec2b::resize( size_t count );
+lua:
+    oVectorOfVectorOfVec2b:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec2b::resize( size_t                        count,
+                                    const std::vector<cv::Vec2b>& value );
+lua:
+    oVectorOfVectorOfVec2b:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfVec2b.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfVec2b::shrink_to_fit();
+lua:
+    oVectorOfVectorOfVec2b:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfVec2b.sizeof
+
+```cpp
+size_t VectorOfVectorOfVec2b::size();
+lua:
+    oVectorOfVectorOfVec2b:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfVec2b.sol::meta\_function::index
@@ -68246,6 +81364,14 @@ void VectorOfVectorOfVec2b::sol::meta_function::new_index( size_t               
                                                            std::vector<cv::Vec2b> value );
 lua:
     oVectorOfVectorOfVec2b:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec2b.swap
+
+```cpp
+void VectorOfVectorOfVec2b::swap( std::vector<std::vector<cv::Vec2b>>& other );
+lua:
+    oVectorOfVectorOfVec2b:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfVec2b.table
@@ -68281,12 +81407,123 @@ lua:
     VectorOfVectorOfVec2d( other ) -> <std::vector<std::vector<cv::Vec2d>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Vec2d>>( std::vector<cv::Vec2d>* data,
+                                     size_t                  count );
+lua:
+    VectorOfVectorOfVec2d.new( data, count ) -> <std::vector<std::vector<cv::Vec2d>> object>
+    VectorOfVectorOfVec2d( data, count ) -> <std::vector<std::vector<cv::Vec2d>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec2d>>( std::vector<cv::Vec2d>* first,
+                                     std::vector<cv::Vec2d>* last );
+lua:
+    VectorOfVectorOfVec2d.new( first, last ) -> <std::vector<std::vector<cv::Vec2d>> object>
+    VectorOfVectorOfVec2d( first, last ) -> <std::vector<std::vector<cv::Vec2d>> object>
+```
+
+### VectorOfVectorOfVec2d.back
+
+```cpp
+std::vector<cv::Vec2d> VectorOfVectorOfVec2d::back();
+lua:
+    oVectorOfVectorOfVec2d:back() -> retval
+```
+
+### VectorOfVectorOfVec2d.capacity
+
+```cpp
+size_t VectorOfVectorOfVec2d::capacity();
+lua:
+    oVectorOfVectorOfVec2d:capacity() -> retval
+```
+
+### VectorOfVectorOfVec2d.clear
+
+```cpp
+void VectorOfVectorOfVec2d::clear();
+lua:
+    oVectorOfVectorOfVec2d:clear() -> None
+```
+
 ### VectorOfVectorOfVec2d.data
 
 ```cpp
 void* VectorOfVectorOfVec2d::data();
 lua:
     oVectorOfVectorOfVec2d:data() -> retval
+```
+
+### VectorOfVectorOfVec2d.empty
+
+```cpp
+bool VectorOfVectorOfVec2d::empty() const;
+lua:
+    oVectorOfVectorOfVec2d:empty() -> retval
+```
+
+### VectorOfVectorOfVec2d.front
+
+```cpp
+std::vector<cv::Vec2d> VectorOfVectorOfVec2d::front();
+lua:
+    oVectorOfVectorOfVec2d:front() -> retval
+```
+
+### VectorOfVectorOfVec2d.max\_size
+
+```cpp
+size_t VectorOfVectorOfVec2d::max_size();
+lua:
+    oVectorOfVectorOfVec2d:max_size() -> retval
+```
+
+### VectorOfVectorOfVec2d.pop\_back
+
+```cpp
+void VectorOfVectorOfVec2d::pop_back();
+lua:
+    oVectorOfVectorOfVec2d:pop_back() -> None
+```
+
+### VectorOfVectorOfVec2d.reserve
+
+```cpp
+void VectorOfVectorOfVec2d::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfVec2d:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfVec2d.resize
+
+```cpp
+void VectorOfVectorOfVec2d::resize( size_t count );
+lua:
+    oVectorOfVectorOfVec2d:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec2d::resize( size_t                        count,
+                                    const std::vector<cv::Vec2d>& value );
+lua:
+    oVectorOfVectorOfVec2d:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfVec2d.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfVec2d::shrink_to_fit();
+lua:
+    oVectorOfVectorOfVec2d:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfVec2d.sizeof
+
+```cpp
+size_t VectorOfVectorOfVec2d::size();
+lua:
+    oVectorOfVectorOfVec2d:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfVec2d.sol::meta\_function::index
@@ -68312,6 +81549,14 @@ void VectorOfVectorOfVec2d::sol::meta_function::new_index( size_t               
                                                            std::vector<cv::Vec2d> value );
 lua:
     oVectorOfVectorOfVec2d:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec2d.swap
+
+```cpp
+void VectorOfVectorOfVec2d::swap( std::vector<std::vector<cv::Vec2d>>& other );
+lua:
+    oVectorOfVectorOfVec2d:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfVec2d.table
@@ -68347,12 +81592,123 @@ lua:
     VectorOfVectorOfVec2f( other ) -> <std::vector<std::vector<cv::Vec2f>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Vec2f>>( std::vector<cv::Vec2f>* data,
+                                     size_t                  count );
+lua:
+    VectorOfVectorOfVec2f.new( data, count ) -> <std::vector<std::vector<cv::Vec2f>> object>
+    VectorOfVectorOfVec2f( data, count ) -> <std::vector<std::vector<cv::Vec2f>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec2f>>( std::vector<cv::Vec2f>* first,
+                                     std::vector<cv::Vec2f>* last );
+lua:
+    VectorOfVectorOfVec2f.new( first, last ) -> <std::vector<std::vector<cv::Vec2f>> object>
+    VectorOfVectorOfVec2f( first, last ) -> <std::vector<std::vector<cv::Vec2f>> object>
+```
+
+### VectorOfVectorOfVec2f.back
+
+```cpp
+std::vector<cv::Vec2f> VectorOfVectorOfVec2f::back();
+lua:
+    oVectorOfVectorOfVec2f:back() -> retval
+```
+
+### VectorOfVectorOfVec2f.capacity
+
+```cpp
+size_t VectorOfVectorOfVec2f::capacity();
+lua:
+    oVectorOfVectorOfVec2f:capacity() -> retval
+```
+
+### VectorOfVectorOfVec2f.clear
+
+```cpp
+void VectorOfVectorOfVec2f::clear();
+lua:
+    oVectorOfVectorOfVec2f:clear() -> None
+```
+
 ### VectorOfVectorOfVec2f.data
 
 ```cpp
 void* VectorOfVectorOfVec2f::data();
 lua:
     oVectorOfVectorOfVec2f:data() -> retval
+```
+
+### VectorOfVectorOfVec2f.empty
+
+```cpp
+bool VectorOfVectorOfVec2f::empty() const;
+lua:
+    oVectorOfVectorOfVec2f:empty() -> retval
+```
+
+### VectorOfVectorOfVec2f.front
+
+```cpp
+std::vector<cv::Vec2f> VectorOfVectorOfVec2f::front();
+lua:
+    oVectorOfVectorOfVec2f:front() -> retval
+```
+
+### VectorOfVectorOfVec2f.max\_size
+
+```cpp
+size_t VectorOfVectorOfVec2f::max_size();
+lua:
+    oVectorOfVectorOfVec2f:max_size() -> retval
+```
+
+### VectorOfVectorOfVec2f.pop\_back
+
+```cpp
+void VectorOfVectorOfVec2f::pop_back();
+lua:
+    oVectorOfVectorOfVec2f:pop_back() -> None
+```
+
+### VectorOfVectorOfVec2f.reserve
+
+```cpp
+void VectorOfVectorOfVec2f::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfVec2f:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfVec2f.resize
+
+```cpp
+void VectorOfVectorOfVec2f::resize( size_t count );
+lua:
+    oVectorOfVectorOfVec2f:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec2f::resize( size_t                        count,
+                                    const std::vector<cv::Vec2f>& value );
+lua:
+    oVectorOfVectorOfVec2f:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfVec2f.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfVec2f::shrink_to_fit();
+lua:
+    oVectorOfVectorOfVec2f:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfVec2f.sizeof
+
+```cpp
+size_t VectorOfVectorOfVec2f::size();
+lua:
+    oVectorOfVectorOfVec2f:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfVec2f.sol::meta\_function::index
@@ -68378,6 +81734,14 @@ void VectorOfVectorOfVec2f::sol::meta_function::new_index( size_t               
                                                            std::vector<cv::Vec2f> value );
 lua:
     oVectorOfVectorOfVec2f:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec2f.swap
+
+```cpp
+void VectorOfVectorOfVec2f::swap( std::vector<std::vector<cv::Vec2f>>& other );
+lua:
+    oVectorOfVectorOfVec2f:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfVec2f.table
@@ -68413,12 +81777,123 @@ lua:
     VectorOfVectorOfVec2i( other ) -> <std::vector<std::vector<cv::Vec2i>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Vec2i>>( std::vector<cv::Vec2i>* data,
+                                     size_t                  count );
+lua:
+    VectorOfVectorOfVec2i.new( data, count ) -> <std::vector<std::vector<cv::Vec2i>> object>
+    VectorOfVectorOfVec2i( data, count ) -> <std::vector<std::vector<cv::Vec2i>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec2i>>( std::vector<cv::Vec2i>* first,
+                                     std::vector<cv::Vec2i>* last );
+lua:
+    VectorOfVectorOfVec2i.new( first, last ) -> <std::vector<std::vector<cv::Vec2i>> object>
+    VectorOfVectorOfVec2i( first, last ) -> <std::vector<std::vector<cv::Vec2i>> object>
+```
+
+### VectorOfVectorOfVec2i.back
+
+```cpp
+std::vector<cv::Vec2i> VectorOfVectorOfVec2i::back();
+lua:
+    oVectorOfVectorOfVec2i:back() -> retval
+```
+
+### VectorOfVectorOfVec2i.capacity
+
+```cpp
+size_t VectorOfVectorOfVec2i::capacity();
+lua:
+    oVectorOfVectorOfVec2i:capacity() -> retval
+```
+
+### VectorOfVectorOfVec2i.clear
+
+```cpp
+void VectorOfVectorOfVec2i::clear();
+lua:
+    oVectorOfVectorOfVec2i:clear() -> None
+```
+
 ### VectorOfVectorOfVec2i.data
 
 ```cpp
 void* VectorOfVectorOfVec2i::data();
 lua:
     oVectorOfVectorOfVec2i:data() -> retval
+```
+
+### VectorOfVectorOfVec2i.empty
+
+```cpp
+bool VectorOfVectorOfVec2i::empty() const;
+lua:
+    oVectorOfVectorOfVec2i:empty() -> retval
+```
+
+### VectorOfVectorOfVec2i.front
+
+```cpp
+std::vector<cv::Vec2i> VectorOfVectorOfVec2i::front();
+lua:
+    oVectorOfVectorOfVec2i:front() -> retval
+```
+
+### VectorOfVectorOfVec2i.max\_size
+
+```cpp
+size_t VectorOfVectorOfVec2i::max_size();
+lua:
+    oVectorOfVectorOfVec2i:max_size() -> retval
+```
+
+### VectorOfVectorOfVec2i.pop\_back
+
+```cpp
+void VectorOfVectorOfVec2i::pop_back();
+lua:
+    oVectorOfVectorOfVec2i:pop_back() -> None
+```
+
+### VectorOfVectorOfVec2i.reserve
+
+```cpp
+void VectorOfVectorOfVec2i::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfVec2i:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfVec2i.resize
+
+```cpp
+void VectorOfVectorOfVec2i::resize( size_t count );
+lua:
+    oVectorOfVectorOfVec2i:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec2i::resize( size_t                        count,
+                                    const std::vector<cv::Vec2i>& value );
+lua:
+    oVectorOfVectorOfVec2i:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfVec2i.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfVec2i::shrink_to_fit();
+lua:
+    oVectorOfVectorOfVec2i:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfVec2i.sizeof
+
+```cpp
+size_t VectorOfVectorOfVec2i::size();
+lua:
+    oVectorOfVectorOfVec2i:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfVec2i.sol::meta\_function::index
@@ -68444,6 +81919,14 @@ void VectorOfVectorOfVec2i::sol::meta_function::new_index( size_t               
                                                            std::vector<cv::Vec2i> value );
 lua:
     oVectorOfVectorOfVec2i:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec2i.swap
+
+```cpp
+void VectorOfVectorOfVec2i::swap( std::vector<std::vector<cv::Vec2i>>& other );
+lua:
+    oVectorOfVectorOfVec2i:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfVec2i.table
@@ -68479,12 +81962,123 @@ lua:
     VectorOfVectorOfVec2s( other ) -> <std::vector<std::vector<cv::Vec2s>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Vec2s>>( std::vector<cv::Vec2s>* data,
+                                     size_t                  count );
+lua:
+    VectorOfVectorOfVec2s.new( data, count ) -> <std::vector<std::vector<cv::Vec2s>> object>
+    VectorOfVectorOfVec2s( data, count ) -> <std::vector<std::vector<cv::Vec2s>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec2s>>( std::vector<cv::Vec2s>* first,
+                                     std::vector<cv::Vec2s>* last );
+lua:
+    VectorOfVectorOfVec2s.new( first, last ) -> <std::vector<std::vector<cv::Vec2s>> object>
+    VectorOfVectorOfVec2s( first, last ) -> <std::vector<std::vector<cv::Vec2s>> object>
+```
+
+### VectorOfVectorOfVec2s.back
+
+```cpp
+std::vector<cv::Vec2s> VectorOfVectorOfVec2s::back();
+lua:
+    oVectorOfVectorOfVec2s:back() -> retval
+```
+
+### VectorOfVectorOfVec2s.capacity
+
+```cpp
+size_t VectorOfVectorOfVec2s::capacity();
+lua:
+    oVectorOfVectorOfVec2s:capacity() -> retval
+```
+
+### VectorOfVectorOfVec2s.clear
+
+```cpp
+void VectorOfVectorOfVec2s::clear();
+lua:
+    oVectorOfVectorOfVec2s:clear() -> None
+```
+
 ### VectorOfVectorOfVec2s.data
 
 ```cpp
 void* VectorOfVectorOfVec2s::data();
 lua:
     oVectorOfVectorOfVec2s:data() -> retval
+```
+
+### VectorOfVectorOfVec2s.empty
+
+```cpp
+bool VectorOfVectorOfVec2s::empty() const;
+lua:
+    oVectorOfVectorOfVec2s:empty() -> retval
+```
+
+### VectorOfVectorOfVec2s.front
+
+```cpp
+std::vector<cv::Vec2s> VectorOfVectorOfVec2s::front();
+lua:
+    oVectorOfVectorOfVec2s:front() -> retval
+```
+
+### VectorOfVectorOfVec2s.max\_size
+
+```cpp
+size_t VectorOfVectorOfVec2s::max_size();
+lua:
+    oVectorOfVectorOfVec2s:max_size() -> retval
+```
+
+### VectorOfVectorOfVec2s.pop\_back
+
+```cpp
+void VectorOfVectorOfVec2s::pop_back();
+lua:
+    oVectorOfVectorOfVec2s:pop_back() -> None
+```
+
+### VectorOfVectorOfVec2s.reserve
+
+```cpp
+void VectorOfVectorOfVec2s::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfVec2s:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfVec2s.resize
+
+```cpp
+void VectorOfVectorOfVec2s::resize( size_t count );
+lua:
+    oVectorOfVectorOfVec2s:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec2s::resize( size_t                        count,
+                                    const std::vector<cv::Vec2s>& value );
+lua:
+    oVectorOfVectorOfVec2s:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfVec2s.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfVec2s::shrink_to_fit();
+lua:
+    oVectorOfVectorOfVec2s:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfVec2s.sizeof
+
+```cpp
+size_t VectorOfVectorOfVec2s::size();
+lua:
+    oVectorOfVectorOfVec2s:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfVec2s.sol::meta\_function::index
@@ -68510,6 +82104,14 @@ void VectorOfVectorOfVec2s::sol::meta_function::new_index( size_t               
                                                            std::vector<cv::Vec2s> value );
 lua:
     oVectorOfVectorOfVec2s:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec2s.swap
+
+```cpp
+void VectorOfVectorOfVec2s::swap( std::vector<std::vector<cv::Vec2s>>& other );
+lua:
+    oVectorOfVectorOfVec2s:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfVec2s.table
@@ -68545,12 +82147,123 @@ lua:
     VectorOfVectorOfVec2w( other ) -> <std::vector<std::vector<cv::Vec2w>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Vec2w>>( std::vector<cv::Vec2w>* data,
+                                     size_t                  count );
+lua:
+    VectorOfVectorOfVec2w.new( data, count ) -> <std::vector<std::vector<cv::Vec2w>> object>
+    VectorOfVectorOfVec2w( data, count ) -> <std::vector<std::vector<cv::Vec2w>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec2w>>( std::vector<cv::Vec2w>* first,
+                                     std::vector<cv::Vec2w>* last );
+lua:
+    VectorOfVectorOfVec2w.new( first, last ) -> <std::vector<std::vector<cv::Vec2w>> object>
+    VectorOfVectorOfVec2w( first, last ) -> <std::vector<std::vector<cv::Vec2w>> object>
+```
+
+### VectorOfVectorOfVec2w.back
+
+```cpp
+std::vector<cv::Vec2w> VectorOfVectorOfVec2w::back();
+lua:
+    oVectorOfVectorOfVec2w:back() -> retval
+```
+
+### VectorOfVectorOfVec2w.capacity
+
+```cpp
+size_t VectorOfVectorOfVec2w::capacity();
+lua:
+    oVectorOfVectorOfVec2w:capacity() -> retval
+```
+
+### VectorOfVectorOfVec2w.clear
+
+```cpp
+void VectorOfVectorOfVec2w::clear();
+lua:
+    oVectorOfVectorOfVec2w:clear() -> None
+```
+
 ### VectorOfVectorOfVec2w.data
 
 ```cpp
 void* VectorOfVectorOfVec2w::data();
 lua:
     oVectorOfVectorOfVec2w:data() -> retval
+```
+
+### VectorOfVectorOfVec2w.empty
+
+```cpp
+bool VectorOfVectorOfVec2w::empty() const;
+lua:
+    oVectorOfVectorOfVec2w:empty() -> retval
+```
+
+### VectorOfVectorOfVec2w.front
+
+```cpp
+std::vector<cv::Vec2w> VectorOfVectorOfVec2w::front();
+lua:
+    oVectorOfVectorOfVec2w:front() -> retval
+```
+
+### VectorOfVectorOfVec2w.max\_size
+
+```cpp
+size_t VectorOfVectorOfVec2w::max_size();
+lua:
+    oVectorOfVectorOfVec2w:max_size() -> retval
+```
+
+### VectorOfVectorOfVec2w.pop\_back
+
+```cpp
+void VectorOfVectorOfVec2w::pop_back();
+lua:
+    oVectorOfVectorOfVec2w:pop_back() -> None
+```
+
+### VectorOfVectorOfVec2w.reserve
+
+```cpp
+void VectorOfVectorOfVec2w::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfVec2w:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfVec2w.resize
+
+```cpp
+void VectorOfVectorOfVec2w::resize( size_t count );
+lua:
+    oVectorOfVectorOfVec2w:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec2w::resize( size_t                        count,
+                                    const std::vector<cv::Vec2w>& value );
+lua:
+    oVectorOfVectorOfVec2w:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfVec2w.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfVec2w::shrink_to_fit();
+lua:
+    oVectorOfVectorOfVec2w:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfVec2w.sizeof
+
+```cpp
+size_t VectorOfVectorOfVec2w::size();
+lua:
+    oVectorOfVectorOfVec2w:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfVec2w.sol::meta\_function::index
@@ -68576,6 +82289,14 @@ void VectorOfVectorOfVec2w::sol::meta_function::new_index( size_t               
                                                            std::vector<cv::Vec2w> value );
 lua:
     oVectorOfVectorOfVec2w:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec2w.swap
+
+```cpp
+void VectorOfVectorOfVec2w::swap( std::vector<std::vector<cv::Vec2w>>& other );
+lua:
+    oVectorOfVectorOfVec2w:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfVec2w.table
@@ -68611,12 +82332,123 @@ lua:
     VectorOfVectorOfVec3b( other ) -> <std::vector<std::vector<cv::Vec3b>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Vec3b>>( std::vector<cv::Vec3b>* data,
+                                     size_t                  count );
+lua:
+    VectorOfVectorOfVec3b.new( data, count ) -> <std::vector<std::vector<cv::Vec3b>> object>
+    VectorOfVectorOfVec3b( data, count ) -> <std::vector<std::vector<cv::Vec3b>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec3b>>( std::vector<cv::Vec3b>* first,
+                                     std::vector<cv::Vec3b>* last );
+lua:
+    VectorOfVectorOfVec3b.new( first, last ) -> <std::vector<std::vector<cv::Vec3b>> object>
+    VectorOfVectorOfVec3b( first, last ) -> <std::vector<std::vector<cv::Vec3b>> object>
+```
+
+### VectorOfVectorOfVec3b.back
+
+```cpp
+std::vector<cv::Vec3b> VectorOfVectorOfVec3b::back();
+lua:
+    oVectorOfVectorOfVec3b:back() -> retval
+```
+
+### VectorOfVectorOfVec3b.capacity
+
+```cpp
+size_t VectorOfVectorOfVec3b::capacity();
+lua:
+    oVectorOfVectorOfVec3b:capacity() -> retval
+```
+
+### VectorOfVectorOfVec3b.clear
+
+```cpp
+void VectorOfVectorOfVec3b::clear();
+lua:
+    oVectorOfVectorOfVec3b:clear() -> None
+```
+
 ### VectorOfVectorOfVec3b.data
 
 ```cpp
 void* VectorOfVectorOfVec3b::data();
 lua:
     oVectorOfVectorOfVec3b:data() -> retval
+```
+
+### VectorOfVectorOfVec3b.empty
+
+```cpp
+bool VectorOfVectorOfVec3b::empty() const;
+lua:
+    oVectorOfVectorOfVec3b:empty() -> retval
+```
+
+### VectorOfVectorOfVec3b.front
+
+```cpp
+std::vector<cv::Vec3b> VectorOfVectorOfVec3b::front();
+lua:
+    oVectorOfVectorOfVec3b:front() -> retval
+```
+
+### VectorOfVectorOfVec3b.max\_size
+
+```cpp
+size_t VectorOfVectorOfVec3b::max_size();
+lua:
+    oVectorOfVectorOfVec3b:max_size() -> retval
+```
+
+### VectorOfVectorOfVec3b.pop\_back
+
+```cpp
+void VectorOfVectorOfVec3b::pop_back();
+lua:
+    oVectorOfVectorOfVec3b:pop_back() -> None
+```
+
+### VectorOfVectorOfVec3b.reserve
+
+```cpp
+void VectorOfVectorOfVec3b::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfVec3b:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfVec3b.resize
+
+```cpp
+void VectorOfVectorOfVec3b::resize( size_t count );
+lua:
+    oVectorOfVectorOfVec3b:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec3b::resize( size_t                        count,
+                                    const std::vector<cv::Vec3b>& value );
+lua:
+    oVectorOfVectorOfVec3b:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfVec3b.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfVec3b::shrink_to_fit();
+lua:
+    oVectorOfVectorOfVec3b:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfVec3b.sizeof
+
+```cpp
+size_t VectorOfVectorOfVec3b::size();
+lua:
+    oVectorOfVectorOfVec3b:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfVec3b.sol::meta\_function::index
@@ -68642,6 +82474,14 @@ void VectorOfVectorOfVec3b::sol::meta_function::new_index( size_t               
                                                            std::vector<cv::Vec3b> value );
 lua:
     oVectorOfVectorOfVec3b:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec3b.swap
+
+```cpp
+void VectorOfVectorOfVec3b::swap( std::vector<std::vector<cv::Vec3b>>& other );
+lua:
+    oVectorOfVectorOfVec3b:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfVec3b.table
@@ -68677,12 +82517,123 @@ lua:
     VectorOfVectorOfVec3d( other ) -> <std::vector<std::vector<cv::Vec3d>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Vec3d>>( std::vector<cv::Vec3d>* data,
+                                     size_t                  count );
+lua:
+    VectorOfVectorOfVec3d.new( data, count ) -> <std::vector<std::vector<cv::Vec3d>> object>
+    VectorOfVectorOfVec3d( data, count ) -> <std::vector<std::vector<cv::Vec3d>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec3d>>( std::vector<cv::Vec3d>* first,
+                                     std::vector<cv::Vec3d>* last );
+lua:
+    VectorOfVectorOfVec3d.new( first, last ) -> <std::vector<std::vector<cv::Vec3d>> object>
+    VectorOfVectorOfVec3d( first, last ) -> <std::vector<std::vector<cv::Vec3d>> object>
+```
+
+### VectorOfVectorOfVec3d.back
+
+```cpp
+std::vector<cv::Vec3d> VectorOfVectorOfVec3d::back();
+lua:
+    oVectorOfVectorOfVec3d:back() -> retval
+```
+
+### VectorOfVectorOfVec3d.capacity
+
+```cpp
+size_t VectorOfVectorOfVec3d::capacity();
+lua:
+    oVectorOfVectorOfVec3d:capacity() -> retval
+```
+
+### VectorOfVectorOfVec3d.clear
+
+```cpp
+void VectorOfVectorOfVec3d::clear();
+lua:
+    oVectorOfVectorOfVec3d:clear() -> None
+```
+
 ### VectorOfVectorOfVec3d.data
 
 ```cpp
 void* VectorOfVectorOfVec3d::data();
 lua:
     oVectorOfVectorOfVec3d:data() -> retval
+```
+
+### VectorOfVectorOfVec3d.empty
+
+```cpp
+bool VectorOfVectorOfVec3d::empty() const;
+lua:
+    oVectorOfVectorOfVec3d:empty() -> retval
+```
+
+### VectorOfVectorOfVec3d.front
+
+```cpp
+std::vector<cv::Vec3d> VectorOfVectorOfVec3d::front();
+lua:
+    oVectorOfVectorOfVec3d:front() -> retval
+```
+
+### VectorOfVectorOfVec3d.max\_size
+
+```cpp
+size_t VectorOfVectorOfVec3d::max_size();
+lua:
+    oVectorOfVectorOfVec3d:max_size() -> retval
+```
+
+### VectorOfVectorOfVec3d.pop\_back
+
+```cpp
+void VectorOfVectorOfVec3d::pop_back();
+lua:
+    oVectorOfVectorOfVec3d:pop_back() -> None
+```
+
+### VectorOfVectorOfVec3d.reserve
+
+```cpp
+void VectorOfVectorOfVec3d::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfVec3d:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfVec3d.resize
+
+```cpp
+void VectorOfVectorOfVec3d::resize( size_t count );
+lua:
+    oVectorOfVectorOfVec3d:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec3d::resize( size_t                        count,
+                                    const std::vector<cv::Vec3d>& value );
+lua:
+    oVectorOfVectorOfVec3d:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfVec3d.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfVec3d::shrink_to_fit();
+lua:
+    oVectorOfVectorOfVec3d:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfVec3d.sizeof
+
+```cpp
+size_t VectorOfVectorOfVec3d::size();
+lua:
+    oVectorOfVectorOfVec3d:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfVec3d.sol::meta\_function::index
@@ -68708,6 +82659,14 @@ void VectorOfVectorOfVec3d::sol::meta_function::new_index( size_t               
                                                            std::vector<cv::Vec3d> value );
 lua:
     oVectorOfVectorOfVec3d:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec3d.swap
+
+```cpp
+void VectorOfVectorOfVec3d::swap( std::vector<std::vector<cv::Vec3d>>& other );
+lua:
+    oVectorOfVectorOfVec3d:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfVec3d.table
@@ -68743,12 +82702,123 @@ lua:
     VectorOfVectorOfVec3f( other ) -> <std::vector<std::vector<cv::Vec3f>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Vec3f>>( std::vector<cv::Vec3f>* data,
+                                     size_t                  count );
+lua:
+    VectorOfVectorOfVec3f.new( data, count ) -> <std::vector<std::vector<cv::Vec3f>> object>
+    VectorOfVectorOfVec3f( data, count ) -> <std::vector<std::vector<cv::Vec3f>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec3f>>( std::vector<cv::Vec3f>* first,
+                                     std::vector<cv::Vec3f>* last );
+lua:
+    VectorOfVectorOfVec3f.new( first, last ) -> <std::vector<std::vector<cv::Vec3f>> object>
+    VectorOfVectorOfVec3f( first, last ) -> <std::vector<std::vector<cv::Vec3f>> object>
+```
+
+### VectorOfVectorOfVec3f.back
+
+```cpp
+std::vector<cv::Vec3f> VectorOfVectorOfVec3f::back();
+lua:
+    oVectorOfVectorOfVec3f:back() -> retval
+```
+
+### VectorOfVectorOfVec3f.capacity
+
+```cpp
+size_t VectorOfVectorOfVec3f::capacity();
+lua:
+    oVectorOfVectorOfVec3f:capacity() -> retval
+```
+
+### VectorOfVectorOfVec3f.clear
+
+```cpp
+void VectorOfVectorOfVec3f::clear();
+lua:
+    oVectorOfVectorOfVec3f:clear() -> None
+```
+
 ### VectorOfVectorOfVec3f.data
 
 ```cpp
 void* VectorOfVectorOfVec3f::data();
 lua:
     oVectorOfVectorOfVec3f:data() -> retval
+```
+
+### VectorOfVectorOfVec3f.empty
+
+```cpp
+bool VectorOfVectorOfVec3f::empty() const;
+lua:
+    oVectorOfVectorOfVec3f:empty() -> retval
+```
+
+### VectorOfVectorOfVec3f.front
+
+```cpp
+std::vector<cv::Vec3f> VectorOfVectorOfVec3f::front();
+lua:
+    oVectorOfVectorOfVec3f:front() -> retval
+```
+
+### VectorOfVectorOfVec3f.max\_size
+
+```cpp
+size_t VectorOfVectorOfVec3f::max_size();
+lua:
+    oVectorOfVectorOfVec3f:max_size() -> retval
+```
+
+### VectorOfVectorOfVec3f.pop\_back
+
+```cpp
+void VectorOfVectorOfVec3f::pop_back();
+lua:
+    oVectorOfVectorOfVec3f:pop_back() -> None
+```
+
+### VectorOfVectorOfVec3f.reserve
+
+```cpp
+void VectorOfVectorOfVec3f::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfVec3f:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfVec3f.resize
+
+```cpp
+void VectorOfVectorOfVec3f::resize( size_t count );
+lua:
+    oVectorOfVectorOfVec3f:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec3f::resize( size_t                        count,
+                                    const std::vector<cv::Vec3f>& value );
+lua:
+    oVectorOfVectorOfVec3f:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfVec3f.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfVec3f::shrink_to_fit();
+lua:
+    oVectorOfVectorOfVec3f:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfVec3f.sizeof
+
+```cpp
+size_t VectorOfVectorOfVec3f::size();
+lua:
+    oVectorOfVectorOfVec3f:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfVec3f.sol::meta\_function::index
@@ -68774,6 +82844,14 @@ void VectorOfVectorOfVec3f::sol::meta_function::new_index( size_t               
                                                            std::vector<cv::Vec3f> value );
 lua:
     oVectorOfVectorOfVec3f:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec3f.swap
+
+```cpp
+void VectorOfVectorOfVec3f::swap( std::vector<std::vector<cv::Vec3f>>& other );
+lua:
+    oVectorOfVectorOfVec3f:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfVec3f.table
@@ -68809,12 +82887,123 @@ lua:
     VectorOfVectorOfVec3i( other ) -> <std::vector<std::vector<cv::Vec3i>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Vec3i>>( std::vector<cv::Vec3i>* data,
+                                     size_t                  count );
+lua:
+    VectorOfVectorOfVec3i.new( data, count ) -> <std::vector<std::vector<cv::Vec3i>> object>
+    VectorOfVectorOfVec3i( data, count ) -> <std::vector<std::vector<cv::Vec3i>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec3i>>( std::vector<cv::Vec3i>* first,
+                                     std::vector<cv::Vec3i>* last );
+lua:
+    VectorOfVectorOfVec3i.new( first, last ) -> <std::vector<std::vector<cv::Vec3i>> object>
+    VectorOfVectorOfVec3i( first, last ) -> <std::vector<std::vector<cv::Vec3i>> object>
+```
+
+### VectorOfVectorOfVec3i.back
+
+```cpp
+std::vector<cv::Vec3i> VectorOfVectorOfVec3i::back();
+lua:
+    oVectorOfVectorOfVec3i:back() -> retval
+```
+
+### VectorOfVectorOfVec3i.capacity
+
+```cpp
+size_t VectorOfVectorOfVec3i::capacity();
+lua:
+    oVectorOfVectorOfVec3i:capacity() -> retval
+```
+
+### VectorOfVectorOfVec3i.clear
+
+```cpp
+void VectorOfVectorOfVec3i::clear();
+lua:
+    oVectorOfVectorOfVec3i:clear() -> None
+```
+
 ### VectorOfVectorOfVec3i.data
 
 ```cpp
 void* VectorOfVectorOfVec3i::data();
 lua:
     oVectorOfVectorOfVec3i:data() -> retval
+```
+
+### VectorOfVectorOfVec3i.empty
+
+```cpp
+bool VectorOfVectorOfVec3i::empty() const;
+lua:
+    oVectorOfVectorOfVec3i:empty() -> retval
+```
+
+### VectorOfVectorOfVec3i.front
+
+```cpp
+std::vector<cv::Vec3i> VectorOfVectorOfVec3i::front();
+lua:
+    oVectorOfVectorOfVec3i:front() -> retval
+```
+
+### VectorOfVectorOfVec3i.max\_size
+
+```cpp
+size_t VectorOfVectorOfVec3i::max_size();
+lua:
+    oVectorOfVectorOfVec3i:max_size() -> retval
+```
+
+### VectorOfVectorOfVec3i.pop\_back
+
+```cpp
+void VectorOfVectorOfVec3i::pop_back();
+lua:
+    oVectorOfVectorOfVec3i:pop_back() -> None
+```
+
+### VectorOfVectorOfVec3i.reserve
+
+```cpp
+void VectorOfVectorOfVec3i::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfVec3i:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfVec3i.resize
+
+```cpp
+void VectorOfVectorOfVec3i::resize( size_t count );
+lua:
+    oVectorOfVectorOfVec3i:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec3i::resize( size_t                        count,
+                                    const std::vector<cv::Vec3i>& value );
+lua:
+    oVectorOfVectorOfVec3i:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfVec3i.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfVec3i::shrink_to_fit();
+lua:
+    oVectorOfVectorOfVec3i:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfVec3i.sizeof
+
+```cpp
+size_t VectorOfVectorOfVec3i::size();
+lua:
+    oVectorOfVectorOfVec3i:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfVec3i.sol::meta\_function::index
@@ -68840,6 +83029,14 @@ void VectorOfVectorOfVec3i::sol::meta_function::new_index( size_t               
                                                            std::vector<cv::Vec3i> value );
 lua:
     oVectorOfVectorOfVec3i:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec3i.swap
+
+```cpp
+void VectorOfVectorOfVec3i::swap( std::vector<std::vector<cv::Vec3i>>& other );
+lua:
+    oVectorOfVectorOfVec3i:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfVec3i.table
@@ -68875,12 +83072,123 @@ lua:
     VectorOfVectorOfVec3s( other ) -> <std::vector<std::vector<cv::Vec3s>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Vec3s>>( std::vector<cv::Vec3s>* data,
+                                     size_t                  count );
+lua:
+    VectorOfVectorOfVec3s.new( data, count ) -> <std::vector<std::vector<cv::Vec3s>> object>
+    VectorOfVectorOfVec3s( data, count ) -> <std::vector<std::vector<cv::Vec3s>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec3s>>( std::vector<cv::Vec3s>* first,
+                                     std::vector<cv::Vec3s>* last );
+lua:
+    VectorOfVectorOfVec3s.new( first, last ) -> <std::vector<std::vector<cv::Vec3s>> object>
+    VectorOfVectorOfVec3s( first, last ) -> <std::vector<std::vector<cv::Vec3s>> object>
+```
+
+### VectorOfVectorOfVec3s.back
+
+```cpp
+std::vector<cv::Vec3s> VectorOfVectorOfVec3s::back();
+lua:
+    oVectorOfVectorOfVec3s:back() -> retval
+```
+
+### VectorOfVectorOfVec3s.capacity
+
+```cpp
+size_t VectorOfVectorOfVec3s::capacity();
+lua:
+    oVectorOfVectorOfVec3s:capacity() -> retval
+```
+
+### VectorOfVectorOfVec3s.clear
+
+```cpp
+void VectorOfVectorOfVec3s::clear();
+lua:
+    oVectorOfVectorOfVec3s:clear() -> None
+```
+
 ### VectorOfVectorOfVec3s.data
 
 ```cpp
 void* VectorOfVectorOfVec3s::data();
 lua:
     oVectorOfVectorOfVec3s:data() -> retval
+```
+
+### VectorOfVectorOfVec3s.empty
+
+```cpp
+bool VectorOfVectorOfVec3s::empty() const;
+lua:
+    oVectorOfVectorOfVec3s:empty() -> retval
+```
+
+### VectorOfVectorOfVec3s.front
+
+```cpp
+std::vector<cv::Vec3s> VectorOfVectorOfVec3s::front();
+lua:
+    oVectorOfVectorOfVec3s:front() -> retval
+```
+
+### VectorOfVectorOfVec3s.max\_size
+
+```cpp
+size_t VectorOfVectorOfVec3s::max_size();
+lua:
+    oVectorOfVectorOfVec3s:max_size() -> retval
+```
+
+### VectorOfVectorOfVec3s.pop\_back
+
+```cpp
+void VectorOfVectorOfVec3s::pop_back();
+lua:
+    oVectorOfVectorOfVec3s:pop_back() -> None
+```
+
+### VectorOfVectorOfVec3s.reserve
+
+```cpp
+void VectorOfVectorOfVec3s::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfVec3s:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfVec3s.resize
+
+```cpp
+void VectorOfVectorOfVec3s::resize( size_t count );
+lua:
+    oVectorOfVectorOfVec3s:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec3s::resize( size_t                        count,
+                                    const std::vector<cv::Vec3s>& value );
+lua:
+    oVectorOfVectorOfVec3s:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfVec3s.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfVec3s::shrink_to_fit();
+lua:
+    oVectorOfVectorOfVec3s:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfVec3s.sizeof
+
+```cpp
+size_t VectorOfVectorOfVec3s::size();
+lua:
+    oVectorOfVectorOfVec3s:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfVec3s.sol::meta\_function::index
@@ -68906,6 +83214,14 @@ void VectorOfVectorOfVec3s::sol::meta_function::new_index( size_t               
                                                            std::vector<cv::Vec3s> value );
 lua:
     oVectorOfVectorOfVec3s:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec3s.swap
+
+```cpp
+void VectorOfVectorOfVec3s::swap( std::vector<std::vector<cv::Vec3s>>& other );
+lua:
+    oVectorOfVectorOfVec3s:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfVec3s.table
@@ -68941,12 +83257,123 @@ lua:
     VectorOfVectorOfVec3w( other ) -> <std::vector<std::vector<cv::Vec3w>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Vec3w>>( std::vector<cv::Vec3w>* data,
+                                     size_t                  count );
+lua:
+    VectorOfVectorOfVec3w.new( data, count ) -> <std::vector<std::vector<cv::Vec3w>> object>
+    VectorOfVectorOfVec3w( data, count ) -> <std::vector<std::vector<cv::Vec3w>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec3w>>( std::vector<cv::Vec3w>* first,
+                                     std::vector<cv::Vec3w>* last );
+lua:
+    VectorOfVectorOfVec3w.new( first, last ) -> <std::vector<std::vector<cv::Vec3w>> object>
+    VectorOfVectorOfVec3w( first, last ) -> <std::vector<std::vector<cv::Vec3w>> object>
+```
+
+### VectorOfVectorOfVec3w.back
+
+```cpp
+std::vector<cv::Vec3w> VectorOfVectorOfVec3w::back();
+lua:
+    oVectorOfVectorOfVec3w:back() -> retval
+```
+
+### VectorOfVectorOfVec3w.capacity
+
+```cpp
+size_t VectorOfVectorOfVec3w::capacity();
+lua:
+    oVectorOfVectorOfVec3w:capacity() -> retval
+```
+
+### VectorOfVectorOfVec3w.clear
+
+```cpp
+void VectorOfVectorOfVec3w::clear();
+lua:
+    oVectorOfVectorOfVec3w:clear() -> None
+```
+
 ### VectorOfVectorOfVec3w.data
 
 ```cpp
 void* VectorOfVectorOfVec3w::data();
 lua:
     oVectorOfVectorOfVec3w:data() -> retval
+```
+
+### VectorOfVectorOfVec3w.empty
+
+```cpp
+bool VectorOfVectorOfVec3w::empty() const;
+lua:
+    oVectorOfVectorOfVec3w:empty() -> retval
+```
+
+### VectorOfVectorOfVec3w.front
+
+```cpp
+std::vector<cv::Vec3w> VectorOfVectorOfVec3w::front();
+lua:
+    oVectorOfVectorOfVec3w:front() -> retval
+```
+
+### VectorOfVectorOfVec3w.max\_size
+
+```cpp
+size_t VectorOfVectorOfVec3w::max_size();
+lua:
+    oVectorOfVectorOfVec3w:max_size() -> retval
+```
+
+### VectorOfVectorOfVec3w.pop\_back
+
+```cpp
+void VectorOfVectorOfVec3w::pop_back();
+lua:
+    oVectorOfVectorOfVec3w:pop_back() -> None
+```
+
+### VectorOfVectorOfVec3w.reserve
+
+```cpp
+void VectorOfVectorOfVec3w::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfVec3w:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfVec3w.resize
+
+```cpp
+void VectorOfVectorOfVec3w::resize( size_t count );
+lua:
+    oVectorOfVectorOfVec3w:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec3w::resize( size_t                        count,
+                                    const std::vector<cv::Vec3w>& value );
+lua:
+    oVectorOfVectorOfVec3w:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfVec3w.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfVec3w::shrink_to_fit();
+lua:
+    oVectorOfVectorOfVec3w:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfVec3w.sizeof
+
+```cpp
+size_t VectorOfVectorOfVec3w::size();
+lua:
+    oVectorOfVectorOfVec3w:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfVec3w.sol::meta\_function::index
@@ -68972,6 +83399,14 @@ void VectorOfVectorOfVec3w::sol::meta_function::new_index( size_t               
                                                            std::vector<cv::Vec3w> value );
 lua:
     oVectorOfVectorOfVec3w:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec3w.swap
+
+```cpp
+void VectorOfVectorOfVec3w::swap( std::vector<std::vector<cv::Vec3w>>& other );
+lua:
+    oVectorOfVectorOfVec3w:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfVec3w.table
@@ -69007,12 +83442,123 @@ lua:
     VectorOfVectorOfVec4b( other ) -> <std::vector<std::vector<cv::Vec4b>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Vec4b>>( std::vector<cv::Vec4b>* data,
+                                     size_t                  count );
+lua:
+    VectorOfVectorOfVec4b.new( data, count ) -> <std::vector<std::vector<cv::Vec4b>> object>
+    VectorOfVectorOfVec4b( data, count ) -> <std::vector<std::vector<cv::Vec4b>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec4b>>( std::vector<cv::Vec4b>* first,
+                                     std::vector<cv::Vec4b>* last );
+lua:
+    VectorOfVectorOfVec4b.new( first, last ) -> <std::vector<std::vector<cv::Vec4b>> object>
+    VectorOfVectorOfVec4b( first, last ) -> <std::vector<std::vector<cv::Vec4b>> object>
+```
+
+### VectorOfVectorOfVec4b.back
+
+```cpp
+std::vector<cv::Vec4b> VectorOfVectorOfVec4b::back();
+lua:
+    oVectorOfVectorOfVec4b:back() -> retval
+```
+
+### VectorOfVectorOfVec4b.capacity
+
+```cpp
+size_t VectorOfVectorOfVec4b::capacity();
+lua:
+    oVectorOfVectorOfVec4b:capacity() -> retval
+```
+
+### VectorOfVectorOfVec4b.clear
+
+```cpp
+void VectorOfVectorOfVec4b::clear();
+lua:
+    oVectorOfVectorOfVec4b:clear() -> None
+```
+
 ### VectorOfVectorOfVec4b.data
 
 ```cpp
 void* VectorOfVectorOfVec4b::data();
 lua:
     oVectorOfVectorOfVec4b:data() -> retval
+```
+
+### VectorOfVectorOfVec4b.empty
+
+```cpp
+bool VectorOfVectorOfVec4b::empty() const;
+lua:
+    oVectorOfVectorOfVec4b:empty() -> retval
+```
+
+### VectorOfVectorOfVec4b.front
+
+```cpp
+std::vector<cv::Vec4b> VectorOfVectorOfVec4b::front();
+lua:
+    oVectorOfVectorOfVec4b:front() -> retval
+```
+
+### VectorOfVectorOfVec4b.max\_size
+
+```cpp
+size_t VectorOfVectorOfVec4b::max_size();
+lua:
+    oVectorOfVectorOfVec4b:max_size() -> retval
+```
+
+### VectorOfVectorOfVec4b.pop\_back
+
+```cpp
+void VectorOfVectorOfVec4b::pop_back();
+lua:
+    oVectorOfVectorOfVec4b:pop_back() -> None
+```
+
+### VectorOfVectorOfVec4b.reserve
+
+```cpp
+void VectorOfVectorOfVec4b::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfVec4b:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfVec4b.resize
+
+```cpp
+void VectorOfVectorOfVec4b::resize( size_t count );
+lua:
+    oVectorOfVectorOfVec4b:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec4b::resize( size_t                        count,
+                                    const std::vector<cv::Vec4b>& value );
+lua:
+    oVectorOfVectorOfVec4b:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfVec4b.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfVec4b::shrink_to_fit();
+lua:
+    oVectorOfVectorOfVec4b:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfVec4b.sizeof
+
+```cpp
+size_t VectorOfVectorOfVec4b::size();
+lua:
+    oVectorOfVectorOfVec4b:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfVec4b.sol::meta\_function::index
@@ -69038,6 +83584,14 @@ void VectorOfVectorOfVec4b::sol::meta_function::new_index( size_t               
                                                            std::vector<cv::Vec4b> value );
 lua:
     oVectorOfVectorOfVec4b:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec4b.swap
+
+```cpp
+void VectorOfVectorOfVec4b::swap( std::vector<std::vector<cv::Vec4b>>& other );
+lua:
+    oVectorOfVectorOfVec4b:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfVec4b.table
@@ -69073,12 +83627,123 @@ lua:
     VectorOfVectorOfVec4d( other ) -> <std::vector<std::vector<cv::Vec4d>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Vec4d>>( std::vector<cv::Vec4d>* data,
+                                     size_t                  count );
+lua:
+    VectorOfVectorOfVec4d.new( data, count ) -> <std::vector<std::vector<cv::Vec4d>> object>
+    VectorOfVectorOfVec4d( data, count ) -> <std::vector<std::vector<cv::Vec4d>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec4d>>( std::vector<cv::Vec4d>* first,
+                                     std::vector<cv::Vec4d>* last );
+lua:
+    VectorOfVectorOfVec4d.new( first, last ) -> <std::vector<std::vector<cv::Vec4d>> object>
+    VectorOfVectorOfVec4d( first, last ) -> <std::vector<std::vector<cv::Vec4d>> object>
+```
+
+### VectorOfVectorOfVec4d.back
+
+```cpp
+std::vector<cv::Vec4d> VectorOfVectorOfVec4d::back();
+lua:
+    oVectorOfVectorOfVec4d:back() -> retval
+```
+
+### VectorOfVectorOfVec4d.capacity
+
+```cpp
+size_t VectorOfVectorOfVec4d::capacity();
+lua:
+    oVectorOfVectorOfVec4d:capacity() -> retval
+```
+
+### VectorOfVectorOfVec4d.clear
+
+```cpp
+void VectorOfVectorOfVec4d::clear();
+lua:
+    oVectorOfVectorOfVec4d:clear() -> None
+```
+
 ### VectorOfVectorOfVec4d.data
 
 ```cpp
 void* VectorOfVectorOfVec4d::data();
 lua:
     oVectorOfVectorOfVec4d:data() -> retval
+```
+
+### VectorOfVectorOfVec4d.empty
+
+```cpp
+bool VectorOfVectorOfVec4d::empty() const;
+lua:
+    oVectorOfVectorOfVec4d:empty() -> retval
+```
+
+### VectorOfVectorOfVec4d.front
+
+```cpp
+std::vector<cv::Vec4d> VectorOfVectorOfVec4d::front();
+lua:
+    oVectorOfVectorOfVec4d:front() -> retval
+```
+
+### VectorOfVectorOfVec4d.max\_size
+
+```cpp
+size_t VectorOfVectorOfVec4d::max_size();
+lua:
+    oVectorOfVectorOfVec4d:max_size() -> retval
+```
+
+### VectorOfVectorOfVec4d.pop\_back
+
+```cpp
+void VectorOfVectorOfVec4d::pop_back();
+lua:
+    oVectorOfVectorOfVec4d:pop_back() -> None
+```
+
+### VectorOfVectorOfVec4d.reserve
+
+```cpp
+void VectorOfVectorOfVec4d::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfVec4d:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfVec4d.resize
+
+```cpp
+void VectorOfVectorOfVec4d::resize( size_t count );
+lua:
+    oVectorOfVectorOfVec4d:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec4d::resize( size_t                        count,
+                                    const std::vector<cv::Vec4d>& value );
+lua:
+    oVectorOfVectorOfVec4d:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfVec4d.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfVec4d::shrink_to_fit();
+lua:
+    oVectorOfVectorOfVec4d:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfVec4d.sizeof
+
+```cpp
+size_t VectorOfVectorOfVec4d::size();
+lua:
+    oVectorOfVectorOfVec4d:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfVec4d.sol::meta\_function::index
@@ -69104,6 +83769,14 @@ void VectorOfVectorOfVec4d::sol::meta_function::new_index( size_t               
                                                            std::vector<cv::Vec4d> value );
 lua:
     oVectorOfVectorOfVec4d:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec4d.swap
+
+```cpp
+void VectorOfVectorOfVec4d::swap( std::vector<std::vector<cv::Vec4d>>& other );
+lua:
+    oVectorOfVectorOfVec4d:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfVec4d.table
@@ -69139,12 +83812,123 @@ lua:
     VectorOfVectorOfVec4f( other ) -> <std::vector<std::vector<cv::Vec4f>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Vec4f>>( std::vector<cv::Vec4f>* data,
+                                     size_t                  count );
+lua:
+    VectorOfVectorOfVec4f.new( data, count ) -> <std::vector<std::vector<cv::Vec4f>> object>
+    VectorOfVectorOfVec4f( data, count ) -> <std::vector<std::vector<cv::Vec4f>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec4f>>( std::vector<cv::Vec4f>* first,
+                                     std::vector<cv::Vec4f>* last );
+lua:
+    VectorOfVectorOfVec4f.new( first, last ) -> <std::vector<std::vector<cv::Vec4f>> object>
+    VectorOfVectorOfVec4f( first, last ) -> <std::vector<std::vector<cv::Vec4f>> object>
+```
+
+### VectorOfVectorOfVec4f.back
+
+```cpp
+std::vector<cv::Vec4f> VectorOfVectorOfVec4f::back();
+lua:
+    oVectorOfVectorOfVec4f:back() -> retval
+```
+
+### VectorOfVectorOfVec4f.capacity
+
+```cpp
+size_t VectorOfVectorOfVec4f::capacity();
+lua:
+    oVectorOfVectorOfVec4f:capacity() -> retval
+```
+
+### VectorOfVectorOfVec4f.clear
+
+```cpp
+void VectorOfVectorOfVec4f::clear();
+lua:
+    oVectorOfVectorOfVec4f:clear() -> None
+```
+
 ### VectorOfVectorOfVec4f.data
 
 ```cpp
 void* VectorOfVectorOfVec4f::data();
 lua:
     oVectorOfVectorOfVec4f:data() -> retval
+```
+
+### VectorOfVectorOfVec4f.empty
+
+```cpp
+bool VectorOfVectorOfVec4f::empty() const;
+lua:
+    oVectorOfVectorOfVec4f:empty() -> retval
+```
+
+### VectorOfVectorOfVec4f.front
+
+```cpp
+std::vector<cv::Vec4f> VectorOfVectorOfVec4f::front();
+lua:
+    oVectorOfVectorOfVec4f:front() -> retval
+```
+
+### VectorOfVectorOfVec4f.max\_size
+
+```cpp
+size_t VectorOfVectorOfVec4f::max_size();
+lua:
+    oVectorOfVectorOfVec4f:max_size() -> retval
+```
+
+### VectorOfVectorOfVec4f.pop\_back
+
+```cpp
+void VectorOfVectorOfVec4f::pop_back();
+lua:
+    oVectorOfVectorOfVec4f:pop_back() -> None
+```
+
+### VectorOfVectorOfVec4f.reserve
+
+```cpp
+void VectorOfVectorOfVec4f::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfVec4f:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfVec4f.resize
+
+```cpp
+void VectorOfVectorOfVec4f::resize( size_t count );
+lua:
+    oVectorOfVectorOfVec4f:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec4f::resize( size_t                        count,
+                                    const std::vector<cv::Vec4f>& value );
+lua:
+    oVectorOfVectorOfVec4f:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfVec4f.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfVec4f::shrink_to_fit();
+lua:
+    oVectorOfVectorOfVec4f:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfVec4f.sizeof
+
+```cpp
+size_t VectorOfVectorOfVec4f::size();
+lua:
+    oVectorOfVectorOfVec4f:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfVec4f.sol::meta\_function::index
@@ -69170,6 +83954,14 @@ void VectorOfVectorOfVec4f::sol::meta_function::new_index( size_t               
                                                            std::vector<cv::Vec4f> value );
 lua:
     oVectorOfVectorOfVec4f:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec4f.swap
+
+```cpp
+void VectorOfVectorOfVec4f::swap( std::vector<std::vector<cv::Vec4f>>& other );
+lua:
+    oVectorOfVectorOfVec4f:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfVec4f.table
@@ -69205,12 +83997,123 @@ lua:
     VectorOfVectorOfVec4i( other ) -> <std::vector<std::vector<cv::Vec4i>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Vec4i>>( std::vector<cv::Vec4i>* data,
+                                     size_t                  count );
+lua:
+    VectorOfVectorOfVec4i.new( data, count ) -> <std::vector<std::vector<cv::Vec4i>> object>
+    VectorOfVectorOfVec4i( data, count ) -> <std::vector<std::vector<cv::Vec4i>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec4i>>( std::vector<cv::Vec4i>* first,
+                                     std::vector<cv::Vec4i>* last );
+lua:
+    VectorOfVectorOfVec4i.new( first, last ) -> <std::vector<std::vector<cv::Vec4i>> object>
+    VectorOfVectorOfVec4i( first, last ) -> <std::vector<std::vector<cv::Vec4i>> object>
+```
+
+### VectorOfVectorOfVec4i.back
+
+```cpp
+std::vector<cv::Vec4i> VectorOfVectorOfVec4i::back();
+lua:
+    oVectorOfVectorOfVec4i:back() -> retval
+```
+
+### VectorOfVectorOfVec4i.capacity
+
+```cpp
+size_t VectorOfVectorOfVec4i::capacity();
+lua:
+    oVectorOfVectorOfVec4i:capacity() -> retval
+```
+
+### VectorOfVectorOfVec4i.clear
+
+```cpp
+void VectorOfVectorOfVec4i::clear();
+lua:
+    oVectorOfVectorOfVec4i:clear() -> None
+```
+
 ### VectorOfVectorOfVec4i.data
 
 ```cpp
 void* VectorOfVectorOfVec4i::data();
 lua:
     oVectorOfVectorOfVec4i:data() -> retval
+```
+
+### VectorOfVectorOfVec4i.empty
+
+```cpp
+bool VectorOfVectorOfVec4i::empty() const;
+lua:
+    oVectorOfVectorOfVec4i:empty() -> retval
+```
+
+### VectorOfVectorOfVec4i.front
+
+```cpp
+std::vector<cv::Vec4i> VectorOfVectorOfVec4i::front();
+lua:
+    oVectorOfVectorOfVec4i:front() -> retval
+```
+
+### VectorOfVectorOfVec4i.max\_size
+
+```cpp
+size_t VectorOfVectorOfVec4i::max_size();
+lua:
+    oVectorOfVectorOfVec4i:max_size() -> retval
+```
+
+### VectorOfVectorOfVec4i.pop\_back
+
+```cpp
+void VectorOfVectorOfVec4i::pop_back();
+lua:
+    oVectorOfVectorOfVec4i:pop_back() -> None
+```
+
+### VectorOfVectorOfVec4i.reserve
+
+```cpp
+void VectorOfVectorOfVec4i::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfVec4i:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfVec4i.resize
+
+```cpp
+void VectorOfVectorOfVec4i::resize( size_t count );
+lua:
+    oVectorOfVectorOfVec4i:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec4i::resize( size_t                        count,
+                                    const std::vector<cv::Vec4i>& value );
+lua:
+    oVectorOfVectorOfVec4i:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfVec4i.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfVec4i::shrink_to_fit();
+lua:
+    oVectorOfVectorOfVec4i:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfVec4i.sizeof
+
+```cpp
+size_t VectorOfVectorOfVec4i::size();
+lua:
+    oVectorOfVectorOfVec4i:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfVec4i.sol::meta\_function::index
@@ -69236,6 +84139,14 @@ void VectorOfVectorOfVec4i::sol::meta_function::new_index( size_t               
                                                            std::vector<cv::Vec4i> value );
 lua:
     oVectorOfVectorOfVec4i:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec4i.swap
+
+```cpp
+void VectorOfVectorOfVec4i::swap( std::vector<std::vector<cv::Vec4i>>& other );
+lua:
+    oVectorOfVectorOfVec4i:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfVec4i.table
@@ -69271,12 +84182,123 @@ lua:
     VectorOfVectorOfVec4s( other ) -> <std::vector<std::vector<cv::Vec4s>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Vec4s>>( std::vector<cv::Vec4s>* data,
+                                     size_t                  count );
+lua:
+    VectorOfVectorOfVec4s.new( data, count ) -> <std::vector<std::vector<cv::Vec4s>> object>
+    VectorOfVectorOfVec4s( data, count ) -> <std::vector<std::vector<cv::Vec4s>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec4s>>( std::vector<cv::Vec4s>* first,
+                                     std::vector<cv::Vec4s>* last );
+lua:
+    VectorOfVectorOfVec4s.new( first, last ) -> <std::vector<std::vector<cv::Vec4s>> object>
+    VectorOfVectorOfVec4s( first, last ) -> <std::vector<std::vector<cv::Vec4s>> object>
+```
+
+### VectorOfVectorOfVec4s.back
+
+```cpp
+std::vector<cv::Vec4s> VectorOfVectorOfVec4s::back();
+lua:
+    oVectorOfVectorOfVec4s:back() -> retval
+```
+
+### VectorOfVectorOfVec4s.capacity
+
+```cpp
+size_t VectorOfVectorOfVec4s::capacity();
+lua:
+    oVectorOfVectorOfVec4s:capacity() -> retval
+```
+
+### VectorOfVectorOfVec4s.clear
+
+```cpp
+void VectorOfVectorOfVec4s::clear();
+lua:
+    oVectorOfVectorOfVec4s:clear() -> None
+```
+
 ### VectorOfVectorOfVec4s.data
 
 ```cpp
 void* VectorOfVectorOfVec4s::data();
 lua:
     oVectorOfVectorOfVec4s:data() -> retval
+```
+
+### VectorOfVectorOfVec4s.empty
+
+```cpp
+bool VectorOfVectorOfVec4s::empty() const;
+lua:
+    oVectorOfVectorOfVec4s:empty() -> retval
+```
+
+### VectorOfVectorOfVec4s.front
+
+```cpp
+std::vector<cv::Vec4s> VectorOfVectorOfVec4s::front();
+lua:
+    oVectorOfVectorOfVec4s:front() -> retval
+```
+
+### VectorOfVectorOfVec4s.max\_size
+
+```cpp
+size_t VectorOfVectorOfVec4s::max_size();
+lua:
+    oVectorOfVectorOfVec4s:max_size() -> retval
+```
+
+### VectorOfVectorOfVec4s.pop\_back
+
+```cpp
+void VectorOfVectorOfVec4s::pop_back();
+lua:
+    oVectorOfVectorOfVec4s:pop_back() -> None
+```
+
+### VectorOfVectorOfVec4s.reserve
+
+```cpp
+void VectorOfVectorOfVec4s::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfVec4s:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfVec4s.resize
+
+```cpp
+void VectorOfVectorOfVec4s::resize( size_t count );
+lua:
+    oVectorOfVectorOfVec4s:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec4s::resize( size_t                        count,
+                                    const std::vector<cv::Vec4s>& value );
+lua:
+    oVectorOfVectorOfVec4s:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfVec4s.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfVec4s::shrink_to_fit();
+lua:
+    oVectorOfVectorOfVec4s:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfVec4s.sizeof
+
+```cpp
+size_t VectorOfVectorOfVec4s::size();
+lua:
+    oVectorOfVectorOfVec4s:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfVec4s.sol::meta\_function::index
@@ -69302,6 +84324,14 @@ void VectorOfVectorOfVec4s::sol::meta_function::new_index( size_t               
                                                            std::vector<cv::Vec4s> value );
 lua:
     oVectorOfVectorOfVec4s:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec4s.swap
+
+```cpp
+void VectorOfVectorOfVec4s::swap( std::vector<std::vector<cv::Vec4s>>& other );
+lua:
+    oVectorOfVectorOfVec4s:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfVec4s.table
@@ -69337,12 +84367,123 @@ lua:
     VectorOfVectorOfVec4w( other ) -> <std::vector<std::vector<cv::Vec4w>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Vec4w>>( std::vector<cv::Vec4w>* data,
+                                     size_t                  count );
+lua:
+    VectorOfVectorOfVec4w.new( data, count ) -> <std::vector<std::vector<cv::Vec4w>> object>
+    VectorOfVectorOfVec4w( data, count ) -> <std::vector<std::vector<cv::Vec4w>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec4w>>( std::vector<cv::Vec4w>* first,
+                                     std::vector<cv::Vec4w>* last );
+lua:
+    VectorOfVectorOfVec4w.new( first, last ) -> <std::vector<std::vector<cv::Vec4w>> object>
+    VectorOfVectorOfVec4w( first, last ) -> <std::vector<std::vector<cv::Vec4w>> object>
+```
+
+### VectorOfVectorOfVec4w.back
+
+```cpp
+std::vector<cv::Vec4w> VectorOfVectorOfVec4w::back();
+lua:
+    oVectorOfVectorOfVec4w:back() -> retval
+```
+
+### VectorOfVectorOfVec4w.capacity
+
+```cpp
+size_t VectorOfVectorOfVec4w::capacity();
+lua:
+    oVectorOfVectorOfVec4w:capacity() -> retval
+```
+
+### VectorOfVectorOfVec4w.clear
+
+```cpp
+void VectorOfVectorOfVec4w::clear();
+lua:
+    oVectorOfVectorOfVec4w:clear() -> None
+```
+
 ### VectorOfVectorOfVec4w.data
 
 ```cpp
 void* VectorOfVectorOfVec4w::data();
 lua:
     oVectorOfVectorOfVec4w:data() -> retval
+```
+
+### VectorOfVectorOfVec4w.empty
+
+```cpp
+bool VectorOfVectorOfVec4w::empty() const;
+lua:
+    oVectorOfVectorOfVec4w:empty() -> retval
+```
+
+### VectorOfVectorOfVec4w.front
+
+```cpp
+std::vector<cv::Vec4w> VectorOfVectorOfVec4w::front();
+lua:
+    oVectorOfVectorOfVec4w:front() -> retval
+```
+
+### VectorOfVectorOfVec4w.max\_size
+
+```cpp
+size_t VectorOfVectorOfVec4w::max_size();
+lua:
+    oVectorOfVectorOfVec4w:max_size() -> retval
+```
+
+### VectorOfVectorOfVec4w.pop\_back
+
+```cpp
+void VectorOfVectorOfVec4w::pop_back();
+lua:
+    oVectorOfVectorOfVec4w:pop_back() -> None
+```
+
+### VectorOfVectorOfVec4w.reserve
+
+```cpp
+void VectorOfVectorOfVec4w::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfVec4w:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfVec4w.resize
+
+```cpp
+void VectorOfVectorOfVec4w::resize( size_t count );
+lua:
+    oVectorOfVectorOfVec4w:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec4w::resize( size_t                        count,
+                                    const std::vector<cv::Vec4w>& value );
+lua:
+    oVectorOfVectorOfVec4w:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfVec4w.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfVec4w::shrink_to_fit();
+lua:
+    oVectorOfVectorOfVec4w:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfVec4w.sizeof
+
+```cpp
+size_t VectorOfVectorOfVec4w::size();
+lua:
+    oVectorOfVectorOfVec4w:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfVec4w.sol::meta\_function::index
@@ -69368,6 +84509,14 @@ void VectorOfVectorOfVec4w::sol::meta_function::new_index( size_t               
                                                            std::vector<cv::Vec4w> value );
 lua:
     oVectorOfVectorOfVec4w:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec4w.swap
+
+```cpp
+void VectorOfVectorOfVec4w::swap( std::vector<std::vector<cv::Vec4w>>& other );
+lua:
+    oVectorOfVectorOfVec4w:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfVec4w.table
@@ -69403,12 +84552,123 @@ lua:
     VectorOfVectorOfVec6d( other ) -> <std::vector<std::vector<cv::Vec6d>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Vec6d>>( std::vector<cv::Vec6d>* data,
+                                     size_t                  count );
+lua:
+    VectorOfVectorOfVec6d.new( data, count ) -> <std::vector<std::vector<cv::Vec6d>> object>
+    VectorOfVectorOfVec6d( data, count ) -> <std::vector<std::vector<cv::Vec6d>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec6d>>( std::vector<cv::Vec6d>* first,
+                                     std::vector<cv::Vec6d>* last );
+lua:
+    VectorOfVectorOfVec6d.new( first, last ) -> <std::vector<std::vector<cv::Vec6d>> object>
+    VectorOfVectorOfVec6d( first, last ) -> <std::vector<std::vector<cv::Vec6d>> object>
+```
+
+### VectorOfVectorOfVec6d.back
+
+```cpp
+std::vector<cv::Vec6d> VectorOfVectorOfVec6d::back();
+lua:
+    oVectorOfVectorOfVec6d:back() -> retval
+```
+
+### VectorOfVectorOfVec6d.capacity
+
+```cpp
+size_t VectorOfVectorOfVec6d::capacity();
+lua:
+    oVectorOfVectorOfVec6d:capacity() -> retval
+```
+
+### VectorOfVectorOfVec6d.clear
+
+```cpp
+void VectorOfVectorOfVec6d::clear();
+lua:
+    oVectorOfVectorOfVec6d:clear() -> None
+```
+
 ### VectorOfVectorOfVec6d.data
 
 ```cpp
 void* VectorOfVectorOfVec6d::data();
 lua:
     oVectorOfVectorOfVec6d:data() -> retval
+```
+
+### VectorOfVectorOfVec6d.empty
+
+```cpp
+bool VectorOfVectorOfVec6d::empty() const;
+lua:
+    oVectorOfVectorOfVec6d:empty() -> retval
+```
+
+### VectorOfVectorOfVec6d.front
+
+```cpp
+std::vector<cv::Vec6d> VectorOfVectorOfVec6d::front();
+lua:
+    oVectorOfVectorOfVec6d:front() -> retval
+```
+
+### VectorOfVectorOfVec6d.max\_size
+
+```cpp
+size_t VectorOfVectorOfVec6d::max_size();
+lua:
+    oVectorOfVectorOfVec6d:max_size() -> retval
+```
+
+### VectorOfVectorOfVec6d.pop\_back
+
+```cpp
+void VectorOfVectorOfVec6d::pop_back();
+lua:
+    oVectorOfVectorOfVec6d:pop_back() -> None
+```
+
+### VectorOfVectorOfVec6d.reserve
+
+```cpp
+void VectorOfVectorOfVec6d::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfVec6d:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfVec6d.resize
+
+```cpp
+void VectorOfVectorOfVec6d::resize( size_t count );
+lua:
+    oVectorOfVectorOfVec6d:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec6d::resize( size_t                        count,
+                                    const std::vector<cv::Vec6d>& value );
+lua:
+    oVectorOfVectorOfVec6d:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfVec6d.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfVec6d::shrink_to_fit();
+lua:
+    oVectorOfVectorOfVec6d:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfVec6d.sizeof
+
+```cpp
+size_t VectorOfVectorOfVec6d::size();
+lua:
+    oVectorOfVectorOfVec6d:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfVec6d.sol::meta\_function::index
@@ -69434,6 +84694,14 @@ void VectorOfVectorOfVec6d::sol::meta_function::new_index( size_t               
                                                            std::vector<cv::Vec6d> value );
 lua:
     oVectorOfVectorOfVec6d:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec6d.swap
+
+```cpp
+void VectorOfVectorOfVec6d::swap( std::vector<std::vector<cv::Vec6d>>& other );
+lua:
+    oVectorOfVectorOfVec6d:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfVec6d.table
@@ -69469,12 +84737,123 @@ lua:
     VectorOfVectorOfVec6f( other ) -> <std::vector<std::vector<cv::Vec6f>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Vec6f>>( std::vector<cv::Vec6f>* data,
+                                     size_t                  count );
+lua:
+    VectorOfVectorOfVec6f.new( data, count ) -> <std::vector<std::vector<cv::Vec6f>> object>
+    VectorOfVectorOfVec6f( data, count ) -> <std::vector<std::vector<cv::Vec6f>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec6f>>( std::vector<cv::Vec6f>* first,
+                                     std::vector<cv::Vec6f>* last );
+lua:
+    VectorOfVectorOfVec6f.new( first, last ) -> <std::vector<std::vector<cv::Vec6f>> object>
+    VectorOfVectorOfVec6f( first, last ) -> <std::vector<std::vector<cv::Vec6f>> object>
+```
+
+### VectorOfVectorOfVec6f.back
+
+```cpp
+std::vector<cv::Vec6f> VectorOfVectorOfVec6f::back();
+lua:
+    oVectorOfVectorOfVec6f:back() -> retval
+```
+
+### VectorOfVectorOfVec6f.capacity
+
+```cpp
+size_t VectorOfVectorOfVec6f::capacity();
+lua:
+    oVectorOfVectorOfVec6f:capacity() -> retval
+```
+
+### VectorOfVectorOfVec6f.clear
+
+```cpp
+void VectorOfVectorOfVec6f::clear();
+lua:
+    oVectorOfVectorOfVec6f:clear() -> None
+```
+
 ### VectorOfVectorOfVec6f.data
 
 ```cpp
 void* VectorOfVectorOfVec6f::data();
 lua:
     oVectorOfVectorOfVec6f:data() -> retval
+```
+
+### VectorOfVectorOfVec6f.empty
+
+```cpp
+bool VectorOfVectorOfVec6f::empty() const;
+lua:
+    oVectorOfVectorOfVec6f:empty() -> retval
+```
+
+### VectorOfVectorOfVec6f.front
+
+```cpp
+std::vector<cv::Vec6f> VectorOfVectorOfVec6f::front();
+lua:
+    oVectorOfVectorOfVec6f:front() -> retval
+```
+
+### VectorOfVectorOfVec6f.max\_size
+
+```cpp
+size_t VectorOfVectorOfVec6f::max_size();
+lua:
+    oVectorOfVectorOfVec6f:max_size() -> retval
+```
+
+### VectorOfVectorOfVec6f.pop\_back
+
+```cpp
+void VectorOfVectorOfVec6f::pop_back();
+lua:
+    oVectorOfVectorOfVec6f:pop_back() -> None
+```
+
+### VectorOfVectorOfVec6f.reserve
+
+```cpp
+void VectorOfVectorOfVec6f::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfVec6f:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfVec6f.resize
+
+```cpp
+void VectorOfVectorOfVec6f::resize( size_t count );
+lua:
+    oVectorOfVectorOfVec6f:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec6f::resize( size_t                        count,
+                                    const std::vector<cv::Vec6f>& value );
+lua:
+    oVectorOfVectorOfVec6f:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfVec6f.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfVec6f::shrink_to_fit();
+lua:
+    oVectorOfVectorOfVec6f:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfVec6f.sizeof
+
+```cpp
+size_t VectorOfVectorOfVec6f::size();
+lua:
+    oVectorOfVectorOfVec6f:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfVec6f.sol::meta\_function::index
@@ -69500,6 +84879,14 @@ void VectorOfVectorOfVec6f::sol::meta_function::new_index( size_t               
                                                            std::vector<cv::Vec6f> value );
 lua:
     oVectorOfVectorOfVec6f:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec6f.swap
+
+```cpp
+void VectorOfVectorOfVec6f::swap( std::vector<std::vector<cv::Vec6f>>& other );
+lua:
+    oVectorOfVectorOfVec6f:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfVec6f.table
@@ -69535,12 +84922,123 @@ lua:
     VectorOfVectorOfVec6i( other ) -> <std::vector<std::vector<cv::Vec6i>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Vec6i>>( std::vector<cv::Vec6i>* data,
+                                     size_t                  count );
+lua:
+    VectorOfVectorOfVec6i.new( data, count ) -> <std::vector<std::vector<cv::Vec6i>> object>
+    VectorOfVectorOfVec6i( data, count ) -> <std::vector<std::vector<cv::Vec6i>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec6i>>( std::vector<cv::Vec6i>* first,
+                                     std::vector<cv::Vec6i>* last );
+lua:
+    VectorOfVectorOfVec6i.new( first, last ) -> <std::vector<std::vector<cv::Vec6i>> object>
+    VectorOfVectorOfVec6i( first, last ) -> <std::vector<std::vector<cv::Vec6i>> object>
+```
+
+### VectorOfVectorOfVec6i.back
+
+```cpp
+std::vector<cv::Vec6i> VectorOfVectorOfVec6i::back();
+lua:
+    oVectorOfVectorOfVec6i:back() -> retval
+```
+
+### VectorOfVectorOfVec6i.capacity
+
+```cpp
+size_t VectorOfVectorOfVec6i::capacity();
+lua:
+    oVectorOfVectorOfVec6i:capacity() -> retval
+```
+
+### VectorOfVectorOfVec6i.clear
+
+```cpp
+void VectorOfVectorOfVec6i::clear();
+lua:
+    oVectorOfVectorOfVec6i:clear() -> None
+```
+
 ### VectorOfVectorOfVec6i.data
 
 ```cpp
 void* VectorOfVectorOfVec6i::data();
 lua:
     oVectorOfVectorOfVec6i:data() -> retval
+```
+
+### VectorOfVectorOfVec6i.empty
+
+```cpp
+bool VectorOfVectorOfVec6i::empty() const;
+lua:
+    oVectorOfVectorOfVec6i:empty() -> retval
+```
+
+### VectorOfVectorOfVec6i.front
+
+```cpp
+std::vector<cv::Vec6i> VectorOfVectorOfVec6i::front();
+lua:
+    oVectorOfVectorOfVec6i:front() -> retval
+```
+
+### VectorOfVectorOfVec6i.max\_size
+
+```cpp
+size_t VectorOfVectorOfVec6i::max_size();
+lua:
+    oVectorOfVectorOfVec6i:max_size() -> retval
+```
+
+### VectorOfVectorOfVec6i.pop\_back
+
+```cpp
+void VectorOfVectorOfVec6i::pop_back();
+lua:
+    oVectorOfVectorOfVec6i:pop_back() -> None
+```
+
+### VectorOfVectorOfVec6i.reserve
+
+```cpp
+void VectorOfVectorOfVec6i::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfVec6i:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfVec6i.resize
+
+```cpp
+void VectorOfVectorOfVec6i::resize( size_t count );
+lua:
+    oVectorOfVectorOfVec6i:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec6i::resize( size_t                        count,
+                                    const std::vector<cv::Vec6i>& value );
+lua:
+    oVectorOfVectorOfVec6i:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfVec6i.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfVec6i::shrink_to_fit();
+lua:
+    oVectorOfVectorOfVec6i:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfVec6i.sizeof
+
+```cpp
+size_t VectorOfVectorOfVec6i::size();
+lua:
+    oVectorOfVectorOfVec6i:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfVec6i.sol::meta\_function::index
@@ -69566,6 +85064,14 @@ void VectorOfVectorOfVec6i::sol::meta_function::new_index( size_t               
                                                            std::vector<cv::Vec6i> value );
 lua:
     oVectorOfVectorOfVec6i:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec6i.swap
+
+```cpp
+void VectorOfVectorOfVec6i::swap( std::vector<std::vector<cv::Vec6i>>& other );
+lua:
+    oVectorOfVectorOfVec6i:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfVec6i.table
@@ -69601,12 +85107,123 @@ lua:
     VectorOfVectorOfVec8i( other ) -> <std::vector<std::vector<cv::Vec8i>> object>
 ```
 
+```cpp
+std::vector<std::vector<cv::Vec8i>>( std::vector<cv::Vec8i>* data,
+                                     size_t                  count );
+lua:
+    VectorOfVectorOfVec8i.new( data, count ) -> <std::vector<std::vector<cv::Vec8i>> object>
+    VectorOfVectorOfVec8i( data, count ) -> <std::vector<std::vector<cv::Vec8i>> object>
+```
+
+```cpp
+std::vector<std::vector<cv::Vec8i>>( std::vector<cv::Vec8i>* first,
+                                     std::vector<cv::Vec8i>* last );
+lua:
+    VectorOfVectorOfVec8i.new( first, last ) -> <std::vector<std::vector<cv::Vec8i>> object>
+    VectorOfVectorOfVec8i( first, last ) -> <std::vector<std::vector<cv::Vec8i>> object>
+```
+
+### VectorOfVectorOfVec8i.back
+
+```cpp
+std::vector<cv::Vec8i> VectorOfVectorOfVec8i::back();
+lua:
+    oVectorOfVectorOfVec8i:back() -> retval
+```
+
+### VectorOfVectorOfVec8i.capacity
+
+```cpp
+size_t VectorOfVectorOfVec8i::capacity();
+lua:
+    oVectorOfVectorOfVec8i:capacity() -> retval
+```
+
+### VectorOfVectorOfVec8i.clear
+
+```cpp
+void VectorOfVectorOfVec8i::clear();
+lua:
+    oVectorOfVectorOfVec8i:clear() -> None
+```
+
 ### VectorOfVectorOfVec8i.data
 
 ```cpp
 void* VectorOfVectorOfVec8i::data();
 lua:
     oVectorOfVectorOfVec8i:data() -> retval
+```
+
+### VectorOfVectorOfVec8i.empty
+
+```cpp
+bool VectorOfVectorOfVec8i::empty() const;
+lua:
+    oVectorOfVectorOfVec8i:empty() -> retval
+```
+
+### VectorOfVectorOfVec8i.front
+
+```cpp
+std::vector<cv::Vec8i> VectorOfVectorOfVec8i::front();
+lua:
+    oVectorOfVectorOfVec8i:front() -> retval
+```
+
+### VectorOfVectorOfVec8i.max\_size
+
+```cpp
+size_t VectorOfVectorOfVec8i::max_size();
+lua:
+    oVectorOfVectorOfVec8i:max_size() -> retval
+```
+
+### VectorOfVectorOfVec8i.pop\_back
+
+```cpp
+void VectorOfVectorOfVec8i::pop_back();
+lua:
+    oVectorOfVectorOfVec8i:pop_back() -> None
+```
+
+### VectorOfVectorOfVec8i.reserve
+
+```cpp
+void VectorOfVectorOfVec8i::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfVec8i:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfVec8i.resize
+
+```cpp
+void VectorOfVectorOfVec8i::resize( size_t count );
+lua:
+    oVectorOfVectorOfVec8i:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVec8i::resize( size_t                        count,
+                                    const std::vector<cv::Vec8i>& value );
+lua:
+    oVectorOfVectorOfVec8i:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfVec8i.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfVec8i::shrink_to_fit();
+lua:
+    oVectorOfVectorOfVec8i:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfVec8i.sizeof
+
+```cpp
+size_t VectorOfVectorOfVec8i::size();
+lua:
+    oVectorOfVectorOfVec8i:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfVec8i.sol::meta\_function::index
@@ -69632,6 +85249,14 @@ void VectorOfVectorOfVec8i::sol::meta_function::new_index( size_t               
                                                            std::vector<cv::Vec8i> value );
 lua:
     oVectorOfVectorOfVec8i:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVec8i.swap
+
+```cpp
+void VectorOfVectorOfVec8i::swap( std::vector<std::vector<cv::Vec8i>>& other );
+lua:
+    oVectorOfVectorOfVec8i:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfVec8i.table
@@ -69667,12 +85292,123 @@ lua:
     VectorOfVectorOfVectorOfInt( other ) -> <std::vector<std::vector<std::vector<int>>> object>
 ```
 
+```cpp
+std::vector<std::vector<std::vector<int>>>( std::vector<std::vector<int>>* data,
+                                            size_t                         count );
+lua:
+    VectorOfVectorOfVectorOfInt.new( data, count ) -> <std::vector<std::vector<std::vector<int>>> object>
+    VectorOfVectorOfVectorOfInt( data, count ) -> <std::vector<std::vector<std::vector<int>>> object>
+```
+
+```cpp
+std::vector<std::vector<std::vector<int>>>( std::vector<std::vector<int>>* first,
+                                            std::vector<std::vector<int>>* last );
+lua:
+    VectorOfVectorOfVectorOfInt.new( first, last ) -> <std::vector<std::vector<std::vector<int>>> object>
+    VectorOfVectorOfVectorOfInt( first, last ) -> <std::vector<std::vector<std::vector<int>>> object>
+```
+
+### VectorOfVectorOfVectorOfInt.back
+
+```cpp
+std::vector<std::vector<int>> VectorOfVectorOfVectorOfInt::back();
+lua:
+    oVectorOfVectorOfVectorOfInt:back() -> retval
+```
+
+### VectorOfVectorOfVectorOfInt.capacity
+
+```cpp
+size_t VectorOfVectorOfVectorOfInt::capacity();
+lua:
+    oVectorOfVectorOfVectorOfInt:capacity() -> retval
+```
+
+### VectorOfVectorOfVectorOfInt.clear
+
+```cpp
+void VectorOfVectorOfVectorOfInt::clear();
+lua:
+    oVectorOfVectorOfVectorOfInt:clear() -> None
+```
+
 ### VectorOfVectorOfVectorOfInt.data
 
 ```cpp
 void* VectorOfVectorOfVectorOfInt::data();
 lua:
     oVectorOfVectorOfVectorOfInt:data() -> retval
+```
+
+### VectorOfVectorOfVectorOfInt.empty
+
+```cpp
+bool VectorOfVectorOfVectorOfInt::empty() const;
+lua:
+    oVectorOfVectorOfVectorOfInt:empty() -> retval
+```
+
+### VectorOfVectorOfVectorOfInt.front
+
+```cpp
+std::vector<std::vector<int>> VectorOfVectorOfVectorOfInt::front();
+lua:
+    oVectorOfVectorOfVectorOfInt:front() -> retval
+```
+
+### VectorOfVectorOfVectorOfInt.max\_size
+
+```cpp
+size_t VectorOfVectorOfVectorOfInt::max_size();
+lua:
+    oVectorOfVectorOfVectorOfInt:max_size() -> retval
+```
+
+### VectorOfVectorOfVectorOfInt.pop\_back
+
+```cpp
+void VectorOfVectorOfVectorOfInt::pop_back();
+lua:
+    oVectorOfVectorOfVectorOfInt:pop_back() -> None
+```
+
+### VectorOfVectorOfVectorOfInt.reserve
+
+```cpp
+void VectorOfVectorOfVectorOfInt::reserve( size_t new_cap );
+lua:
+    oVectorOfVectorOfVectorOfInt:reserve( new_cap ) -> None
+```
+
+### VectorOfVectorOfVectorOfInt.resize
+
+```cpp
+void VectorOfVectorOfVectorOfInt::resize( size_t count );
+lua:
+    oVectorOfVectorOfVectorOfInt:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVectorOfVectorOfInt::resize( size_t                               count,
+                                          const std::vector<std::vector<int>>& value );
+lua:
+    oVectorOfVectorOfVectorOfInt:resize( count, value ) -> None
+```
+
+### VectorOfVectorOfVectorOfInt.shrink\_to\_fit
+
+```cpp
+void VectorOfVectorOfVectorOfInt::shrink_to_fit();
+lua:
+    oVectorOfVectorOfVectorOfInt:shrink_to_fit() -> None
+```
+
+### VectorOfVectorOfVectorOfInt.sizeof
+
+```cpp
+size_t VectorOfVectorOfVectorOfInt::size();
+lua:
+    oVectorOfVectorOfVectorOfInt:sizeof() -> retval
 ```
 
 ### VectorOfVectorOfVectorOfInt.sol::meta\_function::index
@@ -69698,6 +85434,14 @@ void VectorOfVectorOfVectorOfInt::sol::meta_function::new_index( size_t         
                                                                  std::vector<std::vector<int>> value );
 lua:
     oVectorOfVectorOfVectorOfInt:__newindex( index, value ) -> None
+```
+
+### VectorOfVectorOfVectorOfInt.swap
+
+```cpp
+void VectorOfVectorOfVectorOfInt::swap( std::vector<std::vector<std::vector<int>>>& other );
+lua:
+    oVectorOfVectorOfVectorOfInt:swap( other ) -> None
 ```
 
 ### VectorOfVectorOfVectorOfInt.table
@@ -69733,12 +85477,123 @@ lua:
     VectorOfVideoCapture( other ) -> <std::vector<cv::VideoCapture> object>
 ```
 
+```cpp
+std::vector<cv::VideoCapture>( cv::VideoCapture* data,
+                               size_t            count );
+lua:
+    VectorOfVideoCapture.new( data, count ) -> <std::vector<cv::VideoCapture> object>
+    VectorOfVideoCapture( data, count ) -> <std::vector<cv::VideoCapture> object>
+```
+
+```cpp
+std::vector<cv::VideoCapture>( cv::VideoCapture* first,
+                               cv::VideoCapture* last );
+lua:
+    VectorOfVideoCapture.new( first, last ) -> <std::vector<cv::VideoCapture> object>
+    VectorOfVideoCapture( first, last ) -> <std::vector<cv::VideoCapture> object>
+```
+
+### VectorOfVideoCapture.back
+
+```cpp
+cv::VideoCapture VectorOfVideoCapture::back();
+lua:
+    oVectorOfVideoCapture:back() -> retval
+```
+
+### VectorOfVideoCapture.capacity
+
+```cpp
+size_t VectorOfVideoCapture::capacity();
+lua:
+    oVectorOfVideoCapture:capacity() -> retval
+```
+
+### VectorOfVideoCapture.clear
+
+```cpp
+void VectorOfVideoCapture::clear();
+lua:
+    oVectorOfVideoCapture:clear() -> None
+```
+
 ### VectorOfVideoCapture.data
 
 ```cpp
 void* VectorOfVideoCapture::data();
 lua:
     oVectorOfVideoCapture:data() -> retval
+```
+
+### VectorOfVideoCapture.empty
+
+```cpp
+bool VectorOfVideoCapture::empty() const;
+lua:
+    oVectorOfVideoCapture:empty() -> retval
+```
+
+### VectorOfVideoCapture.front
+
+```cpp
+cv::VideoCapture VectorOfVideoCapture::front();
+lua:
+    oVectorOfVideoCapture:front() -> retval
+```
+
+### VectorOfVideoCapture.max\_size
+
+```cpp
+size_t VectorOfVideoCapture::max_size();
+lua:
+    oVectorOfVideoCapture:max_size() -> retval
+```
+
+### VectorOfVideoCapture.pop\_back
+
+```cpp
+void VectorOfVideoCapture::pop_back();
+lua:
+    oVectorOfVideoCapture:pop_back() -> None
+```
+
+### VectorOfVideoCapture.reserve
+
+```cpp
+void VectorOfVideoCapture::reserve( size_t new_cap );
+lua:
+    oVectorOfVideoCapture:reserve( new_cap ) -> None
+```
+
+### VectorOfVideoCapture.resize
+
+```cpp
+void VectorOfVideoCapture::resize( size_t count );
+lua:
+    oVectorOfVideoCapture:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVideoCapture::resize( size_t                  count,
+                                   const cv::VideoCapture& value );
+lua:
+    oVectorOfVideoCapture:resize( count, value ) -> None
+```
+
+### VectorOfVideoCapture.shrink\_to\_fit
+
+```cpp
+void VectorOfVideoCapture::shrink_to_fit();
+lua:
+    oVectorOfVideoCapture:shrink_to_fit() -> None
+```
+
+### VectorOfVideoCapture.sizeof
+
+```cpp
+size_t VectorOfVideoCapture::size();
+lua:
+    oVectorOfVideoCapture:sizeof() -> retval
 ```
 
 ### VectorOfVideoCapture.sol::meta\_function::index
@@ -69764,6 +85619,14 @@ void VectorOfVideoCapture::sol::meta_function::new_index( size_t           index
                                                           cv::VideoCapture value );
 lua:
     oVectorOfVideoCapture:__newindex( index, value ) -> None
+```
+
+### VectorOfVideoCapture.swap
+
+```cpp
+void VectorOfVideoCapture::swap( std::vector<cv::VideoCapture>& other );
+lua:
+    oVectorOfVideoCapture:swap( other ) -> None
 ```
 
 ### VectorOfVideoCapture.table
@@ -69799,12 +85662,123 @@ lua:
     VectorOfVideoCaptureAPIs( other ) -> <std::vector<cv::VideoCaptureAPIs> object>
 ```
 
+```cpp
+std::vector<cv::VideoCaptureAPIs>( cv::VideoCaptureAPIs* data,
+                                   size_t                count );
+lua:
+    VectorOfVideoCaptureAPIs.new( data, count ) -> <std::vector<cv::VideoCaptureAPIs> object>
+    VectorOfVideoCaptureAPIs( data, count ) -> <std::vector<cv::VideoCaptureAPIs> object>
+```
+
+```cpp
+std::vector<cv::VideoCaptureAPIs>( cv::VideoCaptureAPIs* first,
+                                   cv::VideoCaptureAPIs* last );
+lua:
+    VectorOfVideoCaptureAPIs.new( first, last ) -> <std::vector<cv::VideoCaptureAPIs> object>
+    VectorOfVideoCaptureAPIs( first, last ) -> <std::vector<cv::VideoCaptureAPIs> object>
+```
+
+### VectorOfVideoCaptureAPIs.back
+
+```cpp
+cv::VideoCaptureAPIs VectorOfVideoCaptureAPIs::back();
+lua:
+    oVectorOfVideoCaptureAPIs:back() -> retval
+```
+
+### VectorOfVideoCaptureAPIs.capacity
+
+```cpp
+size_t VectorOfVideoCaptureAPIs::capacity();
+lua:
+    oVectorOfVideoCaptureAPIs:capacity() -> retval
+```
+
+### VectorOfVideoCaptureAPIs.clear
+
+```cpp
+void VectorOfVideoCaptureAPIs::clear();
+lua:
+    oVectorOfVideoCaptureAPIs:clear() -> None
+```
+
 ### VectorOfVideoCaptureAPIs.data
 
 ```cpp
 void* VectorOfVideoCaptureAPIs::data();
 lua:
     oVectorOfVideoCaptureAPIs:data() -> retval
+```
+
+### VectorOfVideoCaptureAPIs.empty
+
+```cpp
+bool VectorOfVideoCaptureAPIs::empty() const;
+lua:
+    oVectorOfVideoCaptureAPIs:empty() -> retval
+```
+
+### VectorOfVideoCaptureAPIs.front
+
+```cpp
+cv::VideoCaptureAPIs VectorOfVideoCaptureAPIs::front();
+lua:
+    oVectorOfVideoCaptureAPIs:front() -> retval
+```
+
+### VectorOfVideoCaptureAPIs.max\_size
+
+```cpp
+size_t VectorOfVideoCaptureAPIs::max_size();
+lua:
+    oVectorOfVideoCaptureAPIs:max_size() -> retval
+```
+
+### VectorOfVideoCaptureAPIs.pop\_back
+
+```cpp
+void VectorOfVideoCaptureAPIs::pop_back();
+lua:
+    oVectorOfVideoCaptureAPIs:pop_back() -> None
+```
+
+### VectorOfVideoCaptureAPIs.reserve
+
+```cpp
+void VectorOfVideoCaptureAPIs::reserve( size_t new_cap );
+lua:
+    oVectorOfVideoCaptureAPIs:reserve( new_cap ) -> None
+```
+
+### VectorOfVideoCaptureAPIs.resize
+
+```cpp
+void VectorOfVideoCaptureAPIs::resize( size_t count );
+lua:
+    oVectorOfVideoCaptureAPIs:resize( count ) -> None
+```
+
+```cpp
+void VectorOfVideoCaptureAPIs::resize( size_t                      count,
+                                       const cv::VideoCaptureAPIs& value );
+lua:
+    oVectorOfVideoCaptureAPIs:resize( count, value ) -> None
+```
+
+### VectorOfVideoCaptureAPIs.shrink\_to\_fit
+
+```cpp
+void VectorOfVideoCaptureAPIs::shrink_to_fit();
+lua:
+    oVectorOfVideoCaptureAPIs:shrink_to_fit() -> None
+```
+
+### VectorOfVideoCaptureAPIs.sizeof
+
+```cpp
+size_t VectorOfVideoCaptureAPIs::size();
+lua:
+    oVectorOfVideoCaptureAPIs:sizeof() -> retval
 ```
 
 ### VectorOfVideoCaptureAPIs.sol::meta\_function::index
@@ -69830,6 +85804,14 @@ void VectorOfVideoCaptureAPIs::sol::meta_function::new_index( size_t            
                                                               cv::VideoCaptureAPIs value );
 lua:
     oVectorOfVideoCaptureAPIs:__newindex( index, value ) -> None
+```
+
+### VectorOfVideoCaptureAPIs.swap
+
+```cpp
+void VectorOfVideoCaptureAPIs::swap( std::vector<cv::VideoCaptureAPIs>& other );
+lua:
+    oVectorOfVideoCaptureAPIs:swap( other ) -> None
 ```
 
 ### VectorOfVideoCaptureAPIs.table

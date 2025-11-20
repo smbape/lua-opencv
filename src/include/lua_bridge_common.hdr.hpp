@@ -152,25 +152,19 @@ namespace LUA_MODULE_NAME {
 	void init_global_state(lua_State* L);
 	bool has_lua_jit();
 
-	int acquire_gil();
-	int release_gil();
-	int yield(lua_State* L);
-
 	struct GilLock {
-		bool lock;
-
-		GilLock(const bool lock) : lock(lock) {
-			if (lock) {
-				acquire_gil();
-			}
-		}
-
-		~GilLock() {
-			if (lock) {
-				release_gil();
-			}
-		}
+		GilLock(const bool lock);
+		~GilLock() = default;
+		std::unique_ptr<std::unique_lock<std::mutex>> mutex_lock;
 	};
+
+	struct GilYield {
+		GilYield();
+		~GilYield();
+		std::unique_ptr<std::unique_lock<std::mutex>> yielder_lock;
+	};
+
+	int yield(lua_State* L);
 
 	int __call_constructor(lua_State* L);
 
@@ -259,7 +253,13 @@ namespace LUA_MODULE_NAME {
 		return is_valid && !!lua_toboolean(L, index);
 	}
 
-	inline int lua_push(lua_State* L, bool value) {
+	// Avoid implicit conversion of T* to bool
+	template<typename T>
+	inline std::enable_if_t<
+		std::is_same_v<std::remove_cvref_t<std::decay_t<T>>, bool>
+		|| std::is_same_v<T, std::vector<bool>::reference>
+		|| std::is_same_v<T, std::vector<bool>::const_reference>
+	, int> lua_push(lua_State* L, T value) {
 		lua_pushboolean(L, value);
 		return 1;
 	}
@@ -280,6 +280,12 @@ namespace LUA_MODULE_NAME {
 				if (len == 1) {
 					return static_cast<Integer>(c_str[0]);
 				}
+			}
+		}
+		else if constexpr (std::is_same_v<bool, Integer>) {
+			is_valid = lua_isboolean(L, index);
+			if (is_valid) {
+				return lua_toboolean(L, index);
 			}
 		}
 
@@ -307,13 +313,20 @@ namespace LUA_MODULE_NAME {
 	}
 
 	inline int lua_push(lua_State* L, std::integral auto n) {
+		using Integer = std::decay_t<decltype(n)>;
+		if constexpr (std::is_same_v<bool, Integer>) {
+			lua_pushboolean(L, n);
+			return 1;
+		}
+		else {
 #if LUA_VERSION_NUM >= 503
-		// Lua 5.3 and greater checks for numeric precision
-		lua_pushinteger(L, n);
+			// Lua 5.3 and greater checks for numeric precision
+			lua_pushinteger(L, n);
 #else
-		lua_pushnumber(L, (lua_Number)n);
+			lua_pushnumber(L, (lua_Number)n);
 #endif
-		return 1;
+			return 1;
+		}
 	}
 
 	// ================================
@@ -342,6 +355,11 @@ namespace LUA_MODULE_NAME {
 		is_valid = lua_isnil(L, index);
 		if (is_valid) {
 			return nullptr;
+		}
+
+		is_valid = lua_islightuserdata(L, index);
+		if (is_valid) {
+			return static_cast<const char*>(lua_touserdata(L, index));
 		}
 
 		is_valid = lua_type(L, index) == LUA_TSTRING;
@@ -448,6 +466,10 @@ namespace LUA_MODULE_NAME {
 			lua_pushnil(L);
 		}
 		return 1;
+	}
+
+	inline int lua_push(lua_State* L, const void* ptr) {
+		return lua_push(L, const_cast<void *>(ptr));
 	}
 
 
@@ -677,6 +699,9 @@ namespace LUA_MODULE_NAME {
 
 	template<typename T>
 	inline std::enable_if_t<is_usertype_v<T>, int> lua_push(lua_State* L, T* ptr);
+
+	template<typename T>
+	inline std::enable_if_t<is_usertype_v<T>, int> lua_push(lua_State* L, const T* ptr);
 
 	template<typename T>
 	inline std::enable_if_t<is_usertype_v<T>, int> lua_push(lua_State* L, T&& obj);

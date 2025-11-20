@@ -111,6 +111,10 @@ namespace {
 		lua_pop(L, 1);
 	}
 
+	std::mutex gil_mutex;
+	std::unique_lock<std::mutex> gil{ gil_mutex, std::defer_lock };
+	std::mutex yielder_mutex;
+
 	void register_Callbacks(lua_State* L) {
 		const struct luaL_Reg funcs_callbacks[] = {
 			{ "notifyCallbacks", yield },
@@ -121,7 +125,7 @@ namespace {
 		lua_pushfuncs(L, funcs_callbacks);
 
 		// the main thread has the lock
-		acquire_gil();
+		gil.lock();
 	}
 }
 
@@ -139,53 +143,34 @@ namespace LUA_MODULE_NAME {
 	bool has_lua_jit() {
 		return _has_lua_jit;
 	}
-}
 
-namespace {
-	std::shared_timed_mutex gil_mutex;
-	std::unique_lock<std::shared_timed_mutex> gil{ gil_mutex, std::defer_lock };
-
-	std::shared_timed_mutex yielder_mutex;
-	bool yielding = false;
-
-	// avoid yielding while already yielding
-	bool should_yield() {
-		std::unique_lock<std::shared_timed_mutex> lock(yielder_mutex);
-
-		if (yielding) {
-			return false;
+	GilLock::GilLock(const bool lock) {
+		if (lock) {
+			mutex_lock = std::make_unique<std::unique_lock<std::mutex>>(gil_mutex);
 		}
-
-		yielding = true;
-		return true;
 	}
 
-	void done_yielding() {
-		std::unique_lock<std::shared_timed_mutex> lock(yielder_mutex);
-		yielding = false;
+	GilYield::GilYield() {
+		yielder_lock = std::make_unique<std::unique_lock<std::mutex>>(yielder_mutex, std::defer_lock);
+		if (yielder_lock->try_lock()) {
+			// if (!gil.owns_lock()) {
+			// 	LUAL_MODULE_ERROR_RETURN(L, "GIL is not locked.");
+			// }
+			gil.unlock();
+		}
 	}
-}
 
-namespace LUA_MODULE_NAME {
+	GilYield::~GilYield() {
+		if (yielder_lock->owns_lock()) {
+			// if (gil.owns_lock()) {
+			// 	LUAL_MODULE_ERROR_RETURN(L, "GIL is locked.");
+			// }
+			gil.lock();
+		}
+	}
+
 	int yield(lua_State* L) {
-		if (should_yield()) {
-			if (!gil.owns_lock()) {
-				LUAL_MODULE_ERROR_RETURN(L, "GIL is not locked.");
-			}
-			release_gil();
-			acquire_gil();
-			done_yielding();
-		}
-		return 0;
-	}
-
-	int acquire_gil() {
-		gil.lock();
-		return 0;
-	}
-
-	int release_gil() {
-		gil.unlock();
+		GilYield yielder;
 		return 0;
 	}
 

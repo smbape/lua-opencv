@@ -169,10 +169,10 @@ PROJECT_ID=opencv
 GIT_BRANCH="${GIT_BRANCH:-develop}"
 
 CONTAINER_NAME_MANY_LINUX_x86_64=${PROJECT_ID}-lua-manylinux2014-x86-64
-DOCKER_IMAGE_MANY_LINUX_x86_64=quay.io/opencv-ci/opencv-python-manylinux2014-x86-64:20241202
+DOCKER_IMAGE_MANY_LINUX_x86_64=quay.io/opencv-ci/opencv-python-manylinux2014-x86-64:20250630
 
 CONTAINER_NAME_MANY_LINUX_aarch64=${PROJECT_ID}-lua-manylinux2014-aarch64
-DOCKER_IMAGE_MANY_LINUX_aarch64=quay.io/opencv-ci/opencv-python-manylinux2014-aarch64:20241202
+DOCKER_IMAGE_MANY_LINUX_aarch64=quay.io/opencv-ci/opencv-python-manylinux2014-aarch64:20250630
 
 DIST_VERSION=${DIST_VERSION:-1}
 WSL_DISTNAME=${WSL_DISTNAME:-Ubuntu}
@@ -226,11 +226,11 @@ esac
 
 # https://askubuntu.com/questions/355565/how-do-i-install-the-latest-version-of-cmake-from-the-command-line/865294#865294
 if ! command -v cmake &>/dev/null; then
-    CMAKE_VERSION=3.31.6
+    CMAKE_VERSION=4.2.0
     CMAKE_INSTALL_SCRIPT=/opt/cmake/dl/cmake-${CMAKE_VERSION}-linux-${cpu_arch_alt}.sh
     case $cpu_arch_alt in
-        x86_64)  CMAKE_VERSION_SHA256=518c76bd18cc4ca5faab891db69b1289dc1bf134f394f0983a19576711b95210 ;;
-        aarch64) CMAKE_VERSION_SHA256=10a0ac7e70b751d9f2aabc5e6c8ca57b0ede7ae1dbdd1ca8075954a0d97a443c ;;
+        x86_64)  CMAKE_VERSION_SHA256=1f29ddc5cc3f5d016f431d919154e970855a8e35b57c33e43b52d18322f1768d ;;
+        aarch64) CMAKE_VERSION_SHA256=b7919a63c5c56112f831de75086e657886ac9fcb7bfaed5801ce5a9c77723ec0 ;;
         *)       echo "Unsupported cpu arch for cmake"; exit 1 ;;
     esac
 
@@ -250,7 +250,7 @@ if ! command -v cmake &>/dev/null; then
 fi
 
 if ! command -v ninja &>/dev/null; then
-    NINJA_VERSION=1.12.1
+    NINJA_VERSION=1.13.2
     mkdir -p /opt/ninja/build /opt/ninja/src && \
     cd /opt/ninja && \
     curl -L https://github.com/ninja-build/ninja/archive/refs/tags/v${NINJA_VERSION}.tar.gz -o ninja.tar.gz && \

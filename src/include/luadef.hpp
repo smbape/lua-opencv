@@ -133,7 +133,7 @@ extern int luaL_typeerror(lua_State* L, int arg, const char* tname);
 #define LUA_MODULE_INFO( _message ) do { \
 	std::ostringstream _out; _out << _message;  \
 	fflush(stdout); fflush(stderr);         \
-	fprintf(stderr, LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_NAME) "(%s) Info: %s (%s) in %s, file %s, line %d\n", LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_VERSION), _out.str().c_str(), "", Lua_Module_Func, __FILE__, __LINE__); \
+	fprintf(stdout, LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_NAME) "(%s) Info: %s (%s) in %s, file %s, line %d\n", LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_VERSION), _out.str().c_str(), "", Lua_Module_Func, __FILE__, __LINE__); \
 	fflush(stdout); fflush(stderr);         \
 } while(0)
 #endif

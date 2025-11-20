@@ -63,7 +63,7 @@ exports.useNamespaces = (body, method, processor, coclass) => {
 
 exports.getTypeDef = (type, options) => {
     let type_def = type
-        .replace(/\b(u?int(?:8|16|32|64))_t\b/g, "$1")
+        .replace(/\bunsigned\s+(char|short|int|long)\b/g, "u$1")
         .replaceAll("*", "MapOPtr")
         .replaceAll("std::map", "MapOf")
         .replaceAll("std::pair", "PairOf")
