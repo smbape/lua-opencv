@@ -144,7 +144,7 @@ const proto = {
 
         const vtype = cpptype.slice("std::vector<".length, -">".length);
 
-        const { self, self_get } = options;
+        const { self } = options;
 
         this.typedefs.set(fqn, cpptype);
 
@@ -176,6 +176,13 @@ const proto = {
 
         if (vtype !== "bool") {
             coclass.addMethod([`${ fqn }.data`, "void*", ["/WrapAs=static_cast<void*>"], [], "", ""], options);
+            coclass.addMethod([`${ fqn }.data`, "void*", ["=ptr", "/Expr=", "/Output=$0 + i", "/WrapAs=static_cast<void*>"], [
+                ["size_t", "i", "", []],
+            ], "", ""], options);
+            coclass.addMethod([`${ fqn }.ptr`, "void*", ["/S", `/Call=static_cast<${ vtype }*>`, "/Expr=ptr", "/Output=$0 + i", "/WrapAs=static_cast<void*>"], [
+                ["void*", "ptr", "", []],
+                ["size_t", "i", "", []],
+            ], "", ""], options);
         }
 
         coclass.addMethod([`${ fqn }.front`, vtype, [], [], "", ""], options);
@@ -845,8 +852,7 @@ class LuaGenerator {
                 }
 
                 for (let j = 0; j < argc; j++) {
-                    const [argtype, argname, defval, arg_modifiers] = list_of_arguments[j];
-                    const is_ptr = argtype.endsWith("*");
+                    const [argtype, argname, , arg_modifiers] = list_of_arguments[j];
                     const is_in_array = /^Input(?:Output)?Array(?:OfArrays)?$/.test(argtype);
                     const is_out_array = /^(?:Input)?OutputArray(?:OfArrays)?$/.test(argtype);
                     const is_in_out = arg_modifiers.includes("/IO");
@@ -904,7 +910,7 @@ class LuaGenerator {
                 }
 
                 if (variadic) {
-                    precondition.push(`has_kwargs`);
+                    precondition.push("has_kwargs");
                     precondition.push(`${ largc } < ${ argc + offset - 1 }`);
                 } else {
                     precondition.push(`${ largc } + kwargc > ${ argc + offset }`);
@@ -1007,7 +1013,6 @@ class LuaGenerator {
                         if (arg_modifiers.includes("/C")) {
                             cpptype = `const ${ cpptype }`;
                         }
-
                     }
 
                     if (/^char\s*\*\s*$/.test(cpptype) && arg_modifiers.includes("/C")) {
@@ -1296,11 +1301,7 @@ class LuaGenerator {
                 for (const modifier of func_modifiers) {
                     if (modifier.startsWith("/WrapAs=")) {
                         callee = `${ modifier.slice("/WrapAs=".length) }(${ callee })`;
-                    }
-                }
-
-                for (const modifier of func_modifiers) {
-                    if (modifier.startsWith("/Output=")) {
+                    } else if (modifier.startsWith("/Output=")) {
                         callee = makeExpansion(modifier.slice("/Output=".length), callee);
                     }
                 }
@@ -1348,7 +1349,7 @@ class LuaGenerator {
                     const call = [];
 
                     if (isConstructor && default_constructor) {
-                        callee = `auto self = ${ lua_push_args[1] };`
+                        callee = `auto self = ${ lua_push_args[1] };`;
                         call.push(...callee.split("\n"), ...default_constructor.trim().split("\n"));
                         lua_push_args[1] = "self";
                     }
@@ -1500,6 +1501,18 @@ class LuaGenerator {
         `.replace(/^ {12}/mg, "").trim());
     }
 
+    static getDocCppType(processor, type, coclass, options) {
+        if (type.endsWith("*")) {
+            return `${ this.getDocCppType(processor, type.slice(0, -1).trim(), coclass, options) }*`;
+        }
+
+        if (processor.typedefs.has(type) && processor.typedefs.get(type) != null && processor.typedefs.get(type).startsWith("struct ")) {
+            return type;
+        }
+
+        return processor.getCppType(type, coclass, options);
+    }
+
     static writeMethodDocs(
         processor,
         coclass,
@@ -1517,7 +1530,7 @@ class LuaGenerator {
         const [name, return_value_type, func_modifiers, list_of_arguments] = decl;
         const argc = list_of_arguments.length;
         const isStatic = func_modifiers.includes("/S") || coclass.isStatic();
-        const cppfqn = processor.typedefs.has(fqn) ? processor.typedefs.get(fqn) : fqn;
+        const cppfqn = processor.hasTypeDef(fqn) ? processor.typedefs.get(fqn) : fqn;
         const cname = options.cname ? options.cname : "create";
 
         firstoptarg = Math.min(firstoptarg, argc);
@@ -1566,7 +1579,7 @@ class LuaGenerator {
             description += `\n    ${ args.join(` ${ op } `) } -> ${ outstr }`;
         }
 
-        let cppsignature = `${ processor.getCppType(return_value_type, coclass, options) } ${ name.replaceAll(".", "::") }`;
+        let cppsignature = `${ LuaGenerator.getDocCppType(processor, return_value_type, coclass, options) } ${ name.replaceAll(".", "::") }`;
 
         if (isConstructor) {
             cppsignature = cppfqn;
@@ -1591,7 +1604,7 @@ class LuaGenerator {
 
             const is_in_array = /^Input(?:Output)?Array(?:OfArrays)?$/.test(argtype);
             const is_out_array = /^(?:Input)?OutputArray(?:OfArrays)?$/.test(argtype);
-            str += is_in_array || is_out_array ? argtype : processor.getCppType(argtype, coclass, options);
+            str += is_in_array || is_out_array ? argtype : LuaGenerator.getDocCppType(processor, argtype, coclass, options);
 
             if (arg_modifiers.includes("/Ref")) {
                 str += "&";
@@ -1602,9 +1615,9 @@ class LuaGenerator {
             return str;
         });
 
-        cppsignature = `${ cppsignature }( ${ list_of_arguments.map(([, argname, defval], i) => {
+        cppsignature = `${ cppsignature }( ${ list_of_arguments.map(([, argname, defval, arg_modifiers], i) => {
             let str = typelist[i] + " ".repeat(maxlength + 1 - typelist[i].length) + argname;
-            if (defval !== "") {
+            if (defval !== "" && !arg_modifiers.includes("/IO") && !arg_modifiers.includes("/O")) {
                 str += ` = ${ defval }`;
             }
             return str;
@@ -1935,7 +1948,7 @@ class LuaGenerator {
 
                     "",
 
-                    ...Array.from(processor.typedefs).map(([fqn, cpptype]) => {
+                    ...Array.from(processor.typedefs).filter(([fqn]) => processor.hasTypeDef(fqn)).map(([fqn, cpptype]) => {
                         const parts = fqn.split("::");
                         const last = parts.length - 1;
                         const begin = new Array(last);

@@ -157,7 +157,7 @@ class DeclProcessor {
 
         for (const fqn of ordered) {
             const coclass = this.classes.get(fqn);
-            const cpptype = this.typedefs.has(fqn) ? fqn : this.getCppType(fqn, coclass, options);
+            const cpptype = this.hasTypeDef(fqn) ? fqn : this.getCppType(fqn, coclass, options);
             const displayName = this.getTypeDisplayName(fqn, cpptype);
 
             // add __str__ method
@@ -488,6 +488,14 @@ class DeclProcessor {
         return coclass;
     }
 
+    hasTypeDef(fqn) {
+        if (!this.typedefs.has(fqn)) {
+            return false;
+        }
+        const alias = this.typedefs.get(fqn);
+        return alias != null && alias !== fqn && !alias.startsWith("struct ");
+    }
+
     getCppType(type, coclass, options = {}) {
         if (type.includes("(") || type.includes(")") || type.includes("<") && !type.endsWith(">") || countInstances(type, "<") !== countInstances(type, ">")) {
             // invalid type, most likely comming from defval
@@ -515,7 +523,7 @@ class DeclProcessor {
             return `${ this.getCppType(type.slice(0, -1).trim(), coclass, options) }*`;
         }
 
-        if (this.typedefs.has(type)) {
+        if (this.hasTypeDef(type)) {
             return this.getCppType(this.typedefs.get(type), coclass, options);
         }
 
@@ -577,7 +585,7 @@ class DeclProcessor {
     }
 
     getTypeDisplayName(fqn, cpptype) {
-        const name = this.typedefs.has(fqn) ? this.typedefs.get(fqn) : cpptype;
+        const name = this.hasTypeDef(fqn) ? this.typedefs.get(fqn) : cpptype;
         return name.startsWith("::") ? name.slice("::".length) : name;
     }
 
@@ -727,8 +735,6 @@ class DeclProcessor {
         }
 
         if (coclass.modifiers?.includes("/DC")) {
-            const { shared_ptr } = options;
-
             // https://en.cppreference.com/w/c/language/struct_initialization.html
 
             const args = Array.from(coclass.properties.entries()).map(([argname, {type: argtype, value: defval, modifiers}]) => {
@@ -764,7 +770,7 @@ class DeclProcessor {
                     }
                 }
 
-                return `${ wexpr.replace(/\$(?:value\b|\{[^\S\n]*value[^\S\n]*\})/g, `std::get<${ i }>(args)`) };`
+                return `${ wexpr.replace(/\$(?:value\b|\{[^\S\n]*value[^\S\n]*\})/g, `std::get<${ i }>(args)`) };`;
             }).join("\n") }`], [
                 [`std::tuple<${ args.map(([argtype]) => argtype) }>`, "args", "", []],
             ]], options);

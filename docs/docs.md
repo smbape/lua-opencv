@@ -5582,6 +5582,7 @@
   - [VectorOfAruco\_Dictionary.front](#vectorofaruco%5C_dictionaryfront)
   - [VectorOfAruco\_Dictionary.max\_size](#vectorofaruco%5C_dictionarymax%5C_size)
   - [VectorOfAruco\_Dictionary.pop\_back](#vectorofaruco%5C_dictionarypop%5C_back)
+  - [VectorOfAruco\_Dictionary.ptr](#vectorofaruco%5C_dictionaryptr)
   - [VectorOfAruco\_Dictionary.reserve](#vectorofaruco%5C_dictionaryreserve)
   - [VectorOfAruco\_Dictionary.resize](#vectorofaruco%5C_dictionaryresize)
   - [VectorOfAruco\_Dictionary.shrink\_to\_fit](#vectorofaruco%5C_dictionaryshrink%5C_to%5C_fit)
@@ -5619,6 +5620,7 @@
   - [VectorOfChar.front](#vectorofcharfront)
   - [VectorOfChar.max\_size](#vectorofcharmax%5C_size)
   - [VectorOfChar.pop\_back](#vectorofcharpop%5C_back)
+  - [VectorOfChar.ptr](#vectorofcharptr)
   - [VectorOfChar.reserve](#vectorofcharreserve)
   - [VectorOfChar.resize](#vectorofcharresize)
   - [VectorOfChar.shrink\_to\_fit](#vectorofcharshrink%5C_to%5C_fit)
@@ -5638,6 +5640,7 @@
   - [VectorOfCvVariantOfIntAndRange.front](#vectorofcvvariantofintandrangefront)
   - [VectorOfCvVariantOfIntAndRange.max\_size](#vectorofcvvariantofintandrangemax%5C_size)
   - [VectorOfCvVariantOfIntAndRange.pop\_back](#vectorofcvvariantofintandrangepop%5C_back)
+  - [VectorOfCvVariantOfIntAndRange.ptr](#vectorofcvvariantofintandrangeptr)
   - [VectorOfCvVariantOfIntAndRange.reserve](#vectorofcvvariantofintandrangereserve)
   - [VectorOfCvVariantOfIntAndRange.resize](#vectorofcvvariantofintandrangeresize)
   - [VectorOfCvVariantOfIntAndRange.shrink\_to\_fit](#vectorofcvvariantofintandrangeshrink%5C_to%5C_fit)
@@ -5657,6 +5660,7 @@
   - [VectorOfDMatch.front](#vectorofdmatchfront)
   - [VectorOfDMatch.max\_size](#vectorofdmatchmax%5C_size)
   - [VectorOfDMatch.pop\_back](#vectorofdmatchpop%5C_back)
+  - [VectorOfDMatch.ptr](#vectorofdmatchptr)
   - [VectorOfDMatch.reserve](#vectorofdmatchreserve)
   - [VectorOfDMatch.resize](#vectorofdmatchresize)
   - [VectorOfDMatch.shrink\_to\_fit](#vectorofdmatchshrink%5C_to%5C_fit)
@@ -5676,6 +5680,7 @@
   - [VectorOfDetail\_CameraParams.front](#vectorofdetail%5C_cameraparamsfront)
   - [VectorOfDetail\_CameraParams.max\_size](#vectorofdetail%5C_cameraparamsmax%5C_size)
   - [VectorOfDetail\_CameraParams.pop\_back](#vectorofdetail%5C_cameraparamspop%5C_back)
+  - [VectorOfDetail\_CameraParams.ptr](#vectorofdetail%5C_cameraparamsptr)
   - [VectorOfDetail\_CameraParams.reserve](#vectorofdetail%5C_cameraparamsreserve)
   - [VectorOfDetail\_CameraParams.resize](#vectorofdetail%5C_cameraparamsresize)
   - [VectorOfDetail\_CameraParams.shrink\_to\_fit](#vectorofdetail%5C_cameraparamsshrink%5C_to%5C_fit)
@@ -5695,6 +5700,7 @@
   - [VectorOfDetail\_ImageFeatures.front](#vectorofdetail%5C_imagefeaturesfront)
   - [VectorOfDetail\_ImageFeatures.max\_size](#vectorofdetail%5C_imagefeaturesmax%5C_size)
   - [VectorOfDetail\_ImageFeatures.pop\_back](#vectorofdetail%5C_imagefeaturespop%5C_back)
+  - [VectorOfDetail\_ImageFeatures.ptr](#vectorofdetail%5C_imagefeaturesptr)
   - [VectorOfDetail\_ImageFeatures.reserve](#vectorofdetail%5C_imagefeaturesreserve)
   - [VectorOfDetail\_ImageFeatures.resize](#vectorofdetail%5C_imagefeaturesresize)
   - [VectorOfDetail\_ImageFeatures.shrink\_to\_fit](#vectorofdetail%5C_imagefeaturesshrink%5C_to%5C_fit)
@@ -5714,6 +5720,7 @@
   - [VectorOfDetail\_MatchesInfo.front](#vectorofdetail%5C_matchesinfofront)
   - [VectorOfDetail\_MatchesInfo.max\_size](#vectorofdetail%5C_matchesinfomax%5C_size)
   - [VectorOfDetail\_MatchesInfo.pop\_back](#vectorofdetail%5C_matchesinfopop%5C_back)
+  - [VectorOfDetail\_MatchesInfo.ptr](#vectorofdetail%5C_matchesinfoptr)
   - [VectorOfDetail\_MatchesInfo.reserve](#vectorofdetail%5C_matchesinforeserve)
   - [VectorOfDetail\_MatchesInfo.resize](#vectorofdetail%5C_matchesinforesize)
   - [VectorOfDetail\_MatchesInfo.shrink\_to\_fit](#vectorofdetail%5C_matchesinfoshrink%5C_to%5C_fit)
@@ -5733,6 +5740,7 @@
   - [VectorOfDnn\_Target.front](#vectorofdnn%5C_targetfront)
   - [VectorOfDnn\_Target.max\_size](#vectorofdnn%5C_targetmax%5C_size)
   - [VectorOfDnn\_Target.pop\_back](#vectorofdnn%5C_targetpop%5C_back)
+  - [VectorOfDnn\_Target.ptr](#vectorofdnn%5C_targetptr)
   - [VectorOfDnn\_Target.reserve](#vectorofdnn%5C_targetreserve)
   - [VectorOfDnn\_Target.resize](#vectorofdnn%5C_targetresize)
   - [VectorOfDnn\_Target.shrink\_to\_fit](#vectorofdnn%5C_targetshrink%5C_to%5C_fit)
@@ -5752,6 +5760,7 @@
   - [VectorOfDouble.front](#vectorofdoublefront)
   - [VectorOfDouble.max\_size](#vectorofdoublemax%5C_size)
   - [VectorOfDouble.pop\_back](#vectorofdoublepop%5C_back)
+  - [VectorOfDouble.ptr](#vectorofdoubleptr)
   - [VectorOfDouble.reserve](#vectorofdoublereserve)
   - [VectorOfDouble.resize](#vectorofdoubleresize)
   - [VectorOfDouble.shrink\_to\_fit](#vectorofdoubleshrink%5C_to%5C_fit)
@@ -5771,6 +5780,7 @@
   - [VectorOfFloat.front](#vectoroffloatfront)
   - [VectorOfFloat.max\_size](#vectoroffloatmax%5C_size)
   - [VectorOfFloat.pop\_back](#vectoroffloatpop%5C_back)
+  - [VectorOfFloat.ptr](#vectoroffloatptr)
   - [VectorOfFloat.reserve](#vectoroffloatreserve)
   - [VectorOfFloat.resize](#vectoroffloatresize)
   - [VectorOfFloat.shrink\_to\_fit](#vectoroffloatshrink%5C_to%5C_fit)
@@ -5790,6 +5800,7 @@
   - [VectorOfGCompileArg.front](#vectorofgcompileargfront)
   - [VectorOfGCompileArg.max\_size](#vectorofgcompileargmax%5C_size)
   - [VectorOfGCompileArg.pop\_back](#vectorofgcompileargpop%5C_back)
+  - [VectorOfGCompileArg.ptr](#vectorofgcompileargptr)
   - [VectorOfGCompileArg.reserve](#vectorofgcompileargreserve)
   - [VectorOfGCompileArg.resize](#vectorofgcompileargresize)
   - [VectorOfGCompileArg.shrink\_to\_fit](#vectorofgcompileargshrink%5C_to%5C_fit)
@@ -5809,6 +5820,7 @@
   - [VectorOfGMat.front](#vectorofgmatfront)
   - [VectorOfGMat.max\_size](#vectorofgmatmax%5C_size)
   - [VectorOfGMat.pop\_back](#vectorofgmatpop%5C_back)
+  - [VectorOfGMat.ptr](#vectorofgmatptr)
   - [VectorOfGMat.reserve](#vectorofgmatreserve)
   - [VectorOfGMat.resize](#vectorofgmatresize)
   - [VectorOfGMat.shrink\_to\_fit](#vectorofgmatshrink%5C_to%5C_fit)
@@ -5828,6 +5840,7 @@
   - [VectorOfGMetaArg.front](#vectorofgmetaargfront)
   - [VectorOfGMetaArg.max\_size](#vectorofgmetaargmax%5C_size)
   - [VectorOfGMetaArg.pop\_back](#vectorofgmetaargpop%5C_back)
+  - [VectorOfGMetaArg.ptr](#vectorofgmetaargptr)
   - [VectorOfGMetaArg.reserve](#vectorofgmetaargreserve)
   - [VectorOfGMetaArg.resize](#vectorofgmetaargresize)
   - [VectorOfGMetaArg.shrink\_to\_fit](#vectorofgmetaargshrink%5C_to%5C_fit)
@@ -5847,6 +5860,7 @@
   - [VectorOfGRunArg.front](#vectorofgrunargfront)
   - [VectorOfGRunArg.max\_size](#vectorofgrunargmax%5C_size)
   - [VectorOfGRunArg.pop\_back](#vectorofgrunargpop%5C_back)
+  - [VectorOfGRunArg.ptr](#vectorofgrunargptr)
   - [VectorOfGRunArg.reserve](#vectorofgrunargreserve)
   - [VectorOfGRunArg.resize](#vectorofgrunargresize)
   - [VectorOfGRunArg.shrink\_to\_fit](#vectorofgrunargshrink%5C_to%5C_fit)
@@ -5866,6 +5880,7 @@
   - [VectorOfGapi\_GNetParam.front](#vectorofgapi%5C_gnetparamfront)
   - [VectorOfGapi\_GNetParam.max\_size](#vectorofgapi%5C_gnetparammax%5C_size)
   - [VectorOfGapi\_GNetParam.pop\_back](#vectorofgapi%5C_gnetparampop%5C_back)
+  - [VectorOfGapi\_GNetParam.ptr](#vectorofgapi%5C_gnetparamptr)
   - [VectorOfGapi\_GNetParam.reserve](#vectorofgapi%5C_gnetparamreserve)
   - [VectorOfGapi\_GNetParam.resize](#vectorofgapi%5C_gnetparamresize)
   - [VectorOfGapi\_GNetParam.shrink\_to\_fit](#vectorofgapi%5C_gnetparamshrink%5C_to%5C_fit)
@@ -5885,6 +5900,7 @@
   - [VectorOfGapi\_wip\_draw\_Prim.front](#vectorofgapi%5C_wip%5C_draw%5C_primfront)
   - [VectorOfGapi\_wip\_draw\_Prim.max\_size](#vectorofgapi%5C_wip%5C_draw%5C_primmax%5C_size)
   - [VectorOfGapi\_wip\_draw\_Prim.pop\_back](#vectorofgapi%5C_wip%5C_draw%5C_primpop%5C_back)
+  - [VectorOfGapi\_wip\_draw\_Prim.ptr](#vectorofgapi%5C_wip%5C_draw%5C_primptr)
   - [VectorOfGapi\_wip\_draw\_Prim.reserve](#vectorofgapi%5C_wip%5C_draw%5C_primreserve)
   - [VectorOfGapi\_wip\_draw\_Prim.resize](#vectorofgapi%5C_wip%5C_draw%5C_primresize)
   - [VectorOfGapi\_wip\_draw\_Prim.shrink\_to\_fit](#vectorofgapi%5C_wip%5C_draw%5C_primshrink%5C_to%5C_fit)
@@ -5904,6 +5920,7 @@
   - [VectorOfInt.front](#vectorofintfront)
   - [VectorOfInt.max\_size](#vectorofintmax%5C_size)
   - [VectorOfInt.pop\_back](#vectorofintpop%5C_back)
+  - [VectorOfInt.ptr](#vectorofintptr)
   - [VectorOfInt.reserve](#vectorofintreserve)
   - [VectorOfInt.resize](#vectorofintresize)
   - [VectorOfInt.shrink\_to\_fit](#vectorofintshrink%5C_to%5C_fit)
@@ -5923,6 +5940,7 @@
   - [VectorOfKeyPoint.front](#vectorofkeypointfront)
   - [VectorOfKeyPoint.max\_size](#vectorofkeypointmax%5C_size)
   - [VectorOfKeyPoint.pop\_back](#vectorofkeypointpop%5C_back)
+  - [VectorOfKeyPoint.ptr](#vectorofkeypointptr)
   - [VectorOfKeyPoint.reserve](#vectorofkeypointreserve)
   - [VectorOfKeyPoint.resize](#vectorofkeypointresize)
   - [VectorOfKeyPoint.shrink\_to\_fit](#vectorofkeypointshrink%5C_to%5C_fit)
@@ -5942,6 +5960,7 @@
   - [VectorOfMat.front](#vectorofmatfront)
   - [VectorOfMat.max\_size](#vectorofmatmax%5C_size)
   - [VectorOfMat.pop\_back](#vectorofmatpop%5C_back)
+  - [VectorOfMat.ptr](#vectorofmatptr)
   - [VectorOfMat.reserve](#vectorofmatreserve)
   - [VectorOfMat.resize](#vectorofmatresize)
   - [VectorOfMat.shrink\_to\_fit](#vectorofmatshrink%5C_to%5C_fit)
@@ -5961,6 +5980,7 @@
   - [VectorOfMoments.front](#vectorofmomentsfront)
   - [VectorOfMoments.max\_size](#vectorofmomentsmax%5C_size)
   - [VectorOfMoments.pop\_back](#vectorofmomentspop%5C_back)
+  - [VectorOfMoments.ptr](#vectorofmomentsptr)
   - [VectorOfMoments.reserve](#vectorofmomentsreserve)
   - [VectorOfMoments.resize](#vectorofmomentsresize)
   - [VectorOfMoments.shrink\_to\_fit](#vectorofmomentsshrink%5C_to%5C_fit)
@@ -5980,6 +6000,7 @@
   - [VectorOfPairOfIntAndDouble.front](#vectorofpairofintanddoublefront)
   - [VectorOfPairOfIntAndDouble.max\_size](#vectorofpairofintanddoublemax%5C_size)
   - [VectorOfPairOfIntAndDouble.pop\_back](#vectorofpairofintanddoublepop%5C_back)
+  - [VectorOfPairOfIntAndDouble.ptr](#vectorofpairofintanddoubleptr)
   - [VectorOfPairOfIntAndDouble.reserve](#vectorofpairofintanddoublereserve)
   - [VectorOfPairOfIntAndDouble.resize](#vectorofpairofintanddoubleresize)
   - [VectorOfPairOfIntAndDouble.shrink\_to\_fit](#vectorofpairofintanddoubleshrink%5C_to%5C_fit)
@@ -5999,6 +6020,7 @@
   - [VectorOfPairOfStringAndInt.front](#vectorofpairofstringandintfront)
   - [VectorOfPairOfStringAndInt.max\_size](#vectorofpairofstringandintmax%5C_size)
   - [VectorOfPairOfStringAndInt.pop\_back](#vectorofpairofstringandintpop%5C_back)
+  - [VectorOfPairOfStringAndInt.ptr](#vectorofpairofstringandintptr)
   - [VectorOfPairOfStringAndInt.reserve](#vectorofpairofstringandintreserve)
   - [VectorOfPairOfStringAndInt.resize](#vectorofpairofstringandintresize)
   - [VectorOfPairOfStringAndInt.shrink\_to\_fit](#vectorofpairofstringandintshrink%5C_to%5C_fit)
@@ -6018,6 +6040,7 @@
   - [VectorOfPairOfStringAndString.front](#vectorofpairofstringandstringfront)
   - [VectorOfPairOfStringAndString.max\_size](#vectorofpairofstringandstringmax%5C_size)
   - [VectorOfPairOfStringAndString.pop\_back](#vectorofpairofstringandstringpop%5C_back)
+  - [VectorOfPairOfStringAndString.ptr](#vectorofpairofstringandstringptr)
   - [VectorOfPairOfStringAndString.reserve](#vectorofpairofstringandstringreserve)
   - [VectorOfPairOfStringAndString.resize](#vectorofpairofstringandstringresize)
   - [VectorOfPairOfStringAndString.shrink\_to\_fit](#vectorofpairofstringandstringshrink%5C_to%5C_fit)
@@ -6037,6 +6060,7 @@
   - [VectorOfPairOfStringAndVectorOfFloat.front](#vectorofpairofstringandvectoroffloatfront)
   - [VectorOfPairOfStringAndVectorOfFloat.max\_size](#vectorofpairofstringandvectoroffloatmax%5C_size)
   - [VectorOfPairOfStringAndVectorOfFloat.pop\_back](#vectorofpairofstringandvectoroffloatpop%5C_back)
+  - [VectorOfPairOfStringAndVectorOfFloat.ptr](#vectorofpairofstringandvectoroffloatptr)
   - [VectorOfPairOfStringAndVectorOfFloat.reserve](#vectorofpairofstringandvectoroffloatreserve)
   - [VectorOfPairOfStringAndVectorOfFloat.resize](#vectorofpairofstringandvectoroffloatresize)
   - [VectorOfPairOfStringAndVectorOfFloat.shrink\_to\_fit](#vectorofpairofstringandvectoroffloatshrink%5C_to%5C_fit)
@@ -6056,6 +6080,7 @@
   - [VectorOfPairOfStringAndVectorOfSize\_t.front](#vectorofpairofstringandvectorofsize%5C_tfront)
   - [VectorOfPairOfStringAndVectorOfSize\_t.max\_size](#vectorofpairofstringandvectorofsize%5C_tmax%5C_size)
   - [VectorOfPairOfStringAndVectorOfSize\_t.pop\_back](#vectorofpairofstringandvectorofsize%5C_tpop%5C_back)
+  - [VectorOfPairOfStringAndVectorOfSize\_t.ptr](#vectorofpairofstringandvectorofsize%5C_tptr)
   - [VectorOfPairOfStringAndVectorOfSize\_t.reserve](#vectorofpairofstringandvectorofsize%5C_treserve)
   - [VectorOfPairOfStringAndVectorOfSize\_t.resize](#vectorofpairofstringandvectorofsize%5C_tresize)
   - [VectorOfPairOfStringAndVectorOfSize\_t.shrink\_to\_fit](#vectorofpairofstringandvectorofsize%5C_tshrink%5C_to%5C_fit)
@@ -6075,6 +6100,7 @@
   - [VectorOfPoint.front](#vectorofpointfront)
   - [VectorOfPoint.max\_size](#vectorofpointmax%5C_size)
   - [VectorOfPoint.pop\_back](#vectorofpointpop%5C_back)
+  - [VectorOfPoint.ptr](#vectorofpointptr)
   - [VectorOfPoint.reserve](#vectorofpointreserve)
   - [VectorOfPoint.resize](#vectorofpointresize)
   - [VectorOfPoint.shrink\_to\_fit](#vectorofpointshrink%5C_to%5C_fit)
@@ -6094,6 +6120,7 @@
   - [VectorOfPoint2d.front](#vectorofpoint2dfront)
   - [VectorOfPoint2d.max\_size](#vectorofpoint2dmax%5C_size)
   - [VectorOfPoint2d.pop\_back](#vectorofpoint2dpop%5C_back)
+  - [VectorOfPoint2d.ptr](#vectorofpoint2dptr)
   - [VectorOfPoint2d.reserve](#vectorofpoint2dreserve)
   - [VectorOfPoint2d.resize](#vectorofpoint2dresize)
   - [VectorOfPoint2d.shrink\_to\_fit](#vectorofpoint2dshrink%5C_to%5C_fit)
@@ -6113,6 +6140,7 @@
   - [VectorOfPoint2f.front](#vectorofpoint2ffront)
   - [VectorOfPoint2f.max\_size](#vectorofpoint2fmax%5C_size)
   - [VectorOfPoint2f.pop\_back](#vectorofpoint2fpop%5C_back)
+  - [VectorOfPoint2f.ptr](#vectorofpoint2fptr)
   - [VectorOfPoint2f.reserve](#vectorofpoint2freserve)
   - [VectorOfPoint2f.resize](#vectorofpoint2fresize)
   - [VectorOfPoint2f.shrink\_to\_fit](#vectorofpoint2fshrink%5C_to%5C_fit)
@@ -6132,6 +6160,7 @@
   - [VectorOfPoint3d.front](#vectorofpoint3dfront)
   - [VectorOfPoint3d.max\_size](#vectorofpoint3dmax%5C_size)
   - [VectorOfPoint3d.pop\_back](#vectorofpoint3dpop%5C_back)
+  - [VectorOfPoint3d.ptr](#vectorofpoint3dptr)
   - [VectorOfPoint3d.reserve](#vectorofpoint3dreserve)
   - [VectorOfPoint3d.resize](#vectorofpoint3dresize)
   - [VectorOfPoint3d.shrink\_to\_fit](#vectorofpoint3dshrink%5C_to%5C_fit)
@@ -6151,6 +6180,7 @@
   - [VectorOfPoint3f.front](#vectorofpoint3ffront)
   - [VectorOfPoint3f.max\_size](#vectorofpoint3fmax%5C_size)
   - [VectorOfPoint3f.pop\_back](#vectorofpoint3fpop%5C_back)
+  - [VectorOfPoint3f.ptr](#vectorofpoint3fptr)
   - [VectorOfPoint3f.reserve](#vectorofpoint3freserve)
   - [VectorOfPoint3f.resize](#vectorofpoint3fresize)
   - [VectorOfPoint3f.shrink\_to\_fit](#vectorofpoint3fshrink%5C_to%5C_fit)
@@ -6170,6 +6200,7 @@
   - [VectorOfPoint3i.front](#vectorofpoint3ifront)
   - [VectorOfPoint3i.max\_size](#vectorofpoint3imax%5C_size)
   - [VectorOfPoint3i.pop\_back](#vectorofpoint3ipop%5C_back)
+  - [VectorOfPoint3i.ptr](#vectorofpoint3iptr)
   - [VectorOfPoint3i.reserve](#vectorofpoint3ireserve)
   - [VectorOfPoint3i.resize](#vectorofpoint3iresize)
   - [VectorOfPoint3i.shrink\_to\_fit](#vectorofpoint3ishrink%5C_to%5C_fit)
@@ -6189,6 +6220,7 @@
   - [VectorOfRange.front](#vectorofrangefront)
   - [VectorOfRange.max\_size](#vectorofrangemax%5C_size)
   - [VectorOfRange.pop\_back](#vectorofrangepop%5C_back)
+  - [VectorOfRange.ptr](#vectorofrangeptr)
   - [VectorOfRange.reserve](#vectorofrangereserve)
   - [VectorOfRange.resize](#vectorofrangeresize)
   - [VectorOfRange.shrink\_to\_fit](#vectorofrangeshrink%5C_to%5C_fit)
@@ -6208,6 +6240,7 @@
   - [VectorOfRect.front](#vectorofrectfront)
   - [VectorOfRect.max\_size](#vectorofrectmax%5C_size)
   - [VectorOfRect.pop\_back](#vectorofrectpop%5C_back)
+  - [VectorOfRect.ptr](#vectorofrectptr)
   - [VectorOfRect.reserve](#vectorofrectreserve)
   - [VectorOfRect.resize](#vectorofrectresize)
   - [VectorOfRect.shrink\_to\_fit](#vectorofrectshrink%5C_to%5C_fit)
@@ -6227,6 +6260,7 @@
   - [VectorOfRect2d.front](#vectorofrect2dfront)
   - [VectorOfRect2d.max\_size](#vectorofrect2dmax%5C_size)
   - [VectorOfRect2d.pop\_back](#vectorofrect2dpop%5C_back)
+  - [VectorOfRect2d.ptr](#vectorofrect2dptr)
   - [VectorOfRect2d.reserve](#vectorofrect2dreserve)
   - [VectorOfRect2d.resize](#vectorofrect2dresize)
   - [VectorOfRect2d.shrink\_to\_fit](#vectorofrect2dshrink%5C_to%5C_fit)
@@ -6246,6 +6280,7 @@
   - [VectorOfRect2f.front](#vectorofrect2ffront)
   - [VectorOfRect2f.max\_size](#vectorofrect2fmax%5C_size)
   - [VectorOfRect2f.pop\_back](#vectorofrect2fpop%5C_back)
+  - [VectorOfRect2f.ptr](#vectorofrect2fptr)
   - [VectorOfRect2f.reserve](#vectorofrect2freserve)
   - [VectorOfRect2f.resize](#vectorofrect2fresize)
   - [VectorOfRect2f.shrink\_to\_fit](#vectorofrect2fshrink%5C_to%5C_fit)
@@ -6265,6 +6300,7 @@
   - [VectorOfRotatedRect.front](#vectorofrotatedrectfront)
   - [VectorOfRotatedRect.max\_size](#vectorofrotatedrectmax%5C_size)
   - [VectorOfRotatedRect.pop\_back](#vectorofrotatedrectpop%5C_back)
+  - [VectorOfRotatedRect.ptr](#vectorofrotatedrectptr)
   - [VectorOfRotatedRect.reserve](#vectorofrotatedrectreserve)
   - [VectorOfRotatedRect.resize](#vectorofrotatedrectresize)
   - [VectorOfRotatedRect.shrink\_to\_fit](#vectorofrotatedrectshrink%5C_to%5C_fit)
@@ -6284,6 +6320,7 @@
   - [VectorOfSchar.front](#vectorofscharfront)
   - [VectorOfSchar.max\_size](#vectorofscharmax%5C_size)
   - [VectorOfSchar.pop\_back](#vectorofscharpop%5C_back)
+  - [VectorOfSchar.ptr](#vectorofscharptr)
   - [VectorOfSchar.reserve](#vectorofscharreserve)
   - [VectorOfSchar.resize](#vectorofscharresize)
   - [VectorOfSchar.shrink\_to\_fit](#vectorofscharshrink%5C_to%5C_fit)
@@ -6303,6 +6340,7 @@
   - [VectorOfShort.front](#vectorofshortfront)
   - [VectorOfShort.max\_size](#vectorofshortmax%5C_size)
   - [VectorOfShort.pop\_back](#vectorofshortpop%5C_back)
+  - [VectorOfShort.ptr](#vectorofshortptr)
   - [VectorOfShort.reserve](#vectorofshortreserve)
   - [VectorOfShort.resize](#vectorofshortresize)
   - [VectorOfShort.shrink\_to\_fit](#vectorofshortshrink%5C_to%5C_fit)
@@ -6322,6 +6360,7 @@
   - [VectorOfSize.front](#vectorofsizefront)
   - [VectorOfSize.max\_size](#vectorofsizemax%5C_size)
   - [VectorOfSize.pop\_back](#vectorofsizepop%5C_back)
+  - [VectorOfSize.ptr](#vectorofsizeptr)
   - [VectorOfSize.reserve](#vectorofsizereserve)
   - [VectorOfSize.resize](#vectorofsizeresize)
   - [VectorOfSize.shrink\_to\_fit](#vectorofsizeshrink%5C_to%5C_fit)
@@ -6341,6 +6380,7 @@
   - [VectorOfSize2d.front](#vectorofsize2dfront)
   - [VectorOfSize2d.max\_size](#vectorofsize2dmax%5C_size)
   - [VectorOfSize2d.pop\_back](#vectorofsize2dpop%5C_back)
+  - [VectorOfSize2d.ptr](#vectorofsize2dptr)
   - [VectorOfSize2d.reserve](#vectorofsize2dreserve)
   - [VectorOfSize2d.resize](#vectorofsize2dresize)
   - [VectorOfSize2d.shrink\_to\_fit](#vectorofsize2dshrink%5C_to%5C_fit)
@@ -6360,6 +6400,7 @@
   - [VectorOfSize2f.front](#vectorofsize2ffront)
   - [VectorOfSize2f.max\_size](#vectorofsize2fmax%5C_size)
   - [VectorOfSize2f.pop\_back](#vectorofsize2fpop%5C_back)
+  - [VectorOfSize2f.ptr](#vectorofsize2fptr)
   - [VectorOfSize2f.reserve](#vectorofsize2freserve)
   - [VectorOfSize2f.resize](#vectorofsize2fresize)
   - [VectorOfSize2f.shrink\_to\_fit](#vectorofsize2fshrink%5C_to%5C_fit)
@@ -6379,6 +6420,7 @@
   - [VectorOfSize\_t.front](#vectorofsize%5C_tfront)
   - [VectorOfSize\_t.max\_size](#vectorofsize%5C_tmax%5C_size)
   - [VectorOfSize\_t.pop\_back](#vectorofsize%5C_tpop%5C_back)
+  - [VectorOfSize\_t.ptr](#vectorofsize%5C_tptr)
   - [VectorOfSize\_t.reserve](#vectorofsize%5C_treserve)
   - [VectorOfSize\_t.resize](#vectorofsize%5C_tresize)
   - [VectorOfSize\_t.shrink\_to\_fit](#vectorofsize%5C_tshrink%5C_to%5C_fit)
@@ -6398,6 +6440,7 @@
   - [VectorOfString.front](#vectorofstringfront)
   - [VectorOfString.max\_size](#vectorofstringmax%5C_size)
   - [VectorOfString.pop\_back](#vectorofstringpop%5C_back)
+  - [VectorOfString.ptr](#vectorofstringptr)
   - [VectorOfString.reserve](#vectorofstringreserve)
   - [VectorOfString.resize](#vectorofstringresize)
   - [VectorOfString.shrink\_to\_fit](#vectorofstringshrink%5C_to%5C_fit)
@@ -6417,6 +6460,7 @@
   - [VectorOfTuplePointAndDouble.front](#vectoroftuplepointanddoublefront)
   - [VectorOfTuplePointAndDouble.max\_size](#vectoroftuplepointanddoublemax%5C_size)
   - [VectorOfTuplePointAndDouble.pop\_back](#vectoroftuplepointanddoublepop%5C_back)
+  - [VectorOfTuplePointAndDouble.ptr](#vectoroftuplepointanddoubleptr)
   - [VectorOfTuplePointAndDouble.reserve](#vectoroftuplepointanddoublereserve)
   - [VectorOfTuplePointAndDouble.resize](#vectoroftuplepointanddoubleresize)
   - [VectorOfTuplePointAndDouble.shrink\_to\_fit](#vectoroftuplepointanddoubleshrink%5C_to%5C_fit)
@@ -6436,6 +6480,7 @@
   - [VectorOfUMat.front](#vectorofumatfront)
   - [VectorOfUMat.max\_size](#vectorofumatmax%5C_size)
   - [VectorOfUMat.pop\_back](#vectorofumatpop%5C_back)
+  - [VectorOfUMat.ptr](#vectorofumatptr)
   - [VectorOfUMat.reserve](#vectorofumatreserve)
   - [VectorOfUMat.resize](#vectorofumatresize)
   - [VectorOfUMat.shrink\_to\_fit](#vectorofumatshrink%5C_to%5C_fit)
@@ -6455,6 +6500,7 @@
   - [VectorOfUchar.front](#vectorofucharfront)
   - [VectorOfUchar.max\_size](#vectorofucharmax%5C_size)
   - [VectorOfUchar.pop\_back](#vectorofucharpop%5C_back)
+  - [VectorOfUchar.ptr](#vectorofucharptr)
   - [VectorOfUchar.reserve](#vectorofucharreserve)
   - [VectorOfUchar.resize](#vectorofucharresize)
   - [VectorOfUchar.shrink\_to\_fit](#vectorofucharshrink%5C_to%5C_fit)
@@ -6474,6 +6520,7 @@
   - [VectorOfUshort.front](#vectorofushortfront)
   - [VectorOfUshort.max\_size](#vectorofushortmax%5C_size)
   - [VectorOfUshort.pop\_back](#vectorofushortpop%5C_back)
+  - [VectorOfUshort.ptr](#vectorofushortptr)
   - [VectorOfUshort.reserve](#vectorofushortreserve)
   - [VectorOfUshort.resize](#vectorofushortresize)
   - [VectorOfUshort.shrink\_to\_fit](#vectorofushortshrink%5C_to%5C_fit)
@@ -6493,6 +6540,7 @@
   - [VectorOfVec2b.front](#vectorofvec2bfront)
   - [VectorOfVec2b.max\_size](#vectorofvec2bmax%5C_size)
   - [VectorOfVec2b.pop\_back](#vectorofvec2bpop%5C_back)
+  - [VectorOfVec2b.ptr](#vectorofvec2bptr)
   - [VectorOfVec2b.reserve](#vectorofvec2breserve)
   - [VectorOfVec2b.resize](#vectorofvec2bresize)
   - [VectorOfVec2b.shrink\_to\_fit](#vectorofvec2bshrink%5C_to%5C_fit)
@@ -6512,6 +6560,7 @@
   - [VectorOfVec2d.front](#vectorofvec2dfront)
   - [VectorOfVec2d.max\_size](#vectorofvec2dmax%5C_size)
   - [VectorOfVec2d.pop\_back](#vectorofvec2dpop%5C_back)
+  - [VectorOfVec2d.ptr](#vectorofvec2dptr)
   - [VectorOfVec2d.reserve](#vectorofvec2dreserve)
   - [VectorOfVec2d.resize](#vectorofvec2dresize)
   - [VectorOfVec2d.shrink\_to\_fit](#vectorofvec2dshrink%5C_to%5C_fit)
@@ -6531,6 +6580,7 @@
   - [VectorOfVec2f.front](#vectorofvec2ffront)
   - [VectorOfVec2f.max\_size](#vectorofvec2fmax%5C_size)
   - [VectorOfVec2f.pop\_back](#vectorofvec2fpop%5C_back)
+  - [VectorOfVec2f.ptr](#vectorofvec2fptr)
   - [VectorOfVec2f.reserve](#vectorofvec2freserve)
   - [VectorOfVec2f.resize](#vectorofvec2fresize)
   - [VectorOfVec2f.shrink\_to\_fit](#vectorofvec2fshrink%5C_to%5C_fit)
@@ -6550,6 +6600,7 @@
   - [VectorOfVec2i.front](#vectorofvec2ifront)
   - [VectorOfVec2i.max\_size](#vectorofvec2imax%5C_size)
   - [VectorOfVec2i.pop\_back](#vectorofvec2ipop%5C_back)
+  - [VectorOfVec2i.ptr](#vectorofvec2iptr)
   - [VectorOfVec2i.reserve](#vectorofvec2ireserve)
   - [VectorOfVec2i.resize](#vectorofvec2iresize)
   - [VectorOfVec2i.shrink\_to\_fit](#vectorofvec2ishrink%5C_to%5C_fit)
@@ -6569,6 +6620,7 @@
   - [VectorOfVec2s.front](#vectorofvec2sfront)
   - [VectorOfVec2s.max\_size](#vectorofvec2smax%5C_size)
   - [VectorOfVec2s.pop\_back](#vectorofvec2spop%5C_back)
+  - [VectorOfVec2s.ptr](#vectorofvec2sptr)
   - [VectorOfVec2s.reserve](#vectorofvec2sreserve)
   - [VectorOfVec2s.resize](#vectorofvec2sresize)
   - [VectorOfVec2s.shrink\_to\_fit](#vectorofvec2sshrink%5C_to%5C_fit)
@@ -6588,6 +6640,7 @@
   - [VectorOfVec2w.front](#vectorofvec2wfront)
   - [VectorOfVec2w.max\_size](#vectorofvec2wmax%5C_size)
   - [VectorOfVec2w.pop\_back](#vectorofvec2wpop%5C_back)
+  - [VectorOfVec2w.ptr](#vectorofvec2wptr)
   - [VectorOfVec2w.reserve](#vectorofvec2wreserve)
   - [VectorOfVec2w.resize](#vectorofvec2wresize)
   - [VectorOfVec2w.shrink\_to\_fit](#vectorofvec2wshrink%5C_to%5C_fit)
@@ -6607,6 +6660,7 @@
   - [VectorOfVec3b.front](#vectorofvec3bfront)
   - [VectorOfVec3b.max\_size](#vectorofvec3bmax%5C_size)
   - [VectorOfVec3b.pop\_back](#vectorofvec3bpop%5C_back)
+  - [VectorOfVec3b.ptr](#vectorofvec3bptr)
   - [VectorOfVec3b.reserve](#vectorofvec3breserve)
   - [VectorOfVec3b.resize](#vectorofvec3bresize)
   - [VectorOfVec3b.shrink\_to\_fit](#vectorofvec3bshrink%5C_to%5C_fit)
@@ -6626,6 +6680,7 @@
   - [VectorOfVec3d.front](#vectorofvec3dfront)
   - [VectorOfVec3d.max\_size](#vectorofvec3dmax%5C_size)
   - [VectorOfVec3d.pop\_back](#vectorofvec3dpop%5C_back)
+  - [VectorOfVec3d.ptr](#vectorofvec3dptr)
   - [VectorOfVec3d.reserve](#vectorofvec3dreserve)
   - [VectorOfVec3d.resize](#vectorofvec3dresize)
   - [VectorOfVec3d.shrink\_to\_fit](#vectorofvec3dshrink%5C_to%5C_fit)
@@ -6645,6 +6700,7 @@
   - [VectorOfVec3f.front](#vectorofvec3ffront)
   - [VectorOfVec3f.max\_size](#vectorofvec3fmax%5C_size)
   - [VectorOfVec3f.pop\_back](#vectorofvec3fpop%5C_back)
+  - [VectorOfVec3f.ptr](#vectorofvec3fptr)
   - [VectorOfVec3f.reserve](#vectorofvec3freserve)
   - [VectorOfVec3f.resize](#vectorofvec3fresize)
   - [VectorOfVec3f.shrink\_to\_fit](#vectorofvec3fshrink%5C_to%5C_fit)
@@ -6664,6 +6720,7 @@
   - [VectorOfVec3i.front](#vectorofvec3ifront)
   - [VectorOfVec3i.max\_size](#vectorofvec3imax%5C_size)
   - [VectorOfVec3i.pop\_back](#vectorofvec3ipop%5C_back)
+  - [VectorOfVec3i.ptr](#vectorofvec3iptr)
   - [VectorOfVec3i.reserve](#vectorofvec3ireserve)
   - [VectorOfVec3i.resize](#vectorofvec3iresize)
   - [VectorOfVec3i.shrink\_to\_fit](#vectorofvec3ishrink%5C_to%5C_fit)
@@ -6683,6 +6740,7 @@
   - [VectorOfVec3s.front](#vectorofvec3sfront)
   - [VectorOfVec3s.max\_size](#vectorofvec3smax%5C_size)
   - [VectorOfVec3s.pop\_back](#vectorofvec3spop%5C_back)
+  - [VectorOfVec3s.ptr](#vectorofvec3sptr)
   - [VectorOfVec3s.reserve](#vectorofvec3sreserve)
   - [VectorOfVec3s.resize](#vectorofvec3sresize)
   - [VectorOfVec3s.shrink\_to\_fit](#vectorofvec3sshrink%5C_to%5C_fit)
@@ -6702,6 +6760,7 @@
   - [VectorOfVec3w.front](#vectorofvec3wfront)
   - [VectorOfVec3w.max\_size](#vectorofvec3wmax%5C_size)
   - [VectorOfVec3w.pop\_back](#vectorofvec3wpop%5C_back)
+  - [VectorOfVec3w.ptr](#vectorofvec3wptr)
   - [VectorOfVec3w.reserve](#vectorofvec3wreserve)
   - [VectorOfVec3w.resize](#vectorofvec3wresize)
   - [VectorOfVec3w.shrink\_to\_fit](#vectorofvec3wshrink%5C_to%5C_fit)
@@ -6721,6 +6780,7 @@
   - [VectorOfVec4b.front](#vectorofvec4bfront)
   - [VectorOfVec4b.max\_size](#vectorofvec4bmax%5C_size)
   - [VectorOfVec4b.pop\_back](#vectorofvec4bpop%5C_back)
+  - [VectorOfVec4b.ptr](#vectorofvec4bptr)
   - [VectorOfVec4b.reserve](#vectorofvec4breserve)
   - [VectorOfVec4b.resize](#vectorofvec4bresize)
   - [VectorOfVec4b.shrink\_to\_fit](#vectorofvec4bshrink%5C_to%5C_fit)
@@ -6740,6 +6800,7 @@
   - [VectorOfVec4d.front](#vectorofvec4dfront)
   - [VectorOfVec4d.max\_size](#vectorofvec4dmax%5C_size)
   - [VectorOfVec4d.pop\_back](#vectorofvec4dpop%5C_back)
+  - [VectorOfVec4d.ptr](#vectorofvec4dptr)
   - [VectorOfVec4d.reserve](#vectorofvec4dreserve)
   - [VectorOfVec4d.resize](#vectorofvec4dresize)
   - [VectorOfVec4d.shrink\_to\_fit](#vectorofvec4dshrink%5C_to%5C_fit)
@@ -6759,6 +6820,7 @@
   - [VectorOfVec4f.front](#vectorofvec4ffront)
   - [VectorOfVec4f.max\_size](#vectorofvec4fmax%5C_size)
   - [VectorOfVec4f.pop\_back](#vectorofvec4fpop%5C_back)
+  - [VectorOfVec4f.ptr](#vectorofvec4fptr)
   - [VectorOfVec4f.reserve](#vectorofvec4freserve)
   - [VectorOfVec4f.resize](#vectorofvec4fresize)
   - [VectorOfVec4f.shrink\_to\_fit](#vectorofvec4fshrink%5C_to%5C_fit)
@@ -6778,6 +6840,7 @@
   - [VectorOfVec4i.front](#vectorofvec4ifront)
   - [VectorOfVec4i.max\_size](#vectorofvec4imax%5C_size)
   - [VectorOfVec4i.pop\_back](#vectorofvec4ipop%5C_back)
+  - [VectorOfVec4i.ptr](#vectorofvec4iptr)
   - [VectorOfVec4i.reserve](#vectorofvec4ireserve)
   - [VectorOfVec4i.resize](#vectorofvec4iresize)
   - [VectorOfVec4i.shrink\_to\_fit](#vectorofvec4ishrink%5C_to%5C_fit)
@@ -6797,6 +6860,7 @@
   - [VectorOfVec4s.front](#vectorofvec4sfront)
   - [VectorOfVec4s.max\_size](#vectorofvec4smax%5C_size)
   - [VectorOfVec4s.pop\_back](#vectorofvec4spop%5C_back)
+  - [VectorOfVec4s.ptr](#vectorofvec4sptr)
   - [VectorOfVec4s.reserve](#vectorofvec4sreserve)
   - [VectorOfVec4s.resize](#vectorofvec4sresize)
   - [VectorOfVec4s.shrink\_to\_fit](#vectorofvec4sshrink%5C_to%5C_fit)
@@ -6816,6 +6880,7 @@
   - [VectorOfVec4w.front](#vectorofvec4wfront)
   - [VectorOfVec4w.max\_size](#vectorofvec4wmax%5C_size)
   - [VectorOfVec4w.pop\_back](#vectorofvec4wpop%5C_back)
+  - [VectorOfVec4w.ptr](#vectorofvec4wptr)
   - [VectorOfVec4w.reserve](#vectorofvec4wreserve)
   - [VectorOfVec4w.resize](#vectorofvec4wresize)
   - [VectorOfVec4w.shrink\_to\_fit](#vectorofvec4wshrink%5C_to%5C_fit)
@@ -6835,6 +6900,7 @@
   - [VectorOfVec6d.front](#vectorofvec6dfront)
   - [VectorOfVec6d.max\_size](#vectorofvec6dmax%5C_size)
   - [VectorOfVec6d.pop\_back](#vectorofvec6dpop%5C_back)
+  - [VectorOfVec6d.ptr](#vectorofvec6dptr)
   - [VectorOfVec6d.reserve](#vectorofvec6dreserve)
   - [VectorOfVec6d.resize](#vectorofvec6dresize)
   - [VectorOfVec6d.shrink\_to\_fit](#vectorofvec6dshrink%5C_to%5C_fit)
@@ -6854,6 +6920,7 @@
   - [VectorOfVec6f.front](#vectorofvec6ffront)
   - [VectorOfVec6f.max\_size](#vectorofvec6fmax%5C_size)
   - [VectorOfVec6f.pop\_back](#vectorofvec6fpop%5C_back)
+  - [VectorOfVec6f.ptr](#vectorofvec6fptr)
   - [VectorOfVec6f.reserve](#vectorofvec6freserve)
   - [VectorOfVec6f.resize](#vectorofvec6fresize)
   - [VectorOfVec6f.shrink\_to\_fit](#vectorofvec6fshrink%5C_to%5C_fit)
@@ -6873,6 +6940,7 @@
   - [VectorOfVec6i.front](#vectorofvec6ifront)
   - [VectorOfVec6i.max\_size](#vectorofvec6imax%5C_size)
   - [VectorOfVec6i.pop\_back](#vectorofvec6ipop%5C_back)
+  - [VectorOfVec6i.ptr](#vectorofvec6iptr)
   - [VectorOfVec6i.reserve](#vectorofvec6ireserve)
   - [VectorOfVec6i.resize](#vectorofvec6iresize)
   - [VectorOfVec6i.shrink\_to\_fit](#vectorofvec6ishrink%5C_to%5C_fit)
@@ -6892,6 +6960,7 @@
   - [VectorOfVec8i.front](#vectorofvec8ifront)
   - [VectorOfVec8i.max\_size](#vectorofvec8imax%5C_size)
   - [VectorOfVec8i.pop\_back](#vectorofvec8ipop%5C_back)
+  - [VectorOfVec8i.ptr](#vectorofvec8iptr)
   - [VectorOfVec8i.reserve](#vectorofvec8ireserve)
   - [VectorOfVec8i.resize](#vectorofvec8iresize)
   - [VectorOfVec8i.shrink\_to\_fit](#vectorofvec8ishrink%5C_to%5C_fit)
@@ -6911,6 +6980,7 @@
   - [VectorOfVectorOfBool.front](#vectorofvectorofboolfront)
   - [VectorOfVectorOfBool.max\_size](#vectorofvectorofboolmax%5C_size)
   - [VectorOfVectorOfBool.pop\_back](#vectorofvectorofboolpop%5C_back)
+  - [VectorOfVectorOfBool.ptr](#vectorofvectorofboolptr)
   - [VectorOfVectorOfBool.reserve](#vectorofvectorofboolreserve)
   - [VectorOfVectorOfBool.resize](#vectorofvectorofboolresize)
   - [VectorOfVectorOfBool.shrink\_to\_fit](#vectorofvectorofboolshrink%5C_to%5C_fit)
@@ -6930,6 +7000,7 @@
   - [VectorOfVectorOfChar.front](#vectorofvectorofcharfront)
   - [VectorOfVectorOfChar.max\_size](#vectorofvectorofcharmax%5C_size)
   - [VectorOfVectorOfChar.pop\_back](#vectorofvectorofcharpop%5C_back)
+  - [VectorOfVectorOfChar.ptr](#vectorofvectorofcharptr)
   - [VectorOfVectorOfChar.reserve](#vectorofvectorofcharreserve)
   - [VectorOfVectorOfChar.resize](#vectorofvectorofcharresize)
   - [VectorOfVectorOfChar.shrink\_to\_fit](#vectorofvectorofcharshrink%5C_to%5C_fit)
@@ -6949,6 +7020,7 @@
   - [VectorOfVectorOfDMatch.front](#vectorofvectorofdmatchfront)
   - [VectorOfVectorOfDMatch.max\_size](#vectorofvectorofdmatchmax%5C_size)
   - [VectorOfVectorOfDMatch.pop\_back](#vectorofvectorofdmatchpop%5C_back)
+  - [VectorOfVectorOfDMatch.ptr](#vectorofvectorofdmatchptr)
   - [VectorOfVectorOfDMatch.reserve](#vectorofvectorofdmatchreserve)
   - [VectorOfVectorOfDMatch.resize](#vectorofvectorofdmatchresize)
   - [VectorOfVectorOfDMatch.shrink\_to\_fit](#vectorofvectorofdmatchshrink%5C_to%5C_fit)
@@ -6968,6 +7040,7 @@
   - [VectorOfVectorOfDouble.front](#vectorofvectorofdoublefront)
   - [VectorOfVectorOfDouble.max\_size](#vectorofvectorofdoublemax%5C_size)
   - [VectorOfVectorOfDouble.pop\_back](#vectorofvectorofdoublepop%5C_back)
+  - [VectorOfVectorOfDouble.ptr](#vectorofvectorofdoubleptr)
   - [VectorOfVectorOfDouble.reserve](#vectorofvectorofdoublereserve)
   - [VectorOfVectorOfDouble.resize](#vectorofvectorofdoubleresize)
   - [VectorOfVectorOfDouble.shrink\_to\_fit](#vectorofvectorofdoubleshrink%5C_to%5C_fit)
@@ -6987,6 +7060,7 @@
   - [VectorOfVectorOfFloat.front](#vectorofvectoroffloatfront)
   - [VectorOfVectorOfFloat.max\_size](#vectorofvectoroffloatmax%5C_size)
   - [VectorOfVectorOfFloat.pop\_back](#vectorofvectoroffloatpop%5C_back)
+  - [VectorOfVectorOfFloat.ptr](#vectorofvectoroffloatptr)
   - [VectorOfVectorOfFloat.reserve](#vectorofvectoroffloatreserve)
   - [VectorOfVectorOfFloat.resize](#vectorofvectoroffloatresize)
   - [VectorOfVectorOfFloat.shrink\_to\_fit](#vectorofvectoroffloatshrink%5C_to%5C_fit)
@@ -7006,6 +7080,7 @@
   - [VectorOfVectorOfInt.front](#vectorofvectorofintfront)
   - [VectorOfVectorOfInt.max\_size](#vectorofvectorofintmax%5C_size)
   - [VectorOfVectorOfInt.pop\_back](#vectorofvectorofintpop%5C_back)
+  - [VectorOfVectorOfInt.ptr](#vectorofvectorofintptr)
   - [VectorOfVectorOfInt.reserve](#vectorofvectorofintreserve)
   - [VectorOfVectorOfInt.resize](#vectorofvectorofintresize)
   - [VectorOfVectorOfInt.shrink\_to\_fit](#vectorofvectorofintshrink%5C_to%5C_fit)
@@ -7025,6 +7100,7 @@
   - [VectorOfVectorOfKeyPoint.front](#vectorofvectorofkeypointfront)
   - [VectorOfVectorOfKeyPoint.max\_size](#vectorofvectorofkeypointmax%5C_size)
   - [VectorOfVectorOfKeyPoint.pop\_back](#vectorofvectorofkeypointpop%5C_back)
+  - [VectorOfVectorOfKeyPoint.ptr](#vectorofvectorofkeypointptr)
   - [VectorOfVectorOfKeyPoint.reserve](#vectorofvectorofkeypointreserve)
   - [VectorOfVectorOfKeyPoint.resize](#vectorofvectorofkeypointresize)
   - [VectorOfVectorOfKeyPoint.shrink\_to\_fit](#vectorofvectorofkeypointshrink%5C_to%5C_fit)
@@ -7044,6 +7120,7 @@
   - [VectorOfVectorOfMat.front](#vectorofvectorofmatfront)
   - [VectorOfVectorOfMat.max\_size](#vectorofvectorofmatmax%5C_size)
   - [VectorOfVectorOfMat.pop\_back](#vectorofvectorofmatpop%5C_back)
+  - [VectorOfVectorOfMat.ptr](#vectorofvectorofmatptr)
   - [VectorOfVectorOfMat.reserve](#vectorofvectorofmatreserve)
   - [VectorOfVectorOfMat.resize](#vectorofvectorofmatresize)
   - [VectorOfVectorOfMat.shrink\_to\_fit](#vectorofvectorofmatshrink%5C_to%5C_fit)
@@ -7063,6 +7140,7 @@
   - [VectorOfVectorOfMoments.front](#vectorofvectorofmomentsfront)
   - [VectorOfVectorOfMoments.max\_size](#vectorofvectorofmomentsmax%5C_size)
   - [VectorOfVectorOfMoments.pop\_back](#vectorofvectorofmomentspop%5C_back)
+  - [VectorOfVectorOfMoments.ptr](#vectorofvectorofmomentsptr)
   - [VectorOfVectorOfMoments.reserve](#vectorofvectorofmomentsreserve)
   - [VectorOfVectorOfMoments.resize](#vectorofvectorofmomentsresize)
   - [VectorOfVectorOfMoments.shrink\_to\_fit](#vectorofvectorofmomentsshrink%5C_to%5C_fit)
@@ -7082,6 +7160,7 @@
   - [VectorOfVectorOfPoint.front](#vectorofvectorofpointfront)
   - [VectorOfVectorOfPoint.max\_size](#vectorofvectorofpointmax%5C_size)
   - [VectorOfVectorOfPoint.pop\_back](#vectorofvectorofpointpop%5C_back)
+  - [VectorOfVectorOfPoint.ptr](#vectorofvectorofpointptr)
   - [VectorOfVectorOfPoint.reserve](#vectorofvectorofpointreserve)
   - [VectorOfVectorOfPoint.resize](#vectorofvectorofpointresize)
   - [VectorOfVectorOfPoint.shrink\_to\_fit](#vectorofvectorofpointshrink%5C_to%5C_fit)
@@ -7101,6 +7180,7 @@
   - [VectorOfVectorOfPoint2d.front](#vectorofvectorofpoint2dfront)
   - [VectorOfVectorOfPoint2d.max\_size](#vectorofvectorofpoint2dmax%5C_size)
   - [VectorOfVectorOfPoint2d.pop\_back](#vectorofvectorofpoint2dpop%5C_back)
+  - [VectorOfVectorOfPoint2d.ptr](#vectorofvectorofpoint2dptr)
   - [VectorOfVectorOfPoint2d.reserve](#vectorofvectorofpoint2dreserve)
   - [VectorOfVectorOfPoint2d.resize](#vectorofvectorofpoint2dresize)
   - [VectorOfVectorOfPoint2d.shrink\_to\_fit](#vectorofvectorofpoint2dshrink%5C_to%5C_fit)
@@ -7120,6 +7200,7 @@
   - [VectorOfVectorOfPoint2f.front](#vectorofvectorofpoint2ffront)
   - [VectorOfVectorOfPoint2f.max\_size](#vectorofvectorofpoint2fmax%5C_size)
   - [VectorOfVectorOfPoint2f.pop\_back](#vectorofvectorofpoint2fpop%5C_back)
+  - [VectorOfVectorOfPoint2f.ptr](#vectorofvectorofpoint2fptr)
   - [VectorOfVectorOfPoint2f.reserve](#vectorofvectorofpoint2freserve)
   - [VectorOfVectorOfPoint2f.resize](#vectorofvectorofpoint2fresize)
   - [VectorOfVectorOfPoint2f.shrink\_to\_fit](#vectorofvectorofpoint2fshrink%5C_to%5C_fit)
@@ -7139,6 +7220,7 @@
   - [VectorOfVectorOfPoint3d.front](#vectorofvectorofpoint3dfront)
   - [VectorOfVectorOfPoint3d.max\_size](#vectorofvectorofpoint3dmax%5C_size)
   - [VectorOfVectorOfPoint3d.pop\_back](#vectorofvectorofpoint3dpop%5C_back)
+  - [VectorOfVectorOfPoint3d.ptr](#vectorofvectorofpoint3dptr)
   - [VectorOfVectorOfPoint3d.reserve](#vectorofvectorofpoint3dreserve)
   - [VectorOfVectorOfPoint3d.resize](#vectorofvectorofpoint3dresize)
   - [VectorOfVectorOfPoint3d.shrink\_to\_fit](#vectorofvectorofpoint3dshrink%5C_to%5C_fit)
@@ -7158,6 +7240,7 @@
   - [VectorOfVectorOfPoint3f.front](#vectorofvectorofpoint3ffront)
   - [VectorOfVectorOfPoint3f.max\_size](#vectorofvectorofpoint3fmax%5C_size)
   - [VectorOfVectorOfPoint3f.pop\_back](#vectorofvectorofpoint3fpop%5C_back)
+  - [VectorOfVectorOfPoint3f.ptr](#vectorofvectorofpoint3fptr)
   - [VectorOfVectorOfPoint3f.reserve](#vectorofvectorofpoint3freserve)
   - [VectorOfVectorOfPoint3f.resize](#vectorofvectorofpoint3fresize)
   - [VectorOfVectorOfPoint3f.shrink\_to\_fit](#vectorofvectorofpoint3fshrink%5C_to%5C_fit)
@@ -7177,6 +7260,7 @@
   - [VectorOfVectorOfPoint3i.front](#vectorofvectorofpoint3ifront)
   - [VectorOfVectorOfPoint3i.max\_size](#vectorofvectorofpoint3imax%5C_size)
   - [VectorOfVectorOfPoint3i.pop\_back](#vectorofvectorofpoint3ipop%5C_back)
+  - [VectorOfVectorOfPoint3i.ptr](#vectorofvectorofpoint3iptr)
   - [VectorOfVectorOfPoint3i.reserve](#vectorofvectorofpoint3ireserve)
   - [VectorOfVectorOfPoint3i.resize](#vectorofvectorofpoint3iresize)
   - [VectorOfVectorOfPoint3i.shrink\_to\_fit](#vectorofvectorofpoint3ishrink%5C_to%5C_fit)
@@ -7196,6 +7280,7 @@
   - [VectorOfVectorOfRange.front](#vectorofvectorofrangefront)
   - [VectorOfVectorOfRange.max\_size](#vectorofvectorofrangemax%5C_size)
   - [VectorOfVectorOfRange.pop\_back](#vectorofvectorofrangepop%5C_back)
+  - [VectorOfVectorOfRange.ptr](#vectorofvectorofrangeptr)
   - [VectorOfVectorOfRange.reserve](#vectorofvectorofrangereserve)
   - [VectorOfVectorOfRange.resize](#vectorofvectorofrangeresize)
   - [VectorOfVectorOfRange.shrink\_to\_fit](#vectorofvectorofrangeshrink%5C_to%5C_fit)
@@ -7215,6 +7300,7 @@
   - [VectorOfVectorOfRect.front](#vectorofvectorofrectfront)
   - [VectorOfVectorOfRect.max\_size](#vectorofvectorofrectmax%5C_size)
   - [VectorOfVectorOfRect.pop\_back](#vectorofvectorofrectpop%5C_back)
+  - [VectorOfVectorOfRect.ptr](#vectorofvectorofrectptr)
   - [VectorOfVectorOfRect.reserve](#vectorofvectorofrectreserve)
   - [VectorOfVectorOfRect.resize](#vectorofvectorofrectresize)
   - [VectorOfVectorOfRect.shrink\_to\_fit](#vectorofvectorofrectshrink%5C_to%5C_fit)
@@ -7234,6 +7320,7 @@
   - [VectorOfVectorOfRect2d.front](#vectorofvectorofrect2dfront)
   - [VectorOfVectorOfRect2d.max\_size](#vectorofvectorofrect2dmax%5C_size)
   - [VectorOfVectorOfRect2d.pop\_back](#vectorofvectorofrect2dpop%5C_back)
+  - [VectorOfVectorOfRect2d.ptr](#vectorofvectorofrect2dptr)
   - [VectorOfVectorOfRect2d.reserve](#vectorofvectorofrect2dreserve)
   - [VectorOfVectorOfRect2d.resize](#vectorofvectorofrect2dresize)
   - [VectorOfVectorOfRect2d.shrink\_to\_fit](#vectorofvectorofrect2dshrink%5C_to%5C_fit)
@@ -7253,6 +7340,7 @@
   - [VectorOfVectorOfRect2f.front](#vectorofvectorofrect2ffront)
   - [VectorOfVectorOfRect2f.max\_size](#vectorofvectorofrect2fmax%5C_size)
   - [VectorOfVectorOfRect2f.pop\_back](#vectorofvectorofrect2fpop%5C_back)
+  - [VectorOfVectorOfRect2f.ptr](#vectorofvectorofrect2fptr)
   - [VectorOfVectorOfRect2f.reserve](#vectorofvectorofrect2freserve)
   - [VectorOfVectorOfRect2f.resize](#vectorofvectorofrect2fresize)
   - [VectorOfVectorOfRect2f.shrink\_to\_fit](#vectorofvectorofrect2fshrink%5C_to%5C_fit)
@@ -7272,6 +7360,7 @@
   - [VectorOfVectorOfRotatedRect.front](#vectorofvectorofrotatedrectfront)
   - [VectorOfVectorOfRotatedRect.max\_size](#vectorofvectorofrotatedrectmax%5C_size)
   - [VectorOfVectorOfRotatedRect.pop\_back](#vectorofvectorofrotatedrectpop%5C_back)
+  - [VectorOfVectorOfRotatedRect.ptr](#vectorofvectorofrotatedrectptr)
   - [VectorOfVectorOfRotatedRect.reserve](#vectorofvectorofrotatedrectreserve)
   - [VectorOfVectorOfRotatedRect.resize](#vectorofvectorofrotatedrectresize)
   - [VectorOfVectorOfRotatedRect.shrink\_to\_fit](#vectorofvectorofrotatedrectshrink%5C_to%5C_fit)
@@ -7291,6 +7380,7 @@
   - [VectorOfVectorOfSchar.front](#vectorofvectorofscharfront)
   - [VectorOfVectorOfSchar.max\_size](#vectorofvectorofscharmax%5C_size)
   - [VectorOfVectorOfSchar.pop\_back](#vectorofvectorofscharpop%5C_back)
+  - [VectorOfVectorOfSchar.ptr](#vectorofvectorofscharptr)
   - [VectorOfVectorOfSchar.reserve](#vectorofvectorofscharreserve)
   - [VectorOfVectorOfSchar.resize](#vectorofvectorofscharresize)
   - [VectorOfVectorOfSchar.shrink\_to\_fit](#vectorofvectorofscharshrink%5C_to%5C_fit)
@@ -7310,6 +7400,7 @@
   - [VectorOfVectorOfShort.front](#vectorofvectorofshortfront)
   - [VectorOfVectorOfShort.max\_size](#vectorofvectorofshortmax%5C_size)
   - [VectorOfVectorOfShort.pop\_back](#vectorofvectorofshortpop%5C_back)
+  - [VectorOfVectorOfShort.ptr](#vectorofvectorofshortptr)
   - [VectorOfVectorOfShort.reserve](#vectorofvectorofshortreserve)
   - [VectorOfVectorOfShort.resize](#vectorofvectorofshortresize)
   - [VectorOfVectorOfShort.shrink\_to\_fit](#vectorofvectorofshortshrink%5C_to%5C_fit)
@@ -7329,6 +7420,7 @@
   - [VectorOfVectorOfSize.front](#vectorofvectorofsizefront)
   - [VectorOfVectorOfSize.max\_size](#vectorofvectorofsizemax%5C_size)
   - [VectorOfVectorOfSize.pop\_back](#vectorofvectorofsizepop%5C_back)
+  - [VectorOfVectorOfSize.ptr](#vectorofvectorofsizeptr)
   - [VectorOfVectorOfSize.reserve](#vectorofvectorofsizereserve)
   - [VectorOfVectorOfSize.resize](#vectorofvectorofsizeresize)
   - [VectorOfVectorOfSize.shrink\_to\_fit](#vectorofvectorofsizeshrink%5C_to%5C_fit)
@@ -7348,6 +7440,7 @@
   - [VectorOfVectorOfSize2d.front](#vectorofvectorofsize2dfront)
   - [VectorOfVectorOfSize2d.max\_size](#vectorofvectorofsize2dmax%5C_size)
   - [VectorOfVectorOfSize2d.pop\_back](#vectorofvectorofsize2dpop%5C_back)
+  - [VectorOfVectorOfSize2d.ptr](#vectorofvectorofsize2dptr)
   - [VectorOfVectorOfSize2d.reserve](#vectorofvectorofsize2dreserve)
   - [VectorOfVectorOfSize2d.resize](#vectorofvectorofsize2dresize)
   - [VectorOfVectorOfSize2d.shrink\_to\_fit](#vectorofvectorofsize2dshrink%5C_to%5C_fit)
@@ -7367,6 +7460,7 @@
   - [VectorOfVectorOfSize2f.front](#vectorofvectorofsize2ffront)
   - [VectorOfVectorOfSize2f.max\_size](#vectorofvectorofsize2fmax%5C_size)
   - [VectorOfVectorOfSize2f.pop\_back](#vectorofvectorofsize2fpop%5C_back)
+  - [VectorOfVectorOfSize2f.ptr](#vectorofvectorofsize2fptr)
   - [VectorOfVectorOfSize2f.reserve](#vectorofvectorofsize2freserve)
   - [VectorOfVectorOfSize2f.resize](#vectorofvectorofsize2fresize)
   - [VectorOfVectorOfSize2f.shrink\_to\_fit](#vectorofvectorofsize2fshrink%5C_to%5C_fit)
@@ -7386,6 +7480,7 @@
   - [VectorOfVectorOfUchar.front](#vectorofvectorofucharfront)
   - [VectorOfVectorOfUchar.max\_size](#vectorofvectorofucharmax%5C_size)
   - [VectorOfVectorOfUchar.pop\_back](#vectorofvectorofucharpop%5C_back)
+  - [VectorOfVectorOfUchar.ptr](#vectorofvectorofucharptr)
   - [VectorOfVectorOfUchar.reserve](#vectorofvectorofucharreserve)
   - [VectorOfVectorOfUchar.resize](#vectorofvectorofucharresize)
   - [VectorOfVectorOfUchar.shrink\_to\_fit](#vectorofvectorofucharshrink%5C_to%5C_fit)
@@ -7405,6 +7500,7 @@
   - [VectorOfVectorOfUshort.front](#vectorofvectorofushortfront)
   - [VectorOfVectorOfUshort.max\_size](#vectorofvectorofushortmax%5C_size)
   - [VectorOfVectorOfUshort.pop\_back](#vectorofvectorofushortpop%5C_back)
+  - [VectorOfVectorOfUshort.ptr](#vectorofvectorofushortptr)
   - [VectorOfVectorOfUshort.reserve](#vectorofvectorofushortreserve)
   - [VectorOfVectorOfUshort.resize](#vectorofvectorofushortresize)
   - [VectorOfVectorOfUshort.shrink\_to\_fit](#vectorofvectorofushortshrink%5C_to%5C_fit)
@@ -7424,6 +7520,7 @@
   - [VectorOfVectorOfVec2b.front](#vectorofvectorofvec2bfront)
   - [VectorOfVectorOfVec2b.max\_size](#vectorofvectorofvec2bmax%5C_size)
   - [VectorOfVectorOfVec2b.pop\_back](#vectorofvectorofvec2bpop%5C_back)
+  - [VectorOfVectorOfVec2b.ptr](#vectorofvectorofvec2bptr)
   - [VectorOfVectorOfVec2b.reserve](#vectorofvectorofvec2breserve)
   - [VectorOfVectorOfVec2b.resize](#vectorofvectorofvec2bresize)
   - [VectorOfVectorOfVec2b.shrink\_to\_fit](#vectorofvectorofvec2bshrink%5C_to%5C_fit)
@@ -7443,6 +7540,7 @@
   - [VectorOfVectorOfVec2d.front](#vectorofvectorofvec2dfront)
   - [VectorOfVectorOfVec2d.max\_size](#vectorofvectorofvec2dmax%5C_size)
   - [VectorOfVectorOfVec2d.pop\_back](#vectorofvectorofvec2dpop%5C_back)
+  - [VectorOfVectorOfVec2d.ptr](#vectorofvectorofvec2dptr)
   - [VectorOfVectorOfVec2d.reserve](#vectorofvectorofvec2dreserve)
   - [VectorOfVectorOfVec2d.resize](#vectorofvectorofvec2dresize)
   - [VectorOfVectorOfVec2d.shrink\_to\_fit](#vectorofvectorofvec2dshrink%5C_to%5C_fit)
@@ -7462,6 +7560,7 @@
   - [VectorOfVectorOfVec2f.front](#vectorofvectorofvec2ffront)
   - [VectorOfVectorOfVec2f.max\_size](#vectorofvectorofvec2fmax%5C_size)
   - [VectorOfVectorOfVec2f.pop\_back](#vectorofvectorofvec2fpop%5C_back)
+  - [VectorOfVectorOfVec2f.ptr](#vectorofvectorofvec2fptr)
   - [VectorOfVectorOfVec2f.reserve](#vectorofvectorofvec2freserve)
   - [VectorOfVectorOfVec2f.resize](#vectorofvectorofvec2fresize)
   - [VectorOfVectorOfVec2f.shrink\_to\_fit](#vectorofvectorofvec2fshrink%5C_to%5C_fit)
@@ -7481,6 +7580,7 @@
   - [VectorOfVectorOfVec2i.front](#vectorofvectorofvec2ifront)
   - [VectorOfVectorOfVec2i.max\_size](#vectorofvectorofvec2imax%5C_size)
   - [VectorOfVectorOfVec2i.pop\_back](#vectorofvectorofvec2ipop%5C_back)
+  - [VectorOfVectorOfVec2i.ptr](#vectorofvectorofvec2iptr)
   - [VectorOfVectorOfVec2i.reserve](#vectorofvectorofvec2ireserve)
   - [VectorOfVectorOfVec2i.resize](#vectorofvectorofvec2iresize)
   - [VectorOfVectorOfVec2i.shrink\_to\_fit](#vectorofvectorofvec2ishrink%5C_to%5C_fit)
@@ -7500,6 +7600,7 @@
   - [VectorOfVectorOfVec2s.front](#vectorofvectorofvec2sfront)
   - [VectorOfVectorOfVec2s.max\_size](#vectorofvectorofvec2smax%5C_size)
   - [VectorOfVectorOfVec2s.pop\_back](#vectorofvectorofvec2spop%5C_back)
+  - [VectorOfVectorOfVec2s.ptr](#vectorofvectorofvec2sptr)
   - [VectorOfVectorOfVec2s.reserve](#vectorofvectorofvec2sreserve)
   - [VectorOfVectorOfVec2s.resize](#vectorofvectorofvec2sresize)
   - [VectorOfVectorOfVec2s.shrink\_to\_fit](#vectorofvectorofvec2sshrink%5C_to%5C_fit)
@@ -7519,6 +7620,7 @@
   - [VectorOfVectorOfVec2w.front](#vectorofvectorofvec2wfront)
   - [VectorOfVectorOfVec2w.max\_size](#vectorofvectorofvec2wmax%5C_size)
   - [VectorOfVectorOfVec2w.pop\_back](#vectorofvectorofvec2wpop%5C_back)
+  - [VectorOfVectorOfVec2w.ptr](#vectorofvectorofvec2wptr)
   - [VectorOfVectorOfVec2w.reserve](#vectorofvectorofvec2wreserve)
   - [VectorOfVectorOfVec2w.resize](#vectorofvectorofvec2wresize)
   - [VectorOfVectorOfVec2w.shrink\_to\_fit](#vectorofvectorofvec2wshrink%5C_to%5C_fit)
@@ -7538,6 +7640,7 @@
   - [VectorOfVectorOfVec3b.front](#vectorofvectorofvec3bfront)
   - [VectorOfVectorOfVec3b.max\_size](#vectorofvectorofvec3bmax%5C_size)
   - [VectorOfVectorOfVec3b.pop\_back](#vectorofvectorofvec3bpop%5C_back)
+  - [VectorOfVectorOfVec3b.ptr](#vectorofvectorofvec3bptr)
   - [VectorOfVectorOfVec3b.reserve](#vectorofvectorofvec3breserve)
   - [VectorOfVectorOfVec3b.resize](#vectorofvectorofvec3bresize)
   - [VectorOfVectorOfVec3b.shrink\_to\_fit](#vectorofvectorofvec3bshrink%5C_to%5C_fit)
@@ -7557,6 +7660,7 @@
   - [VectorOfVectorOfVec3d.front](#vectorofvectorofvec3dfront)
   - [VectorOfVectorOfVec3d.max\_size](#vectorofvectorofvec3dmax%5C_size)
   - [VectorOfVectorOfVec3d.pop\_back](#vectorofvectorofvec3dpop%5C_back)
+  - [VectorOfVectorOfVec3d.ptr](#vectorofvectorofvec3dptr)
   - [VectorOfVectorOfVec3d.reserve](#vectorofvectorofvec3dreserve)
   - [VectorOfVectorOfVec3d.resize](#vectorofvectorofvec3dresize)
   - [VectorOfVectorOfVec3d.shrink\_to\_fit](#vectorofvectorofvec3dshrink%5C_to%5C_fit)
@@ -7576,6 +7680,7 @@
   - [VectorOfVectorOfVec3f.front](#vectorofvectorofvec3ffront)
   - [VectorOfVectorOfVec3f.max\_size](#vectorofvectorofvec3fmax%5C_size)
   - [VectorOfVectorOfVec3f.pop\_back](#vectorofvectorofvec3fpop%5C_back)
+  - [VectorOfVectorOfVec3f.ptr](#vectorofvectorofvec3fptr)
   - [VectorOfVectorOfVec3f.reserve](#vectorofvectorofvec3freserve)
   - [VectorOfVectorOfVec3f.resize](#vectorofvectorofvec3fresize)
   - [VectorOfVectorOfVec3f.shrink\_to\_fit](#vectorofvectorofvec3fshrink%5C_to%5C_fit)
@@ -7595,6 +7700,7 @@
   - [VectorOfVectorOfVec3i.front](#vectorofvectorofvec3ifront)
   - [VectorOfVectorOfVec3i.max\_size](#vectorofvectorofvec3imax%5C_size)
   - [VectorOfVectorOfVec3i.pop\_back](#vectorofvectorofvec3ipop%5C_back)
+  - [VectorOfVectorOfVec3i.ptr](#vectorofvectorofvec3iptr)
   - [VectorOfVectorOfVec3i.reserve](#vectorofvectorofvec3ireserve)
   - [VectorOfVectorOfVec3i.resize](#vectorofvectorofvec3iresize)
   - [VectorOfVectorOfVec3i.shrink\_to\_fit](#vectorofvectorofvec3ishrink%5C_to%5C_fit)
@@ -7614,6 +7720,7 @@
   - [VectorOfVectorOfVec3s.front](#vectorofvectorofvec3sfront)
   - [VectorOfVectorOfVec3s.max\_size](#vectorofvectorofvec3smax%5C_size)
   - [VectorOfVectorOfVec3s.pop\_back](#vectorofvectorofvec3spop%5C_back)
+  - [VectorOfVectorOfVec3s.ptr](#vectorofvectorofvec3sptr)
   - [VectorOfVectorOfVec3s.reserve](#vectorofvectorofvec3sreserve)
   - [VectorOfVectorOfVec3s.resize](#vectorofvectorofvec3sresize)
   - [VectorOfVectorOfVec3s.shrink\_to\_fit](#vectorofvectorofvec3sshrink%5C_to%5C_fit)
@@ -7633,6 +7740,7 @@
   - [VectorOfVectorOfVec3w.front](#vectorofvectorofvec3wfront)
   - [VectorOfVectorOfVec3w.max\_size](#vectorofvectorofvec3wmax%5C_size)
   - [VectorOfVectorOfVec3w.pop\_back](#vectorofvectorofvec3wpop%5C_back)
+  - [VectorOfVectorOfVec3w.ptr](#vectorofvectorofvec3wptr)
   - [VectorOfVectorOfVec3w.reserve](#vectorofvectorofvec3wreserve)
   - [VectorOfVectorOfVec3w.resize](#vectorofvectorofvec3wresize)
   - [VectorOfVectorOfVec3w.shrink\_to\_fit](#vectorofvectorofvec3wshrink%5C_to%5C_fit)
@@ -7652,6 +7760,7 @@
   - [VectorOfVectorOfVec4b.front](#vectorofvectorofvec4bfront)
   - [VectorOfVectorOfVec4b.max\_size](#vectorofvectorofvec4bmax%5C_size)
   - [VectorOfVectorOfVec4b.pop\_back](#vectorofvectorofvec4bpop%5C_back)
+  - [VectorOfVectorOfVec4b.ptr](#vectorofvectorofvec4bptr)
   - [VectorOfVectorOfVec4b.reserve](#vectorofvectorofvec4breserve)
   - [VectorOfVectorOfVec4b.resize](#vectorofvectorofvec4bresize)
   - [VectorOfVectorOfVec4b.shrink\_to\_fit](#vectorofvectorofvec4bshrink%5C_to%5C_fit)
@@ -7671,6 +7780,7 @@
   - [VectorOfVectorOfVec4d.front](#vectorofvectorofvec4dfront)
   - [VectorOfVectorOfVec4d.max\_size](#vectorofvectorofvec4dmax%5C_size)
   - [VectorOfVectorOfVec4d.pop\_back](#vectorofvectorofvec4dpop%5C_back)
+  - [VectorOfVectorOfVec4d.ptr](#vectorofvectorofvec4dptr)
   - [VectorOfVectorOfVec4d.reserve](#vectorofvectorofvec4dreserve)
   - [VectorOfVectorOfVec4d.resize](#vectorofvectorofvec4dresize)
   - [VectorOfVectorOfVec4d.shrink\_to\_fit](#vectorofvectorofvec4dshrink%5C_to%5C_fit)
@@ -7690,6 +7800,7 @@
   - [VectorOfVectorOfVec4f.front](#vectorofvectorofvec4ffront)
   - [VectorOfVectorOfVec4f.max\_size](#vectorofvectorofvec4fmax%5C_size)
   - [VectorOfVectorOfVec4f.pop\_back](#vectorofvectorofvec4fpop%5C_back)
+  - [VectorOfVectorOfVec4f.ptr](#vectorofvectorofvec4fptr)
   - [VectorOfVectorOfVec4f.reserve](#vectorofvectorofvec4freserve)
   - [VectorOfVectorOfVec4f.resize](#vectorofvectorofvec4fresize)
   - [VectorOfVectorOfVec4f.shrink\_to\_fit](#vectorofvectorofvec4fshrink%5C_to%5C_fit)
@@ -7709,6 +7820,7 @@
   - [VectorOfVectorOfVec4i.front](#vectorofvectorofvec4ifront)
   - [VectorOfVectorOfVec4i.max\_size](#vectorofvectorofvec4imax%5C_size)
   - [VectorOfVectorOfVec4i.pop\_back](#vectorofvectorofvec4ipop%5C_back)
+  - [VectorOfVectorOfVec4i.ptr](#vectorofvectorofvec4iptr)
   - [VectorOfVectorOfVec4i.reserve](#vectorofvectorofvec4ireserve)
   - [VectorOfVectorOfVec4i.resize](#vectorofvectorofvec4iresize)
   - [VectorOfVectorOfVec4i.shrink\_to\_fit](#vectorofvectorofvec4ishrink%5C_to%5C_fit)
@@ -7728,6 +7840,7 @@
   - [VectorOfVectorOfVec4s.front](#vectorofvectorofvec4sfront)
   - [VectorOfVectorOfVec4s.max\_size](#vectorofvectorofvec4smax%5C_size)
   - [VectorOfVectorOfVec4s.pop\_back](#vectorofvectorofvec4spop%5C_back)
+  - [VectorOfVectorOfVec4s.ptr](#vectorofvectorofvec4sptr)
   - [VectorOfVectorOfVec4s.reserve](#vectorofvectorofvec4sreserve)
   - [VectorOfVectorOfVec4s.resize](#vectorofvectorofvec4sresize)
   - [VectorOfVectorOfVec4s.shrink\_to\_fit](#vectorofvectorofvec4sshrink%5C_to%5C_fit)
@@ -7747,6 +7860,7 @@
   - [VectorOfVectorOfVec4w.front](#vectorofvectorofvec4wfront)
   - [VectorOfVectorOfVec4w.max\_size](#vectorofvectorofvec4wmax%5C_size)
   - [VectorOfVectorOfVec4w.pop\_back](#vectorofvectorofvec4wpop%5C_back)
+  - [VectorOfVectorOfVec4w.ptr](#vectorofvectorofvec4wptr)
   - [VectorOfVectorOfVec4w.reserve](#vectorofvectorofvec4wreserve)
   - [VectorOfVectorOfVec4w.resize](#vectorofvectorofvec4wresize)
   - [VectorOfVectorOfVec4w.shrink\_to\_fit](#vectorofvectorofvec4wshrink%5C_to%5C_fit)
@@ -7766,6 +7880,7 @@
   - [VectorOfVectorOfVec6d.front](#vectorofvectorofvec6dfront)
   - [VectorOfVectorOfVec6d.max\_size](#vectorofvectorofvec6dmax%5C_size)
   - [VectorOfVectorOfVec6d.pop\_back](#vectorofvectorofvec6dpop%5C_back)
+  - [VectorOfVectorOfVec6d.ptr](#vectorofvectorofvec6dptr)
   - [VectorOfVectorOfVec6d.reserve](#vectorofvectorofvec6dreserve)
   - [VectorOfVectorOfVec6d.resize](#vectorofvectorofvec6dresize)
   - [VectorOfVectorOfVec6d.shrink\_to\_fit](#vectorofvectorofvec6dshrink%5C_to%5C_fit)
@@ -7785,6 +7900,7 @@
   - [VectorOfVectorOfVec6f.front](#vectorofvectorofvec6ffront)
   - [VectorOfVectorOfVec6f.max\_size](#vectorofvectorofvec6fmax%5C_size)
   - [VectorOfVectorOfVec6f.pop\_back](#vectorofvectorofvec6fpop%5C_back)
+  - [VectorOfVectorOfVec6f.ptr](#vectorofvectorofvec6fptr)
   - [VectorOfVectorOfVec6f.reserve](#vectorofvectorofvec6freserve)
   - [VectorOfVectorOfVec6f.resize](#vectorofvectorofvec6fresize)
   - [VectorOfVectorOfVec6f.shrink\_to\_fit](#vectorofvectorofvec6fshrink%5C_to%5C_fit)
@@ -7804,6 +7920,7 @@
   - [VectorOfVectorOfVec6i.front](#vectorofvectorofvec6ifront)
   - [VectorOfVectorOfVec6i.max\_size](#vectorofvectorofvec6imax%5C_size)
   - [VectorOfVectorOfVec6i.pop\_back](#vectorofvectorofvec6ipop%5C_back)
+  - [VectorOfVectorOfVec6i.ptr](#vectorofvectorofvec6iptr)
   - [VectorOfVectorOfVec6i.reserve](#vectorofvectorofvec6ireserve)
   - [VectorOfVectorOfVec6i.resize](#vectorofvectorofvec6iresize)
   - [VectorOfVectorOfVec6i.shrink\_to\_fit](#vectorofvectorofvec6ishrink%5C_to%5C_fit)
@@ -7823,6 +7940,7 @@
   - [VectorOfVectorOfVec8i.front](#vectorofvectorofvec8ifront)
   - [VectorOfVectorOfVec8i.max\_size](#vectorofvectorofvec8imax%5C_size)
   - [VectorOfVectorOfVec8i.pop\_back](#vectorofvectorofvec8ipop%5C_back)
+  - [VectorOfVectorOfVec8i.ptr](#vectorofvectorofvec8iptr)
   - [VectorOfVectorOfVec8i.reserve](#vectorofvectorofvec8ireserve)
   - [VectorOfVectorOfVec8i.resize](#vectorofvectorofvec8iresize)
   - [VectorOfVectorOfVec8i.shrink\_to\_fit](#vectorofvectorofvec8ishrink%5C_to%5C_fit)
@@ -7842,6 +7960,7 @@
   - [VectorOfVectorOfVectorOfInt.front](#vectorofvectorofvectorofintfront)
   - [VectorOfVectorOfVectorOfInt.max\_size](#vectorofvectorofvectorofintmax%5C_size)
   - [VectorOfVectorOfVectorOfInt.pop\_back](#vectorofvectorofvectorofintpop%5C_back)
+  - [VectorOfVectorOfVectorOfInt.ptr](#vectorofvectorofvectorofintptr)
   - [VectorOfVectorOfVectorOfInt.reserve](#vectorofvectorofvectorofintreserve)
   - [VectorOfVectorOfVectorOfInt.resize](#vectorofvectorofvectorofintresize)
   - [VectorOfVectorOfVectorOfInt.shrink\_to\_fit](#vectorofvectorofvectorofintshrink%5C_to%5C_fit)
@@ -7861,6 +7980,7 @@
   - [VectorOfVideoCapture.front](#vectorofvideocapturefront)
   - [VectorOfVideoCapture.max\_size](#vectorofvideocapturemax%5C_size)
   - [VectorOfVideoCapture.pop\_back](#vectorofvideocapturepop%5C_back)
+  - [VectorOfVideoCapture.ptr](#vectorofvideocaptureptr)
   - [VectorOfVideoCapture.reserve](#vectorofvideocapturereserve)
   - [VectorOfVideoCapture.resize](#vectorofvideocaptureresize)
   - [VectorOfVideoCapture.shrink\_to\_fit](#vectorofvideocaptureshrink%5C_to%5C_fit)
@@ -7880,6 +8000,7 @@
   - [VectorOfVideoCaptureAPIs.front](#vectorofvideocaptureapisfront)
   - [VectorOfVideoCaptureAPIs.max\_size](#vectorofvideocaptureapismax%5C_size)
   - [VectorOfVideoCaptureAPIs.pop\_back](#vectorofvideocaptureapispop%5C_back)
+  - [VectorOfVideoCaptureAPIs.ptr](#vectorofvideocaptureapisptr)
   - [VectorOfVideoCaptureAPIs.reserve](#vectorofvideocaptureapisreserve)
   - [VectorOfVideoCaptureAPIs.resize](#vectorofvideocaptureapisresize)
   - [VectorOfVideoCaptureAPIs.shrink\_to\_fit](#vectorofvideocaptureapisshrink%5C_to%5C_fit)
@@ -17937,8 +18058,8 @@ float cv::wrapperEMD( InputArray     signature1,
                       InputArray     signature2,
                       int            distType,
                       InputArray     cost = noArray(),
-                      cv::Ptr<float> lowerBound = Ptr<float>(),
-                      OutputArray    flow = noArray() );
+                      cv::Ptr<float> lowerBound,
+                      OutputArray    flow );
 lua:
     cv.EMD( signature1, signature2, distType[, cost[, lowerBound[, flow]]] ) -> retval, lowerBound, flow
 ```
@@ -18177,9 +18298,9 @@ lua:
 cv::Vec3d cv::RQDecomp3x3( InputArray  src,
                            OutputArray mtxR,
                            OutputArray mtxQ,
-                           OutputArray Qx = noArray(),
-                           OutputArray Qy = noArray(),
-                           OutputArray Qz = noArray() );
+                           OutputArray Qx,
+                           OutputArray Qy,
+                           OutputArray Qz );
 lua:
     cv.RQDecomp3x3( src[, mtxR[, mtxQ[, Qx[, Qy[, Qz]]]]] ) -> retval, mtxR, mtxQ, Qx, Qy, Qz
 ```
@@ -18189,7 +18310,7 @@ lua:
 ```cpp
 void cv::Rodrigues( InputArray  src,
                     OutputArray dst,
-                    OutputArray jacobian = noArray() );
+                    OutputArray jacobian );
 lua:
     cv.Rodrigues( src[, dst[, jacobian]] ) -> dst, jacobian
 ```
@@ -18842,7 +18963,7 @@ lua:
 ```cpp
 bool cv::checkRange( InputArray a,
                      bool       quiet = true,
-                     cv::Point* pos = 0,
+                     cv::Point* pos,
                      double     minVal = -DBL_MAX,
                      double     maxVal = DBL_MAX );
 lua:
@@ -18925,14 +19046,14 @@ void cv::composeRT( InputArray  rvec1,
                     InputArray  tvec2,
                     OutputArray rvec3,
                     OutputArray tvec3,
-                    OutputArray dr3dr1 = noArray(),
-                    OutputArray dr3dt1 = noArray(),
-                    OutputArray dr3dr2 = noArray(),
-                    OutputArray dr3dt2 = noArray(),
-                    OutputArray dt3dr1 = noArray(),
-                    OutputArray dt3dt1 = noArray(),
-                    OutputArray dt3dr2 = noArray(),
-                    OutputArray dt3dt2 = noArray() );
+                    OutputArray dr3dr1,
+                    OutputArray dr3dt1,
+                    OutputArray dr3dr2,
+                    OutputArray dr3dt2,
+                    OutputArray dt3dr1,
+                    OutputArray dt3dt1,
+                    OutputArray dt3dr2,
+                    OutputArray dt3dt2 );
 lua:
     cv.composeRT( rvec1, tvec1, rvec2, tvec2[, rvec3[, tvec3[, dr3dr1[, dr3dt1[, dr3dr2[, dr3dt2[, dt3dr1[, dt3dt1[, dt3dr2[, dt3dt2]]]]]]]]]] ) -> rvec3, tvec3, dr3dr1, dr3dt1, dr3dr2, dr3dt2, dt3dr1, dt3dt1, dt3dr2, dt3dt2
 ```
@@ -19471,10 +19592,10 @@ void cv::decomposeProjectionMatrix( InputArray  projMatrix,
                                     OutputArray cameraMatrix,
                                     OutputArray rotMatrix,
                                     OutputArray transVect,
-                                    OutputArray rotMatrixX = noArray(),
-                                    OutputArray rotMatrixY = noArray(),
-                                    OutputArray rotMatrixZ = noArray(),
-                                    OutputArray eulerAngles = noArray() );
+                                    OutputArray rotMatrixX,
+                                    OutputArray rotMatrixY,
+                                    OutputArray rotMatrixZ,
+                                    OutputArray eulerAngles );
 lua:
     cv.decomposeProjectionMatrix( projMatrix[, cameraMatrix[, rotMatrix[, transVect[, rotMatrixX[, rotMatrixY[, rotMatrixZ[, eulerAngles]]]]]]] ) -> cameraMatrix, rotMatrix, transVect, rotMatrixX, rotMatrixY, rotMatrixZ, eulerAngles
 ```
@@ -19783,7 +19904,7 @@ lua:
 ```cpp
 bool cv::eigen( InputArray  src,
                 OutputArray eigenvalues,
-                OutputArray eigenvectors = noArray() );
+                OutputArray eigenvectors );
 lua:
     cv.eigen( src[, eigenvalues[, eigenvectors]] ) -> retval, eigenvalues, eigenvectors
 ```
@@ -19891,7 +20012,7 @@ lua:
 ```cpp
 cv::Mat cv::estimateAffine2D( InputArray  from,
                               InputArray  to,
-                              OutputArray inliers = noArray(),
+                              OutputArray inliers,
                               int         method = RANSAC,
                               double      ransacReprojThreshold = 3,
                               size_t      maxIters = 2000,
@@ -19926,7 +20047,7 @@ lua:
 ```cpp
 cv::Mat cv::estimateAffine3D( InputArray src,
                               InputArray dst,
-                              double*    scale = nullptr,
+                              double*    scale,
                               bool       force_rotation = true );
 lua:
     cv.estimateAffine3D( src, dst[, force_rotation[, scale]] ) -> retval, scale
@@ -19937,7 +20058,7 @@ lua:
 ```cpp
 cv::Mat cv::estimateAffinePartial2D( InputArray  from,
                                      InputArray  to,
-                                     OutputArray inliers = noArray(),
+                                     OutputArray inliers,
                                      int         method = RANSAC,
                                      double      ransacReprojThreshold = 3,
                                      size_t      maxIters = 2000,
@@ -19955,7 +20076,7 @@ cv::Scalar cv::estimateChessboardSharpness( InputArray  image,
                                             InputArray  corners,
                                             float       rise_distance = 0.8F,
                                             bool        vertical = false,
-                                            OutputArray sharpness = noArray() );
+                                            OutputArray sharpness );
 lua:
     cv.estimateChessboardSharpness( image, patternSize, corners[, rise_distance[, vertical[, sharpness]]] ) -> retval, sharpness
 ```
@@ -20138,7 +20259,7 @@ void cv::filterSpeckles( InputOutputArray img,
                          double           newVal,
                          int              maxSpeckleSize,
                          double           maxDiff,
-                         InputOutputArray buf = noArray() );
+                         InputOutputArray buf );
 lua:
     cv.filterSpeckles( [img[, newVal[, maxSpeckleSize[, maxDiff[, buf]]]]] ) -> img, buf
 ```
@@ -20250,7 +20371,7 @@ cv::Mat cv::findEssentialMat( InputArray  points1,
                               double      prob = 0.999,
                               double      threshold = 1.0,
                               int         maxIters = 1000,
-                              OutputArray mask = noArray() );
+                              OutputArray mask );
 lua:
     cv.findEssentialMat( points1, points2, cameraMatrix[, method[, prob[, threshold[, maxIters[, mask]]]]] ) -> retval, mask
 ```
@@ -20264,7 +20385,7 @@ cv::Mat cv::findEssentialMat( InputArray  points1,
                               double      prob = 0.999,
                               double      threshold = 1.0,
                               int         maxIters = 1000,
-                              OutputArray mask = noArray() );
+                              OutputArray mask );
 lua:
     cv.findEssentialMat( points1, points2[, focal[, pp[, method[, prob[, threshold[, maxIters[, mask]]]]]]] ) -> retval, mask
 ```
@@ -20279,7 +20400,7 @@ cv::Mat cv::findEssentialMat( InputArray  points1,
                               int         method = RANSAC,
                               double      prob = 0.999,
                               double      threshold = 1.0,
-                              OutputArray mask = noArray() );
+                              OutputArray mask );
 lua:
     cv.findEssentialMat( points1, points2, cameraMatrix1, distCoeffs1, cameraMatrix2, distCoeffs2[, method[, prob[, threshold[, mask]]]] ) -> retval, mask
 ```
@@ -20306,7 +20427,7 @@ cv::Mat cv::findFundamentalMat( InputArray  points1,
                                 double      ransacReprojThreshold,
                                 double      confidence,
                                 int         maxIters,
-                                OutputArray mask = noArray() );
+                                OutputArray mask );
 lua:
     cv.findFundamentalMat( points1, points2, method, ransacReprojThreshold, confidence, maxIters[, mask] ) -> retval, mask
 ```
@@ -20317,7 +20438,7 @@ cv::Mat cv::findFundamentalMat( InputArray  points1,
                                 int         method = FM_RANSAC,
                                 double      ransacReprojThreshold = 3.,
                                 double      confidence = 0.99,
-                                OutputArray mask = noArray() );
+                                OutputArray mask );
 lua:
     cv.findFundamentalMat( points1, points2[, method[, ransacReprojThreshold[, confidence[, mask]]]] ) -> retval, mask
 ```
@@ -20338,7 +20459,7 @@ cv::Mat cv::findHomography( InputArray   srcPoints,
                             InputArray   dstPoints,
                             int          method = 0,
                             double       ransacReprojThreshold = 3,
-                            OutputArray  mask = noArray(),
+                            OutputArray  mask,
                             const int    maxIters = 2000,
                             const double confidence = 0.995 );
 lua:
@@ -20474,7 +20595,7 @@ int cv::floodFill( InputOutputArray image,
                    InputOutputArray mask,
                    cv::Point        seedPoint,
                    cv::Scalar       newVal,
-                   cv::Rect*        rect = 0,
+                   cv::Rect*        rect,
                    cv::Scalar       loDiff = Scalar(),
                    cv::Scalar       upDiff = Scalar(),
                    int              flags = 4 );
@@ -20663,7 +20784,7 @@ cv::Mat cv::getOptimalNewCameraMatrix( InputArray cameraMatrix,
                                        cv::Size   imageSize,
                                        double     alpha,
                                        cv::Size   newImgSize = Size(),
-                                       cv::Rect*  validPixROI = 0,
+                                       cv::Rect*  validPixROI,
                                        bool       centerPrincipalPoint = false );
 lua:
     cv.getOptimalNewCameraMatrix( cameraMatrix, distCoeffs, imageSize, alpha[, newImgSize[, centerPrincipalPoint[, validPixROI]]] ) -> retval, validPixROI
@@ -21328,7 +21449,7 @@ double cv::kmeans( InputArray       data,
                    cv::TermCriteria criteria,
                    int              attempts,
                    int              flags,
-                   OutputArray      centers = noArray() );
+                   OutputArray      centers );
 lua:
     cv.kmeans( data, K[, bestLabels[, criteria[, attempts[, flags[, centers]]]]] ) -> retval, bestLabels, centers
 ```
@@ -21537,9 +21658,9 @@ lua:
 ```cpp
 void cv::minMaxLoc( InputArray src,
                     double*    minVal,
-                    double*    maxVal = 0,
-                    cv::Point* minLoc = 0,
-                    cv::Point* maxLoc = 0,
+                    double*    maxVal,
+                    cv::Point* minLoc,
+                    cv::Point* maxLoc,
                     InputArray mask = noArray() );
 lua:
     cv.minMaxLoc( src[, mask[, minVal[, maxVal[, minLoc[, maxLoc]]]]] ) -> minVal, maxVal, minLoc, maxLoc
@@ -21717,7 +21838,7 @@ lua:
 cv::Point2d cv::phaseCorrelate( InputArray src1,
                                 InputArray src2,
                                 InputArray window = noArray(),
-                                double*    response = 0 );
+                                double*    response );
 lua:
     cv.phaseCorrelate( src1, src2[, window[, response]] ) -> retval, response
 ```
@@ -21796,7 +21917,7 @@ void cv::projectPoints( InputArray  objectPoints,
                         InputArray  cameraMatrix,
                         InputArray  distCoeffs,
                         OutputArray imagePoints,
-                        OutputArray jacobian = noArray(),
+                        OutputArray jacobian,
                         double      aspectRatio = 0 );
 lua:
     cv.projectPoints( objectPoints, rvec, tvec, cameraMatrix, distCoeffs[, imagePoints[, jacobian[, aspectRatio]]] ) -> imagePoints, jacobian
@@ -21882,7 +22003,7 @@ lua:
 ```cpp
 void cv::randn( int              rows,
                 int              cols,
-                InputOutputArray dst = Mat(),
+                InputOutputArray dst,
                 int              type = CV_32F );
 lua:
     cv.randn( rows, cols[, dst[, type]] ) -> dst
@@ -21890,7 +22011,7 @@ lua:
 
 ```cpp
 void cv::randn( cv::Size         size,
-                InputOutputArray dst = Mat(),
+                InputOutputArray dst,
                 int              type = CV_32F );
 lua:
     cv.randn( size[, dst[, type]] ) -> dst
@@ -21898,7 +22019,7 @@ lua:
 
 ```cpp
 void cv::randn( const std::vector<int>& sizes,
-                InputOutputArray        dst = Mat(),
+                InputOutputArray        dst,
                 int                     type = CV_32F );
 lua:
     cv.randn( sizes[, dst[, type]] ) -> dst
@@ -21923,7 +22044,7 @@ lua:
 ```cpp
 void cv::randu( int              rows,
                 int              cols,
-                InputOutputArray dst = Mat(),
+                InputOutputArray dst,
                 int              type = CV_32F );
 lua:
     cv.randu( rows, cols[, dst[, type]] ) -> dst
@@ -21931,7 +22052,7 @@ lua:
 
 ```cpp
 void cv::randu( cv::Size         size,
-                InputOutputArray dst = Mat(),
+                InputOutputArray dst,
                 int              type = CV_32F );
 lua:
     cv.randu( size[, dst[, type]] ) -> dst
@@ -21939,7 +22060,7 @@ lua:
 
 ```cpp
 void cv::randu( const std::vector<int>& sizes,
-                InputOutputArray        dst = Mat(),
+                InputOutputArray        dst,
                 int                     type = CV_32F );
 lua:
     cv.randu( sizes[, dst[, type]] ) -> dst
@@ -22047,7 +22168,7 @@ int cv::recoverPose( InputArray       points1,
                      int              method = cv::RANSAC,
                      double           prob = 0.999,
                      double           threshold = 1.0,
-                     InputOutputArray mask = noArray() );
+                     InputOutputArray mask );
 lua:
     cv.recoverPose( points1, points2, cameraMatrix1, distCoeffs1, cameraMatrix2, distCoeffs2[, E[, R[, t[, method[, prob[, threshold[, mask]]]]]]] ) -> retval, E, R, t, mask
 ```
@@ -22059,7 +22180,7 @@ int cv::recoverPose( InputArray       E,
                      InputArray       cameraMatrix,
                      OutputArray      R,
                      OutputArray      t,
-                     InputOutputArray mask = noArray() );
+                     InputOutputArray mask );
 lua:
     cv.recoverPose( E, points1, points2, cameraMatrix[, R[, t[, mask]]] ) -> retval, R, t, mask
 ```
@@ -22072,7 +22193,7 @@ int cv::recoverPose( InputArray       E,
                      OutputArray      t,
                      double           focal = 1.0,
                      cv::Point2d      pp = Point2d(0, 0),
-                     InputOutputArray mask = noArray() );
+                     InputOutputArray mask );
 lua:
     cv.recoverPose( E, points1, points2[, R[, t[, focal[, pp[, mask]]]]] ) -> retval, R, t, mask
 ```
@@ -22085,8 +22206,8 @@ int cv::recoverPose( InputArray       E,
                      OutputArray      R,
                      OutputArray      t,
                      double           distanceThresh,
-                     InputOutputArray mask = noArray(),
-                     OutputArray      triangulatedPoints = noArray() );
+                     InputOutputArray mask,
+                     OutputArray      triangulatedPoints );
 lua:
     cv.recoverPose( E, points1, points2, cameraMatrix, distanceThresh[, R[, t[, mask[, triangulatedPoints]]]] ) -> retval, R, t, mask, triangulatedPoints
 ```
@@ -22573,7 +22694,7 @@ int cv::solvePnPGeneric( InputArray          objectPoints,
                          cv::SolvePnPMethod  flags = SOLVEPNP_ITERATIVE,
                          InputArray          rvec = noArray(),
                          InputArray          tvec = noArray(),
-                         OutputArray         reprojectionError = noArray() );
+                         OutputArray         reprojectionError );
 lua:
     cv.solvePnPGeneric( objectPoints, imagePoints, cameraMatrix, distCoeffs[, rvecs[, tvecs[, useExtrinsicGuess[, flags[, rvec[, tvec[, reprojectionError]]]]]]] ) -> retval, rvecs, tvecs, reprojectionError
 ```
@@ -22591,7 +22712,7 @@ bool cv::solvePnPRansac( InputArray  objectPoints,
                          int         iterationsCount = 100,
                          float       reprojectionError = 8.0,
                          double      confidence = 0.99,
-                         OutputArray inliers = noArray(),
+                         OutputArray inliers,
                          int         flags = SOLVEPNP_ITERATIVE );
 lua:
     cv.solvePnPRansac( objectPoints, imagePoints, cameraMatrix, distCoeffs[, rvec[, tvec[, useExtrinsicGuess[, iterationsCount[, reprojectionError[, confidence[, inliers[, flags]]]]]]]] ) -> retval, rvec, tvec, inliers
@@ -22814,8 +22935,8 @@ void cv::stereoRectify( InputArray  cameraMatrix1,
                         int         flags = CALIB_ZERO_DISPARITY,
                         double      alpha = -1,
                         cv::Size    newImageSize = Size(),
-                        cv::Rect*   validPixROI1 = 0,
-                        cv::Rect*   validPixROI2 = 0 );
+                        cv::Rect*   validPixROI1,
+                        cv::Rect*   validPixROI2 );
 lua:
     cv.stereoRectify( cameraMatrix1, distCoeffs1, cameraMatrix2, distCoeffs2, imageSize, R, T[, R1[, R2[, P1[, P2[, Q[, flags[, alpha[, newImageSize[, validPixROI1[, validPixROI2]]]]]]]]]] ) -> R1, R2, P1, P2, Q, validPixROI1, validPixROI2
 ```
@@ -27514,7 +27635,7 @@ lua:
 ```cpp
 void cv::GeneralizedHough::detect( InputArray  image,
                                    OutputArray positions,
-                                   OutputArray votes = noArray() );
+                                   OutputArray votes );
 lua:
     oGeneralizedHough:detect( image[, positions[, votes]] ) -> positions, votes
 ```
@@ -27524,7 +27645,7 @@ void cv::GeneralizedHough::detect( InputArray  edges,
                                    InputArray  dx,
                                    InputArray  dy,
                                    OutputArray positions,
-                                   OutputArray votes = noArray() );
+                                   OutputArray votes );
 lua:
     oGeneralizedHough:detect( edges, dx, dy[, positions[, votes]] ) -> positions, votes
 ```
@@ -27862,7 +27983,7 @@ lua:
 ```cpp
 std::string cv::GraphicalCodeDetector::decode( InputArray  img,
                                                InputArray  points,
-                                               OutputArray straight_code = noArray() ) const;
+                                               OutputArray straight_code ) const;
 lua:
     oGraphicalCodeDetector:decode( img, points[, straight_code] ) -> retval, straight_code
 ```
@@ -27872,7 +27993,7 @@ lua:
 ```cpp
 std::string cv::GraphicalCodeDetector::decode( InputArray  img,
                                                InputArray  points,
-                                               OutputArray straight_code = noArray() ) const;
+                                               OutputArray straight_code ) const;
 lua:
     oGraphicalCodeDetector:decodeBytes( img, points[, straight_code] ) -> retval, straight_code
 ```
@@ -27883,7 +28004,7 @@ lua:
 bool cv::GraphicalCodeDetector::decodeMulti( InputArray                img,
                                              InputArray                points,
                                              std::vector<std::string>& decoded_info,
-                                             OutputArrayOfArrays       straight_code = noArray() ) const;
+                                             OutputArrayOfArrays       straight_code ) const;
 lua:
     oGraphicalCodeDetector:decodeBytesMulti( img, points[, straight_code[, decoded_info]] ) -> retval, decoded_info, straight_code
 ```
@@ -27894,7 +28015,7 @@ lua:
 bool cv::GraphicalCodeDetector::decodeMulti( InputArray                img,
                                              InputArray                points,
                                              std::vector<std::string>& decoded_info,
-                                             OutputArrayOfArrays       straight_code = noArray() ) const;
+                                             OutputArrayOfArrays       straight_code ) const;
 lua:
     oGraphicalCodeDetector:decodeMulti( img, points[, straight_code[, decoded_info]] ) -> retval, decoded_info, straight_code
 ```
@@ -27912,8 +28033,8 @@ lua:
 
 ```cpp
 std::string cv::GraphicalCodeDetector::detectAndDecode( InputArray  img,
-                                                        OutputArray points = noArray(),
-                                                        OutputArray straight_code = noArray() ) const;
+                                                        OutputArray points,
+                                                        OutputArray straight_code ) const;
 lua:
     oGraphicalCodeDetector:detectAndDecode( img[, points[, straight_code]] ) -> retval, points, straight_code
 ```
@@ -27922,8 +28043,8 @@ lua:
 
 ```cpp
 std::string cv::GraphicalCodeDetector::detectAndDecode( InputArray  img,
-                                                        OutputArray points = noArray(),
-                                                        OutputArray straight_code = noArray() ) const;
+                                                        OutputArray points,
+                                                        OutputArray straight_code ) const;
 lua:
     oGraphicalCodeDetector:detectAndDecodeBytes( img[, points[, straight_code]] ) -> retval, points, straight_code
 ```
@@ -27933,8 +28054,8 @@ lua:
 ```cpp
 bool cv::GraphicalCodeDetector::detectAndDecodeMulti( InputArray                img,
                                                       std::vector<std::string>& decoded_info,
-                                                      OutputArray               points = noArray(),
-                                                      OutputArrayOfArrays       straight_code = noArray() ) const;
+                                                      OutputArray               points,
+                                                      OutputArrayOfArrays       straight_code ) const;
 lua:
     oGraphicalCodeDetector:detectAndDecodeBytesMulti( img[, points[, straight_code[, decoded_info]]] ) -> retval, decoded_info, points, straight_code
 ```
@@ -27944,8 +28065,8 @@ lua:
 ```cpp
 bool cv::GraphicalCodeDetector::detectAndDecodeMulti( InputArray                img,
                                                       std::vector<std::string>& decoded_info,
-                                                      OutputArray               points = noArray(),
-                                                      OutputArrayOfArrays       straight_code = noArray() ) const;
+                                                      OutputArray               points,
+                                                      OutputArrayOfArrays       straight_code ) const;
 lua:
     oGraphicalCodeDetector:detectAndDecodeMulti( img[, points[, straight_code[, decoded_info]]] ) -> retval, decoded_info, points, straight_code
 ```
@@ -28649,7 +28770,7 @@ lua:
 int cv::LineSegmentDetector::compareSegments( const cv::Size&  size,
                                               InputArray       lines1,
                                               InputArray       lines2,
-                                              InputOutputArray image = noArray() );
+                                              InputOutputArray image );
 lua:
     oLineSegmentDetector:compareSegments( size, lines1, lines2[, image] ) -> retval, image
 ```
@@ -28659,9 +28780,9 @@ lua:
 ```cpp
 void cv::LineSegmentDetector::detect( InputArray  image,
                                       OutputArray lines,
-                                      OutputArray width = noArray(),
-                                      OutputArray prec = noArray(),
-                                      OutputArray nfa = noArray() );
+                                      OutputArray width,
+                                      OutputArray prec,
+                                      OutputArray nfa );
 lua:
     oLineSegmentDetector:detect( image[, lines[, width[, prec[, nfa]]]] ) -> lines, width, prec, nfa
 ```
@@ -38250,7 +38371,7 @@ lua:
 ```cpp
 cv::String cv::QRCodeDetector::decodeCurved( InputArray  img,
                                              InputArray  points,
-                                             OutputArray straight_qrcode = noArray() );
+                                             OutputArray straight_qrcode );
 lua:
     oQRCodeDetector:decodeCurved( img, points[, straight_qrcode] ) -> retval, straight_qrcode
 ```
@@ -38259,8 +38380,8 @@ lua:
 
 ```cpp
 std::string cv::QRCodeDetector::detectAndDecodeCurved( InputArray  img,
-                                                       OutputArray points = noArray(),
-                                                       OutputArray straight_qrcode = noArray() );
+                                                       OutputArray points,
+                                                       OutputArray straight_qrcode );
 lua:
     oQRCodeDetector:detectAndDecodeCurved( img[, points[, straight_qrcode]] ) -> retval, points, straight_qrcode
 ```
@@ -39428,7 +39549,7 @@ void cv::SparseOpticalFlow::calc( InputArray       prevImg,
                                   InputArray       prevPts,
                                   InputOutputArray nextPts,
                                   OutputArray      status,
-                                  OutputArray      err = cv::noArray() );
+                                  OutputArray      err );
 lua:
     oSparseOpticalFlow:calc( prevImg, nextImg, prevPts[, nextPts[, status[, err]]] ) -> nextPts, status, err
 ```
@@ -40283,7 +40404,7 @@ lua:
 
 ```cpp
 int cv::Subdiv2D::edgeDst( int          edge,
-                           cv::Point2f* dstpt = 0 ) const;
+                           cv::Point2f* dstpt ) const;
 lua:
     oSubdiv2D:edgeDst( edge[, dstpt] ) -> retval, dstpt
 ```
@@ -40292,7 +40413,7 @@ lua:
 
 ```cpp
 int cv::Subdiv2D::edgeOrg( int          edge,
-                           cv::Point2f* orgpt = 0 ) const;
+                           cv::Point2f* orgpt ) const;
 lua:
     oSubdiv2D:edgeOrg( edge[, orgpt] ) -> retval, orgpt
 ```
@@ -40301,7 +40422,7 @@ lua:
 
 ```cpp
 int cv::Subdiv2D::findNearest( cv::Point2f  pt,
-                               cv::Point2f* nearestPt = 0 );
+                               cv::Point2f* nearestPt );
 lua:
     oSubdiv2D:findNearest( pt[, nearestPt] ) -> retval, nearestPt
 ```
@@ -40343,7 +40464,7 @@ lua:
 
 ```cpp
 cv::Point2f cv::Subdiv2D::getVertex( int  vertex,
-                                     int* firstEdge = 0 ) const;
+                                     int* firstEdge ) const;
 lua:
     oSubdiv2D:getVertex( vertex[, firstEdge] ) -> retval, firstEdge
 ```
@@ -41779,7 +41900,7 @@ lua:
 ```cpp
 static void cv::UMat::operator*( const cv::UMat& src1,
                                  InputArray      src2,
-                                 cv::UMat        dst = cv::UMat() );
+                                 cv::UMat        dst );
 lua:
     cv.UMat.__mul( src1, src2[, dst] ) -> dst
     src1 * src2 -> dst
@@ -41790,7 +41911,7 @@ lua:
 ```cpp
 static void cv::UMat::operator+( const cv::UMat& src1,
                                  InputArray      src2,
-                                 cv::UMat        dst = cv::UMat() );
+                                 cv::UMat        dst );
 lua:
     cv.UMat.__add( src1, src2[, dst] ) -> dst
     src1 + src2 -> dst
@@ -41801,7 +41922,7 @@ lua:
 ```cpp
 static void cv::UMat::operator-( const cv::UMat& src1,
                                  InputArray      src2,
-                                 cv::UMat        dst = cv::UMat() );
+                                 cv::UMat        dst );
 lua:
     cv.UMat.__sub( src1, src2[, dst] ) -> dst
     src1 - src2 -> dst
@@ -41812,7 +41933,7 @@ lua:
 ```cpp
 static void cv::UMat::operator/( const cv::UMat& src1,
                                  InputArray      src2,
-                                 cv::UMat        dst = cv::UMat() );
+                                 cv::UMat        dst );
 lua:
     cv.UMat.__div( src1, src2[, dst] ) -> dst
     src1 / src2 -> dst
@@ -41823,7 +41944,7 @@ lua:
 ```cpp
 static void cv::UMat::operator<( const cv::UMat& src1,
                                  InputArray      src2,
-                                 cv::UMat        dst = cv::UMat() );
+                                 cv::UMat        dst );
 lua:
     cv.UMat.__lt( src1, src2[, dst] ) -> dst
 ```
@@ -41833,7 +41954,7 @@ lua:
 ```cpp
 static void cv::UMat::operator<=( const cv::UMat& src1,
                                   InputArray      src2,
-                                  cv::UMat        dst = cv::UMat() );
+                                  cv::UMat        dst );
 lua:
     cv.UMat.__le( src1, src2[, dst] ) -> dst
 ```
@@ -41843,7 +41964,7 @@ lua:
 ```cpp
 static void cv::UMat::operator==( const cv::UMat& src1,
                                   InputArray      src2,
-                                  cv::UMat        dst = cv::UMat() );
+                                  cv::UMat        dst );
 lua:
     cv.UMat.__eq( src1, src2[, dst] ) -> dst
 ```
@@ -43266,7 +43387,7 @@ lua:
 void cv::aruco::ArucoDetector::detectMarkers( InputArray          image,
                                               OutputArrayOfArrays corners,
                                               OutputArray         ids,
-                                              OutputArrayOfArrays rejectedImgPoints = noArray() ) const;
+                                              OutputArrayOfArrays rejectedImgPoints ) const;
 lua:
     oArucoDetector:detectMarkers( image[, corners[, ids[, rejectedImgPoints]]] ) -> corners, ids, rejectedImgPoints
 ```
@@ -43277,8 +43398,8 @@ lua:
 void cv::aruco::ArucoDetector::detectMarkersMultiDict( InputArray          image,
                                                        OutputArrayOfArrays corners,
                                                        OutputArray         ids,
-                                                       OutputArrayOfArrays rejectedImgPoints = noArray(),
-                                                       OutputArray         dictIndices = noArray() ) const;
+                                                       OutputArrayOfArrays rejectedImgPoints,
+                                                       OutputArray         dictIndices ) const;
 lua:
     oArucoDetector:detectMarkersMultiDict( image[, corners[, ids[, rejectedImgPoints[, dictIndices]]]] ) -> corners, ids, rejectedImgPoints, dictIndices
 ```
@@ -43333,7 +43454,7 @@ void cv::aruco::ArucoDetector::refineDetectedMarkers( InputArray               i
                                                       InputOutputArrayOfArrays rejectedCorners,
                                                       InputArray               cameraMatrix = noArray(),
                                                       InputArray               distCoeffs = noArray(),
-                                                      OutputArray              recoveredIdxs = noArray() ) const;
+                                                      OutputArray              recoveredIdxs ) const;
 lua:
     oArucoDetector:refineDetectedMarkers( image, board[, detectedCorners[, detectedIds[, rejectedCorners[, cameraMatrix[, distCoeffs[, recoveredIdxs]]]]]] ) -> detectedCorners, detectedIds, rejectedCorners, recoveredIdxs
 ```
@@ -43537,8 +43658,8 @@ lua:
 void cv::aruco::CharucoDetector::detectBoard( InputArray               image,
                                               OutputArray              charucoCorners,
                                               OutputArray              charucoIds,
-                                              InputOutputArrayOfArrays markerCorners = noArray(),
-                                              InputOutputArray         markerIds = noArray() ) const;
+                                              InputOutputArrayOfArrays markerCorners,
+                                              InputOutputArray         markerIds ) const;
 lua:
     oCharucoDetector:detectBoard( image[, charucoCorners[, charucoIds[, markerCorners[, markerIds]]]] ) -> charucoCorners, charucoIds, markerCorners, markerIds
 ```
@@ -43549,8 +43670,8 @@ lua:
 void cv::aruco::CharucoDetector::detectDiamonds( InputArray               image,
                                                  OutputArrayOfArrays      diamondCorners,
                                                  OutputArray              diamondIds,
-                                                 InputOutputArrayOfArrays markerCorners = noArray(),
-                                                 InputOutputArray         markerIds = noArray() ) const;
+                                                 InputOutputArrayOfArrays markerCorners,
+                                                 InputOutputArray         markerIds ) const;
 lua:
     oCharucoDetector:detectDiamonds( image[, diamondCorners[, diamondIds[, markerCorners[, markerIds]]]] ) -> diamondCorners, diamondIds, markerCorners, markerIds
 ```
@@ -44209,7 +44330,7 @@ lua:
 bool cv::barcode::BarcodeDetector::detectAndDecodeWithType( InputArray                img,
                                                             std::vector<std::string>& decoded_info,
                                                             std::vector<std::string>& decoded_type,
-                                                            OutputArray               points = noArray() ) const;
+                                                            OutputArray               points ) const;
 lua:
     oBarcodeDetector:detectAndDecodeWithType( img[, points[, decoded_info[, decoded_type]]] ) -> retval, decoded_info, decoded_type, points
 ```
@@ -45523,7 +45644,7 @@ lua:
 ```cpp
 static void cv::cuda::GpuMat::operator*( const cv::cuda::GpuMat& src1,
                                          InputArray              src2,
-                                         cv::cuda::GpuMat        dst = cv::cuda::GpuMat() );
+                                         cv::cuda::GpuMat        dst );
 lua:
     cv.cuda.GpuMat.__mul( src1, src2[, dst] ) -> dst
     src1 * src2 -> dst
@@ -45534,7 +45655,7 @@ lua:
 ```cpp
 static void cv::cuda::GpuMat::operator+( const cv::cuda::GpuMat& src1,
                                          InputArray              src2,
-                                         cv::cuda::GpuMat        dst = cv::cuda::GpuMat() );
+                                         cv::cuda::GpuMat        dst );
 lua:
     cv.cuda.GpuMat.__add( src1, src2[, dst] ) -> dst
     src1 + src2 -> dst
@@ -45545,7 +45666,7 @@ lua:
 ```cpp
 static void cv::cuda::GpuMat::operator-( const cv::cuda::GpuMat& src1,
                                          InputArray              src2,
-                                         cv::cuda::GpuMat        dst = cv::cuda::GpuMat() );
+                                         cv::cuda::GpuMat        dst );
 lua:
     cv.cuda.GpuMat.__sub( src1, src2[, dst] ) -> dst
     src1 - src2 -> dst
@@ -45556,7 +45677,7 @@ lua:
 ```cpp
 static void cv::cuda::GpuMat::operator/( const cv::cuda::GpuMat& src1,
                                          InputArray              src2,
-                                         cv::cuda::GpuMat        dst = cv::cuda::GpuMat() );
+                                         cv::cuda::GpuMat        dst );
 lua:
     cv.cuda.GpuMat.__div( src1, src2[, dst] ) -> dst
     src1 / src2 -> dst
@@ -45567,7 +45688,7 @@ lua:
 ```cpp
 static void cv::cuda::GpuMat::operator<( const cv::cuda::GpuMat& src1,
                                          InputArray              src2,
-                                         cv::cuda::GpuMat        dst = cv::cuda::GpuMat() );
+                                         cv::cuda::GpuMat        dst );
 lua:
     cv.cuda.GpuMat.__lt( src1, src2[, dst] ) -> dst
 ```
@@ -45577,7 +45698,7 @@ lua:
 ```cpp
 static void cv::cuda::GpuMat::operator<=( const cv::cuda::GpuMat& src1,
                                           InputArray              src2,
-                                          cv::cuda::GpuMat        dst = cv::cuda::GpuMat() );
+                                          cv::cuda::GpuMat        dst );
 lua:
     cv.cuda.GpuMat.__le( src1, src2[, dst] ) -> dst
 ```
@@ -45587,7 +45708,7 @@ lua:
 ```cpp
 static void cv::cuda::GpuMat::operator==( const cv::cuda::GpuMat& src1,
                                           InputArray              src2,
-                                          cv::cuda::GpuMat        dst = cv::cuda::GpuMat() );
+                                          cv::cuda::GpuMat        dst );
 lua:
     cv.cuda.GpuMat.__eq( src1, src2[, dst] ) -> dst
 ```
@@ -49542,7 +49663,7 @@ void cv::fisheye::projectPoints( InputArray  objectPoints,
                                  InputArray  K,
                                  InputArray  D,
                                  double      alpha = 0,
-                                 OutputArray jacobian = noArray() );
+                                 OutputArray jacobian );
 lua:
     cv.fisheye.projectPoints( objectPoints, rvec, tvec, K, D[, imagePoints[, alpha[, jacobian]]] ) -> imagePoints, jacobian
 ```
@@ -49576,7 +49697,7 @@ bool cv::fisheye::solvePnPRansac( InputArray       objectPoints,
                                   int              iterationsCount = 100,
                                   float            reprojectionError = 8.0,
                                   double           confidence = 0.99,
-                                  OutputArray      inliers = noArray(),
+                                  OutputArray      inliers,
                                   int              flags = SOLVEPNP_ITERATIVE,
                                   cv::TermCriteria criteria = TermCriteria(TermCriteria::MAX_ITER + TermCriteria::EPS, 10, 1e-8) );
 lua:
@@ -53268,7 +53389,7 @@ lua:
 
 ```cpp
 float cv::ml::EM::predict( InputArray  samples,
-                           OutputArray results = noArray(),
+                           OutputArray results,
                            int         flags = 0 ) const;
 lua:
     oEM:predict( samples[, results[, flags]] ) -> retval, results
@@ -53314,9 +53435,9 @@ bool cv::ml::EM::trainE( InputArray  samples,
                          InputArray  means0,
                          InputArray  covs0 = noArray(),
                          InputArray  weights0 = noArray(),
-                         OutputArray logLikelihoods = noArray(),
-                         OutputArray labels = noArray(),
-                         OutputArray probs = noArray() );
+                         OutputArray logLikelihoods,
+                         OutputArray labels,
+                         OutputArray probs );
 lua:
     oEM:trainE( samples, means0[, covs0[, weights0[, logLikelihoods[, labels[, probs]]]]] ) -> retval, logLikelihoods, labels, probs
 ```
@@ -53325,9 +53446,9 @@ lua:
 
 ```cpp
 bool cv::ml::EM::trainEM( InputArray  samples,
-                          OutputArray logLikelihoods = noArray(),
-                          OutputArray labels = noArray(),
-                          OutputArray probs = noArray() );
+                          OutputArray logLikelihoods,
+                          OutputArray labels,
+                          OutputArray probs );
 lua:
     oEM:trainEM( samples[, logLikelihoods[, labels[, probs]]] ) -> retval, logLikelihoods, labels, probs
 ```
@@ -53337,9 +53458,9 @@ lua:
 ```cpp
 bool cv::ml::EM::trainM( InputArray  samples,
                          InputArray  probs0,
-                         OutputArray logLikelihoods = noArray(),
-                         OutputArray labels = noArray(),
-                         OutputArray probs = noArray() );
+                         OutputArray logLikelihoods,
+                         OutputArray labels,
+                         OutputArray probs );
 lua:
     oEM:trainM( samples, probs0[, logLikelihoods[, labels[, probs]]] ) -> retval, logLikelihoods, labels, probs
 ```
@@ -53376,8 +53497,8 @@ lua:
 float cv::ml::KNearest::findNearest( InputArray  samples,
                                      int         k,
                                      OutputArray results,
-                                     OutputArray neighborResponses = noArray(),
-                                     OutputArray dist = noArray() ) const;
+                                     OutputArray neighborResponses,
+                                     OutputArray dist ) const;
 lua:
     oKNearest:findNearest( samples, k[, results[, neighborResponses[, dist]]] ) -> retval, results, neighborResponses, dist
 ```
@@ -53573,7 +53694,7 @@ lua:
 
 ```cpp
 float cv::ml::LogisticRegression::predict( InputArray  samples,
-                                           OutputArray results = noArray(),
+                                           OutputArray results,
                                            int         flags = 0 ) const;
 lua:
     oLogisticRegression:predict( samples[, results[, flags]] ) -> retval, results
@@ -54412,7 +54533,7 @@ lua:
 
 ```cpp
 float cv::ml::StatModel::predict( InputArray  samples,
-                                  OutputArray results = noArray(),
+                                  OutputArray results,
                                   int         flags = 0 ) const;
 lua:
     oStatModel:predict( samples[, results[, flags]] ) -> retval, results
@@ -63365,6 +63486,21 @@ lua:
     oVectorOfAruco_Dictionary:pop_back() -> None
 ```
 
+### VectorOfAruco\_Dictionary.ptr
+
+```cpp
+void* VectorOfAruco_Dictionary::data( size_t i );
+lua:
+    oVectorOfAruco_Dictionary:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfAruco_Dictionary::ptr( void*  ptr,
+                                            size_t i );
+lua:
+    VectorOfAruco_Dictionary.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfAruco\_Dictionary.reserve
 
 ```cpp
@@ -63727,6 +63863,21 @@ lua:
     oVectorOfChar:pop_back() -> None
 ```
 
+### VectorOfChar.ptr
+
+```cpp
+void* VectorOfChar::data( size_t i );
+lua:
+    oVectorOfChar:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfChar::ptr( void*  ptr,
+                                size_t i );
+lua:
+    VectorOfChar.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfChar.reserve
 
 ```cpp
@@ -63910,6 +64061,21 @@ lua:
 void VectorOfCvVariantOfIntAndRange::pop_back();
 lua:
     oVectorOfCvVariantOfIntAndRange:pop_back() -> None
+```
+
+### VectorOfCvVariantOfIntAndRange.ptr
+
+```cpp
+void* VectorOfCvVariantOfIntAndRange::data( size_t i );
+lua:
+    oVectorOfCvVariantOfIntAndRange:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfCvVariantOfIntAndRange::ptr( void*  ptr,
+                                                  size_t i );
+lua:
+    VectorOfCvVariantOfIntAndRange.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfCvVariantOfIntAndRange.reserve
@@ -64097,6 +64263,21 @@ lua:
     oVectorOfDMatch:pop_back() -> None
 ```
 
+### VectorOfDMatch.ptr
+
+```cpp
+void* VectorOfDMatch::data( size_t i );
+lua:
+    oVectorOfDMatch:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfDMatch::ptr( void*  ptr,
+                                  size_t i );
+lua:
+    VectorOfDMatch.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfDMatch.reserve
 
 ```cpp
@@ -64280,6 +64461,21 @@ lua:
 void VectorOfDetail_CameraParams::pop_back();
 lua:
     oVectorOfDetail_CameraParams:pop_back() -> None
+```
+
+### VectorOfDetail\_CameraParams.ptr
+
+```cpp
+void* VectorOfDetail_CameraParams::data( size_t i );
+lua:
+    oVectorOfDetail_CameraParams:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfDetail_CameraParams::ptr( void*  ptr,
+                                               size_t i );
+lua:
+    VectorOfDetail_CameraParams.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfDetail\_CameraParams.reserve
@@ -64467,6 +64663,21 @@ lua:
     oVectorOfDetail_ImageFeatures:pop_back() -> None
 ```
 
+### VectorOfDetail\_ImageFeatures.ptr
+
+```cpp
+void* VectorOfDetail_ImageFeatures::data( size_t i );
+lua:
+    oVectorOfDetail_ImageFeatures:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfDetail_ImageFeatures::ptr( void*  ptr,
+                                                size_t i );
+lua:
+    VectorOfDetail_ImageFeatures.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfDetail\_ImageFeatures.reserve
 
 ```cpp
@@ -64650,6 +64861,21 @@ lua:
 void VectorOfDetail_MatchesInfo::pop_back();
 lua:
     oVectorOfDetail_MatchesInfo:pop_back() -> None
+```
+
+### VectorOfDetail\_MatchesInfo.ptr
+
+```cpp
+void* VectorOfDetail_MatchesInfo::data( size_t i );
+lua:
+    oVectorOfDetail_MatchesInfo:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfDetail_MatchesInfo::ptr( void*  ptr,
+                                              size_t i );
+lua:
+    VectorOfDetail_MatchesInfo.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfDetail\_MatchesInfo.reserve
@@ -64837,6 +65063,21 @@ lua:
     oVectorOfDnn_Target:pop_back() -> None
 ```
 
+### VectorOfDnn\_Target.ptr
+
+```cpp
+void* VectorOfDnn_Target::data( size_t i );
+lua:
+    oVectorOfDnn_Target:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfDnn_Target::ptr( void*  ptr,
+                                      size_t i );
+lua:
+    VectorOfDnn_Target.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfDnn\_Target.reserve
 
 ```cpp
@@ -65020,6 +65261,21 @@ lua:
 void VectorOfDouble::pop_back();
 lua:
     oVectorOfDouble:pop_back() -> None
+```
+
+### VectorOfDouble.ptr
+
+```cpp
+void* VectorOfDouble::data( size_t i );
+lua:
+    oVectorOfDouble:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfDouble::ptr( void*  ptr,
+                                  size_t i );
+lua:
+    VectorOfDouble.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfDouble.reserve
@@ -65207,6 +65463,21 @@ lua:
     oVectorOfFloat:pop_back() -> None
 ```
 
+### VectorOfFloat.ptr
+
+```cpp
+void* VectorOfFloat::data( size_t i );
+lua:
+    oVectorOfFloat:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfFloat::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfFloat.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfFloat.reserve
 
 ```cpp
@@ -65390,6 +65661,21 @@ lua:
 void VectorOfGCompileArg::pop_back();
 lua:
     oVectorOfGCompileArg:pop_back() -> None
+```
+
+### VectorOfGCompileArg.ptr
+
+```cpp
+void* VectorOfGCompileArg::data( size_t i );
+lua:
+    oVectorOfGCompileArg:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfGCompileArg::ptr( void*  ptr,
+                                       size_t i );
+lua:
+    VectorOfGCompileArg.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfGCompileArg.reserve
@@ -65577,6 +65863,21 @@ lua:
     oVectorOfGMat:pop_back() -> None
 ```
 
+### VectorOfGMat.ptr
+
+```cpp
+void* VectorOfGMat::data( size_t i );
+lua:
+    oVectorOfGMat:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfGMat::ptr( void*  ptr,
+                                size_t i );
+lua:
+    VectorOfGMat.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfGMat.reserve
 
 ```cpp
@@ -65760,6 +66061,21 @@ lua:
 void VectorOfGMetaArg::pop_back();
 lua:
     oVectorOfGMetaArg:pop_back() -> None
+```
+
+### VectorOfGMetaArg.ptr
+
+```cpp
+void* VectorOfGMetaArg::data( size_t i );
+lua:
+    oVectorOfGMetaArg:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfGMetaArg::ptr( void*  ptr,
+                                    size_t i );
+lua:
+    VectorOfGMetaArg.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfGMetaArg.reserve
@@ -65947,6 +66263,21 @@ lua:
     oVectorOfGRunArg:pop_back() -> None
 ```
 
+### VectorOfGRunArg.ptr
+
+```cpp
+void* VectorOfGRunArg::data( size_t i );
+lua:
+    oVectorOfGRunArg:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfGRunArg::ptr( void*  ptr,
+                                   size_t i );
+lua:
+    VectorOfGRunArg.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfGRunArg.reserve
 
 ```cpp
@@ -66130,6 +66461,21 @@ lua:
 void VectorOfGapi_GNetParam::pop_back();
 lua:
     oVectorOfGapi_GNetParam:pop_back() -> None
+```
+
+### VectorOfGapi\_GNetParam.ptr
+
+```cpp
+void* VectorOfGapi_GNetParam::data( size_t i );
+lua:
+    oVectorOfGapi_GNetParam:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfGapi_GNetParam::ptr( void*  ptr,
+                                          size_t i );
+lua:
+    VectorOfGapi_GNetParam.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfGapi\_GNetParam.reserve
@@ -66317,6 +66663,21 @@ lua:
     oVectorOfGapi_wip_draw_Prim:pop_back() -> None
 ```
 
+### VectorOfGapi\_wip\_draw\_Prim.ptr
+
+```cpp
+void* VectorOfGapi_wip_draw_Prim::data( size_t i );
+lua:
+    oVectorOfGapi_wip_draw_Prim:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfGapi_wip_draw_Prim::ptr( void*  ptr,
+                                              size_t i );
+lua:
+    VectorOfGapi_wip_draw_Prim.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfGapi\_wip\_draw\_Prim.reserve
 
 ```cpp
@@ -66500,6 +66861,21 @@ lua:
 void VectorOfInt::pop_back();
 lua:
     oVectorOfInt:pop_back() -> None
+```
+
+### VectorOfInt.ptr
+
+```cpp
+void* VectorOfInt::data( size_t i );
+lua:
+    oVectorOfInt:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfInt::ptr( void*  ptr,
+                               size_t i );
+lua:
+    VectorOfInt.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfInt.reserve
@@ -66687,6 +67063,21 @@ lua:
     oVectorOfKeyPoint:pop_back() -> None
 ```
 
+### VectorOfKeyPoint.ptr
+
+```cpp
+void* VectorOfKeyPoint::data( size_t i );
+lua:
+    oVectorOfKeyPoint:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfKeyPoint::ptr( void*  ptr,
+                                    size_t i );
+lua:
+    VectorOfKeyPoint.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfKeyPoint.reserve
 
 ```cpp
@@ -66870,6 +67261,21 @@ lua:
 void VectorOfMat::pop_back();
 lua:
     oVectorOfMat:pop_back() -> None
+```
+
+### VectorOfMat.ptr
+
+```cpp
+void* VectorOfMat::data( size_t i );
+lua:
+    oVectorOfMat:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfMat::ptr( void*  ptr,
+                               size_t i );
+lua:
+    VectorOfMat.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfMat.reserve
@@ -67057,6 +67463,21 @@ lua:
     oVectorOfMoments:pop_back() -> None
 ```
 
+### VectorOfMoments.ptr
+
+```cpp
+void* VectorOfMoments::data( size_t i );
+lua:
+    oVectorOfMoments:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfMoments::ptr( void*  ptr,
+                                   size_t i );
+lua:
+    VectorOfMoments.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfMoments.reserve
 
 ```cpp
@@ -67240,6 +67661,21 @@ lua:
 void VectorOfPairOfIntAndDouble::pop_back();
 lua:
     oVectorOfPairOfIntAndDouble:pop_back() -> None
+```
+
+### VectorOfPairOfIntAndDouble.ptr
+
+```cpp
+void* VectorOfPairOfIntAndDouble::data( size_t i );
+lua:
+    oVectorOfPairOfIntAndDouble:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfPairOfIntAndDouble::ptr( void*  ptr,
+                                              size_t i );
+lua:
+    VectorOfPairOfIntAndDouble.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfPairOfIntAndDouble.reserve
@@ -67427,6 +67863,21 @@ lua:
     oVectorOfPairOfStringAndInt:pop_back() -> None
 ```
 
+### VectorOfPairOfStringAndInt.ptr
+
+```cpp
+void* VectorOfPairOfStringAndInt::data( size_t i );
+lua:
+    oVectorOfPairOfStringAndInt:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfPairOfStringAndInt::ptr( void*  ptr,
+                                              size_t i );
+lua:
+    VectorOfPairOfStringAndInt.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfPairOfStringAndInt.reserve
 
 ```cpp
@@ -67610,6 +68061,21 @@ lua:
 void VectorOfPairOfStringAndString::pop_back();
 lua:
     oVectorOfPairOfStringAndString:pop_back() -> None
+```
+
+### VectorOfPairOfStringAndString.ptr
+
+```cpp
+void* VectorOfPairOfStringAndString::data( size_t i );
+lua:
+    oVectorOfPairOfStringAndString:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfPairOfStringAndString::ptr( void*  ptr,
+                                                 size_t i );
+lua:
+    VectorOfPairOfStringAndString.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfPairOfStringAndString.reserve
@@ -67797,6 +68263,21 @@ lua:
     oVectorOfPairOfStringAndVectorOfFloat:pop_back() -> None
 ```
 
+### VectorOfPairOfStringAndVectorOfFloat.ptr
+
+```cpp
+void* VectorOfPairOfStringAndVectorOfFloat::data( size_t i );
+lua:
+    oVectorOfPairOfStringAndVectorOfFloat:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfPairOfStringAndVectorOfFloat::ptr( void*  ptr,
+                                                        size_t i );
+lua:
+    VectorOfPairOfStringAndVectorOfFloat.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfPairOfStringAndVectorOfFloat.reserve
 
 ```cpp
@@ -67980,6 +68461,21 @@ lua:
 void VectorOfPairOfStringAndVectorOfSize_t::pop_back();
 lua:
     oVectorOfPairOfStringAndVectorOfSize_t:pop_back() -> None
+```
+
+### VectorOfPairOfStringAndVectorOfSize\_t.ptr
+
+```cpp
+void* VectorOfPairOfStringAndVectorOfSize_t::data( size_t i );
+lua:
+    oVectorOfPairOfStringAndVectorOfSize_t:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfPairOfStringAndVectorOfSize_t::ptr( void*  ptr,
+                                                         size_t i );
+lua:
+    VectorOfPairOfStringAndVectorOfSize_t.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfPairOfStringAndVectorOfSize\_t.reserve
@@ -68167,6 +68663,21 @@ lua:
     oVectorOfPoint:pop_back() -> None
 ```
 
+### VectorOfPoint.ptr
+
+```cpp
+void* VectorOfPoint::data( size_t i );
+lua:
+    oVectorOfPoint:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfPoint::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfPoint.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfPoint.reserve
 
 ```cpp
@@ -68350,6 +68861,21 @@ lua:
 void VectorOfPoint2d::pop_back();
 lua:
     oVectorOfPoint2d:pop_back() -> None
+```
+
+### VectorOfPoint2d.ptr
+
+```cpp
+void* VectorOfPoint2d::data( size_t i );
+lua:
+    oVectorOfPoint2d:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfPoint2d::ptr( void*  ptr,
+                                   size_t i );
+lua:
+    VectorOfPoint2d.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfPoint2d.reserve
@@ -68537,6 +69063,21 @@ lua:
     oVectorOfPoint2f:pop_back() -> None
 ```
 
+### VectorOfPoint2f.ptr
+
+```cpp
+void* VectorOfPoint2f::data( size_t i );
+lua:
+    oVectorOfPoint2f:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfPoint2f::ptr( void*  ptr,
+                                   size_t i );
+lua:
+    VectorOfPoint2f.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfPoint2f.reserve
 
 ```cpp
@@ -68720,6 +69261,21 @@ lua:
 void VectorOfPoint3d::pop_back();
 lua:
     oVectorOfPoint3d:pop_back() -> None
+```
+
+### VectorOfPoint3d.ptr
+
+```cpp
+void* VectorOfPoint3d::data( size_t i );
+lua:
+    oVectorOfPoint3d:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfPoint3d::ptr( void*  ptr,
+                                   size_t i );
+lua:
+    VectorOfPoint3d.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfPoint3d.reserve
@@ -68907,6 +69463,21 @@ lua:
     oVectorOfPoint3f:pop_back() -> None
 ```
 
+### VectorOfPoint3f.ptr
+
+```cpp
+void* VectorOfPoint3f::data( size_t i );
+lua:
+    oVectorOfPoint3f:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfPoint3f::ptr( void*  ptr,
+                                   size_t i );
+lua:
+    VectorOfPoint3f.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfPoint3f.reserve
 
 ```cpp
@@ -69090,6 +69661,21 @@ lua:
 void VectorOfPoint3i::pop_back();
 lua:
     oVectorOfPoint3i:pop_back() -> None
+```
+
+### VectorOfPoint3i.ptr
+
+```cpp
+void* VectorOfPoint3i::data( size_t i );
+lua:
+    oVectorOfPoint3i:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfPoint3i::ptr( void*  ptr,
+                                   size_t i );
+lua:
+    VectorOfPoint3i.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfPoint3i.reserve
@@ -69277,6 +69863,21 @@ lua:
     oVectorOfRange:pop_back() -> None
 ```
 
+### VectorOfRange.ptr
+
+```cpp
+void* VectorOfRange::data( size_t i );
+lua:
+    oVectorOfRange:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfRange::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfRange.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfRange.reserve
 
 ```cpp
@@ -69460,6 +70061,21 @@ lua:
 void VectorOfRect::pop_back();
 lua:
     oVectorOfRect:pop_back() -> None
+```
+
+### VectorOfRect.ptr
+
+```cpp
+void* VectorOfRect::data( size_t i );
+lua:
+    oVectorOfRect:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfRect::ptr( void*  ptr,
+                                size_t i );
+lua:
+    VectorOfRect.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfRect.reserve
@@ -69647,6 +70263,21 @@ lua:
     oVectorOfRect2d:pop_back() -> None
 ```
 
+### VectorOfRect2d.ptr
+
+```cpp
+void* VectorOfRect2d::data( size_t i );
+lua:
+    oVectorOfRect2d:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfRect2d::ptr( void*  ptr,
+                                  size_t i );
+lua:
+    VectorOfRect2d.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfRect2d.reserve
 
 ```cpp
@@ -69830,6 +70461,21 @@ lua:
 void VectorOfRect2f::pop_back();
 lua:
     oVectorOfRect2f:pop_back() -> None
+```
+
+### VectorOfRect2f.ptr
+
+```cpp
+void* VectorOfRect2f::data( size_t i );
+lua:
+    oVectorOfRect2f:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfRect2f::ptr( void*  ptr,
+                                  size_t i );
+lua:
+    VectorOfRect2f.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfRect2f.reserve
@@ -70017,6 +70663,21 @@ lua:
     oVectorOfRotatedRect:pop_back() -> None
 ```
 
+### VectorOfRotatedRect.ptr
+
+```cpp
+void* VectorOfRotatedRect::data( size_t i );
+lua:
+    oVectorOfRotatedRect:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfRotatedRect::ptr( void*  ptr,
+                                       size_t i );
+lua:
+    VectorOfRotatedRect.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfRotatedRect.reserve
 
 ```cpp
@@ -70200,6 +70861,21 @@ lua:
 void VectorOfSchar::pop_back();
 lua:
     oVectorOfSchar:pop_back() -> None
+```
+
+### VectorOfSchar.ptr
+
+```cpp
+void* VectorOfSchar::data( size_t i );
+lua:
+    oVectorOfSchar:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfSchar::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfSchar.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfSchar.reserve
@@ -70387,6 +71063,21 @@ lua:
     oVectorOfShort:pop_back() -> None
 ```
 
+### VectorOfShort.ptr
+
+```cpp
+void* VectorOfShort::data( size_t i );
+lua:
+    oVectorOfShort:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfShort::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfShort.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfShort.reserve
 
 ```cpp
@@ -70570,6 +71261,21 @@ lua:
 void VectorOfSize::pop_back();
 lua:
     oVectorOfSize:pop_back() -> None
+```
+
+### VectorOfSize.ptr
+
+```cpp
+void* VectorOfSize::data( size_t i );
+lua:
+    oVectorOfSize:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfSize::ptr( void*  ptr,
+                                size_t i );
+lua:
+    VectorOfSize.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfSize.reserve
@@ -70757,6 +71463,21 @@ lua:
     oVectorOfSize2d:pop_back() -> None
 ```
 
+### VectorOfSize2d.ptr
+
+```cpp
+void* VectorOfSize2d::data( size_t i );
+lua:
+    oVectorOfSize2d:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfSize2d::ptr( void*  ptr,
+                                  size_t i );
+lua:
+    VectorOfSize2d.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfSize2d.reserve
 
 ```cpp
@@ -70940,6 +71661,21 @@ lua:
 void VectorOfSize2f::pop_back();
 lua:
     oVectorOfSize2f:pop_back() -> None
+```
+
+### VectorOfSize2f.ptr
+
+```cpp
+void* VectorOfSize2f::data( size_t i );
+lua:
+    oVectorOfSize2f:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfSize2f::ptr( void*  ptr,
+                                  size_t i );
+lua:
+    VectorOfSize2f.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfSize2f.reserve
@@ -71127,6 +71863,21 @@ lua:
     oVectorOfSize_t:pop_back() -> None
 ```
 
+### VectorOfSize\_t.ptr
+
+```cpp
+void* VectorOfSize_t::data( size_t i );
+lua:
+    oVectorOfSize_t:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfSize_t::ptr( void*  ptr,
+                                  size_t i );
+lua:
+    VectorOfSize_t.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfSize\_t.reserve
 
 ```cpp
@@ -71310,6 +72061,21 @@ lua:
 void VectorOfString::pop_back();
 lua:
     oVectorOfString:pop_back() -> None
+```
+
+### VectorOfString.ptr
+
+```cpp
+void* VectorOfString::data( size_t i );
+lua:
+    oVectorOfString:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfString::ptr( void*  ptr,
+                                  size_t i );
+lua:
+    VectorOfString.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfString.reserve
@@ -71497,6 +72263,21 @@ lua:
     oVectorOfTuplePointAndDouble:pop_back() -> None
 ```
 
+### VectorOfTuplePointAndDouble.ptr
+
+```cpp
+void* VectorOfTuplePointAndDouble::data( size_t i );
+lua:
+    oVectorOfTuplePointAndDouble:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfTuplePointAndDouble::ptr( void*  ptr,
+                                               size_t i );
+lua:
+    VectorOfTuplePointAndDouble.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfTuplePointAndDouble.reserve
 
 ```cpp
@@ -71680,6 +72461,21 @@ lua:
 void VectorOfUMat::pop_back();
 lua:
     oVectorOfUMat:pop_back() -> None
+```
+
+### VectorOfUMat.ptr
+
+```cpp
+void* VectorOfUMat::data( size_t i );
+lua:
+    oVectorOfUMat:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfUMat::ptr( void*  ptr,
+                                size_t i );
+lua:
+    VectorOfUMat.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfUMat.reserve
@@ -71867,6 +72663,21 @@ lua:
     oVectorOfUchar:pop_back() -> None
 ```
 
+### VectorOfUchar.ptr
+
+```cpp
+void* VectorOfUchar::data( size_t i );
+lua:
+    oVectorOfUchar:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfUchar::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfUchar.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfUchar.reserve
 
 ```cpp
@@ -72050,6 +72861,21 @@ lua:
 void VectorOfUshort::pop_back();
 lua:
     oVectorOfUshort:pop_back() -> None
+```
+
+### VectorOfUshort.ptr
+
+```cpp
+void* VectorOfUshort::data( size_t i );
+lua:
+    oVectorOfUshort:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfUshort::ptr( void*  ptr,
+                                  size_t i );
+lua:
+    VectorOfUshort.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfUshort.reserve
@@ -72237,6 +73063,21 @@ lua:
     oVectorOfVec2b:pop_back() -> None
 ```
 
+### VectorOfVec2b.ptr
+
+```cpp
+void* VectorOfVec2b::data( size_t i );
+lua:
+    oVectorOfVec2b:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVec2b::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfVec2b.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVec2b.reserve
 
 ```cpp
@@ -72420,6 +73261,21 @@ lua:
 void VectorOfVec2d::pop_back();
 lua:
     oVectorOfVec2d:pop_back() -> None
+```
+
+### VectorOfVec2d.ptr
+
+```cpp
+void* VectorOfVec2d::data( size_t i );
+lua:
+    oVectorOfVec2d:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVec2d::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfVec2d.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVec2d.reserve
@@ -72607,6 +73463,21 @@ lua:
     oVectorOfVec2f:pop_back() -> None
 ```
 
+### VectorOfVec2f.ptr
+
+```cpp
+void* VectorOfVec2f::data( size_t i );
+lua:
+    oVectorOfVec2f:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVec2f::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfVec2f.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVec2f.reserve
 
 ```cpp
@@ -72790,6 +73661,21 @@ lua:
 void VectorOfVec2i::pop_back();
 lua:
     oVectorOfVec2i:pop_back() -> None
+```
+
+### VectorOfVec2i.ptr
+
+```cpp
+void* VectorOfVec2i::data( size_t i );
+lua:
+    oVectorOfVec2i:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVec2i::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfVec2i.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVec2i.reserve
@@ -72977,6 +73863,21 @@ lua:
     oVectorOfVec2s:pop_back() -> None
 ```
 
+### VectorOfVec2s.ptr
+
+```cpp
+void* VectorOfVec2s::data( size_t i );
+lua:
+    oVectorOfVec2s:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVec2s::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfVec2s.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVec2s.reserve
 
 ```cpp
@@ -73160,6 +74061,21 @@ lua:
 void VectorOfVec2w::pop_back();
 lua:
     oVectorOfVec2w:pop_back() -> None
+```
+
+### VectorOfVec2w.ptr
+
+```cpp
+void* VectorOfVec2w::data( size_t i );
+lua:
+    oVectorOfVec2w:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVec2w::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfVec2w.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVec2w.reserve
@@ -73347,6 +74263,21 @@ lua:
     oVectorOfVec3b:pop_back() -> None
 ```
 
+### VectorOfVec3b.ptr
+
+```cpp
+void* VectorOfVec3b::data( size_t i );
+lua:
+    oVectorOfVec3b:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVec3b::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfVec3b.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVec3b.reserve
 
 ```cpp
@@ -73530,6 +74461,21 @@ lua:
 void VectorOfVec3d::pop_back();
 lua:
     oVectorOfVec3d:pop_back() -> None
+```
+
+### VectorOfVec3d.ptr
+
+```cpp
+void* VectorOfVec3d::data( size_t i );
+lua:
+    oVectorOfVec3d:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVec3d::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfVec3d.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVec3d.reserve
@@ -73717,6 +74663,21 @@ lua:
     oVectorOfVec3f:pop_back() -> None
 ```
 
+### VectorOfVec3f.ptr
+
+```cpp
+void* VectorOfVec3f::data( size_t i );
+lua:
+    oVectorOfVec3f:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVec3f::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfVec3f.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVec3f.reserve
 
 ```cpp
@@ -73900,6 +74861,21 @@ lua:
 void VectorOfVec3i::pop_back();
 lua:
     oVectorOfVec3i:pop_back() -> None
+```
+
+### VectorOfVec3i.ptr
+
+```cpp
+void* VectorOfVec3i::data( size_t i );
+lua:
+    oVectorOfVec3i:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVec3i::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfVec3i.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVec3i.reserve
@@ -74087,6 +75063,21 @@ lua:
     oVectorOfVec3s:pop_back() -> None
 ```
 
+### VectorOfVec3s.ptr
+
+```cpp
+void* VectorOfVec3s::data( size_t i );
+lua:
+    oVectorOfVec3s:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVec3s::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfVec3s.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVec3s.reserve
 
 ```cpp
@@ -74270,6 +75261,21 @@ lua:
 void VectorOfVec3w::pop_back();
 lua:
     oVectorOfVec3w:pop_back() -> None
+```
+
+### VectorOfVec3w.ptr
+
+```cpp
+void* VectorOfVec3w::data( size_t i );
+lua:
+    oVectorOfVec3w:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVec3w::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfVec3w.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVec3w.reserve
@@ -74457,6 +75463,21 @@ lua:
     oVectorOfVec4b:pop_back() -> None
 ```
 
+### VectorOfVec4b.ptr
+
+```cpp
+void* VectorOfVec4b::data( size_t i );
+lua:
+    oVectorOfVec4b:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVec4b::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfVec4b.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVec4b.reserve
 
 ```cpp
@@ -74640,6 +75661,21 @@ lua:
 void VectorOfVec4d::pop_back();
 lua:
     oVectorOfVec4d:pop_back() -> None
+```
+
+### VectorOfVec4d.ptr
+
+```cpp
+void* VectorOfVec4d::data( size_t i );
+lua:
+    oVectorOfVec4d:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVec4d::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfVec4d.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVec4d.reserve
@@ -74827,6 +75863,21 @@ lua:
     oVectorOfVec4f:pop_back() -> None
 ```
 
+### VectorOfVec4f.ptr
+
+```cpp
+void* VectorOfVec4f::data( size_t i );
+lua:
+    oVectorOfVec4f:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVec4f::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfVec4f.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVec4f.reserve
 
 ```cpp
@@ -75010,6 +76061,21 @@ lua:
 void VectorOfVec4i::pop_back();
 lua:
     oVectorOfVec4i:pop_back() -> None
+```
+
+### VectorOfVec4i.ptr
+
+```cpp
+void* VectorOfVec4i::data( size_t i );
+lua:
+    oVectorOfVec4i:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVec4i::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfVec4i.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVec4i.reserve
@@ -75197,6 +76263,21 @@ lua:
     oVectorOfVec4s:pop_back() -> None
 ```
 
+### VectorOfVec4s.ptr
+
+```cpp
+void* VectorOfVec4s::data( size_t i );
+lua:
+    oVectorOfVec4s:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVec4s::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfVec4s.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVec4s.reserve
 
 ```cpp
@@ -75380,6 +76461,21 @@ lua:
 void VectorOfVec4w::pop_back();
 lua:
     oVectorOfVec4w:pop_back() -> None
+```
+
+### VectorOfVec4w.ptr
+
+```cpp
+void* VectorOfVec4w::data( size_t i );
+lua:
+    oVectorOfVec4w:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVec4w::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfVec4w.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVec4w.reserve
@@ -75567,6 +76663,21 @@ lua:
     oVectorOfVec6d:pop_back() -> None
 ```
 
+### VectorOfVec6d.ptr
+
+```cpp
+void* VectorOfVec6d::data( size_t i );
+lua:
+    oVectorOfVec6d:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVec6d::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfVec6d.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVec6d.reserve
 
 ```cpp
@@ -75750,6 +76861,21 @@ lua:
 void VectorOfVec6f::pop_back();
 lua:
     oVectorOfVec6f:pop_back() -> None
+```
+
+### VectorOfVec6f.ptr
+
+```cpp
+void* VectorOfVec6f::data( size_t i );
+lua:
+    oVectorOfVec6f:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVec6f::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfVec6f.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVec6f.reserve
@@ -75937,6 +77063,21 @@ lua:
     oVectorOfVec6i:pop_back() -> None
 ```
 
+### VectorOfVec6i.ptr
+
+```cpp
+void* VectorOfVec6i::data( size_t i );
+lua:
+    oVectorOfVec6i:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVec6i::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfVec6i.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVec6i.reserve
 
 ```cpp
@@ -76120,6 +77261,21 @@ lua:
 void VectorOfVec8i::pop_back();
 lua:
     oVectorOfVec8i:pop_back() -> None
+```
+
+### VectorOfVec8i.ptr
+
+```cpp
+void* VectorOfVec8i::data( size_t i );
+lua:
+    oVectorOfVec8i:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVec8i::ptr( void*  ptr,
+                                 size_t i );
+lua:
+    VectorOfVec8i.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVec8i.reserve
@@ -76307,6 +77463,21 @@ lua:
     oVectorOfVectorOfBool:pop_back() -> None
 ```
 
+### VectorOfVectorOfBool.ptr
+
+```cpp
+void* VectorOfVectorOfBool::data( size_t i );
+lua:
+    oVectorOfVectorOfBool:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfBool::ptr( void*  ptr,
+                                        size_t i );
+lua:
+    VectorOfVectorOfBool.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVectorOfBool.reserve
 
 ```cpp
@@ -76490,6 +77661,21 @@ lua:
 void VectorOfVectorOfChar::pop_back();
 lua:
     oVectorOfVectorOfChar:pop_back() -> None
+```
+
+### VectorOfVectorOfChar.ptr
+
+```cpp
+void* VectorOfVectorOfChar::data( size_t i );
+lua:
+    oVectorOfVectorOfChar:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfChar::ptr( void*  ptr,
+                                        size_t i );
+lua:
+    VectorOfVectorOfChar.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVectorOfChar.reserve
@@ -76677,6 +77863,21 @@ lua:
     oVectorOfVectorOfDMatch:pop_back() -> None
 ```
 
+### VectorOfVectorOfDMatch.ptr
+
+```cpp
+void* VectorOfVectorOfDMatch::data( size_t i );
+lua:
+    oVectorOfVectorOfDMatch:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfDMatch::ptr( void*  ptr,
+                                          size_t i );
+lua:
+    VectorOfVectorOfDMatch.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVectorOfDMatch.reserve
 
 ```cpp
@@ -76860,6 +78061,21 @@ lua:
 void VectorOfVectorOfDouble::pop_back();
 lua:
     oVectorOfVectorOfDouble:pop_back() -> None
+```
+
+### VectorOfVectorOfDouble.ptr
+
+```cpp
+void* VectorOfVectorOfDouble::data( size_t i );
+lua:
+    oVectorOfVectorOfDouble:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfDouble::ptr( void*  ptr,
+                                          size_t i );
+lua:
+    VectorOfVectorOfDouble.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVectorOfDouble.reserve
@@ -77047,6 +78263,21 @@ lua:
     oVectorOfVectorOfFloat:pop_back() -> None
 ```
 
+### VectorOfVectorOfFloat.ptr
+
+```cpp
+void* VectorOfVectorOfFloat::data( size_t i );
+lua:
+    oVectorOfVectorOfFloat:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfFloat::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfFloat.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVectorOfFloat.reserve
 
 ```cpp
@@ -77230,6 +78461,21 @@ lua:
 void VectorOfVectorOfInt::pop_back();
 lua:
     oVectorOfVectorOfInt:pop_back() -> None
+```
+
+### VectorOfVectorOfInt.ptr
+
+```cpp
+void* VectorOfVectorOfInt::data( size_t i );
+lua:
+    oVectorOfVectorOfInt:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfInt::ptr( void*  ptr,
+                                       size_t i );
+lua:
+    VectorOfVectorOfInt.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVectorOfInt.reserve
@@ -77417,6 +78663,21 @@ lua:
     oVectorOfVectorOfKeyPoint:pop_back() -> None
 ```
 
+### VectorOfVectorOfKeyPoint.ptr
+
+```cpp
+void* VectorOfVectorOfKeyPoint::data( size_t i );
+lua:
+    oVectorOfVectorOfKeyPoint:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfKeyPoint::ptr( void*  ptr,
+                                            size_t i );
+lua:
+    VectorOfVectorOfKeyPoint.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVectorOfKeyPoint.reserve
 
 ```cpp
@@ -77600,6 +78861,21 @@ lua:
 void VectorOfVectorOfMat::pop_back();
 lua:
     oVectorOfVectorOfMat:pop_back() -> None
+```
+
+### VectorOfVectorOfMat.ptr
+
+```cpp
+void* VectorOfVectorOfMat::data( size_t i );
+lua:
+    oVectorOfVectorOfMat:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfMat::ptr( void*  ptr,
+                                       size_t i );
+lua:
+    VectorOfVectorOfMat.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVectorOfMat.reserve
@@ -77787,6 +79063,21 @@ lua:
     oVectorOfVectorOfMoments:pop_back() -> None
 ```
 
+### VectorOfVectorOfMoments.ptr
+
+```cpp
+void* VectorOfVectorOfMoments::data( size_t i );
+lua:
+    oVectorOfVectorOfMoments:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfMoments::ptr( void*  ptr,
+                                           size_t i );
+lua:
+    VectorOfVectorOfMoments.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVectorOfMoments.reserve
 
 ```cpp
@@ -77970,6 +79261,21 @@ lua:
 void VectorOfVectorOfPoint::pop_back();
 lua:
     oVectorOfVectorOfPoint:pop_back() -> None
+```
+
+### VectorOfVectorOfPoint.ptr
+
+```cpp
+void* VectorOfVectorOfPoint::data( size_t i );
+lua:
+    oVectorOfVectorOfPoint:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfPoint::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfPoint.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVectorOfPoint.reserve
@@ -78157,6 +79463,21 @@ lua:
     oVectorOfVectorOfPoint2d:pop_back() -> None
 ```
 
+### VectorOfVectorOfPoint2d.ptr
+
+```cpp
+void* VectorOfVectorOfPoint2d::data( size_t i );
+lua:
+    oVectorOfVectorOfPoint2d:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfPoint2d::ptr( void*  ptr,
+                                           size_t i );
+lua:
+    VectorOfVectorOfPoint2d.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVectorOfPoint2d.reserve
 
 ```cpp
@@ -78340,6 +79661,21 @@ lua:
 void VectorOfVectorOfPoint2f::pop_back();
 lua:
     oVectorOfVectorOfPoint2f:pop_back() -> None
+```
+
+### VectorOfVectorOfPoint2f.ptr
+
+```cpp
+void* VectorOfVectorOfPoint2f::data( size_t i );
+lua:
+    oVectorOfVectorOfPoint2f:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfPoint2f::ptr( void*  ptr,
+                                           size_t i );
+lua:
+    VectorOfVectorOfPoint2f.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVectorOfPoint2f.reserve
@@ -78527,6 +79863,21 @@ lua:
     oVectorOfVectorOfPoint3d:pop_back() -> None
 ```
 
+### VectorOfVectorOfPoint3d.ptr
+
+```cpp
+void* VectorOfVectorOfPoint3d::data( size_t i );
+lua:
+    oVectorOfVectorOfPoint3d:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfPoint3d::ptr( void*  ptr,
+                                           size_t i );
+lua:
+    VectorOfVectorOfPoint3d.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVectorOfPoint3d.reserve
 
 ```cpp
@@ -78710,6 +80061,21 @@ lua:
 void VectorOfVectorOfPoint3f::pop_back();
 lua:
     oVectorOfVectorOfPoint3f:pop_back() -> None
+```
+
+### VectorOfVectorOfPoint3f.ptr
+
+```cpp
+void* VectorOfVectorOfPoint3f::data( size_t i );
+lua:
+    oVectorOfVectorOfPoint3f:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfPoint3f::ptr( void*  ptr,
+                                           size_t i );
+lua:
+    VectorOfVectorOfPoint3f.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVectorOfPoint3f.reserve
@@ -78897,6 +80263,21 @@ lua:
     oVectorOfVectorOfPoint3i:pop_back() -> None
 ```
 
+### VectorOfVectorOfPoint3i.ptr
+
+```cpp
+void* VectorOfVectorOfPoint3i::data( size_t i );
+lua:
+    oVectorOfVectorOfPoint3i:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfPoint3i::ptr( void*  ptr,
+                                           size_t i );
+lua:
+    VectorOfVectorOfPoint3i.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVectorOfPoint3i.reserve
 
 ```cpp
@@ -79080,6 +80461,21 @@ lua:
 void VectorOfVectorOfRange::pop_back();
 lua:
     oVectorOfVectorOfRange:pop_back() -> None
+```
+
+### VectorOfVectorOfRange.ptr
+
+```cpp
+void* VectorOfVectorOfRange::data( size_t i );
+lua:
+    oVectorOfVectorOfRange:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfRange::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfRange.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVectorOfRange.reserve
@@ -79267,6 +80663,21 @@ lua:
     oVectorOfVectorOfRect:pop_back() -> None
 ```
 
+### VectorOfVectorOfRect.ptr
+
+```cpp
+void* VectorOfVectorOfRect::data( size_t i );
+lua:
+    oVectorOfVectorOfRect:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfRect::ptr( void*  ptr,
+                                        size_t i );
+lua:
+    VectorOfVectorOfRect.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVectorOfRect.reserve
 
 ```cpp
@@ -79450,6 +80861,21 @@ lua:
 void VectorOfVectorOfRect2d::pop_back();
 lua:
     oVectorOfVectorOfRect2d:pop_back() -> None
+```
+
+### VectorOfVectorOfRect2d.ptr
+
+```cpp
+void* VectorOfVectorOfRect2d::data( size_t i );
+lua:
+    oVectorOfVectorOfRect2d:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfRect2d::ptr( void*  ptr,
+                                          size_t i );
+lua:
+    VectorOfVectorOfRect2d.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVectorOfRect2d.reserve
@@ -79637,6 +81063,21 @@ lua:
     oVectorOfVectorOfRect2f:pop_back() -> None
 ```
 
+### VectorOfVectorOfRect2f.ptr
+
+```cpp
+void* VectorOfVectorOfRect2f::data( size_t i );
+lua:
+    oVectorOfVectorOfRect2f:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfRect2f::ptr( void*  ptr,
+                                          size_t i );
+lua:
+    VectorOfVectorOfRect2f.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVectorOfRect2f.reserve
 
 ```cpp
@@ -79820,6 +81261,21 @@ lua:
 void VectorOfVectorOfRotatedRect::pop_back();
 lua:
     oVectorOfVectorOfRotatedRect:pop_back() -> None
+```
+
+### VectorOfVectorOfRotatedRect.ptr
+
+```cpp
+void* VectorOfVectorOfRotatedRect::data( size_t i );
+lua:
+    oVectorOfVectorOfRotatedRect:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfRotatedRect::ptr( void*  ptr,
+                                               size_t i );
+lua:
+    VectorOfVectorOfRotatedRect.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVectorOfRotatedRect.reserve
@@ -80007,6 +81463,21 @@ lua:
     oVectorOfVectorOfSchar:pop_back() -> None
 ```
 
+### VectorOfVectorOfSchar.ptr
+
+```cpp
+void* VectorOfVectorOfSchar::data( size_t i );
+lua:
+    oVectorOfVectorOfSchar:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfSchar::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfSchar.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVectorOfSchar.reserve
 
 ```cpp
@@ -80190,6 +81661,21 @@ lua:
 void VectorOfVectorOfShort::pop_back();
 lua:
     oVectorOfVectorOfShort:pop_back() -> None
+```
+
+### VectorOfVectorOfShort.ptr
+
+```cpp
+void* VectorOfVectorOfShort::data( size_t i );
+lua:
+    oVectorOfVectorOfShort:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfShort::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfShort.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVectorOfShort.reserve
@@ -80377,6 +81863,21 @@ lua:
     oVectorOfVectorOfSize:pop_back() -> None
 ```
 
+### VectorOfVectorOfSize.ptr
+
+```cpp
+void* VectorOfVectorOfSize::data( size_t i );
+lua:
+    oVectorOfVectorOfSize:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfSize::ptr( void*  ptr,
+                                        size_t i );
+lua:
+    VectorOfVectorOfSize.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVectorOfSize.reserve
 
 ```cpp
@@ -80560,6 +82061,21 @@ lua:
 void VectorOfVectorOfSize2d::pop_back();
 lua:
     oVectorOfVectorOfSize2d:pop_back() -> None
+```
+
+### VectorOfVectorOfSize2d.ptr
+
+```cpp
+void* VectorOfVectorOfSize2d::data( size_t i );
+lua:
+    oVectorOfVectorOfSize2d:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfSize2d::ptr( void*  ptr,
+                                          size_t i );
+lua:
+    VectorOfVectorOfSize2d.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVectorOfSize2d.reserve
@@ -80747,6 +82263,21 @@ lua:
     oVectorOfVectorOfSize2f:pop_back() -> None
 ```
 
+### VectorOfVectorOfSize2f.ptr
+
+```cpp
+void* VectorOfVectorOfSize2f::data( size_t i );
+lua:
+    oVectorOfVectorOfSize2f:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfSize2f::ptr( void*  ptr,
+                                          size_t i );
+lua:
+    VectorOfVectorOfSize2f.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVectorOfSize2f.reserve
 
 ```cpp
@@ -80930,6 +82461,21 @@ lua:
 void VectorOfVectorOfUchar::pop_back();
 lua:
     oVectorOfVectorOfUchar:pop_back() -> None
+```
+
+### VectorOfVectorOfUchar.ptr
+
+```cpp
+void* VectorOfVectorOfUchar::data( size_t i );
+lua:
+    oVectorOfVectorOfUchar:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfUchar::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfUchar.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVectorOfUchar.reserve
@@ -81117,6 +82663,21 @@ lua:
     oVectorOfVectorOfUshort:pop_back() -> None
 ```
 
+### VectorOfVectorOfUshort.ptr
+
+```cpp
+void* VectorOfVectorOfUshort::data( size_t i );
+lua:
+    oVectorOfVectorOfUshort:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfUshort::ptr( void*  ptr,
+                                          size_t i );
+lua:
+    VectorOfVectorOfUshort.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVectorOfUshort.reserve
 
 ```cpp
@@ -81300,6 +82861,21 @@ lua:
 void VectorOfVectorOfVec2b::pop_back();
 lua:
     oVectorOfVectorOfVec2b:pop_back() -> None
+```
+
+### VectorOfVectorOfVec2b.ptr
+
+```cpp
+void* VectorOfVectorOfVec2b::data( size_t i );
+lua:
+    oVectorOfVectorOfVec2b:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfVec2b::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfVec2b.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVectorOfVec2b.reserve
@@ -81487,6 +83063,21 @@ lua:
     oVectorOfVectorOfVec2d:pop_back() -> None
 ```
 
+### VectorOfVectorOfVec2d.ptr
+
+```cpp
+void* VectorOfVectorOfVec2d::data( size_t i );
+lua:
+    oVectorOfVectorOfVec2d:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfVec2d::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfVec2d.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVectorOfVec2d.reserve
 
 ```cpp
@@ -81670,6 +83261,21 @@ lua:
 void VectorOfVectorOfVec2f::pop_back();
 lua:
     oVectorOfVectorOfVec2f:pop_back() -> None
+```
+
+### VectorOfVectorOfVec2f.ptr
+
+```cpp
+void* VectorOfVectorOfVec2f::data( size_t i );
+lua:
+    oVectorOfVectorOfVec2f:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfVec2f::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfVec2f.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVectorOfVec2f.reserve
@@ -81857,6 +83463,21 @@ lua:
     oVectorOfVectorOfVec2i:pop_back() -> None
 ```
 
+### VectorOfVectorOfVec2i.ptr
+
+```cpp
+void* VectorOfVectorOfVec2i::data( size_t i );
+lua:
+    oVectorOfVectorOfVec2i:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfVec2i::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfVec2i.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVectorOfVec2i.reserve
 
 ```cpp
@@ -82040,6 +83661,21 @@ lua:
 void VectorOfVectorOfVec2s::pop_back();
 lua:
     oVectorOfVectorOfVec2s:pop_back() -> None
+```
+
+### VectorOfVectorOfVec2s.ptr
+
+```cpp
+void* VectorOfVectorOfVec2s::data( size_t i );
+lua:
+    oVectorOfVectorOfVec2s:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfVec2s::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfVec2s.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVectorOfVec2s.reserve
@@ -82227,6 +83863,21 @@ lua:
     oVectorOfVectorOfVec2w:pop_back() -> None
 ```
 
+### VectorOfVectorOfVec2w.ptr
+
+```cpp
+void* VectorOfVectorOfVec2w::data( size_t i );
+lua:
+    oVectorOfVectorOfVec2w:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfVec2w::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfVec2w.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVectorOfVec2w.reserve
 
 ```cpp
@@ -82410,6 +84061,21 @@ lua:
 void VectorOfVectorOfVec3b::pop_back();
 lua:
     oVectorOfVectorOfVec3b:pop_back() -> None
+```
+
+### VectorOfVectorOfVec3b.ptr
+
+```cpp
+void* VectorOfVectorOfVec3b::data( size_t i );
+lua:
+    oVectorOfVectorOfVec3b:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfVec3b::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfVec3b.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVectorOfVec3b.reserve
@@ -82597,6 +84263,21 @@ lua:
     oVectorOfVectorOfVec3d:pop_back() -> None
 ```
 
+### VectorOfVectorOfVec3d.ptr
+
+```cpp
+void* VectorOfVectorOfVec3d::data( size_t i );
+lua:
+    oVectorOfVectorOfVec3d:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfVec3d::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfVec3d.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVectorOfVec3d.reserve
 
 ```cpp
@@ -82780,6 +84461,21 @@ lua:
 void VectorOfVectorOfVec3f::pop_back();
 lua:
     oVectorOfVectorOfVec3f:pop_back() -> None
+```
+
+### VectorOfVectorOfVec3f.ptr
+
+```cpp
+void* VectorOfVectorOfVec3f::data( size_t i );
+lua:
+    oVectorOfVectorOfVec3f:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfVec3f::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfVec3f.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVectorOfVec3f.reserve
@@ -82967,6 +84663,21 @@ lua:
     oVectorOfVectorOfVec3i:pop_back() -> None
 ```
 
+### VectorOfVectorOfVec3i.ptr
+
+```cpp
+void* VectorOfVectorOfVec3i::data( size_t i );
+lua:
+    oVectorOfVectorOfVec3i:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfVec3i::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfVec3i.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVectorOfVec3i.reserve
 
 ```cpp
@@ -83150,6 +84861,21 @@ lua:
 void VectorOfVectorOfVec3s::pop_back();
 lua:
     oVectorOfVectorOfVec3s:pop_back() -> None
+```
+
+### VectorOfVectorOfVec3s.ptr
+
+```cpp
+void* VectorOfVectorOfVec3s::data( size_t i );
+lua:
+    oVectorOfVectorOfVec3s:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfVec3s::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfVec3s.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVectorOfVec3s.reserve
@@ -83337,6 +85063,21 @@ lua:
     oVectorOfVectorOfVec3w:pop_back() -> None
 ```
 
+### VectorOfVectorOfVec3w.ptr
+
+```cpp
+void* VectorOfVectorOfVec3w::data( size_t i );
+lua:
+    oVectorOfVectorOfVec3w:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfVec3w::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfVec3w.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVectorOfVec3w.reserve
 
 ```cpp
@@ -83520,6 +85261,21 @@ lua:
 void VectorOfVectorOfVec4b::pop_back();
 lua:
     oVectorOfVectorOfVec4b:pop_back() -> None
+```
+
+### VectorOfVectorOfVec4b.ptr
+
+```cpp
+void* VectorOfVectorOfVec4b::data( size_t i );
+lua:
+    oVectorOfVectorOfVec4b:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfVec4b::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfVec4b.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVectorOfVec4b.reserve
@@ -83707,6 +85463,21 @@ lua:
     oVectorOfVectorOfVec4d:pop_back() -> None
 ```
 
+### VectorOfVectorOfVec4d.ptr
+
+```cpp
+void* VectorOfVectorOfVec4d::data( size_t i );
+lua:
+    oVectorOfVectorOfVec4d:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfVec4d::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfVec4d.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVectorOfVec4d.reserve
 
 ```cpp
@@ -83890,6 +85661,21 @@ lua:
 void VectorOfVectorOfVec4f::pop_back();
 lua:
     oVectorOfVectorOfVec4f:pop_back() -> None
+```
+
+### VectorOfVectorOfVec4f.ptr
+
+```cpp
+void* VectorOfVectorOfVec4f::data( size_t i );
+lua:
+    oVectorOfVectorOfVec4f:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfVec4f::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfVec4f.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVectorOfVec4f.reserve
@@ -84077,6 +85863,21 @@ lua:
     oVectorOfVectorOfVec4i:pop_back() -> None
 ```
 
+### VectorOfVectorOfVec4i.ptr
+
+```cpp
+void* VectorOfVectorOfVec4i::data( size_t i );
+lua:
+    oVectorOfVectorOfVec4i:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfVec4i::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfVec4i.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVectorOfVec4i.reserve
 
 ```cpp
@@ -84260,6 +86061,21 @@ lua:
 void VectorOfVectorOfVec4s::pop_back();
 lua:
     oVectorOfVectorOfVec4s:pop_back() -> None
+```
+
+### VectorOfVectorOfVec4s.ptr
+
+```cpp
+void* VectorOfVectorOfVec4s::data( size_t i );
+lua:
+    oVectorOfVectorOfVec4s:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfVec4s::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfVec4s.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVectorOfVec4s.reserve
@@ -84447,6 +86263,21 @@ lua:
     oVectorOfVectorOfVec4w:pop_back() -> None
 ```
 
+### VectorOfVectorOfVec4w.ptr
+
+```cpp
+void* VectorOfVectorOfVec4w::data( size_t i );
+lua:
+    oVectorOfVectorOfVec4w:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfVec4w::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfVec4w.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVectorOfVec4w.reserve
 
 ```cpp
@@ -84630,6 +86461,21 @@ lua:
 void VectorOfVectorOfVec6d::pop_back();
 lua:
     oVectorOfVectorOfVec6d:pop_back() -> None
+```
+
+### VectorOfVectorOfVec6d.ptr
+
+```cpp
+void* VectorOfVectorOfVec6d::data( size_t i );
+lua:
+    oVectorOfVectorOfVec6d:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfVec6d::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfVec6d.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVectorOfVec6d.reserve
@@ -84817,6 +86663,21 @@ lua:
     oVectorOfVectorOfVec6f:pop_back() -> None
 ```
 
+### VectorOfVectorOfVec6f.ptr
+
+```cpp
+void* VectorOfVectorOfVec6f::data( size_t i );
+lua:
+    oVectorOfVectorOfVec6f:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfVec6f::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfVec6f.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVectorOfVec6f.reserve
 
 ```cpp
@@ -85000,6 +86861,21 @@ lua:
 void VectorOfVectorOfVec6i::pop_back();
 lua:
     oVectorOfVectorOfVec6i:pop_back() -> None
+```
+
+### VectorOfVectorOfVec6i.ptr
+
+```cpp
+void* VectorOfVectorOfVec6i::data( size_t i );
+lua:
+    oVectorOfVectorOfVec6i:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfVec6i::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfVec6i.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVectorOfVec6i.reserve
@@ -85187,6 +87063,21 @@ lua:
     oVectorOfVectorOfVec8i:pop_back() -> None
 ```
 
+### VectorOfVectorOfVec8i.ptr
+
+```cpp
+void* VectorOfVectorOfVec8i::data( size_t i );
+lua:
+    oVectorOfVectorOfVec8i:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfVec8i::ptr( void*  ptr,
+                                         size_t i );
+lua:
+    VectorOfVectorOfVec8i.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVectorOfVec8i.reserve
 
 ```cpp
@@ -85370,6 +87261,21 @@ lua:
 void VectorOfVectorOfVectorOfInt::pop_back();
 lua:
     oVectorOfVectorOfVectorOfInt:pop_back() -> None
+```
+
+### VectorOfVectorOfVectorOfInt.ptr
+
+```cpp
+void* VectorOfVectorOfVectorOfInt::data( size_t i );
+lua:
+    oVectorOfVectorOfVectorOfInt:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVectorOfVectorOfInt::ptr( void*  ptr,
+                                               size_t i );
+lua:
+    VectorOfVectorOfVectorOfInt.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVectorOfVectorOfInt.reserve
@@ -85557,6 +87463,21 @@ lua:
     oVectorOfVideoCapture:pop_back() -> None
 ```
 
+### VectorOfVideoCapture.ptr
+
+```cpp
+void* VectorOfVideoCapture::data( size_t i );
+lua:
+    oVectorOfVideoCapture:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVideoCapture::ptr( void*  ptr,
+                                        size_t i );
+lua:
+    VectorOfVideoCapture.ptr( ptr, i ) -> retval
+```
+
 ### VectorOfVideoCapture.reserve
 
 ```cpp
@@ -85740,6 +87661,21 @@ lua:
 void VectorOfVideoCaptureAPIs::pop_back();
 lua:
     oVectorOfVideoCaptureAPIs:pop_back() -> None
+```
+
+### VectorOfVideoCaptureAPIs.ptr
+
+```cpp
+void* VectorOfVideoCaptureAPIs::data( size_t i );
+lua:
+    oVectorOfVideoCaptureAPIs:ptr( i ) -> retval
+```
+
+```cpp
+static void* VectorOfVideoCaptureAPIs::ptr( void*  ptr,
+                                            size_t i );
+lua:
+    VectorOfVideoCaptureAPIs.ptr( ptr, i ) -> retval
 ```
 
 ### VectorOfVideoCaptureAPIs.reserve

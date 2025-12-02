@@ -106,58 +106,88 @@ const findFile = (path, rootPath = ".") => {
 
 exports.findFile = findFile;
 
+const writeFile = (data, filename, doctoc_to_generate, options, cb) => {
+    waterfall([
+        next => {
+            if (options.save === false || data === true) {
+                next();
+                return;
+            }
+
+            mkdirp(sysPath.dirname(filename)).then(performed => {
+                next();
+            }, next);
+        },
+
+        next => {
+            if (data === true) {
+                next(null, data);
+                return;
+            }
+
+            fs.readFile(filename, (err, buffer) => {
+                if (err && err.code === "ENOENT") {
+                    err = null;
+                    buffer = Buffer.from([]);
+                }
+                next(err, buffer);
+            });
+        },
+
+        (buffer, next) => {
+            if (data === true) {
+                next(null, false);
+                return;
+            }
+
+            if (!data.endsWith("\n")) {
+                data += "\n";
+            }
+
+            const content = eol.lf(data);
+            const str = buffer.toString();
+
+            if (content === str) {
+                next(null, false);
+                return;
+            }
+
+            console.log("write file", options.output, sysPath.relative(options.output, filename));
+            if (options.save === false) {
+                next(null, false);
+                return;
+            }
+
+            fs.writeFile(filename, content, err => {
+                if (options.toc !== false && filename.endsWith(".md")) {
+                    doctoc_to_generate.add(filename);
+                }
+                next(err, true);
+            });
+        },
+    ], cb);
+};
+
 const writeFiles = (files, options, cb) => {
     const doctoc_to_generate = new Set();
 
     series([
         next => {
             // write files
-            eachOfLimit(files.keys(), cpus, (filename, i, next) => {
-                waterfall([
-                    next => {
-                        if (options.save === false) {
-                            next();
-                            return;
-                        }
+            eachOfLimit(files, cpus, ([filename, data], i, next) => {
+                writeFile(data, filename, doctoc_to_generate, options, next);
+            }, next);
+        },
 
-                        mkdirp(sysPath.dirname(filename)).then(performed => {
-                            next();
-                        }, next);
-                    },
+        next => {
+            if (!options.generated) {
+                next();
+                return;
+            }
 
-                    next => {
-                        fs.readFile(filename, (err, buffer) => {
-                            if (err && err.code === "ENOENT") {
-                                err = null;
-                                buffer = Buffer.from([]);
-                            }
-                            next(err, buffer);
-                        });
-                    },
-
-                    (buffer, next) => {
-                        const content = eol.lf(files.get(filename));
-                        const str = buffer.toString();
-
-                        if (content === str) {
-                            next(null, false);
-                            return;
-                        }
-
-                        console.log("write file", options.output, sysPath.relative(options.output, filename));
-                        if (options.save === false) {
-                            next(null, false);
-                            return;
-                        }
-
-                        fs.writeFile(filename, content, err => {
-                            if (options.toc !== false && filename.endsWith(".md")) {
-                                doctoc_to_generate.add(filename);
-                            }
-                            next(err, true);
-                        });
-                    },
-                ], next);
+            // write generated
+            eachOfLimit(options.generated, cpus, ([filename, data], i, next) => {
+                writeFile(data, filename, doctoc_to_generate, options, next);
             }, next);
         },
 
@@ -179,7 +209,7 @@ const writeFiles = (files, options, cb) => {
 exports.writeFiles = writeFiles;
 
 const deleteFiles = (directory, files, options, cb) => {
-    files = new Set([...files.keys()]);
+    files = new Set([...files.keys(), ...(options.generated ? options.generated.keys() : [])]);
 
     waterfall([
         next => {
@@ -190,7 +220,11 @@ const deleteFiles = (directory, files, options, cb) => {
             eachOfLimit(names, cpus, (filename, i, next) => {
                 filename = sysPath.join(directory, filename);
 
-                if (files.has(filename) || ![".h", ".hpp", ".c", ".cc", ".cpp", ".cxx"].some(ext => filename.endsWith(ext))) {
+                if (files.has(filename) || ![
+                    ".h", ".hh", ".hpp", ".hxx",
+                    ".c", ".cc", ".cpp", ".cxx",
+                    ".inc",
+                ].some(ext => filename.endsWith(ext))) {
                     next();
                     return;
                 }

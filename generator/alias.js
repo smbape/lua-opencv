@@ -13,7 +13,7 @@ exports.makeExpansion = (str, ...args) => {
     str = str.replace(/\$(?:(\d+)\b|\{(\d+)\})/g, (match, i1, i2) => {
         const i = parseInt(i1 || i2, 10) - 1;
         return i >= 0 && i < args.length ? args[i] : match;
-    })
+    });
     return str;
 };
 
@@ -64,7 +64,7 @@ exports.useNamespaces = (body, method, processor, coclass) => {
 exports.getTypeDef = (type, options) => {
     let type_def = type
         .replace(/\bunsigned\s+(char|short|int|long)\b/g, "u$1")
-        .replaceAll("*", "MapOPtr")
+        .replaceAll("*", "Ptr")
         .replaceAll("std::map", "MapOf")
         .replaceAll("std::pair", "PairOf")
         .replaceAll("std::vector", "VectorOf")

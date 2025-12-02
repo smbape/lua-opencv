@@ -816,6 +816,40 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename T>
+	int lua_method__eq(lua_State* L) {
+		auto vargc = lua_gettop(L);
+
+		if (vargc != 2) {
+			return luaL_error(L, "missing lhs and rhs arguments");
+		}
+
+		bool is_valid;
+
+		const auto lhs = lua_userdata_to(L, 1, static_cast<T*>(nullptr), is_valid);
+		if (!is_valid) {
+			lua_pushboolean(L, false);
+			return 1;
+		}
+
+		const auto rhs = lua_userdata_to(L, 2, static_cast<T*>(nullptr), is_valid);
+		if (!is_valid) {
+			lua_pushboolean(L, false);
+			return 1;
+		}
+
+		lua_pushboolean(L, lhs.get() == rhs.get());
+		return 1;
+	}
+
+	template<typename T>
+	int lua_method__gc(lua_State* L) {
+		using SharedPtr = std::shared_ptr<T>;
+		auto userdata_ptr = static_cast<SharedPtr*>(lua_touserdata(L, 1));
+		userdata_ptr->~SharedPtr();
+		return 0;
+	}
+
+	template<typename T>
 	int lua_method__self(lua_State* L) {
 		auto vargc = lua_gettop(L);
 
@@ -855,14 +889,6 @@ namespace LUA_MODULE_NAME {
 		}
 
 		return lua_push(L, static_cast<T*>(lua_touserdata(L, 1)));
-	}
-
-	template<typename T>
-	int lua_method__gc(lua_State* L) {
-		using SharedPtr = std::shared_ptr<T>;
-		auto userdata_ptr = static_cast<SharedPtr*>(lua_touserdata(L, 1));
-		userdata_ptr->~SharedPtr();
-		return 0;
 	}
 
 	template<std::size_t I = 0, typename... _Ts>
@@ -1135,10 +1161,11 @@ namespace LUA_MODULE_NAME {
 		if constexpr (requires(lua_State * L, int index, bool& is_valid) { usertype_info<T>::lua_userdata_to(L, index, is_valid); }) {
 			// class Garbage-Collection and introspection methods
 			const struct luaL_Reg lua_instance_misc_methods[] = {
+				{"__eq", lua_method__eq<T>},
+				{"__gc", lua_method__gc<T>},
 				{"__self", lua_method__self<T>}, // For ffi purpose
 				{"__cast", lua_method__cast<T>}, // For ffi purpose
 				{"isinstance", lua_method_isinstance<T>},
-				{"__gc", lua_method__gc<T>},
 				{NULL, NULL} // Sentinel
 			};
 			lua_pushfuncs(L, lua_instance_misc_methods);

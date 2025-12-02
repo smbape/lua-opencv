@@ -108,6 +108,8 @@ if (os.platform() === "win32") {
         "-e",
         [
             `package.path="${ [
+                `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lib").replaceAll("\\", "/") }/?.lua`,
+                `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lib").replaceAll("\\", "/") }/?/init.lua`,
                 `${ LUA_MODULES }/share/lua/${ ABIVER }/?.lua`,
                 `${ LUA_MODULES }/share/lua/${ ABIVER }/?/init.lua`,
                 `${ APPDATA }/luarocks/share/lua/${ ABIVER }/?.lua`,
@@ -127,6 +129,8 @@ if (os.platform() === "win32") {
         "-e",
         [
             `package.path="${ [
+                `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lib") }/?.lua`,
+                `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lib") }/?/init.lua`,
                 `${ LUA_MODULES }/share/lua/${ ABIVER }/?.lua`,
                 `${ LUA_MODULES }/share/lua/${ ABIVER }/?/init.lua`,
             ].join(";").replace(/[\\]/g, "/") };"..package.path`,
