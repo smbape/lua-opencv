@@ -158,6 +158,21 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<typename T>
+	inline std::enable_if_t<is_usertype_v<T>, std::shared_ptr<T>> lua_to(lua_State* L, int index, std::shared_ptr<T>*, bool& is_valid) {
+		is_valid = lua_isnil(L, index);
+		if (is_valid) {
+			return std::shared_ptr<T>();
+		}
+
+		is_valid = lua_isuserdata(L, index);
+		if (!is_valid) {
+			return std::shared_ptr<T>();
+		}
+
+		return lua_userdata_to(L, index, static_cast<T*>(nullptr), is_valid);
+	}
+
+	template<typename T>
 	inline std::enable_if_t<is_usertype_v<T>, std::shared_ptr<T>> lua_to(lua_State* L, int index, T* ptr, bool& is_valid) {
 		if constexpr (requires(lua_State * L, const size_t __top__, bool& is_valid) { usertype_info<T>::Lua_new(L, __top__, is_valid); }) {
 			auto value = lua_userdata_to(L, index, ptr, is_valid);
@@ -223,7 +238,7 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<typename T>
-	inline std::shared_ptr<T> lua_to(lua_State* L, int index, std::shared_ptr<T>*, bool& is_valid) {
+	inline std::enable_if_t<!is_usertype_v<T>, std::shared_ptr<T>> lua_to(lua_State* L, int index, std::shared_ptr<T>*, bool& is_valid) {
 		is_valid = lua_isnil(L, index);
 		if (is_valid) {
 			return std::shared_ptr<T>();
@@ -1106,6 +1121,15 @@ namespace LUA_MODULE_NAME {
 			lua_rawget(L, -2); // cls = module[name]
 		}
 
+		if constexpr (requires(lua_State * L, int index, bool& is_valid) { usertype_info<T>::lua_userdata_to(L, index, is_valid); }) {
+			// Generic __eq has lower priority than inherited __eq
+			const struct luaL_Reg lua_instance_misc_methods[] = {
+				{"__eq", lua_method__eq<T>},
+				{NULL, NULL} // Sentinel
+			};
+			lua_pushfuncs(L, lua_instance_misc_methods);
+		}
+
 		lua_inherit_methods<0, T, _Ts...>(L);
 
 		// class index methods
@@ -1161,7 +1185,6 @@ namespace LUA_MODULE_NAME {
 		if constexpr (requires(lua_State * L, int index, bool& is_valid) { usertype_info<T>::lua_userdata_to(L, index, is_valid); }) {
 			// class Garbage-Collection and introspection methods
 			const struct luaL_Reg lua_instance_misc_methods[] = {
-				{"__eq", lua_method__eq<T>},
 				{"__gc", lua_method__gc<T>},
 				{"__self", lua_method__self<T>}, // For ffi purpose
 				{"__cast", lua_method__cast<T>}, // For ffi purpose

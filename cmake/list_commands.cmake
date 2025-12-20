@@ -196,7 +196,7 @@ function(list_double_quote __items_var)
     set(${__items_var} "${${__items_var}}" PARENT_SCOPE)
 endfunction()
 
-function(list_to_json_array list_NAME)
+function(list_to_json_array __items_var)
     set(options)
     set(oneValueArgs OUTPUT_VARIABLE INDENT)
     set(multiValueArgs)
@@ -210,20 +210,20 @@ function(list_to_json_array list_NAME)
     endif()
 
     if (NOT list_OUTPUT_VARIABLE)
-        set(list_OUTPUT_VARIABLE ${list_NAME})
+        set(list_OUTPUT_VARIABLE ${__items_var})
     endif()
 
     if (NOT list_INDENT)
-        string(REPLACE ";" "\", \"" list_OUTPUT "${${list_NAME}}")
+        string(REPLACE ";" "\", \"" list_OUTPUT "${${__items_var}}")
         set(${list_OUTPUT_VARIABLE} "[\"${list_OUTPUT}\"]" PARENT_SCOPE)
         return()
     endif()
 
-    list(TRANSFORM ${list_NAME} PREPEND "    ${list_INDENT}\"")
-    list(TRANSFORM ${list_NAME} APPEND "\",")
-    list(PREPEND ${list_NAME} "[")
-    list(APPEND ${list_NAME} "${list_INDENT}]")
-    string(REPLACE ";" "\n" list_OUTPUT "${${list_NAME}}")
+    list(TRANSFORM ${__items_var} PREPEND "    ${list_INDENT}\"")
+    list(TRANSFORM ${__items_var} APPEND "\",")
+    list(PREPEND ${__items_var} "[")
+    list(APPEND ${__items_var} "${list_INDENT}]")
+    string(REPLACE ";" "\n" list_OUTPUT "${${__items_var}}")
 
     set(${list_OUTPUT_VARIABLE} "${list_OUTPUT}" PARENT_SCOPE)
 endfunction()
@@ -243,7 +243,7 @@ function(list_print __items_var)
     message(STATUS "${__title}: ${__result}")
 endfunction()
 
-function (list_intersection output_variable list_var1 list_var2)
+function(list_intersection output_variable list_var1 list_var2)
     list(APPEND list1_minus_list2 ${${list_var1}})
     list(REMOVE_ITEM list1_minus_list2 ${${list_var2}})
 
@@ -255,4 +255,40 @@ function (list_intersection output_variable list_var1 list_var2)
     list(REMOVE_ITEM inter_list ${list1_minus_list2} ${list2_minus_list1})
 
     set(${output_variable} ${inter_list} PARENT_SCOPE)
+endfunction()
+
+function(list_get_duplicates __items_var)
+    set(options)
+    set(oneValueArgs OUTPUT_VARIABLE)
+    set(multiValueArgs)
+    cmake_parse_arguments(PARSE_ARGV 1 list
+        "${options}" "${oneValueArgs}" "${multiValueArgs}"
+    )
+
+    if (list_UNPARSED_ARGUMENTS)
+        string(REPLACE ";" ", " list_UNPARSED_ARGUMENTS "${list_UNPARSED_ARGUMENTS}")
+        message(FATAL_ERROR "Unknown arguments [${list_UNPARSED_ARGUMENTS}]")
+    endif()
+
+    if (NOT list_OUTPUT_VARIABLE)
+        set(list_OUTPUT_VARIABLE ${__items_var})
+    endif()
+
+
+    set(list_ENTRIES ${${__items_var}})
+    list(SORT list_ENTRIES)
+    set(list_OUTPUT)
+    list(GET list_ENTRIES 0 lisit_PREV_ITEM)
+    list(POP_FRONT list_ENTRIES)
+
+    foreach (list_NEXT_ITEM IN LISTS list_ENTRIES)
+        if (list_NEXT_ITEM EQUAL lisit_PREV_ITEM)
+            list(APPEND list_OUTPUT ${list_NEXT_ITEM})
+        else()
+            set(lisit_PREV_ITEM ${list_NEXT_ITEM})
+        endif()
+    endforeach()
+
+    list(REMOVE_DUPLICATES list_OUTPUT)
+    set(${list_OUTPUT_VARIABLE} "${list_OUTPUT}" PARENT_SCOPE)
 endfunction()

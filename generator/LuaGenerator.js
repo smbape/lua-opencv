@@ -8,7 +8,8 @@ const FileUtils = require("./FileUtils");
 const {
     makeExpansion,
     useNamespaces,
-    getTypeDef
+    getTypeDef,
+    removeConstQualifiers
 } = require("./alias");
 const {
     PTR,
@@ -45,6 +46,10 @@ const proto = {
                 this.makeDependent(itype, coclass, options);
             }
         }
+
+        if (typeof options.makeDependent === "function") {
+            options.makeDependent(this, cpptype, coclass, options);
+        }
     },
 
     add_map(cpptype, parent, options) {
@@ -75,6 +80,10 @@ const proto = {
 
         coclass.addMethod([`${ fqn }.${ coclass.name }`, "", [], [], "", ""], options);
 
+        coclass.addMethod([`${ fqn }.${ coclass.name }`, "", [], [
+            [cpptype, "other", "", []],
+        ], "", ""], options);
+
         coclass.addMethod([`${ fqn }.new`, `std::shared_ptr<${ coclass.name }>`, ["/Call=lua_map_new", "/S"], [
             [`std::vector<std::pair<${ key_type }, ${ value_type }>>`, "pairs", "", []],
         ], "", ""], options);
@@ -102,6 +111,14 @@ const proto = {
 
         coclass.addMethod([`${ fqn }.erase`, "size_t", ["=remove"], [
             [key_type, "key", "", []],
+        ], "", ""], options);
+
+        coclass.addMethod([`${ fqn }.swap`, "void", [], [
+            [cpptype, "other", "", ["/Ref"]],
+        ], "", ""], options);
+
+        coclass.addMethod([`${ fqn }.operator=`, cpptype, ["=copy", "/Ref"], [
+            [cpptype, "other", "", ["/Ref", "/C"]],
         ], "", ""], options);
 
         coclass.addMethod([`${ fqn }.merge`, "void", [], [
@@ -177,11 +194,20 @@ const proto = {
         if (vtype !== "bool") {
             coclass.addMethod([`${ fqn }.data`, "void*", ["/WrapAs=static_cast<void*>"], [], "", ""], options);
             coclass.addMethod([`${ fqn }.data`, "void*", ["=ptr", "/Expr=", "/Output=$0 + i", "/WrapAs=static_cast<void*>"], [
+                ["size_t", "i", "0", []],
+            ], "", ""], options);
+            coclass.addMethod([`${ fqn }.ptr`, "void*", ["/S", "/Call=static_cast<void*>", "/Expr=$1 + $2"], [
+                ["void*", "ptr", "", [`/Cast=static_cast<${ vtype }*>`]],
+                ["size_t", "i", "0", []],
+            ], "", ""], options);
+            coclass.addMethod([`${ fqn }.get`, vtype, ["/S", "/Call=*", "/Expr=$1 + $2"], [
+                ["void*", "ptr", "", [`/Cast=static_cast<${ vtype }*>`]],
                 ["size_t", "i", "", []],
             ], "", ""], options);
-            coclass.addMethod([`${ fqn }.ptr`, "void*", ["/S", `/Call=static_cast<${ vtype }*>`, "/Expr=ptr", "/Output=$0 + i", "/WrapAs=static_cast<void*>"], [
-                ["void*", "ptr", "", []],
+            coclass.addMethod([`${ fqn }.set`, "void", ["/S", "/Call=*", "/Expr=$1 + $2", "/Output=$0 = value"], [
+                ["void*", "ptr", "", [`/Cast=static_cast<${ vtype }*>`]],
                 ["size_t", "i", "", []],
+                [vtype, "value", "", []],
             ], "", ""], options);
         }
 
@@ -191,13 +217,16 @@ const proto = {
         coclass.addMethod([`${ fqn }.size`, "size_t", ["=sol::meta_function::length"], [], "", ""], options);
         coclass.addMethod([`${ fqn }.size`, "size_t", ["=sizeof", `/Output=$0 * sizeof(${ vtype })`], [], "", ""], options);
         coclass.addMethod([`${ fqn }.max_size`, "size_t", [], [], "", ""], options);
+
         coclass.addMethod([`${ fqn }.reserve`, "void", [], [
             ["size_t", "new_cap", "", []],
         ], "", ""], options);
+
         coclass.addMethod([`${ fqn }.capacity`, "size_t", [], [], "", ""], options);
         coclass.addMethod([`${ fqn }.shrink_to_fit`, "void", [], [], "", ""], options);
         coclass.addMethod([`${ fqn }.clear`, "void", [], [], "", ""], options);
         coclass.addMethod([`${ fqn }.pop_back`, "void", [], [], "", ""], options);
+
         coclass.addMethod([`${ fqn }.resize`, "void", [], [
             ["size_t", "count", "", []],
         ], "", ""], options);
@@ -205,8 +234,13 @@ const proto = {
             ["size_t", "count", "", []],
             [vtype, "value", "", ["/C", "/Ref"]],
         ], "", ""], options);
+
         coclass.addMethod([`${ fqn }.swap`, "void", [], [
             [cpptype, "other", "", ["/Ref"]],
+        ], "", ""], options);
+
+        coclass.addMethod([`${ fqn }.operator=`, cpptype, ["=copy", "/Ref"], [
+            [cpptype, "other", "", ["/Ref", "/C"]],
         ], "", ""], options);
 
         coclass.addMethod([`${ fqn }.sol::meta_function::index`, vtype, ["/Call=lua_vector_method__index", `/Expr=L, ${ self }, $0`], [
@@ -610,7 +644,7 @@ class LuaGenerator {
                 const cpptypes = [];
 
                 for (const [o_setter, o_type, o_expr] of overloads) {
-                    const wtype = processor.getCppType(o_type, coclass, options);
+                    const wtype = removeConstQualifiers(processor.getCppType(o_type, coclass, options));
 
                     cpptypes.push(wtype);
 
@@ -1007,17 +1041,7 @@ class LuaGenerator {
                         defval = "";
                     }
 
-                    cpptype = processor.getCppType(argtype, coclass, options);
-                    if (/\bconst$/.test(cpptype)) {
-                        cpptype = cpptype.replace(/\s*const$/, "");
-                        if (arg_modifiers.includes("/C")) {
-                            cpptype = `const ${ cpptype }`;
-                        }
-                    }
-
-                    if (/^char\s*\*\s*$/.test(cpptype) && arg_modifiers.includes("/C")) {
-                        cpptype = `const ${ cpptype }`;
-                    }
+                    cpptype = removeConstQualifiers(processor.getCppType(argtype, coclass, options));
 
                     for (const modifier of arg_modifiers) {
                         if (modifier.startsWith("/Cast=")) {
@@ -1378,6 +1402,17 @@ class LuaGenerator {
 
                 contentFunction.push("{");
 
+                let constraints;
+                for (const modifier of func_modifiers) {
+                    if (modifier.startsWith("/Requires=")) {
+                        constraints = modifier.slice("/Requires=".length);
+                    }
+                }
+
+                if (constraints) {
+                    contentFunction[contentFunction.length - 1] = `if constexpr (requires${ constraints }) {`;
+                }
+
                 contentFunction.push(indent + overload.join("\n").split("\n").join(`\n${ indent }`));
 
                 contentFunction.push("}");
@@ -1502,15 +1537,17 @@ class LuaGenerator {
     }
 
     static getDocCppType(processor, type, coclass, options) {
+        let doctype;
+
         if (type.endsWith("*")) {
-            return `${ this.getDocCppType(processor, type.slice(0, -1).trim(), coclass, options) }*`;
+            doctype = `${ this.getDocCppType(processor, type.slice(0, -1).trim(), coclass, options) }*`;
+        } else if (processor.typedefs.has(type) && processor.typedefs.get(type) != null && processor.typedefs.get(type).startsWith("struct ")) {
+            doctype = type;
+        } else {
+            doctype = processor.getCppType(type, coclass, options);
         }
 
-        if (processor.typedefs.has(type) && processor.typedefs.get(type) != null && processor.typedefs.get(type).startsWith("struct ")) {
-            return type;
-        }
-
-        return processor.getCppType(type, coclass, options);
+        return typeof options.getDocCppType === "function" ? options.getDocCppType(processor, doctype, coclass, options) : doctype;
     }
 
     static writeMethodDocs(
@@ -1943,7 +1980,6 @@ class LuaGenerator {
                 sysPath.join(options.output, "lua_generated_include.hpp"),
                 [
                     "#pragma once\n",
-                    "#include <string>",
                     ...generated_include,
 
                     "",

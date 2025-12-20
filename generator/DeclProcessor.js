@@ -734,6 +734,13 @@ class DeclProcessor {
             coclass.addMethod([ctor, "", [], []], options);
         }
 
+        // Add a copy constructor
+        if (options.hasCopyConstructorSupport && coclass.is_struct && coclass.is_simple) {
+            coclass.addMethod([ctor, "", [`/Requires=(${ fqn }& self, const ${ fqn }& other) { self = other; }`, "/Expr=", `/DC=if (other) ${ options.self } = *other;`], [
+                [`${ options.shared_ptr || "std::shared_ptr" }<${ fqn }>`, "other", "", ["/Ref", "/C"]],
+            ]], options);
+        }
+
         if (coclass.modifiers?.includes("/DC")) {
             // https://en.cppreference.com/w/c/language/struct_initialization.html
 

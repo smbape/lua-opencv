@@ -289,6 +289,13 @@ namespace LUA_MODULE_NAME {
 			}
 		}
 
+#if (defined __bool_true_false_are_defined || defined __BOOL_TRUE_FALSE_ARE_DEFINED)
+		is_valid = lua_isboolean(L, index);
+		if (is_valid) {
+			return static_cast<Integer>(lua_toboolean(L, index) ? 1 : 0);
+		}
+#endif
+
 		is_valid = lua_type(L, index) == LUA_TNUMBER;
 		if (!is_valid) {
 			return static_cast<Integer>(0);
@@ -692,6 +699,9 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<typename T>
+	inline std::enable_if_t<is_usertype_v<T>, std::shared_ptr<T>> lua_to(lua_State* L, int index, std::shared_ptr<T>*, bool& is_valid);
+
+	template<typename T>
 	inline std::enable_if_t<is_usertype_v<T>, std::shared_ptr<T>> lua_to(lua_State* L, int index, T* ptr, bool& is_valid);
 
 	template<typename T>
@@ -752,7 +762,7 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<typename T>
-	inline std::shared_ptr<T> lua_to(lua_State* L, int index, std::shared_ptr<T>*, bool& is_valid);
+	inline std::enable_if_t<!is_usertype_v<T>, std::shared_ptr<T>> lua_to(lua_State* L, int index, std::shared_ptr<T>*, bool& is_valid);
 
 	template<typename T>
 	inline int lua_push(lua_State* L, const std::shared_ptr<T>& ptr);

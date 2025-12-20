@@ -204,6 +204,12 @@ function export_shared_env() {
     [ -z ${HTTPS_PROXY+x} ] || echo "export HTTPS_PROXY='${HTTPS_PROXY}'"
     [ -z ${http_proxy+x} ] || echo "export http_proxy='${http_proxy}'"
     [ -z ${HTTP_PROXY+x} ] || echo "export HTTP_PROXY='${HTTP_PROXY}'"
+
+    if [ ${#SHARED_ENV} -ne 0 ]; then
+        for env in $SHARED_ENV; do
+            eval "echo export $env=\"\${$env//\\\"/\\\"\\\\\\\"\\\"}\""
+        done
+    fi
 }
 
 function install_build_essentials_from_source() {
@@ -1512,7 +1518,7 @@ PYTHON_VENV_PATH="${PWD}/out/test/.venv" node scripts/test.js --Debug'
     # excluded due to camera device missing
     script="$script $WSL_EXCLUDED_TESTS"
 
-    wsl -c "$script"
+    wsl -c "$(export_shared_env /mnt);$script"
 }
 
 function build_debug_clean_windows() {

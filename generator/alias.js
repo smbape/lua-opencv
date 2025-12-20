@@ -64,7 +64,7 @@ exports.useNamespaces = (body, method, processor, coclass) => {
 exports.getTypeDef = (type, options) => {
     let type_def = type
         .replace(/\bunsigned\s+(char|short|int|long)\b/g, "u$1")
-        .replaceAll("*", "Ptr")
+        .replace(/\s*\*/g, "Ptr")
         .replaceAll("std::map", "MapOf")
         .replaceAll("std::pair", "PairOf")
         .replaceAll("std::vector", "VectorOf")
@@ -95,4 +95,72 @@ exports.getAlias = str => {
 
     const sep = str.includes("::") ? "::" : ".";
     return str.split(sep).map(item => (ALIASES.has(item) ? ALIASES.get(item) : item)).join(sep);
+};
+
+const noSpaceReg = /\S/g;
+
+exports.removeConstQualifiers = type => {
+    if (type.includes("std::optional<const")) {
+        debugger;
+    }
+
+    if (!type.includes("<") || !type.endsWith(">")) {
+        // ignore const qualifiers since they have no effect
+        if (/(?:^const\s+|\s+const$)/.test(type) && !/^(?:const\s+char|char\s+const)\s*\*$/.test(type)) {
+            type = type.replace(/(?:^const\s+|\s+const$)/, "");
+        }
+
+        return type;
+    }
+
+    const separators = /[,<>]/g;
+    const types = [];
+
+    let lastIndex = type.indexOf("<") + 1;
+    let match;
+    let open = 0;
+
+    separators.lastIndex = lastIndex;
+
+    while (match = separators.exec(type)) { // eslint-disable-line no-cond-assign
+        if (match[0] === "<") {
+            open++;
+        } else if (match[0] === ">") {
+            open--;
+        } else if (open === 0 && match[0] === ",") {
+            let end = match.index;
+            while (end > 0 && /s/.test(type[end - 1])) {
+                end--;
+            }
+
+            noSpaceReg.lastIndex = lastIndex;
+            match = noSpaceReg.exec(type);
+            const start = match.index;
+
+            types.push({
+                start,
+                end
+            });
+
+            lastIndex = separators.lastIndex;
+        }
+    }
+
+    if (lastIndex !== type.length - 1) {
+        types.push({
+            start: lastIndex,
+            end: type.length - 1
+        });
+    }
+
+    const replacers = [];
+    lastIndex = 0;
+    for (const {start, end} of types) {
+        replacers.push(type.slice(lastIndex, start));
+        replacers.push(exports.removeConstQualifiers(type.slice(start, end)));
+        lastIndex = end;
+    }
+    replacers.push(">");
+
+    return replacers.join("");
 };
