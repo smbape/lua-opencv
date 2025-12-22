@@ -153,15 +153,15 @@ namespace LUA_MODULE_NAME {
 	bool has_lua_jit();
 
 	struct GilLock {
-		GilLock(const bool lock);
-		~GilLock() = default;
-		std::unique_ptr<std::unique_lock<std::mutex>> mutex_lock;
+		GilLock();
+		~GilLock();
+		bool locked;
 	};
 
 	struct GilYield {
 		GilYield();
 		~GilYield();
-		std::unique_ptr<std::unique_lock<std::mutex>> yielder_lock;
+		bool yielded;
 	};
 
 	int yield(lua_State* L);
@@ -301,21 +301,8 @@ namespace LUA_MODULE_NAME {
 			return static_cast<Integer>(0);
 		}
 
-#if LUA_VERSION_NUM >= 503
-		// Lua 5.3 and greater check for numeric precision
-		// https://en.cppreference.com/w/cpp/types/numeric_limits
-		if (lua_isinteger(L, index)) {
-			lua_Integer v = lua_tointeger(L, index);
-			is_valid = v >= std::numeric_limits<Integer>::min() && v <= std::numeric_limits<Integer>::max();
-			return static_cast<Integer>(v);
-		}
-#endif
-
 		const lua_Number v = lua_tonumber(L, index);
-
-		// https://stackoverflow.com/questions/1521607/check-double-variable-if-it-contains-an-integer-and-not-floating-point/1521682#1521682
-		double intpart;
-		is_valid = std::modf(v, &intpart) == 0.0;
+		is_valid = v >= std::numeric_limits<Integer>::min() && v <= std::numeric_limits<Integer>::max();
 		return static_cast<Integer>(v);
 	}
 

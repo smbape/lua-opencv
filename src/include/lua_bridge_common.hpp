@@ -730,13 +730,11 @@ namespace LUA_MODULE_NAME {
 	namespace detail {
 		template<class R, class... Args>
 		struct FunctionInvoker {
-			std::thread::id thread_id;
 			Function fn;
 
 			FunctionInvoker() = default;
 
 			FunctionInvoker(lua_State* L, int index, bool& is_valid) {
-				this->thread_id = std::this_thread::get_id();
 				auto fn = lua_to(L, index, static_cast<Function*>(nullptr), is_valid);
 				if (is_valid) {
 					this->fn.assign(L, fn);
@@ -765,8 +763,7 @@ namespace LUA_MODULE_NAME {
 			}
 
 			R operator()(Args&&... args) {
-				const auto async = thread_id != std::this_thread::get_id();
-				GilLock lock(async);
+				GilLock lock;
 
 				auto& L = fn.L;
 
@@ -1044,6 +1041,19 @@ namespace LUA_MODULE_NAME {
 		return lua_push(L, oss.str());
 	}
 
+	template<typename T>
+	int usertype_default_to_string(lua_State* L) {
+		bool is_valid;
+		const auto userdata_ptr = lua_userdata_to(L, 1, static_cast<T*>(nullptr), is_valid);
+		if (!is_valid) {
+			lua_pushnil(L);
+			return 1;
+		}
+
+		lua_pushfstring(L, "cdata<%s>: %p", internal::GetTypeName<T>(), static_cast<void*>(userdata_ptr.get()));
+		return 1;
+	}
+
 	template<typename K, typename V>
 	std::shared_ptr<std::map<K, V>> lua_map_new(const std::vector<std::pair<K, V>>& pairs) {
 		std::shared_ptr<std::map<K, V>> res(new std::map<K, V>());
@@ -1177,6 +1187,15 @@ namespace LUA_MODULE_NAME {
 		else if constexpr (requires(const T & t) { std::to_string(t); }) {
 			const struct luaL_Reg lua_tostring_methods[] = {
 				{"__tostring", adl_default_to_string<T>},
+				{NULL, NULL} // Sentinel
+			};
+			lua_pushfuncs(L, lua_tostring_methods);
+		}
+
+		// FIXME : how to use this method only if parent __tostring is not a usertype_default_to_string
+		else if constexpr (sizeof...(_Ts) == 0 && requires(lua_State * L, int index, bool& is_valid) { usertype_info<T>::lua_userdata_to(L, index, is_valid); }) {
+			const struct luaL_Reg lua_tostring_methods[] = {
+				{"__tostring", usertype_default_to_string<T>},
 				{NULL, NULL} // Sentinel
 			};
 			lua_pushfuncs(L, lua_tostring_methods);

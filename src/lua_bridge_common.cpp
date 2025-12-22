@@ -112,8 +112,17 @@ namespace {
 	}
 
 	std::mutex gil_mutex;
-	std::unique_lock<std::mutex> gil{ gil_mutex, std::defer_lock };
 	std::mutex yielder_mutex;
+	std::unordered_map<std::thread::id, std::unique_lock<std::mutex>> thread_lock_map;
+
+	std::unique_lock<std::mutex>& get_thread_lock() {
+		using Map = decltype(thread_lock_map);
+
+		std::unique_lock<std::mutex> yielder_lock(yielder_mutex);
+		const auto thread_id = std::this_thread::get_id();
+		const auto [it, success] = thread_lock_map.insert(Map::value_type{ thread_id, Map::mapped_type{ gil_mutex, std::defer_lock } });
+		return it->second;
+	}
 
 	void register_Callbacks(lua_State* L) {
 		const struct luaL_Reg funcs_callbacks[] = {
@@ -125,7 +134,7 @@ namespace {
 		lua_pushfuncs(L, funcs_callbacks);
 
 		// the main thread has the lock
-		gil.lock();
+		get_thread_lock().lock();
 	}
 }
 
@@ -144,28 +153,31 @@ namespace LUA_MODULE_NAME {
 		return _has_lua_jit;
 	}
 
-	GilLock::GilLock(const bool lock) {
-		if (lock) {
-			mutex_lock = std::make_unique<std::unique_lock<std::mutex>>(gil_mutex);
+	GilLock::GilLock() : locked(false) {
+		auto& lock = get_thread_lock();
+		if (!lock.owns_lock()) {
+			lock.lock();
+			locked = true;
 		}
 	}
 
-	GilYield::GilYield() {
-		yielder_lock = std::make_unique<std::unique_lock<std::mutex>>(yielder_mutex, std::defer_lock);
-		if (yielder_lock->try_lock()) {
-			// if (!gil.owns_lock()) {
-			// 	LUAL_MODULE_ERROR_RETURN(L, "GIL is not locked.");
-			// }
-			gil.unlock();
+	GilLock::~GilLock() {
+		if (locked) {
+			get_thread_lock().unlock();
+		}
+	}
+
+	GilYield::GilYield() : yielded(false) {
+		auto& lock = get_thread_lock();
+		if (lock.owns_lock()) {
+			lock.unlock();
+			yielded = true;
 		}
 	}
 
 	GilYield::~GilYield() {
-		if (yielder_lock->owns_lock()) {
-			// if (gil.owns_lock()) {
-			// 	LUAL_MODULE_ERROR_RETURN(L, "GIL is locked.");
-			// }
-			gil.lock();
+		if (yielded) {
+			get_thread_lock().lock();
 		}
 	}
 

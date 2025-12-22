@@ -8,13 +8,12 @@ namespace LUA_MODULE_NAME {
 
 		static R invoke(Args... args, void* userdata);
 
-		CallbackInvoker(lua_State* L, const Function& fn, const Object& userdata) : thread_id(std::this_thread::get_id()) {
+		CallbackInvoker(lua_State* L, const Function& fn, const Object& userdata) {
 			this->fn.assign(L, fn);
 			this->userdata.assign(L, userdata);
 		}
 
 		bool active = true;
-		std::thread::id thread_id;
 		Function fn;
 		Object userdata;
 	};
@@ -32,8 +31,7 @@ namespace LUA_MODULE_NAME {
 			}
 		}
 
-		const auto async = invoker.thread_id != std::this_thread::get_id();
-		GilLock lock(async);
+		GilLock lock;
 
 		auto& fn = invoker.fn;
 		auto& userdata = invoker.userdata;

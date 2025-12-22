@@ -194,19 +194,19 @@ const proto = {
         if (vtype !== "bool") {
             coclass.addMethod([`${ fqn }.data`, "void*", ["/WrapAs=static_cast<void*>"], [], "", ""], options);
             coclass.addMethod([`${ fqn }.data`, "void*", ["=ptr", "/Expr=", "/Output=$0 + i", "/WrapAs=static_cast<void*>"], [
-                ["size_t", "i", "0", []],
+                ["std::ptrdiff_t", "i", "0", []],
             ], "", ""], options);
             coclass.addMethod([`${ fqn }.ptr`, "void*", ["/S", "/Call=static_cast<void*>", "/Expr=$1 + $2"], [
                 ["void*", "ptr", "", [`/Cast=static_cast<${ vtype }*>`]],
-                ["size_t", "i", "0", []],
+                ["std::ptrdiff_t", "i", "0", []],
             ], "", ""], options);
             coclass.addMethod([`${ fqn }.get`, vtype, ["/S", "/Call=*", "/Expr=$1 + $2"], [
                 ["void*", "ptr", "", [`/Cast=static_cast<${ vtype }*>`]],
-                ["size_t", "i", "", []],
+                ["std::ptrdiff_t", "i", "", []],
             ], "", ""], options);
             coclass.addMethod([`${ fqn }.set`, "void", ["/S", "/Call=*", "/Expr=$1 + $2", "/Output=$0 = value"], [
                 ["void*", "ptr", "", [`/Cast=static_cast<${ vtype }*>`]],
-                ["size_t", "i", "", []],
+                ["std::ptrdiff_t", "i", "", []],
                 [vtype, "value", "", []],
             ], "", ""], options);
         }
