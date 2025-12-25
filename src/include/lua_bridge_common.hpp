@@ -24,6 +24,235 @@ namespace LUA_MODULE_NAME {
 		}
 	}
 
+
+	// ================================
+	// bool
+	// ================================
+
+	inline auto lua_to(lua_State* L, int index, bool*, bool& is_valid) {
+		if constexpr (has_lua_to_custom_bridge_v<bool>) {
+			const auto v = lua_to_custom_bridge<bool>::lua_to(L, index, is_valid);
+			if (is_valid) {
+				return v;
+			}
+		}
+
+		is_valid = lua_isboolean(L, index);
+		return is_valid && !!lua_toboolean(L, index);
+	}
+
+
+	// ================================
+	// std::integral
+	// ================================
+
+	template<typename T>
+	inline std::enable_if_t<std::is_integral_v<T> && !std::is_same_v<bool, std::decay_t<T>>, std::decay_t<T>> lua_to(lua_State* L, int index, T* ptr, bool& is_valid) {
+		using Integer = std::decay_t<T>;
+
+		if constexpr (has_lua_to_custom_bridge_v<Integer>) {
+			const auto v = lua_to_custom_bridge<Integer>::lua_to(L, index, is_valid);
+			if (is_valid) {
+				return v;
+			}
+		}
+
+		// allow strings with only one character to be treated as char
+		if constexpr (std::is_same_v<char, Integer>) {
+			is_valid = lua_type(L, index) == LUA_TSTRING;
+			if (is_valid) {
+				size_t len;
+				auto c_str = lua_tolstring(L, index, &len);
+				if (len == 1) {
+					return static_cast<Integer>(c_str[0]);
+				}
+			}
+		}
+
+#if (defined __bool_true_false_are_defined || defined __BOOL_TRUE_FALSE_ARE_DEFINED)
+		is_valid = lua_isboolean(L, index);
+		if (is_valid) {
+			return static_cast<Integer>(lua_toboolean(L, index) ? 1 : 0);
+		}
+#endif
+
+		is_valid = lua_type(L, index) == LUA_TNUMBER;
+		if (!is_valid) {
+			return static_cast<Integer>(0);
+		}
+
+		const lua_Number v = lua_tonumber(L, index);
+		is_valid = v >= std::numeric_limits<Integer>::min() && v <= std::numeric_limits<Integer>::max();
+		return static_cast<Integer>(v);
+	}
+
+
+	// ================================
+	// std::floating_point
+	// ================================
+
+	template<typename T>
+	inline std::enable_if_t<std::is_floating_point_v<T>, std::decay_t<T>> lua_to(lua_State* L, int index, T* ptr, bool& is_valid) {
+		using Float = std::decay_t<T>;
+
+		if constexpr (has_lua_to_custom_bridge_v<Float>) {
+			const auto v = lua_to_custom_bridge<Float>::lua_to(L, index, is_valid);
+			if (is_valid) {
+				return v;
+			}
+		}
+
+		is_valid = lua_type(L, index) == LUA_TNUMBER;
+		if (!is_valid) {
+			return static_cast<Float>(0);
+		}
+		return static_cast<Float>(lua_tonumber(L, index));
+	}
+
+
+	// ================================
+	// const char*
+	// ================================
+
+	inline const char* lua_to(lua_State* L, int index, const char**, bool& is_valid) {
+		if constexpr (has_lua_to_custom_bridge_v<const char*>) {
+			const auto v = lua_to_custom_bridge<const char*>::lua_to(L, index, is_valid);
+			if (is_valid) {
+				return v;
+			}
+		}
+
+		is_valid = lua_isnil(L, index);
+		if (is_valid) {
+			return nullptr;
+		}
+
+		is_valid = lua_islightuserdata(L, index);
+		if (is_valid) {
+			return static_cast<const char*>(lua_touserdata(L, index));
+		}
+
+		is_valid = lua_type(L, index) == LUA_TSTRING;
+		if (!is_valid) {
+			return nullptr;
+		}
+
+		size_t len;
+		auto c_str = lua_tolstring(L, index, &len);
+		return c_str;
+	}
+
+
+	// ================================
+	// std::string
+	// ================================
+
+	inline std::string lua_to(lua_State* L, int index, std::string*, bool& is_valid) {
+		if constexpr (has_lua_to_custom_bridge_v<std::string>) {
+			const auto v = lua_to_custom_bridge<std::string>::lua_to(L, index, is_valid);
+			if (is_valid) {
+				return v;
+			}
+		}
+
+		is_valid = lua_isnil(L, index);
+		if (is_valid) {
+			return std::string();
+		}
+
+		is_valid = lua_type(L, index) == LUA_TSTRING;
+		if (!is_valid) {
+			return "";
+		}
+
+		size_t len;
+		auto c_str = lua_tolstring(L, index, &len);
+		return std::string(c_str, len);
+	}
+
+#ifdef _MSC_VER
+	inline std::wstring lua_to(lua_State* L, int index, std::wstring*, bool& is_valid) {
+		if constexpr (has_lua_to_custom_bridge_v<std::wstring>) {
+			const auto v = lua_to_custom_bridge<std::wstring>::lua_to(L, index, is_valid);
+			if (is_valid) {
+				return v;
+			}
+		}
+
+		is_valid = lua_isnil(L, index);
+		if (is_valid) {
+			return std::wstring();
+		}
+
+		is_valid = lua_type(L, index) == LUA_TSTRING;
+		if (!is_valid) {
+			return L"";
+		}
+
+		size_t len;
+		auto c_str = lua_tolstring(L, index, &len);
+		std::wstring wstr; wide_char::utf8_to_wcs(c_str, len, wstr);
+		return wstr;
+	}
+#endif
+
+
+	// ================================
+	// void*
+	// ================================
+
+	inline void* lua_to(lua_State* L, int index, void**, bool& is_valid) {
+		if constexpr (has_lua_to_custom_bridge_v<void*>) {
+			const auto v = lua_to_custom_bridge<void*>::lua_to(L, index, is_valid);
+			if (is_valid) {
+				return v;
+			}
+		}
+
+		is_valid = lua_isnil(L, index);
+		if (is_valid) {
+			return nullptr;
+		}
+
+		is_valid = lua_type(L, index) == LUA_TSTRING;
+		if (is_valid) {
+			size_t len;
+			auto c_str = lua_tolstring(L, index, &len);
+			return const_cast<char*>(c_str);
+		}
+
+		is_valid = lua_islightuserdata(L, index);
+		if (is_valid) {
+			return lua_touserdata(L, index);
+		}
+
+		if (lua_isuserdata(L, index)) {
+			if (index < 0) {
+				index += lua_gettop(L) + 1;
+			}
+
+			lua_pushliteral(L, "__self");
+			lua_gettable(L, index);
+
+			is_valid = lua_islightuserdata(L, -1);
+
+			void* ptr = nullptr;
+			if (is_valid) {
+				ptr = lua_touserdata(L, -1);
+				is_valid = static_cast<bool>(ptr);
+			}
+
+			lua_pop(L, 1);
+
+			if (is_valid) {
+				return ptr;
+			}
+		}
+
+		return nullptr;
+	}
+
+
 	// ================================
 	// _Object
 	// ================================
@@ -154,6 +383,16 @@ namespace LUA_MODULE_NAME {
 
 
 	// ================================
+	// T if std::is_enum_v<T>
+	// ================================
+
+	template<typename T>
+	inline std::enable_if_t<std::is_enum_v<T>, int> lua_to(lua_State* L, int index, T* ptr, bool& is_valid) {
+		return lua_to(L, index, static_cast<int*>(nullptr), is_valid);
+	}
+
+
+	// ================================
 	// T if is_usertype_v<T>
 	// ================================
 
@@ -230,6 +469,27 @@ namespace LUA_MODULE_NAME {
 	template<typename T>
 	inline std::enable_if_t<is_usertype_v<T>, int> lua_push(lua_State* L, const T& obj) {
 		return lua_push(L, std::make_shared<T>(obj));
+	}
+
+
+	// ================================
+	// T if !is_usertype_v<remove_cvref_all_pointers_t<T>
+	// ================================
+
+	template<typename T>
+	inline std::enable_if_t<!std::is_function_v<T> && !is_usertype_v<remove_cvref_all_pointers_t<T>> && !std::is_same_v<remove_cvref_all_pointers_t<T>, void>, T*> lua_to(lua_State* L, int index, T**, bool& is_valid) {
+		auto ptr = lua_to(L, index, static_cast<void**>(nullptr), is_valid);
+		return static_cast<T*>(is_valid ? ptr : nullptr);
+	}
+
+	// ================================
+	// T** as void*
+	// ================================
+
+	template<typename T>
+	inline T** lua_to(lua_State* L, int index, T***, bool& is_valid) {
+		auto ptr = lua_to(L, index, static_cast<void**>(nullptr), is_valid);
+		return is_valid ? static_cast<T**>(ptr) : nullptr;
 	}
 
 
@@ -863,16 +1123,6 @@ namespace LUA_MODULE_NAME {
 
 	template<typename T>
 	int lua_method__self(lua_State* L) {
-		auto vargc = lua_gettop(L);
-
-		if (vargc == 0) {
-			return luaL_error(L, "self is not defined");
-		}
-
-		if (vargc != 1) {
-			return luaL_error(L, "too many arguments");
-		}
-
 		bool is_valid;
 		const auto userdata = lua_userdata_to(L, 1, static_cast<T*>(nullptr), is_valid);
 		if (!is_valid) {
@@ -916,12 +1166,35 @@ namespace LUA_MODULE_NAME {
 		}
 	}
 
+	inline int lua_missing_declaration(lua_State* L) {
+		const auto arg = 2;
+		char const *sname;
+		if (lua_type(L, arg) == LUA_TSTRING) {
+			sname = lua_tostring(L, arg);
+		}
+		else if (lua_type(L, arg) == LUA_TLIGHTUSERDATA) {
+			sname = "light userdata";  /* special name for messages */
+		}
+		else {
+			sname = luaL_typename(L, arg);  /* standard name */
+		}
+		luaL_error(L, "missing declaration for symbol '%s'", sname);
+		return 0;
+	}
+
 	template<std::size_t I = 0, typename... _Ts>
 	int lua_class__index(lua_State* L) {
 		using _Tuple = typename std::tuple<_Ts...>;
 		using T = std::tuple_element_t<I, _Tuple>;
 
 		if constexpr (is_usertype_v<T>) {
+			// For ffi purpose
+			if constexpr (requires(lua_State * L, int index, bool& is_valid) { usertype_info<T>::lua_userdata_to(L, index, is_valid); }) {
+				if (lua_type(L, 2) == LUA_TSTRING && std::strcmp(lua_tostring(L, 2), "__self") == 0) {
+					return lua_method__self<T>(L);
+				}
+			}
+
 			// for instantiable classes: lookup in the raw porperties of the metatable
 			// =================================================
 			usertype_push_metatable<T>(L); // push the metatable
@@ -967,6 +1240,7 @@ namespace LUA_MODULE_NAME {
 		if constexpr (I == sizeof...(_Ts) - 1) {
 			// if there are no parent class: return nil
 			// =================================================
+			lua_missing_declaration(L);
 			return 1;
 		}
 		else {
@@ -1064,9 +1338,9 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename K, typename V>
-	int lua_map_method__index(lua_State* L, const std::map<K, V>& m, K key) {
+	int lua_map_method__index(lua_State* L, std::map<K, V>& m, K key) {
 		if (m.count(key)) {
-			lua_push(L, m.at(key));
+			lua_push(L, &m.at(key));
 		}
 		else {
 			lua_pushnil(L);
@@ -1082,7 +1356,7 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename T>
-	decltype(auto) lua_vector_method__index(lua_State* L, const std::vector<T>& vec, size_t index) {
+	decltype(auto) lua_vector_method__index(lua_State* L, std::vector<T>& vec, size_t index) {
 		if (index >= vec.size()) {
 			luaL_error(L, "index %d is out of range. Expecting a number between 0 and %d.", index, vec.size() - 1);
 		}
@@ -1093,7 +1367,7 @@ namespace LUA_MODULE_NAME {
 	int atoi(lua_State* L, const std::string& s);
 
 	template<typename T>
-	decltype(auto) lua_vector_method__index(lua_State* L, const std::vector<T>& vec, const std::string& s) {
+	T* lua_vector_method__index(lua_State* L, std::vector<T>& vec, const std::string& s) {
 		return lua_vector_method__index(L, vec, atosize_t(L, s));
 	}
 
@@ -1130,6 +1404,10 @@ namespace LUA_MODULE_NAME {
 			lua_pushstring(L, name);
 			lua_rawget(L, -2); // cls = module[name]
 		}
+
+		lua_pushliteral(L, "__name");
+		lua_pushstring(L, internal::GetTypeName<T>());
+		lua_rawset(L, -3); // cls.__name = typename
 
 		if constexpr (requires(lua_State * L, int index, bool& is_valid) { usertype_info<T>::lua_userdata_to(L, index, is_valid); }) {
 			// Generic __eq has lower priority than inherited __eq
@@ -1205,7 +1483,6 @@ namespace LUA_MODULE_NAME {
 			// class Garbage-Collection and introspection methods
 			const struct luaL_Reg lua_instance_misc_methods[] = {
 				{"__gc", lua_method__gc<T>},
-				{"__self", lua_method__self<T>}, // For ffi purpose
 				{"__cast", lua_method__cast<T>}, // For ffi purpose
 				{"isinstance", lua_method_isinstance<T>},
 				{NULL, NULL} // Sentinel

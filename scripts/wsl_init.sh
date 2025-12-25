@@ -34,6 +34,10 @@ rsync -t --delete -v -r \
     --exclude=samples/dnn/object_detection/models \
     "${projectDir}/" "${sources}" || exit $?
 
+for ifile in $(git --git-dir "${projectDir}/.git" ls-files 2>&1); do
+    touch -c -r "${projectDir}/${ifile}" "${sources}/${ifile}"
+done
+
 export PATH="/snap/bin:$PATH"
 export workspaceHash projectDir sources
 else

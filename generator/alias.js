@@ -61,9 +61,66 @@ exports.useNamespaces = (body, method, processor, coclass) => {
     }));
 };
 
+exports.getTupleTypes = type => {
+    const separators = /[,<>]/g;
+    const types = [];
+
+    let lastIndex = 0;
+    let match;
+    let open = 0;
+
+    while (match = separators.exec(type)) { // eslint-disable-line no-cond-assign
+        if (match[0] === "<") {
+            open++;
+        } else if (match[0] === ">") {
+            open--;
+        } else if (open === 0 && match[0] === ",") {
+            types.push(type.slice(lastIndex, match.index).trim());
+            lastIndex = separators.lastIndex;
+        }
+    }
+
+    if (lastIndex !== type.length) {
+        types.push(type.slice(lastIndex).trim());
+    }
+
+    return types;
+};
+
+const FUNDAMENTAL_TYPES = new Map([
+    ["signed char", "char"],
+    ["short int", "short"],
+    ["signed short", "short"],
+    ["signed short int", "short"],
+    ["unsigned short int", "unsigned short"],
+    ["short unsigned int", "unsigned short"],
+    ["signed int", "int"],
+    ["unsigned", "unsigned int"],
+    ["long int", "long"],
+    ["signed long", "long"],
+    ["signed long int", "long"],
+    ["unsigned long int", "unsigned long"],
+    ["long unsigned int", "unsigned long"],
+    ["long long int", "long long"],
+    ["signed long long", "long long"],
+    ["signed long long int", "long long"],
+    ["unsigned long long int", "unsigned long long"],
+    ["long long unsigned int", "unsigned long long"],
+]);
+
 exports.getTypeDef = (type, options) => {
-    let type_def = type
-        .replace(/\bunsigned\s+(char|short|int|long)\b/g, "u$1")
+    if (type.includes("<") && type.endsWith(">")) {
+        const pos = type.indexOf("<");
+        const tpl = type.slice(0, pos);
+        const types = exports.getTupleTypes(type.slice(pos + 1, -">".length));
+        type = `${ tpl }<${ types.map(itype => exports.getTypeDef(itype, options)).join(", ") }>`;
+    } else if (FUNDAMENTAL_TYPES.has(type)) {
+        type = FUNDAMENTAL_TYPES.get(type);
+    }
+
+    const typename = type
+        .replace(/\bunsigned\s+\b/g, "u")
+        .replace(/\bsigned\s+\b/g, "")
         .replace(/\s*\*/g, "Ptr")
         .replaceAll("std::map", "MapOf")
         .replaceAll("std::pair", "PairOf")
@@ -73,14 +130,14 @@ exports.getTypeDef = (type, options) => {
         .replaceAll("std::variant", "VariantOf")
         .replaceAll("cv::util::variant", "CvVariantOf");
 
-    type_def = exports.removeNamespaces(type_def, options)
+    const typedef = exports.removeNamespaces(typename, options)
         .replace(/\b_variant_t\b/g, "Variant")
         .replace(/::/g, "_")
         .replace(/\b[a-z]/g, m => m.toUpperCase())
         .replace(/, /g, "And")
-        .replace(/[<>]/g, "");
+        .replace(/[<> ]/g, "");
 
-    return type_def;
+    return typedef;
 };
 
 const {ALIASES} = require("./constants");
@@ -89,28 +146,34 @@ exports.getAlias = str => {
     str = str.trim();
 
     const key = str.split(".").filter(item => Boolean(item)).join("::");
+
     if (ALIASES.has(key)) {
         return ALIASES.get(key);
     }
 
+    if (FUNDAMENTAL_TYPES.has(key)) {
+        return FUNDAMENTAL_TYPES.get(key);
+    }
+
     const sep = str.includes("::") ? "::" : ".";
-    return str.split(sep).map(item => (ALIASES.has(item) ? ALIASES.get(item) : item)).join(sep);
+
+    if (!str.includes(sep)) {
+        return str;
+    }
+
+    return str.split(sep).map(item => exports.getAlias(item)).join(sep);
 };
 
 const noSpaceReg = /\S/g;
 
 exports.removeConstQualifiers = type => {
-    if (type.includes("std::optional<const")) {
-        debugger;
-    }
-
     if (!type.includes("<") || !type.endsWith(">")) {
         // ignore const qualifiers since they have no effect
         if (/(?:^const\s+|\s+const$)/.test(type) && !/^(?:const\s+char|char\s+const)\s*\*$/.test(type)) {
             type = type.replace(/(?:^const\s+|\s+const$)/, "");
         }
 
-        return type;
+        return type.replace(/^struct\s+/, "");
     }
 
     const separators = /[,<>]/g;

@@ -117,7 +117,7 @@ namespace LUA_MODULE_NAME {
 			index += lua_gettop(L) + 1;
 		}
 		lua_pushstring(L, key);
-		lua_gettable(L, index);
+		lua_rawget(L, index);
 	}
 
 	bool Keywords::has(lua_State* L, int index, const char* key) {

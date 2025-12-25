@@ -1,14 +1,17 @@
 const { v4: uuidv4 } = require("uuid");
 
 const knwon_ids = require("./ids");
-const {removeNamespaces} = require("./alias");
 
 const {
     CLASS_PTR,
     TEMPLATED_TYPES,
 } = require("./constants");
 
-const { getAlias } = require("./alias");
+const {
+    getAlias,
+    getTupleTypes,
+    removeNamespaces,
+} = require("./alias");
 
 const {hasOwnProperty: hasProp} = Object.prototype;
 
@@ -90,31 +93,7 @@ class CoClass {
         return DISID_CONSTANTS.has(sid) ? DISID_CONSTANTS.get(sid) : Number(sid);
     }
 
-    static getTupleTypes(type) {
-        const separators = /[,<>]/g;
-        const types = [];
-
-        let lastIndex = 0;
-        let match;
-        let open = 0;
-
-        while (match = separators.exec(type)) { // eslint-disable-line no-cond-assign
-            if (match[0] === "<") {
-                open++;
-            } else if (match[0] === ">") {
-                open--;
-            } else if (open === 0 && match[0] === ",") {
-                types.push(type.slice(lastIndex, match.index).trim());
-                lastIndex = separators.lastIndex;
-            }
-        }
-
-        if (lastIndex !== type.length) {
-            types.push(type.slice(lastIndex).trim());
-        }
-
-        return types;
-    }
+    static getTupleTypes = getTupleTypes;
 
     static restoreOriginalTypeLegacy(type, options = {}) {
         const shared_ptr = removeNamespaces(options.shared_ptr, options);

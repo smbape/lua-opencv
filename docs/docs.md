@@ -8383,6 +8383,7 @@
   - [MapOfStringAndVectorOfSize\_t.swap](#mapofstringandvectorofsize%5C_tswap)
   - [MapOfStringAndVectorOfSize\_t.table](#mapofstringandvectorofsize%5C_ttable)
 - [VectorOfAruco\_Dictionary](#vectorofaruco%5C_dictionary)
+  - [VectorOfAruco\_Dictionary.sizeof\_value\_type](#vectorofaruco%5C_dictionarysizeof%5C_value%5C_type)
   - [VectorOfAruco\_Dictionary.new](#vectorofaruco%5C_dictionarynew)
   - [VectorOfAruco\_Dictionary.back](#vectorofaruco%5C_dictionaryback)
   - [VectorOfAruco\_Dictionary.capacity](#vectorofaruco%5C_dictionarycapacity)
@@ -8406,6 +8407,7 @@
   - [VectorOfAruco\_Dictionary.swap](#vectorofaruco%5C_dictionaryswap)
   - [VectorOfAruco\_Dictionary.table](#vectorofaruco%5C_dictionarytable)
 - [VectorOfBool](#vectorofbool)
+  - [VectorOfBool.sizeof\_value\_type](#vectorofboolsizeof%5C_value%5C_type)
   - [VectorOfBool.new](#vectorofboolnew)
   - [VectorOfBool.back](#vectorofboolback)
   - [VectorOfBool.capacity](#vectorofboolcapacity)
@@ -8425,6 +8427,7 @@
   - [VectorOfBool.swap](#vectorofboolswap)
   - [VectorOfBool.table](#vectorofbooltable)
 - [VectorOfChar](#vectorofchar)
+  - [VectorOfChar.sizeof\_value\_type](#vectorofcharsizeof%5C_value%5C_type)
   - [VectorOfChar.new](#vectorofcharnew)
   - [VectorOfChar.back](#vectorofcharback)
   - [VectorOfChar.capacity](#vectorofcharcapacity)
@@ -8448,6 +8451,7 @@
   - [VectorOfChar.swap](#vectorofcharswap)
   - [VectorOfChar.table](#vectorofchartable)
 - [VectorOfCuda\_GpuMat](#vectorofcuda%5C_gpumat)
+  - [VectorOfCuda\_GpuMat.sizeof\_value\_type](#vectorofcuda%5C_gpumatsizeof%5C_value%5C_type)
   - [VectorOfCuda\_GpuMat.new](#vectorofcuda%5C_gpumatnew)
   - [VectorOfCuda\_GpuMat.back](#vectorofcuda%5C_gpumatback)
   - [VectorOfCuda\_GpuMat.capacity](#vectorofcuda%5C_gpumatcapacity)
@@ -8471,6 +8475,7 @@
   - [VectorOfCuda\_GpuMat.swap](#vectorofcuda%5C_gpumatswap)
   - [VectorOfCuda\_GpuMat.table](#vectorofcuda%5C_gpumattable)
 - [VectorOfCvVariantOfIntAndRange](#vectorofcvvariantofintandrange)
+  - [VectorOfCvVariantOfIntAndRange.sizeof\_value\_type](#vectorofcvvariantofintandrangesizeof%5C_value%5C_type)
   - [VectorOfCvVariantOfIntAndRange.new](#vectorofcvvariantofintandrangenew)
   - [VectorOfCvVariantOfIntAndRange.back](#vectorofcvvariantofintandrangeback)
   - [VectorOfCvVariantOfIntAndRange.capacity](#vectorofcvvariantofintandrangecapacity)
@@ -8494,6 +8499,7 @@
   - [VectorOfCvVariantOfIntAndRange.swap](#vectorofcvvariantofintandrangeswap)
   - [VectorOfCvVariantOfIntAndRange.table](#vectorofcvvariantofintandrangetable)
 - [VectorOfDMatch](#vectorofdmatch)
+  - [VectorOfDMatch.sizeof\_value\_type](#vectorofdmatchsizeof%5C_value%5C_type)
   - [VectorOfDMatch.new](#vectorofdmatchnew)
   - [VectorOfDMatch.back](#vectorofdmatchback)
   - [VectorOfDMatch.capacity](#vectorofdmatchcapacity)
@@ -8517,6 +8523,7 @@
   - [VectorOfDMatch.swap](#vectorofdmatchswap)
   - [VectorOfDMatch.table](#vectorofdmatchtable)
 - [VectorOfDetail\_CameraParams](#vectorofdetail%5C_cameraparams)
+  - [VectorOfDetail\_CameraParams.sizeof\_value\_type](#vectorofdetail%5C_cameraparamssizeof%5C_value%5C_type)
   - [VectorOfDetail\_CameraParams.new](#vectorofdetail%5C_cameraparamsnew)
   - [VectorOfDetail\_CameraParams.back](#vectorofdetail%5C_cameraparamsback)
   - [VectorOfDetail\_CameraParams.capacity](#vectorofdetail%5C_cameraparamscapacity)
@@ -8540,6 +8547,7 @@
   - [VectorOfDetail\_CameraParams.swap](#vectorofdetail%5C_cameraparamsswap)
   - [VectorOfDetail\_CameraParams.table](#vectorofdetail%5C_cameraparamstable)
 - [VectorOfDetail\_ImageFeatures](#vectorofdetail%5C_imagefeatures)
+  - [VectorOfDetail\_ImageFeatures.sizeof\_value\_type](#vectorofdetail%5C_imagefeaturessizeof%5C_value%5C_type)
   - [VectorOfDetail\_ImageFeatures.new](#vectorofdetail%5C_imagefeaturesnew)
   - [VectorOfDetail\_ImageFeatures.back](#vectorofdetail%5C_imagefeaturesback)
   - [VectorOfDetail\_ImageFeatures.capacity](#vectorofdetail%5C_imagefeaturescapacity)
@@ -8563,6 +8571,7 @@
   - [VectorOfDetail\_ImageFeatures.swap](#vectorofdetail%5C_imagefeaturesswap)
   - [VectorOfDetail\_ImageFeatures.table](#vectorofdetail%5C_imagefeaturestable)
 - [VectorOfDetail\_MatchesInfo](#vectorofdetail%5C_matchesinfo)
+  - [VectorOfDetail\_MatchesInfo.sizeof\_value\_type](#vectorofdetail%5C_matchesinfosizeof%5C_value%5C_type)
   - [VectorOfDetail\_MatchesInfo.new](#vectorofdetail%5C_matchesinfonew)
   - [VectorOfDetail\_MatchesInfo.back](#vectorofdetail%5C_matchesinfoback)
   - [VectorOfDetail\_MatchesInfo.capacity](#vectorofdetail%5C_matchesinfocapacity)
@@ -8586,6 +8595,7 @@
   - [VectorOfDetail\_MatchesInfo.swap](#vectorofdetail%5C_matchesinfoswap)
   - [VectorOfDetail\_MatchesInfo.table](#vectorofdetail%5C_matchesinfotable)
 - [VectorOfDnn\_Target](#vectorofdnn%5C_target)
+  - [VectorOfDnn\_Target.sizeof\_value\_type](#vectorofdnn%5C_targetsizeof%5C_value%5C_type)
   - [VectorOfDnn\_Target.new](#vectorofdnn%5C_targetnew)
   - [VectorOfDnn\_Target.back](#vectorofdnn%5C_targetback)
   - [VectorOfDnn\_Target.capacity](#vectorofdnn%5C_targetcapacity)
@@ -8609,6 +8619,7 @@
   - [VectorOfDnn\_Target.swap](#vectorofdnn%5C_targetswap)
   - [VectorOfDnn\_Target.table](#vectorofdnn%5C_targettable)
 - [VectorOfDouble](#vectorofdouble)
+  - [VectorOfDouble.sizeof\_value\_type](#vectorofdoublesizeof%5C_value%5C_type)
   - [VectorOfDouble.new](#vectorofdoublenew)
   - [VectorOfDouble.back](#vectorofdoubleback)
   - [VectorOfDouble.capacity](#vectorofdoublecapacity)
@@ -8632,6 +8643,7 @@
   - [VectorOfDouble.swap](#vectorofdoubleswap)
   - [VectorOfDouble.table](#vectorofdoubletable)
 - [VectorOfFloat](#vectoroffloat)
+  - [VectorOfFloat.sizeof\_value\_type](#vectoroffloatsizeof%5C_value%5C_type)
   - [VectorOfFloat.new](#vectoroffloatnew)
   - [VectorOfFloat.back](#vectoroffloatback)
   - [VectorOfFloat.capacity](#vectoroffloatcapacity)
@@ -8655,6 +8667,7 @@
   - [VectorOfFloat.swap](#vectoroffloatswap)
   - [VectorOfFloat.table](#vectoroffloattable)
 - [VectorOfGCompileArg](#vectorofgcompilearg)
+  - [VectorOfGCompileArg.sizeof\_value\_type](#vectorofgcompileargsizeof%5C_value%5C_type)
   - [VectorOfGCompileArg.new](#vectorofgcompileargnew)
   - [VectorOfGCompileArg.back](#vectorofgcompileargback)
   - [VectorOfGCompileArg.capacity](#vectorofgcompileargcapacity)
@@ -8678,6 +8691,7 @@
   - [VectorOfGCompileArg.swap](#vectorofgcompileargswap)
   - [VectorOfGCompileArg.table](#vectorofgcompileargtable)
 - [VectorOfGMat](#vectorofgmat)
+  - [VectorOfGMat.sizeof\_value\_type](#vectorofgmatsizeof%5C_value%5C_type)
   - [VectorOfGMat.new](#vectorofgmatnew)
   - [VectorOfGMat.back](#vectorofgmatback)
   - [VectorOfGMat.capacity](#vectorofgmatcapacity)
@@ -8701,6 +8715,7 @@
   - [VectorOfGMat.swap](#vectorofgmatswap)
   - [VectorOfGMat.table](#vectorofgmattable)
 - [VectorOfGMetaArg](#vectorofgmetaarg)
+  - [VectorOfGMetaArg.sizeof\_value\_type](#vectorofgmetaargsizeof%5C_value%5C_type)
   - [VectorOfGMetaArg.new](#vectorofgmetaargnew)
   - [VectorOfGMetaArg.back](#vectorofgmetaargback)
   - [VectorOfGMetaArg.capacity](#vectorofgmetaargcapacity)
@@ -8724,6 +8739,7 @@
   - [VectorOfGMetaArg.swap](#vectorofgmetaargswap)
   - [VectorOfGMetaArg.table](#vectorofgmetaargtable)
 - [VectorOfGRunArg](#vectorofgrunarg)
+  - [VectorOfGRunArg.sizeof\_value\_type](#vectorofgrunargsizeof%5C_value%5C_type)
   - [VectorOfGRunArg.new](#vectorofgrunargnew)
   - [VectorOfGRunArg.back](#vectorofgrunargback)
   - [VectorOfGRunArg.capacity](#vectorofgrunargcapacity)
@@ -8747,6 +8763,7 @@
   - [VectorOfGRunArg.swap](#vectorofgrunargswap)
   - [VectorOfGRunArg.table](#vectorofgrunargtable)
 - [VectorOfGapi\_GNetParam](#vectorofgapi%5C_gnetparam)
+  - [VectorOfGapi\_GNetParam.sizeof\_value\_type](#vectorofgapi%5C_gnetparamsizeof%5C_value%5C_type)
   - [VectorOfGapi\_GNetParam.new](#vectorofgapi%5C_gnetparamnew)
   - [VectorOfGapi\_GNetParam.back](#vectorofgapi%5C_gnetparamback)
   - [VectorOfGapi\_GNetParam.capacity](#vectorofgapi%5C_gnetparamcapacity)
@@ -8770,6 +8787,7 @@
   - [VectorOfGapi\_GNetParam.swap](#vectorofgapi%5C_gnetparamswap)
   - [VectorOfGapi\_GNetParam.table](#vectorofgapi%5C_gnetparamtable)
 - [VectorOfGapi\_wip\_draw\_Prim](#vectorofgapi%5C_wip%5C_draw%5C_prim)
+  - [VectorOfGapi\_wip\_draw\_Prim.sizeof\_value\_type](#vectorofgapi%5C_wip%5C_draw%5C_primsizeof%5C_value%5C_type)
   - [VectorOfGapi\_wip\_draw\_Prim.new](#vectorofgapi%5C_wip%5C_draw%5C_primnew)
   - [VectorOfGapi\_wip\_draw\_Prim.back](#vectorofgapi%5C_wip%5C_draw%5C_primback)
   - [VectorOfGapi\_wip\_draw\_Prim.capacity](#vectorofgapi%5C_wip%5C_draw%5C_primcapacity)
@@ -8793,6 +8811,7 @@
   - [VectorOfGapi\_wip\_draw\_Prim.swap](#vectorofgapi%5C_wip%5C_draw%5C_primswap)
   - [VectorOfGapi\_wip\_draw\_Prim.table](#vectorofgapi%5C_wip%5C_draw%5C_primtable)
 - [VectorOfInt](#vectorofint)
+  - [VectorOfInt.sizeof\_value\_type](#vectorofintsizeof%5C_value%5C_type)
   - [VectorOfInt.new](#vectorofintnew)
   - [VectorOfInt.back](#vectorofintback)
   - [VectorOfInt.capacity](#vectorofintcapacity)
@@ -8816,6 +8835,7 @@
   - [VectorOfInt.swap](#vectorofintswap)
   - [VectorOfInt.table](#vectorofinttable)
 - [VectorOfKeyPoint](#vectorofkeypoint)
+  - [VectorOfKeyPoint.sizeof\_value\_type](#vectorofkeypointsizeof%5C_value%5C_type)
   - [VectorOfKeyPoint.new](#vectorofkeypointnew)
   - [VectorOfKeyPoint.back](#vectorofkeypointback)
   - [VectorOfKeyPoint.capacity](#vectorofkeypointcapacity)
@@ -8839,6 +8859,7 @@
   - [VectorOfKeyPoint.swap](#vectorofkeypointswap)
   - [VectorOfKeyPoint.table](#vectorofkeypointtable)
 - [VectorOfLine\_descriptor\_KeyLine](#vectorofline%5C_descriptor%5C_keyline)
+  - [VectorOfLine\_descriptor\_KeyLine.sizeof\_value\_type](#vectorofline%5C_descriptor%5C_keylinesizeof%5C_value%5C_type)
   - [VectorOfLine\_descriptor\_KeyLine.new](#vectorofline%5C_descriptor%5C_keylinenew)
   - [VectorOfLine\_descriptor\_KeyLine.back](#vectorofline%5C_descriptor%5C_keylineback)
   - [VectorOfLine\_descriptor\_KeyLine.capacity](#vectorofline%5C_descriptor%5C_keylinecapacity)
@@ -8862,6 +8883,7 @@
   - [VectorOfLine\_descriptor\_KeyLine.swap](#vectorofline%5C_descriptor%5C_keylineswap)
   - [VectorOfLine\_descriptor\_KeyLine.table](#vectorofline%5C_descriptor%5C_keylinetable)
 - [VectorOfLinemod\_Feature](#vectoroflinemod%5C_feature)
+  - [VectorOfLinemod\_Feature.sizeof\_value\_type](#vectoroflinemod%5C_featuresizeof%5C_value%5C_type)
   - [VectorOfLinemod\_Feature.new](#vectoroflinemod%5C_featurenew)
   - [VectorOfLinemod\_Feature.back](#vectoroflinemod%5C_featureback)
   - [VectorOfLinemod\_Feature.capacity](#vectoroflinemod%5C_featurecapacity)
@@ -8885,6 +8907,7 @@
   - [VectorOfLinemod\_Feature.swap](#vectoroflinemod%5C_featureswap)
   - [VectorOfLinemod\_Feature.table](#vectoroflinemod%5C_featuretable)
 - [VectorOfLinemod\_Match](#vectoroflinemod%5C_match)
+  - [VectorOfLinemod\_Match.sizeof\_value\_type](#vectoroflinemod%5C_matchsizeof%5C_value%5C_type)
   - [VectorOfLinemod\_Match.new](#vectoroflinemod%5C_matchnew)
   - [VectorOfLinemod\_Match.back](#vectoroflinemod%5C_matchback)
   - [VectorOfLinemod\_Match.capacity](#vectoroflinemod%5C_matchcapacity)
@@ -8908,6 +8931,7 @@
   - [VectorOfLinemod\_Match.swap](#vectoroflinemod%5C_matchswap)
   - [VectorOfLinemod\_Match.table](#vectoroflinemod%5C_matchtable)
 - [VectorOfLinemod\_Template](#vectoroflinemod%5C_template)
+  - [VectorOfLinemod\_Template.sizeof\_value\_type](#vectoroflinemod%5C_templatesizeof%5C_value%5C_type)
   - [VectorOfLinemod\_Template.new](#vectoroflinemod%5C_templatenew)
   - [VectorOfLinemod\_Template.back](#vectoroflinemod%5C_templateback)
   - [VectorOfLinemod\_Template.capacity](#vectoroflinemod%5C_templatecapacity)
@@ -8931,6 +8955,7 @@
   - [VectorOfLinemod\_Template.swap](#vectoroflinemod%5C_templateswap)
   - [VectorOfLinemod\_Template.table](#vectoroflinemod%5C_templatetable)
 - [VectorOfMat](#vectorofmat)
+  - [VectorOfMat.sizeof\_value\_type](#vectorofmatsizeof%5C_value%5C_type)
   - [VectorOfMat.new](#vectorofmatnew)
   - [VectorOfMat.back](#vectorofmatback)
   - [VectorOfMat.capacity](#vectorofmatcapacity)
@@ -8954,6 +8979,7 @@
   - [VectorOfMat.swap](#vectorofmatswap)
   - [VectorOfMat.table](#vectorofmattable)
 - [VectorOfMoments](#vectorofmoments)
+  - [VectorOfMoments.sizeof\_value\_type](#vectorofmomentssizeof%5C_value%5C_type)
   - [VectorOfMoments.new](#vectorofmomentsnew)
   - [VectorOfMoments.back](#vectorofmomentsback)
   - [VectorOfMoments.capacity](#vectorofmomentscapacity)
@@ -8977,6 +9003,7 @@
   - [VectorOfMoments.swap](#vectorofmomentsswap)
   - [VectorOfMoments.table](#vectorofmomentstable)
 - [VectorOfPairOfIntAndDouble](#vectorofpairofintanddouble)
+  - [VectorOfPairOfIntAndDouble.sizeof\_value\_type](#vectorofpairofintanddoublesizeof%5C_value%5C_type)
   - [VectorOfPairOfIntAndDouble.new](#vectorofpairofintanddoublenew)
   - [VectorOfPairOfIntAndDouble.back](#vectorofpairofintanddoubleback)
   - [VectorOfPairOfIntAndDouble.capacity](#vectorofpairofintanddoublecapacity)
@@ -9000,6 +9027,7 @@
   - [VectorOfPairOfIntAndDouble.swap](#vectorofpairofintanddoubleswap)
   - [VectorOfPairOfIntAndDouble.table](#vectorofpairofintanddoubletable)
 - [VectorOfPairOfStringAndInt](#vectorofpairofstringandint)
+  - [VectorOfPairOfStringAndInt.sizeof\_value\_type](#vectorofpairofstringandintsizeof%5C_value%5C_type)
   - [VectorOfPairOfStringAndInt.new](#vectorofpairofstringandintnew)
   - [VectorOfPairOfStringAndInt.back](#vectorofpairofstringandintback)
   - [VectorOfPairOfStringAndInt.capacity](#vectorofpairofstringandintcapacity)
@@ -9023,6 +9051,7 @@
   - [VectorOfPairOfStringAndInt.swap](#vectorofpairofstringandintswap)
   - [VectorOfPairOfStringAndInt.table](#vectorofpairofstringandinttable)
 - [VectorOfPairOfStringAndString](#vectorofpairofstringandstring)
+  - [VectorOfPairOfStringAndString.sizeof\_value\_type](#vectorofpairofstringandstringsizeof%5C_value%5C_type)
   - [VectorOfPairOfStringAndString.new](#vectorofpairofstringandstringnew)
   - [VectorOfPairOfStringAndString.back](#vectorofpairofstringandstringback)
   - [VectorOfPairOfStringAndString.capacity](#vectorofpairofstringandstringcapacity)
@@ -9046,6 +9075,7 @@
   - [VectorOfPairOfStringAndString.swap](#vectorofpairofstringandstringswap)
   - [VectorOfPairOfStringAndString.table](#vectorofpairofstringandstringtable)
 - [VectorOfPairOfStringAndVectorOfFloat](#vectorofpairofstringandvectoroffloat)
+  - [VectorOfPairOfStringAndVectorOfFloat.sizeof\_value\_type](#vectorofpairofstringandvectoroffloatsizeof%5C_value%5C_type)
   - [VectorOfPairOfStringAndVectorOfFloat.new](#vectorofpairofstringandvectoroffloatnew)
   - [VectorOfPairOfStringAndVectorOfFloat.back](#vectorofpairofstringandvectoroffloatback)
   - [VectorOfPairOfStringAndVectorOfFloat.capacity](#vectorofpairofstringandvectoroffloatcapacity)
@@ -9069,6 +9099,7 @@
   - [VectorOfPairOfStringAndVectorOfFloat.swap](#vectorofpairofstringandvectoroffloatswap)
   - [VectorOfPairOfStringAndVectorOfFloat.table](#vectorofpairofstringandvectoroffloattable)
 - [VectorOfPairOfStringAndVectorOfSize\_t](#vectorofpairofstringandvectorofsize%5C_t)
+  - [VectorOfPairOfStringAndVectorOfSize\_t.sizeof\_value\_type](#vectorofpairofstringandvectorofsize%5C_tsizeof%5C_value%5C_type)
   - [VectorOfPairOfStringAndVectorOfSize\_t.new](#vectorofpairofstringandvectorofsize%5C_tnew)
   - [VectorOfPairOfStringAndVectorOfSize\_t.back](#vectorofpairofstringandvectorofsize%5C_tback)
   - [VectorOfPairOfStringAndVectorOfSize\_t.capacity](#vectorofpairofstringandvectorofsize%5C_tcapacity)
@@ -9092,6 +9123,7 @@
   - [VectorOfPairOfStringAndVectorOfSize\_t.swap](#vectorofpairofstringandvectorofsize%5C_tswap)
   - [VectorOfPairOfStringAndVectorOfSize\_t.table](#vectorofpairofstringandvectorofsize%5C_ttable)
 - [VectorOfPoint](#vectorofpoint)
+  - [VectorOfPoint.sizeof\_value\_type](#vectorofpointsizeof%5C_value%5C_type)
   - [VectorOfPoint.new](#vectorofpointnew)
   - [VectorOfPoint.back](#vectorofpointback)
   - [VectorOfPoint.capacity](#vectorofpointcapacity)
@@ -9115,6 +9147,7 @@
   - [VectorOfPoint.swap](#vectorofpointswap)
   - [VectorOfPoint.table](#vectorofpointtable)
 - [VectorOfPoint2d](#vectorofpoint2d)
+  - [VectorOfPoint2d.sizeof\_value\_type](#vectorofpoint2dsizeof%5C_value%5C_type)
   - [VectorOfPoint2d.new](#vectorofpoint2dnew)
   - [VectorOfPoint2d.back](#vectorofpoint2dback)
   - [VectorOfPoint2d.capacity](#vectorofpoint2dcapacity)
@@ -9138,6 +9171,7 @@
   - [VectorOfPoint2d.swap](#vectorofpoint2dswap)
   - [VectorOfPoint2d.table](#vectorofpoint2dtable)
 - [VectorOfPoint2f](#vectorofpoint2f)
+  - [VectorOfPoint2f.sizeof\_value\_type](#vectorofpoint2fsizeof%5C_value%5C_type)
   - [VectorOfPoint2f.new](#vectorofpoint2fnew)
   - [VectorOfPoint2f.back](#vectorofpoint2fback)
   - [VectorOfPoint2f.capacity](#vectorofpoint2fcapacity)
@@ -9161,6 +9195,7 @@
   - [VectorOfPoint2f.swap](#vectorofpoint2fswap)
   - [VectorOfPoint2f.table](#vectorofpoint2ftable)
 - [VectorOfPoint3d](#vectorofpoint3d)
+  - [VectorOfPoint3d.sizeof\_value\_type](#vectorofpoint3dsizeof%5C_value%5C_type)
   - [VectorOfPoint3d.new](#vectorofpoint3dnew)
   - [VectorOfPoint3d.back](#vectorofpoint3dback)
   - [VectorOfPoint3d.capacity](#vectorofpoint3dcapacity)
@@ -9184,6 +9219,7 @@
   - [VectorOfPoint3d.swap](#vectorofpoint3dswap)
   - [VectorOfPoint3d.table](#vectorofpoint3dtable)
 - [VectorOfPoint3f](#vectorofpoint3f)
+  - [VectorOfPoint3f.sizeof\_value\_type](#vectorofpoint3fsizeof%5C_value%5C_type)
   - [VectorOfPoint3f.new](#vectorofpoint3fnew)
   - [VectorOfPoint3f.back](#vectorofpoint3fback)
   - [VectorOfPoint3f.capacity](#vectorofpoint3fcapacity)
@@ -9207,6 +9243,7 @@
   - [VectorOfPoint3f.swap](#vectorofpoint3fswap)
   - [VectorOfPoint3f.table](#vectorofpoint3ftable)
 - [VectorOfPoint3i](#vectorofpoint3i)
+  - [VectorOfPoint3i.sizeof\_value\_type](#vectorofpoint3isizeof%5C_value%5C_type)
   - [VectorOfPoint3i.new](#vectorofpoint3inew)
   - [VectorOfPoint3i.back](#vectorofpoint3iback)
   - [VectorOfPoint3i.capacity](#vectorofpoint3icapacity)
@@ -9230,6 +9267,7 @@
   - [VectorOfPoint3i.swap](#vectorofpoint3iswap)
   - [VectorOfPoint3i.table](#vectorofpoint3itable)
 - [VectorOfRange](#vectorofrange)
+  - [VectorOfRange.sizeof\_value\_type](#vectorofrangesizeof%5C_value%5C_type)
   - [VectorOfRange.new](#vectorofrangenew)
   - [VectorOfRange.back](#vectorofrangeback)
   - [VectorOfRange.capacity](#vectorofrangecapacity)
@@ -9253,6 +9291,7 @@
   - [VectorOfRange.swap](#vectorofrangeswap)
   - [VectorOfRange.table](#vectorofrangetable)
 - [VectorOfRect](#vectorofrect)
+  - [VectorOfRect.sizeof\_value\_type](#vectorofrectsizeof%5C_value%5C_type)
   - [VectorOfRect.new](#vectorofrectnew)
   - [VectorOfRect.back](#vectorofrectback)
   - [VectorOfRect.capacity](#vectorofrectcapacity)
@@ -9276,6 +9315,7 @@
   - [VectorOfRect.swap](#vectorofrectswap)
   - [VectorOfRect.table](#vectorofrecttable)
 - [VectorOfRect2d](#vectorofrect2d)
+  - [VectorOfRect2d.sizeof\_value\_type](#vectorofrect2dsizeof%5C_value%5C_type)
   - [VectorOfRect2d.new](#vectorofrect2dnew)
   - [VectorOfRect2d.back](#vectorofrect2dback)
   - [VectorOfRect2d.capacity](#vectorofrect2dcapacity)
@@ -9299,6 +9339,7 @@
   - [VectorOfRect2d.swap](#vectorofrect2dswap)
   - [VectorOfRect2d.table](#vectorofrect2dtable)
 - [VectorOfRect2f](#vectorofrect2f)
+  - [VectorOfRect2f.sizeof\_value\_type](#vectorofrect2fsizeof%5C_value%5C_type)
   - [VectorOfRect2f.new](#vectorofrect2fnew)
   - [VectorOfRect2f.back](#vectorofrect2fback)
   - [VectorOfRect2f.capacity](#vectorofrect2fcapacity)
@@ -9322,6 +9363,7 @@
   - [VectorOfRect2f.swap](#vectorofrect2fswap)
   - [VectorOfRect2f.table](#vectorofrect2ftable)
 - [VectorOfRotatedRect](#vectorofrotatedrect)
+  - [VectorOfRotatedRect.sizeof\_value\_type](#vectorofrotatedrectsizeof%5C_value%5C_type)
   - [VectorOfRotatedRect.new](#vectorofrotatedrectnew)
   - [VectorOfRotatedRect.back](#vectorofrotatedrectback)
   - [VectorOfRotatedRect.capacity](#vectorofrotatedrectcapacity)
@@ -9345,6 +9387,7 @@
   - [VectorOfRotatedRect.swap](#vectorofrotatedrectswap)
   - [VectorOfRotatedRect.table](#vectorofrotatedrecttable)
 - [VectorOfSchar](#vectorofschar)
+  - [VectorOfSchar.sizeof\_value\_type](#vectorofscharsizeof%5C_value%5C_type)
   - [VectorOfSchar.new](#vectorofscharnew)
   - [VectorOfSchar.back](#vectorofscharback)
   - [VectorOfSchar.capacity](#vectorofscharcapacity)
@@ -9368,6 +9411,7 @@
   - [VectorOfSchar.swap](#vectorofscharswap)
   - [VectorOfSchar.table](#vectorofschartable)
 - [VectorOfSharedPtrOfLinemod\_Modality](#vectorofsharedptroflinemod%5C_modality)
+  - [VectorOfSharedPtrOfLinemod\_Modality.sizeof\_value\_type](#vectorofsharedptroflinemod%5C_modalitysizeof%5C_value%5C_type)
   - [VectorOfSharedPtrOfLinemod\_Modality.new](#vectorofsharedptroflinemod%5C_modalitynew)
   - [VectorOfSharedPtrOfLinemod\_Modality.back](#vectorofsharedptroflinemod%5C_modalityback)
   - [VectorOfSharedPtrOfLinemod\_Modality.capacity](#vectorofsharedptroflinemod%5C_modalitycapacity)
@@ -9391,6 +9435,7 @@
   - [VectorOfSharedPtrOfLinemod\_Modality.swap](#vectorofsharedptroflinemod%5C_modalityswap)
   - [VectorOfSharedPtrOfLinemod\_Modality.table](#vectorofsharedptroflinemod%5C_modalitytable)
 - [VectorOfSharedPtrOfMcc\_CChecker](#vectorofsharedptrofmcc%5C_cchecker)
+  - [VectorOfSharedPtrOfMcc\_CChecker.sizeof\_value\_type](#vectorofsharedptrofmcc%5C_ccheckersizeof%5C_value%5C_type)
   - [VectorOfSharedPtrOfMcc\_CChecker.new](#vectorofsharedptrofmcc%5C_ccheckernew)
   - [VectorOfSharedPtrOfMcc\_CChecker.back](#vectorofsharedptrofmcc%5C_ccheckerback)
   - [VectorOfSharedPtrOfMcc\_CChecker.capacity](#vectorofsharedptrofmcc%5C_ccheckercapacity)
@@ -9414,6 +9459,7 @@
   - [VectorOfSharedPtrOfMcc\_CChecker.swap](#vectorofsharedptrofmcc%5C_ccheckerswap)
   - [VectorOfSharedPtrOfMcc\_CChecker.table](#vectorofsharedptrofmcc%5C_ccheckertable)
 - [VectorOfSharedPtrOfPpf\_match\_3d\_Pose3D](#vectorofsharedptrofppf%5C_match%5C_3d%5C_pose3d)
+  - [VectorOfSharedPtrOfPpf\_match\_3d\_Pose3D.sizeof\_value\_type](#vectorofsharedptrofppf%5C_match%5C_3d%5C_pose3dsizeof%5C_value%5C_type)
   - [VectorOfSharedPtrOfPpf\_match\_3d\_Pose3D.new](#vectorofsharedptrofppf%5C_match%5C_3d%5C_pose3dnew)
   - [VectorOfSharedPtrOfPpf\_match\_3d\_Pose3D.back](#vectorofsharedptrofppf%5C_match%5C_3d%5C_pose3dback)
   - [VectorOfSharedPtrOfPpf\_match\_3d\_Pose3D.capacity](#vectorofsharedptrofppf%5C_match%5C_3d%5C_pose3dcapacity)
@@ -9437,6 +9483,7 @@
   - [VectorOfSharedPtrOfPpf\_match\_3d\_Pose3D.swap](#vectorofsharedptrofppf%5C_match%5C_3d%5C_pose3dswap)
   - [VectorOfSharedPtrOfPpf\_match\_3d\_Pose3D.table](#vectorofsharedptrofppf%5C_match%5C_3d%5C_pose3dtable)
 - [VectorOfShort](#vectorofshort)
+  - [VectorOfShort.sizeof\_value\_type](#vectorofshortsizeof%5C_value%5C_type)
   - [VectorOfShort.new](#vectorofshortnew)
   - [VectorOfShort.back](#vectorofshortback)
   - [VectorOfShort.capacity](#vectorofshortcapacity)
@@ -9460,6 +9507,7 @@
   - [VectorOfShort.swap](#vectorofshortswap)
   - [VectorOfShort.table](#vectorofshorttable)
 - [VectorOfSize](#vectorofsize)
+  - [VectorOfSize.sizeof\_value\_type](#vectorofsizesizeof%5C_value%5C_type)
   - [VectorOfSize.new](#vectorofsizenew)
   - [VectorOfSize.back](#vectorofsizeback)
   - [VectorOfSize.capacity](#vectorofsizecapacity)
@@ -9483,6 +9531,7 @@
   - [VectorOfSize.swap](#vectorofsizeswap)
   - [VectorOfSize.table](#vectorofsizetable)
 - [VectorOfSize2d](#vectorofsize2d)
+  - [VectorOfSize2d.sizeof\_value\_type](#vectorofsize2dsizeof%5C_value%5C_type)
   - [VectorOfSize2d.new](#vectorofsize2dnew)
   - [VectorOfSize2d.back](#vectorofsize2dback)
   - [VectorOfSize2d.capacity](#vectorofsize2dcapacity)
@@ -9506,6 +9555,7 @@
   - [VectorOfSize2d.swap](#vectorofsize2dswap)
   - [VectorOfSize2d.table](#vectorofsize2dtable)
 - [VectorOfSize2f](#vectorofsize2f)
+  - [VectorOfSize2f.sizeof\_value\_type](#vectorofsize2fsizeof%5C_value%5C_type)
   - [VectorOfSize2f.new](#vectorofsize2fnew)
   - [VectorOfSize2f.back](#vectorofsize2fback)
   - [VectorOfSize2f.capacity](#vectorofsize2fcapacity)
@@ -9529,6 +9579,7 @@
   - [VectorOfSize2f.swap](#vectorofsize2fswap)
   - [VectorOfSize2f.table](#vectorofsize2ftable)
 - [VectorOfSize\_t](#vectorofsize%5C_t)
+  - [VectorOfSize\_t.sizeof\_value\_type](#vectorofsize%5C_tsizeof%5C_value%5C_type)
   - [VectorOfSize\_t.new](#vectorofsize%5C_tnew)
   - [VectorOfSize\_t.back](#vectorofsize%5C_tback)
   - [VectorOfSize\_t.capacity](#vectorofsize%5C_tcapacity)
@@ -9552,6 +9603,7 @@
   - [VectorOfSize\_t.swap](#vectorofsize%5C_tswap)
   - [VectorOfSize\_t.table](#vectorofsize%5C_ttable)
 - [VectorOfStereo\_MatchQuasiDense](#vectorofstereo%5C_matchquasidense)
+  - [VectorOfStereo\_MatchQuasiDense.sizeof\_value\_type](#vectorofstereo%5C_matchquasidensesizeof%5C_value%5C_type)
   - [VectorOfStereo\_MatchQuasiDense.new](#vectorofstereo%5C_matchquasidensenew)
   - [VectorOfStereo\_MatchQuasiDense.back](#vectorofstereo%5C_matchquasidenseback)
   - [VectorOfStereo\_MatchQuasiDense.capacity](#vectorofstereo%5C_matchquasidensecapacity)
@@ -9575,6 +9627,7 @@
   - [VectorOfStereo\_MatchQuasiDense.swap](#vectorofstereo%5C_matchquasidenseswap)
   - [VectorOfStereo\_MatchQuasiDense.table](#vectorofstereo%5C_matchquasidensetable)
 - [VectorOfString](#vectorofstring)
+  - [VectorOfString.sizeof\_value\_type](#vectorofstringsizeof%5C_value%5C_type)
   - [VectorOfString.new](#vectorofstringnew)
   - [VectorOfString.back](#vectorofstringback)
   - [VectorOfString.capacity](#vectorofstringcapacity)
@@ -9598,6 +9651,7 @@
   - [VectorOfString.swap](#vectorofstringswap)
   - [VectorOfString.table](#vectorofstringtable)
 - [VectorOfTuplePointAndDouble](#vectoroftuplepointanddouble)
+  - [VectorOfTuplePointAndDouble.sizeof\_value\_type](#vectoroftuplepointanddoublesizeof%5C_value%5C_type)
   - [VectorOfTuplePointAndDouble.new](#vectoroftuplepointanddoublenew)
   - [VectorOfTuplePointAndDouble.back](#vectoroftuplepointanddoubleback)
   - [VectorOfTuplePointAndDouble.capacity](#vectoroftuplepointanddoublecapacity)
@@ -9621,6 +9675,7 @@
   - [VectorOfTuplePointAndDouble.swap](#vectoroftuplepointanddoubleswap)
   - [VectorOfTuplePointAndDouble.table](#vectoroftuplepointanddoubletable)
 - [VectorOfUMat](#vectorofumat)
+  - [VectorOfUMat.sizeof\_value\_type](#vectorofumatsizeof%5C_value%5C_type)
   - [VectorOfUMat.new](#vectorofumatnew)
   - [VectorOfUMat.back](#vectorofumatback)
   - [VectorOfUMat.capacity](#vectorofumatcapacity)
@@ -9644,6 +9699,7 @@
   - [VectorOfUMat.swap](#vectorofumatswap)
   - [VectorOfUMat.table](#vectorofumattable)
 - [VectorOfUchar](#vectorofuchar)
+  - [VectorOfUchar.sizeof\_value\_type](#vectorofucharsizeof%5C_value%5C_type)
   - [VectorOfUchar.new](#vectorofucharnew)
   - [VectorOfUchar.back](#vectorofucharback)
   - [VectorOfUchar.capacity](#vectorofucharcapacity)
@@ -9667,6 +9723,7 @@
   - [VectorOfUchar.swap](#vectorofucharswap)
   - [VectorOfUchar.table](#vectorofuchartable)
 - [VectorOfUshort](#vectorofushort)
+  - [VectorOfUshort.sizeof\_value\_type](#vectorofushortsizeof%5C_value%5C_type)
   - [VectorOfUshort.new](#vectorofushortnew)
   - [VectorOfUshort.back](#vectorofushortback)
   - [VectorOfUshort.capacity](#vectorofushortcapacity)
@@ -9690,6 +9747,7 @@
   - [VectorOfUshort.swap](#vectorofushortswap)
   - [VectorOfUshort.table](#vectorofushorttable)
 - [VectorOfVec2b](#vectorofvec2b)
+  - [VectorOfVec2b.sizeof\_value\_type](#vectorofvec2bsizeof%5C_value%5C_type)
   - [VectorOfVec2b.new](#vectorofvec2bnew)
   - [VectorOfVec2b.back](#vectorofvec2bback)
   - [VectorOfVec2b.capacity](#vectorofvec2bcapacity)
@@ -9713,6 +9771,7 @@
   - [VectorOfVec2b.swap](#vectorofvec2bswap)
   - [VectorOfVec2b.table](#vectorofvec2btable)
 - [VectorOfVec2d](#vectorofvec2d)
+  - [VectorOfVec2d.sizeof\_value\_type](#vectorofvec2dsizeof%5C_value%5C_type)
   - [VectorOfVec2d.new](#vectorofvec2dnew)
   - [VectorOfVec2d.back](#vectorofvec2dback)
   - [VectorOfVec2d.capacity](#vectorofvec2dcapacity)
@@ -9736,6 +9795,7 @@
   - [VectorOfVec2d.swap](#vectorofvec2dswap)
   - [VectorOfVec2d.table](#vectorofvec2dtable)
 - [VectorOfVec2f](#vectorofvec2f)
+  - [VectorOfVec2f.sizeof\_value\_type](#vectorofvec2fsizeof%5C_value%5C_type)
   - [VectorOfVec2f.new](#vectorofvec2fnew)
   - [VectorOfVec2f.back](#vectorofvec2fback)
   - [VectorOfVec2f.capacity](#vectorofvec2fcapacity)
@@ -9759,6 +9819,7 @@
   - [VectorOfVec2f.swap](#vectorofvec2fswap)
   - [VectorOfVec2f.table](#vectorofvec2ftable)
 - [VectorOfVec2i](#vectorofvec2i)
+  - [VectorOfVec2i.sizeof\_value\_type](#vectorofvec2isizeof%5C_value%5C_type)
   - [VectorOfVec2i.new](#vectorofvec2inew)
   - [VectorOfVec2i.back](#vectorofvec2iback)
   - [VectorOfVec2i.capacity](#vectorofvec2icapacity)
@@ -9782,6 +9843,7 @@
   - [VectorOfVec2i.swap](#vectorofvec2iswap)
   - [VectorOfVec2i.table](#vectorofvec2itable)
 - [VectorOfVec2s](#vectorofvec2s)
+  - [VectorOfVec2s.sizeof\_value\_type](#vectorofvec2ssizeof%5C_value%5C_type)
   - [VectorOfVec2s.new](#vectorofvec2snew)
   - [VectorOfVec2s.back](#vectorofvec2sback)
   - [VectorOfVec2s.capacity](#vectorofvec2scapacity)
@@ -9805,6 +9867,7 @@
   - [VectorOfVec2s.swap](#vectorofvec2sswap)
   - [VectorOfVec2s.table](#vectorofvec2stable)
 - [VectorOfVec2w](#vectorofvec2w)
+  - [VectorOfVec2w.sizeof\_value\_type](#vectorofvec2wsizeof%5C_value%5C_type)
   - [VectorOfVec2w.new](#vectorofvec2wnew)
   - [VectorOfVec2w.back](#vectorofvec2wback)
   - [VectorOfVec2w.capacity](#vectorofvec2wcapacity)
@@ -9828,6 +9891,7 @@
   - [VectorOfVec2w.swap](#vectorofvec2wswap)
   - [VectorOfVec2w.table](#vectorofvec2wtable)
 - [VectorOfVec3b](#vectorofvec3b)
+  - [VectorOfVec3b.sizeof\_value\_type](#vectorofvec3bsizeof%5C_value%5C_type)
   - [VectorOfVec3b.new](#vectorofvec3bnew)
   - [VectorOfVec3b.back](#vectorofvec3bback)
   - [VectorOfVec3b.capacity](#vectorofvec3bcapacity)
@@ -9851,6 +9915,7 @@
   - [VectorOfVec3b.swap](#vectorofvec3bswap)
   - [VectorOfVec3b.table](#vectorofvec3btable)
 - [VectorOfVec3d](#vectorofvec3d)
+  - [VectorOfVec3d.sizeof\_value\_type](#vectorofvec3dsizeof%5C_value%5C_type)
   - [VectorOfVec3d.new](#vectorofvec3dnew)
   - [VectorOfVec3d.back](#vectorofvec3dback)
   - [VectorOfVec3d.capacity](#vectorofvec3dcapacity)
@@ -9874,6 +9939,7 @@
   - [VectorOfVec3d.swap](#vectorofvec3dswap)
   - [VectorOfVec3d.table](#vectorofvec3dtable)
 - [VectorOfVec3f](#vectorofvec3f)
+  - [VectorOfVec3f.sizeof\_value\_type](#vectorofvec3fsizeof%5C_value%5C_type)
   - [VectorOfVec3f.new](#vectorofvec3fnew)
   - [VectorOfVec3f.back](#vectorofvec3fback)
   - [VectorOfVec3f.capacity](#vectorofvec3fcapacity)
@@ -9897,6 +9963,7 @@
   - [VectorOfVec3f.swap](#vectorofvec3fswap)
   - [VectorOfVec3f.table](#vectorofvec3ftable)
 - [VectorOfVec3i](#vectorofvec3i)
+  - [VectorOfVec3i.sizeof\_value\_type](#vectorofvec3isizeof%5C_value%5C_type)
   - [VectorOfVec3i.new](#vectorofvec3inew)
   - [VectorOfVec3i.back](#vectorofvec3iback)
   - [VectorOfVec3i.capacity](#vectorofvec3icapacity)
@@ -9920,6 +9987,7 @@
   - [VectorOfVec3i.swap](#vectorofvec3iswap)
   - [VectorOfVec3i.table](#vectorofvec3itable)
 - [VectorOfVec3s](#vectorofvec3s)
+  - [VectorOfVec3s.sizeof\_value\_type](#vectorofvec3ssizeof%5C_value%5C_type)
   - [VectorOfVec3s.new](#vectorofvec3snew)
   - [VectorOfVec3s.back](#vectorofvec3sback)
   - [VectorOfVec3s.capacity](#vectorofvec3scapacity)
@@ -9943,6 +10011,7 @@
   - [VectorOfVec3s.swap](#vectorofvec3sswap)
   - [VectorOfVec3s.table](#vectorofvec3stable)
 - [VectorOfVec3w](#vectorofvec3w)
+  - [VectorOfVec3w.sizeof\_value\_type](#vectorofvec3wsizeof%5C_value%5C_type)
   - [VectorOfVec3w.new](#vectorofvec3wnew)
   - [VectorOfVec3w.back](#vectorofvec3wback)
   - [VectorOfVec3w.capacity](#vectorofvec3wcapacity)
@@ -9966,6 +10035,7 @@
   - [VectorOfVec3w.swap](#vectorofvec3wswap)
   - [VectorOfVec3w.table](#vectorofvec3wtable)
 - [VectorOfVec4b](#vectorofvec4b)
+  - [VectorOfVec4b.sizeof\_value\_type](#vectorofvec4bsizeof%5C_value%5C_type)
   - [VectorOfVec4b.new](#vectorofvec4bnew)
   - [VectorOfVec4b.back](#vectorofvec4bback)
   - [VectorOfVec4b.capacity](#vectorofvec4bcapacity)
@@ -9989,6 +10059,7 @@
   - [VectorOfVec4b.swap](#vectorofvec4bswap)
   - [VectorOfVec4b.table](#vectorofvec4btable)
 - [VectorOfVec4d](#vectorofvec4d)
+  - [VectorOfVec4d.sizeof\_value\_type](#vectorofvec4dsizeof%5C_value%5C_type)
   - [VectorOfVec4d.new](#vectorofvec4dnew)
   - [VectorOfVec4d.back](#vectorofvec4dback)
   - [VectorOfVec4d.capacity](#vectorofvec4dcapacity)
@@ -10012,6 +10083,7 @@
   - [VectorOfVec4d.swap](#vectorofvec4dswap)
   - [VectorOfVec4d.table](#vectorofvec4dtable)
 - [VectorOfVec4f](#vectorofvec4f)
+  - [VectorOfVec4f.sizeof\_value\_type](#vectorofvec4fsizeof%5C_value%5C_type)
   - [VectorOfVec4f.new](#vectorofvec4fnew)
   - [VectorOfVec4f.back](#vectorofvec4fback)
   - [VectorOfVec4f.capacity](#vectorofvec4fcapacity)
@@ -10035,6 +10107,7 @@
   - [VectorOfVec4f.swap](#vectorofvec4fswap)
   - [VectorOfVec4f.table](#vectorofvec4ftable)
 - [VectorOfVec4i](#vectorofvec4i)
+  - [VectorOfVec4i.sizeof\_value\_type](#vectorofvec4isizeof%5C_value%5C_type)
   - [VectorOfVec4i.new](#vectorofvec4inew)
   - [VectorOfVec4i.back](#vectorofvec4iback)
   - [VectorOfVec4i.capacity](#vectorofvec4icapacity)
@@ -10058,6 +10131,7 @@
   - [VectorOfVec4i.swap](#vectorofvec4iswap)
   - [VectorOfVec4i.table](#vectorofvec4itable)
 - [VectorOfVec4s](#vectorofvec4s)
+  - [VectorOfVec4s.sizeof\_value\_type](#vectorofvec4ssizeof%5C_value%5C_type)
   - [VectorOfVec4s.new](#vectorofvec4snew)
   - [VectorOfVec4s.back](#vectorofvec4sback)
   - [VectorOfVec4s.capacity](#vectorofvec4scapacity)
@@ -10081,6 +10155,7 @@
   - [VectorOfVec4s.swap](#vectorofvec4sswap)
   - [VectorOfVec4s.table](#vectorofvec4stable)
 - [VectorOfVec4w](#vectorofvec4w)
+  - [VectorOfVec4w.sizeof\_value\_type](#vectorofvec4wsizeof%5C_value%5C_type)
   - [VectorOfVec4w.new](#vectorofvec4wnew)
   - [VectorOfVec4w.back](#vectorofvec4wback)
   - [VectorOfVec4w.capacity](#vectorofvec4wcapacity)
@@ -10104,6 +10179,7 @@
   - [VectorOfVec4w.swap](#vectorofvec4wswap)
   - [VectorOfVec4w.table](#vectorofvec4wtable)
 - [VectorOfVec6d](#vectorofvec6d)
+  - [VectorOfVec6d.sizeof\_value\_type](#vectorofvec6dsizeof%5C_value%5C_type)
   - [VectorOfVec6d.new](#vectorofvec6dnew)
   - [VectorOfVec6d.back](#vectorofvec6dback)
   - [VectorOfVec6d.capacity](#vectorofvec6dcapacity)
@@ -10127,6 +10203,7 @@
   - [VectorOfVec6d.swap](#vectorofvec6dswap)
   - [VectorOfVec6d.table](#vectorofvec6dtable)
 - [VectorOfVec6f](#vectorofvec6f)
+  - [VectorOfVec6f.sizeof\_value\_type](#vectorofvec6fsizeof%5C_value%5C_type)
   - [VectorOfVec6f.new](#vectorofvec6fnew)
   - [VectorOfVec6f.back](#vectorofvec6fback)
   - [VectorOfVec6f.capacity](#vectorofvec6fcapacity)
@@ -10150,6 +10227,7 @@
   - [VectorOfVec6f.swap](#vectorofvec6fswap)
   - [VectorOfVec6f.table](#vectorofvec6ftable)
 - [VectorOfVec6i](#vectorofvec6i)
+  - [VectorOfVec6i.sizeof\_value\_type](#vectorofvec6isizeof%5C_value%5C_type)
   - [VectorOfVec6i.new](#vectorofvec6inew)
   - [VectorOfVec6i.back](#vectorofvec6iback)
   - [VectorOfVec6i.capacity](#vectorofvec6icapacity)
@@ -10173,6 +10251,7 @@
   - [VectorOfVec6i.swap](#vectorofvec6iswap)
   - [VectorOfVec6i.table](#vectorofvec6itable)
 - [VectorOfVec8i](#vectorofvec8i)
+  - [VectorOfVec8i.sizeof\_value\_type](#vectorofvec8isizeof%5C_value%5C_type)
   - [VectorOfVec8i.new](#vectorofvec8inew)
   - [VectorOfVec8i.back](#vectorofvec8iback)
   - [VectorOfVec8i.capacity](#vectorofvec8icapacity)
@@ -10196,6 +10275,7 @@
   - [VectorOfVec8i.swap](#vectorofvec8iswap)
   - [VectorOfVec8i.table](#vectorofvec8itable)
 - [VectorOfVectorOfBool](#vectorofvectorofbool)
+  - [VectorOfVectorOfBool.sizeof\_value\_type](#vectorofvectorofboolsizeof%5C_value%5C_type)
   - [VectorOfVectorOfBool.new](#vectorofvectorofboolnew)
   - [VectorOfVectorOfBool.back](#vectorofvectorofboolback)
   - [VectorOfVectorOfBool.capacity](#vectorofvectorofboolcapacity)
@@ -10219,6 +10299,7 @@
   - [VectorOfVectorOfBool.swap](#vectorofvectorofboolswap)
   - [VectorOfVectorOfBool.table](#vectorofvectorofbooltable)
 - [VectorOfVectorOfChar](#vectorofvectorofchar)
+  - [VectorOfVectorOfChar.sizeof\_value\_type](#vectorofvectorofcharsizeof%5C_value%5C_type)
   - [VectorOfVectorOfChar.new](#vectorofvectorofcharnew)
   - [VectorOfVectorOfChar.back](#vectorofvectorofcharback)
   - [VectorOfVectorOfChar.capacity](#vectorofvectorofcharcapacity)
@@ -10242,6 +10323,7 @@
   - [VectorOfVectorOfChar.swap](#vectorofvectorofcharswap)
   - [VectorOfVectorOfChar.table](#vectorofvectorofchartable)
 - [VectorOfVectorOfDMatch](#vectorofvectorofdmatch)
+  - [VectorOfVectorOfDMatch.sizeof\_value\_type](#vectorofvectorofdmatchsizeof%5C_value%5C_type)
   - [VectorOfVectorOfDMatch.new](#vectorofvectorofdmatchnew)
   - [VectorOfVectorOfDMatch.back](#vectorofvectorofdmatchback)
   - [VectorOfVectorOfDMatch.capacity](#vectorofvectorofdmatchcapacity)
@@ -10265,6 +10347,7 @@
   - [VectorOfVectorOfDMatch.swap](#vectorofvectorofdmatchswap)
   - [VectorOfVectorOfDMatch.table](#vectorofvectorofdmatchtable)
 - [VectorOfVectorOfDouble](#vectorofvectorofdouble)
+  - [VectorOfVectorOfDouble.sizeof\_value\_type](#vectorofvectorofdoublesizeof%5C_value%5C_type)
   - [VectorOfVectorOfDouble.new](#vectorofvectorofdoublenew)
   - [VectorOfVectorOfDouble.back](#vectorofvectorofdoubleback)
   - [VectorOfVectorOfDouble.capacity](#vectorofvectorofdoublecapacity)
@@ -10288,6 +10371,7 @@
   - [VectorOfVectorOfDouble.swap](#vectorofvectorofdoubleswap)
   - [VectorOfVectorOfDouble.table](#vectorofvectorofdoubletable)
 - [VectorOfVectorOfFloat](#vectorofvectoroffloat)
+  - [VectorOfVectorOfFloat.sizeof\_value\_type](#vectorofvectoroffloatsizeof%5C_value%5C_type)
   - [VectorOfVectorOfFloat.new](#vectorofvectoroffloatnew)
   - [VectorOfVectorOfFloat.back](#vectorofvectoroffloatback)
   - [VectorOfVectorOfFloat.capacity](#vectorofvectoroffloatcapacity)
@@ -10311,6 +10395,7 @@
   - [VectorOfVectorOfFloat.swap](#vectorofvectoroffloatswap)
   - [VectorOfVectorOfFloat.table](#vectorofvectoroffloattable)
 - [VectorOfVectorOfInt](#vectorofvectorofint)
+  - [VectorOfVectorOfInt.sizeof\_value\_type](#vectorofvectorofintsizeof%5C_value%5C_type)
   - [VectorOfVectorOfInt.new](#vectorofvectorofintnew)
   - [VectorOfVectorOfInt.back](#vectorofvectorofintback)
   - [VectorOfVectorOfInt.capacity](#vectorofvectorofintcapacity)
@@ -10334,6 +10419,7 @@
   - [VectorOfVectorOfInt.swap](#vectorofvectorofintswap)
   - [VectorOfVectorOfInt.table](#vectorofvectorofinttable)
 - [VectorOfVectorOfKeyPoint](#vectorofvectorofkeypoint)
+  - [VectorOfVectorOfKeyPoint.sizeof\_value\_type](#vectorofvectorofkeypointsizeof%5C_value%5C_type)
   - [VectorOfVectorOfKeyPoint.new](#vectorofvectorofkeypointnew)
   - [VectorOfVectorOfKeyPoint.back](#vectorofvectorofkeypointback)
   - [VectorOfVectorOfKeyPoint.capacity](#vectorofvectorofkeypointcapacity)
@@ -10357,6 +10443,7 @@
   - [VectorOfVectorOfKeyPoint.swap](#vectorofvectorofkeypointswap)
   - [VectorOfVectorOfKeyPoint.table](#vectorofvectorofkeypointtable)
 - [VectorOfVectorOfLine\_descriptor\_KeyLine](#vectorofvectorofline%5C_descriptor%5C_keyline)
+  - [VectorOfVectorOfLine\_descriptor\_KeyLine.sizeof\_value\_type](#vectorofvectorofline%5C_descriptor%5C_keylinesizeof%5C_value%5C_type)
   - [VectorOfVectorOfLine\_descriptor\_KeyLine.new](#vectorofvectorofline%5C_descriptor%5C_keylinenew)
   - [VectorOfVectorOfLine\_descriptor\_KeyLine.back](#vectorofvectorofline%5C_descriptor%5C_keylineback)
   - [VectorOfVectorOfLine\_descriptor\_KeyLine.capacity](#vectorofvectorofline%5C_descriptor%5C_keylinecapacity)
@@ -10380,6 +10467,7 @@
   - [VectorOfVectorOfLine\_descriptor\_KeyLine.swap](#vectorofvectorofline%5C_descriptor%5C_keylineswap)
   - [VectorOfVectorOfLine\_descriptor\_KeyLine.table](#vectorofvectorofline%5C_descriptor%5C_keylinetable)
 - [VectorOfVectorOfMat](#vectorofvectorofmat)
+  - [VectorOfVectorOfMat.sizeof\_value\_type](#vectorofvectorofmatsizeof%5C_value%5C_type)
   - [VectorOfVectorOfMat.new](#vectorofvectorofmatnew)
   - [VectorOfVectorOfMat.back](#vectorofvectorofmatback)
   - [VectorOfVectorOfMat.capacity](#vectorofvectorofmatcapacity)
@@ -10403,6 +10491,7 @@
   - [VectorOfVectorOfMat.swap](#vectorofvectorofmatswap)
   - [VectorOfVectorOfMat.table](#vectorofvectorofmattable)
 - [VectorOfVectorOfMoments](#vectorofvectorofmoments)
+  - [VectorOfVectorOfMoments.sizeof\_value\_type](#vectorofvectorofmomentssizeof%5C_value%5C_type)
   - [VectorOfVectorOfMoments.new](#vectorofvectorofmomentsnew)
   - [VectorOfVectorOfMoments.back](#vectorofvectorofmomentsback)
   - [VectorOfVectorOfMoments.capacity](#vectorofvectorofmomentscapacity)
@@ -10426,6 +10515,7 @@
   - [VectorOfVectorOfMoments.swap](#vectorofvectorofmomentsswap)
   - [VectorOfVectorOfMoments.table](#vectorofvectorofmomentstable)
 - [VectorOfVectorOfPoint](#vectorofvectorofpoint)
+  - [VectorOfVectorOfPoint.sizeof\_value\_type](#vectorofvectorofpointsizeof%5C_value%5C_type)
   - [VectorOfVectorOfPoint.new](#vectorofvectorofpointnew)
   - [VectorOfVectorOfPoint.back](#vectorofvectorofpointback)
   - [VectorOfVectorOfPoint.capacity](#vectorofvectorofpointcapacity)
@@ -10449,6 +10539,7 @@
   - [VectorOfVectorOfPoint.swap](#vectorofvectorofpointswap)
   - [VectorOfVectorOfPoint.table](#vectorofvectorofpointtable)
 - [VectorOfVectorOfPoint2d](#vectorofvectorofpoint2d)
+  - [VectorOfVectorOfPoint2d.sizeof\_value\_type](#vectorofvectorofpoint2dsizeof%5C_value%5C_type)
   - [VectorOfVectorOfPoint2d.new](#vectorofvectorofpoint2dnew)
   - [VectorOfVectorOfPoint2d.back](#vectorofvectorofpoint2dback)
   - [VectorOfVectorOfPoint2d.capacity](#vectorofvectorofpoint2dcapacity)
@@ -10472,6 +10563,7 @@
   - [VectorOfVectorOfPoint2d.swap](#vectorofvectorofpoint2dswap)
   - [VectorOfVectorOfPoint2d.table](#vectorofvectorofpoint2dtable)
 - [VectorOfVectorOfPoint2f](#vectorofvectorofpoint2f)
+  - [VectorOfVectorOfPoint2f.sizeof\_value\_type](#vectorofvectorofpoint2fsizeof%5C_value%5C_type)
   - [VectorOfVectorOfPoint2f.new](#vectorofvectorofpoint2fnew)
   - [VectorOfVectorOfPoint2f.back](#vectorofvectorofpoint2fback)
   - [VectorOfVectorOfPoint2f.capacity](#vectorofvectorofpoint2fcapacity)
@@ -10495,6 +10587,7 @@
   - [VectorOfVectorOfPoint2f.swap](#vectorofvectorofpoint2fswap)
   - [VectorOfVectorOfPoint2f.table](#vectorofvectorofpoint2ftable)
 - [VectorOfVectorOfPoint3d](#vectorofvectorofpoint3d)
+  - [VectorOfVectorOfPoint3d.sizeof\_value\_type](#vectorofvectorofpoint3dsizeof%5C_value%5C_type)
   - [VectorOfVectorOfPoint3d.new](#vectorofvectorofpoint3dnew)
   - [VectorOfVectorOfPoint3d.back](#vectorofvectorofpoint3dback)
   - [VectorOfVectorOfPoint3d.capacity](#vectorofvectorofpoint3dcapacity)
@@ -10518,6 +10611,7 @@
   - [VectorOfVectorOfPoint3d.swap](#vectorofvectorofpoint3dswap)
   - [VectorOfVectorOfPoint3d.table](#vectorofvectorofpoint3dtable)
 - [VectorOfVectorOfPoint3f](#vectorofvectorofpoint3f)
+  - [VectorOfVectorOfPoint3f.sizeof\_value\_type](#vectorofvectorofpoint3fsizeof%5C_value%5C_type)
   - [VectorOfVectorOfPoint3f.new](#vectorofvectorofpoint3fnew)
   - [VectorOfVectorOfPoint3f.back](#vectorofvectorofpoint3fback)
   - [VectorOfVectorOfPoint3f.capacity](#vectorofvectorofpoint3fcapacity)
@@ -10541,6 +10635,7 @@
   - [VectorOfVectorOfPoint3f.swap](#vectorofvectorofpoint3fswap)
   - [VectorOfVectorOfPoint3f.table](#vectorofvectorofpoint3ftable)
 - [VectorOfVectorOfPoint3i](#vectorofvectorofpoint3i)
+  - [VectorOfVectorOfPoint3i.sizeof\_value\_type](#vectorofvectorofpoint3isizeof%5C_value%5C_type)
   - [VectorOfVectorOfPoint3i.new](#vectorofvectorofpoint3inew)
   - [VectorOfVectorOfPoint3i.back](#vectorofvectorofpoint3iback)
   - [VectorOfVectorOfPoint3i.capacity](#vectorofvectorofpoint3icapacity)
@@ -10564,6 +10659,7 @@
   - [VectorOfVectorOfPoint3i.swap](#vectorofvectorofpoint3iswap)
   - [VectorOfVectorOfPoint3i.table](#vectorofvectorofpoint3itable)
 - [VectorOfVectorOfRange](#vectorofvectorofrange)
+  - [VectorOfVectorOfRange.sizeof\_value\_type](#vectorofvectorofrangesizeof%5C_value%5C_type)
   - [VectorOfVectorOfRange.new](#vectorofvectorofrangenew)
   - [VectorOfVectorOfRange.back](#vectorofvectorofrangeback)
   - [VectorOfVectorOfRange.capacity](#vectorofvectorofrangecapacity)
@@ -10587,6 +10683,7 @@
   - [VectorOfVectorOfRange.swap](#vectorofvectorofrangeswap)
   - [VectorOfVectorOfRange.table](#vectorofvectorofrangetable)
 - [VectorOfVectorOfRect](#vectorofvectorofrect)
+  - [VectorOfVectorOfRect.sizeof\_value\_type](#vectorofvectorofrectsizeof%5C_value%5C_type)
   - [VectorOfVectorOfRect.new](#vectorofvectorofrectnew)
   - [VectorOfVectorOfRect.back](#vectorofvectorofrectback)
   - [VectorOfVectorOfRect.capacity](#vectorofvectorofrectcapacity)
@@ -10610,6 +10707,7 @@
   - [VectorOfVectorOfRect.swap](#vectorofvectorofrectswap)
   - [VectorOfVectorOfRect.table](#vectorofvectorofrecttable)
 - [VectorOfVectorOfRect2d](#vectorofvectorofrect2d)
+  - [VectorOfVectorOfRect2d.sizeof\_value\_type](#vectorofvectorofrect2dsizeof%5C_value%5C_type)
   - [VectorOfVectorOfRect2d.new](#vectorofvectorofrect2dnew)
   - [VectorOfVectorOfRect2d.back](#vectorofvectorofrect2dback)
   - [VectorOfVectorOfRect2d.capacity](#vectorofvectorofrect2dcapacity)
@@ -10633,6 +10731,7 @@
   - [VectorOfVectorOfRect2d.swap](#vectorofvectorofrect2dswap)
   - [VectorOfVectorOfRect2d.table](#vectorofvectorofrect2dtable)
 - [VectorOfVectorOfRect2f](#vectorofvectorofrect2f)
+  - [VectorOfVectorOfRect2f.sizeof\_value\_type](#vectorofvectorofrect2fsizeof%5C_value%5C_type)
   - [VectorOfVectorOfRect2f.new](#vectorofvectorofrect2fnew)
   - [VectorOfVectorOfRect2f.back](#vectorofvectorofrect2fback)
   - [VectorOfVectorOfRect2f.capacity](#vectorofvectorofrect2fcapacity)
@@ -10656,6 +10755,7 @@
   - [VectorOfVectorOfRect2f.swap](#vectorofvectorofrect2fswap)
   - [VectorOfVectorOfRect2f.table](#vectorofvectorofrect2ftable)
 - [VectorOfVectorOfRotatedRect](#vectorofvectorofrotatedrect)
+  - [VectorOfVectorOfRotatedRect.sizeof\_value\_type](#vectorofvectorofrotatedrectsizeof%5C_value%5C_type)
   - [VectorOfVectorOfRotatedRect.new](#vectorofvectorofrotatedrectnew)
   - [VectorOfVectorOfRotatedRect.back](#vectorofvectorofrotatedrectback)
   - [VectorOfVectorOfRotatedRect.capacity](#vectorofvectorofrotatedrectcapacity)
@@ -10679,6 +10779,7 @@
   - [VectorOfVectorOfRotatedRect.swap](#vectorofvectorofrotatedrectswap)
   - [VectorOfVectorOfRotatedRect.table](#vectorofvectorofrotatedrecttable)
 - [VectorOfVectorOfSchar](#vectorofvectorofschar)
+  - [VectorOfVectorOfSchar.sizeof\_value\_type](#vectorofvectorofscharsizeof%5C_value%5C_type)
   - [VectorOfVectorOfSchar.new](#vectorofvectorofscharnew)
   - [VectorOfVectorOfSchar.back](#vectorofvectorofscharback)
   - [VectorOfVectorOfSchar.capacity](#vectorofvectorofscharcapacity)
@@ -10702,6 +10803,7 @@
   - [VectorOfVectorOfSchar.swap](#vectorofvectorofscharswap)
   - [VectorOfVectorOfSchar.table](#vectorofvectorofschartable)
 - [VectorOfVectorOfShort](#vectorofvectorofshort)
+  - [VectorOfVectorOfShort.sizeof\_value\_type](#vectorofvectorofshortsizeof%5C_value%5C_type)
   - [VectorOfVectorOfShort.new](#vectorofvectorofshortnew)
   - [VectorOfVectorOfShort.back](#vectorofvectorofshortback)
   - [VectorOfVectorOfShort.capacity](#vectorofvectorofshortcapacity)
@@ -10725,6 +10827,7 @@
   - [VectorOfVectorOfShort.swap](#vectorofvectorofshortswap)
   - [VectorOfVectorOfShort.table](#vectorofvectorofshorttable)
 - [VectorOfVectorOfSize](#vectorofvectorofsize)
+  - [VectorOfVectorOfSize.sizeof\_value\_type](#vectorofvectorofsizesizeof%5C_value%5C_type)
   - [VectorOfVectorOfSize.new](#vectorofvectorofsizenew)
   - [VectorOfVectorOfSize.back](#vectorofvectorofsizeback)
   - [VectorOfVectorOfSize.capacity](#vectorofvectorofsizecapacity)
@@ -10748,6 +10851,7 @@
   - [VectorOfVectorOfSize.swap](#vectorofvectorofsizeswap)
   - [VectorOfVectorOfSize.table](#vectorofvectorofsizetable)
 - [VectorOfVectorOfSize2d](#vectorofvectorofsize2d)
+  - [VectorOfVectorOfSize2d.sizeof\_value\_type](#vectorofvectorofsize2dsizeof%5C_value%5C_type)
   - [VectorOfVectorOfSize2d.new](#vectorofvectorofsize2dnew)
   - [VectorOfVectorOfSize2d.back](#vectorofvectorofsize2dback)
   - [VectorOfVectorOfSize2d.capacity](#vectorofvectorofsize2dcapacity)
@@ -10771,6 +10875,7 @@
   - [VectorOfVectorOfSize2d.swap](#vectorofvectorofsize2dswap)
   - [VectorOfVectorOfSize2d.table](#vectorofvectorofsize2dtable)
 - [VectorOfVectorOfSize2f](#vectorofvectorofsize2f)
+  - [VectorOfVectorOfSize2f.sizeof\_value\_type](#vectorofvectorofsize2fsizeof%5C_value%5C_type)
   - [VectorOfVectorOfSize2f.new](#vectorofvectorofsize2fnew)
   - [VectorOfVectorOfSize2f.back](#vectorofvectorofsize2fback)
   - [VectorOfVectorOfSize2f.capacity](#vectorofvectorofsize2fcapacity)
@@ -10794,6 +10899,7 @@
   - [VectorOfVectorOfSize2f.swap](#vectorofvectorofsize2fswap)
   - [VectorOfVectorOfSize2f.table](#vectorofvectorofsize2ftable)
 - [VectorOfVectorOfUchar](#vectorofvectorofuchar)
+  - [VectorOfVectorOfUchar.sizeof\_value\_type](#vectorofvectorofucharsizeof%5C_value%5C_type)
   - [VectorOfVectorOfUchar.new](#vectorofvectorofucharnew)
   - [VectorOfVectorOfUchar.back](#vectorofvectorofucharback)
   - [VectorOfVectorOfUchar.capacity](#vectorofvectorofucharcapacity)
@@ -10817,6 +10923,7 @@
   - [VectorOfVectorOfUchar.swap](#vectorofvectorofucharswap)
   - [VectorOfVectorOfUchar.table](#vectorofvectorofuchartable)
 - [VectorOfVectorOfUshort](#vectorofvectorofushort)
+  - [VectorOfVectorOfUshort.sizeof\_value\_type](#vectorofvectorofushortsizeof%5C_value%5C_type)
   - [VectorOfVectorOfUshort.new](#vectorofvectorofushortnew)
   - [VectorOfVectorOfUshort.back](#vectorofvectorofushortback)
   - [VectorOfVectorOfUshort.capacity](#vectorofvectorofushortcapacity)
@@ -10840,6 +10947,7 @@
   - [VectorOfVectorOfUshort.swap](#vectorofvectorofushortswap)
   - [VectorOfVectorOfUshort.table](#vectorofvectorofushorttable)
 - [VectorOfVectorOfVec2b](#vectorofvectorofvec2b)
+  - [VectorOfVectorOfVec2b.sizeof\_value\_type](#vectorofvectorofvec2bsizeof%5C_value%5C_type)
   - [VectorOfVectorOfVec2b.new](#vectorofvectorofvec2bnew)
   - [VectorOfVectorOfVec2b.back](#vectorofvectorofvec2bback)
   - [VectorOfVectorOfVec2b.capacity](#vectorofvectorofvec2bcapacity)
@@ -10863,6 +10971,7 @@
   - [VectorOfVectorOfVec2b.swap](#vectorofvectorofvec2bswap)
   - [VectorOfVectorOfVec2b.table](#vectorofvectorofvec2btable)
 - [VectorOfVectorOfVec2d](#vectorofvectorofvec2d)
+  - [VectorOfVectorOfVec2d.sizeof\_value\_type](#vectorofvectorofvec2dsizeof%5C_value%5C_type)
   - [VectorOfVectorOfVec2d.new](#vectorofvectorofvec2dnew)
   - [VectorOfVectorOfVec2d.back](#vectorofvectorofvec2dback)
   - [VectorOfVectorOfVec2d.capacity](#vectorofvectorofvec2dcapacity)
@@ -10886,6 +10995,7 @@
   - [VectorOfVectorOfVec2d.swap](#vectorofvectorofvec2dswap)
   - [VectorOfVectorOfVec2d.table](#vectorofvectorofvec2dtable)
 - [VectorOfVectorOfVec2f](#vectorofvectorofvec2f)
+  - [VectorOfVectorOfVec2f.sizeof\_value\_type](#vectorofvectorofvec2fsizeof%5C_value%5C_type)
   - [VectorOfVectorOfVec2f.new](#vectorofvectorofvec2fnew)
   - [VectorOfVectorOfVec2f.back](#vectorofvectorofvec2fback)
   - [VectorOfVectorOfVec2f.capacity](#vectorofvectorofvec2fcapacity)
@@ -10909,6 +11019,7 @@
   - [VectorOfVectorOfVec2f.swap](#vectorofvectorofvec2fswap)
   - [VectorOfVectorOfVec2f.table](#vectorofvectorofvec2ftable)
 - [VectorOfVectorOfVec2i](#vectorofvectorofvec2i)
+  - [VectorOfVectorOfVec2i.sizeof\_value\_type](#vectorofvectorofvec2isizeof%5C_value%5C_type)
   - [VectorOfVectorOfVec2i.new](#vectorofvectorofvec2inew)
   - [VectorOfVectorOfVec2i.back](#vectorofvectorofvec2iback)
   - [VectorOfVectorOfVec2i.capacity](#vectorofvectorofvec2icapacity)
@@ -10932,6 +11043,7 @@
   - [VectorOfVectorOfVec2i.swap](#vectorofvectorofvec2iswap)
   - [VectorOfVectorOfVec2i.table](#vectorofvectorofvec2itable)
 - [VectorOfVectorOfVec2s](#vectorofvectorofvec2s)
+  - [VectorOfVectorOfVec2s.sizeof\_value\_type](#vectorofvectorofvec2ssizeof%5C_value%5C_type)
   - [VectorOfVectorOfVec2s.new](#vectorofvectorofvec2snew)
   - [VectorOfVectorOfVec2s.back](#vectorofvectorofvec2sback)
   - [VectorOfVectorOfVec2s.capacity](#vectorofvectorofvec2scapacity)
@@ -10955,6 +11067,7 @@
   - [VectorOfVectorOfVec2s.swap](#vectorofvectorofvec2sswap)
   - [VectorOfVectorOfVec2s.table](#vectorofvectorofvec2stable)
 - [VectorOfVectorOfVec2w](#vectorofvectorofvec2w)
+  - [VectorOfVectorOfVec2w.sizeof\_value\_type](#vectorofvectorofvec2wsizeof%5C_value%5C_type)
   - [VectorOfVectorOfVec2w.new](#vectorofvectorofvec2wnew)
   - [VectorOfVectorOfVec2w.back](#vectorofvectorofvec2wback)
   - [VectorOfVectorOfVec2w.capacity](#vectorofvectorofvec2wcapacity)
@@ -10978,6 +11091,7 @@
   - [VectorOfVectorOfVec2w.swap](#vectorofvectorofvec2wswap)
   - [VectorOfVectorOfVec2w.table](#vectorofvectorofvec2wtable)
 - [VectorOfVectorOfVec3b](#vectorofvectorofvec3b)
+  - [VectorOfVectorOfVec3b.sizeof\_value\_type](#vectorofvectorofvec3bsizeof%5C_value%5C_type)
   - [VectorOfVectorOfVec3b.new](#vectorofvectorofvec3bnew)
   - [VectorOfVectorOfVec3b.back](#vectorofvectorofvec3bback)
   - [VectorOfVectorOfVec3b.capacity](#vectorofvectorofvec3bcapacity)
@@ -11001,6 +11115,7 @@
   - [VectorOfVectorOfVec3b.swap](#vectorofvectorofvec3bswap)
   - [VectorOfVectorOfVec3b.table](#vectorofvectorofvec3btable)
 - [VectorOfVectorOfVec3d](#vectorofvectorofvec3d)
+  - [VectorOfVectorOfVec3d.sizeof\_value\_type](#vectorofvectorofvec3dsizeof%5C_value%5C_type)
   - [VectorOfVectorOfVec3d.new](#vectorofvectorofvec3dnew)
   - [VectorOfVectorOfVec3d.back](#vectorofvectorofvec3dback)
   - [VectorOfVectorOfVec3d.capacity](#vectorofvectorofvec3dcapacity)
@@ -11024,6 +11139,7 @@
   - [VectorOfVectorOfVec3d.swap](#vectorofvectorofvec3dswap)
   - [VectorOfVectorOfVec3d.table](#vectorofvectorofvec3dtable)
 - [VectorOfVectorOfVec3f](#vectorofvectorofvec3f)
+  - [VectorOfVectorOfVec3f.sizeof\_value\_type](#vectorofvectorofvec3fsizeof%5C_value%5C_type)
   - [VectorOfVectorOfVec3f.new](#vectorofvectorofvec3fnew)
   - [VectorOfVectorOfVec3f.back](#vectorofvectorofvec3fback)
   - [VectorOfVectorOfVec3f.capacity](#vectorofvectorofvec3fcapacity)
@@ -11047,6 +11163,7 @@
   - [VectorOfVectorOfVec3f.swap](#vectorofvectorofvec3fswap)
   - [VectorOfVectorOfVec3f.table](#vectorofvectorofvec3ftable)
 - [VectorOfVectorOfVec3i](#vectorofvectorofvec3i)
+  - [VectorOfVectorOfVec3i.sizeof\_value\_type](#vectorofvectorofvec3isizeof%5C_value%5C_type)
   - [VectorOfVectorOfVec3i.new](#vectorofvectorofvec3inew)
   - [VectorOfVectorOfVec3i.back](#vectorofvectorofvec3iback)
   - [VectorOfVectorOfVec3i.capacity](#vectorofvectorofvec3icapacity)
@@ -11070,6 +11187,7 @@
   - [VectorOfVectorOfVec3i.swap](#vectorofvectorofvec3iswap)
   - [VectorOfVectorOfVec3i.table](#vectorofvectorofvec3itable)
 - [VectorOfVectorOfVec3s](#vectorofvectorofvec3s)
+  - [VectorOfVectorOfVec3s.sizeof\_value\_type](#vectorofvectorofvec3ssizeof%5C_value%5C_type)
   - [VectorOfVectorOfVec3s.new](#vectorofvectorofvec3snew)
   - [VectorOfVectorOfVec3s.back](#vectorofvectorofvec3sback)
   - [VectorOfVectorOfVec3s.capacity](#vectorofvectorofvec3scapacity)
@@ -11093,6 +11211,7 @@
   - [VectorOfVectorOfVec3s.swap](#vectorofvectorofvec3sswap)
   - [VectorOfVectorOfVec3s.table](#vectorofvectorofvec3stable)
 - [VectorOfVectorOfVec3w](#vectorofvectorofvec3w)
+  - [VectorOfVectorOfVec3w.sizeof\_value\_type](#vectorofvectorofvec3wsizeof%5C_value%5C_type)
   - [VectorOfVectorOfVec3w.new](#vectorofvectorofvec3wnew)
   - [VectorOfVectorOfVec3w.back](#vectorofvectorofvec3wback)
   - [VectorOfVectorOfVec3w.capacity](#vectorofvectorofvec3wcapacity)
@@ -11116,6 +11235,7 @@
   - [VectorOfVectorOfVec3w.swap](#vectorofvectorofvec3wswap)
   - [VectorOfVectorOfVec3w.table](#vectorofvectorofvec3wtable)
 - [VectorOfVectorOfVec4b](#vectorofvectorofvec4b)
+  - [VectorOfVectorOfVec4b.sizeof\_value\_type](#vectorofvectorofvec4bsizeof%5C_value%5C_type)
   - [VectorOfVectorOfVec4b.new](#vectorofvectorofvec4bnew)
   - [VectorOfVectorOfVec4b.back](#vectorofvectorofvec4bback)
   - [VectorOfVectorOfVec4b.capacity](#vectorofvectorofvec4bcapacity)
@@ -11139,6 +11259,7 @@
   - [VectorOfVectorOfVec4b.swap](#vectorofvectorofvec4bswap)
   - [VectorOfVectorOfVec4b.table](#vectorofvectorofvec4btable)
 - [VectorOfVectorOfVec4d](#vectorofvectorofvec4d)
+  - [VectorOfVectorOfVec4d.sizeof\_value\_type](#vectorofvectorofvec4dsizeof%5C_value%5C_type)
   - [VectorOfVectorOfVec4d.new](#vectorofvectorofvec4dnew)
   - [VectorOfVectorOfVec4d.back](#vectorofvectorofvec4dback)
   - [VectorOfVectorOfVec4d.capacity](#vectorofvectorofvec4dcapacity)
@@ -11162,6 +11283,7 @@
   - [VectorOfVectorOfVec4d.swap](#vectorofvectorofvec4dswap)
   - [VectorOfVectorOfVec4d.table](#vectorofvectorofvec4dtable)
 - [VectorOfVectorOfVec4f](#vectorofvectorofvec4f)
+  - [VectorOfVectorOfVec4f.sizeof\_value\_type](#vectorofvectorofvec4fsizeof%5C_value%5C_type)
   - [VectorOfVectorOfVec4f.new](#vectorofvectorofvec4fnew)
   - [VectorOfVectorOfVec4f.back](#vectorofvectorofvec4fback)
   - [VectorOfVectorOfVec4f.capacity](#vectorofvectorofvec4fcapacity)
@@ -11185,6 +11307,7 @@
   - [VectorOfVectorOfVec4f.swap](#vectorofvectorofvec4fswap)
   - [VectorOfVectorOfVec4f.table](#vectorofvectorofvec4ftable)
 - [VectorOfVectorOfVec4i](#vectorofvectorofvec4i)
+  - [VectorOfVectorOfVec4i.sizeof\_value\_type](#vectorofvectorofvec4isizeof%5C_value%5C_type)
   - [VectorOfVectorOfVec4i.new](#vectorofvectorofvec4inew)
   - [VectorOfVectorOfVec4i.back](#vectorofvectorofvec4iback)
   - [VectorOfVectorOfVec4i.capacity](#vectorofvectorofvec4icapacity)
@@ -11208,6 +11331,7 @@
   - [VectorOfVectorOfVec4i.swap](#vectorofvectorofvec4iswap)
   - [VectorOfVectorOfVec4i.table](#vectorofvectorofvec4itable)
 - [VectorOfVectorOfVec4s](#vectorofvectorofvec4s)
+  - [VectorOfVectorOfVec4s.sizeof\_value\_type](#vectorofvectorofvec4ssizeof%5C_value%5C_type)
   - [VectorOfVectorOfVec4s.new](#vectorofvectorofvec4snew)
   - [VectorOfVectorOfVec4s.back](#vectorofvectorofvec4sback)
   - [VectorOfVectorOfVec4s.capacity](#vectorofvectorofvec4scapacity)
@@ -11231,6 +11355,7 @@
   - [VectorOfVectorOfVec4s.swap](#vectorofvectorofvec4sswap)
   - [VectorOfVectorOfVec4s.table](#vectorofvectorofvec4stable)
 - [VectorOfVectorOfVec4w](#vectorofvectorofvec4w)
+  - [VectorOfVectorOfVec4w.sizeof\_value\_type](#vectorofvectorofvec4wsizeof%5C_value%5C_type)
   - [VectorOfVectorOfVec4w.new](#vectorofvectorofvec4wnew)
   - [VectorOfVectorOfVec4w.back](#vectorofvectorofvec4wback)
   - [VectorOfVectorOfVec4w.capacity](#vectorofvectorofvec4wcapacity)
@@ -11254,6 +11379,7 @@
   - [VectorOfVectorOfVec4w.swap](#vectorofvectorofvec4wswap)
   - [VectorOfVectorOfVec4w.table](#vectorofvectorofvec4wtable)
 - [VectorOfVectorOfVec6d](#vectorofvectorofvec6d)
+  - [VectorOfVectorOfVec6d.sizeof\_value\_type](#vectorofvectorofvec6dsizeof%5C_value%5C_type)
   - [VectorOfVectorOfVec6d.new](#vectorofvectorofvec6dnew)
   - [VectorOfVectorOfVec6d.back](#vectorofvectorofvec6dback)
   - [VectorOfVectorOfVec6d.capacity](#vectorofvectorofvec6dcapacity)
@@ -11277,6 +11403,7 @@
   - [VectorOfVectorOfVec6d.swap](#vectorofvectorofvec6dswap)
   - [VectorOfVectorOfVec6d.table](#vectorofvectorofvec6dtable)
 - [VectorOfVectorOfVec6f](#vectorofvectorofvec6f)
+  - [VectorOfVectorOfVec6f.sizeof\_value\_type](#vectorofvectorofvec6fsizeof%5C_value%5C_type)
   - [VectorOfVectorOfVec6f.new](#vectorofvectorofvec6fnew)
   - [VectorOfVectorOfVec6f.back](#vectorofvectorofvec6fback)
   - [VectorOfVectorOfVec6f.capacity](#vectorofvectorofvec6fcapacity)
@@ -11300,6 +11427,7 @@
   - [VectorOfVectorOfVec6f.swap](#vectorofvectorofvec6fswap)
   - [VectorOfVectorOfVec6f.table](#vectorofvectorofvec6ftable)
 - [VectorOfVectorOfVec6i](#vectorofvectorofvec6i)
+  - [VectorOfVectorOfVec6i.sizeof\_value\_type](#vectorofvectorofvec6isizeof%5C_value%5C_type)
   - [VectorOfVectorOfVec6i.new](#vectorofvectorofvec6inew)
   - [VectorOfVectorOfVec6i.back](#vectorofvectorofvec6iback)
   - [VectorOfVectorOfVec6i.capacity](#vectorofvectorofvec6icapacity)
@@ -11323,6 +11451,7 @@
   - [VectorOfVectorOfVec6i.swap](#vectorofvectorofvec6iswap)
   - [VectorOfVectorOfVec6i.table](#vectorofvectorofvec6itable)
 - [VectorOfVectorOfVec8i](#vectorofvectorofvec8i)
+  - [VectorOfVectorOfVec8i.sizeof\_value\_type](#vectorofvectorofvec8isizeof%5C_value%5C_type)
   - [VectorOfVectorOfVec8i.new](#vectorofvectorofvec8inew)
   - [VectorOfVectorOfVec8i.back](#vectorofvectorofvec8iback)
   - [VectorOfVectorOfVec8i.capacity](#vectorofvectorofvec8icapacity)
@@ -11346,6 +11475,7 @@
   - [VectorOfVectorOfVec8i.swap](#vectorofvectorofvec8iswap)
   - [VectorOfVectorOfVec8i.table](#vectorofvectorofvec8itable)
 - [VectorOfVectorOfVectorOfInt](#vectorofvectorofvectorofint)
+  - [VectorOfVectorOfVectorOfInt.sizeof\_value\_type](#vectorofvectorofvectorofintsizeof%5C_value%5C_type)
   - [VectorOfVectorOfVectorOfInt.new](#vectorofvectorofvectorofintnew)
   - [VectorOfVectorOfVectorOfInt.back](#vectorofvectorofvectorofintback)
   - [VectorOfVectorOfVectorOfInt.capacity](#vectorofvectorofvectorofintcapacity)
@@ -11369,6 +11499,7 @@
   - [VectorOfVectorOfVectorOfInt.swap](#vectorofvectorofvectorofintswap)
   - [VectorOfVectorOfVectorOfInt.table](#vectorofvectorofvectorofinttable)
 - [VectorOfVideoCapture](#vectorofvideocapture)
+  - [VectorOfVideoCapture.sizeof\_value\_type](#vectorofvideocapturesizeof%5C_value%5C_type)
   - [VectorOfVideoCapture.new](#vectorofvideocapturenew)
   - [VectorOfVideoCapture.back](#vectorofvideocaptureback)
   - [VectorOfVideoCapture.capacity](#vectorofvideocapturecapacity)
@@ -11392,6 +11523,7 @@
   - [VectorOfVideoCapture.swap](#vectorofvideocaptureswap)
   - [VectorOfVideoCapture.table](#vectorofvideocapturetable)
 - [VectorOfVideoCaptureAPIs](#vectorofvideocaptureapis)
+  - [VectorOfVideoCaptureAPIs.sizeof\_value\_type](#vectorofvideocaptureapissizeof%5C_value%5C_type)
   - [VectorOfVideoCaptureAPIs.new](#vectorofvideocaptureapisnew)
   - [VectorOfVideoCaptureAPIs.back](#vectorofvideocaptureapisback)
   - [VectorOfVideoCaptureAPIs.capacity](#vectorofvideocaptureapiscapacity)
@@ -68828,7 +68960,7 @@ lua:
 ### DetectorParameters.minGroupSize
 
 ```cpp
-unsigned cv::mcc::DetectorParameters::minGroupSize
+unsigned int cv::mcc::DetectorParameters::minGroupSize
 lua:
     [propget, propput] oDetectorParameters.minGroupSize
 ```
@@ -89614,9 +89746,9 @@ lua:
 ### MapOfIntAndDouble.copy
 
 ```cpp
-std::map<int, double> MapOfIntAndDouble::operator=( const std::map<int, double>& other );
+void MapOfIntAndDouble::operator=( const std::map<int, double>& other );
 lua:
-    oMapOfIntAndDouble:copy( other ) -> retval
+    oMapOfIntAndDouble:copy( other ) -> None
 ```
 
 ### MapOfIntAndDouble.count
@@ -89751,9 +89883,9 @@ lua:
 ### MapOfStringAndInt.copy
 
 ```cpp
-std::map<std::string, int> MapOfStringAndInt::operator=( const std::map<std::string, int>& other );
+void MapOfStringAndInt::operator=( const std::map<std::string, int>& other );
 lua:
-    oMapOfStringAndInt:copy( other ) -> retval
+    oMapOfStringAndInt:copy( other ) -> None
 ```
 
 ### MapOfStringAndInt.count
@@ -89888,9 +90020,9 @@ lua:
 ### MapOfStringAndString.copy
 
 ```cpp
-std::map<std::string, std::string> MapOfStringAndString::operator=( const std::map<std::string, std::string>& other );
+void MapOfStringAndString::operator=( const std::map<std::string, std::string>& other );
 lua:
-    oMapOfStringAndString:copy( other ) -> retval
+    oMapOfStringAndString:copy( other ) -> None
 ```
 
 ### MapOfStringAndString.count
@@ -90025,9 +90157,9 @@ lua:
 ### MapOfStringAndVectorOfFloat.copy
 
 ```cpp
-std::map<std::string, std::vector<float>> MapOfStringAndVectorOfFloat::operator=( const std::map<std::string, std::vector<float>>& other );
+void MapOfStringAndVectorOfFloat::operator=( const std::map<std::string, std::vector<float>>& other );
 lua:
-    oMapOfStringAndVectorOfFloat:copy( other ) -> retval
+    oMapOfStringAndVectorOfFloat:copy( other ) -> None
 ```
 
 ### MapOfStringAndVectorOfFloat.count
@@ -90162,9 +90294,9 @@ lua:
 ### MapOfStringAndVectorOfSize\_t.copy
 
 ```cpp
-std::map<std::string, std::vector<size_t>> MapOfStringAndVectorOfSize_t::operator=( const std::map<std::string, std::vector<size_t>>& other );
+void MapOfStringAndVectorOfSize_t::operator=( const std::map<std::string, std::vector<size_t>>& other );
 lua:
-    oMapOfStringAndVectorOfSize_t:copy( other ) -> retval
+    oMapOfStringAndVectorOfSize_t:copy( other ) -> None
 ```
 
 ### MapOfStringAndVectorOfSize\_t.count
@@ -90266,6 +90398,14 @@ lua:
 
 ## VectorOfAruco\_Dictionary
 
+### VectorOfAruco\_Dictionary.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfAruco_Dictionary::sizeof_value_type
+lua:
+    [propget] VectorOfAruco_Dictionary.sizeof_value_type
+```
+
 ### VectorOfAruco\_Dictionary.new
 
 ```cpp
@@ -90332,9 +90472,9 @@ lua:
 ### VectorOfAruco\_Dictionary.copy
 
 ```cpp
-std::vector<cv::aruco::Dictionary> VectorOfAruco_Dictionary::operator=( const std::vector<cv::aruco::Dictionary>& other );
+void VectorOfAruco_Dictionary::operator=( const std::vector<cv::aruco::Dictionary>& other );
 lua:
-    oVectorOfAruco_Dictionary:copy( other ) -> retval
+    oVectorOfAruco_Dictionary:copy( other ) -> None
 ```
 
 ### VectorOfAruco\_Dictionary.data
@@ -90364,8 +90504,8 @@ lua:
 ### VectorOfAruco\_Dictionary.get
 
 ```cpp
-static cv::aruco::Dictionary VectorOfAruco_Dictionary::get( void*  ptr,
-                                                            size_t i );
+static cv::aruco::Dictionary* VectorOfAruco_Dictionary::get( void*          ptr,
+                                                             std::ptrdiff_t i );
 lua:
     VectorOfAruco_Dictionary.get( ptr, i ) -> retval
 ```
@@ -90389,14 +90529,14 @@ lua:
 ### VectorOfAruco\_Dictionary.ptr
 
 ```cpp
-void* VectorOfAruco_Dictionary::data( size_t i = 0 );
+void* VectorOfAruco_Dictionary::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfAruco_Dictionary:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfAruco_Dictionary::ptr( void*  ptr,
-                                            size_t i = 0 );
+static void* VectorOfAruco_Dictionary::ptr( void*          ptr,
+                                            std::ptrdiff_t i = 0 );
 lua:
     VectorOfAruco_Dictionary.ptr( ptr[, i] ) -> retval
 ```
@@ -90428,7 +90568,7 @@ lua:
 
 ```cpp
 static void VectorOfAruco_Dictionary::set( void*                 ptr,
-                                           size_t                i,
+                                           std::ptrdiff_t        i,
                                            cv::aruco::Dictionary value );
 lua:
     VectorOfAruco_Dictionary.set( ptr, i, value ) -> None
@@ -90453,7 +90593,7 @@ lua:
 ### VectorOfAruco\_Dictionary.sol::meta\_function::index
 
 ```cpp
-cv::aruco::Dictionary VectorOfAruco_Dictionary::sol::meta_function::index( size_t index );
+cv::aruco::Dictionary* VectorOfAruco_Dictionary::sol::meta_function::index( size_t index );
 lua:
     oVectorOfAruco_Dictionary:__index( index ) -> retval
 ```
@@ -90492,6 +90632,14 @@ lua:
 ```
 
 ## VectorOfBool
+
+### VectorOfBool.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfBool::sizeof_value_type
+lua:
+    [propget] VectorOfBool.sizeof_value_type
+```
 
 ### VectorOfBool.new
 
@@ -90559,9 +90707,9 @@ lua:
 ### VectorOfBool.copy
 
 ```cpp
-std::vector<bool> VectorOfBool::operator=( const std::vector<bool>& other );
+void VectorOfBool::operator=( const std::vector<bool>& other );
 lua:
-    oVectorOfBool:copy( other ) -> retval
+    oVectorOfBool:copy( other ) -> None
 ```
 
 ### VectorOfBool.empty
@@ -90678,6 +90826,14 @@ lua:
 
 ## VectorOfChar
 
+### VectorOfChar.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfChar::sizeof_value_type
+lua:
+    [propget] VectorOfChar.sizeof_value_type
+```
+
 ### VectorOfChar.new
 
 ```cpp
@@ -90744,9 +90900,9 @@ lua:
 ### VectorOfChar.copy
 
 ```cpp
-std::vector<char> VectorOfChar::operator=( const std::vector<char>& other );
+void VectorOfChar::operator=( const std::vector<char>& other );
 lua:
-    oVectorOfChar:copy( other ) -> retval
+    oVectorOfChar:copy( other ) -> None
 ```
 
 ### VectorOfChar.data
@@ -90776,8 +90932,8 @@ lua:
 ### VectorOfChar.get
 
 ```cpp
-static char VectorOfChar::get( void*  ptr,
-                               size_t i );
+static char VectorOfChar::get( void*          ptr,
+                               std::ptrdiff_t i );
 lua:
     VectorOfChar.get( ptr, i ) -> retval
 ```
@@ -90801,14 +90957,14 @@ lua:
 ### VectorOfChar.ptr
 
 ```cpp
-void* VectorOfChar::data( size_t i = 0 );
+void* VectorOfChar::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfChar:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfChar::ptr( void*  ptr,
-                                size_t i = 0 );
+static void* VectorOfChar::ptr( void*          ptr,
+                                std::ptrdiff_t i = 0 );
 lua:
     VectorOfChar.ptr( ptr[, i] ) -> retval
 ```
@@ -90839,9 +90995,9 @@ lua:
 ### VectorOfChar.set
 
 ```cpp
-static void VectorOfChar::set( void*  ptr,
-                               size_t i,
-                               char   value );
+static void VectorOfChar::set( void*          ptr,
+                               std::ptrdiff_t i,
+                               char           value );
 lua:
     VectorOfChar.set( ptr, i, value ) -> None
 ```
@@ -90904,6 +91060,14 @@ lua:
 ```
 
 ## VectorOfCuda\_GpuMat
+
+### VectorOfCuda\_GpuMat.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfCuda_GpuMat::sizeof_value_type
+lua:
+    [propget] VectorOfCuda_GpuMat.sizeof_value_type
+```
 
 ### VectorOfCuda\_GpuMat.new
 
@@ -90971,9 +91135,9 @@ lua:
 ### VectorOfCuda\_GpuMat.copy
 
 ```cpp
-std::vector<cv::cuda::GpuMat> VectorOfCuda_GpuMat::operator=( const std::vector<cv::cuda::GpuMat>& other );
+void VectorOfCuda_GpuMat::operator=( const std::vector<cv::cuda::GpuMat>& other );
 lua:
-    oVectorOfCuda_GpuMat:copy( other ) -> retval
+    oVectorOfCuda_GpuMat:copy( other ) -> None
 ```
 
 ### VectorOfCuda\_GpuMat.data
@@ -91003,8 +91167,8 @@ lua:
 ### VectorOfCuda\_GpuMat.get
 
 ```cpp
-static cv::cuda::GpuMat VectorOfCuda_GpuMat::get( void*  ptr,
-                                                  size_t i );
+static cv::cuda::GpuMat* VectorOfCuda_GpuMat::get( void*          ptr,
+                                                   std::ptrdiff_t i );
 lua:
     VectorOfCuda_GpuMat.get( ptr, i ) -> retval
 ```
@@ -91028,14 +91192,14 @@ lua:
 ### VectorOfCuda\_GpuMat.ptr
 
 ```cpp
-void* VectorOfCuda_GpuMat::data( size_t i = 0 );
+void* VectorOfCuda_GpuMat::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfCuda_GpuMat:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfCuda_GpuMat::ptr( void*  ptr,
-                                       size_t i = 0 );
+static void* VectorOfCuda_GpuMat::ptr( void*          ptr,
+                                       std::ptrdiff_t i = 0 );
 lua:
     VectorOfCuda_GpuMat.ptr( ptr[, i] ) -> retval
 ```
@@ -91067,7 +91231,7 @@ lua:
 
 ```cpp
 static void VectorOfCuda_GpuMat::set( void*            ptr,
-                                      size_t           i,
+                                      std::ptrdiff_t   i,
                                       cv::cuda::GpuMat value );
 lua:
     VectorOfCuda_GpuMat.set( ptr, i, value ) -> None
@@ -91092,7 +91256,7 @@ lua:
 ### VectorOfCuda\_GpuMat.sol::meta\_function::index
 
 ```cpp
-cv::cuda::GpuMat VectorOfCuda_GpuMat::sol::meta_function::index( size_t index );
+cv::cuda::GpuMat* VectorOfCuda_GpuMat::sol::meta_function::index( size_t index );
 lua:
     oVectorOfCuda_GpuMat:__index( index ) -> retval
 ```
@@ -91131,6 +91295,14 @@ lua:
 ```
 
 ## VectorOfCvVariantOfIntAndRange
+
+### VectorOfCvVariantOfIntAndRange.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfCvVariantOfIntAndRange::sizeof_value_type
+lua:
+    [propget] VectorOfCvVariantOfIntAndRange.sizeof_value_type
+```
 
 ### VectorOfCvVariantOfIntAndRange.new
 
@@ -91198,9 +91370,9 @@ lua:
 ### VectorOfCvVariantOfIntAndRange.copy
 
 ```cpp
-std::vector<cv::util::variant<int, cv::Range>> VectorOfCvVariantOfIntAndRange::operator=( const std::vector<cv::util::variant<int, cv::Range>>& other );
+void VectorOfCvVariantOfIntAndRange::operator=( const std::vector<cv::util::variant<int, cv::Range>>& other );
 lua:
-    oVectorOfCvVariantOfIntAndRange:copy( other ) -> retval
+    oVectorOfCvVariantOfIntAndRange:copy( other ) -> None
 ```
 
 ### VectorOfCvVariantOfIntAndRange.data
@@ -91230,8 +91402,8 @@ lua:
 ### VectorOfCvVariantOfIntAndRange.get
 
 ```cpp
-static cv::util::variant<int, cv::Range> VectorOfCvVariantOfIntAndRange::get( void*  ptr,
-                                                                              size_t i );
+static cv::util::variant<int, cv::Range> VectorOfCvVariantOfIntAndRange::get( void*          ptr,
+                                                                              std::ptrdiff_t i );
 lua:
     VectorOfCvVariantOfIntAndRange.get( ptr, i ) -> retval
 ```
@@ -91255,14 +91427,14 @@ lua:
 ### VectorOfCvVariantOfIntAndRange.ptr
 
 ```cpp
-void* VectorOfCvVariantOfIntAndRange::data( size_t i = 0 );
+void* VectorOfCvVariantOfIntAndRange::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfCvVariantOfIntAndRange:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfCvVariantOfIntAndRange::ptr( void*  ptr,
-                                                  size_t i = 0 );
+static void* VectorOfCvVariantOfIntAndRange::ptr( void*          ptr,
+                                                  std::ptrdiff_t i = 0 );
 lua:
     VectorOfCvVariantOfIntAndRange.ptr( ptr[, i] ) -> retval
 ```
@@ -91294,7 +91466,7 @@ lua:
 
 ```cpp
 static void VectorOfCvVariantOfIntAndRange::set( void*                             ptr,
-                                                 size_t                            i,
+                                                 std::ptrdiff_t                    i,
                                                  cv::util::variant<int, cv::Range> value );
 lua:
     VectorOfCvVariantOfIntAndRange.set( ptr, i, value ) -> None
@@ -91358,6 +91530,14 @@ lua:
 ```
 
 ## VectorOfDMatch
+
+### VectorOfDMatch.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfDMatch::sizeof_value_type
+lua:
+    [propget] VectorOfDMatch.sizeof_value_type
+```
 
 ### VectorOfDMatch.new
 
@@ -91425,9 +91605,9 @@ lua:
 ### VectorOfDMatch.copy
 
 ```cpp
-std::vector<cv::DMatch> VectorOfDMatch::operator=( const std::vector<cv::DMatch>& other );
+void VectorOfDMatch::operator=( const std::vector<cv::DMatch>& other );
 lua:
-    oVectorOfDMatch:copy( other ) -> retval
+    oVectorOfDMatch:copy( other ) -> None
 ```
 
 ### VectorOfDMatch.data
@@ -91457,8 +91637,8 @@ lua:
 ### VectorOfDMatch.get
 
 ```cpp
-static cv::DMatch VectorOfDMatch::get( void*  ptr,
-                                       size_t i );
+static cv::DMatch* VectorOfDMatch::get( void*          ptr,
+                                        std::ptrdiff_t i );
 lua:
     VectorOfDMatch.get( ptr, i ) -> retval
 ```
@@ -91482,14 +91662,14 @@ lua:
 ### VectorOfDMatch.ptr
 
 ```cpp
-void* VectorOfDMatch::data( size_t i = 0 );
+void* VectorOfDMatch::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfDMatch:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfDMatch::ptr( void*  ptr,
-                                  size_t i = 0 );
+static void* VectorOfDMatch::ptr( void*          ptr,
+                                  std::ptrdiff_t i = 0 );
 lua:
     VectorOfDMatch.ptr( ptr[, i] ) -> retval
 ```
@@ -91520,9 +91700,9 @@ lua:
 ### VectorOfDMatch.set
 
 ```cpp
-static void VectorOfDMatch::set( void*      ptr,
-                                 size_t     i,
-                                 cv::DMatch value );
+static void VectorOfDMatch::set( void*          ptr,
+                                 std::ptrdiff_t i,
+                                 cv::DMatch     value );
 lua:
     VectorOfDMatch.set( ptr, i, value ) -> None
 ```
@@ -91546,7 +91726,7 @@ lua:
 ### VectorOfDMatch.sol::meta\_function::index
 
 ```cpp
-cv::DMatch VectorOfDMatch::sol::meta_function::index( size_t index );
+cv::DMatch* VectorOfDMatch::sol::meta_function::index( size_t index );
 lua:
     oVectorOfDMatch:__index( index ) -> retval
 ```
@@ -91585,6 +91765,14 @@ lua:
 ```
 
 ## VectorOfDetail\_CameraParams
+
+### VectorOfDetail\_CameraParams.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfDetail_CameraParams::sizeof_value_type
+lua:
+    [propget] VectorOfDetail_CameraParams.sizeof_value_type
+```
 
 ### VectorOfDetail\_CameraParams.new
 
@@ -91652,9 +91840,9 @@ lua:
 ### VectorOfDetail\_CameraParams.copy
 
 ```cpp
-std::vector<cv::detail::CameraParams> VectorOfDetail_CameraParams::operator=( const std::vector<cv::detail::CameraParams>& other );
+void VectorOfDetail_CameraParams::operator=( const std::vector<cv::detail::CameraParams>& other );
 lua:
-    oVectorOfDetail_CameraParams:copy( other ) -> retval
+    oVectorOfDetail_CameraParams:copy( other ) -> None
 ```
 
 ### VectorOfDetail\_CameraParams.data
@@ -91684,8 +91872,8 @@ lua:
 ### VectorOfDetail\_CameraParams.get
 
 ```cpp
-static cv::detail::CameraParams VectorOfDetail_CameraParams::get( void*  ptr,
-                                                                  size_t i );
+static cv::detail::CameraParams* VectorOfDetail_CameraParams::get( void*          ptr,
+                                                                   std::ptrdiff_t i );
 lua:
     VectorOfDetail_CameraParams.get( ptr, i ) -> retval
 ```
@@ -91709,14 +91897,14 @@ lua:
 ### VectorOfDetail\_CameraParams.ptr
 
 ```cpp
-void* VectorOfDetail_CameraParams::data( size_t i = 0 );
+void* VectorOfDetail_CameraParams::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfDetail_CameraParams:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfDetail_CameraParams::ptr( void*  ptr,
-                                               size_t i = 0 );
+static void* VectorOfDetail_CameraParams::ptr( void*          ptr,
+                                               std::ptrdiff_t i = 0 );
 lua:
     VectorOfDetail_CameraParams.ptr( ptr[, i] ) -> retval
 ```
@@ -91748,7 +91936,7 @@ lua:
 
 ```cpp
 static void VectorOfDetail_CameraParams::set( void*                    ptr,
-                                              size_t                   i,
+                                              std::ptrdiff_t           i,
                                               cv::detail::CameraParams value );
 lua:
     VectorOfDetail_CameraParams.set( ptr, i, value ) -> None
@@ -91773,7 +91961,7 @@ lua:
 ### VectorOfDetail\_CameraParams.sol::meta\_function::index
 
 ```cpp
-cv::detail::CameraParams VectorOfDetail_CameraParams::sol::meta_function::index( size_t index );
+cv::detail::CameraParams* VectorOfDetail_CameraParams::sol::meta_function::index( size_t index );
 lua:
     oVectorOfDetail_CameraParams:__index( index ) -> retval
 ```
@@ -91812,6 +92000,14 @@ lua:
 ```
 
 ## VectorOfDetail\_ImageFeatures
+
+### VectorOfDetail\_ImageFeatures.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfDetail_ImageFeatures::sizeof_value_type
+lua:
+    [propget] VectorOfDetail_ImageFeatures.sizeof_value_type
+```
 
 ### VectorOfDetail\_ImageFeatures.new
 
@@ -91879,9 +92075,9 @@ lua:
 ### VectorOfDetail\_ImageFeatures.copy
 
 ```cpp
-std::vector<cv::detail::ImageFeatures> VectorOfDetail_ImageFeatures::operator=( const std::vector<cv::detail::ImageFeatures>& other );
+void VectorOfDetail_ImageFeatures::operator=( const std::vector<cv::detail::ImageFeatures>& other );
 lua:
-    oVectorOfDetail_ImageFeatures:copy( other ) -> retval
+    oVectorOfDetail_ImageFeatures:copy( other ) -> None
 ```
 
 ### VectorOfDetail\_ImageFeatures.data
@@ -91911,8 +92107,8 @@ lua:
 ### VectorOfDetail\_ImageFeatures.get
 
 ```cpp
-static cv::detail::ImageFeatures VectorOfDetail_ImageFeatures::get( void*  ptr,
-                                                                    size_t i );
+static cv::detail::ImageFeatures* VectorOfDetail_ImageFeatures::get( void*          ptr,
+                                                                     std::ptrdiff_t i );
 lua:
     VectorOfDetail_ImageFeatures.get( ptr, i ) -> retval
 ```
@@ -91936,14 +92132,14 @@ lua:
 ### VectorOfDetail\_ImageFeatures.ptr
 
 ```cpp
-void* VectorOfDetail_ImageFeatures::data( size_t i = 0 );
+void* VectorOfDetail_ImageFeatures::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfDetail_ImageFeatures:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfDetail_ImageFeatures::ptr( void*  ptr,
-                                                size_t i = 0 );
+static void* VectorOfDetail_ImageFeatures::ptr( void*          ptr,
+                                                std::ptrdiff_t i = 0 );
 lua:
     VectorOfDetail_ImageFeatures.ptr( ptr[, i] ) -> retval
 ```
@@ -91975,7 +92171,7 @@ lua:
 
 ```cpp
 static void VectorOfDetail_ImageFeatures::set( void*                     ptr,
-                                               size_t                    i,
+                                               std::ptrdiff_t            i,
                                                cv::detail::ImageFeatures value );
 lua:
     VectorOfDetail_ImageFeatures.set( ptr, i, value ) -> None
@@ -92000,7 +92196,7 @@ lua:
 ### VectorOfDetail\_ImageFeatures.sol::meta\_function::index
 
 ```cpp
-cv::detail::ImageFeatures VectorOfDetail_ImageFeatures::sol::meta_function::index( size_t index );
+cv::detail::ImageFeatures* VectorOfDetail_ImageFeatures::sol::meta_function::index( size_t index );
 lua:
     oVectorOfDetail_ImageFeatures:__index( index ) -> retval
 ```
@@ -92039,6 +92235,14 @@ lua:
 ```
 
 ## VectorOfDetail\_MatchesInfo
+
+### VectorOfDetail\_MatchesInfo.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfDetail_MatchesInfo::sizeof_value_type
+lua:
+    [propget] VectorOfDetail_MatchesInfo.sizeof_value_type
+```
 
 ### VectorOfDetail\_MatchesInfo.new
 
@@ -92106,9 +92310,9 @@ lua:
 ### VectorOfDetail\_MatchesInfo.copy
 
 ```cpp
-std::vector<cv::detail::MatchesInfo> VectorOfDetail_MatchesInfo::operator=( const std::vector<cv::detail::MatchesInfo>& other );
+void VectorOfDetail_MatchesInfo::operator=( const std::vector<cv::detail::MatchesInfo>& other );
 lua:
-    oVectorOfDetail_MatchesInfo:copy( other ) -> retval
+    oVectorOfDetail_MatchesInfo:copy( other ) -> None
 ```
 
 ### VectorOfDetail\_MatchesInfo.data
@@ -92138,8 +92342,8 @@ lua:
 ### VectorOfDetail\_MatchesInfo.get
 
 ```cpp
-static cv::detail::MatchesInfo VectorOfDetail_MatchesInfo::get( void*  ptr,
-                                                                size_t i );
+static cv::detail::MatchesInfo* VectorOfDetail_MatchesInfo::get( void*          ptr,
+                                                                 std::ptrdiff_t i );
 lua:
     VectorOfDetail_MatchesInfo.get( ptr, i ) -> retval
 ```
@@ -92163,14 +92367,14 @@ lua:
 ### VectorOfDetail\_MatchesInfo.ptr
 
 ```cpp
-void* VectorOfDetail_MatchesInfo::data( size_t i = 0 );
+void* VectorOfDetail_MatchesInfo::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfDetail_MatchesInfo:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfDetail_MatchesInfo::ptr( void*  ptr,
-                                              size_t i = 0 );
+static void* VectorOfDetail_MatchesInfo::ptr( void*          ptr,
+                                              std::ptrdiff_t i = 0 );
 lua:
     VectorOfDetail_MatchesInfo.ptr( ptr[, i] ) -> retval
 ```
@@ -92202,7 +92406,7 @@ lua:
 
 ```cpp
 static void VectorOfDetail_MatchesInfo::set( void*                   ptr,
-                                             size_t                  i,
+                                             std::ptrdiff_t          i,
                                              cv::detail::MatchesInfo value );
 lua:
     VectorOfDetail_MatchesInfo.set( ptr, i, value ) -> None
@@ -92227,7 +92431,7 @@ lua:
 ### VectorOfDetail\_MatchesInfo.sol::meta\_function::index
 
 ```cpp
-cv::detail::MatchesInfo VectorOfDetail_MatchesInfo::sol::meta_function::index( size_t index );
+cv::detail::MatchesInfo* VectorOfDetail_MatchesInfo::sol::meta_function::index( size_t index );
 lua:
     oVectorOfDetail_MatchesInfo:__index( index ) -> retval
 ```
@@ -92266,6 +92470,14 @@ lua:
 ```
 
 ## VectorOfDnn\_Target
+
+### VectorOfDnn\_Target.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfDnn_Target::sizeof_value_type
+lua:
+    [propget] VectorOfDnn_Target.sizeof_value_type
+```
 
 ### VectorOfDnn\_Target.new
 
@@ -92333,9 +92545,9 @@ lua:
 ### VectorOfDnn\_Target.copy
 
 ```cpp
-std::vector<cv::dnn::Target> VectorOfDnn_Target::operator=( const std::vector<cv::dnn::Target>& other );
+void VectorOfDnn_Target::operator=( const std::vector<cv::dnn::Target>& other );
 lua:
-    oVectorOfDnn_Target:copy( other ) -> retval
+    oVectorOfDnn_Target:copy( other ) -> None
 ```
 
 ### VectorOfDnn\_Target.data
@@ -92365,8 +92577,8 @@ lua:
 ### VectorOfDnn\_Target.get
 
 ```cpp
-static cv::dnn::Target VectorOfDnn_Target::get( void*  ptr,
-                                                size_t i );
+static cv::dnn::Target VectorOfDnn_Target::get( void*          ptr,
+                                                std::ptrdiff_t i );
 lua:
     VectorOfDnn_Target.get( ptr, i ) -> retval
 ```
@@ -92390,14 +92602,14 @@ lua:
 ### VectorOfDnn\_Target.ptr
 
 ```cpp
-void* VectorOfDnn_Target::data( size_t i = 0 );
+void* VectorOfDnn_Target::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfDnn_Target:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfDnn_Target::ptr( void*  ptr,
-                                      size_t i = 0 );
+static void* VectorOfDnn_Target::ptr( void*          ptr,
+                                      std::ptrdiff_t i = 0 );
 lua:
     VectorOfDnn_Target.ptr( ptr[, i] ) -> retval
 ```
@@ -92429,7 +92641,7 @@ lua:
 
 ```cpp
 static void VectorOfDnn_Target::set( void*           ptr,
-                                     size_t          i,
+                                     std::ptrdiff_t  i,
                                      cv::dnn::Target value );
 lua:
     VectorOfDnn_Target.set( ptr, i, value ) -> None
@@ -92493,6 +92705,14 @@ lua:
 ```
 
 ## VectorOfDouble
+
+### VectorOfDouble.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfDouble::sizeof_value_type
+lua:
+    [propget] VectorOfDouble.sizeof_value_type
+```
 
 ### VectorOfDouble.new
 
@@ -92560,9 +92780,9 @@ lua:
 ### VectorOfDouble.copy
 
 ```cpp
-std::vector<double> VectorOfDouble::operator=( const std::vector<double>& other );
+void VectorOfDouble::operator=( const std::vector<double>& other );
 lua:
-    oVectorOfDouble:copy( other ) -> retval
+    oVectorOfDouble:copy( other ) -> None
 ```
 
 ### VectorOfDouble.data
@@ -92592,8 +92812,8 @@ lua:
 ### VectorOfDouble.get
 
 ```cpp
-static double VectorOfDouble::get( void*  ptr,
-                                   size_t i );
+static double VectorOfDouble::get( void*          ptr,
+                                   std::ptrdiff_t i );
 lua:
     VectorOfDouble.get( ptr, i ) -> retval
 ```
@@ -92617,14 +92837,14 @@ lua:
 ### VectorOfDouble.ptr
 
 ```cpp
-void* VectorOfDouble::data( size_t i = 0 );
+void* VectorOfDouble::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfDouble:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfDouble::ptr( void*  ptr,
-                                  size_t i = 0 );
+static void* VectorOfDouble::ptr( void*          ptr,
+                                  std::ptrdiff_t i = 0 );
 lua:
     VectorOfDouble.ptr( ptr[, i] ) -> retval
 ```
@@ -92655,9 +92875,9 @@ lua:
 ### VectorOfDouble.set
 
 ```cpp
-static void VectorOfDouble::set( void*  ptr,
-                                 size_t i,
-                                 double value );
+static void VectorOfDouble::set( void*          ptr,
+                                 std::ptrdiff_t i,
+                                 double         value );
 lua:
     VectorOfDouble.set( ptr, i, value ) -> None
 ```
@@ -92720,6 +92940,14 @@ lua:
 ```
 
 ## VectorOfFloat
+
+### VectorOfFloat.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfFloat::sizeof_value_type
+lua:
+    [propget] VectorOfFloat.sizeof_value_type
+```
 
 ### VectorOfFloat.new
 
@@ -92787,9 +93015,9 @@ lua:
 ### VectorOfFloat.copy
 
 ```cpp
-std::vector<float> VectorOfFloat::operator=( const std::vector<float>& other );
+void VectorOfFloat::operator=( const std::vector<float>& other );
 lua:
-    oVectorOfFloat:copy( other ) -> retval
+    oVectorOfFloat:copy( other ) -> None
 ```
 
 ### VectorOfFloat.data
@@ -92819,8 +93047,8 @@ lua:
 ### VectorOfFloat.get
 
 ```cpp
-static float VectorOfFloat::get( void*  ptr,
-                                 size_t i );
+static float VectorOfFloat::get( void*          ptr,
+                                 std::ptrdiff_t i );
 lua:
     VectorOfFloat.get( ptr, i ) -> retval
 ```
@@ -92844,14 +93072,14 @@ lua:
 ### VectorOfFloat.ptr
 
 ```cpp
-void* VectorOfFloat::data( size_t i = 0 );
+void* VectorOfFloat::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfFloat:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfFloat::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfFloat::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfFloat.ptr( ptr[, i] ) -> retval
 ```
@@ -92882,9 +93110,9 @@ lua:
 ### VectorOfFloat.set
 
 ```cpp
-static void VectorOfFloat::set( void*  ptr,
-                                size_t i,
-                                float  value );
+static void VectorOfFloat::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                float          value );
 lua:
     VectorOfFloat.set( ptr, i, value ) -> None
 ```
@@ -92947,6 +93175,14 @@ lua:
 ```
 
 ## VectorOfGCompileArg
+
+### VectorOfGCompileArg.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfGCompileArg::sizeof_value_type
+lua:
+    [propget] VectorOfGCompileArg.sizeof_value_type
+```
 
 ### VectorOfGCompileArg.new
 
@@ -93014,9 +93250,9 @@ lua:
 ### VectorOfGCompileArg.copy
 
 ```cpp
-std::vector<cv::GCompileArg> VectorOfGCompileArg::operator=( const std::vector<cv::GCompileArg>& other );
+void VectorOfGCompileArg::operator=( const std::vector<cv::GCompileArg>& other );
 lua:
-    oVectorOfGCompileArg:copy( other ) -> retval
+    oVectorOfGCompileArg:copy( other ) -> None
 ```
 
 ### VectorOfGCompileArg.data
@@ -93046,8 +93282,8 @@ lua:
 ### VectorOfGCompileArg.get
 
 ```cpp
-static cv::GCompileArg VectorOfGCompileArg::get( void*  ptr,
-                                                 size_t i );
+static cv::GCompileArg* VectorOfGCompileArg::get( void*          ptr,
+                                                  std::ptrdiff_t i );
 lua:
     VectorOfGCompileArg.get( ptr, i ) -> retval
 ```
@@ -93071,14 +93307,14 @@ lua:
 ### VectorOfGCompileArg.ptr
 
 ```cpp
-void* VectorOfGCompileArg::data( size_t i = 0 );
+void* VectorOfGCompileArg::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfGCompileArg:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfGCompileArg::ptr( void*  ptr,
-                                       size_t i = 0 );
+static void* VectorOfGCompileArg::ptr( void*          ptr,
+                                       std::ptrdiff_t i = 0 );
 lua:
     VectorOfGCompileArg.ptr( ptr[, i] ) -> retval
 ```
@@ -93110,7 +93346,7 @@ lua:
 
 ```cpp
 static void VectorOfGCompileArg::set( void*           ptr,
-                                      size_t          i,
+                                      std::ptrdiff_t  i,
                                       cv::GCompileArg value );
 lua:
     VectorOfGCompileArg.set( ptr, i, value ) -> None
@@ -93135,7 +93371,7 @@ lua:
 ### VectorOfGCompileArg.sol::meta\_function::index
 
 ```cpp
-cv::GCompileArg VectorOfGCompileArg::sol::meta_function::index( size_t index );
+cv::GCompileArg* VectorOfGCompileArg::sol::meta_function::index( size_t index );
 lua:
     oVectorOfGCompileArg:__index( index ) -> retval
 ```
@@ -93174,6 +93410,14 @@ lua:
 ```
 
 ## VectorOfGMat
+
+### VectorOfGMat.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfGMat::sizeof_value_type
+lua:
+    [propget] VectorOfGMat.sizeof_value_type
+```
 
 ### VectorOfGMat.new
 
@@ -93241,9 +93485,9 @@ lua:
 ### VectorOfGMat.copy
 
 ```cpp
-std::vector<cv::GMat> VectorOfGMat::operator=( const std::vector<cv::GMat>& other );
+void VectorOfGMat::operator=( const std::vector<cv::GMat>& other );
 lua:
-    oVectorOfGMat:copy( other ) -> retval
+    oVectorOfGMat:copy( other ) -> None
 ```
 
 ### VectorOfGMat.data
@@ -93273,8 +93517,8 @@ lua:
 ### VectorOfGMat.get
 
 ```cpp
-static cv::GMat VectorOfGMat::get( void*  ptr,
-                                   size_t i );
+static cv::GMat* VectorOfGMat::get( void*          ptr,
+                                    std::ptrdiff_t i );
 lua:
     VectorOfGMat.get( ptr, i ) -> retval
 ```
@@ -93298,14 +93542,14 @@ lua:
 ### VectorOfGMat.ptr
 
 ```cpp
-void* VectorOfGMat::data( size_t i = 0 );
+void* VectorOfGMat::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfGMat:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfGMat::ptr( void*  ptr,
-                                size_t i = 0 );
+static void* VectorOfGMat::ptr( void*          ptr,
+                                std::ptrdiff_t i = 0 );
 lua:
     VectorOfGMat.ptr( ptr[, i] ) -> retval
 ```
@@ -93336,9 +93580,9 @@ lua:
 ### VectorOfGMat.set
 
 ```cpp
-static void VectorOfGMat::set( void*    ptr,
-                               size_t   i,
-                               cv::GMat value );
+static void VectorOfGMat::set( void*          ptr,
+                               std::ptrdiff_t i,
+                               cv::GMat       value );
 lua:
     VectorOfGMat.set( ptr, i, value ) -> None
 ```
@@ -93362,7 +93606,7 @@ lua:
 ### VectorOfGMat.sol::meta\_function::index
 
 ```cpp
-cv::GMat VectorOfGMat::sol::meta_function::index( size_t index );
+cv::GMat* VectorOfGMat::sol::meta_function::index( size_t index );
 lua:
     oVectorOfGMat:__index( index ) -> retval
 ```
@@ -93401,6 +93645,14 @@ lua:
 ```
 
 ## VectorOfGMetaArg
+
+### VectorOfGMetaArg.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfGMetaArg::sizeof_value_type
+lua:
+    [propget] VectorOfGMetaArg.sizeof_value_type
+```
 
 ### VectorOfGMetaArg.new
 
@@ -93468,9 +93720,9 @@ lua:
 ### VectorOfGMetaArg.copy
 
 ```cpp
-std::vector<cv::GMetaArg> VectorOfGMetaArg::operator=( const std::vector<cv::GMetaArg>& other );
+void VectorOfGMetaArg::operator=( const std::vector<cv::GMetaArg>& other );
 lua:
-    oVectorOfGMetaArg:copy( other ) -> retval
+    oVectorOfGMetaArg:copy( other ) -> None
 ```
 
 ### VectorOfGMetaArg.data
@@ -93500,8 +93752,8 @@ lua:
 ### VectorOfGMetaArg.get
 
 ```cpp
-static cv::GMetaArg VectorOfGMetaArg::get( void*  ptr,
-                                           size_t i );
+static cv::GMetaArg VectorOfGMetaArg::get( void*          ptr,
+                                           std::ptrdiff_t i );
 lua:
     VectorOfGMetaArg.get( ptr, i ) -> retval
 ```
@@ -93525,14 +93777,14 @@ lua:
 ### VectorOfGMetaArg.ptr
 
 ```cpp
-void* VectorOfGMetaArg::data( size_t i = 0 );
+void* VectorOfGMetaArg::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfGMetaArg:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfGMetaArg::ptr( void*  ptr,
-                                    size_t i = 0 );
+static void* VectorOfGMetaArg::ptr( void*          ptr,
+                                    std::ptrdiff_t i = 0 );
 lua:
     VectorOfGMetaArg.ptr( ptr[, i] ) -> retval
 ```
@@ -93563,9 +93815,9 @@ lua:
 ### VectorOfGMetaArg.set
 
 ```cpp
-static void VectorOfGMetaArg::set( void*        ptr,
-                                   size_t       i,
-                                   cv::GMetaArg value );
+static void VectorOfGMetaArg::set( void*          ptr,
+                                   std::ptrdiff_t i,
+                                   cv::GMetaArg   value );
 lua:
     VectorOfGMetaArg.set( ptr, i, value ) -> None
 ```
@@ -93628,6 +93880,14 @@ lua:
 ```
 
 ## VectorOfGRunArg
+
+### VectorOfGRunArg.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfGRunArg::sizeof_value_type
+lua:
+    [propget] VectorOfGRunArg.sizeof_value_type
+```
 
 ### VectorOfGRunArg.new
 
@@ -93695,9 +93955,9 @@ lua:
 ### VectorOfGRunArg.copy
 
 ```cpp
-std::vector<cv::GRunArg> VectorOfGRunArg::operator=( const std::vector<cv::GRunArg>& other );
+void VectorOfGRunArg::operator=( const std::vector<cv::GRunArg>& other );
 lua:
-    oVectorOfGRunArg:copy( other ) -> retval
+    oVectorOfGRunArg:copy( other ) -> None
 ```
 
 ### VectorOfGRunArg.data
@@ -93727,8 +93987,8 @@ lua:
 ### VectorOfGRunArg.get
 
 ```cpp
-static cv::GRunArg VectorOfGRunArg::get( void*  ptr,
-                                         size_t i );
+static cv::GRunArg VectorOfGRunArg::get( void*          ptr,
+                                         std::ptrdiff_t i );
 lua:
     VectorOfGRunArg.get( ptr, i ) -> retval
 ```
@@ -93752,14 +94012,14 @@ lua:
 ### VectorOfGRunArg.ptr
 
 ```cpp
-void* VectorOfGRunArg::data( size_t i = 0 );
+void* VectorOfGRunArg::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfGRunArg:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfGRunArg::ptr( void*  ptr,
-                                   size_t i = 0 );
+static void* VectorOfGRunArg::ptr( void*          ptr,
+                                   std::ptrdiff_t i = 0 );
 lua:
     VectorOfGRunArg.ptr( ptr[, i] ) -> retval
 ```
@@ -93790,9 +94050,9 @@ lua:
 ### VectorOfGRunArg.set
 
 ```cpp
-static void VectorOfGRunArg::set( void*       ptr,
-                                  size_t      i,
-                                  cv::GRunArg value );
+static void VectorOfGRunArg::set( void*          ptr,
+                                  std::ptrdiff_t i,
+                                  cv::GRunArg    value );
 lua:
     VectorOfGRunArg.set( ptr, i, value ) -> None
 ```
@@ -93855,6 +94115,14 @@ lua:
 ```
 
 ## VectorOfGapi\_GNetParam
+
+### VectorOfGapi\_GNetParam.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfGapi_GNetParam::sizeof_value_type
+lua:
+    [propget] VectorOfGapi_GNetParam.sizeof_value_type
+```
 
 ### VectorOfGapi\_GNetParam.new
 
@@ -93922,9 +94190,9 @@ lua:
 ### VectorOfGapi\_GNetParam.copy
 
 ```cpp
-std::vector<cv::gapi::GNetParam> VectorOfGapi_GNetParam::operator=( const std::vector<cv::gapi::GNetParam>& other );
+void VectorOfGapi_GNetParam::operator=( const std::vector<cv::gapi::GNetParam>& other );
 lua:
-    oVectorOfGapi_GNetParam:copy( other ) -> retval
+    oVectorOfGapi_GNetParam:copy( other ) -> None
 ```
 
 ### VectorOfGapi\_GNetParam.data
@@ -93954,8 +94222,8 @@ lua:
 ### VectorOfGapi\_GNetParam.get
 
 ```cpp
-static cv::gapi::GNetParam VectorOfGapi_GNetParam::get( void*  ptr,
-                                                        size_t i );
+static cv::gapi::GNetParam* VectorOfGapi_GNetParam::get( void*          ptr,
+                                                         std::ptrdiff_t i );
 lua:
     VectorOfGapi_GNetParam.get( ptr, i ) -> retval
 ```
@@ -93979,14 +94247,14 @@ lua:
 ### VectorOfGapi\_GNetParam.ptr
 
 ```cpp
-void* VectorOfGapi_GNetParam::data( size_t i = 0 );
+void* VectorOfGapi_GNetParam::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfGapi_GNetParam:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfGapi_GNetParam::ptr( void*  ptr,
-                                          size_t i = 0 );
+static void* VectorOfGapi_GNetParam::ptr( void*          ptr,
+                                          std::ptrdiff_t i = 0 );
 lua:
     VectorOfGapi_GNetParam.ptr( ptr[, i] ) -> retval
 ```
@@ -94018,7 +94286,7 @@ lua:
 
 ```cpp
 static void VectorOfGapi_GNetParam::set( void*               ptr,
-                                         size_t              i,
+                                         std::ptrdiff_t      i,
                                          cv::gapi::GNetParam value );
 lua:
     VectorOfGapi_GNetParam.set( ptr, i, value ) -> None
@@ -94043,7 +94311,7 @@ lua:
 ### VectorOfGapi\_GNetParam.sol::meta\_function::index
 
 ```cpp
-cv::gapi::GNetParam VectorOfGapi_GNetParam::sol::meta_function::index( size_t index );
+cv::gapi::GNetParam* VectorOfGapi_GNetParam::sol::meta_function::index( size_t index );
 lua:
     oVectorOfGapi_GNetParam:__index( index ) -> retval
 ```
@@ -94082,6 +94350,14 @@ lua:
 ```
 
 ## VectorOfGapi\_wip\_draw\_Prim
+
+### VectorOfGapi\_wip\_draw\_Prim.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfGapi_wip_draw_Prim::sizeof_value_type
+lua:
+    [propget] VectorOfGapi_wip_draw_Prim.sizeof_value_type
+```
 
 ### VectorOfGapi\_wip\_draw\_Prim.new
 
@@ -94149,9 +94425,9 @@ lua:
 ### VectorOfGapi\_wip\_draw\_Prim.copy
 
 ```cpp
-std::vector<cv::gapi::wip::draw::Prim> VectorOfGapi_wip_draw_Prim::operator=( const std::vector<cv::gapi::wip::draw::Prim>& other );
+void VectorOfGapi_wip_draw_Prim::operator=( const std::vector<cv::gapi::wip::draw::Prim>& other );
 lua:
-    oVectorOfGapi_wip_draw_Prim:copy( other ) -> retval
+    oVectorOfGapi_wip_draw_Prim:copy( other ) -> None
 ```
 
 ### VectorOfGapi\_wip\_draw\_Prim.data
@@ -94181,8 +94457,8 @@ lua:
 ### VectorOfGapi\_wip\_draw\_Prim.get
 
 ```cpp
-static cv::gapi::wip::draw::Prim VectorOfGapi_wip_draw_Prim::get( void*  ptr,
-                                                                  size_t i );
+static cv::gapi::wip::draw::Prim VectorOfGapi_wip_draw_Prim::get( void*          ptr,
+                                                                  std::ptrdiff_t i );
 lua:
     VectorOfGapi_wip_draw_Prim.get( ptr, i ) -> retval
 ```
@@ -94206,14 +94482,14 @@ lua:
 ### VectorOfGapi\_wip\_draw\_Prim.ptr
 
 ```cpp
-void* VectorOfGapi_wip_draw_Prim::data( size_t i = 0 );
+void* VectorOfGapi_wip_draw_Prim::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfGapi_wip_draw_Prim:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfGapi_wip_draw_Prim::ptr( void*  ptr,
-                                              size_t i = 0 );
+static void* VectorOfGapi_wip_draw_Prim::ptr( void*          ptr,
+                                              std::ptrdiff_t i = 0 );
 lua:
     VectorOfGapi_wip_draw_Prim.ptr( ptr[, i] ) -> retval
 ```
@@ -94245,7 +94521,7 @@ lua:
 
 ```cpp
 static void VectorOfGapi_wip_draw_Prim::set( void*                     ptr,
-                                             size_t                    i,
+                                             std::ptrdiff_t            i,
                                              cv::gapi::wip::draw::Prim value );
 lua:
     VectorOfGapi_wip_draw_Prim.set( ptr, i, value ) -> None
@@ -94309,6 +94585,14 @@ lua:
 ```
 
 ## VectorOfInt
+
+### VectorOfInt.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfInt::sizeof_value_type
+lua:
+    [propget] VectorOfInt.sizeof_value_type
+```
 
 ### VectorOfInt.new
 
@@ -94376,9 +94660,9 @@ lua:
 ### VectorOfInt.copy
 
 ```cpp
-std::vector<int> VectorOfInt::operator=( const std::vector<int>& other );
+void VectorOfInt::operator=( const std::vector<int>& other );
 lua:
-    oVectorOfInt:copy( other ) -> retval
+    oVectorOfInt:copy( other ) -> None
 ```
 
 ### VectorOfInt.data
@@ -94408,8 +94692,8 @@ lua:
 ### VectorOfInt.get
 
 ```cpp
-static int VectorOfInt::get( void*  ptr,
-                             size_t i );
+static int VectorOfInt::get( void*          ptr,
+                             std::ptrdiff_t i );
 lua:
     VectorOfInt.get( ptr, i ) -> retval
 ```
@@ -94433,14 +94717,14 @@ lua:
 ### VectorOfInt.ptr
 
 ```cpp
-void* VectorOfInt::data( size_t i = 0 );
+void* VectorOfInt::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfInt:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfInt::ptr( void*  ptr,
-                               size_t i = 0 );
+static void* VectorOfInt::ptr( void*          ptr,
+                               std::ptrdiff_t i = 0 );
 lua:
     VectorOfInt.ptr( ptr[, i] ) -> retval
 ```
@@ -94471,9 +94755,9 @@ lua:
 ### VectorOfInt.set
 
 ```cpp
-static void VectorOfInt::set( void*  ptr,
-                              size_t i,
-                              int    value );
+static void VectorOfInt::set( void*          ptr,
+                              std::ptrdiff_t i,
+                              int            value );
 lua:
     VectorOfInt.set( ptr, i, value ) -> None
 ```
@@ -94536,6 +94820,14 @@ lua:
 ```
 
 ## VectorOfKeyPoint
+
+### VectorOfKeyPoint.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfKeyPoint::sizeof_value_type
+lua:
+    [propget] VectorOfKeyPoint.sizeof_value_type
+```
 
 ### VectorOfKeyPoint.new
 
@@ -94603,9 +94895,9 @@ lua:
 ### VectorOfKeyPoint.copy
 
 ```cpp
-std::vector<cv::KeyPoint> VectorOfKeyPoint::operator=( const std::vector<cv::KeyPoint>& other );
+void VectorOfKeyPoint::operator=( const std::vector<cv::KeyPoint>& other );
 lua:
-    oVectorOfKeyPoint:copy( other ) -> retval
+    oVectorOfKeyPoint:copy( other ) -> None
 ```
 
 ### VectorOfKeyPoint.data
@@ -94635,8 +94927,8 @@ lua:
 ### VectorOfKeyPoint.get
 
 ```cpp
-static cv::KeyPoint VectorOfKeyPoint::get( void*  ptr,
-                                           size_t i );
+static cv::KeyPoint* VectorOfKeyPoint::get( void*          ptr,
+                                            std::ptrdiff_t i );
 lua:
     VectorOfKeyPoint.get( ptr, i ) -> retval
 ```
@@ -94660,14 +94952,14 @@ lua:
 ### VectorOfKeyPoint.ptr
 
 ```cpp
-void* VectorOfKeyPoint::data( size_t i = 0 );
+void* VectorOfKeyPoint::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfKeyPoint:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfKeyPoint::ptr( void*  ptr,
-                                    size_t i = 0 );
+static void* VectorOfKeyPoint::ptr( void*          ptr,
+                                    std::ptrdiff_t i = 0 );
 lua:
     VectorOfKeyPoint.ptr( ptr[, i] ) -> retval
 ```
@@ -94698,9 +94990,9 @@ lua:
 ### VectorOfKeyPoint.set
 
 ```cpp
-static void VectorOfKeyPoint::set( void*        ptr,
-                                   size_t       i,
-                                   cv::KeyPoint value );
+static void VectorOfKeyPoint::set( void*          ptr,
+                                   std::ptrdiff_t i,
+                                   cv::KeyPoint   value );
 lua:
     VectorOfKeyPoint.set( ptr, i, value ) -> None
 ```
@@ -94724,7 +95016,7 @@ lua:
 ### VectorOfKeyPoint.sol::meta\_function::index
 
 ```cpp
-cv::KeyPoint VectorOfKeyPoint::sol::meta_function::index( size_t index );
+cv::KeyPoint* VectorOfKeyPoint::sol::meta_function::index( size_t index );
 lua:
     oVectorOfKeyPoint:__index( index ) -> retval
 ```
@@ -94763,6 +95055,14 @@ lua:
 ```
 
 ## VectorOfLine\_descriptor\_KeyLine
+
+### VectorOfLine\_descriptor\_KeyLine.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfLine_descriptor_KeyLine::sizeof_value_type
+lua:
+    [propget] VectorOfLine_descriptor_KeyLine.sizeof_value_type
+```
 
 ### VectorOfLine\_descriptor\_KeyLine.new
 
@@ -94830,9 +95130,9 @@ lua:
 ### VectorOfLine\_descriptor\_KeyLine.copy
 
 ```cpp
-std::vector<cv::line_descriptor::KeyLine> VectorOfLine_descriptor_KeyLine::operator=( const std::vector<cv::line_descriptor::KeyLine>& other );
+void VectorOfLine_descriptor_KeyLine::operator=( const std::vector<cv::line_descriptor::KeyLine>& other );
 lua:
-    oVectorOfLine_descriptor_KeyLine:copy( other ) -> retval
+    oVectorOfLine_descriptor_KeyLine:copy( other ) -> None
 ```
 
 ### VectorOfLine\_descriptor\_KeyLine.data
@@ -94862,8 +95162,8 @@ lua:
 ### VectorOfLine\_descriptor\_KeyLine.get
 
 ```cpp
-static cv::line_descriptor::KeyLine VectorOfLine_descriptor_KeyLine::get( void*  ptr,
-                                                                          size_t i );
+static cv::line_descriptor::KeyLine* VectorOfLine_descriptor_KeyLine::get( void*          ptr,
+                                                                           std::ptrdiff_t i );
 lua:
     VectorOfLine_descriptor_KeyLine.get( ptr, i ) -> retval
 ```
@@ -94887,14 +95187,14 @@ lua:
 ### VectorOfLine\_descriptor\_KeyLine.ptr
 
 ```cpp
-void* VectorOfLine_descriptor_KeyLine::data( size_t i = 0 );
+void* VectorOfLine_descriptor_KeyLine::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfLine_descriptor_KeyLine:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfLine_descriptor_KeyLine::ptr( void*  ptr,
-                                                   size_t i = 0 );
+static void* VectorOfLine_descriptor_KeyLine::ptr( void*          ptr,
+                                                   std::ptrdiff_t i = 0 );
 lua:
     VectorOfLine_descriptor_KeyLine.ptr( ptr[, i] ) -> retval
 ```
@@ -94926,7 +95226,7 @@ lua:
 
 ```cpp
 static void VectorOfLine_descriptor_KeyLine::set( void*                        ptr,
-                                                  size_t                       i,
+                                                  std::ptrdiff_t               i,
                                                   cv::line_descriptor::KeyLine value );
 lua:
     VectorOfLine_descriptor_KeyLine.set( ptr, i, value ) -> None
@@ -94951,7 +95251,7 @@ lua:
 ### VectorOfLine\_descriptor\_KeyLine.sol::meta\_function::index
 
 ```cpp
-cv::line_descriptor::KeyLine VectorOfLine_descriptor_KeyLine::sol::meta_function::index( size_t index );
+cv::line_descriptor::KeyLine* VectorOfLine_descriptor_KeyLine::sol::meta_function::index( size_t index );
 lua:
     oVectorOfLine_descriptor_KeyLine:__index( index ) -> retval
 ```
@@ -94990,6 +95290,14 @@ lua:
 ```
 
 ## VectorOfLinemod\_Feature
+
+### VectorOfLinemod\_Feature.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfLinemod_Feature::sizeof_value_type
+lua:
+    [propget] VectorOfLinemod_Feature.sizeof_value_type
+```
 
 ### VectorOfLinemod\_Feature.new
 
@@ -95057,9 +95365,9 @@ lua:
 ### VectorOfLinemod\_Feature.copy
 
 ```cpp
-std::vector<cv::linemod::Feature> VectorOfLinemod_Feature::operator=( const std::vector<cv::linemod::Feature>& other );
+void VectorOfLinemod_Feature::operator=( const std::vector<cv::linemod::Feature>& other );
 lua:
-    oVectorOfLinemod_Feature:copy( other ) -> retval
+    oVectorOfLinemod_Feature:copy( other ) -> None
 ```
 
 ### VectorOfLinemod\_Feature.data
@@ -95089,8 +95397,8 @@ lua:
 ### VectorOfLinemod\_Feature.get
 
 ```cpp
-static cv::linemod::Feature VectorOfLinemod_Feature::get( void*  ptr,
-                                                          size_t i );
+static cv::linemod::Feature* VectorOfLinemod_Feature::get( void*          ptr,
+                                                           std::ptrdiff_t i );
 lua:
     VectorOfLinemod_Feature.get( ptr, i ) -> retval
 ```
@@ -95114,14 +95422,14 @@ lua:
 ### VectorOfLinemod\_Feature.ptr
 
 ```cpp
-void* VectorOfLinemod_Feature::data( size_t i = 0 );
+void* VectorOfLinemod_Feature::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfLinemod_Feature:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfLinemod_Feature::ptr( void*  ptr,
-                                           size_t i = 0 );
+static void* VectorOfLinemod_Feature::ptr( void*          ptr,
+                                           std::ptrdiff_t i = 0 );
 lua:
     VectorOfLinemod_Feature.ptr( ptr[, i] ) -> retval
 ```
@@ -95153,7 +95461,7 @@ lua:
 
 ```cpp
 static void VectorOfLinemod_Feature::set( void*                ptr,
-                                          size_t               i,
+                                          std::ptrdiff_t       i,
                                           cv::linemod::Feature value );
 lua:
     VectorOfLinemod_Feature.set( ptr, i, value ) -> None
@@ -95178,7 +95486,7 @@ lua:
 ### VectorOfLinemod\_Feature.sol::meta\_function::index
 
 ```cpp
-cv::linemod::Feature VectorOfLinemod_Feature::sol::meta_function::index( size_t index );
+cv::linemod::Feature* VectorOfLinemod_Feature::sol::meta_function::index( size_t index );
 lua:
     oVectorOfLinemod_Feature:__index( index ) -> retval
 ```
@@ -95217,6 +95525,14 @@ lua:
 ```
 
 ## VectorOfLinemod\_Match
+
+### VectorOfLinemod\_Match.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfLinemod_Match::sizeof_value_type
+lua:
+    [propget] VectorOfLinemod_Match.sizeof_value_type
+```
 
 ### VectorOfLinemod\_Match.new
 
@@ -95284,9 +95600,9 @@ lua:
 ### VectorOfLinemod\_Match.copy
 
 ```cpp
-std::vector<cv::linemod::Match> VectorOfLinemod_Match::operator=( const std::vector<cv::linemod::Match>& other );
+void VectorOfLinemod_Match::operator=( const std::vector<cv::linemod::Match>& other );
 lua:
-    oVectorOfLinemod_Match:copy( other ) -> retval
+    oVectorOfLinemod_Match:copy( other ) -> None
 ```
 
 ### VectorOfLinemod\_Match.data
@@ -95316,8 +95632,8 @@ lua:
 ### VectorOfLinemod\_Match.get
 
 ```cpp
-static cv::linemod::Match VectorOfLinemod_Match::get( void*  ptr,
-                                                      size_t i );
+static cv::linemod::Match* VectorOfLinemod_Match::get( void*          ptr,
+                                                       std::ptrdiff_t i );
 lua:
     VectorOfLinemod_Match.get( ptr, i ) -> retval
 ```
@@ -95341,14 +95657,14 @@ lua:
 ### VectorOfLinemod\_Match.ptr
 
 ```cpp
-void* VectorOfLinemod_Match::data( size_t i = 0 );
+void* VectorOfLinemod_Match::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfLinemod_Match:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfLinemod_Match::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfLinemod_Match::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfLinemod_Match.ptr( ptr[, i] ) -> retval
 ```
@@ -95380,7 +95696,7 @@ lua:
 
 ```cpp
 static void VectorOfLinemod_Match::set( void*              ptr,
-                                        size_t             i,
+                                        std::ptrdiff_t     i,
                                         cv::linemod::Match value );
 lua:
     VectorOfLinemod_Match.set( ptr, i, value ) -> None
@@ -95405,7 +95721,7 @@ lua:
 ### VectorOfLinemod\_Match.sol::meta\_function::index
 
 ```cpp
-cv::linemod::Match VectorOfLinemod_Match::sol::meta_function::index( size_t index );
+cv::linemod::Match* VectorOfLinemod_Match::sol::meta_function::index( size_t index );
 lua:
     oVectorOfLinemod_Match:__index( index ) -> retval
 ```
@@ -95444,6 +95760,14 @@ lua:
 ```
 
 ## VectorOfLinemod\_Template
+
+### VectorOfLinemod\_Template.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfLinemod_Template::sizeof_value_type
+lua:
+    [propget] VectorOfLinemod_Template.sizeof_value_type
+```
 
 ### VectorOfLinemod\_Template.new
 
@@ -95511,9 +95835,9 @@ lua:
 ### VectorOfLinemod\_Template.copy
 
 ```cpp
-std::vector<cv::linemod::Template> VectorOfLinemod_Template::operator=( const std::vector<cv::linemod::Template>& other );
+void VectorOfLinemod_Template::operator=( const std::vector<cv::linemod::Template>& other );
 lua:
-    oVectorOfLinemod_Template:copy( other ) -> retval
+    oVectorOfLinemod_Template:copy( other ) -> None
 ```
 
 ### VectorOfLinemod\_Template.data
@@ -95543,8 +95867,8 @@ lua:
 ### VectorOfLinemod\_Template.get
 
 ```cpp
-static cv::linemod::Template VectorOfLinemod_Template::get( void*  ptr,
-                                                            size_t i );
+static cv::linemod::Template* VectorOfLinemod_Template::get( void*          ptr,
+                                                             std::ptrdiff_t i );
 lua:
     VectorOfLinemod_Template.get( ptr, i ) -> retval
 ```
@@ -95568,14 +95892,14 @@ lua:
 ### VectorOfLinemod\_Template.ptr
 
 ```cpp
-void* VectorOfLinemod_Template::data( size_t i = 0 );
+void* VectorOfLinemod_Template::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfLinemod_Template:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfLinemod_Template::ptr( void*  ptr,
-                                            size_t i = 0 );
+static void* VectorOfLinemod_Template::ptr( void*          ptr,
+                                            std::ptrdiff_t i = 0 );
 lua:
     VectorOfLinemod_Template.ptr( ptr[, i] ) -> retval
 ```
@@ -95607,7 +95931,7 @@ lua:
 
 ```cpp
 static void VectorOfLinemod_Template::set( void*                 ptr,
-                                           size_t                i,
+                                           std::ptrdiff_t        i,
                                            cv::linemod::Template value );
 lua:
     VectorOfLinemod_Template.set( ptr, i, value ) -> None
@@ -95632,7 +95956,7 @@ lua:
 ### VectorOfLinemod\_Template.sol::meta\_function::index
 
 ```cpp
-cv::linemod::Template VectorOfLinemod_Template::sol::meta_function::index( size_t index );
+cv::linemod::Template* VectorOfLinemod_Template::sol::meta_function::index( size_t index );
 lua:
     oVectorOfLinemod_Template:__index( index ) -> retval
 ```
@@ -95671,6 +95995,14 @@ lua:
 ```
 
 ## VectorOfMat
+
+### VectorOfMat.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfMat::sizeof_value_type
+lua:
+    [propget] VectorOfMat.sizeof_value_type
+```
 
 ### VectorOfMat.new
 
@@ -95738,9 +96070,9 @@ lua:
 ### VectorOfMat.copy
 
 ```cpp
-std::vector<cv::Mat> VectorOfMat::operator=( const std::vector<cv::Mat>& other );
+void VectorOfMat::operator=( const std::vector<cv::Mat>& other );
 lua:
-    oVectorOfMat:copy( other ) -> retval
+    oVectorOfMat:copy( other ) -> None
 ```
 
 ### VectorOfMat.data
@@ -95770,8 +96102,8 @@ lua:
 ### VectorOfMat.get
 
 ```cpp
-static cv::Mat VectorOfMat::get( void*  ptr,
-                                 size_t i );
+static cv::Mat* VectorOfMat::get( void*          ptr,
+                                  std::ptrdiff_t i );
 lua:
     VectorOfMat.get( ptr, i ) -> retval
 ```
@@ -95795,14 +96127,14 @@ lua:
 ### VectorOfMat.ptr
 
 ```cpp
-void* VectorOfMat::data( size_t i = 0 );
+void* VectorOfMat::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfMat:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfMat::ptr( void*  ptr,
-                               size_t i = 0 );
+static void* VectorOfMat::ptr( void*          ptr,
+                               std::ptrdiff_t i = 0 );
 lua:
     VectorOfMat.ptr( ptr[, i] ) -> retval
 ```
@@ -95833,9 +96165,9 @@ lua:
 ### VectorOfMat.set
 
 ```cpp
-static void VectorOfMat::set( void*   ptr,
-                              size_t  i,
-                              cv::Mat value );
+static void VectorOfMat::set( void*          ptr,
+                              std::ptrdiff_t i,
+                              cv::Mat        value );
 lua:
     VectorOfMat.set( ptr, i, value ) -> None
 ```
@@ -95859,7 +96191,7 @@ lua:
 ### VectorOfMat.sol::meta\_function::index
 
 ```cpp
-cv::Mat VectorOfMat::sol::meta_function::index( size_t index );
+cv::Mat* VectorOfMat::sol::meta_function::index( size_t index );
 lua:
     oVectorOfMat:__index( index ) -> retval
 ```
@@ -95898,6 +96230,14 @@ lua:
 ```
 
 ## VectorOfMoments
+
+### VectorOfMoments.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfMoments::sizeof_value_type
+lua:
+    [propget] VectorOfMoments.sizeof_value_type
+```
 
 ### VectorOfMoments.new
 
@@ -95965,9 +96305,9 @@ lua:
 ### VectorOfMoments.copy
 
 ```cpp
-std::vector<cv::Moments> VectorOfMoments::operator=( const std::vector<cv::Moments>& other );
+void VectorOfMoments::operator=( const std::vector<cv::Moments>& other );
 lua:
-    oVectorOfMoments:copy( other ) -> retval
+    oVectorOfMoments:copy( other ) -> None
 ```
 
 ### VectorOfMoments.data
@@ -95997,8 +96337,8 @@ lua:
 ### VectorOfMoments.get
 
 ```cpp
-static cv::Moments VectorOfMoments::get( void*  ptr,
-                                         size_t i );
+static cv::Moments* VectorOfMoments::get( void*          ptr,
+                                          std::ptrdiff_t i );
 lua:
     VectorOfMoments.get( ptr, i ) -> retval
 ```
@@ -96022,14 +96362,14 @@ lua:
 ### VectorOfMoments.ptr
 
 ```cpp
-void* VectorOfMoments::data( size_t i = 0 );
+void* VectorOfMoments::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfMoments:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfMoments::ptr( void*  ptr,
-                                   size_t i = 0 );
+static void* VectorOfMoments::ptr( void*          ptr,
+                                   std::ptrdiff_t i = 0 );
 lua:
     VectorOfMoments.ptr( ptr[, i] ) -> retval
 ```
@@ -96060,9 +96400,9 @@ lua:
 ### VectorOfMoments.set
 
 ```cpp
-static void VectorOfMoments::set( void*       ptr,
-                                  size_t      i,
-                                  cv::Moments value );
+static void VectorOfMoments::set( void*          ptr,
+                                  std::ptrdiff_t i,
+                                  cv::Moments    value );
 lua:
     VectorOfMoments.set( ptr, i, value ) -> None
 ```
@@ -96086,7 +96426,7 @@ lua:
 ### VectorOfMoments.sol::meta\_function::index
 
 ```cpp
-cv::Moments VectorOfMoments::sol::meta_function::index( size_t index );
+cv::Moments* VectorOfMoments::sol::meta_function::index( size_t index );
 lua:
     oVectorOfMoments:__index( index ) -> retval
 ```
@@ -96125,6 +96465,14 @@ lua:
 ```
 
 ## VectorOfPairOfIntAndDouble
+
+### VectorOfPairOfIntAndDouble.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfPairOfIntAndDouble::sizeof_value_type
+lua:
+    [propget] VectorOfPairOfIntAndDouble.sizeof_value_type
+```
 
 ### VectorOfPairOfIntAndDouble.new
 
@@ -96192,9 +96540,9 @@ lua:
 ### VectorOfPairOfIntAndDouble.copy
 
 ```cpp
-std::vector<std::pair<int, double>> VectorOfPairOfIntAndDouble::operator=( const std::vector<std::pair<int, double>>& other );
+void VectorOfPairOfIntAndDouble::operator=( const std::vector<std::pair<int, double>>& other );
 lua:
-    oVectorOfPairOfIntAndDouble:copy( other ) -> retval
+    oVectorOfPairOfIntAndDouble:copy( other ) -> None
 ```
 
 ### VectorOfPairOfIntAndDouble.data
@@ -96224,8 +96572,8 @@ lua:
 ### VectorOfPairOfIntAndDouble.get
 
 ```cpp
-static std::pair<int, double> VectorOfPairOfIntAndDouble::get( void*  ptr,
-                                                               size_t i );
+static std::pair<int, double> VectorOfPairOfIntAndDouble::get( void*          ptr,
+                                                               std::ptrdiff_t i );
 lua:
     VectorOfPairOfIntAndDouble.get( ptr, i ) -> retval
 ```
@@ -96249,14 +96597,14 @@ lua:
 ### VectorOfPairOfIntAndDouble.ptr
 
 ```cpp
-void* VectorOfPairOfIntAndDouble::data( size_t i = 0 );
+void* VectorOfPairOfIntAndDouble::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfPairOfIntAndDouble:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfPairOfIntAndDouble::ptr( void*  ptr,
-                                              size_t i = 0 );
+static void* VectorOfPairOfIntAndDouble::ptr( void*          ptr,
+                                              std::ptrdiff_t i = 0 );
 lua:
     VectorOfPairOfIntAndDouble.ptr( ptr[, i] ) -> retval
 ```
@@ -96288,7 +96636,7 @@ lua:
 
 ```cpp
 static void VectorOfPairOfIntAndDouble::set( void*                  ptr,
-                                             size_t                 i,
+                                             std::ptrdiff_t         i,
                                              std::pair<int, double> value );
 lua:
     VectorOfPairOfIntAndDouble.set( ptr, i, value ) -> None
@@ -96352,6 +96700,14 @@ lua:
 ```
 
 ## VectorOfPairOfStringAndInt
+
+### VectorOfPairOfStringAndInt.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfPairOfStringAndInt::sizeof_value_type
+lua:
+    [propget] VectorOfPairOfStringAndInt.sizeof_value_type
+```
 
 ### VectorOfPairOfStringAndInt.new
 
@@ -96419,9 +96775,9 @@ lua:
 ### VectorOfPairOfStringAndInt.copy
 
 ```cpp
-std::vector<std::pair<std::string, int>> VectorOfPairOfStringAndInt::operator=( const std::vector<std::pair<std::string, int>>& other );
+void VectorOfPairOfStringAndInt::operator=( const std::vector<std::pair<std::string, int>>& other );
 lua:
-    oVectorOfPairOfStringAndInt:copy( other ) -> retval
+    oVectorOfPairOfStringAndInt:copy( other ) -> None
 ```
 
 ### VectorOfPairOfStringAndInt.data
@@ -96451,8 +96807,8 @@ lua:
 ### VectorOfPairOfStringAndInt.get
 
 ```cpp
-static std::pair<std::string, int> VectorOfPairOfStringAndInt::get( void*  ptr,
-                                                                    size_t i );
+static std::pair<std::string, int> VectorOfPairOfStringAndInt::get( void*          ptr,
+                                                                    std::ptrdiff_t i );
 lua:
     VectorOfPairOfStringAndInt.get( ptr, i ) -> retval
 ```
@@ -96476,14 +96832,14 @@ lua:
 ### VectorOfPairOfStringAndInt.ptr
 
 ```cpp
-void* VectorOfPairOfStringAndInt::data( size_t i = 0 );
+void* VectorOfPairOfStringAndInt::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfPairOfStringAndInt:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfPairOfStringAndInt::ptr( void*  ptr,
-                                              size_t i = 0 );
+static void* VectorOfPairOfStringAndInt::ptr( void*          ptr,
+                                              std::ptrdiff_t i = 0 );
 lua:
     VectorOfPairOfStringAndInt.ptr( ptr[, i] ) -> retval
 ```
@@ -96515,7 +96871,7 @@ lua:
 
 ```cpp
 static void VectorOfPairOfStringAndInt::set( void*                       ptr,
-                                             size_t                      i,
+                                             std::ptrdiff_t              i,
                                              std::pair<std::string, int> value );
 lua:
     VectorOfPairOfStringAndInt.set( ptr, i, value ) -> None
@@ -96579,6 +96935,14 @@ lua:
 ```
 
 ## VectorOfPairOfStringAndString
+
+### VectorOfPairOfStringAndString.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfPairOfStringAndString::sizeof_value_type
+lua:
+    [propget] VectorOfPairOfStringAndString.sizeof_value_type
+```
 
 ### VectorOfPairOfStringAndString.new
 
@@ -96646,9 +97010,9 @@ lua:
 ### VectorOfPairOfStringAndString.copy
 
 ```cpp
-std::vector<std::pair<std::string, std::string>> VectorOfPairOfStringAndString::operator=( const std::vector<std::pair<std::string, std::string>>& other );
+void VectorOfPairOfStringAndString::operator=( const std::vector<std::pair<std::string, std::string>>& other );
 lua:
-    oVectorOfPairOfStringAndString:copy( other ) -> retval
+    oVectorOfPairOfStringAndString:copy( other ) -> None
 ```
 
 ### VectorOfPairOfStringAndString.data
@@ -96678,8 +97042,8 @@ lua:
 ### VectorOfPairOfStringAndString.get
 
 ```cpp
-static std::pair<std::string, std::string> VectorOfPairOfStringAndString::get( void*  ptr,
-                                                                               size_t i );
+static std::pair<std::string, std::string> VectorOfPairOfStringAndString::get( void*          ptr,
+                                                                               std::ptrdiff_t i );
 lua:
     VectorOfPairOfStringAndString.get( ptr, i ) -> retval
 ```
@@ -96703,14 +97067,14 @@ lua:
 ### VectorOfPairOfStringAndString.ptr
 
 ```cpp
-void* VectorOfPairOfStringAndString::data( size_t i = 0 );
+void* VectorOfPairOfStringAndString::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfPairOfStringAndString:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfPairOfStringAndString::ptr( void*  ptr,
-                                                 size_t i = 0 );
+static void* VectorOfPairOfStringAndString::ptr( void*          ptr,
+                                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfPairOfStringAndString.ptr( ptr[, i] ) -> retval
 ```
@@ -96742,7 +97106,7 @@ lua:
 
 ```cpp
 static void VectorOfPairOfStringAndString::set( void*                               ptr,
-                                                size_t                              i,
+                                                std::ptrdiff_t                      i,
                                                 std::pair<std::string, std::string> value );
 lua:
     VectorOfPairOfStringAndString.set( ptr, i, value ) -> None
@@ -96806,6 +97170,14 @@ lua:
 ```
 
 ## VectorOfPairOfStringAndVectorOfFloat
+
+### VectorOfPairOfStringAndVectorOfFloat.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfPairOfStringAndVectorOfFloat::sizeof_value_type
+lua:
+    [propget] VectorOfPairOfStringAndVectorOfFloat.sizeof_value_type
+```
 
 ### VectorOfPairOfStringAndVectorOfFloat.new
 
@@ -96873,9 +97245,9 @@ lua:
 ### VectorOfPairOfStringAndVectorOfFloat.copy
 
 ```cpp
-std::vector<std::pair<std::string, std::vector<float>>> VectorOfPairOfStringAndVectorOfFloat::operator=( const std::vector<std::pair<std::string, std::vector<float>>>& other );
+void VectorOfPairOfStringAndVectorOfFloat::operator=( const std::vector<std::pair<std::string, std::vector<float>>>& other );
 lua:
-    oVectorOfPairOfStringAndVectorOfFloat:copy( other ) -> retval
+    oVectorOfPairOfStringAndVectorOfFloat:copy( other ) -> None
 ```
 
 ### VectorOfPairOfStringAndVectorOfFloat.data
@@ -96905,8 +97277,8 @@ lua:
 ### VectorOfPairOfStringAndVectorOfFloat.get
 
 ```cpp
-static std::pair<std::string, std::vector<float>> VectorOfPairOfStringAndVectorOfFloat::get( void*  ptr,
-                                                                                             size_t i );
+static std::pair<std::string, std::vector<float>> VectorOfPairOfStringAndVectorOfFloat::get( void*          ptr,
+                                                                                             std::ptrdiff_t i );
 lua:
     VectorOfPairOfStringAndVectorOfFloat.get( ptr, i ) -> retval
 ```
@@ -96930,14 +97302,14 @@ lua:
 ### VectorOfPairOfStringAndVectorOfFloat.ptr
 
 ```cpp
-void* VectorOfPairOfStringAndVectorOfFloat::data( size_t i = 0 );
+void* VectorOfPairOfStringAndVectorOfFloat::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfPairOfStringAndVectorOfFloat:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfPairOfStringAndVectorOfFloat::ptr( void*  ptr,
-                                                        size_t i = 0 );
+static void* VectorOfPairOfStringAndVectorOfFloat::ptr( void*          ptr,
+                                                        std::ptrdiff_t i = 0 );
 lua:
     VectorOfPairOfStringAndVectorOfFloat.ptr( ptr[, i] ) -> retval
 ```
@@ -96969,7 +97341,7 @@ lua:
 
 ```cpp
 static void VectorOfPairOfStringAndVectorOfFloat::set( void*                                      ptr,
-                                                       size_t                                     i,
+                                                       std::ptrdiff_t                             i,
                                                        std::pair<std::string, std::vector<float>> value );
 lua:
     VectorOfPairOfStringAndVectorOfFloat.set( ptr, i, value ) -> None
@@ -97033,6 +97405,14 @@ lua:
 ```
 
 ## VectorOfPairOfStringAndVectorOfSize\_t
+
+### VectorOfPairOfStringAndVectorOfSize\_t.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfPairOfStringAndVectorOfSize_t::sizeof_value_type
+lua:
+    [propget] VectorOfPairOfStringAndVectorOfSize_t.sizeof_value_type
+```
 
 ### VectorOfPairOfStringAndVectorOfSize\_t.new
 
@@ -97100,9 +97480,9 @@ lua:
 ### VectorOfPairOfStringAndVectorOfSize\_t.copy
 
 ```cpp
-std::vector<std::pair<std::string, std::vector<size_t>>> VectorOfPairOfStringAndVectorOfSize_t::operator=( const std::vector<std::pair<std::string, std::vector<size_t>>>& other );
+void VectorOfPairOfStringAndVectorOfSize_t::operator=( const std::vector<std::pair<std::string, std::vector<size_t>>>& other );
 lua:
-    oVectorOfPairOfStringAndVectorOfSize_t:copy( other ) -> retval
+    oVectorOfPairOfStringAndVectorOfSize_t:copy( other ) -> None
 ```
 
 ### VectorOfPairOfStringAndVectorOfSize\_t.data
@@ -97132,8 +97512,8 @@ lua:
 ### VectorOfPairOfStringAndVectorOfSize\_t.get
 
 ```cpp
-static std::pair<std::string, std::vector<size_t>> VectorOfPairOfStringAndVectorOfSize_t::get( void*  ptr,
-                                                                                               size_t i );
+static std::pair<std::string, std::vector<size_t>> VectorOfPairOfStringAndVectorOfSize_t::get( void*          ptr,
+                                                                                               std::ptrdiff_t i );
 lua:
     VectorOfPairOfStringAndVectorOfSize_t.get( ptr, i ) -> retval
 ```
@@ -97157,14 +97537,14 @@ lua:
 ### VectorOfPairOfStringAndVectorOfSize\_t.ptr
 
 ```cpp
-void* VectorOfPairOfStringAndVectorOfSize_t::data( size_t i = 0 );
+void* VectorOfPairOfStringAndVectorOfSize_t::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfPairOfStringAndVectorOfSize_t:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfPairOfStringAndVectorOfSize_t::ptr( void*  ptr,
-                                                         size_t i = 0 );
+static void* VectorOfPairOfStringAndVectorOfSize_t::ptr( void*          ptr,
+                                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfPairOfStringAndVectorOfSize_t.ptr( ptr[, i] ) -> retval
 ```
@@ -97196,7 +97576,7 @@ lua:
 
 ```cpp
 static void VectorOfPairOfStringAndVectorOfSize_t::set( void*                                       ptr,
-                                                        size_t                                      i,
+                                                        std::ptrdiff_t                              i,
                                                         std::pair<std::string, std::vector<size_t>> value );
 lua:
     VectorOfPairOfStringAndVectorOfSize_t.set( ptr, i, value ) -> None
@@ -97260,6 +97640,14 @@ lua:
 ```
 
 ## VectorOfPoint
+
+### VectorOfPoint.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfPoint::sizeof_value_type
+lua:
+    [propget] VectorOfPoint.sizeof_value_type
+```
 
 ### VectorOfPoint.new
 
@@ -97327,9 +97715,9 @@ lua:
 ### VectorOfPoint.copy
 
 ```cpp
-std::vector<cv::Point> VectorOfPoint::operator=( const std::vector<cv::Point>& other );
+void VectorOfPoint::operator=( const std::vector<cv::Point>& other );
 lua:
-    oVectorOfPoint:copy( other ) -> retval
+    oVectorOfPoint:copy( other ) -> None
 ```
 
 ### VectorOfPoint.data
@@ -97359,8 +97747,8 @@ lua:
 ### VectorOfPoint.get
 
 ```cpp
-static cv::Point VectorOfPoint::get( void*  ptr,
-                                     size_t i );
+static cv::Point VectorOfPoint::get( void*          ptr,
+                                     std::ptrdiff_t i );
 lua:
     VectorOfPoint.get( ptr, i ) -> retval
 ```
@@ -97384,14 +97772,14 @@ lua:
 ### VectorOfPoint.ptr
 
 ```cpp
-void* VectorOfPoint::data( size_t i = 0 );
+void* VectorOfPoint::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfPoint:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfPoint::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfPoint::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfPoint.ptr( ptr[, i] ) -> retval
 ```
@@ -97422,9 +97810,9 @@ lua:
 ### VectorOfPoint.set
 
 ```cpp
-static void VectorOfPoint::set( void*     ptr,
-                                size_t    i,
-                                cv::Point value );
+static void VectorOfPoint::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                cv::Point      value );
 lua:
     VectorOfPoint.set( ptr, i, value ) -> None
 ```
@@ -97487,6 +97875,14 @@ lua:
 ```
 
 ## VectorOfPoint2d
+
+### VectorOfPoint2d.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfPoint2d::sizeof_value_type
+lua:
+    [propget] VectorOfPoint2d.sizeof_value_type
+```
 
 ### VectorOfPoint2d.new
 
@@ -97554,9 +97950,9 @@ lua:
 ### VectorOfPoint2d.copy
 
 ```cpp
-std::vector<cv::Point2d> VectorOfPoint2d::operator=( const std::vector<cv::Point2d>& other );
+void VectorOfPoint2d::operator=( const std::vector<cv::Point2d>& other );
 lua:
-    oVectorOfPoint2d:copy( other ) -> retval
+    oVectorOfPoint2d:copy( other ) -> None
 ```
 
 ### VectorOfPoint2d.data
@@ -97586,8 +97982,8 @@ lua:
 ### VectorOfPoint2d.get
 
 ```cpp
-static cv::Point2d VectorOfPoint2d::get( void*  ptr,
-                                         size_t i );
+static cv::Point2d VectorOfPoint2d::get( void*          ptr,
+                                         std::ptrdiff_t i );
 lua:
     VectorOfPoint2d.get( ptr, i ) -> retval
 ```
@@ -97611,14 +98007,14 @@ lua:
 ### VectorOfPoint2d.ptr
 
 ```cpp
-void* VectorOfPoint2d::data( size_t i = 0 );
+void* VectorOfPoint2d::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfPoint2d:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfPoint2d::ptr( void*  ptr,
-                                   size_t i = 0 );
+static void* VectorOfPoint2d::ptr( void*          ptr,
+                                   std::ptrdiff_t i = 0 );
 lua:
     VectorOfPoint2d.ptr( ptr[, i] ) -> retval
 ```
@@ -97649,9 +98045,9 @@ lua:
 ### VectorOfPoint2d.set
 
 ```cpp
-static void VectorOfPoint2d::set( void*       ptr,
-                                  size_t      i,
-                                  cv::Point2d value );
+static void VectorOfPoint2d::set( void*          ptr,
+                                  std::ptrdiff_t i,
+                                  cv::Point2d    value );
 lua:
     VectorOfPoint2d.set( ptr, i, value ) -> None
 ```
@@ -97714,6 +98110,14 @@ lua:
 ```
 
 ## VectorOfPoint2f
+
+### VectorOfPoint2f.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfPoint2f::sizeof_value_type
+lua:
+    [propget] VectorOfPoint2f.sizeof_value_type
+```
 
 ### VectorOfPoint2f.new
 
@@ -97781,9 +98185,9 @@ lua:
 ### VectorOfPoint2f.copy
 
 ```cpp
-std::vector<cv::Point2f> VectorOfPoint2f::operator=( const std::vector<cv::Point2f>& other );
+void VectorOfPoint2f::operator=( const std::vector<cv::Point2f>& other );
 lua:
-    oVectorOfPoint2f:copy( other ) -> retval
+    oVectorOfPoint2f:copy( other ) -> None
 ```
 
 ### VectorOfPoint2f.data
@@ -97813,8 +98217,8 @@ lua:
 ### VectorOfPoint2f.get
 
 ```cpp
-static cv::Point2f VectorOfPoint2f::get( void*  ptr,
-                                         size_t i );
+static cv::Point2f VectorOfPoint2f::get( void*          ptr,
+                                         std::ptrdiff_t i );
 lua:
     VectorOfPoint2f.get( ptr, i ) -> retval
 ```
@@ -97838,14 +98242,14 @@ lua:
 ### VectorOfPoint2f.ptr
 
 ```cpp
-void* VectorOfPoint2f::data( size_t i = 0 );
+void* VectorOfPoint2f::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfPoint2f:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfPoint2f::ptr( void*  ptr,
-                                   size_t i = 0 );
+static void* VectorOfPoint2f::ptr( void*          ptr,
+                                   std::ptrdiff_t i = 0 );
 lua:
     VectorOfPoint2f.ptr( ptr[, i] ) -> retval
 ```
@@ -97876,9 +98280,9 @@ lua:
 ### VectorOfPoint2f.set
 
 ```cpp
-static void VectorOfPoint2f::set( void*       ptr,
-                                  size_t      i,
-                                  cv::Point2f value );
+static void VectorOfPoint2f::set( void*          ptr,
+                                  std::ptrdiff_t i,
+                                  cv::Point2f    value );
 lua:
     VectorOfPoint2f.set( ptr, i, value ) -> None
 ```
@@ -97941,6 +98345,14 @@ lua:
 ```
 
 ## VectorOfPoint3d
+
+### VectorOfPoint3d.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfPoint3d::sizeof_value_type
+lua:
+    [propget] VectorOfPoint3d.sizeof_value_type
+```
 
 ### VectorOfPoint3d.new
 
@@ -98008,9 +98420,9 @@ lua:
 ### VectorOfPoint3d.copy
 
 ```cpp
-std::vector<cv::Point3d> VectorOfPoint3d::operator=( const std::vector<cv::Point3d>& other );
+void VectorOfPoint3d::operator=( const std::vector<cv::Point3d>& other );
 lua:
-    oVectorOfPoint3d:copy( other ) -> retval
+    oVectorOfPoint3d:copy( other ) -> None
 ```
 
 ### VectorOfPoint3d.data
@@ -98040,8 +98452,8 @@ lua:
 ### VectorOfPoint3d.get
 
 ```cpp
-static cv::Point3d VectorOfPoint3d::get( void*  ptr,
-                                         size_t i );
+static cv::Point3d VectorOfPoint3d::get( void*          ptr,
+                                         std::ptrdiff_t i );
 lua:
     VectorOfPoint3d.get( ptr, i ) -> retval
 ```
@@ -98065,14 +98477,14 @@ lua:
 ### VectorOfPoint3d.ptr
 
 ```cpp
-void* VectorOfPoint3d::data( size_t i = 0 );
+void* VectorOfPoint3d::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfPoint3d:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfPoint3d::ptr( void*  ptr,
-                                   size_t i = 0 );
+static void* VectorOfPoint3d::ptr( void*          ptr,
+                                   std::ptrdiff_t i = 0 );
 lua:
     VectorOfPoint3d.ptr( ptr[, i] ) -> retval
 ```
@@ -98103,9 +98515,9 @@ lua:
 ### VectorOfPoint3d.set
 
 ```cpp
-static void VectorOfPoint3d::set( void*       ptr,
-                                  size_t      i,
-                                  cv::Point3d value );
+static void VectorOfPoint3d::set( void*          ptr,
+                                  std::ptrdiff_t i,
+                                  cv::Point3d    value );
 lua:
     VectorOfPoint3d.set( ptr, i, value ) -> None
 ```
@@ -98168,6 +98580,14 @@ lua:
 ```
 
 ## VectorOfPoint3f
+
+### VectorOfPoint3f.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfPoint3f::sizeof_value_type
+lua:
+    [propget] VectorOfPoint3f.sizeof_value_type
+```
 
 ### VectorOfPoint3f.new
 
@@ -98235,9 +98655,9 @@ lua:
 ### VectorOfPoint3f.copy
 
 ```cpp
-std::vector<cv::Point3f> VectorOfPoint3f::operator=( const std::vector<cv::Point3f>& other );
+void VectorOfPoint3f::operator=( const std::vector<cv::Point3f>& other );
 lua:
-    oVectorOfPoint3f:copy( other ) -> retval
+    oVectorOfPoint3f:copy( other ) -> None
 ```
 
 ### VectorOfPoint3f.data
@@ -98267,8 +98687,8 @@ lua:
 ### VectorOfPoint3f.get
 
 ```cpp
-static cv::Point3f VectorOfPoint3f::get( void*  ptr,
-                                         size_t i );
+static cv::Point3f VectorOfPoint3f::get( void*          ptr,
+                                         std::ptrdiff_t i );
 lua:
     VectorOfPoint3f.get( ptr, i ) -> retval
 ```
@@ -98292,14 +98712,14 @@ lua:
 ### VectorOfPoint3f.ptr
 
 ```cpp
-void* VectorOfPoint3f::data( size_t i = 0 );
+void* VectorOfPoint3f::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfPoint3f:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfPoint3f::ptr( void*  ptr,
-                                   size_t i = 0 );
+static void* VectorOfPoint3f::ptr( void*          ptr,
+                                   std::ptrdiff_t i = 0 );
 lua:
     VectorOfPoint3f.ptr( ptr[, i] ) -> retval
 ```
@@ -98330,9 +98750,9 @@ lua:
 ### VectorOfPoint3f.set
 
 ```cpp
-static void VectorOfPoint3f::set( void*       ptr,
-                                  size_t      i,
-                                  cv::Point3f value );
+static void VectorOfPoint3f::set( void*          ptr,
+                                  std::ptrdiff_t i,
+                                  cv::Point3f    value );
 lua:
     VectorOfPoint3f.set( ptr, i, value ) -> None
 ```
@@ -98395,6 +98815,14 @@ lua:
 ```
 
 ## VectorOfPoint3i
+
+### VectorOfPoint3i.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfPoint3i::sizeof_value_type
+lua:
+    [propget] VectorOfPoint3i.sizeof_value_type
+```
 
 ### VectorOfPoint3i.new
 
@@ -98462,9 +98890,9 @@ lua:
 ### VectorOfPoint3i.copy
 
 ```cpp
-std::vector<cv::Point3i> VectorOfPoint3i::operator=( const std::vector<cv::Point3i>& other );
+void VectorOfPoint3i::operator=( const std::vector<cv::Point3i>& other );
 lua:
-    oVectorOfPoint3i:copy( other ) -> retval
+    oVectorOfPoint3i:copy( other ) -> None
 ```
 
 ### VectorOfPoint3i.data
@@ -98494,8 +98922,8 @@ lua:
 ### VectorOfPoint3i.get
 
 ```cpp
-static cv::Point3i VectorOfPoint3i::get( void*  ptr,
-                                         size_t i );
+static cv::Point3i VectorOfPoint3i::get( void*          ptr,
+                                         std::ptrdiff_t i );
 lua:
     VectorOfPoint3i.get( ptr, i ) -> retval
 ```
@@ -98519,14 +98947,14 @@ lua:
 ### VectorOfPoint3i.ptr
 
 ```cpp
-void* VectorOfPoint3i::data( size_t i = 0 );
+void* VectorOfPoint3i::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfPoint3i:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfPoint3i::ptr( void*  ptr,
-                                   size_t i = 0 );
+static void* VectorOfPoint3i::ptr( void*          ptr,
+                                   std::ptrdiff_t i = 0 );
 lua:
     VectorOfPoint3i.ptr( ptr[, i] ) -> retval
 ```
@@ -98557,9 +98985,9 @@ lua:
 ### VectorOfPoint3i.set
 
 ```cpp
-static void VectorOfPoint3i::set( void*       ptr,
-                                  size_t      i,
-                                  cv::Point3i value );
+static void VectorOfPoint3i::set( void*          ptr,
+                                  std::ptrdiff_t i,
+                                  cv::Point3i    value );
 lua:
     VectorOfPoint3i.set( ptr, i, value ) -> None
 ```
@@ -98622,6 +99050,14 @@ lua:
 ```
 
 ## VectorOfRange
+
+### VectorOfRange.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfRange::sizeof_value_type
+lua:
+    [propget] VectorOfRange.sizeof_value_type
+```
 
 ### VectorOfRange.new
 
@@ -98689,9 +99125,9 @@ lua:
 ### VectorOfRange.copy
 
 ```cpp
-std::vector<cv::Range> VectorOfRange::operator=( const std::vector<cv::Range>& other );
+void VectorOfRange::operator=( const std::vector<cv::Range>& other );
 lua:
-    oVectorOfRange:copy( other ) -> retval
+    oVectorOfRange:copy( other ) -> None
 ```
 
 ### VectorOfRange.data
@@ -98721,8 +99157,8 @@ lua:
 ### VectorOfRange.get
 
 ```cpp
-static cv::Range VectorOfRange::get( void*  ptr,
-                                     size_t i );
+static cv::Range* VectorOfRange::get( void*          ptr,
+                                      std::ptrdiff_t i );
 lua:
     VectorOfRange.get( ptr, i ) -> retval
 ```
@@ -98746,14 +99182,14 @@ lua:
 ### VectorOfRange.ptr
 
 ```cpp
-void* VectorOfRange::data( size_t i = 0 );
+void* VectorOfRange::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfRange:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfRange::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfRange::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfRange.ptr( ptr[, i] ) -> retval
 ```
@@ -98784,9 +99220,9 @@ lua:
 ### VectorOfRange.set
 
 ```cpp
-static void VectorOfRange::set( void*     ptr,
-                                size_t    i,
-                                cv::Range value );
+static void VectorOfRange::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                cv::Range      value );
 lua:
     VectorOfRange.set( ptr, i, value ) -> None
 ```
@@ -98810,7 +99246,7 @@ lua:
 ### VectorOfRange.sol::meta\_function::index
 
 ```cpp
-cv::Range VectorOfRange::sol::meta_function::index( size_t index );
+cv::Range* VectorOfRange::sol::meta_function::index( size_t index );
 lua:
     oVectorOfRange:__index( index ) -> retval
 ```
@@ -98849,6 +99285,14 @@ lua:
 ```
 
 ## VectorOfRect
+
+### VectorOfRect.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfRect::sizeof_value_type
+lua:
+    [propget] VectorOfRect.sizeof_value_type
+```
 
 ### VectorOfRect.new
 
@@ -98916,9 +99360,9 @@ lua:
 ### VectorOfRect.copy
 
 ```cpp
-std::vector<cv::Rect> VectorOfRect::operator=( const std::vector<cv::Rect>& other );
+void VectorOfRect::operator=( const std::vector<cv::Rect>& other );
 lua:
-    oVectorOfRect:copy( other ) -> retval
+    oVectorOfRect:copy( other ) -> None
 ```
 
 ### VectorOfRect.data
@@ -98948,8 +99392,8 @@ lua:
 ### VectorOfRect.get
 
 ```cpp
-static cv::Rect VectorOfRect::get( void*  ptr,
-                                   size_t i );
+static cv::Rect VectorOfRect::get( void*          ptr,
+                                   std::ptrdiff_t i );
 lua:
     VectorOfRect.get( ptr, i ) -> retval
 ```
@@ -98973,14 +99417,14 @@ lua:
 ### VectorOfRect.ptr
 
 ```cpp
-void* VectorOfRect::data( size_t i = 0 );
+void* VectorOfRect::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfRect:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfRect::ptr( void*  ptr,
-                                size_t i = 0 );
+static void* VectorOfRect::ptr( void*          ptr,
+                                std::ptrdiff_t i = 0 );
 lua:
     VectorOfRect.ptr( ptr[, i] ) -> retval
 ```
@@ -99011,9 +99455,9 @@ lua:
 ### VectorOfRect.set
 
 ```cpp
-static void VectorOfRect::set( void*    ptr,
-                               size_t   i,
-                               cv::Rect value );
+static void VectorOfRect::set( void*          ptr,
+                               std::ptrdiff_t i,
+                               cv::Rect       value );
 lua:
     VectorOfRect.set( ptr, i, value ) -> None
 ```
@@ -99076,6 +99520,14 @@ lua:
 ```
 
 ## VectorOfRect2d
+
+### VectorOfRect2d.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfRect2d::sizeof_value_type
+lua:
+    [propget] VectorOfRect2d.sizeof_value_type
+```
 
 ### VectorOfRect2d.new
 
@@ -99143,9 +99595,9 @@ lua:
 ### VectorOfRect2d.copy
 
 ```cpp
-std::vector<cv::Rect2d> VectorOfRect2d::operator=( const std::vector<cv::Rect2d>& other );
+void VectorOfRect2d::operator=( const std::vector<cv::Rect2d>& other );
 lua:
-    oVectorOfRect2d:copy( other ) -> retval
+    oVectorOfRect2d:copy( other ) -> None
 ```
 
 ### VectorOfRect2d.data
@@ -99175,8 +99627,8 @@ lua:
 ### VectorOfRect2d.get
 
 ```cpp
-static cv::Rect2d VectorOfRect2d::get( void*  ptr,
-                                       size_t i );
+static cv::Rect2d VectorOfRect2d::get( void*          ptr,
+                                       std::ptrdiff_t i );
 lua:
     VectorOfRect2d.get( ptr, i ) -> retval
 ```
@@ -99200,14 +99652,14 @@ lua:
 ### VectorOfRect2d.ptr
 
 ```cpp
-void* VectorOfRect2d::data( size_t i = 0 );
+void* VectorOfRect2d::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfRect2d:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfRect2d::ptr( void*  ptr,
-                                  size_t i = 0 );
+static void* VectorOfRect2d::ptr( void*          ptr,
+                                  std::ptrdiff_t i = 0 );
 lua:
     VectorOfRect2d.ptr( ptr[, i] ) -> retval
 ```
@@ -99238,9 +99690,9 @@ lua:
 ### VectorOfRect2d.set
 
 ```cpp
-static void VectorOfRect2d::set( void*      ptr,
-                                 size_t     i,
-                                 cv::Rect2d value );
+static void VectorOfRect2d::set( void*          ptr,
+                                 std::ptrdiff_t i,
+                                 cv::Rect2d     value );
 lua:
     VectorOfRect2d.set( ptr, i, value ) -> None
 ```
@@ -99303,6 +99755,14 @@ lua:
 ```
 
 ## VectorOfRect2f
+
+### VectorOfRect2f.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfRect2f::sizeof_value_type
+lua:
+    [propget] VectorOfRect2f.sizeof_value_type
+```
 
 ### VectorOfRect2f.new
 
@@ -99370,9 +99830,9 @@ lua:
 ### VectorOfRect2f.copy
 
 ```cpp
-std::vector<cv::Rect2f> VectorOfRect2f::operator=( const std::vector<cv::Rect2f>& other );
+void VectorOfRect2f::operator=( const std::vector<cv::Rect2f>& other );
 lua:
-    oVectorOfRect2f:copy( other ) -> retval
+    oVectorOfRect2f:copy( other ) -> None
 ```
 
 ### VectorOfRect2f.data
@@ -99402,8 +99862,8 @@ lua:
 ### VectorOfRect2f.get
 
 ```cpp
-static cv::Rect2f VectorOfRect2f::get( void*  ptr,
-                                       size_t i );
+static cv::Rect2f VectorOfRect2f::get( void*          ptr,
+                                       std::ptrdiff_t i );
 lua:
     VectorOfRect2f.get( ptr, i ) -> retval
 ```
@@ -99427,14 +99887,14 @@ lua:
 ### VectorOfRect2f.ptr
 
 ```cpp
-void* VectorOfRect2f::data( size_t i = 0 );
+void* VectorOfRect2f::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfRect2f:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfRect2f::ptr( void*  ptr,
-                                  size_t i = 0 );
+static void* VectorOfRect2f::ptr( void*          ptr,
+                                  std::ptrdiff_t i = 0 );
 lua:
     VectorOfRect2f.ptr( ptr[, i] ) -> retval
 ```
@@ -99465,9 +99925,9 @@ lua:
 ### VectorOfRect2f.set
 
 ```cpp
-static void VectorOfRect2f::set( void*      ptr,
-                                 size_t     i,
-                                 cv::Rect2f value );
+static void VectorOfRect2f::set( void*          ptr,
+                                 std::ptrdiff_t i,
+                                 cv::Rect2f     value );
 lua:
     VectorOfRect2f.set( ptr, i, value ) -> None
 ```
@@ -99530,6 +99990,14 @@ lua:
 ```
 
 ## VectorOfRotatedRect
+
+### VectorOfRotatedRect.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfRotatedRect::sizeof_value_type
+lua:
+    [propget] VectorOfRotatedRect.sizeof_value_type
+```
 
 ### VectorOfRotatedRect.new
 
@@ -99597,9 +100065,9 @@ lua:
 ### VectorOfRotatedRect.copy
 
 ```cpp
-std::vector<cv::RotatedRect> VectorOfRotatedRect::operator=( const std::vector<cv::RotatedRect>& other );
+void VectorOfRotatedRect::operator=( const std::vector<cv::RotatedRect>& other );
 lua:
-    oVectorOfRotatedRect:copy( other ) -> retval
+    oVectorOfRotatedRect:copy( other ) -> None
 ```
 
 ### VectorOfRotatedRect.data
@@ -99629,8 +100097,8 @@ lua:
 ### VectorOfRotatedRect.get
 
 ```cpp
-static cv::RotatedRect VectorOfRotatedRect::get( void*  ptr,
-                                                 size_t i );
+static cv::RotatedRect* VectorOfRotatedRect::get( void*          ptr,
+                                                  std::ptrdiff_t i );
 lua:
     VectorOfRotatedRect.get( ptr, i ) -> retval
 ```
@@ -99654,14 +100122,14 @@ lua:
 ### VectorOfRotatedRect.ptr
 
 ```cpp
-void* VectorOfRotatedRect::data( size_t i = 0 );
+void* VectorOfRotatedRect::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfRotatedRect:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfRotatedRect::ptr( void*  ptr,
-                                       size_t i = 0 );
+static void* VectorOfRotatedRect::ptr( void*          ptr,
+                                       std::ptrdiff_t i = 0 );
 lua:
     VectorOfRotatedRect.ptr( ptr[, i] ) -> retval
 ```
@@ -99693,7 +100161,7 @@ lua:
 
 ```cpp
 static void VectorOfRotatedRect::set( void*           ptr,
-                                      size_t          i,
+                                      std::ptrdiff_t  i,
                                       cv::RotatedRect value );
 lua:
     VectorOfRotatedRect.set( ptr, i, value ) -> None
@@ -99718,7 +100186,7 @@ lua:
 ### VectorOfRotatedRect.sol::meta\_function::index
 
 ```cpp
-cv::RotatedRect VectorOfRotatedRect::sol::meta_function::index( size_t index );
+cv::RotatedRect* VectorOfRotatedRect::sol::meta_function::index( size_t index );
 lua:
     oVectorOfRotatedRect:__index( index ) -> retval
 ```
@@ -99757,6 +100225,14 @@ lua:
 ```
 
 ## VectorOfSchar
+
+### VectorOfSchar.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfSchar::sizeof_value_type
+lua:
+    [propget] VectorOfSchar.sizeof_value_type
+```
 
 ### VectorOfSchar.new
 
@@ -99824,9 +100300,9 @@ lua:
 ### VectorOfSchar.copy
 
 ```cpp
-std::vector<schar> VectorOfSchar::operator=( const std::vector<schar>& other );
+void VectorOfSchar::operator=( const std::vector<schar>& other );
 lua:
-    oVectorOfSchar:copy( other ) -> retval
+    oVectorOfSchar:copy( other ) -> None
 ```
 
 ### VectorOfSchar.data
@@ -99856,8 +100332,8 @@ lua:
 ### VectorOfSchar.get
 
 ```cpp
-static schar VectorOfSchar::get( void*  ptr,
-                                 size_t i );
+static schar VectorOfSchar::get( void*          ptr,
+                                 std::ptrdiff_t i );
 lua:
     VectorOfSchar.get( ptr, i ) -> retval
 ```
@@ -99881,14 +100357,14 @@ lua:
 ### VectorOfSchar.ptr
 
 ```cpp
-void* VectorOfSchar::data( size_t i = 0 );
+void* VectorOfSchar::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfSchar:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfSchar::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfSchar::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfSchar.ptr( ptr[, i] ) -> retval
 ```
@@ -99919,9 +100395,9 @@ lua:
 ### VectorOfSchar.set
 
 ```cpp
-static void VectorOfSchar::set( void*  ptr,
-                                size_t i,
-                                schar  value );
+static void VectorOfSchar::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                schar          value );
 lua:
     VectorOfSchar.set( ptr, i, value ) -> None
 ```
@@ -99984,6 +100460,14 @@ lua:
 ```
 
 ## VectorOfSharedPtrOfLinemod\_Modality
+
+### VectorOfSharedPtrOfLinemod\_Modality.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfSharedPtrOfLinemod_Modality::sizeof_value_type
+lua:
+    [propget] VectorOfSharedPtrOfLinemod_Modality.sizeof_value_type
+```
 
 ### VectorOfSharedPtrOfLinemod\_Modality.new
 
@@ -100051,9 +100535,9 @@ lua:
 ### VectorOfSharedPtrOfLinemod\_Modality.copy
 
 ```cpp
-std::vector<cv::Ptr<cv::linemod::Modality>> VectorOfSharedPtrOfLinemod_Modality::operator=( const std::vector<cv::Ptr<cv::linemod::Modality>>& other );
+void VectorOfSharedPtrOfLinemod_Modality::operator=( const std::vector<cv::Ptr<cv::linemod::Modality>>& other );
 lua:
-    oVectorOfSharedPtrOfLinemod_Modality:copy( other ) -> retval
+    oVectorOfSharedPtrOfLinemod_Modality:copy( other ) -> None
 ```
 
 ### VectorOfSharedPtrOfLinemod\_Modality.data
@@ -100083,8 +100567,8 @@ lua:
 ### VectorOfSharedPtrOfLinemod\_Modality.get
 
 ```cpp
-static cv::Ptr<cv::linemod::Modality> VectorOfSharedPtrOfLinemod_Modality::get( void*  ptr,
-                                                                                size_t i );
+static cv::Ptr<cv::linemod::Modality> VectorOfSharedPtrOfLinemod_Modality::get( void*          ptr,
+                                                                                std::ptrdiff_t i );
 lua:
     VectorOfSharedPtrOfLinemod_Modality.get( ptr, i ) -> retval
 ```
@@ -100108,14 +100592,14 @@ lua:
 ### VectorOfSharedPtrOfLinemod\_Modality.ptr
 
 ```cpp
-void* VectorOfSharedPtrOfLinemod_Modality::data( size_t i = 0 );
+void* VectorOfSharedPtrOfLinemod_Modality::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfSharedPtrOfLinemod_Modality:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfSharedPtrOfLinemod_Modality::ptr( void*  ptr,
-                                                       size_t i = 0 );
+static void* VectorOfSharedPtrOfLinemod_Modality::ptr( void*          ptr,
+                                                       std::ptrdiff_t i = 0 );
 lua:
     VectorOfSharedPtrOfLinemod_Modality.ptr( ptr[, i] ) -> retval
 ```
@@ -100147,7 +100631,7 @@ lua:
 
 ```cpp
 static void VectorOfSharedPtrOfLinemod_Modality::set( void*                          ptr,
-                                                      size_t                         i,
+                                                      std::ptrdiff_t                 i,
                                                       cv::Ptr<cv::linemod::Modality> value );
 lua:
     VectorOfSharedPtrOfLinemod_Modality.set( ptr, i, value ) -> None
@@ -100211,6 +100695,14 @@ lua:
 ```
 
 ## VectorOfSharedPtrOfMcc\_CChecker
+
+### VectorOfSharedPtrOfMcc\_CChecker.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfSharedPtrOfMcc_CChecker::sizeof_value_type
+lua:
+    [propget] VectorOfSharedPtrOfMcc_CChecker.sizeof_value_type
+```
 
 ### VectorOfSharedPtrOfMcc\_CChecker.new
 
@@ -100278,9 +100770,9 @@ lua:
 ### VectorOfSharedPtrOfMcc\_CChecker.copy
 
 ```cpp
-std::vector<cv::Ptr<cv::mcc::CChecker>> VectorOfSharedPtrOfMcc_CChecker::operator=( const std::vector<cv::Ptr<cv::mcc::CChecker>>& other );
+void VectorOfSharedPtrOfMcc_CChecker::operator=( const std::vector<cv::Ptr<cv::mcc::CChecker>>& other );
 lua:
-    oVectorOfSharedPtrOfMcc_CChecker:copy( other ) -> retval
+    oVectorOfSharedPtrOfMcc_CChecker:copy( other ) -> None
 ```
 
 ### VectorOfSharedPtrOfMcc\_CChecker.data
@@ -100310,8 +100802,8 @@ lua:
 ### VectorOfSharedPtrOfMcc\_CChecker.get
 
 ```cpp
-static cv::Ptr<cv::mcc::CChecker> VectorOfSharedPtrOfMcc_CChecker::get( void*  ptr,
-                                                                        size_t i );
+static cv::Ptr<cv::mcc::CChecker> VectorOfSharedPtrOfMcc_CChecker::get( void*          ptr,
+                                                                        std::ptrdiff_t i );
 lua:
     VectorOfSharedPtrOfMcc_CChecker.get( ptr, i ) -> retval
 ```
@@ -100335,14 +100827,14 @@ lua:
 ### VectorOfSharedPtrOfMcc\_CChecker.ptr
 
 ```cpp
-void* VectorOfSharedPtrOfMcc_CChecker::data( size_t i = 0 );
+void* VectorOfSharedPtrOfMcc_CChecker::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfSharedPtrOfMcc_CChecker:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfSharedPtrOfMcc_CChecker::ptr( void*  ptr,
-                                                   size_t i = 0 );
+static void* VectorOfSharedPtrOfMcc_CChecker::ptr( void*          ptr,
+                                                   std::ptrdiff_t i = 0 );
 lua:
     VectorOfSharedPtrOfMcc_CChecker.ptr( ptr[, i] ) -> retval
 ```
@@ -100374,7 +100866,7 @@ lua:
 
 ```cpp
 static void VectorOfSharedPtrOfMcc_CChecker::set( void*                      ptr,
-                                                  size_t                     i,
+                                                  std::ptrdiff_t             i,
                                                   cv::Ptr<cv::mcc::CChecker> value );
 lua:
     VectorOfSharedPtrOfMcc_CChecker.set( ptr, i, value ) -> None
@@ -100438,6 +100930,14 @@ lua:
 ```
 
 ## VectorOfSharedPtrOfPpf\_match\_3d\_Pose3D
+
+### VectorOfSharedPtrOfPpf\_match\_3d\_Pose3D.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfSharedPtrOfPpf_match_3d_Pose3D::sizeof_value_type
+lua:
+    [propget] VectorOfSharedPtrOfPpf_match_3d_Pose3D.sizeof_value_type
+```
 
 ### VectorOfSharedPtrOfPpf\_match\_3d\_Pose3D.new
 
@@ -100505,9 +101005,9 @@ lua:
 ### VectorOfSharedPtrOfPpf\_match\_3d\_Pose3D.copy
 
 ```cpp
-std::vector<cv::Ptr<cv::ppf_match_3d::Pose3D>> VectorOfSharedPtrOfPpf_match_3d_Pose3D::operator=( const std::vector<cv::Ptr<cv::ppf_match_3d::Pose3D>>& other );
+void VectorOfSharedPtrOfPpf_match_3d_Pose3D::operator=( const std::vector<cv::Ptr<cv::ppf_match_3d::Pose3D>>& other );
 lua:
-    oVectorOfSharedPtrOfPpf_match_3d_Pose3D:copy( other ) -> retval
+    oVectorOfSharedPtrOfPpf_match_3d_Pose3D:copy( other ) -> None
 ```
 
 ### VectorOfSharedPtrOfPpf\_match\_3d\_Pose3D.data
@@ -100537,8 +101037,8 @@ lua:
 ### VectorOfSharedPtrOfPpf\_match\_3d\_Pose3D.get
 
 ```cpp
-static cv::Ptr<cv::ppf_match_3d::Pose3D> VectorOfSharedPtrOfPpf_match_3d_Pose3D::get( void*  ptr,
-                                                                                      size_t i );
+static cv::Ptr<cv::ppf_match_3d::Pose3D> VectorOfSharedPtrOfPpf_match_3d_Pose3D::get( void*          ptr,
+                                                                                      std::ptrdiff_t i );
 lua:
     VectorOfSharedPtrOfPpf_match_3d_Pose3D.get( ptr, i ) -> retval
 ```
@@ -100562,14 +101062,14 @@ lua:
 ### VectorOfSharedPtrOfPpf\_match\_3d\_Pose3D.ptr
 
 ```cpp
-void* VectorOfSharedPtrOfPpf_match_3d_Pose3D::data( size_t i = 0 );
+void* VectorOfSharedPtrOfPpf_match_3d_Pose3D::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfSharedPtrOfPpf_match_3d_Pose3D:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfSharedPtrOfPpf_match_3d_Pose3D::ptr( void*  ptr,
-                                                          size_t i = 0 );
+static void* VectorOfSharedPtrOfPpf_match_3d_Pose3D::ptr( void*          ptr,
+                                                          std::ptrdiff_t i = 0 );
 lua:
     VectorOfSharedPtrOfPpf_match_3d_Pose3D.ptr( ptr[, i] ) -> retval
 ```
@@ -100601,7 +101101,7 @@ lua:
 
 ```cpp
 static void VectorOfSharedPtrOfPpf_match_3d_Pose3D::set( void*                             ptr,
-                                                         size_t                            i,
+                                                         std::ptrdiff_t                    i,
                                                          cv::Ptr<cv::ppf_match_3d::Pose3D> value );
 lua:
     VectorOfSharedPtrOfPpf_match_3d_Pose3D.set( ptr, i, value ) -> None
@@ -100665,6 +101165,14 @@ lua:
 ```
 
 ## VectorOfShort
+
+### VectorOfShort.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfShort::sizeof_value_type
+lua:
+    [propget] VectorOfShort.sizeof_value_type
+```
 
 ### VectorOfShort.new
 
@@ -100732,9 +101240,9 @@ lua:
 ### VectorOfShort.copy
 
 ```cpp
-std::vector<short> VectorOfShort::operator=( const std::vector<short>& other );
+void VectorOfShort::operator=( const std::vector<short>& other );
 lua:
-    oVectorOfShort:copy( other ) -> retval
+    oVectorOfShort:copy( other ) -> None
 ```
 
 ### VectorOfShort.data
@@ -100764,8 +101272,8 @@ lua:
 ### VectorOfShort.get
 
 ```cpp
-static short VectorOfShort::get( void*  ptr,
-                                 size_t i );
+static short VectorOfShort::get( void*          ptr,
+                                 std::ptrdiff_t i );
 lua:
     VectorOfShort.get( ptr, i ) -> retval
 ```
@@ -100789,14 +101297,14 @@ lua:
 ### VectorOfShort.ptr
 
 ```cpp
-void* VectorOfShort::data( size_t i = 0 );
+void* VectorOfShort::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfShort:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfShort::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfShort::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfShort.ptr( ptr[, i] ) -> retval
 ```
@@ -100827,9 +101335,9 @@ lua:
 ### VectorOfShort.set
 
 ```cpp
-static void VectorOfShort::set( void*  ptr,
-                                size_t i,
-                                short  value );
+static void VectorOfShort::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                short          value );
 lua:
     VectorOfShort.set( ptr, i, value ) -> None
 ```
@@ -100892,6 +101400,14 @@ lua:
 ```
 
 ## VectorOfSize
+
+### VectorOfSize.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfSize::sizeof_value_type
+lua:
+    [propget] VectorOfSize.sizeof_value_type
+```
 
 ### VectorOfSize.new
 
@@ -100959,9 +101475,9 @@ lua:
 ### VectorOfSize.copy
 
 ```cpp
-std::vector<cv::Size> VectorOfSize::operator=( const std::vector<cv::Size>& other );
+void VectorOfSize::operator=( const std::vector<cv::Size>& other );
 lua:
-    oVectorOfSize:copy( other ) -> retval
+    oVectorOfSize:copy( other ) -> None
 ```
 
 ### VectorOfSize.data
@@ -100991,8 +101507,8 @@ lua:
 ### VectorOfSize.get
 
 ```cpp
-static cv::Size VectorOfSize::get( void*  ptr,
-                                   size_t i );
+static cv::Size VectorOfSize::get( void*          ptr,
+                                   std::ptrdiff_t i );
 lua:
     VectorOfSize.get( ptr, i ) -> retval
 ```
@@ -101016,14 +101532,14 @@ lua:
 ### VectorOfSize.ptr
 
 ```cpp
-void* VectorOfSize::data( size_t i = 0 );
+void* VectorOfSize::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfSize:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfSize::ptr( void*  ptr,
-                                size_t i = 0 );
+static void* VectorOfSize::ptr( void*          ptr,
+                                std::ptrdiff_t i = 0 );
 lua:
     VectorOfSize.ptr( ptr[, i] ) -> retval
 ```
@@ -101054,9 +101570,9 @@ lua:
 ### VectorOfSize.set
 
 ```cpp
-static void VectorOfSize::set( void*    ptr,
-                               size_t   i,
-                               cv::Size value );
+static void VectorOfSize::set( void*          ptr,
+                               std::ptrdiff_t i,
+                               cv::Size       value );
 lua:
     VectorOfSize.set( ptr, i, value ) -> None
 ```
@@ -101119,6 +101635,14 @@ lua:
 ```
 
 ## VectorOfSize2d
+
+### VectorOfSize2d.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfSize2d::sizeof_value_type
+lua:
+    [propget] VectorOfSize2d.sizeof_value_type
+```
 
 ### VectorOfSize2d.new
 
@@ -101186,9 +101710,9 @@ lua:
 ### VectorOfSize2d.copy
 
 ```cpp
-std::vector<cv::Size2d> VectorOfSize2d::operator=( const std::vector<cv::Size2d>& other );
+void VectorOfSize2d::operator=( const std::vector<cv::Size2d>& other );
 lua:
-    oVectorOfSize2d:copy( other ) -> retval
+    oVectorOfSize2d:copy( other ) -> None
 ```
 
 ### VectorOfSize2d.data
@@ -101218,8 +101742,8 @@ lua:
 ### VectorOfSize2d.get
 
 ```cpp
-static cv::Size2d VectorOfSize2d::get( void*  ptr,
-                                       size_t i );
+static cv::Size2d VectorOfSize2d::get( void*          ptr,
+                                       std::ptrdiff_t i );
 lua:
     VectorOfSize2d.get( ptr, i ) -> retval
 ```
@@ -101243,14 +101767,14 @@ lua:
 ### VectorOfSize2d.ptr
 
 ```cpp
-void* VectorOfSize2d::data( size_t i = 0 );
+void* VectorOfSize2d::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfSize2d:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfSize2d::ptr( void*  ptr,
-                                  size_t i = 0 );
+static void* VectorOfSize2d::ptr( void*          ptr,
+                                  std::ptrdiff_t i = 0 );
 lua:
     VectorOfSize2d.ptr( ptr[, i] ) -> retval
 ```
@@ -101281,9 +101805,9 @@ lua:
 ### VectorOfSize2d.set
 
 ```cpp
-static void VectorOfSize2d::set( void*      ptr,
-                                 size_t     i,
-                                 cv::Size2d value );
+static void VectorOfSize2d::set( void*          ptr,
+                                 std::ptrdiff_t i,
+                                 cv::Size2d     value );
 lua:
     VectorOfSize2d.set( ptr, i, value ) -> None
 ```
@@ -101346,6 +101870,14 @@ lua:
 ```
 
 ## VectorOfSize2f
+
+### VectorOfSize2f.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfSize2f::sizeof_value_type
+lua:
+    [propget] VectorOfSize2f.sizeof_value_type
+```
 
 ### VectorOfSize2f.new
 
@@ -101413,9 +101945,9 @@ lua:
 ### VectorOfSize2f.copy
 
 ```cpp
-std::vector<cv::Size2f> VectorOfSize2f::operator=( const std::vector<cv::Size2f>& other );
+void VectorOfSize2f::operator=( const std::vector<cv::Size2f>& other );
 lua:
-    oVectorOfSize2f:copy( other ) -> retval
+    oVectorOfSize2f:copy( other ) -> None
 ```
 
 ### VectorOfSize2f.data
@@ -101445,8 +101977,8 @@ lua:
 ### VectorOfSize2f.get
 
 ```cpp
-static cv::Size2f VectorOfSize2f::get( void*  ptr,
-                                       size_t i );
+static cv::Size2f VectorOfSize2f::get( void*          ptr,
+                                       std::ptrdiff_t i );
 lua:
     VectorOfSize2f.get( ptr, i ) -> retval
 ```
@@ -101470,14 +102002,14 @@ lua:
 ### VectorOfSize2f.ptr
 
 ```cpp
-void* VectorOfSize2f::data( size_t i = 0 );
+void* VectorOfSize2f::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfSize2f:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfSize2f::ptr( void*  ptr,
-                                  size_t i = 0 );
+static void* VectorOfSize2f::ptr( void*          ptr,
+                                  std::ptrdiff_t i = 0 );
 lua:
     VectorOfSize2f.ptr( ptr[, i] ) -> retval
 ```
@@ -101508,9 +102040,9 @@ lua:
 ### VectorOfSize2f.set
 
 ```cpp
-static void VectorOfSize2f::set( void*      ptr,
-                                 size_t     i,
-                                 cv::Size2f value );
+static void VectorOfSize2f::set( void*          ptr,
+                                 std::ptrdiff_t i,
+                                 cv::Size2f     value );
 lua:
     VectorOfSize2f.set( ptr, i, value ) -> None
 ```
@@ -101573,6 +102105,14 @@ lua:
 ```
 
 ## VectorOfSize\_t
+
+### VectorOfSize\_t.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfSize_t::sizeof_value_type
+lua:
+    [propget] VectorOfSize_t.sizeof_value_type
+```
 
 ### VectorOfSize\_t.new
 
@@ -101640,9 +102180,9 @@ lua:
 ### VectorOfSize\_t.copy
 
 ```cpp
-std::vector<size_t> VectorOfSize_t::operator=( const std::vector<size_t>& other );
+void VectorOfSize_t::operator=( const std::vector<size_t>& other );
 lua:
-    oVectorOfSize_t:copy( other ) -> retval
+    oVectorOfSize_t:copy( other ) -> None
 ```
 
 ### VectorOfSize\_t.data
@@ -101672,8 +102212,8 @@ lua:
 ### VectorOfSize\_t.get
 
 ```cpp
-static size_t VectorOfSize_t::get( void*  ptr,
-                                   size_t i );
+static size_t VectorOfSize_t::get( void*          ptr,
+                                   std::ptrdiff_t i );
 lua:
     VectorOfSize_t.get( ptr, i ) -> retval
 ```
@@ -101697,14 +102237,14 @@ lua:
 ### VectorOfSize\_t.ptr
 
 ```cpp
-void* VectorOfSize_t::data( size_t i = 0 );
+void* VectorOfSize_t::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfSize_t:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfSize_t::ptr( void*  ptr,
-                                  size_t i = 0 );
+static void* VectorOfSize_t::ptr( void*          ptr,
+                                  std::ptrdiff_t i = 0 );
 lua:
     VectorOfSize_t.ptr( ptr[, i] ) -> retval
 ```
@@ -101735,9 +102275,9 @@ lua:
 ### VectorOfSize\_t.set
 
 ```cpp
-static void VectorOfSize_t::set( void*  ptr,
-                                 size_t i,
-                                 size_t value );
+static void VectorOfSize_t::set( void*          ptr,
+                                 std::ptrdiff_t i,
+                                 size_t         value );
 lua:
     VectorOfSize_t.set( ptr, i, value ) -> None
 ```
@@ -101800,6 +102340,14 @@ lua:
 ```
 
 ## VectorOfStereo\_MatchQuasiDense
+
+### VectorOfStereo\_MatchQuasiDense.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfStereo_MatchQuasiDense::sizeof_value_type
+lua:
+    [propget] VectorOfStereo_MatchQuasiDense.sizeof_value_type
+```
 
 ### VectorOfStereo\_MatchQuasiDense.new
 
@@ -101867,9 +102415,9 @@ lua:
 ### VectorOfStereo\_MatchQuasiDense.copy
 
 ```cpp
-std::vector<cv::stereo::MatchQuasiDense> VectorOfStereo_MatchQuasiDense::operator=( const std::vector<cv::stereo::MatchQuasiDense>& other );
+void VectorOfStereo_MatchQuasiDense::operator=( const std::vector<cv::stereo::MatchQuasiDense>& other );
 lua:
-    oVectorOfStereo_MatchQuasiDense:copy( other ) -> retval
+    oVectorOfStereo_MatchQuasiDense:copy( other ) -> None
 ```
 
 ### VectorOfStereo\_MatchQuasiDense.data
@@ -101899,8 +102447,8 @@ lua:
 ### VectorOfStereo\_MatchQuasiDense.get
 
 ```cpp
-static cv::stereo::MatchQuasiDense VectorOfStereo_MatchQuasiDense::get( void*  ptr,
-                                                                        size_t i );
+static cv::stereo::MatchQuasiDense* VectorOfStereo_MatchQuasiDense::get( void*          ptr,
+                                                                         std::ptrdiff_t i );
 lua:
     VectorOfStereo_MatchQuasiDense.get( ptr, i ) -> retval
 ```
@@ -101924,14 +102472,14 @@ lua:
 ### VectorOfStereo\_MatchQuasiDense.ptr
 
 ```cpp
-void* VectorOfStereo_MatchQuasiDense::data( size_t i = 0 );
+void* VectorOfStereo_MatchQuasiDense::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfStereo_MatchQuasiDense:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfStereo_MatchQuasiDense::ptr( void*  ptr,
-                                                  size_t i = 0 );
+static void* VectorOfStereo_MatchQuasiDense::ptr( void*          ptr,
+                                                  std::ptrdiff_t i = 0 );
 lua:
     VectorOfStereo_MatchQuasiDense.ptr( ptr[, i] ) -> retval
 ```
@@ -101963,7 +102511,7 @@ lua:
 
 ```cpp
 static void VectorOfStereo_MatchQuasiDense::set( void*                       ptr,
-                                                 size_t                      i,
+                                                 std::ptrdiff_t              i,
                                                  cv::stereo::MatchQuasiDense value );
 lua:
     VectorOfStereo_MatchQuasiDense.set( ptr, i, value ) -> None
@@ -101988,7 +102536,7 @@ lua:
 ### VectorOfStereo\_MatchQuasiDense.sol::meta\_function::index
 
 ```cpp
-cv::stereo::MatchQuasiDense VectorOfStereo_MatchQuasiDense::sol::meta_function::index( size_t index );
+cv::stereo::MatchQuasiDense* VectorOfStereo_MatchQuasiDense::sol::meta_function::index( size_t index );
 lua:
     oVectorOfStereo_MatchQuasiDense:__index( index ) -> retval
 ```
@@ -102027,6 +102575,14 @@ lua:
 ```
 
 ## VectorOfString
+
+### VectorOfString.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfString::sizeof_value_type
+lua:
+    [propget] VectorOfString.sizeof_value_type
+```
 
 ### VectorOfString.new
 
@@ -102094,9 +102650,9 @@ lua:
 ### VectorOfString.copy
 
 ```cpp
-std::vector<std::string> VectorOfString::operator=( const std::vector<std::string>& other );
+void VectorOfString::operator=( const std::vector<std::string>& other );
 lua:
-    oVectorOfString:copy( other ) -> retval
+    oVectorOfString:copy( other ) -> None
 ```
 
 ### VectorOfString.data
@@ -102126,8 +102682,8 @@ lua:
 ### VectorOfString.get
 
 ```cpp
-static std::string VectorOfString::get( void*  ptr,
-                                        size_t i );
+static std::string VectorOfString::get( void*          ptr,
+                                        std::ptrdiff_t i );
 lua:
     VectorOfString.get( ptr, i ) -> retval
 ```
@@ -102151,14 +102707,14 @@ lua:
 ### VectorOfString.ptr
 
 ```cpp
-void* VectorOfString::data( size_t i = 0 );
+void* VectorOfString::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfString:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfString::ptr( void*  ptr,
-                                  size_t i = 0 );
+static void* VectorOfString::ptr( void*          ptr,
+                                  std::ptrdiff_t i = 0 );
 lua:
     VectorOfString.ptr( ptr[, i] ) -> retval
 ```
@@ -102189,9 +102745,9 @@ lua:
 ### VectorOfString.set
 
 ```cpp
-static void VectorOfString::set( void*       ptr,
-                                 size_t      i,
-                                 std::string value );
+static void VectorOfString::set( void*          ptr,
+                                 std::ptrdiff_t i,
+                                 std::string    value );
 lua:
     VectorOfString.set( ptr, i, value ) -> None
 ```
@@ -102254,6 +102810,14 @@ lua:
 ```
 
 ## VectorOfTuplePointAndDouble
+
+### VectorOfTuplePointAndDouble.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfTuplePointAndDouble::sizeof_value_type
+lua:
+    [propget] VectorOfTuplePointAndDouble.sizeof_value_type
+```
 
 ### VectorOfTuplePointAndDouble.new
 
@@ -102321,9 +102885,9 @@ lua:
 ### VectorOfTuplePointAndDouble.copy
 
 ```cpp
-std::vector<std::tuple<cv::Point, double>> VectorOfTuplePointAndDouble::operator=( const std::vector<std::tuple<cv::Point, double>>& other );
+void VectorOfTuplePointAndDouble::operator=( const std::vector<std::tuple<cv::Point, double>>& other );
 lua:
-    oVectorOfTuplePointAndDouble:copy( other ) -> retval
+    oVectorOfTuplePointAndDouble:copy( other ) -> None
 ```
 
 ### VectorOfTuplePointAndDouble.data
@@ -102353,8 +102917,8 @@ lua:
 ### VectorOfTuplePointAndDouble.get
 
 ```cpp
-static std::tuple<cv::Point, double> VectorOfTuplePointAndDouble::get( void*  ptr,
-                                                                       size_t i );
+static std::tuple<cv::Point, double> VectorOfTuplePointAndDouble::get( void*          ptr,
+                                                                       std::ptrdiff_t i );
 lua:
     VectorOfTuplePointAndDouble.get( ptr, i ) -> retval
 ```
@@ -102378,14 +102942,14 @@ lua:
 ### VectorOfTuplePointAndDouble.ptr
 
 ```cpp
-void* VectorOfTuplePointAndDouble::data( size_t i = 0 );
+void* VectorOfTuplePointAndDouble::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfTuplePointAndDouble:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfTuplePointAndDouble::ptr( void*  ptr,
-                                               size_t i = 0 );
+static void* VectorOfTuplePointAndDouble::ptr( void*          ptr,
+                                               std::ptrdiff_t i = 0 );
 lua:
     VectorOfTuplePointAndDouble.ptr( ptr[, i] ) -> retval
 ```
@@ -102417,7 +102981,7 @@ lua:
 
 ```cpp
 static void VectorOfTuplePointAndDouble::set( void*                         ptr,
-                                              size_t                        i,
+                                              std::ptrdiff_t                i,
                                               std::tuple<cv::Point, double> value );
 lua:
     VectorOfTuplePointAndDouble.set( ptr, i, value ) -> None
@@ -102481,6 +103045,14 @@ lua:
 ```
 
 ## VectorOfUMat
+
+### VectorOfUMat.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfUMat::sizeof_value_type
+lua:
+    [propget] VectorOfUMat.sizeof_value_type
+```
 
 ### VectorOfUMat.new
 
@@ -102548,9 +103120,9 @@ lua:
 ### VectorOfUMat.copy
 
 ```cpp
-std::vector<cv::UMat> VectorOfUMat::operator=( const std::vector<cv::UMat>& other );
+void VectorOfUMat::operator=( const std::vector<cv::UMat>& other );
 lua:
-    oVectorOfUMat:copy( other ) -> retval
+    oVectorOfUMat:copy( other ) -> None
 ```
 
 ### VectorOfUMat.data
@@ -102580,8 +103152,8 @@ lua:
 ### VectorOfUMat.get
 
 ```cpp
-static cv::UMat VectorOfUMat::get( void*  ptr,
-                                   size_t i );
+static cv::UMat* VectorOfUMat::get( void*          ptr,
+                                    std::ptrdiff_t i );
 lua:
     VectorOfUMat.get( ptr, i ) -> retval
 ```
@@ -102605,14 +103177,14 @@ lua:
 ### VectorOfUMat.ptr
 
 ```cpp
-void* VectorOfUMat::data( size_t i = 0 );
+void* VectorOfUMat::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfUMat:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfUMat::ptr( void*  ptr,
-                                size_t i = 0 );
+static void* VectorOfUMat::ptr( void*          ptr,
+                                std::ptrdiff_t i = 0 );
 lua:
     VectorOfUMat.ptr( ptr[, i] ) -> retval
 ```
@@ -102643,9 +103215,9 @@ lua:
 ### VectorOfUMat.set
 
 ```cpp
-static void VectorOfUMat::set( void*    ptr,
-                               size_t   i,
-                               cv::UMat value );
+static void VectorOfUMat::set( void*          ptr,
+                               std::ptrdiff_t i,
+                               cv::UMat       value );
 lua:
     VectorOfUMat.set( ptr, i, value ) -> None
 ```
@@ -102669,7 +103241,7 @@ lua:
 ### VectorOfUMat.sol::meta\_function::index
 
 ```cpp
-cv::UMat VectorOfUMat::sol::meta_function::index( size_t index );
+cv::UMat* VectorOfUMat::sol::meta_function::index( size_t index );
 lua:
     oVectorOfUMat:__index( index ) -> retval
 ```
@@ -102708,6 +103280,14 @@ lua:
 ```
 
 ## VectorOfUchar
+
+### VectorOfUchar.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfUchar::sizeof_value_type
+lua:
+    [propget] VectorOfUchar.sizeof_value_type
+```
 
 ### VectorOfUchar.new
 
@@ -102775,9 +103355,9 @@ lua:
 ### VectorOfUchar.copy
 
 ```cpp
-std::vector<uchar> VectorOfUchar::operator=( const std::vector<uchar>& other );
+void VectorOfUchar::operator=( const std::vector<uchar>& other );
 lua:
-    oVectorOfUchar:copy( other ) -> retval
+    oVectorOfUchar:copy( other ) -> None
 ```
 
 ### VectorOfUchar.data
@@ -102807,8 +103387,8 @@ lua:
 ### VectorOfUchar.get
 
 ```cpp
-static uchar VectorOfUchar::get( void*  ptr,
-                                 size_t i );
+static uchar VectorOfUchar::get( void*          ptr,
+                                 std::ptrdiff_t i );
 lua:
     VectorOfUchar.get( ptr, i ) -> retval
 ```
@@ -102832,14 +103412,14 @@ lua:
 ### VectorOfUchar.ptr
 
 ```cpp
-void* VectorOfUchar::data( size_t i = 0 );
+void* VectorOfUchar::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfUchar:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfUchar::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfUchar::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfUchar.ptr( ptr[, i] ) -> retval
 ```
@@ -102870,9 +103450,9 @@ lua:
 ### VectorOfUchar.set
 
 ```cpp
-static void VectorOfUchar::set( void*  ptr,
-                                size_t i,
-                                uchar  value );
+static void VectorOfUchar::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                uchar          value );
 lua:
     VectorOfUchar.set( ptr, i, value ) -> None
 ```
@@ -102935,6 +103515,14 @@ lua:
 ```
 
 ## VectorOfUshort
+
+### VectorOfUshort.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfUshort::sizeof_value_type
+lua:
+    [propget] VectorOfUshort.sizeof_value_type
+```
 
 ### VectorOfUshort.new
 
@@ -103002,9 +103590,9 @@ lua:
 ### VectorOfUshort.copy
 
 ```cpp
-std::vector<ushort> VectorOfUshort::operator=( const std::vector<ushort>& other );
+void VectorOfUshort::operator=( const std::vector<ushort>& other );
 lua:
-    oVectorOfUshort:copy( other ) -> retval
+    oVectorOfUshort:copy( other ) -> None
 ```
 
 ### VectorOfUshort.data
@@ -103034,8 +103622,8 @@ lua:
 ### VectorOfUshort.get
 
 ```cpp
-static ushort VectorOfUshort::get( void*  ptr,
-                                   size_t i );
+static ushort VectorOfUshort::get( void*          ptr,
+                                   std::ptrdiff_t i );
 lua:
     VectorOfUshort.get( ptr, i ) -> retval
 ```
@@ -103059,14 +103647,14 @@ lua:
 ### VectorOfUshort.ptr
 
 ```cpp
-void* VectorOfUshort::data( size_t i = 0 );
+void* VectorOfUshort::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfUshort:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfUshort::ptr( void*  ptr,
-                                  size_t i = 0 );
+static void* VectorOfUshort::ptr( void*          ptr,
+                                  std::ptrdiff_t i = 0 );
 lua:
     VectorOfUshort.ptr( ptr[, i] ) -> retval
 ```
@@ -103097,9 +103685,9 @@ lua:
 ### VectorOfUshort.set
 
 ```cpp
-static void VectorOfUshort::set( void*  ptr,
-                                 size_t i,
-                                 ushort value );
+static void VectorOfUshort::set( void*          ptr,
+                                 std::ptrdiff_t i,
+                                 ushort         value );
 lua:
     VectorOfUshort.set( ptr, i, value ) -> None
 ```
@@ -103162,6 +103750,14 @@ lua:
 ```
 
 ## VectorOfVec2b
+
+### VectorOfVec2b.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVec2b::sizeof_value_type
+lua:
+    [propget] VectorOfVec2b.sizeof_value_type
+```
 
 ### VectorOfVec2b.new
 
@@ -103229,9 +103825,9 @@ lua:
 ### VectorOfVec2b.copy
 
 ```cpp
-std::vector<cv::Vec2b> VectorOfVec2b::operator=( const std::vector<cv::Vec2b>& other );
+void VectorOfVec2b::operator=( const std::vector<cv::Vec2b>& other );
 lua:
-    oVectorOfVec2b:copy( other ) -> retval
+    oVectorOfVec2b:copy( other ) -> None
 ```
 
 ### VectorOfVec2b.data
@@ -103261,8 +103857,8 @@ lua:
 ### VectorOfVec2b.get
 
 ```cpp
-static cv::Vec2b VectorOfVec2b::get( void*  ptr,
-                                     size_t i );
+static cv::Vec2b VectorOfVec2b::get( void*          ptr,
+                                     std::ptrdiff_t i );
 lua:
     VectorOfVec2b.get( ptr, i ) -> retval
 ```
@@ -103286,14 +103882,14 @@ lua:
 ### VectorOfVec2b.ptr
 
 ```cpp
-void* VectorOfVec2b::data( size_t i = 0 );
+void* VectorOfVec2b::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVec2b:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVec2b::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfVec2b::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfVec2b.ptr( ptr[, i] ) -> retval
 ```
@@ -103324,9 +103920,9 @@ lua:
 ### VectorOfVec2b.set
 
 ```cpp
-static void VectorOfVec2b::set( void*     ptr,
-                                size_t    i,
-                                cv::Vec2b value );
+static void VectorOfVec2b::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                cv::Vec2b      value );
 lua:
     VectorOfVec2b.set( ptr, i, value ) -> None
 ```
@@ -103389,6 +103985,14 @@ lua:
 ```
 
 ## VectorOfVec2d
+
+### VectorOfVec2d.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVec2d::sizeof_value_type
+lua:
+    [propget] VectorOfVec2d.sizeof_value_type
+```
 
 ### VectorOfVec2d.new
 
@@ -103456,9 +104060,9 @@ lua:
 ### VectorOfVec2d.copy
 
 ```cpp
-std::vector<cv::Vec2d> VectorOfVec2d::operator=( const std::vector<cv::Vec2d>& other );
+void VectorOfVec2d::operator=( const std::vector<cv::Vec2d>& other );
 lua:
-    oVectorOfVec2d:copy( other ) -> retval
+    oVectorOfVec2d:copy( other ) -> None
 ```
 
 ### VectorOfVec2d.data
@@ -103488,8 +104092,8 @@ lua:
 ### VectorOfVec2d.get
 
 ```cpp
-static cv::Vec2d VectorOfVec2d::get( void*  ptr,
-                                     size_t i );
+static cv::Vec2d VectorOfVec2d::get( void*          ptr,
+                                     std::ptrdiff_t i );
 lua:
     VectorOfVec2d.get( ptr, i ) -> retval
 ```
@@ -103513,14 +104117,14 @@ lua:
 ### VectorOfVec2d.ptr
 
 ```cpp
-void* VectorOfVec2d::data( size_t i = 0 );
+void* VectorOfVec2d::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVec2d:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVec2d::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfVec2d::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfVec2d.ptr( ptr[, i] ) -> retval
 ```
@@ -103551,9 +104155,9 @@ lua:
 ### VectorOfVec2d.set
 
 ```cpp
-static void VectorOfVec2d::set( void*     ptr,
-                                size_t    i,
-                                cv::Vec2d value );
+static void VectorOfVec2d::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                cv::Vec2d      value );
 lua:
     VectorOfVec2d.set( ptr, i, value ) -> None
 ```
@@ -103616,6 +104220,14 @@ lua:
 ```
 
 ## VectorOfVec2f
+
+### VectorOfVec2f.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVec2f::sizeof_value_type
+lua:
+    [propget] VectorOfVec2f.sizeof_value_type
+```
 
 ### VectorOfVec2f.new
 
@@ -103683,9 +104295,9 @@ lua:
 ### VectorOfVec2f.copy
 
 ```cpp
-std::vector<cv::Vec2f> VectorOfVec2f::operator=( const std::vector<cv::Vec2f>& other );
+void VectorOfVec2f::operator=( const std::vector<cv::Vec2f>& other );
 lua:
-    oVectorOfVec2f:copy( other ) -> retval
+    oVectorOfVec2f:copy( other ) -> None
 ```
 
 ### VectorOfVec2f.data
@@ -103715,8 +104327,8 @@ lua:
 ### VectorOfVec2f.get
 
 ```cpp
-static cv::Vec2f VectorOfVec2f::get( void*  ptr,
-                                     size_t i );
+static cv::Vec2f VectorOfVec2f::get( void*          ptr,
+                                     std::ptrdiff_t i );
 lua:
     VectorOfVec2f.get( ptr, i ) -> retval
 ```
@@ -103740,14 +104352,14 @@ lua:
 ### VectorOfVec2f.ptr
 
 ```cpp
-void* VectorOfVec2f::data( size_t i = 0 );
+void* VectorOfVec2f::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVec2f:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVec2f::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfVec2f::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfVec2f.ptr( ptr[, i] ) -> retval
 ```
@@ -103778,9 +104390,9 @@ lua:
 ### VectorOfVec2f.set
 
 ```cpp
-static void VectorOfVec2f::set( void*     ptr,
-                                size_t    i,
-                                cv::Vec2f value );
+static void VectorOfVec2f::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                cv::Vec2f      value );
 lua:
     VectorOfVec2f.set( ptr, i, value ) -> None
 ```
@@ -103843,6 +104455,14 @@ lua:
 ```
 
 ## VectorOfVec2i
+
+### VectorOfVec2i.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVec2i::sizeof_value_type
+lua:
+    [propget] VectorOfVec2i.sizeof_value_type
+```
 
 ### VectorOfVec2i.new
 
@@ -103910,9 +104530,9 @@ lua:
 ### VectorOfVec2i.copy
 
 ```cpp
-std::vector<cv::Vec2i> VectorOfVec2i::operator=( const std::vector<cv::Vec2i>& other );
+void VectorOfVec2i::operator=( const std::vector<cv::Vec2i>& other );
 lua:
-    oVectorOfVec2i:copy( other ) -> retval
+    oVectorOfVec2i:copy( other ) -> None
 ```
 
 ### VectorOfVec2i.data
@@ -103942,8 +104562,8 @@ lua:
 ### VectorOfVec2i.get
 
 ```cpp
-static cv::Vec2i VectorOfVec2i::get( void*  ptr,
-                                     size_t i );
+static cv::Vec2i VectorOfVec2i::get( void*          ptr,
+                                     std::ptrdiff_t i );
 lua:
     VectorOfVec2i.get( ptr, i ) -> retval
 ```
@@ -103967,14 +104587,14 @@ lua:
 ### VectorOfVec2i.ptr
 
 ```cpp
-void* VectorOfVec2i::data( size_t i = 0 );
+void* VectorOfVec2i::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVec2i:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVec2i::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfVec2i::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfVec2i.ptr( ptr[, i] ) -> retval
 ```
@@ -104005,9 +104625,9 @@ lua:
 ### VectorOfVec2i.set
 
 ```cpp
-static void VectorOfVec2i::set( void*     ptr,
-                                size_t    i,
-                                cv::Vec2i value );
+static void VectorOfVec2i::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                cv::Vec2i      value );
 lua:
     VectorOfVec2i.set( ptr, i, value ) -> None
 ```
@@ -104070,6 +104690,14 @@ lua:
 ```
 
 ## VectorOfVec2s
+
+### VectorOfVec2s.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVec2s::sizeof_value_type
+lua:
+    [propget] VectorOfVec2s.sizeof_value_type
+```
 
 ### VectorOfVec2s.new
 
@@ -104137,9 +104765,9 @@ lua:
 ### VectorOfVec2s.copy
 
 ```cpp
-std::vector<cv::Vec2s> VectorOfVec2s::operator=( const std::vector<cv::Vec2s>& other );
+void VectorOfVec2s::operator=( const std::vector<cv::Vec2s>& other );
 lua:
-    oVectorOfVec2s:copy( other ) -> retval
+    oVectorOfVec2s:copy( other ) -> None
 ```
 
 ### VectorOfVec2s.data
@@ -104169,8 +104797,8 @@ lua:
 ### VectorOfVec2s.get
 
 ```cpp
-static cv::Vec2s VectorOfVec2s::get( void*  ptr,
-                                     size_t i );
+static cv::Vec2s VectorOfVec2s::get( void*          ptr,
+                                     std::ptrdiff_t i );
 lua:
     VectorOfVec2s.get( ptr, i ) -> retval
 ```
@@ -104194,14 +104822,14 @@ lua:
 ### VectorOfVec2s.ptr
 
 ```cpp
-void* VectorOfVec2s::data( size_t i = 0 );
+void* VectorOfVec2s::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVec2s:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVec2s::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfVec2s::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfVec2s.ptr( ptr[, i] ) -> retval
 ```
@@ -104232,9 +104860,9 @@ lua:
 ### VectorOfVec2s.set
 
 ```cpp
-static void VectorOfVec2s::set( void*     ptr,
-                                size_t    i,
-                                cv::Vec2s value );
+static void VectorOfVec2s::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                cv::Vec2s      value );
 lua:
     VectorOfVec2s.set( ptr, i, value ) -> None
 ```
@@ -104297,6 +104925,14 @@ lua:
 ```
 
 ## VectorOfVec2w
+
+### VectorOfVec2w.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVec2w::sizeof_value_type
+lua:
+    [propget] VectorOfVec2w.sizeof_value_type
+```
 
 ### VectorOfVec2w.new
 
@@ -104364,9 +105000,9 @@ lua:
 ### VectorOfVec2w.copy
 
 ```cpp
-std::vector<cv::Vec2w> VectorOfVec2w::operator=( const std::vector<cv::Vec2w>& other );
+void VectorOfVec2w::operator=( const std::vector<cv::Vec2w>& other );
 lua:
-    oVectorOfVec2w:copy( other ) -> retval
+    oVectorOfVec2w:copy( other ) -> None
 ```
 
 ### VectorOfVec2w.data
@@ -104396,8 +105032,8 @@ lua:
 ### VectorOfVec2w.get
 
 ```cpp
-static cv::Vec2w VectorOfVec2w::get( void*  ptr,
-                                     size_t i );
+static cv::Vec2w VectorOfVec2w::get( void*          ptr,
+                                     std::ptrdiff_t i );
 lua:
     VectorOfVec2w.get( ptr, i ) -> retval
 ```
@@ -104421,14 +105057,14 @@ lua:
 ### VectorOfVec2w.ptr
 
 ```cpp
-void* VectorOfVec2w::data( size_t i = 0 );
+void* VectorOfVec2w::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVec2w:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVec2w::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfVec2w::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfVec2w.ptr( ptr[, i] ) -> retval
 ```
@@ -104459,9 +105095,9 @@ lua:
 ### VectorOfVec2w.set
 
 ```cpp
-static void VectorOfVec2w::set( void*     ptr,
-                                size_t    i,
-                                cv::Vec2w value );
+static void VectorOfVec2w::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                cv::Vec2w      value );
 lua:
     VectorOfVec2w.set( ptr, i, value ) -> None
 ```
@@ -104524,6 +105160,14 @@ lua:
 ```
 
 ## VectorOfVec3b
+
+### VectorOfVec3b.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVec3b::sizeof_value_type
+lua:
+    [propget] VectorOfVec3b.sizeof_value_type
+```
 
 ### VectorOfVec3b.new
 
@@ -104591,9 +105235,9 @@ lua:
 ### VectorOfVec3b.copy
 
 ```cpp
-std::vector<cv::Vec3b> VectorOfVec3b::operator=( const std::vector<cv::Vec3b>& other );
+void VectorOfVec3b::operator=( const std::vector<cv::Vec3b>& other );
 lua:
-    oVectorOfVec3b:copy( other ) -> retval
+    oVectorOfVec3b:copy( other ) -> None
 ```
 
 ### VectorOfVec3b.data
@@ -104623,8 +105267,8 @@ lua:
 ### VectorOfVec3b.get
 
 ```cpp
-static cv::Vec3b VectorOfVec3b::get( void*  ptr,
-                                     size_t i );
+static cv::Vec3b VectorOfVec3b::get( void*          ptr,
+                                     std::ptrdiff_t i );
 lua:
     VectorOfVec3b.get( ptr, i ) -> retval
 ```
@@ -104648,14 +105292,14 @@ lua:
 ### VectorOfVec3b.ptr
 
 ```cpp
-void* VectorOfVec3b::data( size_t i = 0 );
+void* VectorOfVec3b::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVec3b:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVec3b::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfVec3b::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfVec3b.ptr( ptr[, i] ) -> retval
 ```
@@ -104686,9 +105330,9 @@ lua:
 ### VectorOfVec3b.set
 
 ```cpp
-static void VectorOfVec3b::set( void*     ptr,
-                                size_t    i,
-                                cv::Vec3b value );
+static void VectorOfVec3b::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                cv::Vec3b      value );
 lua:
     VectorOfVec3b.set( ptr, i, value ) -> None
 ```
@@ -104751,6 +105395,14 @@ lua:
 ```
 
 ## VectorOfVec3d
+
+### VectorOfVec3d.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVec3d::sizeof_value_type
+lua:
+    [propget] VectorOfVec3d.sizeof_value_type
+```
 
 ### VectorOfVec3d.new
 
@@ -104818,9 +105470,9 @@ lua:
 ### VectorOfVec3d.copy
 
 ```cpp
-std::vector<cv::Vec3d> VectorOfVec3d::operator=( const std::vector<cv::Vec3d>& other );
+void VectorOfVec3d::operator=( const std::vector<cv::Vec3d>& other );
 lua:
-    oVectorOfVec3d:copy( other ) -> retval
+    oVectorOfVec3d:copy( other ) -> None
 ```
 
 ### VectorOfVec3d.data
@@ -104850,8 +105502,8 @@ lua:
 ### VectorOfVec3d.get
 
 ```cpp
-static cv::Vec3d VectorOfVec3d::get( void*  ptr,
-                                     size_t i );
+static cv::Vec3d VectorOfVec3d::get( void*          ptr,
+                                     std::ptrdiff_t i );
 lua:
     VectorOfVec3d.get( ptr, i ) -> retval
 ```
@@ -104875,14 +105527,14 @@ lua:
 ### VectorOfVec3d.ptr
 
 ```cpp
-void* VectorOfVec3d::data( size_t i = 0 );
+void* VectorOfVec3d::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVec3d:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVec3d::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfVec3d::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfVec3d.ptr( ptr[, i] ) -> retval
 ```
@@ -104913,9 +105565,9 @@ lua:
 ### VectorOfVec3d.set
 
 ```cpp
-static void VectorOfVec3d::set( void*     ptr,
-                                size_t    i,
-                                cv::Vec3d value );
+static void VectorOfVec3d::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                cv::Vec3d      value );
 lua:
     VectorOfVec3d.set( ptr, i, value ) -> None
 ```
@@ -104978,6 +105630,14 @@ lua:
 ```
 
 ## VectorOfVec3f
+
+### VectorOfVec3f.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVec3f::sizeof_value_type
+lua:
+    [propget] VectorOfVec3f.sizeof_value_type
+```
 
 ### VectorOfVec3f.new
 
@@ -105045,9 +105705,9 @@ lua:
 ### VectorOfVec3f.copy
 
 ```cpp
-std::vector<cv::Vec3f> VectorOfVec3f::operator=( const std::vector<cv::Vec3f>& other );
+void VectorOfVec3f::operator=( const std::vector<cv::Vec3f>& other );
 lua:
-    oVectorOfVec3f:copy( other ) -> retval
+    oVectorOfVec3f:copy( other ) -> None
 ```
 
 ### VectorOfVec3f.data
@@ -105077,8 +105737,8 @@ lua:
 ### VectorOfVec3f.get
 
 ```cpp
-static cv::Vec3f VectorOfVec3f::get( void*  ptr,
-                                     size_t i );
+static cv::Vec3f VectorOfVec3f::get( void*          ptr,
+                                     std::ptrdiff_t i );
 lua:
     VectorOfVec3f.get( ptr, i ) -> retval
 ```
@@ -105102,14 +105762,14 @@ lua:
 ### VectorOfVec3f.ptr
 
 ```cpp
-void* VectorOfVec3f::data( size_t i = 0 );
+void* VectorOfVec3f::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVec3f:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVec3f::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfVec3f::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfVec3f.ptr( ptr[, i] ) -> retval
 ```
@@ -105140,9 +105800,9 @@ lua:
 ### VectorOfVec3f.set
 
 ```cpp
-static void VectorOfVec3f::set( void*     ptr,
-                                size_t    i,
-                                cv::Vec3f value );
+static void VectorOfVec3f::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                cv::Vec3f      value );
 lua:
     VectorOfVec3f.set( ptr, i, value ) -> None
 ```
@@ -105205,6 +105865,14 @@ lua:
 ```
 
 ## VectorOfVec3i
+
+### VectorOfVec3i.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVec3i::sizeof_value_type
+lua:
+    [propget] VectorOfVec3i.sizeof_value_type
+```
 
 ### VectorOfVec3i.new
 
@@ -105272,9 +105940,9 @@ lua:
 ### VectorOfVec3i.copy
 
 ```cpp
-std::vector<cv::Vec3i> VectorOfVec3i::operator=( const std::vector<cv::Vec3i>& other );
+void VectorOfVec3i::operator=( const std::vector<cv::Vec3i>& other );
 lua:
-    oVectorOfVec3i:copy( other ) -> retval
+    oVectorOfVec3i:copy( other ) -> None
 ```
 
 ### VectorOfVec3i.data
@@ -105304,8 +105972,8 @@ lua:
 ### VectorOfVec3i.get
 
 ```cpp
-static cv::Vec3i VectorOfVec3i::get( void*  ptr,
-                                     size_t i );
+static cv::Vec3i VectorOfVec3i::get( void*          ptr,
+                                     std::ptrdiff_t i );
 lua:
     VectorOfVec3i.get( ptr, i ) -> retval
 ```
@@ -105329,14 +105997,14 @@ lua:
 ### VectorOfVec3i.ptr
 
 ```cpp
-void* VectorOfVec3i::data( size_t i = 0 );
+void* VectorOfVec3i::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVec3i:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVec3i::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfVec3i::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfVec3i.ptr( ptr[, i] ) -> retval
 ```
@@ -105367,9 +106035,9 @@ lua:
 ### VectorOfVec3i.set
 
 ```cpp
-static void VectorOfVec3i::set( void*     ptr,
-                                size_t    i,
-                                cv::Vec3i value );
+static void VectorOfVec3i::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                cv::Vec3i      value );
 lua:
     VectorOfVec3i.set( ptr, i, value ) -> None
 ```
@@ -105432,6 +106100,14 @@ lua:
 ```
 
 ## VectorOfVec3s
+
+### VectorOfVec3s.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVec3s::sizeof_value_type
+lua:
+    [propget] VectorOfVec3s.sizeof_value_type
+```
 
 ### VectorOfVec3s.new
 
@@ -105499,9 +106175,9 @@ lua:
 ### VectorOfVec3s.copy
 
 ```cpp
-std::vector<cv::Vec3s> VectorOfVec3s::operator=( const std::vector<cv::Vec3s>& other );
+void VectorOfVec3s::operator=( const std::vector<cv::Vec3s>& other );
 lua:
-    oVectorOfVec3s:copy( other ) -> retval
+    oVectorOfVec3s:copy( other ) -> None
 ```
 
 ### VectorOfVec3s.data
@@ -105531,8 +106207,8 @@ lua:
 ### VectorOfVec3s.get
 
 ```cpp
-static cv::Vec3s VectorOfVec3s::get( void*  ptr,
-                                     size_t i );
+static cv::Vec3s VectorOfVec3s::get( void*          ptr,
+                                     std::ptrdiff_t i );
 lua:
     VectorOfVec3s.get( ptr, i ) -> retval
 ```
@@ -105556,14 +106232,14 @@ lua:
 ### VectorOfVec3s.ptr
 
 ```cpp
-void* VectorOfVec3s::data( size_t i = 0 );
+void* VectorOfVec3s::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVec3s:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVec3s::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfVec3s::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfVec3s.ptr( ptr[, i] ) -> retval
 ```
@@ -105594,9 +106270,9 @@ lua:
 ### VectorOfVec3s.set
 
 ```cpp
-static void VectorOfVec3s::set( void*     ptr,
-                                size_t    i,
-                                cv::Vec3s value );
+static void VectorOfVec3s::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                cv::Vec3s      value );
 lua:
     VectorOfVec3s.set( ptr, i, value ) -> None
 ```
@@ -105659,6 +106335,14 @@ lua:
 ```
 
 ## VectorOfVec3w
+
+### VectorOfVec3w.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVec3w::sizeof_value_type
+lua:
+    [propget] VectorOfVec3w.sizeof_value_type
+```
 
 ### VectorOfVec3w.new
 
@@ -105726,9 +106410,9 @@ lua:
 ### VectorOfVec3w.copy
 
 ```cpp
-std::vector<cv::Vec3w> VectorOfVec3w::operator=( const std::vector<cv::Vec3w>& other );
+void VectorOfVec3w::operator=( const std::vector<cv::Vec3w>& other );
 lua:
-    oVectorOfVec3w:copy( other ) -> retval
+    oVectorOfVec3w:copy( other ) -> None
 ```
 
 ### VectorOfVec3w.data
@@ -105758,8 +106442,8 @@ lua:
 ### VectorOfVec3w.get
 
 ```cpp
-static cv::Vec3w VectorOfVec3w::get( void*  ptr,
-                                     size_t i );
+static cv::Vec3w VectorOfVec3w::get( void*          ptr,
+                                     std::ptrdiff_t i );
 lua:
     VectorOfVec3w.get( ptr, i ) -> retval
 ```
@@ -105783,14 +106467,14 @@ lua:
 ### VectorOfVec3w.ptr
 
 ```cpp
-void* VectorOfVec3w::data( size_t i = 0 );
+void* VectorOfVec3w::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVec3w:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVec3w::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfVec3w::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfVec3w.ptr( ptr[, i] ) -> retval
 ```
@@ -105821,9 +106505,9 @@ lua:
 ### VectorOfVec3w.set
 
 ```cpp
-static void VectorOfVec3w::set( void*     ptr,
-                                size_t    i,
-                                cv::Vec3w value );
+static void VectorOfVec3w::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                cv::Vec3w      value );
 lua:
     VectorOfVec3w.set( ptr, i, value ) -> None
 ```
@@ -105886,6 +106570,14 @@ lua:
 ```
 
 ## VectorOfVec4b
+
+### VectorOfVec4b.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVec4b::sizeof_value_type
+lua:
+    [propget] VectorOfVec4b.sizeof_value_type
+```
 
 ### VectorOfVec4b.new
 
@@ -105953,9 +106645,9 @@ lua:
 ### VectorOfVec4b.copy
 
 ```cpp
-std::vector<cv::Vec4b> VectorOfVec4b::operator=( const std::vector<cv::Vec4b>& other );
+void VectorOfVec4b::operator=( const std::vector<cv::Vec4b>& other );
 lua:
-    oVectorOfVec4b:copy( other ) -> retval
+    oVectorOfVec4b:copy( other ) -> None
 ```
 
 ### VectorOfVec4b.data
@@ -105985,8 +106677,8 @@ lua:
 ### VectorOfVec4b.get
 
 ```cpp
-static cv::Vec4b VectorOfVec4b::get( void*  ptr,
-                                     size_t i );
+static cv::Vec4b VectorOfVec4b::get( void*          ptr,
+                                     std::ptrdiff_t i );
 lua:
     VectorOfVec4b.get( ptr, i ) -> retval
 ```
@@ -106010,14 +106702,14 @@ lua:
 ### VectorOfVec4b.ptr
 
 ```cpp
-void* VectorOfVec4b::data( size_t i = 0 );
+void* VectorOfVec4b::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVec4b:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVec4b::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfVec4b::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfVec4b.ptr( ptr[, i] ) -> retval
 ```
@@ -106048,9 +106740,9 @@ lua:
 ### VectorOfVec4b.set
 
 ```cpp
-static void VectorOfVec4b::set( void*     ptr,
-                                size_t    i,
-                                cv::Vec4b value );
+static void VectorOfVec4b::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                cv::Vec4b      value );
 lua:
     VectorOfVec4b.set( ptr, i, value ) -> None
 ```
@@ -106113,6 +106805,14 @@ lua:
 ```
 
 ## VectorOfVec4d
+
+### VectorOfVec4d.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVec4d::sizeof_value_type
+lua:
+    [propget] VectorOfVec4d.sizeof_value_type
+```
 
 ### VectorOfVec4d.new
 
@@ -106180,9 +106880,9 @@ lua:
 ### VectorOfVec4d.copy
 
 ```cpp
-std::vector<cv::Vec4d> VectorOfVec4d::operator=( const std::vector<cv::Vec4d>& other );
+void VectorOfVec4d::operator=( const std::vector<cv::Vec4d>& other );
 lua:
-    oVectorOfVec4d:copy( other ) -> retval
+    oVectorOfVec4d:copy( other ) -> None
 ```
 
 ### VectorOfVec4d.data
@@ -106212,8 +106912,8 @@ lua:
 ### VectorOfVec4d.get
 
 ```cpp
-static cv::Vec4d VectorOfVec4d::get( void*  ptr,
-                                     size_t i );
+static cv::Vec4d VectorOfVec4d::get( void*          ptr,
+                                     std::ptrdiff_t i );
 lua:
     VectorOfVec4d.get( ptr, i ) -> retval
 ```
@@ -106237,14 +106937,14 @@ lua:
 ### VectorOfVec4d.ptr
 
 ```cpp
-void* VectorOfVec4d::data( size_t i = 0 );
+void* VectorOfVec4d::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVec4d:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVec4d::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfVec4d::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfVec4d.ptr( ptr[, i] ) -> retval
 ```
@@ -106275,9 +106975,9 @@ lua:
 ### VectorOfVec4d.set
 
 ```cpp
-static void VectorOfVec4d::set( void*     ptr,
-                                size_t    i,
-                                cv::Vec4d value );
+static void VectorOfVec4d::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                cv::Vec4d      value );
 lua:
     VectorOfVec4d.set( ptr, i, value ) -> None
 ```
@@ -106340,6 +107040,14 @@ lua:
 ```
 
 ## VectorOfVec4f
+
+### VectorOfVec4f.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVec4f::sizeof_value_type
+lua:
+    [propget] VectorOfVec4f.sizeof_value_type
+```
 
 ### VectorOfVec4f.new
 
@@ -106407,9 +107115,9 @@ lua:
 ### VectorOfVec4f.copy
 
 ```cpp
-std::vector<cv::Vec4f> VectorOfVec4f::operator=( const std::vector<cv::Vec4f>& other );
+void VectorOfVec4f::operator=( const std::vector<cv::Vec4f>& other );
 lua:
-    oVectorOfVec4f:copy( other ) -> retval
+    oVectorOfVec4f:copy( other ) -> None
 ```
 
 ### VectorOfVec4f.data
@@ -106439,8 +107147,8 @@ lua:
 ### VectorOfVec4f.get
 
 ```cpp
-static cv::Vec4f VectorOfVec4f::get( void*  ptr,
-                                     size_t i );
+static cv::Vec4f VectorOfVec4f::get( void*          ptr,
+                                     std::ptrdiff_t i );
 lua:
     VectorOfVec4f.get( ptr, i ) -> retval
 ```
@@ -106464,14 +107172,14 @@ lua:
 ### VectorOfVec4f.ptr
 
 ```cpp
-void* VectorOfVec4f::data( size_t i = 0 );
+void* VectorOfVec4f::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVec4f:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVec4f::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfVec4f::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfVec4f.ptr( ptr[, i] ) -> retval
 ```
@@ -106502,9 +107210,9 @@ lua:
 ### VectorOfVec4f.set
 
 ```cpp
-static void VectorOfVec4f::set( void*     ptr,
-                                size_t    i,
-                                cv::Vec4f value );
+static void VectorOfVec4f::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                cv::Vec4f      value );
 lua:
     VectorOfVec4f.set( ptr, i, value ) -> None
 ```
@@ -106567,6 +107275,14 @@ lua:
 ```
 
 ## VectorOfVec4i
+
+### VectorOfVec4i.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVec4i::sizeof_value_type
+lua:
+    [propget] VectorOfVec4i.sizeof_value_type
+```
 
 ### VectorOfVec4i.new
 
@@ -106634,9 +107350,9 @@ lua:
 ### VectorOfVec4i.copy
 
 ```cpp
-std::vector<cv::Vec4i> VectorOfVec4i::operator=( const std::vector<cv::Vec4i>& other );
+void VectorOfVec4i::operator=( const std::vector<cv::Vec4i>& other );
 lua:
-    oVectorOfVec4i:copy( other ) -> retval
+    oVectorOfVec4i:copy( other ) -> None
 ```
 
 ### VectorOfVec4i.data
@@ -106666,8 +107382,8 @@ lua:
 ### VectorOfVec4i.get
 
 ```cpp
-static cv::Vec4i VectorOfVec4i::get( void*  ptr,
-                                     size_t i );
+static cv::Vec4i VectorOfVec4i::get( void*          ptr,
+                                     std::ptrdiff_t i );
 lua:
     VectorOfVec4i.get( ptr, i ) -> retval
 ```
@@ -106691,14 +107407,14 @@ lua:
 ### VectorOfVec4i.ptr
 
 ```cpp
-void* VectorOfVec4i::data( size_t i = 0 );
+void* VectorOfVec4i::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVec4i:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVec4i::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfVec4i::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfVec4i.ptr( ptr[, i] ) -> retval
 ```
@@ -106729,9 +107445,9 @@ lua:
 ### VectorOfVec4i.set
 
 ```cpp
-static void VectorOfVec4i::set( void*     ptr,
-                                size_t    i,
-                                cv::Vec4i value );
+static void VectorOfVec4i::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                cv::Vec4i      value );
 lua:
     VectorOfVec4i.set( ptr, i, value ) -> None
 ```
@@ -106794,6 +107510,14 @@ lua:
 ```
 
 ## VectorOfVec4s
+
+### VectorOfVec4s.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVec4s::sizeof_value_type
+lua:
+    [propget] VectorOfVec4s.sizeof_value_type
+```
 
 ### VectorOfVec4s.new
 
@@ -106861,9 +107585,9 @@ lua:
 ### VectorOfVec4s.copy
 
 ```cpp
-std::vector<cv::Vec4s> VectorOfVec4s::operator=( const std::vector<cv::Vec4s>& other );
+void VectorOfVec4s::operator=( const std::vector<cv::Vec4s>& other );
 lua:
-    oVectorOfVec4s:copy( other ) -> retval
+    oVectorOfVec4s:copy( other ) -> None
 ```
 
 ### VectorOfVec4s.data
@@ -106893,8 +107617,8 @@ lua:
 ### VectorOfVec4s.get
 
 ```cpp
-static cv::Vec4s VectorOfVec4s::get( void*  ptr,
-                                     size_t i );
+static cv::Vec4s VectorOfVec4s::get( void*          ptr,
+                                     std::ptrdiff_t i );
 lua:
     VectorOfVec4s.get( ptr, i ) -> retval
 ```
@@ -106918,14 +107642,14 @@ lua:
 ### VectorOfVec4s.ptr
 
 ```cpp
-void* VectorOfVec4s::data( size_t i = 0 );
+void* VectorOfVec4s::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVec4s:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVec4s::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfVec4s::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfVec4s.ptr( ptr[, i] ) -> retval
 ```
@@ -106956,9 +107680,9 @@ lua:
 ### VectorOfVec4s.set
 
 ```cpp
-static void VectorOfVec4s::set( void*     ptr,
-                                size_t    i,
-                                cv::Vec4s value );
+static void VectorOfVec4s::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                cv::Vec4s      value );
 lua:
     VectorOfVec4s.set( ptr, i, value ) -> None
 ```
@@ -107021,6 +107745,14 @@ lua:
 ```
 
 ## VectorOfVec4w
+
+### VectorOfVec4w.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVec4w::sizeof_value_type
+lua:
+    [propget] VectorOfVec4w.sizeof_value_type
+```
 
 ### VectorOfVec4w.new
 
@@ -107088,9 +107820,9 @@ lua:
 ### VectorOfVec4w.copy
 
 ```cpp
-std::vector<cv::Vec4w> VectorOfVec4w::operator=( const std::vector<cv::Vec4w>& other );
+void VectorOfVec4w::operator=( const std::vector<cv::Vec4w>& other );
 lua:
-    oVectorOfVec4w:copy( other ) -> retval
+    oVectorOfVec4w:copy( other ) -> None
 ```
 
 ### VectorOfVec4w.data
@@ -107120,8 +107852,8 @@ lua:
 ### VectorOfVec4w.get
 
 ```cpp
-static cv::Vec4w VectorOfVec4w::get( void*  ptr,
-                                     size_t i );
+static cv::Vec4w VectorOfVec4w::get( void*          ptr,
+                                     std::ptrdiff_t i );
 lua:
     VectorOfVec4w.get( ptr, i ) -> retval
 ```
@@ -107145,14 +107877,14 @@ lua:
 ### VectorOfVec4w.ptr
 
 ```cpp
-void* VectorOfVec4w::data( size_t i = 0 );
+void* VectorOfVec4w::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVec4w:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVec4w::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfVec4w::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfVec4w.ptr( ptr[, i] ) -> retval
 ```
@@ -107183,9 +107915,9 @@ lua:
 ### VectorOfVec4w.set
 
 ```cpp
-static void VectorOfVec4w::set( void*     ptr,
-                                size_t    i,
-                                cv::Vec4w value );
+static void VectorOfVec4w::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                cv::Vec4w      value );
 lua:
     VectorOfVec4w.set( ptr, i, value ) -> None
 ```
@@ -107248,6 +107980,14 @@ lua:
 ```
 
 ## VectorOfVec6d
+
+### VectorOfVec6d.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVec6d::sizeof_value_type
+lua:
+    [propget] VectorOfVec6d.sizeof_value_type
+```
 
 ### VectorOfVec6d.new
 
@@ -107315,9 +108055,9 @@ lua:
 ### VectorOfVec6d.copy
 
 ```cpp
-std::vector<cv::Vec6d> VectorOfVec6d::operator=( const std::vector<cv::Vec6d>& other );
+void VectorOfVec6d::operator=( const std::vector<cv::Vec6d>& other );
 lua:
-    oVectorOfVec6d:copy( other ) -> retval
+    oVectorOfVec6d:copy( other ) -> None
 ```
 
 ### VectorOfVec6d.data
@@ -107347,8 +108087,8 @@ lua:
 ### VectorOfVec6d.get
 
 ```cpp
-static cv::Vec6d VectorOfVec6d::get( void*  ptr,
-                                     size_t i );
+static cv::Vec6d VectorOfVec6d::get( void*          ptr,
+                                     std::ptrdiff_t i );
 lua:
     VectorOfVec6d.get( ptr, i ) -> retval
 ```
@@ -107372,14 +108112,14 @@ lua:
 ### VectorOfVec6d.ptr
 
 ```cpp
-void* VectorOfVec6d::data( size_t i = 0 );
+void* VectorOfVec6d::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVec6d:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVec6d::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfVec6d::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfVec6d.ptr( ptr[, i] ) -> retval
 ```
@@ -107410,9 +108150,9 @@ lua:
 ### VectorOfVec6d.set
 
 ```cpp
-static void VectorOfVec6d::set( void*     ptr,
-                                size_t    i,
-                                cv::Vec6d value );
+static void VectorOfVec6d::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                cv::Vec6d      value );
 lua:
     VectorOfVec6d.set( ptr, i, value ) -> None
 ```
@@ -107475,6 +108215,14 @@ lua:
 ```
 
 ## VectorOfVec6f
+
+### VectorOfVec6f.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVec6f::sizeof_value_type
+lua:
+    [propget] VectorOfVec6f.sizeof_value_type
+```
 
 ### VectorOfVec6f.new
 
@@ -107542,9 +108290,9 @@ lua:
 ### VectorOfVec6f.copy
 
 ```cpp
-std::vector<cv::Vec6f> VectorOfVec6f::operator=( const std::vector<cv::Vec6f>& other );
+void VectorOfVec6f::operator=( const std::vector<cv::Vec6f>& other );
 lua:
-    oVectorOfVec6f:copy( other ) -> retval
+    oVectorOfVec6f:copy( other ) -> None
 ```
 
 ### VectorOfVec6f.data
@@ -107574,8 +108322,8 @@ lua:
 ### VectorOfVec6f.get
 
 ```cpp
-static cv::Vec6f VectorOfVec6f::get( void*  ptr,
-                                     size_t i );
+static cv::Vec6f VectorOfVec6f::get( void*          ptr,
+                                     std::ptrdiff_t i );
 lua:
     VectorOfVec6f.get( ptr, i ) -> retval
 ```
@@ -107599,14 +108347,14 @@ lua:
 ### VectorOfVec6f.ptr
 
 ```cpp
-void* VectorOfVec6f::data( size_t i = 0 );
+void* VectorOfVec6f::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVec6f:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVec6f::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfVec6f::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfVec6f.ptr( ptr[, i] ) -> retval
 ```
@@ -107637,9 +108385,9 @@ lua:
 ### VectorOfVec6f.set
 
 ```cpp
-static void VectorOfVec6f::set( void*     ptr,
-                                size_t    i,
-                                cv::Vec6f value );
+static void VectorOfVec6f::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                cv::Vec6f      value );
 lua:
     VectorOfVec6f.set( ptr, i, value ) -> None
 ```
@@ -107702,6 +108450,14 @@ lua:
 ```
 
 ## VectorOfVec6i
+
+### VectorOfVec6i.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVec6i::sizeof_value_type
+lua:
+    [propget] VectorOfVec6i.sizeof_value_type
+```
 
 ### VectorOfVec6i.new
 
@@ -107769,9 +108525,9 @@ lua:
 ### VectorOfVec6i.copy
 
 ```cpp
-std::vector<cv::Vec6i> VectorOfVec6i::operator=( const std::vector<cv::Vec6i>& other );
+void VectorOfVec6i::operator=( const std::vector<cv::Vec6i>& other );
 lua:
-    oVectorOfVec6i:copy( other ) -> retval
+    oVectorOfVec6i:copy( other ) -> None
 ```
 
 ### VectorOfVec6i.data
@@ -107801,8 +108557,8 @@ lua:
 ### VectorOfVec6i.get
 
 ```cpp
-static cv::Vec6i VectorOfVec6i::get( void*  ptr,
-                                     size_t i );
+static cv::Vec6i VectorOfVec6i::get( void*          ptr,
+                                     std::ptrdiff_t i );
 lua:
     VectorOfVec6i.get( ptr, i ) -> retval
 ```
@@ -107826,14 +108582,14 @@ lua:
 ### VectorOfVec6i.ptr
 
 ```cpp
-void* VectorOfVec6i::data( size_t i = 0 );
+void* VectorOfVec6i::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVec6i:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVec6i::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfVec6i::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfVec6i.ptr( ptr[, i] ) -> retval
 ```
@@ -107864,9 +108620,9 @@ lua:
 ### VectorOfVec6i.set
 
 ```cpp
-static void VectorOfVec6i::set( void*     ptr,
-                                size_t    i,
-                                cv::Vec6i value );
+static void VectorOfVec6i::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                cv::Vec6i      value );
 lua:
     VectorOfVec6i.set( ptr, i, value ) -> None
 ```
@@ -107929,6 +108685,14 @@ lua:
 ```
 
 ## VectorOfVec8i
+
+### VectorOfVec8i.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVec8i::sizeof_value_type
+lua:
+    [propget] VectorOfVec8i.sizeof_value_type
+```
 
 ### VectorOfVec8i.new
 
@@ -107996,9 +108760,9 @@ lua:
 ### VectorOfVec8i.copy
 
 ```cpp
-std::vector<cv::Vec8i> VectorOfVec8i::operator=( const std::vector<cv::Vec8i>& other );
+void VectorOfVec8i::operator=( const std::vector<cv::Vec8i>& other );
 lua:
-    oVectorOfVec8i:copy( other ) -> retval
+    oVectorOfVec8i:copy( other ) -> None
 ```
 
 ### VectorOfVec8i.data
@@ -108028,8 +108792,8 @@ lua:
 ### VectorOfVec8i.get
 
 ```cpp
-static cv::Vec8i VectorOfVec8i::get( void*  ptr,
-                                     size_t i );
+static cv::Vec8i VectorOfVec8i::get( void*          ptr,
+                                     std::ptrdiff_t i );
 lua:
     VectorOfVec8i.get( ptr, i ) -> retval
 ```
@@ -108053,14 +108817,14 @@ lua:
 ### VectorOfVec8i.ptr
 
 ```cpp
-void* VectorOfVec8i::data( size_t i = 0 );
+void* VectorOfVec8i::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVec8i:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVec8i::ptr( void*  ptr,
-                                 size_t i = 0 );
+static void* VectorOfVec8i::ptr( void*          ptr,
+                                 std::ptrdiff_t i = 0 );
 lua:
     VectorOfVec8i.ptr( ptr[, i] ) -> retval
 ```
@@ -108091,9 +108855,9 @@ lua:
 ### VectorOfVec8i.set
 
 ```cpp
-static void VectorOfVec8i::set( void*     ptr,
-                                size_t    i,
-                                cv::Vec8i value );
+static void VectorOfVec8i::set( void*          ptr,
+                                std::ptrdiff_t i,
+                                cv::Vec8i      value );
 lua:
     VectorOfVec8i.set( ptr, i, value ) -> None
 ```
@@ -108156,6 +108920,14 @@ lua:
 ```
 
 ## VectorOfVectorOfBool
+
+### VectorOfVectorOfBool.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfBool::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfBool.sizeof_value_type
+```
 
 ### VectorOfVectorOfBool.new
 
@@ -108223,9 +108995,9 @@ lua:
 ### VectorOfVectorOfBool.copy
 
 ```cpp
-std::vector<std::vector<bool>> VectorOfVectorOfBool::operator=( const std::vector<std::vector<bool>>& other );
+void VectorOfVectorOfBool::operator=( const std::vector<std::vector<bool>>& other );
 lua:
-    oVectorOfVectorOfBool:copy( other ) -> retval
+    oVectorOfVectorOfBool:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfBool.data
@@ -108255,8 +109027,8 @@ lua:
 ### VectorOfVectorOfBool.get
 
 ```cpp
-static std::vector<bool> VectorOfVectorOfBool::get( void*  ptr,
-                                                    size_t i );
+static std::vector<bool> VectorOfVectorOfBool::get( void*          ptr,
+                                                    std::ptrdiff_t i );
 lua:
     VectorOfVectorOfBool.get( ptr, i ) -> retval
 ```
@@ -108280,14 +109052,14 @@ lua:
 ### VectorOfVectorOfBool.ptr
 
 ```cpp
-void* VectorOfVectorOfBool::data( size_t i = 0 );
+void* VectorOfVectorOfBool::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfBool:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfBool::ptr( void*  ptr,
-                                        size_t i = 0 );
+static void* VectorOfVectorOfBool::ptr( void*          ptr,
+                                        std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfBool.ptr( ptr[, i] ) -> retval
 ```
@@ -108319,7 +109091,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfBool::set( void*             ptr,
-                                       size_t            i,
+                                       std::ptrdiff_t    i,
                                        std::vector<bool> value );
 lua:
     VectorOfVectorOfBool.set( ptr, i, value ) -> None
@@ -108383,6 +109155,14 @@ lua:
 ```
 
 ## VectorOfVectorOfChar
+
+### VectorOfVectorOfChar.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfChar::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfChar.sizeof_value_type
+```
 
 ### VectorOfVectorOfChar.new
 
@@ -108450,9 +109230,9 @@ lua:
 ### VectorOfVectorOfChar.copy
 
 ```cpp
-std::vector<std::vector<char>> VectorOfVectorOfChar::operator=( const std::vector<std::vector<char>>& other );
+void VectorOfVectorOfChar::operator=( const std::vector<std::vector<char>>& other );
 lua:
-    oVectorOfVectorOfChar:copy( other ) -> retval
+    oVectorOfVectorOfChar:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfChar.data
@@ -108482,8 +109262,8 @@ lua:
 ### VectorOfVectorOfChar.get
 
 ```cpp
-static std::vector<char> VectorOfVectorOfChar::get( void*  ptr,
-                                                    size_t i );
+static std::vector<char> VectorOfVectorOfChar::get( void*          ptr,
+                                                    std::ptrdiff_t i );
 lua:
     VectorOfVectorOfChar.get( ptr, i ) -> retval
 ```
@@ -108507,14 +109287,14 @@ lua:
 ### VectorOfVectorOfChar.ptr
 
 ```cpp
-void* VectorOfVectorOfChar::data( size_t i = 0 );
+void* VectorOfVectorOfChar::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfChar:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfChar::ptr( void*  ptr,
-                                        size_t i = 0 );
+static void* VectorOfVectorOfChar::ptr( void*          ptr,
+                                        std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfChar.ptr( ptr[, i] ) -> retval
 ```
@@ -108546,7 +109326,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfChar::set( void*             ptr,
-                                       size_t            i,
+                                       std::ptrdiff_t    i,
                                        std::vector<char> value );
 lua:
     VectorOfVectorOfChar.set( ptr, i, value ) -> None
@@ -108610,6 +109390,14 @@ lua:
 ```
 
 ## VectorOfVectorOfDMatch
+
+### VectorOfVectorOfDMatch.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfDMatch::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfDMatch.sizeof_value_type
+```
 
 ### VectorOfVectorOfDMatch.new
 
@@ -108677,9 +109465,9 @@ lua:
 ### VectorOfVectorOfDMatch.copy
 
 ```cpp
-std::vector<std::vector<cv::DMatch>> VectorOfVectorOfDMatch::operator=( const std::vector<std::vector<cv::DMatch>>& other );
+void VectorOfVectorOfDMatch::operator=( const std::vector<std::vector<cv::DMatch>>& other );
 lua:
-    oVectorOfVectorOfDMatch:copy( other ) -> retval
+    oVectorOfVectorOfDMatch:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfDMatch.data
@@ -108709,8 +109497,8 @@ lua:
 ### VectorOfVectorOfDMatch.get
 
 ```cpp
-static std::vector<cv::DMatch> VectorOfVectorOfDMatch::get( void*  ptr,
-                                                            size_t i );
+static std::vector<cv::DMatch> VectorOfVectorOfDMatch::get( void*          ptr,
+                                                            std::ptrdiff_t i );
 lua:
     VectorOfVectorOfDMatch.get( ptr, i ) -> retval
 ```
@@ -108734,14 +109522,14 @@ lua:
 ### VectorOfVectorOfDMatch.ptr
 
 ```cpp
-void* VectorOfVectorOfDMatch::data( size_t i = 0 );
+void* VectorOfVectorOfDMatch::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfDMatch:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfDMatch::ptr( void*  ptr,
-                                          size_t i = 0 );
+static void* VectorOfVectorOfDMatch::ptr( void*          ptr,
+                                          std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfDMatch.ptr( ptr[, i] ) -> retval
 ```
@@ -108773,7 +109561,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfDMatch::set( void*                   ptr,
-                                         size_t                  i,
+                                         std::ptrdiff_t          i,
                                          std::vector<cv::DMatch> value );
 lua:
     VectorOfVectorOfDMatch.set( ptr, i, value ) -> None
@@ -108837,6 +109625,14 @@ lua:
 ```
 
 ## VectorOfVectorOfDouble
+
+### VectorOfVectorOfDouble.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfDouble::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfDouble.sizeof_value_type
+```
 
 ### VectorOfVectorOfDouble.new
 
@@ -108904,9 +109700,9 @@ lua:
 ### VectorOfVectorOfDouble.copy
 
 ```cpp
-std::vector<std::vector<double>> VectorOfVectorOfDouble::operator=( const std::vector<std::vector<double>>& other );
+void VectorOfVectorOfDouble::operator=( const std::vector<std::vector<double>>& other );
 lua:
-    oVectorOfVectorOfDouble:copy( other ) -> retval
+    oVectorOfVectorOfDouble:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfDouble.data
@@ -108936,8 +109732,8 @@ lua:
 ### VectorOfVectorOfDouble.get
 
 ```cpp
-static std::vector<double> VectorOfVectorOfDouble::get( void*  ptr,
-                                                        size_t i );
+static std::vector<double> VectorOfVectorOfDouble::get( void*          ptr,
+                                                        std::ptrdiff_t i );
 lua:
     VectorOfVectorOfDouble.get( ptr, i ) -> retval
 ```
@@ -108961,14 +109757,14 @@ lua:
 ### VectorOfVectorOfDouble.ptr
 
 ```cpp
-void* VectorOfVectorOfDouble::data( size_t i = 0 );
+void* VectorOfVectorOfDouble::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfDouble:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfDouble::ptr( void*  ptr,
-                                          size_t i = 0 );
+static void* VectorOfVectorOfDouble::ptr( void*          ptr,
+                                          std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfDouble.ptr( ptr[, i] ) -> retval
 ```
@@ -109000,7 +109796,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfDouble::set( void*               ptr,
-                                         size_t              i,
+                                         std::ptrdiff_t      i,
                                          std::vector<double> value );
 lua:
     VectorOfVectorOfDouble.set( ptr, i, value ) -> None
@@ -109064,6 +109860,14 @@ lua:
 ```
 
 ## VectorOfVectorOfFloat
+
+### VectorOfVectorOfFloat.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfFloat::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfFloat.sizeof_value_type
+```
 
 ### VectorOfVectorOfFloat.new
 
@@ -109131,9 +109935,9 @@ lua:
 ### VectorOfVectorOfFloat.copy
 
 ```cpp
-std::vector<std::vector<float>> VectorOfVectorOfFloat::operator=( const std::vector<std::vector<float>>& other );
+void VectorOfVectorOfFloat::operator=( const std::vector<std::vector<float>>& other );
 lua:
-    oVectorOfVectorOfFloat:copy( other ) -> retval
+    oVectorOfVectorOfFloat:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfFloat.data
@@ -109163,8 +109967,8 @@ lua:
 ### VectorOfVectorOfFloat.get
 
 ```cpp
-static std::vector<float> VectorOfVectorOfFloat::get( void*  ptr,
-                                                      size_t i );
+static std::vector<float> VectorOfVectorOfFloat::get( void*          ptr,
+                                                      std::ptrdiff_t i );
 lua:
     VectorOfVectorOfFloat.get( ptr, i ) -> retval
 ```
@@ -109188,14 +109992,14 @@ lua:
 ### VectorOfVectorOfFloat.ptr
 
 ```cpp
-void* VectorOfVectorOfFloat::data( size_t i = 0 );
+void* VectorOfVectorOfFloat::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfFloat:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfFloat::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfFloat::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfFloat.ptr( ptr[, i] ) -> retval
 ```
@@ -109227,7 +110031,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfFloat::set( void*              ptr,
-                                        size_t             i,
+                                        std::ptrdiff_t     i,
                                         std::vector<float> value );
 lua:
     VectorOfVectorOfFloat.set( ptr, i, value ) -> None
@@ -109291,6 +110095,14 @@ lua:
 ```
 
 ## VectorOfVectorOfInt
+
+### VectorOfVectorOfInt.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfInt::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfInt.sizeof_value_type
+```
 
 ### VectorOfVectorOfInt.new
 
@@ -109358,9 +110170,9 @@ lua:
 ### VectorOfVectorOfInt.copy
 
 ```cpp
-std::vector<std::vector<int>> VectorOfVectorOfInt::operator=( const std::vector<std::vector<int>>& other );
+void VectorOfVectorOfInt::operator=( const std::vector<std::vector<int>>& other );
 lua:
-    oVectorOfVectorOfInt:copy( other ) -> retval
+    oVectorOfVectorOfInt:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfInt.data
@@ -109390,8 +110202,8 @@ lua:
 ### VectorOfVectorOfInt.get
 
 ```cpp
-static std::vector<int> VectorOfVectorOfInt::get( void*  ptr,
-                                                  size_t i );
+static std::vector<int> VectorOfVectorOfInt::get( void*          ptr,
+                                                  std::ptrdiff_t i );
 lua:
     VectorOfVectorOfInt.get( ptr, i ) -> retval
 ```
@@ -109415,14 +110227,14 @@ lua:
 ### VectorOfVectorOfInt.ptr
 
 ```cpp
-void* VectorOfVectorOfInt::data( size_t i = 0 );
+void* VectorOfVectorOfInt::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfInt:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfInt::ptr( void*  ptr,
-                                       size_t i = 0 );
+static void* VectorOfVectorOfInt::ptr( void*          ptr,
+                                       std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfInt.ptr( ptr[, i] ) -> retval
 ```
@@ -109454,7 +110266,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfInt::set( void*            ptr,
-                                      size_t           i,
+                                      std::ptrdiff_t   i,
                                       std::vector<int> value );
 lua:
     VectorOfVectorOfInt.set( ptr, i, value ) -> None
@@ -109518,6 +110330,14 @@ lua:
 ```
 
 ## VectorOfVectorOfKeyPoint
+
+### VectorOfVectorOfKeyPoint.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfKeyPoint::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfKeyPoint.sizeof_value_type
+```
 
 ### VectorOfVectorOfKeyPoint.new
 
@@ -109585,9 +110405,9 @@ lua:
 ### VectorOfVectorOfKeyPoint.copy
 
 ```cpp
-std::vector<std::vector<cv::KeyPoint>> VectorOfVectorOfKeyPoint::operator=( const std::vector<std::vector<cv::KeyPoint>>& other );
+void VectorOfVectorOfKeyPoint::operator=( const std::vector<std::vector<cv::KeyPoint>>& other );
 lua:
-    oVectorOfVectorOfKeyPoint:copy( other ) -> retval
+    oVectorOfVectorOfKeyPoint:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfKeyPoint.data
@@ -109617,8 +110437,8 @@ lua:
 ### VectorOfVectorOfKeyPoint.get
 
 ```cpp
-static std::vector<cv::KeyPoint> VectorOfVectorOfKeyPoint::get( void*  ptr,
-                                                                size_t i );
+static std::vector<cv::KeyPoint> VectorOfVectorOfKeyPoint::get( void*          ptr,
+                                                                std::ptrdiff_t i );
 lua:
     VectorOfVectorOfKeyPoint.get( ptr, i ) -> retval
 ```
@@ -109642,14 +110462,14 @@ lua:
 ### VectorOfVectorOfKeyPoint.ptr
 
 ```cpp
-void* VectorOfVectorOfKeyPoint::data( size_t i = 0 );
+void* VectorOfVectorOfKeyPoint::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfKeyPoint:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfKeyPoint::ptr( void*  ptr,
-                                            size_t i = 0 );
+static void* VectorOfVectorOfKeyPoint::ptr( void*          ptr,
+                                            std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfKeyPoint.ptr( ptr[, i] ) -> retval
 ```
@@ -109681,7 +110501,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfKeyPoint::set( void*                     ptr,
-                                           size_t                    i,
+                                           std::ptrdiff_t            i,
                                            std::vector<cv::KeyPoint> value );
 lua:
     VectorOfVectorOfKeyPoint.set( ptr, i, value ) -> None
@@ -109745,6 +110565,14 @@ lua:
 ```
 
 ## VectorOfVectorOfLine\_descriptor\_KeyLine
+
+### VectorOfVectorOfLine\_descriptor\_KeyLine.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfLine_descriptor_KeyLine::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfLine_descriptor_KeyLine.sizeof_value_type
+```
 
 ### VectorOfVectorOfLine\_descriptor\_KeyLine.new
 
@@ -109812,9 +110640,9 @@ lua:
 ### VectorOfVectorOfLine\_descriptor\_KeyLine.copy
 
 ```cpp
-std::vector<std::vector<cv::line_descriptor::KeyLine>> VectorOfVectorOfLine_descriptor_KeyLine::operator=( const std::vector<std::vector<cv::line_descriptor::KeyLine>>& other );
+void VectorOfVectorOfLine_descriptor_KeyLine::operator=( const std::vector<std::vector<cv::line_descriptor::KeyLine>>& other );
 lua:
-    oVectorOfVectorOfLine_descriptor_KeyLine:copy( other ) -> retval
+    oVectorOfVectorOfLine_descriptor_KeyLine:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfLine\_descriptor\_KeyLine.data
@@ -109844,8 +110672,8 @@ lua:
 ### VectorOfVectorOfLine\_descriptor\_KeyLine.get
 
 ```cpp
-static std::vector<cv::line_descriptor::KeyLine> VectorOfVectorOfLine_descriptor_KeyLine::get( void*  ptr,
-                                                                                               size_t i );
+static std::vector<cv::line_descriptor::KeyLine> VectorOfVectorOfLine_descriptor_KeyLine::get( void*          ptr,
+                                                                                               std::ptrdiff_t i );
 lua:
     VectorOfVectorOfLine_descriptor_KeyLine.get( ptr, i ) -> retval
 ```
@@ -109869,14 +110697,14 @@ lua:
 ### VectorOfVectorOfLine\_descriptor\_KeyLine.ptr
 
 ```cpp
-void* VectorOfVectorOfLine_descriptor_KeyLine::data( size_t i = 0 );
+void* VectorOfVectorOfLine_descriptor_KeyLine::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfLine_descriptor_KeyLine:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfLine_descriptor_KeyLine::ptr( void*  ptr,
-                                                           size_t i = 0 );
+static void* VectorOfVectorOfLine_descriptor_KeyLine::ptr( void*          ptr,
+                                                           std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfLine_descriptor_KeyLine.ptr( ptr[, i] ) -> retval
 ```
@@ -109908,7 +110736,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfLine_descriptor_KeyLine::set( void*                                     ptr,
-                                                          size_t                                    i,
+                                                          std::ptrdiff_t                            i,
                                                           std::vector<cv::line_descriptor::KeyLine> value );
 lua:
     VectorOfVectorOfLine_descriptor_KeyLine.set( ptr, i, value ) -> None
@@ -109972,6 +110800,14 @@ lua:
 ```
 
 ## VectorOfVectorOfMat
+
+### VectorOfVectorOfMat.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfMat::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfMat.sizeof_value_type
+```
 
 ### VectorOfVectorOfMat.new
 
@@ -110039,9 +110875,9 @@ lua:
 ### VectorOfVectorOfMat.copy
 
 ```cpp
-std::vector<std::vector<cv::Mat>> VectorOfVectorOfMat::operator=( const std::vector<std::vector<cv::Mat>>& other );
+void VectorOfVectorOfMat::operator=( const std::vector<std::vector<cv::Mat>>& other );
 lua:
-    oVectorOfVectorOfMat:copy( other ) -> retval
+    oVectorOfVectorOfMat:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfMat.data
@@ -110071,8 +110907,8 @@ lua:
 ### VectorOfVectorOfMat.get
 
 ```cpp
-static std::vector<cv::Mat> VectorOfVectorOfMat::get( void*  ptr,
-                                                      size_t i );
+static std::vector<cv::Mat> VectorOfVectorOfMat::get( void*          ptr,
+                                                      std::ptrdiff_t i );
 lua:
     VectorOfVectorOfMat.get( ptr, i ) -> retval
 ```
@@ -110096,14 +110932,14 @@ lua:
 ### VectorOfVectorOfMat.ptr
 
 ```cpp
-void* VectorOfVectorOfMat::data( size_t i = 0 );
+void* VectorOfVectorOfMat::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfMat:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfMat::ptr( void*  ptr,
-                                       size_t i = 0 );
+static void* VectorOfVectorOfMat::ptr( void*          ptr,
+                                       std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfMat.ptr( ptr[, i] ) -> retval
 ```
@@ -110135,7 +110971,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfMat::set( void*                ptr,
-                                      size_t               i,
+                                      std::ptrdiff_t       i,
                                       std::vector<cv::Mat> value );
 lua:
     VectorOfVectorOfMat.set( ptr, i, value ) -> None
@@ -110199,6 +111035,14 @@ lua:
 ```
 
 ## VectorOfVectorOfMoments
+
+### VectorOfVectorOfMoments.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfMoments::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfMoments.sizeof_value_type
+```
 
 ### VectorOfVectorOfMoments.new
 
@@ -110266,9 +111110,9 @@ lua:
 ### VectorOfVectorOfMoments.copy
 
 ```cpp
-std::vector<std::vector<cv::Moments>> VectorOfVectorOfMoments::operator=( const std::vector<std::vector<cv::Moments>>& other );
+void VectorOfVectorOfMoments::operator=( const std::vector<std::vector<cv::Moments>>& other );
 lua:
-    oVectorOfVectorOfMoments:copy( other ) -> retval
+    oVectorOfVectorOfMoments:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfMoments.data
@@ -110298,8 +111142,8 @@ lua:
 ### VectorOfVectorOfMoments.get
 
 ```cpp
-static std::vector<cv::Moments> VectorOfVectorOfMoments::get( void*  ptr,
-                                                              size_t i );
+static std::vector<cv::Moments> VectorOfVectorOfMoments::get( void*          ptr,
+                                                              std::ptrdiff_t i );
 lua:
     VectorOfVectorOfMoments.get( ptr, i ) -> retval
 ```
@@ -110323,14 +111167,14 @@ lua:
 ### VectorOfVectorOfMoments.ptr
 
 ```cpp
-void* VectorOfVectorOfMoments::data( size_t i = 0 );
+void* VectorOfVectorOfMoments::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfMoments:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfMoments::ptr( void*  ptr,
-                                           size_t i = 0 );
+static void* VectorOfVectorOfMoments::ptr( void*          ptr,
+                                           std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfMoments.ptr( ptr[, i] ) -> retval
 ```
@@ -110362,7 +111206,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfMoments::set( void*                    ptr,
-                                          size_t                   i,
+                                          std::ptrdiff_t           i,
                                           std::vector<cv::Moments> value );
 lua:
     VectorOfVectorOfMoments.set( ptr, i, value ) -> None
@@ -110426,6 +111270,14 @@ lua:
 ```
 
 ## VectorOfVectorOfPoint
+
+### VectorOfVectorOfPoint.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfPoint::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfPoint.sizeof_value_type
+```
 
 ### VectorOfVectorOfPoint.new
 
@@ -110493,9 +111345,9 @@ lua:
 ### VectorOfVectorOfPoint.copy
 
 ```cpp
-std::vector<std::vector<cv::Point>> VectorOfVectorOfPoint::operator=( const std::vector<std::vector<cv::Point>>& other );
+void VectorOfVectorOfPoint::operator=( const std::vector<std::vector<cv::Point>>& other );
 lua:
-    oVectorOfVectorOfPoint:copy( other ) -> retval
+    oVectorOfVectorOfPoint:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfPoint.data
@@ -110525,8 +111377,8 @@ lua:
 ### VectorOfVectorOfPoint.get
 
 ```cpp
-static std::vector<cv::Point> VectorOfVectorOfPoint::get( void*  ptr,
-                                                          size_t i );
+static std::vector<cv::Point> VectorOfVectorOfPoint::get( void*          ptr,
+                                                          std::ptrdiff_t i );
 lua:
     VectorOfVectorOfPoint.get( ptr, i ) -> retval
 ```
@@ -110550,14 +111402,14 @@ lua:
 ### VectorOfVectorOfPoint.ptr
 
 ```cpp
-void* VectorOfVectorOfPoint::data( size_t i = 0 );
+void* VectorOfVectorOfPoint::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfPoint:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfPoint::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfPoint::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfPoint.ptr( ptr[, i] ) -> retval
 ```
@@ -110589,7 +111441,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfPoint::set( void*                  ptr,
-                                        size_t                 i,
+                                        std::ptrdiff_t         i,
                                         std::vector<cv::Point> value );
 lua:
     VectorOfVectorOfPoint.set( ptr, i, value ) -> None
@@ -110653,6 +111505,14 @@ lua:
 ```
 
 ## VectorOfVectorOfPoint2d
+
+### VectorOfVectorOfPoint2d.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfPoint2d::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfPoint2d.sizeof_value_type
+```
 
 ### VectorOfVectorOfPoint2d.new
 
@@ -110720,9 +111580,9 @@ lua:
 ### VectorOfVectorOfPoint2d.copy
 
 ```cpp
-std::vector<std::vector<cv::Point2d>> VectorOfVectorOfPoint2d::operator=( const std::vector<std::vector<cv::Point2d>>& other );
+void VectorOfVectorOfPoint2d::operator=( const std::vector<std::vector<cv::Point2d>>& other );
 lua:
-    oVectorOfVectorOfPoint2d:copy( other ) -> retval
+    oVectorOfVectorOfPoint2d:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfPoint2d.data
@@ -110752,8 +111612,8 @@ lua:
 ### VectorOfVectorOfPoint2d.get
 
 ```cpp
-static std::vector<cv::Point2d> VectorOfVectorOfPoint2d::get( void*  ptr,
-                                                              size_t i );
+static std::vector<cv::Point2d> VectorOfVectorOfPoint2d::get( void*          ptr,
+                                                              std::ptrdiff_t i );
 lua:
     VectorOfVectorOfPoint2d.get( ptr, i ) -> retval
 ```
@@ -110777,14 +111637,14 @@ lua:
 ### VectorOfVectorOfPoint2d.ptr
 
 ```cpp
-void* VectorOfVectorOfPoint2d::data( size_t i = 0 );
+void* VectorOfVectorOfPoint2d::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfPoint2d:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfPoint2d::ptr( void*  ptr,
-                                           size_t i = 0 );
+static void* VectorOfVectorOfPoint2d::ptr( void*          ptr,
+                                           std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfPoint2d.ptr( ptr[, i] ) -> retval
 ```
@@ -110816,7 +111676,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfPoint2d::set( void*                    ptr,
-                                          size_t                   i,
+                                          std::ptrdiff_t           i,
                                           std::vector<cv::Point2d> value );
 lua:
     VectorOfVectorOfPoint2d.set( ptr, i, value ) -> None
@@ -110880,6 +111740,14 @@ lua:
 ```
 
 ## VectorOfVectorOfPoint2f
+
+### VectorOfVectorOfPoint2f.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfPoint2f::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfPoint2f.sizeof_value_type
+```
 
 ### VectorOfVectorOfPoint2f.new
 
@@ -110947,9 +111815,9 @@ lua:
 ### VectorOfVectorOfPoint2f.copy
 
 ```cpp
-std::vector<std::vector<cv::Point2f>> VectorOfVectorOfPoint2f::operator=( const std::vector<std::vector<cv::Point2f>>& other );
+void VectorOfVectorOfPoint2f::operator=( const std::vector<std::vector<cv::Point2f>>& other );
 lua:
-    oVectorOfVectorOfPoint2f:copy( other ) -> retval
+    oVectorOfVectorOfPoint2f:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfPoint2f.data
@@ -110979,8 +111847,8 @@ lua:
 ### VectorOfVectorOfPoint2f.get
 
 ```cpp
-static std::vector<cv::Point2f> VectorOfVectorOfPoint2f::get( void*  ptr,
-                                                              size_t i );
+static std::vector<cv::Point2f> VectorOfVectorOfPoint2f::get( void*          ptr,
+                                                              std::ptrdiff_t i );
 lua:
     VectorOfVectorOfPoint2f.get( ptr, i ) -> retval
 ```
@@ -111004,14 +111872,14 @@ lua:
 ### VectorOfVectorOfPoint2f.ptr
 
 ```cpp
-void* VectorOfVectorOfPoint2f::data( size_t i = 0 );
+void* VectorOfVectorOfPoint2f::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfPoint2f:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfPoint2f::ptr( void*  ptr,
-                                           size_t i = 0 );
+static void* VectorOfVectorOfPoint2f::ptr( void*          ptr,
+                                           std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfPoint2f.ptr( ptr[, i] ) -> retval
 ```
@@ -111043,7 +111911,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfPoint2f::set( void*                    ptr,
-                                          size_t                   i,
+                                          std::ptrdiff_t           i,
                                           std::vector<cv::Point2f> value );
 lua:
     VectorOfVectorOfPoint2f.set( ptr, i, value ) -> None
@@ -111107,6 +111975,14 @@ lua:
 ```
 
 ## VectorOfVectorOfPoint3d
+
+### VectorOfVectorOfPoint3d.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfPoint3d::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfPoint3d.sizeof_value_type
+```
 
 ### VectorOfVectorOfPoint3d.new
 
@@ -111174,9 +112050,9 @@ lua:
 ### VectorOfVectorOfPoint3d.copy
 
 ```cpp
-std::vector<std::vector<cv::Point3d>> VectorOfVectorOfPoint3d::operator=( const std::vector<std::vector<cv::Point3d>>& other );
+void VectorOfVectorOfPoint3d::operator=( const std::vector<std::vector<cv::Point3d>>& other );
 lua:
-    oVectorOfVectorOfPoint3d:copy( other ) -> retval
+    oVectorOfVectorOfPoint3d:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfPoint3d.data
@@ -111206,8 +112082,8 @@ lua:
 ### VectorOfVectorOfPoint3d.get
 
 ```cpp
-static std::vector<cv::Point3d> VectorOfVectorOfPoint3d::get( void*  ptr,
-                                                              size_t i );
+static std::vector<cv::Point3d> VectorOfVectorOfPoint3d::get( void*          ptr,
+                                                              std::ptrdiff_t i );
 lua:
     VectorOfVectorOfPoint3d.get( ptr, i ) -> retval
 ```
@@ -111231,14 +112107,14 @@ lua:
 ### VectorOfVectorOfPoint3d.ptr
 
 ```cpp
-void* VectorOfVectorOfPoint3d::data( size_t i = 0 );
+void* VectorOfVectorOfPoint3d::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfPoint3d:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfPoint3d::ptr( void*  ptr,
-                                           size_t i = 0 );
+static void* VectorOfVectorOfPoint3d::ptr( void*          ptr,
+                                           std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfPoint3d.ptr( ptr[, i] ) -> retval
 ```
@@ -111270,7 +112146,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfPoint3d::set( void*                    ptr,
-                                          size_t                   i,
+                                          std::ptrdiff_t           i,
                                           std::vector<cv::Point3d> value );
 lua:
     VectorOfVectorOfPoint3d.set( ptr, i, value ) -> None
@@ -111334,6 +112210,14 @@ lua:
 ```
 
 ## VectorOfVectorOfPoint3f
+
+### VectorOfVectorOfPoint3f.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfPoint3f::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfPoint3f.sizeof_value_type
+```
 
 ### VectorOfVectorOfPoint3f.new
 
@@ -111401,9 +112285,9 @@ lua:
 ### VectorOfVectorOfPoint3f.copy
 
 ```cpp
-std::vector<std::vector<cv::Point3f>> VectorOfVectorOfPoint3f::operator=( const std::vector<std::vector<cv::Point3f>>& other );
+void VectorOfVectorOfPoint3f::operator=( const std::vector<std::vector<cv::Point3f>>& other );
 lua:
-    oVectorOfVectorOfPoint3f:copy( other ) -> retval
+    oVectorOfVectorOfPoint3f:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfPoint3f.data
@@ -111433,8 +112317,8 @@ lua:
 ### VectorOfVectorOfPoint3f.get
 
 ```cpp
-static std::vector<cv::Point3f> VectorOfVectorOfPoint3f::get( void*  ptr,
-                                                              size_t i );
+static std::vector<cv::Point3f> VectorOfVectorOfPoint3f::get( void*          ptr,
+                                                              std::ptrdiff_t i );
 lua:
     VectorOfVectorOfPoint3f.get( ptr, i ) -> retval
 ```
@@ -111458,14 +112342,14 @@ lua:
 ### VectorOfVectorOfPoint3f.ptr
 
 ```cpp
-void* VectorOfVectorOfPoint3f::data( size_t i = 0 );
+void* VectorOfVectorOfPoint3f::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfPoint3f:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfPoint3f::ptr( void*  ptr,
-                                           size_t i = 0 );
+static void* VectorOfVectorOfPoint3f::ptr( void*          ptr,
+                                           std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfPoint3f.ptr( ptr[, i] ) -> retval
 ```
@@ -111497,7 +112381,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfPoint3f::set( void*                    ptr,
-                                          size_t                   i,
+                                          std::ptrdiff_t           i,
                                           std::vector<cv::Point3f> value );
 lua:
     VectorOfVectorOfPoint3f.set( ptr, i, value ) -> None
@@ -111561,6 +112445,14 @@ lua:
 ```
 
 ## VectorOfVectorOfPoint3i
+
+### VectorOfVectorOfPoint3i.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfPoint3i::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfPoint3i.sizeof_value_type
+```
 
 ### VectorOfVectorOfPoint3i.new
 
@@ -111628,9 +112520,9 @@ lua:
 ### VectorOfVectorOfPoint3i.copy
 
 ```cpp
-std::vector<std::vector<cv::Point3i>> VectorOfVectorOfPoint3i::operator=( const std::vector<std::vector<cv::Point3i>>& other );
+void VectorOfVectorOfPoint3i::operator=( const std::vector<std::vector<cv::Point3i>>& other );
 lua:
-    oVectorOfVectorOfPoint3i:copy( other ) -> retval
+    oVectorOfVectorOfPoint3i:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfPoint3i.data
@@ -111660,8 +112552,8 @@ lua:
 ### VectorOfVectorOfPoint3i.get
 
 ```cpp
-static std::vector<cv::Point3i> VectorOfVectorOfPoint3i::get( void*  ptr,
-                                                              size_t i );
+static std::vector<cv::Point3i> VectorOfVectorOfPoint3i::get( void*          ptr,
+                                                              std::ptrdiff_t i );
 lua:
     VectorOfVectorOfPoint3i.get( ptr, i ) -> retval
 ```
@@ -111685,14 +112577,14 @@ lua:
 ### VectorOfVectorOfPoint3i.ptr
 
 ```cpp
-void* VectorOfVectorOfPoint3i::data( size_t i = 0 );
+void* VectorOfVectorOfPoint3i::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfPoint3i:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfPoint3i::ptr( void*  ptr,
-                                           size_t i = 0 );
+static void* VectorOfVectorOfPoint3i::ptr( void*          ptr,
+                                           std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfPoint3i.ptr( ptr[, i] ) -> retval
 ```
@@ -111724,7 +112616,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfPoint3i::set( void*                    ptr,
-                                          size_t                   i,
+                                          std::ptrdiff_t           i,
                                           std::vector<cv::Point3i> value );
 lua:
     VectorOfVectorOfPoint3i.set( ptr, i, value ) -> None
@@ -111788,6 +112680,14 @@ lua:
 ```
 
 ## VectorOfVectorOfRange
+
+### VectorOfVectorOfRange.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfRange::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfRange.sizeof_value_type
+```
 
 ### VectorOfVectorOfRange.new
 
@@ -111855,9 +112755,9 @@ lua:
 ### VectorOfVectorOfRange.copy
 
 ```cpp
-std::vector<std::vector<cv::Range>> VectorOfVectorOfRange::operator=( const std::vector<std::vector<cv::Range>>& other );
+void VectorOfVectorOfRange::operator=( const std::vector<std::vector<cv::Range>>& other );
 lua:
-    oVectorOfVectorOfRange:copy( other ) -> retval
+    oVectorOfVectorOfRange:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfRange.data
@@ -111887,8 +112787,8 @@ lua:
 ### VectorOfVectorOfRange.get
 
 ```cpp
-static std::vector<cv::Range> VectorOfVectorOfRange::get( void*  ptr,
-                                                          size_t i );
+static std::vector<cv::Range> VectorOfVectorOfRange::get( void*          ptr,
+                                                          std::ptrdiff_t i );
 lua:
     VectorOfVectorOfRange.get( ptr, i ) -> retval
 ```
@@ -111912,14 +112812,14 @@ lua:
 ### VectorOfVectorOfRange.ptr
 
 ```cpp
-void* VectorOfVectorOfRange::data( size_t i = 0 );
+void* VectorOfVectorOfRange::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfRange:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfRange::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfRange::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfRange.ptr( ptr[, i] ) -> retval
 ```
@@ -111951,7 +112851,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfRange::set( void*                  ptr,
-                                        size_t                 i,
+                                        std::ptrdiff_t         i,
                                         std::vector<cv::Range> value );
 lua:
     VectorOfVectorOfRange.set( ptr, i, value ) -> None
@@ -112015,6 +112915,14 @@ lua:
 ```
 
 ## VectorOfVectorOfRect
+
+### VectorOfVectorOfRect.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfRect::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfRect.sizeof_value_type
+```
 
 ### VectorOfVectorOfRect.new
 
@@ -112082,9 +112990,9 @@ lua:
 ### VectorOfVectorOfRect.copy
 
 ```cpp
-std::vector<std::vector<cv::Rect>> VectorOfVectorOfRect::operator=( const std::vector<std::vector<cv::Rect>>& other );
+void VectorOfVectorOfRect::operator=( const std::vector<std::vector<cv::Rect>>& other );
 lua:
-    oVectorOfVectorOfRect:copy( other ) -> retval
+    oVectorOfVectorOfRect:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfRect.data
@@ -112114,8 +113022,8 @@ lua:
 ### VectorOfVectorOfRect.get
 
 ```cpp
-static std::vector<cv::Rect> VectorOfVectorOfRect::get( void*  ptr,
-                                                        size_t i );
+static std::vector<cv::Rect> VectorOfVectorOfRect::get( void*          ptr,
+                                                        std::ptrdiff_t i );
 lua:
     VectorOfVectorOfRect.get( ptr, i ) -> retval
 ```
@@ -112139,14 +113047,14 @@ lua:
 ### VectorOfVectorOfRect.ptr
 
 ```cpp
-void* VectorOfVectorOfRect::data( size_t i = 0 );
+void* VectorOfVectorOfRect::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfRect:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfRect::ptr( void*  ptr,
-                                        size_t i = 0 );
+static void* VectorOfVectorOfRect::ptr( void*          ptr,
+                                        std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfRect.ptr( ptr[, i] ) -> retval
 ```
@@ -112178,7 +113086,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfRect::set( void*                 ptr,
-                                       size_t                i,
+                                       std::ptrdiff_t        i,
                                        std::vector<cv::Rect> value );
 lua:
     VectorOfVectorOfRect.set( ptr, i, value ) -> None
@@ -112242,6 +113150,14 @@ lua:
 ```
 
 ## VectorOfVectorOfRect2d
+
+### VectorOfVectorOfRect2d.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfRect2d::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfRect2d.sizeof_value_type
+```
 
 ### VectorOfVectorOfRect2d.new
 
@@ -112309,9 +113225,9 @@ lua:
 ### VectorOfVectorOfRect2d.copy
 
 ```cpp
-std::vector<std::vector<cv::Rect2d>> VectorOfVectorOfRect2d::operator=( const std::vector<std::vector<cv::Rect2d>>& other );
+void VectorOfVectorOfRect2d::operator=( const std::vector<std::vector<cv::Rect2d>>& other );
 lua:
-    oVectorOfVectorOfRect2d:copy( other ) -> retval
+    oVectorOfVectorOfRect2d:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfRect2d.data
@@ -112341,8 +113257,8 @@ lua:
 ### VectorOfVectorOfRect2d.get
 
 ```cpp
-static std::vector<cv::Rect2d> VectorOfVectorOfRect2d::get( void*  ptr,
-                                                            size_t i );
+static std::vector<cv::Rect2d> VectorOfVectorOfRect2d::get( void*          ptr,
+                                                            std::ptrdiff_t i );
 lua:
     VectorOfVectorOfRect2d.get( ptr, i ) -> retval
 ```
@@ -112366,14 +113282,14 @@ lua:
 ### VectorOfVectorOfRect2d.ptr
 
 ```cpp
-void* VectorOfVectorOfRect2d::data( size_t i = 0 );
+void* VectorOfVectorOfRect2d::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfRect2d:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfRect2d::ptr( void*  ptr,
-                                          size_t i = 0 );
+static void* VectorOfVectorOfRect2d::ptr( void*          ptr,
+                                          std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfRect2d.ptr( ptr[, i] ) -> retval
 ```
@@ -112405,7 +113321,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfRect2d::set( void*                   ptr,
-                                         size_t                  i,
+                                         std::ptrdiff_t          i,
                                          std::vector<cv::Rect2d> value );
 lua:
     VectorOfVectorOfRect2d.set( ptr, i, value ) -> None
@@ -112469,6 +113385,14 @@ lua:
 ```
 
 ## VectorOfVectorOfRect2f
+
+### VectorOfVectorOfRect2f.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfRect2f::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfRect2f.sizeof_value_type
+```
 
 ### VectorOfVectorOfRect2f.new
 
@@ -112536,9 +113460,9 @@ lua:
 ### VectorOfVectorOfRect2f.copy
 
 ```cpp
-std::vector<std::vector<cv::Rect2f>> VectorOfVectorOfRect2f::operator=( const std::vector<std::vector<cv::Rect2f>>& other );
+void VectorOfVectorOfRect2f::operator=( const std::vector<std::vector<cv::Rect2f>>& other );
 lua:
-    oVectorOfVectorOfRect2f:copy( other ) -> retval
+    oVectorOfVectorOfRect2f:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfRect2f.data
@@ -112568,8 +113492,8 @@ lua:
 ### VectorOfVectorOfRect2f.get
 
 ```cpp
-static std::vector<cv::Rect2f> VectorOfVectorOfRect2f::get( void*  ptr,
-                                                            size_t i );
+static std::vector<cv::Rect2f> VectorOfVectorOfRect2f::get( void*          ptr,
+                                                            std::ptrdiff_t i );
 lua:
     VectorOfVectorOfRect2f.get( ptr, i ) -> retval
 ```
@@ -112593,14 +113517,14 @@ lua:
 ### VectorOfVectorOfRect2f.ptr
 
 ```cpp
-void* VectorOfVectorOfRect2f::data( size_t i = 0 );
+void* VectorOfVectorOfRect2f::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfRect2f:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfRect2f::ptr( void*  ptr,
-                                          size_t i = 0 );
+static void* VectorOfVectorOfRect2f::ptr( void*          ptr,
+                                          std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfRect2f.ptr( ptr[, i] ) -> retval
 ```
@@ -112632,7 +113556,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfRect2f::set( void*                   ptr,
-                                         size_t                  i,
+                                         std::ptrdiff_t          i,
                                          std::vector<cv::Rect2f> value );
 lua:
     VectorOfVectorOfRect2f.set( ptr, i, value ) -> None
@@ -112696,6 +113620,14 @@ lua:
 ```
 
 ## VectorOfVectorOfRotatedRect
+
+### VectorOfVectorOfRotatedRect.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfRotatedRect::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfRotatedRect.sizeof_value_type
+```
 
 ### VectorOfVectorOfRotatedRect.new
 
@@ -112763,9 +113695,9 @@ lua:
 ### VectorOfVectorOfRotatedRect.copy
 
 ```cpp
-std::vector<std::vector<cv::RotatedRect>> VectorOfVectorOfRotatedRect::operator=( const std::vector<std::vector<cv::RotatedRect>>& other );
+void VectorOfVectorOfRotatedRect::operator=( const std::vector<std::vector<cv::RotatedRect>>& other );
 lua:
-    oVectorOfVectorOfRotatedRect:copy( other ) -> retval
+    oVectorOfVectorOfRotatedRect:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfRotatedRect.data
@@ -112795,8 +113727,8 @@ lua:
 ### VectorOfVectorOfRotatedRect.get
 
 ```cpp
-static std::vector<cv::RotatedRect> VectorOfVectorOfRotatedRect::get( void*  ptr,
-                                                                      size_t i );
+static std::vector<cv::RotatedRect> VectorOfVectorOfRotatedRect::get( void*          ptr,
+                                                                      std::ptrdiff_t i );
 lua:
     VectorOfVectorOfRotatedRect.get( ptr, i ) -> retval
 ```
@@ -112820,14 +113752,14 @@ lua:
 ### VectorOfVectorOfRotatedRect.ptr
 
 ```cpp
-void* VectorOfVectorOfRotatedRect::data( size_t i = 0 );
+void* VectorOfVectorOfRotatedRect::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfRotatedRect:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfRotatedRect::ptr( void*  ptr,
-                                               size_t i = 0 );
+static void* VectorOfVectorOfRotatedRect::ptr( void*          ptr,
+                                               std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfRotatedRect.ptr( ptr[, i] ) -> retval
 ```
@@ -112859,7 +113791,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfRotatedRect::set( void*                        ptr,
-                                              size_t                       i,
+                                              std::ptrdiff_t               i,
                                               std::vector<cv::RotatedRect> value );
 lua:
     VectorOfVectorOfRotatedRect.set( ptr, i, value ) -> None
@@ -112923,6 +113855,14 @@ lua:
 ```
 
 ## VectorOfVectorOfSchar
+
+### VectorOfVectorOfSchar.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfSchar::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfSchar.sizeof_value_type
+```
 
 ### VectorOfVectorOfSchar.new
 
@@ -112990,9 +113930,9 @@ lua:
 ### VectorOfVectorOfSchar.copy
 
 ```cpp
-std::vector<std::vector<schar>> VectorOfVectorOfSchar::operator=( const std::vector<std::vector<schar>>& other );
+void VectorOfVectorOfSchar::operator=( const std::vector<std::vector<schar>>& other );
 lua:
-    oVectorOfVectorOfSchar:copy( other ) -> retval
+    oVectorOfVectorOfSchar:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfSchar.data
@@ -113022,8 +113962,8 @@ lua:
 ### VectorOfVectorOfSchar.get
 
 ```cpp
-static std::vector<schar> VectorOfVectorOfSchar::get( void*  ptr,
-                                                      size_t i );
+static std::vector<schar> VectorOfVectorOfSchar::get( void*          ptr,
+                                                      std::ptrdiff_t i );
 lua:
     VectorOfVectorOfSchar.get( ptr, i ) -> retval
 ```
@@ -113047,14 +113987,14 @@ lua:
 ### VectorOfVectorOfSchar.ptr
 
 ```cpp
-void* VectorOfVectorOfSchar::data( size_t i = 0 );
+void* VectorOfVectorOfSchar::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfSchar:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfSchar::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfSchar::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfSchar.ptr( ptr[, i] ) -> retval
 ```
@@ -113086,7 +114026,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfSchar::set( void*              ptr,
-                                        size_t             i,
+                                        std::ptrdiff_t     i,
                                         std::vector<schar> value );
 lua:
     VectorOfVectorOfSchar.set( ptr, i, value ) -> None
@@ -113150,6 +114090,14 @@ lua:
 ```
 
 ## VectorOfVectorOfShort
+
+### VectorOfVectorOfShort.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfShort::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfShort.sizeof_value_type
+```
 
 ### VectorOfVectorOfShort.new
 
@@ -113217,9 +114165,9 @@ lua:
 ### VectorOfVectorOfShort.copy
 
 ```cpp
-std::vector<std::vector<short>> VectorOfVectorOfShort::operator=( const std::vector<std::vector<short>>& other );
+void VectorOfVectorOfShort::operator=( const std::vector<std::vector<short>>& other );
 lua:
-    oVectorOfVectorOfShort:copy( other ) -> retval
+    oVectorOfVectorOfShort:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfShort.data
@@ -113249,8 +114197,8 @@ lua:
 ### VectorOfVectorOfShort.get
 
 ```cpp
-static std::vector<short> VectorOfVectorOfShort::get( void*  ptr,
-                                                      size_t i );
+static std::vector<short> VectorOfVectorOfShort::get( void*          ptr,
+                                                      std::ptrdiff_t i );
 lua:
     VectorOfVectorOfShort.get( ptr, i ) -> retval
 ```
@@ -113274,14 +114222,14 @@ lua:
 ### VectorOfVectorOfShort.ptr
 
 ```cpp
-void* VectorOfVectorOfShort::data( size_t i = 0 );
+void* VectorOfVectorOfShort::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfShort:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfShort::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfShort::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfShort.ptr( ptr[, i] ) -> retval
 ```
@@ -113313,7 +114261,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfShort::set( void*              ptr,
-                                        size_t             i,
+                                        std::ptrdiff_t     i,
                                         std::vector<short> value );
 lua:
     VectorOfVectorOfShort.set( ptr, i, value ) -> None
@@ -113377,6 +114325,14 @@ lua:
 ```
 
 ## VectorOfVectorOfSize
+
+### VectorOfVectorOfSize.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfSize::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfSize.sizeof_value_type
+```
 
 ### VectorOfVectorOfSize.new
 
@@ -113444,9 +114400,9 @@ lua:
 ### VectorOfVectorOfSize.copy
 
 ```cpp
-std::vector<std::vector<cv::Size>> VectorOfVectorOfSize::operator=( const std::vector<std::vector<cv::Size>>& other );
+void VectorOfVectorOfSize::operator=( const std::vector<std::vector<cv::Size>>& other );
 lua:
-    oVectorOfVectorOfSize:copy( other ) -> retval
+    oVectorOfVectorOfSize:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfSize.data
@@ -113476,8 +114432,8 @@ lua:
 ### VectorOfVectorOfSize.get
 
 ```cpp
-static std::vector<cv::Size> VectorOfVectorOfSize::get( void*  ptr,
-                                                        size_t i );
+static std::vector<cv::Size> VectorOfVectorOfSize::get( void*          ptr,
+                                                        std::ptrdiff_t i );
 lua:
     VectorOfVectorOfSize.get( ptr, i ) -> retval
 ```
@@ -113501,14 +114457,14 @@ lua:
 ### VectorOfVectorOfSize.ptr
 
 ```cpp
-void* VectorOfVectorOfSize::data( size_t i = 0 );
+void* VectorOfVectorOfSize::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfSize:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfSize::ptr( void*  ptr,
-                                        size_t i = 0 );
+static void* VectorOfVectorOfSize::ptr( void*          ptr,
+                                        std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfSize.ptr( ptr[, i] ) -> retval
 ```
@@ -113540,7 +114496,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfSize::set( void*                 ptr,
-                                       size_t                i,
+                                       std::ptrdiff_t        i,
                                        std::vector<cv::Size> value );
 lua:
     VectorOfVectorOfSize.set( ptr, i, value ) -> None
@@ -113604,6 +114560,14 @@ lua:
 ```
 
 ## VectorOfVectorOfSize2d
+
+### VectorOfVectorOfSize2d.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfSize2d::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfSize2d.sizeof_value_type
+```
 
 ### VectorOfVectorOfSize2d.new
 
@@ -113671,9 +114635,9 @@ lua:
 ### VectorOfVectorOfSize2d.copy
 
 ```cpp
-std::vector<std::vector<cv::Size2d>> VectorOfVectorOfSize2d::operator=( const std::vector<std::vector<cv::Size2d>>& other );
+void VectorOfVectorOfSize2d::operator=( const std::vector<std::vector<cv::Size2d>>& other );
 lua:
-    oVectorOfVectorOfSize2d:copy( other ) -> retval
+    oVectorOfVectorOfSize2d:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfSize2d.data
@@ -113703,8 +114667,8 @@ lua:
 ### VectorOfVectorOfSize2d.get
 
 ```cpp
-static std::vector<cv::Size2d> VectorOfVectorOfSize2d::get( void*  ptr,
-                                                            size_t i );
+static std::vector<cv::Size2d> VectorOfVectorOfSize2d::get( void*          ptr,
+                                                            std::ptrdiff_t i );
 lua:
     VectorOfVectorOfSize2d.get( ptr, i ) -> retval
 ```
@@ -113728,14 +114692,14 @@ lua:
 ### VectorOfVectorOfSize2d.ptr
 
 ```cpp
-void* VectorOfVectorOfSize2d::data( size_t i = 0 );
+void* VectorOfVectorOfSize2d::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfSize2d:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfSize2d::ptr( void*  ptr,
-                                          size_t i = 0 );
+static void* VectorOfVectorOfSize2d::ptr( void*          ptr,
+                                          std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfSize2d.ptr( ptr[, i] ) -> retval
 ```
@@ -113767,7 +114731,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfSize2d::set( void*                   ptr,
-                                         size_t                  i,
+                                         std::ptrdiff_t          i,
                                          std::vector<cv::Size2d> value );
 lua:
     VectorOfVectorOfSize2d.set( ptr, i, value ) -> None
@@ -113831,6 +114795,14 @@ lua:
 ```
 
 ## VectorOfVectorOfSize2f
+
+### VectorOfVectorOfSize2f.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfSize2f::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfSize2f.sizeof_value_type
+```
 
 ### VectorOfVectorOfSize2f.new
 
@@ -113898,9 +114870,9 @@ lua:
 ### VectorOfVectorOfSize2f.copy
 
 ```cpp
-std::vector<std::vector<cv::Size2f>> VectorOfVectorOfSize2f::operator=( const std::vector<std::vector<cv::Size2f>>& other );
+void VectorOfVectorOfSize2f::operator=( const std::vector<std::vector<cv::Size2f>>& other );
 lua:
-    oVectorOfVectorOfSize2f:copy( other ) -> retval
+    oVectorOfVectorOfSize2f:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfSize2f.data
@@ -113930,8 +114902,8 @@ lua:
 ### VectorOfVectorOfSize2f.get
 
 ```cpp
-static std::vector<cv::Size2f> VectorOfVectorOfSize2f::get( void*  ptr,
-                                                            size_t i );
+static std::vector<cv::Size2f> VectorOfVectorOfSize2f::get( void*          ptr,
+                                                            std::ptrdiff_t i );
 lua:
     VectorOfVectorOfSize2f.get( ptr, i ) -> retval
 ```
@@ -113955,14 +114927,14 @@ lua:
 ### VectorOfVectorOfSize2f.ptr
 
 ```cpp
-void* VectorOfVectorOfSize2f::data( size_t i = 0 );
+void* VectorOfVectorOfSize2f::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfSize2f:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfSize2f::ptr( void*  ptr,
-                                          size_t i = 0 );
+static void* VectorOfVectorOfSize2f::ptr( void*          ptr,
+                                          std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfSize2f.ptr( ptr[, i] ) -> retval
 ```
@@ -113994,7 +114966,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfSize2f::set( void*                   ptr,
-                                         size_t                  i,
+                                         std::ptrdiff_t          i,
                                          std::vector<cv::Size2f> value );
 lua:
     VectorOfVectorOfSize2f.set( ptr, i, value ) -> None
@@ -114058,6 +115030,14 @@ lua:
 ```
 
 ## VectorOfVectorOfUchar
+
+### VectorOfVectorOfUchar.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfUchar::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfUchar.sizeof_value_type
+```
 
 ### VectorOfVectorOfUchar.new
 
@@ -114125,9 +115105,9 @@ lua:
 ### VectorOfVectorOfUchar.copy
 
 ```cpp
-std::vector<std::vector<uchar>> VectorOfVectorOfUchar::operator=( const std::vector<std::vector<uchar>>& other );
+void VectorOfVectorOfUchar::operator=( const std::vector<std::vector<uchar>>& other );
 lua:
-    oVectorOfVectorOfUchar:copy( other ) -> retval
+    oVectorOfVectorOfUchar:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfUchar.data
@@ -114157,8 +115137,8 @@ lua:
 ### VectorOfVectorOfUchar.get
 
 ```cpp
-static std::vector<uchar> VectorOfVectorOfUchar::get( void*  ptr,
-                                                      size_t i );
+static std::vector<uchar> VectorOfVectorOfUchar::get( void*          ptr,
+                                                      std::ptrdiff_t i );
 lua:
     VectorOfVectorOfUchar.get( ptr, i ) -> retval
 ```
@@ -114182,14 +115162,14 @@ lua:
 ### VectorOfVectorOfUchar.ptr
 
 ```cpp
-void* VectorOfVectorOfUchar::data( size_t i = 0 );
+void* VectorOfVectorOfUchar::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfUchar:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfUchar::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfUchar::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfUchar.ptr( ptr[, i] ) -> retval
 ```
@@ -114221,7 +115201,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfUchar::set( void*              ptr,
-                                        size_t             i,
+                                        std::ptrdiff_t     i,
                                         std::vector<uchar> value );
 lua:
     VectorOfVectorOfUchar.set( ptr, i, value ) -> None
@@ -114285,6 +115265,14 @@ lua:
 ```
 
 ## VectorOfVectorOfUshort
+
+### VectorOfVectorOfUshort.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfUshort::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfUshort.sizeof_value_type
+```
 
 ### VectorOfVectorOfUshort.new
 
@@ -114352,9 +115340,9 @@ lua:
 ### VectorOfVectorOfUshort.copy
 
 ```cpp
-std::vector<std::vector<ushort>> VectorOfVectorOfUshort::operator=( const std::vector<std::vector<ushort>>& other );
+void VectorOfVectorOfUshort::operator=( const std::vector<std::vector<ushort>>& other );
 lua:
-    oVectorOfVectorOfUshort:copy( other ) -> retval
+    oVectorOfVectorOfUshort:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfUshort.data
@@ -114384,8 +115372,8 @@ lua:
 ### VectorOfVectorOfUshort.get
 
 ```cpp
-static std::vector<ushort> VectorOfVectorOfUshort::get( void*  ptr,
-                                                        size_t i );
+static std::vector<ushort> VectorOfVectorOfUshort::get( void*          ptr,
+                                                        std::ptrdiff_t i );
 lua:
     VectorOfVectorOfUshort.get( ptr, i ) -> retval
 ```
@@ -114409,14 +115397,14 @@ lua:
 ### VectorOfVectorOfUshort.ptr
 
 ```cpp
-void* VectorOfVectorOfUshort::data( size_t i = 0 );
+void* VectorOfVectorOfUshort::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfUshort:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfUshort::ptr( void*  ptr,
-                                          size_t i = 0 );
+static void* VectorOfVectorOfUshort::ptr( void*          ptr,
+                                          std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfUshort.ptr( ptr[, i] ) -> retval
 ```
@@ -114448,7 +115436,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfUshort::set( void*               ptr,
-                                         size_t              i,
+                                         std::ptrdiff_t      i,
                                          std::vector<ushort> value );
 lua:
     VectorOfVectorOfUshort.set( ptr, i, value ) -> None
@@ -114512,6 +115500,14 @@ lua:
 ```
 
 ## VectorOfVectorOfVec2b
+
+### VectorOfVectorOfVec2b.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfVec2b::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfVec2b.sizeof_value_type
+```
 
 ### VectorOfVectorOfVec2b.new
 
@@ -114579,9 +115575,9 @@ lua:
 ### VectorOfVectorOfVec2b.copy
 
 ```cpp
-std::vector<std::vector<cv::Vec2b>> VectorOfVectorOfVec2b::operator=( const std::vector<std::vector<cv::Vec2b>>& other );
+void VectorOfVectorOfVec2b::operator=( const std::vector<std::vector<cv::Vec2b>>& other );
 lua:
-    oVectorOfVectorOfVec2b:copy( other ) -> retval
+    oVectorOfVectorOfVec2b:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfVec2b.data
@@ -114611,8 +115607,8 @@ lua:
 ### VectorOfVectorOfVec2b.get
 
 ```cpp
-static std::vector<cv::Vec2b> VectorOfVectorOfVec2b::get( void*  ptr,
-                                                          size_t i );
+static std::vector<cv::Vec2b> VectorOfVectorOfVec2b::get( void*          ptr,
+                                                          std::ptrdiff_t i );
 lua:
     VectorOfVectorOfVec2b.get( ptr, i ) -> retval
 ```
@@ -114636,14 +115632,14 @@ lua:
 ### VectorOfVectorOfVec2b.ptr
 
 ```cpp
-void* VectorOfVectorOfVec2b::data( size_t i = 0 );
+void* VectorOfVectorOfVec2b::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfVec2b:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfVec2b::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfVec2b::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfVec2b.ptr( ptr[, i] ) -> retval
 ```
@@ -114675,7 +115671,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfVec2b::set( void*                  ptr,
-                                        size_t                 i,
+                                        std::ptrdiff_t         i,
                                         std::vector<cv::Vec2b> value );
 lua:
     VectorOfVectorOfVec2b.set( ptr, i, value ) -> None
@@ -114739,6 +115735,14 @@ lua:
 ```
 
 ## VectorOfVectorOfVec2d
+
+### VectorOfVectorOfVec2d.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfVec2d::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfVec2d.sizeof_value_type
+```
 
 ### VectorOfVectorOfVec2d.new
 
@@ -114806,9 +115810,9 @@ lua:
 ### VectorOfVectorOfVec2d.copy
 
 ```cpp
-std::vector<std::vector<cv::Vec2d>> VectorOfVectorOfVec2d::operator=( const std::vector<std::vector<cv::Vec2d>>& other );
+void VectorOfVectorOfVec2d::operator=( const std::vector<std::vector<cv::Vec2d>>& other );
 lua:
-    oVectorOfVectorOfVec2d:copy( other ) -> retval
+    oVectorOfVectorOfVec2d:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfVec2d.data
@@ -114838,8 +115842,8 @@ lua:
 ### VectorOfVectorOfVec2d.get
 
 ```cpp
-static std::vector<cv::Vec2d> VectorOfVectorOfVec2d::get( void*  ptr,
-                                                          size_t i );
+static std::vector<cv::Vec2d> VectorOfVectorOfVec2d::get( void*          ptr,
+                                                          std::ptrdiff_t i );
 lua:
     VectorOfVectorOfVec2d.get( ptr, i ) -> retval
 ```
@@ -114863,14 +115867,14 @@ lua:
 ### VectorOfVectorOfVec2d.ptr
 
 ```cpp
-void* VectorOfVectorOfVec2d::data( size_t i = 0 );
+void* VectorOfVectorOfVec2d::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfVec2d:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfVec2d::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfVec2d::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfVec2d.ptr( ptr[, i] ) -> retval
 ```
@@ -114902,7 +115906,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfVec2d::set( void*                  ptr,
-                                        size_t                 i,
+                                        std::ptrdiff_t         i,
                                         std::vector<cv::Vec2d> value );
 lua:
     VectorOfVectorOfVec2d.set( ptr, i, value ) -> None
@@ -114966,6 +115970,14 @@ lua:
 ```
 
 ## VectorOfVectorOfVec2f
+
+### VectorOfVectorOfVec2f.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfVec2f::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfVec2f.sizeof_value_type
+```
 
 ### VectorOfVectorOfVec2f.new
 
@@ -115033,9 +116045,9 @@ lua:
 ### VectorOfVectorOfVec2f.copy
 
 ```cpp
-std::vector<std::vector<cv::Vec2f>> VectorOfVectorOfVec2f::operator=( const std::vector<std::vector<cv::Vec2f>>& other );
+void VectorOfVectorOfVec2f::operator=( const std::vector<std::vector<cv::Vec2f>>& other );
 lua:
-    oVectorOfVectorOfVec2f:copy( other ) -> retval
+    oVectorOfVectorOfVec2f:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfVec2f.data
@@ -115065,8 +116077,8 @@ lua:
 ### VectorOfVectorOfVec2f.get
 
 ```cpp
-static std::vector<cv::Vec2f> VectorOfVectorOfVec2f::get( void*  ptr,
-                                                          size_t i );
+static std::vector<cv::Vec2f> VectorOfVectorOfVec2f::get( void*          ptr,
+                                                          std::ptrdiff_t i );
 lua:
     VectorOfVectorOfVec2f.get( ptr, i ) -> retval
 ```
@@ -115090,14 +116102,14 @@ lua:
 ### VectorOfVectorOfVec2f.ptr
 
 ```cpp
-void* VectorOfVectorOfVec2f::data( size_t i = 0 );
+void* VectorOfVectorOfVec2f::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfVec2f:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfVec2f::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfVec2f::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfVec2f.ptr( ptr[, i] ) -> retval
 ```
@@ -115129,7 +116141,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfVec2f::set( void*                  ptr,
-                                        size_t                 i,
+                                        std::ptrdiff_t         i,
                                         std::vector<cv::Vec2f> value );
 lua:
     VectorOfVectorOfVec2f.set( ptr, i, value ) -> None
@@ -115193,6 +116205,14 @@ lua:
 ```
 
 ## VectorOfVectorOfVec2i
+
+### VectorOfVectorOfVec2i.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfVec2i::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfVec2i.sizeof_value_type
+```
 
 ### VectorOfVectorOfVec2i.new
 
@@ -115260,9 +116280,9 @@ lua:
 ### VectorOfVectorOfVec2i.copy
 
 ```cpp
-std::vector<std::vector<cv::Vec2i>> VectorOfVectorOfVec2i::operator=( const std::vector<std::vector<cv::Vec2i>>& other );
+void VectorOfVectorOfVec2i::operator=( const std::vector<std::vector<cv::Vec2i>>& other );
 lua:
-    oVectorOfVectorOfVec2i:copy( other ) -> retval
+    oVectorOfVectorOfVec2i:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfVec2i.data
@@ -115292,8 +116312,8 @@ lua:
 ### VectorOfVectorOfVec2i.get
 
 ```cpp
-static std::vector<cv::Vec2i> VectorOfVectorOfVec2i::get( void*  ptr,
-                                                          size_t i );
+static std::vector<cv::Vec2i> VectorOfVectorOfVec2i::get( void*          ptr,
+                                                          std::ptrdiff_t i );
 lua:
     VectorOfVectorOfVec2i.get( ptr, i ) -> retval
 ```
@@ -115317,14 +116337,14 @@ lua:
 ### VectorOfVectorOfVec2i.ptr
 
 ```cpp
-void* VectorOfVectorOfVec2i::data( size_t i = 0 );
+void* VectorOfVectorOfVec2i::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfVec2i:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfVec2i::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfVec2i::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfVec2i.ptr( ptr[, i] ) -> retval
 ```
@@ -115356,7 +116376,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfVec2i::set( void*                  ptr,
-                                        size_t                 i,
+                                        std::ptrdiff_t         i,
                                         std::vector<cv::Vec2i> value );
 lua:
     VectorOfVectorOfVec2i.set( ptr, i, value ) -> None
@@ -115420,6 +116440,14 @@ lua:
 ```
 
 ## VectorOfVectorOfVec2s
+
+### VectorOfVectorOfVec2s.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfVec2s::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfVec2s.sizeof_value_type
+```
 
 ### VectorOfVectorOfVec2s.new
 
@@ -115487,9 +116515,9 @@ lua:
 ### VectorOfVectorOfVec2s.copy
 
 ```cpp
-std::vector<std::vector<cv::Vec2s>> VectorOfVectorOfVec2s::operator=( const std::vector<std::vector<cv::Vec2s>>& other );
+void VectorOfVectorOfVec2s::operator=( const std::vector<std::vector<cv::Vec2s>>& other );
 lua:
-    oVectorOfVectorOfVec2s:copy( other ) -> retval
+    oVectorOfVectorOfVec2s:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfVec2s.data
@@ -115519,8 +116547,8 @@ lua:
 ### VectorOfVectorOfVec2s.get
 
 ```cpp
-static std::vector<cv::Vec2s> VectorOfVectorOfVec2s::get( void*  ptr,
-                                                          size_t i );
+static std::vector<cv::Vec2s> VectorOfVectorOfVec2s::get( void*          ptr,
+                                                          std::ptrdiff_t i );
 lua:
     VectorOfVectorOfVec2s.get( ptr, i ) -> retval
 ```
@@ -115544,14 +116572,14 @@ lua:
 ### VectorOfVectorOfVec2s.ptr
 
 ```cpp
-void* VectorOfVectorOfVec2s::data( size_t i = 0 );
+void* VectorOfVectorOfVec2s::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfVec2s:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfVec2s::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfVec2s::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfVec2s.ptr( ptr[, i] ) -> retval
 ```
@@ -115583,7 +116611,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfVec2s::set( void*                  ptr,
-                                        size_t                 i,
+                                        std::ptrdiff_t         i,
                                         std::vector<cv::Vec2s> value );
 lua:
     VectorOfVectorOfVec2s.set( ptr, i, value ) -> None
@@ -115647,6 +116675,14 @@ lua:
 ```
 
 ## VectorOfVectorOfVec2w
+
+### VectorOfVectorOfVec2w.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfVec2w::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfVec2w.sizeof_value_type
+```
 
 ### VectorOfVectorOfVec2w.new
 
@@ -115714,9 +116750,9 @@ lua:
 ### VectorOfVectorOfVec2w.copy
 
 ```cpp
-std::vector<std::vector<cv::Vec2w>> VectorOfVectorOfVec2w::operator=( const std::vector<std::vector<cv::Vec2w>>& other );
+void VectorOfVectorOfVec2w::operator=( const std::vector<std::vector<cv::Vec2w>>& other );
 lua:
-    oVectorOfVectorOfVec2w:copy( other ) -> retval
+    oVectorOfVectorOfVec2w:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfVec2w.data
@@ -115746,8 +116782,8 @@ lua:
 ### VectorOfVectorOfVec2w.get
 
 ```cpp
-static std::vector<cv::Vec2w> VectorOfVectorOfVec2w::get( void*  ptr,
-                                                          size_t i );
+static std::vector<cv::Vec2w> VectorOfVectorOfVec2w::get( void*          ptr,
+                                                          std::ptrdiff_t i );
 lua:
     VectorOfVectorOfVec2w.get( ptr, i ) -> retval
 ```
@@ -115771,14 +116807,14 @@ lua:
 ### VectorOfVectorOfVec2w.ptr
 
 ```cpp
-void* VectorOfVectorOfVec2w::data( size_t i = 0 );
+void* VectorOfVectorOfVec2w::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfVec2w:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfVec2w::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfVec2w::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfVec2w.ptr( ptr[, i] ) -> retval
 ```
@@ -115810,7 +116846,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfVec2w::set( void*                  ptr,
-                                        size_t                 i,
+                                        std::ptrdiff_t         i,
                                         std::vector<cv::Vec2w> value );
 lua:
     VectorOfVectorOfVec2w.set( ptr, i, value ) -> None
@@ -115874,6 +116910,14 @@ lua:
 ```
 
 ## VectorOfVectorOfVec3b
+
+### VectorOfVectorOfVec3b.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfVec3b::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfVec3b.sizeof_value_type
+```
 
 ### VectorOfVectorOfVec3b.new
 
@@ -115941,9 +116985,9 @@ lua:
 ### VectorOfVectorOfVec3b.copy
 
 ```cpp
-std::vector<std::vector<cv::Vec3b>> VectorOfVectorOfVec3b::operator=( const std::vector<std::vector<cv::Vec3b>>& other );
+void VectorOfVectorOfVec3b::operator=( const std::vector<std::vector<cv::Vec3b>>& other );
 lua:
-    oVectorOfVectorOfVec3b:copy( other ) -> retval
+    oVectorOfVectorOfVec3b:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfVec3b.data
@@ -115973,8 +117017,8 @@ lua:
 ### VectorOfVectorOfVec3b.get
 
 ```cpp
-static std::vector<cv::Vec3b> VectorOfVectorOfVec3b::get( void*  ptr,
-                                                          size_t i );
+static std::vector<cv::Vec3b> VectorOfVectorOfVec3b::get( void*          ptr,
+                                                          std::ptrdiff_t i );
 lua:
     VectorOfVectorOfVec3b.get( ptr, i ) -> retval
 ```
@@ -115998,14 +117042,14 @@ lua:
 ### VectorOfVectorOfVec3b.ptr
 
 ```cpp
-void* VectorOfVectorOfVec3b::data( size_t i = 0 );
+void* VectorOfVectorOfVec3b::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfVec3b:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfVec3b::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfVec3b::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfVec3b.ptr( ptr[, i] ) -> retval
 ```
@@ -116037,7 +117081,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfVec3b::set( void*                  ptr,
-                                        size_t                 i,
+                                        std::ptrdiff_t         i,
                                         std::vector<cv::Vec3b> value );
 lua:
     VectorOfVectorOfVec3b.set( ptr, i, value ) -> None
@@ -116101,6 +117145,14 @@ lua:
 ```
 
 ## VectorOfVectorOfVec3d
+
+### VectorOfVectorOfVec3d.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfVec3d::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfVec3d.sizeof_value_type
+```
 
 ### VectorOfVectorOfVec3d.new
 
@@ -116168,9 +117220,9 @@ lua:
 ### VectorOfVectorOfVec3d.copy
 
 ```cpp
-std::vector<std::vector<cv::Vec3d>> VectorOfVectorOfVec3d::operator=( const std::vector<std::vector<cv::Vec3d>>& other );
+void VectorOfVectorOfVec3d::operator=( const std::vector<std::vector<cv::Vec3d>>& other );
 lua:
-    oVectorOfVectorOfVec3d:copy( other ) -> retval
+    oVectorOfVectorOfVec3d:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfVec3d.data
@@ -116200,8 +117252,8 @@ lua:
 ### VectorOfVectorOfVec3d.get
 
 ```cpp
-static std::vector<cv::Vec3d> VectorOfVectorOfVec3d::get( void*  ptr,
-                                                          size_t i );
+static std::vector<cv::Vec3d> VectorOfVectorOfVec3d::get( void*          ptr,
+                                                          std::ptrdiff_t i );
 lua:
     VectorOfVectorOfVec3d.get( ptr, i ) -> retval
 ```
@@ -116225,14 +117277,14 @@ lua:
 ### VectorOfVectorOfVec3d.ptr
 
 ```cpp
-void* VectorOfVectorOfVec3d::data( size_t i = 0 );
+void* VectorOfVectorOfVec3d::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfVec3d:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfVec3d::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfVec3d::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfVec3d.ptr( ptr[, i] ) -> retval
 ```
@@ -116264,7 +117316,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfVec3d::set( void*                  ptr,
-                                        size_t                 i,
+                                        std::ptrdiff_t         i,
                                         std::vector<cv::Vec3d> value );
 lua:
     VectorOfVectorOfVec3d.set( ptr, i, value ) -> None
@@ -116328,6 +117380,14 @@ lua:
 ```
 
 ## VectorOfVectorOfVec3f
+
+### VectorOfVectorOfVec3f.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfVec3f::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfVec3f.sizeof_value_type
+```
 
 ### VectorOfVectorOfVec3f.new
 
@@ -116395,9 +117455,9 @@ lua:
 ### VectorOfVectorOfVec3f.copy
 
 ```cpp
-std::vector<std::vector<cv::Vec3f>> VectorOfVectorOfVec3f::operator=( const std::vector<std::vector<cv::Vec3f>>& other );
+void VectorOfVectorOfVec3f::operator=( const std::vector<std::vector<cv::Vec3f>>& other );
 lua:
-    oVectorOfVectorOfVec3f:copy( other ) -> retval
+    oVectorOfVectorOfVec3f:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfVec3f.data
@@ -116427,8 +117487,8 @@ lua:
 ### VectorOfVectorOfVec3f.get
 
 ```cpp
-static std::vector<cv::Vec3f> VectorOfVectorOfVec3f::get( void*  ptr,
-                                                          size_t i );
+static std::vector<cv::Vec3f> VectorOfVectorOfVec3f::get( void*          ptr,
+                                                          std::ptrdiff_t i );
 lua:
     VectorOfVectorOfVec3f.get( ptr, i ) -> retval
 ```
@@ -116452,14 +117512,14 @@ lua:
 ### VectorOfVectorOfVec3f.ptr
 
 ```cpp
-void* VectorOfVectorOfVec3f::data( size_t i = 0 );
+void* VectorOfVectorOfVec3f::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfVec3f:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfVec3f::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfVec3f::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfVec3f.ptr( ptr[, i] ) -> retval
 ```
@@ -116491,7 +117551,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfVec3f::set( void*                  ptr,
-                                        size_t                 i,
+                                        std::ptrdiff_t         i,
                                         std::vector<cv::Vec3f> value );
 lua:
     VectorOfVectorOfVec3f.set( ptr, i, value ) -> None
@@ -116555,6 +117615,14 @@ lua:
 ```
 
 ## VectorOfVectorOfVec3i
+
+### VectorOfVectorOfVec3i.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfVec3i::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfVec3i.sizeof_value_type
+```
 
 ### VectorOfVectorOfVec3i.new
 
@@ -116622,9 +117690,9 @@ lua:
 ### VectorOfVectorOfVec3i.copy
 
 ```cpp
-std::vector<std::vector<cv::Vec3i>> VectorOfVectorOfVec3i::operator=( const std::vector<std::vector<cv::Vec3i>>& other );
+void VectorOfVectorOfVec3i::operator=( const std::vector<std::vector<cv::Vec3i>>& other );
 lua:
-    oVectorOfVectorOfVec3i:copy( other ) -> retval
+    oVectorOfVectorOfVec3i:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfVec3i.data
@@ -116654,8 +117722,8 @@ lua:
 ### VectorOfVectorOfVec3i.get
 
 ```cpp
-static std::vector<cv::Vec3i> VectorOfVectorOfVec3i::get( void*  ptr,
-                                                          size_t i );
+static std::vector<cv::Vec3i> VectorOfVectorOfVec3i::get( void*          ptr,
+                                                          std::ptrdiff_t i );
 lua:
     VectorOfVectorOfVec3i.get( ptr, i ) -> retval
 ```
@@ -116679,14 +117747,14 @@ lua:
 ### VectorOfVectorOfVec3i.ptr
 
 ```cpp
-void* VectorOfVectorOfVec3i::data( size_t i = 0 );
+void* VectorOfVectorOfVec3i::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfVec3i:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfVec3i::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfVec3i::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfVec3i.ptr( ptr[, i] ) -> retval
 ```
@@ -116718,7 +117786,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfVec3i::set( void*                  ptr,
-                                        size_t                 i,
+                                        std::ptrdiff_t         i,
                                         std::vector<cv::Vec3i> value );
 lua:
     VectorOfVectorOfVec3i.set( ptr, i, value ) -> None
@@ -116782,6 +117850,14 @@ lua:
 ```
 
 ## VectorOfVectorOfVec3s
+
+### VectorOfVectorOfVec3s.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfVec3s::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfVec3s.sizeof_value_type
+```
 
 ### VectorOfVectorOfVec3s.new
 
@@ -116849,9 +117925,9 @@ lua:
 ### VectorOfVectorOfVec3s.copy
 
 ```cpp
-std::vector<std::vector<cv::Vec3s>> VectorOfVectorOfVec3s::operator=( const std::vector<std::vector<cv::Vec3s>>& other );
+void VectorOfVectorOfVec3s::operator=( const std::vector<std::vector<cv::Vec3s>>& other );
 lua:
-    oVectorOfVectorOfVec3s:copy( other ) -> retval
+    oVectorOfVectorOfVec3s:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfVec3s.data
@@ -116881,8 +117957,8 @@ lua:
 ### VectorOfVectorOfVec3s.get
 
 ```cpp
-static std::vector<cv::Vec3s> VectorOfVectorOfVec3s::get( void*  ptr,
-                                                          size_t i );
+static std::vector<cv::Vec3s> VectorOfVectorOfVec3s::get( void*          ptr,
+                                                          std::ptrdiff_t i );
 lua:
     VectorOfVectorOfVec3s.get( ptr, i ) -> retval
 ```
@@ -116906,14 +117982,14 @@ lua:
 ### VectorOfVectorOfVec3s.ptr
 
 ```cpp
-void* VectorOfVectorOfVec3s::data( size_t i = 0 );
+void* VectorOfVectorOfVec3s::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfVec3s:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfVec3s::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfVec3s::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfVec3s.ptr( ptr[, i] ) -> retval
 ```
@@ -116945,7 +118021,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfVec3s::set( void*                  ptr,
-                                        size_t                 i,
+                                        std::ptrdiff_t         i,
                                         std::vector<cv::Vec3s> value );
 lua:
     VectorOfVectorOfVec3s.set( ptr, i, value ) -> None
@@ -117009,6 +118085,14 @@ lua:
 ```
 
 ## VectorOfVectorOfVec3w
+
+### VectorOfVectorOfVec3w.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfVec3w::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfVec3w.sizeof_value_type
+```
 
 ### VectorOfVectorOfVec3w.new
 
@@ -117076,9 +118160,9 @@ lua:
 ### VectorOfVectorOfVec3w.copy
 
 ```cpp
-std::vector<std::vector<cv::Vec3w>> VectorOfVectorOfVec3w::operator=( const std::vector<std::vector<cv::Vec3w>>& other );
+void VectorOfVectorOfVec3w::operator=( const std::vector<std::vector<cv::Vec3w>>& other );
 lua:
-    oVectorOfVectorOfVec3w:copy( other ) -> retval
+    oVectorOfVectorOfVec3w:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfVec3w.data
@@ -117108,8 +118192,8 @@ lua:
 ### VectorOfVectorOfVec3w.get
 
 ```cpp
-static std::vector<cv::Vec3w> VectorOfVectorOfVec3w::get( void*  ptr,
-                                                          size_t i );
+static std::vector<cv::Vec3w> VectorOfVectorOfVec3w::get( void*          ptr,
+                                                          std::ptrdiff_t i );
 lua:
     VectorOfVectorOfVec3w.get( ptr, i ) -> retval
 ```
@@ -117133,14 +118217,14 @@ lua:
 ### VectorOfVectorOfVec3w.ptr
 
 ```cpp
-void* VectorOfVectorOfVec3w::data( size_t i = 0 );
+void* VectorOfVectorOfVec3w::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfVec3w:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfVec3w::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfVec3w::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfVec3w.ptr( ptr[, i] ) -> retval
 ```
@@ -117172,7 +118256,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfVec3w::set( void*                  ptr,
-                                        size_t                 i,
+                                        std::ptrdiff_t         i,
                                         std::vector<cv::Vec3w> value );
 lua:
     VectorOfVectorOfVec3w.set( ptr, i, value ) -> None
@@ -117236,6 +118320,14 @@ lua:
 ```
 
 ## VectorOfVectorOfVec4b
+
+### VectorOfVectorOfVec4b.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfVec4b::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfVec4b.sizeof_value_type
+```
 
 ### VectorOfVectorOfVec4b.new
 
@@ -117303,9 +118395,9 @@ lua:
 ### VectorOfVectorOfVec4b.copy
 
 ```cpp
-std::vector<std::vector<cv::Vec4b>> VectorOfVectorOfVec4b::operator=( const std::vector<std::vector<cv::Vec4b>>& other );
+void VectorOfVectorOfVec4b::operator=( const std::vector<std::vector<cv::Vec4b>>& other );
 lua:
-    oVectorOfVectorOfVec4b:copy( other ) -> retval
+    oVectorOfVectorOfVec4b:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfVec4b.data
@@ -117335,8 +118427,8 @@ lua:
 ### VectorOfVectorOfVec4b.get
 
 ```cpp
-static std::vector<cv::Vec4b> VectorOfVectorOfVec4b::get( void*  ptr,
-                                                          size_t i );
+static std::vector<cv::Vec4b> VectorOfVectorOfVec4b::get( void*          ptr,
+                                                          std::ptrdiff_t i );
 lua:
     VectorOfVectorOfVec4b.get( ptr, i ) -> retval
 ```
@@ -117360,14 +118452,14 @@ lua:
 ### VectorOfVectorOfVec4b.ptr
 
 ```cpp
-void* VectorOfVectorOfVec4b::data( size_t i = 0 );
+void* VectorOfVectorOfVec4b::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfVec4b:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfVec4b::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfVec4b::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfVec4b.ptr( ptr[, i] ) -> retval
 ```
@@ -117399,7 +118491,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfVec4b::set( void*                  ptr,
-                                        size_t                 i,
+                                        std::ptrdiff_t         i,
                                         std::vector<cv::Vec4b> value );
 lua:
     VectorOfVectorOfVec4b.set( ptr, i, value ) -> None
@@ -117463,6 +118555,14 @@ lua:
 ```
 
 ## VectorOfVectorOfVec4d
+
+### VectorOfVectorOfVec4d.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfVec4d::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfVec4d.sizeof_value_type
+```
 
 ### VectorOfVectorOfVec4d.new
 
@@ -117530,9 +118630,9 @@ lua:
 ### VectorOfVectorOfVec4d.copy
 
 ```cpp
-std::vector<std::vector<cv::Vec4d>> VectorOfVectorOfVec4d::operator=( const std::vector<std::vector<cv::Vec4d>>& other );
+void VectorOfVectorOfVec4d::operator=( const std::vector<std::vector<cv::Vec4d>>& other );
 lua:
-    oVectorOfVectorOfVec4d:copy( other ) -> retval
+    oVectorOfVectorOfVec4d:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfVec4d.data
@@ -117562,8 +118662,8 @@ lua:
 ### VectorOfVectorOfVec4d.get
 
 ```cpp
-static std::vector<cv::Vec4d> VectorOfVectorOfVec4d::get( void*  ptr,
-                                                          size_t i );
+static std::vector<cv::Vec4d> VectorOfVectorOfVec4d::get( void*          ptr,
+                                                          std::ptrdiff_t i );
 lua:
     VectorOfVectorOfVec4d.get( ptr, i ) -> retval
 ```
@@ -117587,14 +118687,14 @@ lua:
 ### VectorOfVectorOfVec4d.ptr
 
 ```cpp
-void* VectorOfVectorOfVec4d::data( size_t i = 0 );
+void* VectorOfVectorOfVec4d::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfVec4d:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfVec4d::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfVec4d::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfVec4d.ptr( ptr[, i] ) -> retval
 ```
@@ -117626,7 +118726,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfVec4d::set( void*                  ptr,
-                                        size_t                 i,
+                                        std::ptrdiff_t         i,
                                         std::vector<cv::Vec4d> value );
 lua:
     VectorOfVectorOfVec4d.set( ptr, i, value ) -> None
@@ -117690,6 +118790,14 @@ lua:
 ```
 
 ## VectorOfVectorOfVec4f
+
+### VectorOfVectorOfVec4f.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfVec4f::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfVec4f.sizeof_value_type
+```
 
 ### VectorOfVectorOfVec4f.new
 
@@ -117757,9 +118865,9 @@ lua:
 ### VectorOfVectorOfVec4f.copy
 
 ```cpp
-std::vector<std::vector<cv::Vec4f>> VectorOfVectorOfVec4f::operator=( const std::vector<std::vector<cv::Vec4f>>& other );
+void VectorOfVectorOfVec4f::operator=( const std::vector<std::vector<cv::Vec4f>>& other );
 lua:
-    oVectorOfVectorOfVec4f:copy( other ) -> retval
+    oVectorOfVectorOfVec4f:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfVec4f.data
@@ -117789,8 +118897,8 @@ lua:
 ### VectorOfVectorOfVec4f.get
 
 ```cpp
-static std::vector<cv::Vec4f> VectorOfVectorOfVec4f::get( void*  ptr,
-                                                          size_t i );
+static std::vector<cv::Vec4f> VectorOfVectorOfVec4f::get( void*          ptr,
+                                                          std::ptrdiff_t i );
 lua:
     VectorOfVectorOfVec4f.get( ptr, i ) -> retval
 ```
@@ -117814,14 +118922,14 @@ lua:
 ### VectorOfVectorOfVec4f.ptr
 
 ```cpp
-void* VectorOfVectorOfVec4f::data( size_t i = 0 );
+void* VectorOfVectorOfVec4f::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfVec4f:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfVec4f::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfVec4f::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfVec4f.ptr( ptr[, i] ) -> retval
 ```
@@ -117853,7 +118961,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfVec4f::set( void*                  ptr,
-                                        size_t                 i,
+                                        std::ptrdiff_t         i,
                                         std::vector<cv::Vec4f> value );
 lua:
     VectorOfVectorOfVec4f.set( ptr, i, value ) -> None
@@ -117917,6 +119025,14 @@ lua:
 ```
 
 ## VectorOfVectorOfVec4i
+
+### VectorOfVectorOfVec4i.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfVec4i::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfVec4i.sizeof_value_type
+```
 
 ### VectorOfVectorOfVec4i.new
 
@@ -117984,9 +119100,9 @@ lua:
 ### VectorOfVectorOfVec4i.copy
 
 ```cpp
-std::vector<std::vector<cv::Vec4i>> VectorOfVectorOfVec4i::operator=( const std::vector<std::vector<cv::Vec4i>>& other );
+void VectorOfVectorOfVec4i::operator=( const std::vector<std::vector<cv::Vec4i>>& other );
 lua:
-    oVectorOfVectorOfVec4i:copy( other ) -> retval
+    oVectorOfVectorOfVec4i:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfVec4i.data
@@ -118016,8 +119132,8 @@ lua:
 ### VectorOfVectorOfVec4i.get
 
 ```cpp
-static std::vector<cv::Vec4i> VectorOfVectorOfVec4i::get( void*  ptr,
-                                                          size_t i );
+static std::vector<cv::Vec4i> VectorOfVectorOfVec4i::get( void*          ptr,
+                                                          std::ptrdiff_t i );
 lua:
     VectorOfVectorOfVec4i.get( ptr, i ) -> retval
 ```
@@ -118041,14 +119157,14 @@ lua:
 ### VectorOfVectorOfVec4i.ptr
 
 ```cpp
-void* VectorOfVectorOfVec4i::data( size_t i = 0 );
+void* VectorOfVectorOfVec4i::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfVec4i:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfVec4i::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfVec4i::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfVec4i.ptr( ptr[, i] ) -> retval
 ```
@@ -118080,7 +119196,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfVec4i::set( void*                  ptr,
-                                        size_t                 i,
+                                        std::ptrdiff_t         i,
                                         std::vector<cv::Vec4i> value );
 lua:
     VectorOfVectorOfVec4i.set( ptr, i, value ) -> None
@@ -118144,6 +119260,14 @@ lua:
 ```
 
 ## VectorOfVectorOfVec4s
+
+### VectorOfVectorOfVec4s.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfVec4s::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfVec4s.sizeof_value_type
+```
 
 ### VectorOfVectorOfVec4s.new
 
@@ -118211,9 +119335,9 @@ lua:
 ### VectorOfVectorOfVec4s.copy
 
 ```cpp
-std::vector<std::vector<cv::Vec4s>> VectorOfVectorOfVec4s::operator=( const std::vector<std::vector<cv::Vec4s>>& other );
+void VectorOfVectorOfVec4s::operator=( const std::vector<std::vector<cv::Vec4s>>& other );
 lua:
-    oVectorOfVectorOfVec4s:copy( other ) -> retval
+    oVectorOfVectorOfVec4s:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfVec4s.data
@@ -118243,8 +119367,8 @@ lua:
 ### VectorOfVectorOfVec4s.get
 
 ```cpp
-static std::vector<cv::Vec4s> VectorOfVectorOfVec4s::get( void*  ptr,
-                                                          size_t i );
+static std::vector<cv::Vec4s> VectorOfVectorOfVec4s::get( void*          ptr,
+                                                          std::ptrdiff_t i );
 lua:
     VectorOfVectorOfVec4s.get( ptr, i ) -> retval
 ```
@@ -118268,14 +119392,14 @@ lua:
 ### VectorOfVectorOfVec4s.ptr
 
 ```cpp
-void* VectorOfVectorOfVec4s::data( size_t i = 0 );
+void* VectorOfVectorOfVec4s::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfVec4s:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfVec4s::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfVec4s::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfVec4s.ptr( ptr[, i] ) -> retval
 ```
@@ -118307,7 +119431,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfVec4s::set( void*                  ptr,
-                                        size_t                 i,
+                                        std::ptrdiff_t         i,
                                         std::vector<cv::Vec4s> value );
 lua:
     VectorOfVectorOfVec4s.set( ptr, i, value ) -> None
@@ -118371,6 +119495,14 @@ lua:
 ```
 
 ## VectorOfVectorOfVec4w
+
+### VectorOfVectorOfVec4w.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfVec4w::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfVec4w.sizeof_value_type
+```
 
 ### VectorOfVectorOfVec4w.new
 
@@ -118438,9 +119570,9 @@ lua:
 ### VectorOfVectorOfVec4w.copy
 
 ```cpp
-std::vector<std::vector<cv::Vec4w>> VectorOfVectorOfVec4w::operator=( const std::vector<std::vector<cv::Vec4w>>& other );
+void VectorOfVectorOfVec4w::operator=( const std::vector<std::vector<cv::Vec4w>>& other );
 lua:
-    oVectorOfVectorOfVec4w:copy( other ) -> retval
+    oVectorOfVectorOfVec4w:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfVec4w.data
@@ -118470,8 +119602,8 @@ lua:
 ### VectorOfVectorOfVec4w.get
 
 ```cpp
-static std::vector<cv::Vec4w> VectorOfVectorOfVec4w::get( void*  ptr,
-                                                          size_t i );
+static std::vector<cv::Vec4w> VectorOfVectorOfVec4w::get( void*          ptr,
+                                                          std::ptrdiff_t i );
 lua:
     VectorOfVectorOfVec4w.get( ptr, i ) -> retval
 ```
@@ -118495,14 +119627,14 @@ lua:
 ### VectorOfVectorOfVec4w.ptr
 
 ```cpp
-void* VectorOfVectorOfVec4w::data( size_t i = 0 );
+void* VectorOfVectorOfVec4w::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfVec4w:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfVec4w::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfVec4w::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfVec4w.ptr( ptr[, i] ) -> retval
 ```
@@ -118534,7 +119666,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfVec4w::set( void*                  ptr,
-                                        size_t                 i,
+                                        std::ptrdiff_t         i,
                                         std::vector<cv::Vec4w> value );
 lua:
     VectorOfVectorOfVec4w.set( ptr, i, value ) -> None
@@ -118598,6 +119730,14 @@ lua:
 ```
 
 ## VectorOfVectorOfVec6d
+
+### VectorOfVectorOfVec6d.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfVec6d::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfVec6d.sizeof_value_type
+```
 
 ### VectorOfVectorOfVec6d.new
 
@@ -118665,9 +119805,9 @@ lua:
 ### VectorOfVectorOfVec6d.copy
 
 ```cpp
-std::vector<std::vector<cv::Vec6d>> VectorOfVectorOfVec6d::operator=( const std::vector<std::vector<cv::Vec6d>>& other );
+void VectorOfVectorOfVec6d::operator=( const std::vector<std::vector<cv::Vec6d>>& other );
 lua:
-    oVectorOfVectorOfVec6d:copy( other ) -> retval
+    oVectorOfVectorOfVec6d:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfVec6d.data
@@ -118697,8 +119837,8 @@ lua:
 ### VectorOfVectorOfVec6d.get
 
 ```cpp
-static std::vector<cv::Vec6d> VectorOfVectorOfVec6d::get( void*  ptr,
-                                                          size_t i );
+static std::vector<cv::Vec6d> VectorOfVectorOfVec6d::get( void*          ptr,
+                                                          std::ptrdiff_t i );
 lua:
     VectorOfVectorOfVec6d.get( ptr, i ) -> retval
 ```
@@ -118722,14 +119862,14 @@ lua:
 ### VectorOfVectorOfVec6d.ptr
 
 ```cpp
-void* VectorOfVectorOfVec6d::data( size_t i = 0 );
+void* VectorOfVectorOfVec6d::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfVec6d:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfVec6d::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfVec6d::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfVec6d.ptr( ptr[, i] ) -> retval
 ```
@@ -118761,7 +119901,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfVec6d::set( void*                  ptr,
-                                        size_t                 i,
+                                        std::ptrdiff_t         i,
                                         std::vector<cv::Vec6d> value );
 lua:
     VectorOfVectorOfVec6d.set( ptr, i, value ) -> None
@@ -118825,6 +119965,14 @@ lua:
 ```
 
 ## VectorOfVectorOfVec6f
+
+### VectorOfVectorOfVec6f.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfVec6f::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfVec6f.sizeof_value_type
+```
 
 ### VectorOfVectorOfVec6f.new
 
@@ -118892,9 +120040,9 @@ lua:
 ### VectorOfVectorOfVec6f.copy
 
 ```cpp
-std::vector<std::vector<cv::Vec6f>> VectorOfVectorOfVec6f::operator=( const std::vector<std::vector<cv::Vec6f>>& other );
+void VectorOfVectorOfVec6f::operator=( const std::vector<std::vector<cv::Vec6f>>& other );
 lua:
-    oVectorOfVectorOfVec6f:copy( other ) -> retval
+    oVectorOfVectorOfVec6f:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfVec6f.data
@@ -118924,8 +120072,8 @@ lua:
 ### VectorOfVectorOfVec6f.get
 
 ```cpp
-static std::vector<cv::Vec6f> VectorOfVectorOfVec6f::get( void*  ptr,
-                                                          size_t i );
+static std::vector<cv::Vec6f> VectorOfVectorOfVec6f::get( void*          ptr,
+                                                          std::ptrdiff_t i );
 lua:
     VectorOfVectorOfVec6f.get( ptr, i ) -> retval
 ```
@@ -118949,14 +120097,14 @@ lua:
 ### VectorOfVectorOfVec6f.ptr
 
 ```cpp
-void* VectorOfVectorOfVec6f::data( size_t i = 0 );
+void* VectorOfVectorOfVec6f::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfVec6f:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfVec6f::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfVec6f::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfVec6f.ptr( ptr[, i] ) -> retval
 ```
@@ -118988,7 +120136,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfVec6f::set( void*                  ptr,
-                                        size_t                 i,
+                                        std::ptrdiff_t         i,
                                         std::vector<cv::Vec6f> value );
 lua:
     VectorOfVectorOfVec6f.set( ptr, i, value ) -> None
@@ -119052,6 +120200,14 @@ lua:
 ```
 
 ## VectorOfVectorOfVec6i
+
+### VectorOfVectorOfVec6i.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfVec6i::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfVec6i.sizeof_value_type
+```
 
 ### VectorOfVectorOfVec6i.new
 
@@ -119119,9 +120275,9 @@ lua:
 ### VectorOfVectorOfVec6i.copy
 
 ```cpp
-std::vector<std::vector<cv::Vec6i>> VectorOfVectorOfVec6i::operator=( const std::vector<std::vector<cv::Vec6i>>& other );
+void VectorOfVectorOfVec6i::operator=( const std::vector<std::vector<cv::Vec6i>>& other );
 lua:
-    oVectorOfVectorOfVec6i:copy( other ) -> retval
+    oVectorOfVectorOfVec6i:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfVec6i.data
@@ -119151,8 +120307,8 @@ lua:
 ### VectorOfVectorOfVec6i.get
 
 ```cpp
-static std::vector<cv::Vec6i> VectorOfVectorOfVec6i::get( void*  ptr,
-                                                          size_t i );
+static std::vector<cv::Vec6i> VectorOfVectorOfVec6i::get( void*          ptr,
+                                                          std::ptrdiff_t i );
 lua:
     VectorOfVectorOfVec6i.get( ptr, i ) -> retval
 ```
@@ -119176,14 +120332,14 @@ lua:
 ### VectorOfVectorOfVec6i.ptr
 
 ```cpp
-void* VectorOfVectorOfVec6i::data( size_t i = 0 );
+void* VectorOfVectorOfVec6i::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfVec6i:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfVec6i::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfVec6i::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfVec6i.ptr( ptr[, i] ) -> retval
 ```
@@ -119215,7 +120371,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfVec6i::set( void*                  ptr,
-                                        size_t                 i,
+                                        std::ptrdiff_t         i,
                                         std::vector<cv::Vec6i> value );
 lua:
     VectorOfVectorOfVec6i.set( ptr, i, value ) -> None
@@ -119279,6 +120435,14 @@ lua:
 ```
 
 ## VectorOfVectorOfVec8i
+
+### VectorOfVectorOfVec8i.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfVec8i::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfVec8i.sizeof_value_type
+```
 
 ### VectorOfVectorOfVec8i.new
 
@@ -119346,9 +120510,9 @@ lua:
 ### VectorOfVectorOfVec8i.copy
 
 ```cpp
-std::vector<std::vector<cv::Vec8i>> VectorOfVectorOfVec8i::operator=( const std::vector<std::vector<cv::Vec8i>>& other );
+void VectorOfVectorOfVec8i::operator=( const std::vector<std::vector<cv::Vec8i>>& other );
 lua:
-    oVectorOfVectorOfVec8i:copy( other ) -> retval
+    oVectorOfVectorOfVec8i:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfVec8i.data
@@ -119378,8 +120542,8 @@ lua:
 ### VectorOfVectorOfVec8i.get
 
 ```cpp
-static std::vector<cv::Vec8i> VectorOfVectorOfVec8i::get( void*  ptr,
-                                                          size_t i );
+static std::vector<cv::Vec8i> VectorOfVectorOfVec8i::get( void*          ptr,
+                                                          std::ptrdiff_t i );
 lua:
     VectorOfVectorOfVec8i.get( ptr, i ) -> retval
 ```
@@ -119403,14 +120567,14 @@ lua:
 ### VectorOfVectorOfVec8i.ptr
 
 ```cpp
-void* VectorOfVectorOfVec8i::data( size_t i = 0 );
+void* VectorOfVectorOfVec8i::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfVec8i:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfVec8i::ptr( void*  ptr,
-                                         size_t i = 0 );
+static void* VectorOfVectorOfVec8i::ptr( void*          ptr,
+                                         std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfVec8i.ptr( ptr[, i] ) -> retval
 ```
@@ -119442,7 +120606,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfVec8i::set( void*                  ptr,
-                                        size_t                 i,
+                                        std::ptrdiff_t         i,
                                         std::vector<cv::Vec8i> value );
 lua:
     VectorOfVectorOfVec8i.set( ptr, i, value ) -> None
@@ -119506,6 +120670,14 @@ lua:
 ```
 
 ## VectorOfVectorOfVectorOfInt
+
+### VectorOfVectorOfVectorOfInt.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVectorOfVectorOfInt::sizeof_value_type
+lua:
+    [propget] VectorOfVectorOfVectorOfInt.sizeof_value_type
+```
 
 ### VectorOfVectorOfVectorOfInt.new
 
@@ -119573,9 +120745,9 @@ lua:
 ### VectorOfVectorOfVectorOfInt.copy
 
 ```cpp
-std::vector<std::vector<std::vector<int>>> VectorOfVectorOfVectorOfInt::operator=( const std::vector<std::vector<std::vector<int>>>& other );
+void VectorOfVectorOfVectorOfInt::operator=( const std::vector<std::vector<std::vector<int>>>& other );
 lua:
-    oVectorOfVectorOfVectorOfInt:copy( other ) -> retval
+    oVectorOfVectorOfVectorOfInt:copy( other ) -> None
 ```
 
 ### VectorOfVectorOfVectorOfInt.data
@@ -119605,8 +120777,8 @@ lua:
 ### VectorOfVectorOfVectorOfInt.get
 
 ```cpp
-static std::vector<std::vector<int>> VectorOfVectorOfVectorOfInt::get( void*  ptr,
-                                                                       size_t i );
+static std::vector<std::vector<int>> VectorOfVectorOfVectorOfInt::get( void*          ptr,
+                                                                       std::ptrdiff_t i );
 lua:
     VectorOfVectorOfVectorOfInt.get( ptr, i ) -> retval
 ```
@@ -119630,14 +120802,14 @@ lua:
 ### VectorOfVectorOfVectorOfInt.ptr
 
 ```cpp
-void* VectorOfVectorOfVectorOfInt::data( size_t i = 0 );
+void* VectorOfVectorOfVectorOfInt::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVectorOfVectorOfInt:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVectorOfVectorOfInt::ptr( void*  ptr,
-                                               size_t i = 0 );
+static void* VectorOfVectorOfVectorOfInt::ptr( void*          ptr,
+                                               std::ptrdiff_t i = 0 );
 lua:
     VectorOfVectorOfVectorOfInt.ptr( ptr[, i] ) -> retval
 ```
@@ -119669,7 +120841,7 @@ lua:
 
 ```cpp
 static void VectorOfVectorOfVectorOfInt::set( void*                         ptr,
-                                              size_t                        i,
+                                              std::ptrdiff_t                i,
                                               std::vector<std::vector<int>> value );
 lua:
     VectorOfVectorOfVectorOfInt.set( ptr, i, value ) -> None
@@ -119733,6 +120905,14 @@ lua:
 ```
 
 ## VectorOfVideoCapture
+
+### VectorOfVideoCapture.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVideoCapture::sizeof_value_type
+lua:
+    [propget] VectorOfVideoCapture.sizeof_value_type
+```
 
 ### VectorOfVideoCapture.new
 
@@ -119800,9 +120980,9 @@ lua:
 ### VectorOfVideoCapture.copy
 
 ```cpp
-std::vector<cv::VideoCapture> VectorOfVideoCapture::operator=( const std::vector<cv::VideoCapture>& other );
+void VectorOfVideoCapture::operator=( const std::vector<cv::VideoCapture>& other );
 lua:
-    oVectorOfVideoCapture:copy( other ) -> retval
+    oVectorOfVideoCapture:copy( other ) -> None
 ```
 
 ### VectorOfVideoCapture.data
@@ -119832,8 +121012,8 @@ lua:
 ### VectorOfVideoCapture.get
 
 ```cpp
-static cv::VideoCapture VectorOfVideoCapture::get( void*  ptr,
-                                                   size_t i );
+static cv::VideoCapture* VectorOfVideoCapture::get( void*          ptr,
+                                                    std::ptrdiff_t i );
 lua:
     VectorOfVideoCapture.get( ptr, i ) -> retval
 ```
@@ -119857,14 +121037,14 @@ lua:
 ### VectorOfVideoCapture.ptr
 
 ```cpp
-void* VectorOfVideoCapture::data( size_t i = 0 );
+void* VectorOfVideoCapture::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVideoCapture:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVideoCapture::ptr( void*  ptr,
-                                        size_t i = 0 );
+static void* VectorOfVideoCapture::ptr( void*          ptr,
+                                        std::ptrdiff_t i = 0 );
 lua:
     VectorOfVideoCapture.ptr( ptr[, i] ) -> retval
 ```
@@ -119896,7 +121076,7 @@ lua:
 
 ```cpp
 static void VectorOfVideoCapture::set( void*            ptr,
-                                       size_t           i,
+                                       std::ptrdiff_t   i,
                                        cv::VideoCapture value );
 lua:
     VectorOfVideoCapture.set( ptr, i, value ) -> None
@@ -119921,7 +121101,7 @@ lua:
 ### VectorOfVideoCapture.sol::meta\_function::index
 
 ```cpp
-cv::VideoCapture VectorOfVideoCapture::sol::meta_function::index( size_t index );
+cv::VideoCapture* VectorOfVideoCapture::sol::meta_function::index( size_t index );
 lua:
     oVectorOfVideoCapture:__index( index ) -> retval
 ```
@@ -119960,6 +121140,14 @@ lua:
 ```
 
 ## VectorOfVideoCaptureAPIs
+
+### VectorOfVideoCaptureAPIs.sizeof\_value\_type
+
+```cpp
+static const size_t VectorOfVideoCaptureAPIs::sizeof_value_type
+lua:
+    [propget] VectorOfVideoCaptureAPIs.sizeof_value_type
+```
 
 ### VectorOfVideoCaptureAPIs.new
 
@@ -120027,9 +121215,9 @@ lua:
 ### VectorOfVideoCaptureAPIs.copy
 
 ```cpp
-std::vector<cv::VideoCaptureAPIs> VectorOfVideoCaptureAPIs::operator=( const std::vector<cv::VideoCaptureAPIs>& other );
+void VectorOfVideoCaptureAPIs::operator=( const std::vector<cv::VideoCaptureAPIs>& other );
 lua:
-    oVectorOfVideoCaptureAPIs:copy( other ) -> retval
+    oVectorOfVideoCaptureAPIs:copy( other ) -> None
 ```
 
 ### VectorOfVideoCaptureAPIs.data
@@ -120059,8 +121247,8 @@ lua:
 ### VectorOfVideoCaptureAPIs.get
 
 ```cpp
-static cv::VideoCaptureAPIs VectorOfVideoCaptureAPIs::get( void*  ptr,
-                                                           size_t i );
+static cv::VideoCaptureAPIs VectorOfVideoCaptureAPIs::get( void*          ptr,
+                                                           std::ptrdiff_t i );
 lua:
     VectorOfVideoCaptureAPIs.get( ptr, i ) -> retval
 ```
@@ -120084,14 +121272,14 @@ lua:
 ### VectorOfVideoCaptureAPIs.ptr
 
 ```cpp
-void* VectorOfVideoCaptureAPIs::data( size_t i = 0 );
+void* VectorOfVideoCaptureAPIs::data( std::ptrdiff_t i = 0 );
 lua:
     oVectorOfVideoCaptureAPIs:ptr( [i] ) -> retval
 ```
 
 ```cpp
-static void* VectorOfVideoCaptureAPIs::ptr( void*  ptr,
-                                            size_t i = 0 );
+static void* VectorOfVideoCaptureAPIs::ptr( void*          ptr,
+                                            std::ptrdiff_t i = 0 );
 lua:
     VectorOfVideoCaptureAPIs.ptr( ptr[, i] ) -> retval
 ```
@@ -120123,7 +121311,7 @@ lua:
 
 ```cpp
 static void VectorOfVideoCaptureAPIs::set( void*                ptr,
-                                           size_t               i,
+                                           std::ptrdiff_t       i,
                                            cv::VideoCaptureAPIs value );
 lua:
     VectorOfVideoCaptureAPIs.set( ptr, i, value ) -> None

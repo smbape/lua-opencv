@@ -2,14 +2,7 @@
 
 // CV_EXPORTS_W : include this file in lua_generated_include
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-#include <lua.h>
-#include <lauxlib.h>
-#ifdef __cplusplus
-}
-#endif
+#include <lua.hpp>
 
 #include <algorithm>
 #include <array>
@@ -245,6 +238,25 @@ namespace LUA_MODULE_NAME {
 			return typeName;
 			// return LUA_MODULE__PRETTY_FUNCTION;
 		}
+
+
+		inline std::string LuaTypeName(lua_State* L, int arg) {
+			if (luaL_getmetafield(L, arg, "__name") != 0) {
+				if (lua_type(L, -1) == LUA_TSTRING) {
+					std::string typearg = lua_tostring(L, -1);  /* use the given type name */
+					lua_pop(L, 1);
+					return typearg;
+				}
+				lua_pop(L, 1);
+			}
+
+			if (lua_type(L, arg) == LUA_TLIGHTUSERDATA) {
+				return "light userdata";  /* special name for messages */
+			}
+
+			return luaL_typename(L, arg);  /* standard name */
+		}
+
 	}
 }
 

@@ -222,7 +222,7 @@ if type(jit) == "table" and package.config:sub(1, 1) ~= "/" then
 
         local function InputArray_createFromMat(mat)
             local ptr = ffi.gc(ffi.C.malloc(cv._InputArray.__sizeof), ffi.C.free)
-            opencv_lua_lib.InputArray_createFromMat(ptr, mat:__self())
+            opencv_lua_lib.InputArray_createFromMat(ptr, mat.__self)
             ffi.gc(ptr, function(ptr)
                 opencv_lua_lib.InputArray_destructor(ptr)
                 ffi.C.free(ptr)

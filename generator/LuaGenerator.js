@@ -117,7 +117,7 @@ const proto = {
             [cpptype, "other", "", ["/Ref"]],
         ], "", ""], options);
 
-        coclass.addMethod([`${ fqn }.operator=`, cpptype, ["=copy", "/Ref"], [
+        coclass.addMethod([`${ fqn }.operator=`, "void", ["=copy"], [
             [cpptype, "other", "", ["/Ref", "/C"]],
         ], "", ""], options);
 
@@ -155,11 +155,17 @@ const proto = {
         }
 
         const fqn = getTypeDef(cpptype, options);
+
         if (this.classes.has(fqn) && this.getCoClass(fqn, options).is_vector) {
             return;
         }
 
         const vtype = cpptype.slice("std::vector<".length, -">".length);
+
+        const { shared_ptr } = options;
+        const is_ptr = vtype.endsWith("*");
+        const is_shared_ptr = vtype.startsWith(`${ shared_ptr }<`);
+        const is_by_ref = !is_ptr && !is_shared_ptr && this.classes.has(vtype) && !this.enums.has(vtype);
 
         const { self } = options;
 
@@ -200,7 +206,7 @@ const proto = {
                 ["void*", "ptr", "", [`/Cast=static_cast<${ vtype }*>`]],
                 ["std::ptrdiff_t", "i", "0", []],
             ], "", ""], options);
-            coclass.addMethod([`${ fqn }.get`, vtype, ["/S", "/Call=*", "/Expr=$1 + $2"], [
+            coclass.addMethod([`${ fqn }.get`, `${ vtype }${ is_by_ref ? "*" : "" }`, ["/S", `/Call=${ is_by_ref ? "" : "*" }`, "/Expr=$1 + $2"], [
                 ["void*", "ptr", "", [`/Cast=static_cast<${ vtype }*>`]],
                 ["std::ptrdiff_t", "i", "", []],
             ], "", ""], options);
@@ -214,7 +220,7 @@ const proto = {
         coclass.addMethod([`${ fqn }.front`, vtype, [], [], "", ""], options);
         coclass.addMethod([`${ fqn }.back`, vtype, [], [], "", ""], options);
         coclass.addMethod([`${ fqn }.empty`, "bool", ["/C"], [], "", ""], options);
-        coclass.addMethod([`${ fqn }.size`, "size_t", ["=sol::meta_function::length"], [], "", ""], options);
+        coclass.addProperty(["size_t", "sizeof_value_type", "", ["/S", "/C", `/RExpr=sizeof(${ vtype })`]]);
         coclass.addMethod([`${ fqn }.size`, "size_t", ["=sizeof", `/Output=$0 * sizeof(${ vtype })`], [], "", ""], options);
         coclass.addMethod([`${ fqn }.max_size`, "size_t", [], [], "", ""], options);
 
@@ -239,11 +245,11 @@ const proto = {
             [cpptype, "other", "", ["/Ref"]],
         ], "", ""], options);
 
-        coclass.addMethod([`${ fqn }.operator=`, cpptype, ["=copy", "/Ref"], [
+        coclass.addMethod([`${ fqn }.operator=`, "void", ["=copy"], [
             [cpptype, "other", "", ["/Ref", "/C"]],
         ], "", ""], options);
 
-        coclass.addMethod([`${ fqn }.sol::meta_function::index`, vtype, ["/Call=lua_vector_method__index", `/Expr=L, ${ self }, $0`], [
+        coclass.addMethod([`${ fqn }.sol::meta_function::index`, `${ vtype }${ is_by_ref ? "*" : "" }`, [`/Call=${ is_by_ref ? "&" : "" }lua_vector_method__index`, `/Expr=L, ${ self }, $0`], [
             ["size_t", "index", "", []],
         ], "", ""], options);
 
@@ -253,6 +259,8 @@ const proto = {
         ], "", ""], options);
 
         coclass.addMethod([`${ fqn }.table`, "void", ["/Call=lua_push", `/Expr=L, ${ self }`], [], "", ""], options);
+
+        coclass.addMethod([`${ fqn }.size`, "size_t", ["=sol::meta_function::length"], [], "", ""], options);
 
         this.addDependencies(coclass, options);
     },
@@ -749,7 +757,7 @@ class LuaGenerator {
                     if (is_valid && getters.count(k)) {
                         return getters.at(k)(L);
                     }
-                    return 0;
+                    return lua_missing_declaration(L);
                 }
             `.replace(/^ {16}/mg, "").trim());
         }
@@ -787,6 +795,8 @@ class LuaGenerator {
 
             if (dynamic_get.length !== 0) {
                 index_methods.push("{\"__index\", dynamic_get}, // when we access an absent field in an instance");
+            } else {
+                index_methods.push("{\"__index\", lua_missing_declaration}, // when we access an absent field in an instance");
             }
 
             if (dynamic_set.length !== 0) {
@@ -801,11 +811,19 @@ class LuaGenerator {
                     };
                 `.replace(/^ {20}/mg, "").trim());
 
-                contentRegister.push("", `
-                    lua_getmetatable(L, -1);
-                    lua_pushfuncs(L, index_methods);
-                    lua_pop(L, 1);
-                `.replace(/^ {20}/mg, "").trim());
+                const path = getProgId(coclass.path.join("."), options).split(".");
+                while (path.length !== 0 && path[0] === "") {
+                    path.shift();
+                }
+
+                const body = ["lua_pushfuncs(L, index_methods);"];
+
+                if (path.length !== 0) {
+                    body.unshift("lua_getmetatable(L, -1);");
+                    body.push("lua_pop(L, 1);");
+                }
+
+                contentRegister.push("", body.join("\n"));
             }
         }
     }
@@ -813,6 +831,65 @@ class LuaGenerator {
     static isConstructor(func_modifiers) {
         return func_modifiers.includes("/CO") && !func_modifiers.some(modifier => modifier[0] === "=");
     }
+
+    static Errors = {
+        argc: (fname, overload_id, overloads, not_found, variadic, argc, offset, largc) => {
+            if ( overloads.length !== 1 || !not_found.includes("Overload resolution failed")) {
+                return `goto overload${ overload_id };`;
+            }
+
+            if (variadic) {
+                return `LUAL_MODULE_ERROR_RETURN(L, "bad number of arguments to '${ fname }' (expecting at least ${ argc + offset - 1 }, given " << (${ largc }) << ")");`;
+            }
+
+            return `LUAL_MODULE_ERROR_RETURN(L, "bad number of arguments to '${ fname }' (expecting at most ${ argc + offset }, given " << (${ largc } + kwargc) << ")");`;
+        },
+
+        kwarg: (fname, overload_id, overloads, not_found, pos, argname) => {
+            if ( overloads.length !== 1 || !not_found.includes("Overload resolution failed")) {
+                return `goto overload${ overload_id };`;
+            }
+
+            return `LUAL_MODULE_ERROR_RETURN(L, "bad argument ${ pos } to '${ fname }' (already provided as named parameter '${ argname }'");`;
+        },
+
+        kwarg_type: (fname, overload_id, overloads, not_found, pos, type, vargc, argname) => {
+            if ( overloads.length !== 1 || !not_found.includes("Overload resolution failed")) {
+                return `goto overload${ overload_id };`;
+            }
+
+            return [
+                `Keywords::push(L, ${ vargc }, "${ argname }");`,
+                `LUAL_MODULE_ERROR(L, "bad argument '${ argname }' to '${ fname }' (cannot convert '" << ::LUA_MODULE_NAME::internal::LuaTypeName(L, -1) << "' to '${ type }')");`,
+                "lua_pop(L, 1);",
+                `return lua_gettop(L) - ${ vargc };`,
+            ].join("\n");
+        },
+
+        type: (fname, overload_id, overloads, not_found, pos, type, arg) => {
+            if ( overloads.length !== 1 || !not_found.includes("Overload resolution failed")) {
+                return `goto overload${ overload_id };`;
+            }
+
+            return `LUAL_MODULE_ERROR_RETURN(L, "bad argument ${ pos } to '${ fname }' (cannot convert '" << ::LUA_MODULE_NAME::internal::LuaTypeName(L, ${ arg }) << "' to '${ type }')");`;
+        },
+
+        mandatory: (fname, overload_id, overloads, not_found, argname) => {
+            if ( overloads.length !== 1 || !not_found.includes("Overload resolution failed")) {
+                return `goto overload${ overload_id };`;
+            }
+
+            return `LUAL_MODULE_ERROR_RETURN(L, "missing argument ${ argname } to '${ fname }'");`;
+        },
+
+        unknown: (fname, overload_id, overloads, not_found) => {
+            if ( overloads.length !== 1 || !not_found.includes("Overload resolution failed")) {
+                return `goto overload${ overload_id };`;
+            }
+
+            return `LUAL_MODULE_ERROR_RETURN(L, "unknown named parameters to '${ fname }'");`;
+        },
+    };
 
     // eslint-disable-next-line complexity
     static writeMethods(processor, coclass, contentRegisterPrivate, contentRegister, options) {
@@ -837,6 +914,7 @@ class LuaGenerator {
 
             return a > b ? 1 : a < b ? -1 : 0;
         })) {
+            const dname = LuaGenerator.getMetaMethod(fname);
             const ename = LuaGenerator.getLuaFn(fname);
             const overloads = coclass.methods.get(fname);
             const contentFunction = [];
@@ -851,6 +929,15 @@ class LuaGenerator {
             let overload_id = 0;
             let argcMax = 0;
             const argnames = new Set();
+
+            let not_found = "LUAL_MODULE_ERROR_RETURN(L, \"Overload resolution failed\")";
+            if (!coclass.isStatic()) {
+                if (ename === "__index" || ename === "sol::meta_function::index") {
+                    not_found = `return lua_class__index<0, ::${ [fqn, ...coclass.parents].join(", ::") }>(L)`;
+                } else if (ename === "__newindex" || ename === "sol::meta_function::new_index") {
+                    not_found = `return lua_class__newindex<0, ::${ [fqn, ...coclass.parents].join(", ::") }>(L)`;
+                }
+            }
 
             for (const decl of overloads) {
                 overload_id++;
@@ -953,7 +1040,7 @@ class LuaGenerator {
                 overload.push(`
                     if (${ precondition.join(" || ") }) {
                         // wrong number of paramters
-                        goto overload${ overload_id };
+                        ${ LuaGenerator.Errors.argc(dname, overload_id, overloads, not_found, variadic, argc, offset, largc) }
                     }
 
                     int usedkw = 0;
@@ -1118,12 +1205,12 @@ class LuaGenerator {
                                 // positional parameter
                                 ${ argname }_${ arrtype } = lua_to${ arg_suffix }(L, ${ argn }, static_cast<${ var_type }*>(nullptr), is_valid${ arg_suffix === "arrays" && nd_mat ? ", true" : "" });
                                 if (!is_valid) {
-                                    goto overload${ overload_id };
+                                    ${ LuaGenerator.Errors.type(dname, overload_id, overloads, not_found, `#${ argn }`, var_type, argn) }
                                 }
 
                                 // should not be a named parameter
                                 if (has_kwargs && Keywords::has(L, ${ vargc }, "${ argname }")) {
-                                    goto overload${ overload_id };
+                                    ${ LuaGenerator.Errors.kwarg(dname, overload_id, overloads, not_found, `#${ argn }`, argname) }
                                 }
                             }
                             else if (has_kwargs && Keywords::has(L, ${ vargc }, "${ argname }")) {
@@ -1132,7 +1219,7 @@ class LuaGenerator {
                                 ${ argname }_${ arrtype } = lua_to${ arg_suffix }(L, -1, static_cast<${ var_type }*>(nullptr), is_valid${ arg_suffix === "arrays" && nd_mat ? ", true" : "" });
                                 lua_pop(L, 1);
                                 if (!is_valid) {
-                                    goto overload${ overload_id };
+                                    ${ LuaGenerator.Errors.kwarg_type(dname, overload_id, overloads, not_found, `kwargs.${ argname }`, var_type, vargc, argname).split("\n").join(`\n${ " ".repeat(36) }`) }
                                 }
                                 usedkw++;
                             }
@@ -1142,7 +1229,7 @@ class LuaGenerator {
                             extractors.push(`
                                 else {
                                     // mandatory parameter
-                                    goto overload${ overload_id };
+                                    ${ LuaGenerator.Errors.mandatory(dname, overload_id, overloads, not_found, argname) }
                                 }
                             `.replace(/^ {32}/mg, "").trim());
                         } else if (defval !== "") {
@@ -1162,12 +1249,12 @@ class LuaGenerator {
                                 // positional parameter
                                 ${ argname } = lua_to(L, ${ argn }, static_cast<${ var_type }*>(nullptr), is_valid);
                                 if (!is_valid) {
-                                    goto overload${ overload_id };
+                                    ${ LuaGenerator.Errors.type(dname, overload_id, overloads, not_found, `#${ argn }`, var_type, argn) }
                                 }
 
                                 // should not be a named parameter
                                 if (has_kwargs && Keywords::has(L, ${ vargc }, "${ argname }")) {
-                                    goto overload${ overload_id };
+                                    ${ LuaGenerator.Errors.kwarg(dname, overload_id, overloads, not_found, `#${ argn }`, argname) }
                                 }
                             }
                             else if (has_kwargs && Keywords::has(L, ${ vargc }, "${ argname }")) {
@@ -1176,7 +1263,7 @@ class LuaGenerator {
                                 ${ argname } = lua_to(L, -1, static_cast<${ var_type }*>(nullptr), is_valid);
                                 lua_pop(L, 1);
                                 if (!is_valid) {
-                                    goto overload${ overload_id };
+                                    ${ LuaGenerator.Errors.kwarg_type(dname, overload_id, overloads, not_found, `kwargs.${ argname }`, var_type, vargc, argname).split("\n").join(`\n${ " ".repeat(36) }`) }
                                 }
                                 usedkw++;
                             }
@@ -1186,7 +1273,7 @@ class LuaGenerator {
                             extractors.push(`
                                 else {
                                     // mandatory parameter
-                                    goto overload${ overload_id };
+                                    ${ LuaGenerator.Errors.mandatory(dname, overload_id, overloads, not_found, argname) }
                                 }
                             `.replace(/^ {32}/mg, "").trim());
                         } else {
@@ -1205,12 +1292,12 @@ class LuaGenerator {
                                 // positional parameter
                                 ${ argname }_holder = lua_to(L, ${ argn }, static_cast<${ var_type }*>(nullptr), is_valid);
                                 if (!is_valid) {
-                                    goto overload${ overload_id };
+                                    ${ LuaGenerator.Errors.type(dname, overload_id, overloads, not_found, `#${ argn }`, var_type, argn) }
                                 }
 
                                 // should not be a named parameter
                                 if (has_kwargs && Keywords::has(L, ${ vargc }, "${ argname }")) {
-                                    goto overload${ overload_id };
+                                    ${ LuaGenerator.Errors.kwarg(dname, overload_id, overloads, not_found, `#${ argn }`, argname) }
                                 }
                             }
                         `.replace(/^ {28}/mg, "").trim());
@@ -1223,7 +1310,8 @@ class LuaGenerator {
                                     ${ argname }_holder = lua_to(L, -1, static_cast<${ var_type }*>(nullptr), is_valid);
                                     lua_pop(L, 1);
                                     if (!is_valid) {
-                                        goto overload${ overload_id };
+                                        ${ LuaGenerator.Errors.kwarg_type(dname, overload_id, overloads, not_found,
+                                            `kwargs.${ argname }`, var_type, vargc, argname).split("\n").join(`\n${ " ".repeat(40) }`) }
                                     }
                                     usedkw++;
                                 }
@@ -1234,7 +1322,7 @@ class LuaGenerator {
                             extractors.push(`
                                 else {
                                     // mandatory parameter
-                                    goto overload${ overload_id };
+                                    ${ LuaGenerator.Errors.mandatory(dname, overload_id, overloads, not_found, argname) }
                                 }
                             `.replace(/^ {32}/mg, "").trim());
                         }
@@ -1260,7 +1348,7 @@ class LuaGenerator {
                     overload.push(`
                         // unknown named parameters
                         if (usedkw != kwargc) {
-                            goto overload${ overload_id };
+                            ${ LuaGenerator.Errors.unknown(dname, overload_id, overloads, not_found) }
                         }
                     `.replace(/^ {24}/mg, "").trim());
                 }
@@ -1439,15 +1527,6 @@ class LuaGenerator {
             let start = 0;
             while (contentFunction[start] === "" && start + 1 < contentFunction.length) {
                 start++;
-            }
-
-            let not_found = "LUAL_MODULE_ERROR_RETURN(L, \"Overload resolution failed\")";
-            if (!coclass.isStatic()) {
-                if (ename === "__index" || ename === "sol::meta_function::index") {
-                    not_found = `return lua_class__index<0, ::${ [fqn, ...coclass.parents].join(", ::") }>(L)`;
-                } else if (ename === "__newindex" || ename === "sol::meta_function::new_index") {
-                    not_found = `return lua_class__newindex<0, ::${ [fqn, ...coclass.parents].join(", ::") }>(L)`;
-                }
             }
 
             const body = `

@@ -26,6 +26,8 @@
 ** [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
 */
 
+#ifndef LUA_BITLIBNAME
+
 #include <bit.hpp>
 
 #define LUA_BITOP_VERSION   "1.0.2"
@@ -196,3 +198,5 @@ int LUA_MODULE_NAME::luaopen_bit(lua_State* L)
 	lua_pushfuncs(L, bit_funcs);
 	return 1;
 }
+
+#endif /* LUA_BITLIBNAME */

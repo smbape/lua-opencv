@@ -367,7 +367,7 @@ function stash_push() {
 }
 
 function tidy() {
-    node ../${ESLINT_CONFIG_PROJECT}/node_modules/eslint/bin/eslint.js --config=../${ESLINT_CONFIG_PROJECT}/.eslintrc --fix 'generator/**/*.js' 'scripts/*.js'
+    node ../${ESLINT_CONFIG_PROJECT}/node_modules/eslint/bin/eslint.js --config=../${ESLINT_CONFIG_PROJECT}/.eslintrc --fix 'generator/**/*.js' 'scripts/*/*.js'
 }
 
 function doctoc() {
@@ -1549,7 +1549,7 @@ function compile_debug_wsl() {
 source scripts/wsl_init.sh && \
 version=\"\$(get_lua_version)\"
 cd out/build/Linux-GCC-Debug/ && \
-ninja -d explain '${PROJECT_ID}_lua/\${version}/CMakeFiles/${PROJECT_ID}_lua.dir/__/${file}.o'
+ninja -d explain \"${PROJECT_ID}_lua/\${version}/CMakeFiles/${PROJECT_ID}_lua.dir/__/${file}.o\"
 "
 }
 
@@ -1557,7 +1557,6 @@ function compile_debug_strict_wsl() {
     local file="$1"
     wsl -c "
 source scripts/wsl_init.sh && \
-version=\"\$(get_lua_version)\"
 cd out/build/Linux-GCC-Debug/ && \
 ninja -d explain '${file}.o'
 "

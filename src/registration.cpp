@@ -11,11 +11,16 @@ namespace {
 	}
 
 	void register_bit(lua_State* L) {
+#ifdef LUA_BITLIBNAME
+		lua_pushliteral(L, "bit");
+		lua_getglobal(L, "bit");
+		lua_rawset(L, -3);
+#else
+		lua_pushliteral(L, "bit");
 		lua_newtable(L);
-		lua_pushvalue(L, -1);
-		lua_setfield(L, -3, "bit");
 		luaopen_bit(L);
-		lua_pop(L, 1);
+		lua_rawset(L, -3);
+#endif
 	}
 
 	int _round(lua_State* L) {
@@ -65,23 +70,18 @@ namespace {
 		return luaL_error(L, "1 argument expected, got %d", vargc);
 	}
 
-	const struct luaL_Reg funcs_math[] = {
-		{ "round", _round },
-		{ "int", _int },
-		{ NULL, NULL }
-	};
-
 	void register_math(lua_State* L) {
-		lua_newtable(L);
-		lua_pushvalue(L, -1);
-		lua_setfield(L, -3, "math");
-		lua_pushfuncs(L, funcs_math);
-		lua_pop(L, 1);
-	}
+		const struct luaL_Reg funcs[] = {
+			{ "round", _round },
+			{ "int", _int },
+			{ NULL, NULL }
+		};
 
-	const struct luaL_Reg no_funcs[] = {
-		{ NULL, NULL }
-	};
+		lua_pushliteral(L, "math");
+		lua_newtable(L);
+		lua_pushfuncs(L, funcs);
+		lua_rawset(L, -3);
+	}
 }
 
 #define _stringify(s) #s
@@ -89,9 +89,12 @@ namespace {
 
 int LUA_MODULE_LUAOPEN(lua_State* L) {
 #if LUA_VERSION_NUM < 502
+	const struct luaL_Reg no_funcs[] = {
+		{ NULL, NULL }
+	};
 	luaL_register(L, stringify(LUA_MODULE_NAME), no_funcs);
 #else
-	luaL_newlib(L, no_funcs);
+	lua_newtable(L);
 #endif
 
 	using namespace LUA_MODULE_NAME;
