@@ -1,5 +1,6 @@
 const fs = require("node:fs");
 const sysPath = require("node:path");
+const FileUtils = require("../generator/FileUtils");
 
 const primitiveTypes = new Set([
     "bool",
@@ -157,7 +158,7 @@ const hdr = `
         struct _OptionalArray;
 
         template<typename Array, bool is_arrays_type>
-        inline void lua_push(lua_State* L, const _OptionalArray<Array, is_arrays_type>& array);
+        inline void lua_push(lua_State* L, const _OptionalArray<Array, is_arrays_type>& opt_array);
     }
 `.replace(/^ {4}/mg, "").trim().replace(/[^\S\n]+$/mg, "").replaceAll(" ".repeat(4), "\t");
 
@@ -221,6 +222,9 @@ const hdr_impl = `
             }
 
             decltype(auto) operator*() {
+                if (!m_ptr) {
+                    initialize();
+                }
                 return m_ptr.operator*();
             }
 
@@ -252,9 +256,6 @@ const hdr_impl = `
             std::shared_ptr<Array> m_ptr;
         };
 
-        template<typename Array, bool is_arrays_type>
-        void lua_push(lua_State* L, const _OptionalArray<Array, is_arrays_type>& opt_array);
-
         // InputArray, OutputArray, InputOutputArray
         template<typename Array>
         using OptionalArray = _OptionalArray<Array, false>;
@@ -283,7 +284,7 @@ const impl = `
     namespace LUA_MODULE_NAME {
         template<typename Array, bool is_arrays_type>
         _OptionalArray<Array, is_arrays_type>::_OptionalArray() {
-            initialize();
+            // Nothing to do
         }
 
         template<typename Array, bool is_arrays_type>
@@ -351,7 +352,6 @@ const impl = `
         _OptionalArray<Array, is_arrays_type>::_OptionalArray(lua_State* L, int index, bool& is_valid, const bool nd_mat) {
             if (lua_isnil(L, index)) {
                 is_valid = true;
-                initialize();
                 return;
             }
 
@@ -397,21 +397,23 @@ const impl = `
                 m_ptr.reset();
             }
 
-            switch (m_index) {
-                ${ types.map((type, i) => `
-                case ${ i }:
-                    ${ constexprWrap(type, 20, !primitiveTypes.has(type) ? `
-                        if (m_is_shared_ptr) {
-                            delete static_cast<std::shared_ptr<${ type }>*>(m_data);
-                        } else {
-                            delete static_cast<${ type }*>(m_data);
-                        }
-                    `.replace(/^ {4}/mg, "").trim() : `delete static_cast<${ type }*>(m_data);`) }
-                    break;
-                `.trim()).join(`\n${ " ".repeat(16) }`) }
-                default:
-                    // Nothind do do
-                    break;
+            if (m_data) {
+                switch (m_index) {
+                    ${ types.map((type, i) => `
+                    case ${ i }:
+                        ${ constexprWrap(type, 24, !primitiveTypes.has(type) ? `
+                            if (m_is_shared_ptr) {
+                                delete static_cast<std::shared_ptr<${ type }>*>(m_data);
+                            } else {
+                                delete static_cast<${ type }*>(m_data);
+                            }
+                        `.replace(/^ {4}/mg, "").trim() : `delete static_cast<${ type }*>(m_data);`) }
+                        break;
+                    `.trim()).join(`\n${ " ".repeat(20) }`) }
+                    default:
+                        // Nothind do do
+                        break;
+                }
             }
 
             m_index = -1;
@@ -422,7 +424,6 @@ const impl = `
         template<typename Array, bool is_arrays_type>
         void _OptionalArray<Array, is_arrays_type>::reset() {
             free();
-            initialize();
         }
 
         template<typename Array, bool is_arrays_type>
@@ -545,23 +546,28 @@ const impl = `
         //     InputArray R Mat::eye(3, 3, CV_64F)
         template void _OptionalArray<cv::_InputArray, false>::reset<cv::Mat>(cv::Mat&);
 
-        template int lua_push<cv::_InputArray, false>(lua_State* L, const _OptionalArray<cv::_InputArray, false>& opt_array);
-        template int lua_push<cv::_OutputArray, false>(lua_State* L, const _OptionalArray<cv::_OutputArray, false>& opt_array);
-        template int lua_push<cv::_InputOutputArray, false>(lua_State* L, const _OptionalArray<cv::_InputOutputArray, false>& opt_array);
+        template void lua_push<cv::_InputArray, false>(lua_State* L, const _OptionalArray<cv::_InputArray, false>& opt_array);
+        template void lua_push<cv::_OutputArray, false>(lua_State* L, const _OptionalArray<cv::_OutputArray, false>& opt_array);
+        template void lua_push<cv::_InputOutputArray, false>(lua_State* L, const _OptionalArray<cv::_InputOutputArray, false>& opt_array);
 
-        template int lua_push<cv::_InputArray, true>(lua_State* L, const _OptionalArray<cv::_InputArray, true>& opt_array);
-        template int lua_push<cv::_OutputArray, true>(lua_State* L, const _OptionalArray<cv::_OutputArray, true>& opt_array);
-        template int lua_push<cv::_InputOutputArray, true>(lua_State* L, const _OptionalArray<cv::_InputOutputArray, true>& opt_array);
+        template void lua_push<cv::_InputArray, true>(lua_State* L, const _OptionalArray<cv::_InputArray, true>& opt_array);
+        template void lua_push<cv::_OutputArray, true>(lua_State* L, const _OptionalArray<cv::_OutputArray, true>& opt_array);
+        template void lua_push<cv::_InputOutputArray, true>(lua_State* L, const _OptionalArray<cv::_InputOutputArray, true>& opt_array);
     }
 
 `.replace(/^ {4}/mg, "").trim().replace(/[^\S\n]+$/mg, "").replaceAll(" ".repeat(4), "\t");
 
-const LF = "\n";
+const output = sysPath.resolve(__dirname, "..");
 
-fs.writeFileSync(sysPath.join(__dirname, "../src/include/lua_bridge_arrays.hdr.hpp"), hdr + LF);
-
-fs.writeFileSync(sysPath.join(__dirname, "../src/include/lua_bridge_arrays.hpp"), hdr_impl + LF);
-
-fs.writeFileSync(sysPath.join(__dirname, "../src/lua_bridge_arrays.cpp"), impl + LF);
-
-fs.writeFileSync(sysPath.join(__dirname, "../generator/vectors.js"), `module.exports = ${ JSON.stringify(knownArrayTypes, null, 4) };${ LF }`);
+FileUtils.writeFiles(new Map([
+    [sysPath.join(output, "src/include/lua_bridge_arrays.hdr.hpp"), hdr],
+    [sysPath.join(output, "src/include/lua_bridge_arrays.hpp"), hdr_impl],
+    [sysPath.join(output, "src/lua_bridge_arrays.cpp"), impl],
+    [sysPath.join(output, "generator/vectors.js"), `module.exports = ${ JSON.stringify(knownArrayTypes, null, 4) };`],
+]), {
+    output
+}, err => {
+    if (err) {
+        throw err;
+    }
+});

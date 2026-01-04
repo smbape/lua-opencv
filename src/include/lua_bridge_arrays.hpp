@@ -57,6 +57,9 @@ namespace LUA_MODULE_NAME {
 		}
 
 		decltype(auto) operator*() {
+			if (!m_ptr) {
+				initialize();
+			}
 			return m_ptr.operator*();
 		}
 

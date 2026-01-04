@@ -3,7 +3,7 @@
 namespace LUA_MODULE_NAME {
 	template<typename Array, bool is_arrays_type>
 	_OptionalArray<Array, is_arrays_type>::_OptionalArray() {
-		initialize();
+		// Nothing to do
 	}
 
 	template<typename Array, bool is_arrays_type>
@@ -664,7 +664,6 @@ namespace LUA_MODULE_NAME {
 	_OptionalArray<Array, is_arrays_type>::_OptionalArray(lua_State* L, int index, bool& is_valid, const bool nd_mat) {
 		if (lua_isnil(L, index)) {
 			is_valid = true;
-			initialize();
 			return;
 		}
 
@@ -1513,712 +1512,714 @@ namespace LUA_MODULE_NAME {
 			m_ptr.reset();
 		}
 
-		switch (m_index) {
-			case 0:
-				if constexpr (!is_arrays_type && std::is_same_v<Array, cv::_InputArray>) {
-					delete static_cast<bool*>(m_data);
-				}
-				break;
-			case 1:
-				if constexpr (!is_arrays_type && std::is_same_v<Array, cv::_InputArray>) {
-					delete static_cast<double*>(m_data);
-				}
-				break;
-			case 2:
-				if constexpr (!is_arrays_type) {
-					if (m_is_shared_ptr) {
-						delete static_cast<std::shared_ptr<cv::cuda::GpuMat>*>(m_data);
-					} else {
-						delete static_cast<cv::cuda::GpuMat*>(m_data);
+		if (m_data) {
+			switch (m_index) {
+				case 0:
+					if constexpr (!is_arrays_type && std::is_same_v<Array, cv::_InputArray>) {
+						delete static_cast<bool*>(m_data);
 					}
-				}
-				break;
-			case 3:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<cv::Mat>*>(m_data);
-				} else {
-					delete static_cast<cv::Mat*>(m_data);
-				}
-				break;
-			case 4:
-				if constexpr (!is_arrays_type) {
-					if (m_is_shared_ptr) {
-						delete static_cast<std::shared_ptr<cv::UMat>*>(m_data);
-					} else {
-						delete static_cast<cv::UMat*>(m_data);
+					break;
+				case 1:
+					if constexpr (!is_arrays_type && std::is_same_v<Array, cv::_InputArray>) {
+						delete static_cast<double*>(m_data);
 					}
-				}
-				break;
-			case 5:
-				if constexpr (!is_arrays_type && std::is_same_v<Array, cv::_InputArray>) {
-					delete static_cast<cv::Scalar*>(m_data);
-				}
-				break;
-			case 6:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Mat>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Mat>*>(m_data);
-				}
-				break;
-			case 7:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::UMat>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::UMat>*>(m_data);
-				}
-				break;
-			case 8:
-				if constexpr (std::is_same_v<Array, cv::_InputArray>) {
-					if (m_is_shared_ptr) {
-						delete static_cast<std::shared_ptr<std::vector<bool>>*>(m_data);
-					} else {
-						delete static_cast<std::vector<bool>*>(m_data);
+					break;
+				case 2:
+					if constexpr (!is_arrays_type) {
+						if (m_is_shared_ptr) {
+							delete static_cast<std::shared_ptr<cv::cuda::GpuMat>*>(m_data);
+						} else {
+							delete static_cast<cv::cuda::GpuMat*>(m_data);
+						}
 					}
-				}
-				break;
-			case 9:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::RotatedRect>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::RotatedRect>*>(m_data);
-				}
-				break;
-			case 10:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Range>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Range>*>(m_data);
-				}
-				break;
-			case 11:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Moments>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Moments>*>(m_data);
-				}
-				break;
-			case 12:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<uchar>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<uchar>*>(m_data);
-				}
-				break;
-			case 13:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<schar>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<schar>*>(m_data);
-				}
-				break;
-			case 14:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<char>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<char>*>(m_data);
-				}
-				break;
-			case 15:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<ushort>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<ushort>*>(m_data);
-				}
-				break;
-			case 16:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<short>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<short>*>(m_data);
-				}
-				break;
-			case 17:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<int>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<int>*>(m_data);
-				}
-				break;
-			case 18:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<float>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<float>*>(m_data);
-				}
-				break;
-			case 19:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<double>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<double>*>(m_data);
-				}
-				break;
-			case 20:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Point3i>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Point3i>*>(m_data);
-				}
-				break;
-			case 21:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Point3f>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Point3f>*>(m_data);
-				}
-				break;
-			case 22:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Point3d>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Point3d>*>(m_data);
-				}
-				break;
-			case 23:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Point2f>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Point2f>*>(m_data);
-				}
-				break;
-			case 24:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Point2d>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Point2d>*>(m_data);
-				}
-				break;
-			case 25:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Point>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Point>*>(m_data);
-				}
-				break;
-			case 26:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Rect2f>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Rect2f>*>(m_data);
-				}
-				break;
-			case 27:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Rect2d>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Rect2d>*>(m_data);
-				}
-				break;
-			case 28:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Rect>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Rect>*>(m_data);
-				}
-				break;
-			case 29:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Size2f>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Size2f>*>(m_data);
-				}
-				break;
-			case 30:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Size2d>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Size2d>*>(m_data);
-				}
-				break;
-			case 31:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Size>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Size>*>(m_data);
-				}
-				break;
-			case 32:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Vec2b>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Vec2b>*>(m_data);
-				}
-				break;
-			case 33:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Vec3b>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Vec3b>*>(m_data);
-				}
-				break;
-			case 34:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Vec4b>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Vec4b>*>(m_data);
-				}
-				break;
-			case 35:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Vec2s>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Vec2s>*>(m_data);
-				}
-				break;
-			case 36:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Vec3s>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Vec3s>*>(m_data);
-				}
-				break;
-			case 37:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Vec4s>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Vec4s>*>(m_data);
-				}
-				break;
-			case 38:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Vec2w>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Vec2w>*>(m_data);
-				}
-				break;
-			case 39:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Vec3w>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Vec3w>*>(m_data);
-				}
-				break;
-			case 40:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Vec4w>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Vec4w>*>(m_data);
-				}
-				break;
-			case 41:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Vec2i>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Vec2i>*>(m_data);
-				}
-				break;
-			case 42:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Vec3i>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Vec3i>*>(m_data);
-				}
-				break;
-			case 43:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Vec4i>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Vec4i>*>(m_data);
-				}
-				break;
-			case 44:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Vec6i>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Vec6i>*>(m_data);
-				}
-				break;
-			case 45:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Vec8i>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Vec8i>*>(m_data);
-				}
-				break;
-			case 46:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Vec2f>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Vec2f>*>(m_data);
-				}
-				break;
-			case 47:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Vec3f>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Vec3f>*>(m_data);
-				}
-				break;
-			case 48:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Vec4f>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Vec4f>*>(m_data);
-				}
-				break;
-			case 49:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Vec6f>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Vec6f>*>(m_data);
-				}
-				break;
-			case 50:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Vec2d>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Vec2d>*>(m_data);
-				}
-				break;
-			case 51:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Vec3d>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Vec3d>*>(m_data);
-				}
-				break;
-			case 52:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Vec4d>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Vec4d>*>(m_data);
-				}
-				break;
-			case 53:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<cv::Vec6d>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<cv::Vec6d>*>(m_data);
-				}
-				break;
-			case 54:
-				if constexpr (std::is_same_v<Array, cv::_InputOutputArray>) {
+					break;
+				case 3:
 					if (m_is_shared_ptr) {
-						delete static_cast<std::shared_ptr<std::vector<std::vector<bool>>>*>(m_data);
+						delete static_cast<std::shared_ptr<cv::Mat>*>(m_data);
 					} else {
-						delete static_cast<std::vector<std::vector<bool>>*>(m_data);
+						delete static_cast<cv::Mat*>(m_data);
 					}
-				}
-				break;
-			case 55:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::RotatedRect>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::RotatedRect>>*>(m_data);
-				}
-				break;
-			case 56:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Range>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Range>>*>(m_data);
-				}
-				break;
-			case 57:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Moments>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Moments>>*>(m_data);
-				}
-				break;
-			case 58:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<uchar>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<uchar>>*>(m_data);
-				}
-				break;
-			case 59:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<schar>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<schar>>*>(m_data);
-				}
-				break;
-			case 60:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<char>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<char>>*>(m_data);
-				}
-				break;
-			case 61:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<ushort>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<ushort>>*>(m_data);
-				}
-				break;
-			case 62:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<short>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<short>>*>(m_data);
-				}
-				break;
-			case 63:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<int>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<int>>*>(m_data);
-				}
-				break;
-			case 64:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<float>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<float>>*>(m_data);
-				}
-				break;
-			case 65:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<double>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<double>>*>(m_data);
-				}
-				break;
-			case 66:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Point3i>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Point3i>>*>(m_data);
-				}
-				break;
-			case 67:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Point3f>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Point3f>>*>(m_data);
-				}
-				break;
-			case 68:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Point3d>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Point3d>>*>(m_data);
-				}
-				break;
-			case 69:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Point2f>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Point2f>>*>(m_data);
-				}
-				break;
-			case 70:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Point2d>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Point2d>>*>(m_data);
-				}
-				break;
-			case 71:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Point>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Point>>*>(m_data);
-				}
-				break;
-			case 72:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Rect2f>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Rect2f>>*>(m_data);
-				}
-				break;
-			case 73:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Rect2d>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Rect2d>>*>(m_data);
-				}
-				break;
-			case 74:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Rect>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Rect>>*>(m_data);
-				}
-				break;
-			case 75:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Size2f>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Size2f>>*>(m_data);
-				}
-				break;
-			case 76:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Size2d>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Size2d>>*>(m_data);
-				}
-				break;
-			case 77:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Size>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Size>>*>(m_data);
-				}
-				break;
-			case 78:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2b>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Vec2b>>*>(m_data);
-				}
-				break;
-			case 79:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3b>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Vec3b>>*>(m_data);
-				}
-				break;
-			case 80:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4b>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Vec4b>>*>(m_data);
-				}
-				break;
-			case 81:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2s>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Vec2s>>*>(m_data);
-				}
-				break;
-			case 82:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3s>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Vec3s>>*>(m_data);
-				}
-				break;
-			case 83:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4s>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Vec4s>>*>(m_data);
-				}
-				break;
-			case 84:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2w>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Vec2w>>*>(m_data);
-				}
-				break;
-			case 85:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3w>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Vec3w>>*>(m_data);
-				}
-				break;
-			case 86:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4w>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Vec4w>>*>(m_data);
-				}
-				break;
-			case 87:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2i>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Vec2i>>*>(m_data);
-				}
-				break;
-			case 88:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3i>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Vec3i>>*>(m_data);
-				}
-				break;
-			case 89:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4i>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Vec4i>>*>(m_data);
-				}
-				break;
-			case 90:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6i>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Vec6i>>*>(m_data);
-				}
-				break;
-			case 91:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec8i>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Vec8i>>*>(m_data);
-				}
-				break;
-			case 92:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2f>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Vec2f>>*>(m_data);
-				}
-				break;
-			case 93:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3f>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Vec3f>>*>(m_data);
-				}
-				break;
-			case 94:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4f>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Vec4f>>*>(m_data);
-				}
-				break;
-			case 95:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6f>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Vec6f>>*>(m_data);
-				}
-				break;
-			case 96:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2d>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Vec2d>>*>(m_data);
-				}
-				break;
-			case 97:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3d>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Vec3d>>*>(m_data);
-				}
-				break;
-			case 98:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4d>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Vec4d>>*>(m_data);
-				}
-				break;
-			case 99:
-				if (m_is_shared_ptr) {
-					delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6d>>>*>(m_data);
-				} else {
-					delete static_cast<std::vector<std::vector<cv::Vec6d>>*>(m_data);
-				}
-				break;
-			default:
-				// Nothind do do
-				break;
+					break;
+				case 4:
+					if constexpr (!is_arrays_type) {
+						if (m_is_shared_ptr) {
+							delete static_cast<std::shared_ptr<cv::UMat>*>(m_data);
+						} else {
+							delete static_cast<cv::UMat*>(m_data);
+						}
+					}
+					break;
+				case 5:
+					if constexpr (!is_arrays_type && std::is_same_v<Array, cv::_InputArray>) {
+						delete static_cast<cv::Scalar*>(m_data);
+					}
+					break;
+				case 6:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Mat>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Mat>*>(m_data);
+					}
+					break;
+				case 7:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::UMat>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::UMat>*>(m_data);
+					}
+					break;
+				case 8:
+					if constexpr (std::is_same_v<Array, cv::_InputArray>) {
+						if (m_is_shared_ptr) {
+							delete static_cast<std::shared_ptr<std::vector<bool>>*>(m_data);
+						} else {
+							delete static_cast<std::vector<bool>*>(m_data);
+						}
+					}
+					break;
+				case 9:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::RotatedRect>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::RotatedRect>*>(m_data);
+					}
+					break;
+				case 10:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Range>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Range>*>(m_data);
+					}
+					break;
+				case 11:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Moments>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Moments>*>(m_data);
+					}
+					break;
+				case 12:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<uchar>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<uchar>*>(m_data);
+					}
+					break;
+				case 13:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<schar>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<schar>*>(m_data);
+					}
+					break;
+				case 14:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<char>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<char>*>(m_data);
+					}
+					break;
+				case 15:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<ushort>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<ushort>*>(m_data);
+					}
+					break;
+				case 16:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<short>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<short>*>(m_data);
+					}
+					break;
+				case 17:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<int>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<int>*>(m_data);
+					}
+					break;
+				case 18:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<float>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<float>*>(m_data);
+					}
+					break;
+				case 19:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<double>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<double>*>(m_data);
+					}
+					break;
+				case 20:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Point3i>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Point3i>*>(m_data);
+					}
+					break;
+				case 21:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Point3f>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Point3f>*>(m_data);
+					}
+					break;
+				case 22:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Point3d>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Point3d>*>(m_data);
+					}
+					break;
+				case 23:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Point2f>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Point2f>*>(m_data);
+					}
+					break;
+				case 24:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Point2d>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Point2d>*>(m_data);
+					}
+					break;
+				case 25:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Point>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Point>*>(m_data);
+					}
+					break;
+				case 26:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Rect2f>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Rect2f>*>(m_data);
+					}
+					break;
+				case 27:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Rect2d>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Rect2d>*>(m_data);
+					}
+					break;
+				case 28:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Rect>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Rect>*>(m_data);
+					}
+					break;
+				case 29:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Size2f>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Size2f>*>(m_data);
+					}
+					break;
+				case 30:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Size2d>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Size2d>*>(m_data);
+					}
+					break;
+				case 31:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Size>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Size>*>(m_data);
+					}
+					break;
+				case 32:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Vec2b>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Vec2b>*>(m_data);
+					}
+					break;
+				case 33:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Vec3b>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Vec3b>*>(m_data);
+					}
+					break;
+				case 34:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Vec4b>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Vec4b>*>(m_data);
+					}
+					break;
+				case 35:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Vec2s>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Vec2s>*>(m_data);
+					}
+					break;
+				case 36:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Vec3s>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Vec3s>*>(m_data);
+					}
+					break;
+				case 37:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Vec4s>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Vec4s>*>(m_data);
+					}
+					break;
+				case 38:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Vec2w>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Vec2w>*>(m_data);
+					}
+					break;
+				case 39:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Vec3w>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Vec3w>*>(m_data);
+					}
+					break;
+				case 40:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Vec4w>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Vec4w>*>(m_data);
+					}
+					break;
+				case 41:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Vec2i>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Vec2i>*>(m_data);
+					}
+					break;
+				case 42:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Vec3i>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Vec3i>*>(m_data);
+					}
+					break;
+				case 43:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Vec4i>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Vec4i>*>(m_data);
+					}
+					break;
+				case 44:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Vec6i>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Vec6i>*>(m_data);
+					}
+					break;
+				case 45:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Vec8i>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Vec8i>*>(m_data);
+					}
+					break;
+				case 46:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Vec2f>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Vec2f>*>(m_data);
+					}
+					break;
+				case 47:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Vec3f>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Vec3f>*>(m_data);
+					}
+					break;
+				case 48:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Vec4f>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Vec4f>*>(m_data);
+					}
+					break;
+				case 49:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Vec6f>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Vec6f>*>(m_data);
+					}
+					break;
+				case 50:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Vec2d>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Vec2d>*>(m_data);
+					}
+					break;
+				case 51:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Vec3d>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Vec3d>*>(m_data);
+					}
+					break;
+				case 52:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Vec4d>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Vec4d>*>(m_data);
+					}
+					break;
+				case 53:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<cv::Vec6d>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<cv::Vec6d>*>(m_data);
+					}
+					break;
+				case 54:
+					if constexpr (std::is_same_v<Array, cv::_InputOutputArray>) {
+						if (m_is_shared_ptr) {
+							delete static_cast<std::shared_ptr<std::vector<std::vector<bool>>>*>(m_data);
+						} else {
+							delete static_cast<std::vector<std::vector<bool>>*>(m_data);
+						}
+					}
+					break;
+				case 55:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::RotatedRect>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::RotatedRect>>*>(m_data);
+					}
+					break;
+				case 56:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Range>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Range>>*>(m_data);
+					}
+					break;
+				case 57:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Moments>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Moments>>*>(m_data);
+					}
+					break;
+				case 58:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<uchar>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<uchar>>*>(m_data);
+					}
+					break;
+				case 59:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<schar>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<schar>>*>(m_data);
+					}
+					break;
+				case 60:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<char>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<char>>*>(m_data);
+					}
+					break;
+				case 61:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<ushort>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<ushort>>*>(m_data);
+					}
+					break;
+				case 62:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<short>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<short>>*>(m_data);
+					}
+					break;
+				case 63:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<int>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<int>>*>(m_data);
+					}
+					break;
+				case 64:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<float>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<float>>*>(m_data);
+					}
+					break;
+				case 65:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<double>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<double>>*>(m_data);
+					}
+					break;
+				case 66:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Point3i>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Point3i>>*>(m_data);
+					}
+					break;
+				case 67:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Point3f>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Point3f>>*>(m_data);
+					}
+					break;
+				case 68:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Point3d>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Point3d>>*>(m_data);
+					}
+					break;
+				case 69:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Point2f>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Point2f>>*>(m_data);
+					}
+					break;
+				case 70:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Point2d>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Point2d>>*>(m_data);
+					}
+					break;
+				case 71:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Point>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Point>>*>(m_data);
+					}
+					break;
+				case 72:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Rect2f>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Rect2f>>*>(m_data);
+					}
+					break;
+				case 73:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Rect2d>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Rect2d>>*>(m_data);
+					}
+					break;
+				case 74:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Rect>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Rect>>*>(m_data);
+					}
+					break;
+				case 75:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Size2f>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Size2f>>*>(m_data);
+					}
+					break;
+				case 76:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Size2d>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Size2d>>*>(m_data);
+					}
+					break;
+				case 77:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Size>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Size>>*>(m_data);
+					}
+					break;
+				case 78:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2b>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Vec2b>>*>(m_data);
+					}
+					break;
+				case 79:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3b>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Vec3b>>*>(m_data);
+					}
+					break;
+				case 80:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4b>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Vec4b>>*>(m_data);
+					}
+					break;
+				case 81:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2s>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Vec2s>>*>(m_data);
+					}
+					break;
+				case 82:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3s>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Vec3s>>*>(m_data);
+					}
+					break;
+				case 83:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4s>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Vec4s>>*>(m_data);
+					}
+					break;
+				case 84:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2w>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Vec2w>>*>(m_data);
+					}
+					break;
+				case 85:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3w>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Vec3w>>*>(m_data);
+					}
+					break;
+				case 86:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4w>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Vec4w>>*>(m_data);
+					}
+					break;
+				case 87:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2i>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Vec2i>>*>(m_data);
+					}
+					break;
+				case 88:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3i>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Vec3i>>*>(m_data);
+					}
+					break;
+				case 89:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4i>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Vec4i>>*>(m_data);
+					}
+					break;
+				case 90:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6i>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Vec6i>>*>(m_data);
+					}
+					break;
+				case 91:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec8i>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Vec8i>>*>(m_data);
+					}
+					break;
+				case 92:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2f>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Vec2f>>*>(m_data);
+					}
+					break;
+				case 93:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3f>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Vec3f>>*>(m_data);
+					}
+					break;
+				case 94:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4f>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Vec4f>>*>(m_data);
+					}
+					break;
+				case 95:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6f>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Vec6f>>*>(m_data);
+					}
+					break;
+				case 96:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2d>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Vec2d>>*>(m_data);
+					}
+					break;
+				case 97:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3d>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Vec3d>>*>(m_data);
+					}
+					break;
+				case 98:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4d>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Vec4d>>*>(m_data);
+					}
+					break;
+				case 99:
+					if (m_is_shared_ptr) {
+						delete static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6d>>>*>(m_data);
+					} else {
+						delete static_cast<std::vector<std::vector<cv::Vec6d>>*>(m_data);
+					}
+					break;
+				default:
+					// Nothind do do
+					break;
+			}
 		}
 
 		m_index = -1;
@@ -2229,7 +2230,6 @@ namespace LUA_MODULE_NAME {
 	template<typename Array, bool is_arrays_type>
 	void _OptionalArray<Array, is_arrays_type>::reset() {
 		free();
-		initialize();
 	}
 
 	template<typename Array, bool is_arrays_type>
