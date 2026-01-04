@@ -220,6 +220,12 @@ if type(jit) == "table" and package.config:sub(1, 1) ~= "/" then
         print(string.format("cv::sum [C-API] took %.6f seconds. Sum = %i", elapsed, sum))
 
         t = cv.getTickCount()
+        sum = cv.sumElems(cv._InputArray(mat))[1] * times
+        elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
+        collectgarbage()
+        print(string.format("cv::sum [C-API] took %.6f seconds. Sum = %i. (const _InputArray *)", elapsed, sum))
+
+        t = cv.getTickCount()
         for i = 0, rows - 1 do
             for j = 0, cols - 1 do
                 for k = 0, channels - 1 do
@@ -232,6 +238,21 @@ if type(jit) == "table" and package.config:sub(1, 1) ~= "/" then
         elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
         collectgarbage()
         print(string.format("cv::sum [C-API] %i times took %.6f seconds. Sum = %i", total, elapsed, sum))
+
+        local matInputArray = cv._InputArray(mat)
+        t = cv.getTickCount()
+        for i = 0, rows - 1 do
+            for j = 0, cols - 1 do
+                for k = 0, channels - 1 do
+                    for l = 1, times do
+                        sum = cv.sumElems(matInputArray)[1] * times
+                    end
+                end
+            end
+        end
+        elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
+        collectgarbage()
+        print(string.format("cv::sum [C-API] %i times took %.6f seconds. Sum = %i. (const _InputArray *)", total, elapsed, sum))
 
         local function InputArray_createFromMat(mat)
             local ptr = ffi.gc(ffi.C.malloc(cv._InputArray.__sizeof), ffi.C.free)
@@ -275,8 +296,6 @@ if type(jit) == "table" and package.config:sub(1, 1) ~= "/" then
         collectgarbage()
         print(string.format("cv::sum [FFI]   %i times took %.6f seconds. Sum = %i. (Scalar*, const _InputArray *)", total, elapsed, sum))
 
-        if true then return end
-
         local array = InputArray_createFromMat(mat)
         t = cv.getTickCount()
         for i = 0, rows - 1 do
@@ -309,8 +328,6 @@ if type(jit) == "table" and package.config:sub(1, 1) ~= "/" then
 
     test_sum()
 end
-
-if true then return end
 
 -- if type(jit) == 'table' then
 --     t = cv.getTickCount()

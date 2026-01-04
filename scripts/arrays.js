@@ -1,4 +1,3 @@
-const fs = require("node:fs");
 const sysPath = require("node:path");
 const FileUtils = require("../generator/FileUtils");
 
@@ -9,13 +8,12 @@ const primitiveTypes = new Set([
 ]);
 
 const nonArrayTypes = new Set([
-    "bool",
-    "double",
-    "cv::cuda::GpuMat",
-    "cv::cuda::HostMem",
-    "cv::ogl::Buffer",
     "cv::Mat",
     "cv::UMat",
+    "double",
+    "bool",
+    "cv::cuda::GpuMat",
+    "cv::cuda::HostMem",
     "cv::Scalar",
 ]);
 
@@ -65,7 +63,7 @@ const constexprRestirction = (type, restriction = null) => {
     return restrictions.join(" && ");
 };
 
-const constexprWrap = (type, spaces, expr) => {
+const constexprWrap = (type, spaces, expr, alternative = false) => {
     const restriction = constexprRestirction(type);
 
     if (restriction.length === 0) {
@@ -75,18 +73,29 @@ const constexprWrap = (type, spaces, expr) => {
     const indent = " ".repeat(spaces);
     const lines = expr.replace(new RegExp(`^${ indent }`, "mg"), "").split("\n");
 
-    return `
+    expr = `
         if constexpr (${ restriction }) {
             ${ lines.join(`\n${ " ".repeat(12) }`) }
         }
     `.trim().replace(/^ {8}/mg, indent);
+
+    if (alternative) {
+        expr += " ";
+        expr += `
+            else {
+                ${ alternative.replace(new RegExp(`^${ indent }`, "mg"), "").split("\n").join(`\n${ " ".repeat(16) }`) }
+            }
+        `.trim().replace(/^ {12}/mg, indent);
+    }
+
+    return expr;
 };
 
 const knownArrayTypes = [
     // Unique types
-    "bool",
     "cv::Mat",
     "cv::UMat",
+    "bool",
     "cv::RotatedRect",
     "cv::Range",
     "cv::Moments",
@@ -163,6 +172,21 @@ const hdr = `
         inline void lua_push(lua_State* L, const _OptionalArray<Array, is_arrays_type>& opt_array);
     }
 `.replace(/^ {4}/mg, "").trim().replace(/[^\S\n]+$/mg, "").replaceAll(" ".repeat(4), "\t");
+
+const luaTypes = new RegExp(`^(?:${ [
+    "bool",
+    "uchar",
+    "schar",
+    "char",
+    "ushort",
+    "short",
+    "int",
+    "float",
+    "double",
+    // "float16_t",
+
+    "cv::(?:Point|Rect|Scalar|Size|Vec)(?:\\d[bdfisw])?",
+].join("|") })$`);
 
 const hdr_impl = `
     #pragma once
@@ -352,6 +376,12 @@ const impl = `
 
         template<typename Array, bool is_arrays_type>
         _OptionalArray<Array, is_arrays_type>::_OptionalArray(lua_State* L, int index, bool& is_valid, const bool nd_mat) {
+            thread_local const auto luaopen_index = get_luaopen_index(L);
+            thread_local std::unordered_map<const void*, int> metatable_pointers = {
+                { usertype_info<Array>::metatable_pointers.at(luaopen_index), 0 },
+                ${ types.filter(type => !luaTypes.test(type)).map((type, i) => `{ usertype_info<${ type }>::metatable_pointers.at(luaopen_index), ${ i + 1 } }`).join(`,\n${ " ".repeat(16) }`) }
+            };
+
             if (lua_isnil(L, index)) {
                 is_valid = true;
                 return;
@@ -371,7 +401,32 @@ const impl = `
                 }
             }
 
-            ${ types.map((type, i) => constexprWrap(type, 12, `
+            if (lua_isuserdata(L, index) && lua_getmetatable(L, index)) {
+                const auto mt_pointer = lua_topointer(L, -1);
+                lua_pop(L, 1);
+
+                auto search = metatable_pointers.find(mt_pointer);
+                is_valid = search != metatable_pointers.end();
+
+                if (is_valid) {
+                    switch(search->second) {
+                        case 0:
+                            reset(*static_cast<std::shared_ptr<Array>*>(lua_touserdata(L, index)));
+                            return;
+                        ${ types.filter(type => !luaTypes.test(type)).map((type, i) => `
+                        case ${ i + 1 }:
+                            ${ constexprWrap(type, 28, `
+                                reset(*static_cast<std::shared_ptr<${ type }>*>(lua_touserdata(L, index)));
+                                return;
+                            `.replace(/^ {4}/mg, "").trim(), "is_valid = false;\nbreak;") }
+                        `.trim()).join(`\n${ " ".repeat(24) }`) }
+                    }
+                }
+
+                return;
+            }
+
+            ${ types.filter(type => luaTypes.test(type) || type.startsWith("std::vector<")).map(type => constexprWrap(type, 12, `
             {
                 auto value = lua_to(L, index, static_cast<${ type }*>(nullptr), is_valid);
                 if (is_valid) {
@@ -462,6 +517,9 @@ const impl = `
                     }
                 `.replace(/^ {4}/mg, "").trim() : "" }
             `.replace(/^ {4}/mg, "").trim()).join(`\n${ " ".repeat(12) }else `) }
+            else  if constexpr (std::is_same_v<T, std::shared_ptr<Array>>) {
+                m_ptr = value;
+            }
             else {
                 static_assert(!std::is_same_v<T, T>, "Unsupported type");
             }
@@ -500,6 +558,9 @@ const impl = `
                     }
                 `.replace(/^ {4}/mg, "").trim() : "" }
             `.replace(/^ {4}/mg, "").trim()).join(`\n${ " ".repeat(12) }else `) }
+            else  if constexpr (std::is_same_v<T, std::shared_ptr<Array>>) {
+                m_ptr = std::move(value);
+            }
             else {
                 static_assert(!std::is_same_v<T, T>, "Unsupported type");
             }

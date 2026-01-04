@@ -732,7 +732,7 @@ class DeclProcessor {
             ]], options);
         }
 
-        if (coclass.modifiers?.includes("/DC")) {
+        if (coclass.modifiers?.includes("/DC") && coclass.properties.size !== 0) {
             // https://en.cppreference.com/w/c/language/struct_initialization.html
 
             const args = Array.from(coclass.properties.entries()).map(([argname, {type: argtype, value: defval, modifiers}]) => {

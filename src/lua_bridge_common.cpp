@@ -71,25 +71,11 @@ namespace {
 	ThreadSafeSetMap<std::size_t, std::size_t> type_children_map;
 
 	std::mutex yielder_mutex;
-	std::unordered_map<lua_State*, std::unique_ptr<std::mutex>> gil_mutex_map;
-	std::unordered_map<lua_State*, std::unordered_map<std::thread::id, std::unique_lock<std::mutex>>> lua_state_thread_lock_map;
+	std::vector<std::unique_ptr<std::mutex>> gil_mutexes;
 
 	std::unique_lock<std::mutex>& get_thread_lock(lua_State* L) {
-		using GilMutexMap = decltype(gil_mutex_map);
-		using LuaStateMap = decltype(lua_state_thread_lock_map);
-		using ThreadIdMap = LuaStateMap::mapped_type;
-
-		std::unique_lock<std::mutex> yielder_lock(yielder_mutex);
-
-		auto [gil_mutex_it, gil_mutex_success] = gil_mutex_map.insert(GilMutexMap::value_type{ L, std::make_unique<GilMutexMap::mapped_type::element_type>() });
-		auto& gil_mutex = *gil_mutex_it->second;
-
-		auto [lua_state_it, lua_state_success] = lua_state_thread_lock_map.insert(LuaStateMap::value_type{ L, LuaStateMap::mapped_type{} });
-		auto& thread_lock_map = lua_state_it->second;
-
-		const auto& thread_id = std::this_thread::get_id();
-		auto [it, success] = thread_lock_map.insert(ThreadIdMap::value_type{ thread_id, ThreadIdMap::mapped_type{ gil_mutex, std::defer_lock } });
-		return it->second;
+		thread_local std::unique_lock lock{ *gil_mutexes.at(get_luaopen_index(L)), std::defer_lock };
+		return lock;
 	}
 
 	int global_luaopen_index = 0;
@@ -99,6 +85,7 @@ namespace {
 		{
 			std::unique_lock<std::mutex> yielder_lock(yielder_mutex);
 			thread_local_luaopen_index = global_luaopen_index++;
+			gil_mutexes.push_back(std::make_unique<std::mutex>());
 		}
 		lua_pushliteral(L, LUA_MODULE_LUAOPEN_STR);
 		lua_pushnumber(L, thread_local_luaopen_index);
