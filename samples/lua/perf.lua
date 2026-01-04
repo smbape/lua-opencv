@@ -17,6 +17,19 @@ local t, elapsed, sum
 local rng = cv.RNG(cv.getTickCount()) -- Make the starting point unpredictable
 rng:fill(mat, cv.RNG.UNIFORM, 0, 256)
 
+;(function()
+    local defaultName
+    local model = cv.legacy.MultiTracker.create()
+    local loops = rows * cols * channels * times 
+    t = cv.getTickCount()
+    for _ = 1, loops do
+        defaultName = model:getDefaultName()
+    end
+    elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
+    collectgarbage()
+    print(string.format("cv::Algorithm::getDefaultName [C-API]   %i times took %.6f seconds.", loops, elapsed))
+end)()
+
 local function get_windows_symbols(dll)
     local cmd = string.format([[dumpbin /exports "%s"]], dll:gsub('/', package.config:sub(1, 1)))
     local handle = io.popen(string.format([["%s"]], cmd))
@@ -330,6 +343,7 @@ if true then return end
 -- elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
 -- collectgarbage()
 -- print(string.format("opencv_lua.bit %i times took %.6f seconds", total, elapsed))
+
 
 t = cv.getTickCount()
 local bin = cv.Mat.zeros({ 20, 20 }, cv.CV_32S)

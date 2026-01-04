@@ -1862,6 +1862,28 @@ class LuaGenerator {
             if (!coclass.isStatic()) {
                 const descendants = assignableTypes.get(fqn);
 
+                // https://scottmeyers.blogspot.com/2015/09/should-you-be-using-something-instead.html
+                // linear search is faster or competetive to unordered_set on std::vector until around 20 - 35 elements
+                // For multiple if statements, it seems to also be the seem
+                // cf. perf.lua, model = cv.legacy.MultiTracker.create(), model:getDefaultName()
+                const lines = []
+
+                if (descendants.length > 20) {
+                    lines.push(...`
+                        thread_local std::unordered_set<const void*> metatable_pointers = [luaopen_index]() -> std::unordered_set<const void*> {
+                            std::unordered_set<const void*> pointers;
+
+                            ${ descendants.map(descendant => `pointers.insert(usertype_info<${ descendant }>::metatable_pointers.at(luaopen_index));`).join(`\n${ " ".repeat(28) }`) }
+
+                           return pointers;
+                        }();
+
+                        is_valid = metatable_pointers.contains(mt_pointer);
+                    `.replace(/^ {24}/mg, "").trim().split("\n"));
+                } else {
+                    lines.push(...`is_valid = ${ descendants.map(descendant => `mt_pointer == usertype_info<${ descendant }>::metatable_pointers.at(luaopen_index)`).join(`\n${ " ".repeat(4) }|| `) };`.split("\n"));
+                }
+
                 const decl = `
                     static std::mutex mutex;
                     static std::vector<const void*> metatable_pointers;
@@ -1883,12 +1905,21 @@ class LuaGenerator {
                     const std::unordered_map<std::string, std::function<int(lua_State*)>> usertype_info<${ fqn }>::setters(std::move(::setters));
 
                     std::shared_ptr<${ fqn }> usertype_info<${ fqn }>::lua_userdata_to(lua_State* L, int index, bool& is_valid) {
-                        return testudata_metatable<${
-                            descendants.length <= 3 ? descendants.join(", ") :
-                            `
-                            ${ descendants.join(`,\n${ " ".repeat(28) }`) }
-                        `
-                        }>(L, index, is_valid);
+                        is_valid = lua_isuserdata(L, index) && lua_getmetatable(L, index);
+
+                        if (is_valid) {
+                            const auto mt_pointer = lua_topointer(L, -1);
+                            lua_pop(L, 1);
+                            const auto luaopen_index = get_luaopen_index(L);
+
+                            ${ lines.join(`\n${ " ".repeat(28) }`) }
+
+                            if (is_valid) {
+                                return *static_cast<std::shared_ptr<${ fqn }>*>(lua_touserdata(L, index));
+                            }
+                        }
+
+                        return std::shared_ptr<${ fqn }>();
                     }
                 `.replace(/^ {20}/mg, "").trim().split("\n");
 
