@@ -1,8 +1,4 @@
 module.exports = [
-    ["class cv._InputArray", "", [], [], "", ""],
-    ["class cv._OutputArray", "", [], [], "", ""],
-    ["class cv._InputOutputArray", "", [], [], "", ""],
-
     ["cv.format", "void", ["/Output=ouput << cv::format(mtx, fmt)"], [
         ["std::string", "ouput", "", ["/O", "/Ref"]],
         ["InputArray", "mtx", "", []],

@@ -12,6 +12,8 @@ const nonArrayTypes = new Set([
     "bool",
     "double",
     "cv::cuda::GpuMat",
+    "cv::cuda::HostMem",
+    "cv::ogl::Buffer",
     "cv::Mat",
     "cv::UMat",
     "cv::Scalar",
@@ -82,9 +84,9 @@ const constexprWrap = (type, spaces, expr) => {
 
 const knownArrayTypes = [
     // Unique types
+    "bool",
     "cv::Mat",
     "cv::UMat",
-    "bool",
     "cv::RotatedRect",
     "cv::Range",
     "cv::Moments",
@@ -451,11 +453,12 @@ const impl = `
                 }
                 ${ !primitiveTypes.has(type) ? `
                     else if constexpr (${ constexprRestirction(type, `std::is_same_v<T, std::shared_ptr<${ type }>>`) }) {
-                        auto pp = new T(value);
-                        m_data = pp;
-                        m_index = ${ i };
-                        m_is_shared_ptr = true;
-                        m_ptr = std::make_shared<Array>(**pp);
+                        if (value.use_count() < 2) {
+                            m_data = new T(value);
+                            m_index = ${ i };
+                            m_is_shared_ptr = true;
+                        }
+                        m_ptr = std::make_shared<Array>(*value);
                     }
                 `.replace(/^ {4}/mg, "").trim() : "" }
             `.replace(/^ {4}/mg, "").trim()).join(`\n${ " ".repeat(12) }else `) }

@@ -3871,7 +3871,9 @@
   - [\_InputArray.STD\_VECTOR\_CUDA\_GPU\_MAT](#%5C_inputarraystd%5C_vector%5C_cuda%5C_gpu%5C_mat)
   - [\_InputArray.STD\_ARRAY](#%5C_inputarraystd%5C_array)
   - [\_InputArray.STD\_ARRAY\_MAT](#%5C_inputarraystd%5C_array%5C_mat)
+  - [cv.\_InputArray.new](#cv%5C_inputarraynew)
 - [cv::\_InputOutputArray](#cv%5C_inputoutputarray)
+  - [cv.\_InputOutputArray.new](#cv%5C_inputoutputarraynew)
 - [cv::\_OutputArray](#cv%5C_outputarray)
   - [\_OutputArray.DEPTH\_MASK\_8U](#%5C_outputarraydepth%5C_mask%5C_8u)
   - [\_OutputArray.DEPTH\_MASK\_8S](#%5C_outputarraydepth%5C_mask%5C_8s)
@@ -3885,6 +3887,7 @@
   - [\_OutputArray.DEPTH\_MASK\_ALL\_BUT\_8S](#%5C_outputarraydepth%5C_mask%5C_all%5C_but%5C_8s)
   - [\_OutputArray.DEPTH\_MASK\_ALL\_16F](#%5C_outputarraydepth%5C_mask%5C_all%5C_16f)
   - [\_OutputArray.DEPTH\_MASK\_FLT](#%5C_outputarraydepth%5C_mask%5C_flt)
+  - [cv.\_OutputArray.new](#cv%5C_outputarraynew)
 - [cv::aruco](#cvaruco)
   - [aruco.CORNER\_REFINE\_NONE](#arucocorner%5C_refine%5C_none)
   - [aruco.CORNER\_REFINE\_SUBPIX](#arucocorner%5C_refine%5C_subpix)
@@ -47410,7 +47413,1404 @@ lua:
     [propget] _InputArray.STD_ARRAY_MAT
 ```
 
+### cv.\_InputArray.new
+
+```cpp
+cv::_InputArray();
+lua:
+    cv._InputArray.new() -> <cv::_InputArray object>
+    cv._InputArray() -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( cv::Mat& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( cv::UMat& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( double& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( bool& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( cv::cuda::GpuMat& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( cv::cuda::HostMem& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( cv::Scalar& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Mat>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::UMat>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<bool>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::RotatedRect>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Range>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Moments>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<uchar>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<schar>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<char>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<ushort>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<short>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<int>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<float>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<double>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Point3i>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Point3f>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Point3d>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Point2f>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Point2d>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Point>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Rect2f>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Rect2d>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Rect>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Size2f>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Size2d>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Size>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Vec2b>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Vec3b>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Vec4b>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Vec2s>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Vec3s>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Vec4s>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Vec2w>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Vec3w>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Vec4w>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Vec2i>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Vec3i>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Vec4i>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Vec6i>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Vec8i>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Vec2f>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Vec3f>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Vec4f>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Vec6f>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Vec2d>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Vec3d>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Vec4d>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<cv::Vec6d>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::RotatedRect>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Range>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Moments>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<uchar>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<schar>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<char>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<ushort>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<short>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<int>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<float>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<double>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Point3i>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Point3f>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Point3d>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Point2f>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Point2d>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Point>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Rect2f>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Rect2d>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Rect>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Size2f>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Size2d>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Size>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Vec2b>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Vec3b>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Vec4b>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Vec2s>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Vec3s>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Vec4s>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Vec2w>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Vec3w>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Vec4w>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Vec2i>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Vec3i>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Vec4i>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Vec6i>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Vec8i>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Vec2f>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Vec3f>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Vec4f>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Vec6f>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Vec2d>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Vec3d>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Vec4d>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
+```cpp
+cv::_InputArray( std::vector<std::vector<cv::Vec6d>>& obj );
+lua:
+    cv._InputArray.new( obj ) -> <cv::_InputArray object>
+    cv._InputArray( obj ) -> <cv::_InputArray object>
+```
+
 ## cv::\_InputOutputArray
+
+### cv.\_InputOutputArray.new
+
+```cpp
+cv::_InputOutputArray();
+lua:
+    cv._InputOutputArray.new() -> <cv::_InputOutputArray object>
+    cv._InputOutputArray() -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( cv::Mat& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( cv::UMat& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( cv::cuda::GpuMat& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( cv::cuda::HostMem& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Mat>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::UMat>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::RotatedRect>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Range>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Moments>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<uchar>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<schar>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<char>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<ushort>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<short>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<int>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<float>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<double>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Point3i>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Point3f>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Point3d>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Point2f>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Point2d>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Point>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Rect2f>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Rect2d>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Rect>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Size2f>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Size2d>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Size>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Vec2b>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Vec3b>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Vec4b>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Vec2s>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Vec3s>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Vec4s>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Vec2w>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Vec3w>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Vec4w>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Vec2i>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Vec3i>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Vec4i>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Vec6i>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Vec8i>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Vec2f>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Vec3f>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Vec4f>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Vec6f>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Vec2d>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Vec3d>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Vec4d>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<cv::Vec6d>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<bool>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::RotatedRect>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Range>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Moments>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<uchar>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<schar>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<char>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<ushort>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<short>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<int>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<float>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<double>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Point3i>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Point3f>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Point3d>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Point2f>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Point2d>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Point>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Rect2f>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Rect2d>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Rect>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Size2f>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Size2d>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Size>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Vec2b>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Vec3b>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Vec4b>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Vec2s>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Vec3s>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Vec4s>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Vec2w>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Vec3w>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Vec4w>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Vec2i>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Vec3i>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Vec4i>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Vec6i>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Vec8i>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Vec2f>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Vec3f>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Vec4f>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Vec6f>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Vec2d>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Vec3d>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Vec4d>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
+
+```cpp
+cv::_InputOutputArray( std::vector<std::vector<cv::Vec6d>>& obj );
+lua:
+    cv._InputOutputArray.new( obj ) -> <cv::_InputOutputArray object>
+    cv._InputOutputArray( obj ) -> <cv::_InputOutputArray object>
+```
 
 ## cv::\_OutputArray
 
@@ -47508,6 +48908,687 @@ lua:
 static int cv::_OutputArray::DEPTH_MASK_FLT
 lua:
     [propget] _OutputArray.DEPTH_MASK_FLT
+```
+
+### cv.\_OutputArray.new
+
+```cpp
+cv::_OutputArray();
+lua:
+    cv._OutputArray.new() -> <cv::_OutputArray object>
+    cv._OutputArray() -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( cv::Mat& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( cv::UMat& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( cv::cuda::GpuMat& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( cv::cuda::HostMem& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Mat>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::UMat>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::RotatedRect>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Range>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Moments>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<uchar>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<schar>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<char>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<ushort>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<short>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<int>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<float>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<double>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Point3i>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Point3f>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Point3d>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Point2f>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Point2d>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Point>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Rect2f>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Rect2d>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Rect>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Size2f>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Size2d>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Size>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Vec2b>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Vec3b>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Vec4b>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Vec2s>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Vec3s>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Vec4s>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Vec2w>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Vec3w>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Vec4w>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Vec2i>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Vec3i>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Vec4i>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Vec6i>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Vec8i>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Vec2f>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Vec3f>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Vec4f>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Vec6f>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Vec2d>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Vec3d>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Vec4d>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<cv::Vec6d>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::RotatedRect>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Range>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Moments>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<uchar>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<schar>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<char>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<ushort>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<short>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<int>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<float>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<double>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Point3i>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Point3f>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Point3d>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Point2f>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Point2d>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Point>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Rect2f>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Rect2d>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Rect>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Size2f>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Size2d>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Size>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Vec2b>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Vec3b>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Vec4b>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Vec2s>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Vec3s>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Vec4s>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Vec2w>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Vec3w>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Vec4w>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Vec2i>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Vec3i>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Vec4i>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Vec6i>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Vec8i>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Vec2f>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Vec3f>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Vec4f>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Vec6f>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Vec2d>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Vec3d>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Vec4d>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
+```
+
+```cpp
+cv::_OutputArray( std::vector<std::vector<cv::Vec6d>>& obj );
+lua:
+    cv._OutputArray.new( obj ) -> <cv::_OutputArray object>
+    cv._OutputArray( obj ) -> <cv::_OutputArray object>
 ```
 
 ## cv::aruco
