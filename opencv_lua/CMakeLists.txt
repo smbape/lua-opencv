@@ -31,9 +31,6 @@ foreach(item IN LISTS files_to_change)
     vcpkg_regex_replace_string("${item}" "(--branch v)[0-9]+\\.[0-9]+\\.[0-9]+( https://github.com/smbape/lua-opencv)" "\\1${PROJECT_VERSION}\\2")
     vcpkg_regex_replace_string("${item}" "opencv_videoio_ffmpeg[0-9]+_64\\.dll" "opencv_videoio_ffmpeg${OpenCV_DLLVERSION}_64.dll")
     vcpkg_regex_replace_string("${item}" "opencv_world[0-9]+\\.dll" "opencv_world${OpenCV_DLLVERSION}.dll")
-
-    # Force LF EOL
-    configure_file(${item} ${item} @ONLY NEWLINE_STYLE LF)
 endforeach()
 
 option(SKIP_bindings_generation "Skip binding files generation" OFF)

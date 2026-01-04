@@ -201,6 +201,40 @@ namespace LUA_MODULE_NAME {
 	// void*
 	// ================================
 
+	inline void* lua_self_pointer(lua_State* L, int index, bool& is_valid) {
+		void* ptr = nullptr;
+
+		if (index < 0) {
+			index += lua_gettop(L) + 1;
+		}
+
+		is_valid = (lua_isuserdata(L, index) || lua_istable(L, index)) && lua_getmetatable(L, index); // push metatable
+		if (!is_valid) {
+			return ptr;
+		}
+
+		lua_pushliteral(L, "__has_self");
+		lua_rawget(L, -2); // push metatable.__has_self
+		is_valid = lua_isboolean(L, -1) && lua_toboolean(L, -1);
+		lua_pop(L, 2); // pop metatable.__has_self, metatable
+
+		if (!is_valid) {
+			return ptr;
+		}
+
+		lua_pushliteral(L, "__self");
+		lua_gettable(L, index); // push userdata.__self
+		is_valid = lua_islightuserdata(L, -1);
+
+		if (is_valid) {
+			ptr = lua_touserdata(L, -1);
+			is_valid = static_cast<bool>(ptr);
+		}
+
+		lua_pop(L, 1); // pop userdata.__self
+		return ptr;
+	}
+
 	inline void* lua_to(lua_State* L, int index, void**, bool& is_valid) {
 		if constexpr (has_lua_to_custom_bridge_v<void*>) {
 			const auto v = lua_to_custom_bridge<void*>::lua_to(L, index, is_valid);
@@ -226,27 +260,9 @@ namespace LUA_MODULE_NAME {
 			return lua_touserdata(L, index);
 		}
 
-		if (lua_isuserdata(L, index)) {
-			if (index < 0) {
-				index += lua_gettop(L) + 1;
-			}
-
-			lua_pushliteral(L, "__self");
-			lua_gettable(L, index);
-
-			is_valid = lua_islightuserdata(L, -1);
-
-			void* ptr = nullptr;
-			if (is_valid) {
-				ptr = lua_touserdata(L, -1);
-				is_valid = static_cast<bool>(ptr);
-			}
-
-			lua_pop(L, 1);
-
-			if (is_valid) {
-				return ptr;
-			}
+		auto ptr = lua_self_pointer(L, index, is_valid);
+		if (is_valid) {
+			return ptr;
 		}
 
 		return nullptr;
@@ -264,8 +280,7 @@ namespace LUA_MODULE_NAME {
 
 	template<int Kind>
 	template<typename T>
-	_Object<Kind>::_Object(const T& any) {
-		lua_State* L = get_global_state();
+	_Object<Kind>::_Object(lua_State* L, const T& any) {
 		PushGuard guardian(L, any);
 		init(L, -1);
 	}
@@ -296,68 +311,50 @@ namespace LUA_MODULE_NAME {
 	// templated: lua_to, lua_push
 	// ================================
 
-	template<std::size_t I, typename T, typename... _Ts>
-	inline std::shared_ptr<T> lua_userdata_signature_to(lua_State* L, int index, const void* signature, bool& is_valid) {
-		using SharedPtr = std::shared_ptr<T>;
+	template<std::size_t I, typename... _Ts>
+	inline bool check_metatable(lua_State* L, int index, const void* mt_pointer) {
 		using _Tuple = typename std::tuple<_Ts...>;
+		using T = std::tuple_element_t<I, _Tuple>;
 
-		if constexpr (I == 0) {
-			if (signature == usertype_info<T>::signature) {
-				is_valid = true;
-				return *static_cast<SharedPtr*>(lua_touserdata(L, index));
-			}
+		const auto& expected_pointer = usertype_info<T>::metatable_pointers.at(index);
+		if (mt_pointer == expected_pointer) {
+			return true;
+		}
 
-			if constexpr (requires(const void* signature) { usertype_info<T>::derives.count(signature); }) {
-				// Upcasting
-				if (usertype_info<T>::derives.count(signature)) {
-					is_valid = true;
-
-					// https://stackoverflow.com/questions/40336882/c-reinterpret-cast-of-stdshared-ptr-reference-to-optimize#40345780
-					// Shared pointer to derived type is implicitly convertible (1) to a shared pointer to base class.
-					return *static_cast<SharedPtr*>(lua_touserdata(L, index));
-				}
-			}
+		if constexpr (I + 1 != sizeof...(_Ts)) {
+			return check_metatable<I + 1, _Ts...>(L, index, mt_pointer);
 		}
 		else {
-			using Base = std::tuple_element_t<I - 1, _Tuple>;
-			if constexpr (is_usertype_v<Base>) {
-				if (signature == usertype_info<Base>::signature) {
-					is_valid = true;
-
-					// Downcasting
-					auto ptr = static_cast<std::shared_ptr<Base>*>(lua_touserdata(L, index));
-					if (std::type_index(typeid(**ptr)) == std::type_index(typeid(T))) {
-						return std::reinterpret_pointer_cast<T>(*ptr);
-					}
-				}
-			}
-		}
-
-		if constexpr (I != sizeof...(_Ts)) {
-			return lua_userdata_signature_to<I + 1, T, _Ts...>(L, index, signature, is_valid);
-		}
-		else {
-			is_valid = false;
-			return SharedPtr();
+			return false;
 		}
 	}
 
 	template<typename T, typename... _Ts>
-	inline std::shared_ptr<T> lua_userdata_signature_to(lua_State* L, int index, bool& is_valid) {
-		if (!lua_isuserdata(L, index) || !lua_getmetatable(L, index)) {
-			is_valid = false;
-			return std::shared_ptr<T>();
+	inline bool check_metatable(lua_State* L, int index) {
+		if (!lua_getmetatable(L, index)) {
+			return false;
 		}
 
-		auto signature = lua_topointer(L, -1);
+		const auto& mt_pointer = lua_topointer(L, -1);
+		bool is_valid = check_metatable<0, T, _Ts...>(L, get_luaopen_index(L), mt_pointer);
 		lua_pop(L, 1);
+		return is_valid;
+	}
 
-		return lua_userdata_signature_to<0, T, _Ts...>(L, index, signature, is_valid);
+	template<typename T, typename... _Ts>
+	inline std::shared_ptr<T> testudata_metatable(lua_State* L, int index, bool& is_valid) {
+		is_valid = lua_isuserdata(L, index) && check_metatable<T, _Ts...>(L, index);
+		if (!is_valid) {
+			return std::shared_ptr<T>();
+		}
+		return *static_cast<std::shared_ptr<T>*>(lua_touserdata(L, index));
 	}
 
 	template<typename T>
 	inline void usertype_push_metatable(lua_State* L) {
-		lua_rawgeti(L, LUA_REGISTRYINDEX, usertype_info<T>::metatable);
+		const auto& index = get_luaopen_index(L);
+		const auto& ref = usertype_info<T>::metatable_refs.at(index);
+		lua_rawgeti(L, LUA_REGISTRYINDEX, ref);
 	}
 
 
@@ -377,8 +374,8 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename T>
-	inline int lua_push(lua_State* L, T* ptr, void (*d)(T*)) {
-		return lua_push(L, std::make_shared<T>(ptr, CFunctionDeleter(d)));
+	inline void lua_push(lua_State* L, T* ptr, void (*d)(T*)) {
+		lua_push(L, std::make_shared<T>(ptr, CFunctionDeleter(d)));
 	}
 
 
@@ -444,31 +441,46 @@ namespace LUA_MODULE_NAME {
 		if (is_valid) {
 			return static_cast<T*>(nullptr);
 		}
-		return lua_to(L, index, static_cast<T*>(nullptr), is_valid).get();
-	}
 
-	template<typename T>
-	inline std::enable_if_t<is_usertype_v<T>, int> lua_push(lua_State* L, T* ptr) {
-		if (!ptr) {
-			lua_pushnil(L);
-			return 1;
+		auto userdata_ptr = lua_to(L, index, static_cast<T*>(nullptr), is_valid);
+		if (is_valid) {
+			return userdata_ptr.get();
 		}
-		return lua_push(L, reference_internal(ptr));
+
+		is_valid = !lua_islightuserdata(L, index) && lua_isuserdata(L, index) || lua_istable(L, index);
+		if (is_valid) {
+			auto ptr = lua_to(L, index, static_cast<void**>(nullptr), is_valid);
+			if (is_valid) {
+				return static_cast<T*>(ptr);
+			}
+		}
+
+		return static_cast<T*>(nullptr);
 	}
 
 	template<typename T>
-	inline std::enable_if_t<is_usertype_v<T>, int> lua_push(lua_State* L, const T* ptr) {
-		return lua_push(L, const_cast<T*>(ptr));
+	inline std::enable_if_t<is_usertype_v<T>, void> lua_push(lua_State* L, T* ptr) {
+		if (ptr) {
+			lua_push(L, reference_internal(ptr));
+		}
+		else {
+			lua_pushnil(L);
+		}
 	}
 
 	template<typename T>
-	inline std::enable_if_t<is_usertype_v<T>, int> lua_push(lua_State* L, T&& obj) {
-		return lua_push(L, std::make_shared<T>(std::move(obj)));
+	inline std::enable_if_t<is_usertype_v<T>, void> lua_push(lua_State* L, const T* ptr) {
+		lua_push(L, const_cast<T*>(ptr));
 	}
 
 	template<typename T>
-	inline std::enable_if_t<is_usertype_v<T>, int> lua_push(lua_State* L, const T& obj) {
-		return lua_push(L, std::make_shared<T>(obj));
+	inline std::enable_if_t<is_usertype_v<T>, void> lua_push(lua_State* L, T&& obj) {
+		lua_push(L, std::make_shared<T>(std::move(obj)));
+	}
+
+	template<typename T>
+	inline std::enable_if_t<is_usertype_v<T>, void> lua_push(lua_State* L, const T& obj) {
+		lua_push(L, std::make_shared<T>(obj));
 	}
 
 
@@ -507,16 +519,17 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename T>
-	inline int lua_push(lua_State* L, const std::shared_ptr<T>& ptr) {
+	inline void lua_push(lua_State* L, const std::shared_ptr<T>& ptr) {
 		if (!ptr) {
 			lua_pushnil(L);
-			return 1;
+			return;
 		}
 
-		if constexpr (requires(const std::type_index & index) { usertype_info<T>::derives_pushers.count(index); }) {
+		if constexpr (requires(std::size_t type) { usertype_info<T>::derives_pushers.count(type); }) {
 			// Downcasting
-			if (auto search = usertype_info<T>::derives_pushers.find(std::type_index(typeid(*ptr))); search != usertype_info<T>::derives_pushers.end()) {
-				return search->second(L, ptr);
+			if (auto search = usertype_info<T>::derives_pushers.find(typeid(*ptr).hash_code()); search != usertype_info<T>::derives_pushers.end()) {
+				search->second(L, ptr);
+				return;
 			}
 		}
 
@@ -526,18 +539,16 @@ namespace LUA_MODULE_NAME {
 
 		usertype_push_metatable<T>(L);
 		lua_setmetatable(L, -2);
-
-		return 1; // return userdata
 	}
 
 
 	// ================================
-	// std::map
+	// stl map container
 	// ================================
 
-	template<typename K, typename V>
-	inline void lua_to(lua_State* L, int index, std::map<K, V>& out, bool& is_valid) {
-		using Map = std::map<K, V>;
+	template<template<typename, typename, typename...> typename Container, typename K, typename V, typename... _Ts>
+	inline void _stl_map_container_lua_to(lua_State* L, int index, Container<K, V, _Ts...>& out, bool& is_valid) {
+		using Map = Container<K, V, _Ts...>;
 
 		if (lua_isuserdata(L, index)) {
 			out = *lua_userdata_to(L, index, static_cast<Map*>(nullptr), is_valid);
@@ -595,8 +606,8 @@ namespace LUA_MODULE_NAME {
 		}
 	}
 
-	template<typename K, typename V>
-	inline std::shared_ptr<std::map<K, V>> lua_to(lua_State* L, int index, std::map<K, V>* ptr, bool& is_valid) {
+	template<template<typename, typename, typename...> typename Container, typename K, typename V, typename... _Ts>
+	inline std::shared_ptr<Container<K, V, _Ts...>> _stl_map_container_lua_to(lua_State* L, int index, Container<K, V, _Ts...>* ptr, bool& is_valid) {
 		if (lua_isuserdata(L, index)) {
 			return lua_userdata_to(L, index, ptr, is_valid);
 		}
@@ -605,19 +616,19 @@ namespace LUA_MODULE_NAME {
 			index += lua_gettop(L) + 1;
 		}
 
-		auto out = std::make_shared<std::map<K, V>>();
+		auto out = std::make_shared<Container<K, V, _Ts...>>();
 		lua_to(L, index, *out, is_valid);
 		return out;
 	}
 
-	template<typename K, typename V>
-	inline int lua_push(lua_State* L, std::map<K, V>&& kv) {
-		std::map<K, V> _kv(kv);
-		return lua_push(L, _kv);
+	template<template<typename, typename, typename...> typename Container, typename K, typename V, typename... _Ts>
+	inline void _stl_map_container_lua_push(lua_State* L, Container<K, V, _Ts...>&& kv) {
+		Container<K, V, _Ts...> _kv(kv);
+		lua_push(L, _kv);
 	}
 
-	template<typename K, typename V>
-	inline int lua_push(lua_State* L, const std::map<K, V>& kv) {
+	template<template<typename, typename, typename...> typename Container, typename K, typename V, typename... _Ts>
+	inline void _stl_map_container_lua_push(lua_State* L, const Container<K, V, _Ts...>& kv) {
 		lua_newtable(L);
 		int index = lua_gettop(L);
 		int i = 0;
@@ -626,7 +637,106 @@ namespace LUA_MODULE_NAME {
 			lua_push(L, v);
 			lua_rawset(L, index);
 		}
-		return 1;
+	}
+
+
+	// ================================
+	// std::map
+	// ================================
+
+	template<typename K, typename V, typename... _Ts>
+	inline void lua_to(lua_State* L, int index, std::map<K, V, _Ts...>& out, bool& is_valid) {
+		_stl_map_container_lua_to(L, index, out, is_valid);
+	}
+
+	template<typename K, typename V, typename... _Ts>
+	inline std::shared_ptr<std::map<K, V, _Ts...>> lua_to(lua_State* L, int index, std::map<K, V, _Ts...>* ptr, bool& is_valid) {
+		return _stl_map_container_lua_to(L, index, ptr, is_valid);
+	}
+
+	template<typename K, typename V, typename... _Ts>
+	inline void lua_push(lua_State* L, std::map<K, V, _Ts...>&& kv) {
+		_stl_map_container_lua_push(L, std::move(kv));
+	}
+
+	template<typename K, typename V, typename... _Ts>
+	inline void lua_push(lua_State* L, const std::map<K, V, _Ts...>& kv) {
+		_stl_map_container_lua_push(L, kv);
+	}
+
+
+	// ================================
+	// std::multimap
+	// ================================
+
+	template<typename K, typename V, typename... _Ts>
+	inline void lua_to(lua_State* L, int index, std::multimap<K, V, _Ts...>& out, bool& is_valid) {
+		_stl_map_container_lua_to(L, index, out, is_valid);
+	}
+
+	template<typename K, typename V, typename... _Ts>
+	inline std::shared_ptr<std::multimap<K, V, _Ts...>> lua_to(lua_State* L, int index, std::multimap<K, V, _Ts...>* ptr, bool& is_valid) {
+		return _stl_map_container_lua_to(L, index, ptr, is_valid);
+	}
+
+	template<typename K, typename V, typename... _Ts>
+	inline void lua_push(lua_State* L, std::multimap<K, V, _Ts...>&& kv) {
+		_stl_map_container_lua_push(L, std::move(kv));
+	}
+
+	template<typename K, typename V, typename... _Ts>
+	inline void lua_push(lua_State* L, const std::multimap<K, V, _Ts...>& kv) {
+		_stl_map_container_lua_push(L, kv);
+	}
+
+
+	// ================================
+	// std::unordered_map
+	// ================================
+
+	template<typename K, typename V, typename... _Ts>
+	inline void lua_to(lua_State* L, int index, std::unordered_map<K, V, _Ts...>& out, bool& is_valid) {
+		_stl_map_container_lua_to(L, index, out, is_valid);
+	}
+
+	template<typename K, typename V, typename... _Ts>
+	inline std::shared_ptr<std::unordered_map<K, V, _Ts...>> lua_to(lua_State* L, int index, std::unordered_map<K, V, _Ts...>* ptr, bool& is_valid) {
+		return _stl_map_container_lua_to(L, index, ptr, is_valid);
+	}
+
+	template<typename K, typename V, typename... _Ts>
+	inline void lua_push(lua_State* L, std::unordered_map<K, V, _Ts...>&& kv) {
+		_stl_map_container_lua_push(L, std::move(kv));
+	}
+
+	template<typename K, typename V, typename... _Ts>
+	inline void lua_push(lua_State* L, const std::unordered_map<K, V, _Ts...>& kv) {
+		_stl_map_container_lua_push(L, kv);
+	}
+
+
+	// ================================
+	// std::unordered_multimap
+	// ================================
+
+	template<typename K, typename V, typename... _Ts>
+	inline void lua_to(lua_State* L, int index, std::unordered_multimap<K, V, _Ts...>& out, bool& is_valid) {
+		_stl_map_container_lua_to(L, index, out, is_valid);
+	}
+
+	template<typename K, typename V, typename... _Ts>
+	inline std::shared_ptr<std::unordered_multimap<K, V, _Ts...>> lua_to(lua_State* L, int index, std::unordered_multimap<K, V, _Ts...>* ptr, bool& is_valid) {
+		return _stl_map_container_lua_to(L, index, ptr, is_valid);
+	}
+
+	template<typename K, typename V, typename... _Ts>
+	inline void lua_push(lua_State* L, std::unordered_multimap<K, V, _Ts...>&& kv) {
+		_stl_map_container_lua_push(L, std::move(kv));
+	}
+
+	template<typename K, typename V, typename... _Ts>
+	inline void lua_push(lua_State* L, const std::unordered_multimap<K, V, _Ts...>& kv) {
+		_stl_map_container_lua_push(L, kv);
 	}
 
 
@@ -651,13 +761,13 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename T>
-	inline int lua_push(lua_State* L, const std::optional<T>& p) {
+	inline void lua_push(lua_State* L, const std::optional<T>& p) {
 		if (p) {
-			return lua_push(L, p.value());
+			lua_push(L, p.value());
 		}
-
-		lua_pushnil(L);
-		return 1;
+		else {
+			lua_pushnil(L);
+		}
 	}
 
 
@@ -707,7 +817,7 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename T1, typename T2>
-	inline int lua_push(lua_State* L, const std::pair<T1, T2>& p) {
+	inline void lua_push(lua_State* L, const std::pair<T1, T2>& p) {
 		lua_newtable(L);
 		int index = lua_gettop(L);
 
@@ -716,8 +826,6 @@ namespace LUA_MODULE_NAME {
 
 		lua_push(L, p.second);
 		lua_rawset(L, 2);
-
-		return 1;
 	}
 
 
@@ -784,11 +892,10 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename... _Ts>
-	inline int lua_push(lua_State* L, const std::tuple<_Ts...>& value) {
+	inline void lua_push(lua_State* L, const std::tuple<_Ts...>& value) {
 		lua_newtable(L);
 		int index = lua_gettop(L);
 		_lua_push(L, index, value);
-		return 1;
 	}
 
 
@@ -824,27 +931,28 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<std::size_t I = 0, typename... _Ts>
-	inline int _lua_push(lua_State* L, const std::variant<_Ts...>& value) {
+	inline void _lua_push(lua_State* L, const std::variant<_Ts...>& value) {
 		using _Tuple = typename std::tuple<_Ts...>;
 		using T = std::tuple_element_t<I, _Tuple>;
 
 		if constexpr (!std::is_same_v<std::monostate, T>) {
 			if (std::holds_alternative<T>(value)) {
-				return lua_push(L, std::get<T>(value));
+				lua_push(L, std::get<T>(value));
+				return;
 			}
 		}
 
-		if constexpr (I == sizeof...(_Ts) - 1) {
-			return 0;
+		if constexpr (I + 1 != sizeof...(_Ts)) {
+			_lua_push<I + 1, _Ts...>(L, value);
 		}
 		else {
-			return _lua_push<I + 1, _Ts...>(L, value);
+			lua_pushnil(L);
 		}
 	}
 
 	template<typename... _Ts>
-	inline int lua_push(lua_State* L, const std::variant<_Ts...>& value) {
-		return _lua_push(L, value);
+	inline void lua_push(lua_State* L, const std::variant<_Ts...>& value) {
+		_lua_push(L, value);
 	}
 
 
@@ -852,7 +960,7 @@ namespace LUA_MODULE_NAME {
 	// stl container
 	// ================================
 
-	template<template<typename> typename Container, typename... _Ts>
+	template<template<typename...> typename Container, typename... _Ts>
 	inline void _stl_container_lua_to(lua_State* L, int index, Container<_Ts...>& out, bool& is_valid, size_t len, bool loose) {
 		using _Tuple = typename std::tuple<_Ts...>;
 		using T = std::tuple_element_t<0, _Tuple>;
@@ -920,7 +1028,7 @@ namespace LUA_MODULE_NAME {
 		}
 	}
 
-	template<template<typename> typename Container, typename... _Ts>
+	template<template<typename...> typename Container, typename... _Ts>
 	inline std::shared_ptr<Container<_Ts...>> _stl_container_lua_to(lua_State* L, int index, Container<_Ts...>* ptr, bool& is_valid, size_t len, bool loose) {
 		if (lua_isuserdata(L, index)) {
 			auto out = lua_userdata_to(L, index, ptr, is_valid);
@@ -938,14 +1046,14 @@ namespace LUA_MODULE_NAME {
 		return out;
 	}
 
-	template<template<typename> typename Container, typename... _Ts>
-	inline int _stl_container_lua_push(lua_State* L, Container<_Ts...>&& container) {
+	template<template<typename...> typename Container, typename... _Ts>
+	inline void _stl_container_lua_push(lua_State* L, Container<_Ts...>&& container) {
 		Container<_Ts...> _container(std::move(container));
-		return lua_push(L, _container);
+		lua_push(L, _container);
 	}
 
-	template<template<typename> typename Container, typename... _Ts>
-	inline int _stl_container_lua_push(lua_State* L, const Container<_Ts...>& container) {
+	template<template<typename...> typename Container, typename... _Ts>
+	inline void _stl_container_lua_push(lua_State* L, const Container<_Ts...>& container) {
 		lua_newtable(L);
 		int index = lua_gettop(L);
 		int i = 0;
@@ -953,7 +1061,6 @@ namespace LUA_MODULE_NAME {
 			lua_push(L, v);
 			lua_rawseti(L, index, ++i);
 		}
-		return 1;
 	}
 
 
@@ -963,22 +1070,22 @@ namespace LUA_MODULE_NAME {
 
 	template<class T, class Allocator>
 	inline void lua_to(lua_State* L, int index, std::vector<T, Allocator>& out, bool& is_valid, size_t len, bool loose) {
-		return _stl_container_lua_to<std::vector, T, Allocator>(L, index, out, is_valid, len, loose);
+		return _stl_container_lua_to(L, index, out, is_valid, len, loose);
 	}
 
 	template<class T, class Allocator>
 	inline std::shared_ptr<std::vector<T, Allocator>> lua_to(lua_State* L, int index, std::vector<T, Allocator>* ptr, bool& is_valid, size_t len, bool loose) {
-		return _stl_container_lua_to<std::vector, T, Allocator>(L, index, ptr, is_valid, len, loose);
+		return _stl_container_lua_to(L, index, ptr, is_valid, len, loose);
 	}
 
 	template<class T, class Allocator>
-	inline int lua_push(lua_State* L, std::vector<T, Allocator>&& vec) {
-		return _stl_container_lua_push<std::vector, T, Allocator>(L, std::move(vec));
+	inline void lua_push(lua_State* L, std::vector<T, Allocator>&& vec) {
+		_stl_container_lua_push(L, std::move(vec));
 	}
 
 	template<class T, class Allocator>
-	inline int lua_push(lua_State* L, const std::vector<T, Allocator>& vec) {
-		return _stl_container_lua_push<std::vector, T, Allocator>(L, vec);
+	inline void lua_push(lua_State* L, const std::vector<T, Allocator>& vec) {
+		_stl_container_lua_push(L, vec);
 	}
 
 
@@ -1023,9 +1130,8 @@ namespace LUA_MODULE_NAME {
 			}
 
 			R operator()(Args&&... args) {
-				GilLock lock;
-
 				auto& L = fn.L;
+				GilLock lock(L);
 
 				invoke(L, fn, std::forward<Args>(args)...);
 
@@ -1084,7 +1190,8 @@ namespace LUA_MODULE_NAME {
 	int lua_method_isinstance(lua_State* L) {
 		bool is_valid;
 		lua_userdata_to(L, 1, static_cast<T*>(nullptr), is_valid);
-		return lua_push(L, is_valid);
+		lua_pushboolean(L, is_valid);
+		return 1;
 	}
 
 	template<typename T>
@@ -1150,7 +1257,8 @@ namespace LUA_MODULE_NAME {
 			return luaL_typeerror(L, 1, "userdata or ligthuserdata");
 		}
 
-		return lua_push(L, static_cast<T*>(lua_touserdata(L, 1)));
+		lua_push(L, static_cast<T*>(lua_touserdata(L, 1)));
+		return 1;
 	}
 
 	template<std::size_t I = 0, typename... _Ts>
@@ -1293,7 +1401,8 @@ namespace LUA_MODULE_NAME {
 	template<typename T>
 	int member_default_to_string(lua_State* L) {
 		bool is_valid;
-		return lua_push(L, lua_userdata_to(L, 1, static_cast<T*>(nullptr), is_valid)->to_string());
+		lua_push(L, lua_userdata_to(L, 1, static_cast<T*>(nullptr), is_valid)->to_string());
+		return 1;
 	}
 
 	/**
@@ -1302,7 +1411,8 @@ namespace LUA_MODULE_NAME {
 	template <typename T>
 	int adl_default_to_string(lua_State* L) {
 		bool is_valid;
-		return lua_push(L, std::to_string(*lua_userdata_to(L, 1, static_cast<T*>(nullptr), is_valid)));
+		lua_push(L, std::to_string(*lua_userdata_to(L, 1, static_cast<T*>(nullptr), is_valid)));
+		return 1;
 	}
 
 	/**
@@ -1312,7 +1422,8 @@ namespace LUA_MODULE_NAME {
 	int oss_default_to_string(lua_State* L) {
 		std::ostringstream oss; bool is_valid;
 		oss << *lua_userdata_to(L, 1, static_cast<T*>(nullptr), is_valid);
-		return lua_push(L, oss.str());
+		lua_push(L, oss.str());
+		return 1;
 	}
 
 	template<typename T>
@@ -1330,15 +1441,15 @@ namespace LUA_MODULE_NAME {
 
 	template<typename K, typename V>
 	std::shared_ptr<std::map<K, V>> lua_map_new(const std::vector<std::pair<K, V>>& pairs) {
-		std::shared_ptr<std::map<K, V>> res(new std::map<K, V>());
+		auto res = std::make_shared<std::map<K, V>>();
 		for (const auto& pair_ : pairs) {
 			res->insert_or_assign(pair_.first, pair_.second);
 		}
 		return res;
 	}
 
-	template<typename K, typename V>
-	int lua_map_method__index(lua_State* L, std::map<K, V>& m, K key) {
+	template<template<typename, typename, typename...> typename Container, typename K, typename V, typename... _Ts>
+	int lua_map_method__index(lua_State* L, Container<K, V, _Ts...>& m, K key) {
 		if (m.count(key)) {
 			lua_push(L, &m.at(key));
 		}
@@ -1348,8 +1459,8 @@ namespace LUA_MODULE_NAME {
 		return 1;
 	}
 
-	template<typename K, typename V>
-	void lua_map_method_keys(const std::map<K, V>& m, std::vector<K>& keys) {
+	template<template<typename, typename, typename...> typename Container, typename K, typename V, typename... _Ts>
+	void lua_map_method_keys(const Container<K, V, _Ts...>& m, std::vector<K>& keys) {
 		for (auto it = m.begin(); it != m.end(); ++it) {
 			keys.push_back(it->first);
 		}
@@ -1408,6 +1519,17 @@ namespace LUA_MODULE_NAME {
 		lua_pushliteral(L, "__name");
 		lua_pushstring(L, internal::GetTypeName<T>());
 		lua_rawset(L, -3); // cls.__name = typename
+
+		lua_pushliteral(L, "__userdata_typeindex");
+		{
+			auto userdata_ptr = static_cast<std::size_t*>(lua_newuserdata(L, sizeof(std::size_t)));
+			*userdata_ptr = typeid(T*).hash_code();
+		}
+		lua_rawset(L, -3); // cls.__userdata_typeindex = type
+
+		lua_pushliteral(L, "__has_self");
+		lua_pushboolean(L, true);
+		lua_rawset(L, -3); // cls.__has_self = typename
 
 		if constexpr (requires(lua_State * L, int index, bool& is_valid) { usertype_info<T>::lua_userdata_to(L, index, is_valid); }) {
 			// Generic __eq has lower priority than inherited __eq
@@ -1516,8 +1638,14 @@ namespace LUA_MODULE_NAME {
 		// setmetatable(cls, metatable)
 		lua_setmetatable(L, -2);
 
-		usertype_info<T>::signature = lua_topointer(L, -1);
-		usertype_info<T>::metatable = luaL_ref(L, LUA_REGISTRYINDEX);
+		std::unique_lock lock(usertype_info<T>::mutex);
+		const auto index = get_luaopen_index(L);
+		if (index >= usertype_info<T>::metatable_pointers.size()) {
+			usertype_info<T>::metatable_pointers.resize(index + 1);
+			usertype_info<T>::metatable_refs.resize(index + 1);
+		}
+		usertype_info<T>::metatable_pointers.at(index) = lua_topointer(L, -1);
+		usertype_info<T>::metatable_refs.at(index) = luaL_ref(L, LUA_REGISTRYINDEX);
 	}
 
 	template<std::same_as<const char*> T, std::size_t N>

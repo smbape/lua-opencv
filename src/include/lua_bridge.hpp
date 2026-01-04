@@ -45,24 +45,25 @@ namespace LUA_MODULE_NAME {
 
 	// https://github.com/opencv/opencv/blob/4.11.0/modules/dnn/misc/python/pyopencv_dnn.hpp#L40-L51
 	template<typename T>
-	int lua_push_dict_value(lua_State* L, const cv::dnn::DictValue& dv) {
+	void lua_push_dict_value(lua_State* L, const cv::dnn::DictValue& dv) {
 		if (dv.size() > 1) {
 			std::vector<T> vec(dv.size());
 			for (int i = 0; i < dv.size(); ++i) {
 				vec[i] = dv.get<T>(i);
 			}
-			return lua_push(L, vec);
+			lua_push(L, vec);
 		}
-
-		return lua_push(L, dv.get<T>());
+		else {
+			lua_push(L, dv.get<T>());
+		}
 	}
 
 	// https://github.com/opencv/opencv/blob/4.11.0/modules/dnn/misc/python/pyopencv_dnn.hpp#L54-L61
-	inline int lua_push(lua_State* L, const cv::dnn::DictValue& dv) {
-		if (dv.isInt()) return lua_push_dict_value<int>(L, dv);
-		if (dv.isReal()) return lua_push_dict_value<float>(L, dv);
-		if (dv.isString()) return lua_push_dict_value<cv::String>(L, dv);
-		return luaL_error(L, "Unknown value type");
+	inline void lua_push(lua_State* L, const cv::dnn::DictValue& dv) {
+		if (dv.isInt()) lua_push_dict_value<int>(L, dv);
+		else if (dv.isReal()) lua_push_dict_value<float>(L, dv);
+		else if (dv.isString()) lua_push_dict_value<cv::String>(L, dv);
+		else luaL_error(L, "Unknown value type");
 	}
 
 	// https://github.com/opencv/opencv/blob/4.11.0/modules/dnn/misc/python/pyopencv_dnn.hpp#L75-L88
@@ -89,7 +90,7 @@ namespace LUA_MODULE_NAME {
 	}
 
 	// https://github.com/opencv/opencv/blob/4.11.0/modules/dnn/misc/python/pyopencv_dnn.hpp#L65-L72
-	inline int lua_push(lua_State* L, const cv::dnn::LayerParams& lp) {
+	inline void lua_push(lua_State* L, const cv::dnn::LayerParams& lp) {
 		lua_newtable(L);
 		int index = lua_gettop(L);
 		int i = 0;
@@ -98,12 +99,11 @@ namespace LUA_MODULE_NAME {
 			lua_push(L, it->second);
 			lua_rawset(L, index);
 		}
-		return 1;
 	}
 
 	// https://github.com/opencv/opencv/blob/4.11.0/modules/dnn/misc/python/pyopencv_dnn.hpp#L91-L94
-	inline int lua_push(lua_State* L, const std::vector<cv::dnn::Target>& t) {
-		return lua_push(L, std::vector<int>(t.begin(), t.end()));
+	inline void lua_push(lua_State* L, const std::vector<cv::dnn::Target>& t) {
+		lua_push(L, std::vector<int>(t.begin(), t.end()));
 	}
 #endif
 
@@ -183,26 +183,34 @@ namespace LUA_MODULE_NAME {
 	}
 
 	// https://github.com/opencv/opencv/tree/4.11.0/modules/gapi/misc/python/pyopencv_gapi.hpp#L149-L170
-	inline int lua_push(lua_State* L, const cv::gapi::wip::draw::Prim& prim) {
+	inline void lua_push(lua_State* L, const cv::gapi::wip::draw::Prim& prim) {
 		switch (prim.index())
 		{
 			case cv::gapi::wip::draw::Prim::index_of<cv::gapi::wip::draw::Rect>():
-				return lua_push(L, cv::util::get<cv::gapi::wip::draw::Rect>(prim));
+				lua_push(L, cv::util::get<cv::gapi::wip::draw::Rect>(prim));
+				break;
 			case cv::gapi::wip::draw::Prim::index_of<cv::gapi::wip::draw::Text>():
-				return lua_push(L, cv::util::get<cv::gapi::wip::draw::Text>(prim));
+				lua_push(L, cv::util::get<cv::gapi::wip::draw::Text>(prim));
+				break;
 			case cv::gapi::wip::draw::Prim::index_of<cv::gapi::wip::draw::Circle>():
-				return lua_push(L, cv::util::get<cv::gapi::wip::draw::Circle>(prim));
+				lua_push(L, cv::util::get<cv::gapi::wip::draw::Circle>(prim));
+				break;
 			case cv::gapi::wip::draw::Prim::index_of<cv::gapi::wip::draw::Line>():
-				return lua_push(L, cv::util::get<cv::gapi::wip::draw::Line>(prim));
+				lua_push(L, cv::util::get<cv::gapi::wip::draw::Line>(prim));
+				break;
 			case cv::gapi::wip::draw::Prim::index_of<cv::gapi::wip::draw::Poly>():
-				return lua_push(L, cv::util::get<cv::gapi::wip::draw::Poly>(prim));
+				lua_push(L, cv::util::get<cv::gapi::wip::draw::Poly>(prim));
+				break;
 			case cv::gapi::wip::draw::Prim::index_of<cv::gapi::wip::draw::Mosaic>():
-				return lua_push(L, cv::util::get<cv::gapi::wip::draw::Mosaic>(prim));
+				lua_push(L, cv::util::get<cv::gapi::wip::draw::Mosaic>(prim));
+				break;
 			case cv::gapi::wip::draw::Prim::index_of<cv::gapi::wip::draw::Image>():
-				return lua_push(L, cv::util::get<cv::gapi::wip::draw::Image>(prim));
+				lua_push(L, cv::util::get<cv::gapi::wip::draw::Image>(prim));
+				break;
+			default:
+				luaL_error(L, "Unsupported draw primitive type");
 		}
 
-		return luaL_error(L, "Unsupported draw primitive type");
 	}
 
 	// https://github.com/opencv/opencv/tree/4.11.0/modules/gapi/misc/python/pyopencv_gapi.hpp#L208-L226
@@ -236,11 +244,11 @@ namespace LUA_MODULE_NAME {
 	}
 
 	// https://github.com/opencv/opencv/tree/4.11.0/modules/gapi/misc/python/pyopencv_gapi.hpp#L236-L267
-	int lua_push(lua_State* L, const cv::GArg& value) {
+	void lua_push(lua_State* L, const cv::GArg& value) {
 		GAPI_Assert(value.kind != cv::detail::ArgKind::GOBJREF);
 	#define HANDLE_CASE(T, O) case cv::detail::OpaqueKind::CV_##T:  \
 		{                                                           \
-			return lua_push(L, value.get<O>());                   \
+			lua_push(L, value.get<O>()); break;                     \
 		}
 
 	#define UNSUPPORTED(T) case cv::detail::OpaqueKind::CV_##T: break
@@ -264,58 +272,57 @@ namespace LUA_MODULE_NAME {
 			HANDLE_CASE(DRAW_PRIM, cv::gapi::wip::draw::Prim);
 	#undef HANDLE_CASE
 	#undef UNSUPPORTED
+			default:
+				luaL_error(L, "Unsupported kernel input type");
 		}
-		return luaL_error(L, "Unsupported kernel input type");
 	}
 
 	// https://github.com/opencv/opencv/tree/4.11.0/modules/gapi/misc/python/pyopencv_gapi.hpp#L301-L326
-	inline int lua_push(lua_State* L, const cv::detail::OpaqueRef& o) {
+	inline void lua_push(lua_State* L, const cv::detail::OpaqueRef& o) {
 		switch (o.getKind())
 		{
-			case cv::detail::OpaqueKind::CV_BOOL      : return lua_push(L, o.rref<bool>());
-			case cv::detail::OpaqueKind::CV_INT       : return lua_push(L, o.rref<int>());
-			case cv::detail::OpaqueKind::CV_INT64     : return lua_push(L, o.rref<int64_t>());
-			case cv::detail::OpaqueKind::CV_UINT64    : return lua_push(L, o.rref<uint64_t>());
-			case cv::detail::OpaqueKind::CV_DOUBLE    : return lua_push(L, o.rref<double>());
-			case cv::detail::OpaqueKind::CV_FLOAT     : return lua_push(L, o.rref<float>());
-			case cv::detail::OpaqueKind::CV_STRING    : return lua_push(L, o.rref<std::string>());
-			case cv::detail::OpaqueKind::CV_POINT     : return lua_push(L, o.rref<cv::Point>());
-			case cv::detail::OpaqueKind::CV_POINT2F   : return lua_push(L, o.rref<cv::Point2f>());
-			case cv::detail::OpaqueKind::CV_POINT3F   : return lua_push(L, o.rref<cv::Point3f>());
-			case cv::detail::OpaqueKind::CV_SIZE      : return lua_push(L, o.rref<cv::Size>());
-			case cv::detail::OpaqueKind::CV_RECT      : return lua_push(L, o.rref<cv::Rect>());
-			case cv::detail::OpaqueKind::CV_UNKNOWN   : return lua_push(L, o.rref<cv::GArg>());
-			case cv::detail::OpaqueKind::CV_DRAW_PRIM : return lua_push(L, o.rref<cv::gapi::wip::draw::Prim>());
+			case cv::detail::OpaqueKind::CV_BOOL      : lua_push(L, o.rref<bool>()); break;
+			case cv::detail::OpaqueKind::CV_INT       : lua_push(L, o.rref<int>()); break;
+			case cv::detail::OpaqueKind::CV_INT64     : lua_push(L, o.rref<int64_t>()); break;
+			case cv::detail::OpaqueKind::CV_UINT64    : lua_push(L, o.rref<uint64_t>()); break;
+			case cv::detail::OpaqueKind::CV_DOUBLE    : lua_push(L, o.rref<double>()); break;
+			case cv::detail::OpaqueKind::CV_FLOAT     : lua_push(L, o.rref<float>()); break;
+			case cv::detail::OpaqueKind::CV_STRING    : lua_push(L, o.rref<std::string>()); break;
+			case cv::detail::OpaqueKind::CV_POINT     : lua_push(L, o.rref<cv::Point>()); break;
+			case cv::detail::OpaqueKind::CV_POINT2F   : lua_push(L, o.rref<cv::Point2f>()); break;
+			case cv::detail::OpaqueKind::CV_POINT3F   : lua_push(L, o.rref<cv::Point3f>()); break;
+			case cv::detail::OpaqueKind::CV_SIZE      : lua_push(L, o.rref<cv::Size>()); break;
+			case cv::detail::OpaqueKind::CV_RECT      : lua_push(L, o.rref<cv::Rect>()); break;
+			case cv::detail::OpaqueKind::CV_UNKNOWN   : lua_push(L, o.rref<cv::GArg>()); break;
+			case cv::detail::OpaqueKind::CV_DRAW_PRIM : lua_push(L, o.rref<cv::gapi::wip::draw::Prim>()); break;
 			case cv::detail::OpaqueKind::CV_SCALAR    : break;
 			case cv::detail::OpaqueKind::CV_MAT       : break;
+			default                                   : luaL_error(L, "Unsupported GOpaque type");;
 		}
-
-		return luaL_error(L, "Unsupported GOpaque type");
 	}
 
 	// https://github.com/opencv/opencv/tree/4.11.0/modules/gapi/misc/python/pyopencv_gapi.hpp#L328-L352
-	inline int lua_push(lua_State* L, const cv::detail::VectorRef& v) {
+	inline void lua_push(lua_State* L, const cv::detail::VectorRef& v) {
 		switch (v.getKind())
 		{
-			case cv::detail::OpaqueKind::CV_BOOL      : return lua_push(L, v.rref<bool>());
-			case cv::detail::OpaqueKind::CV_INT       : return lua_push(L, v.rref<int>());
-			case cv::detail::OpaqueKind::CV_INT64     : return lua_push(L, v.rref<int64_t>());
-			case cv::detail::OpaqueKind::CV_UINT64    : return lua_push(L, v.rref<uint64_t>());
-			case cv::detail::OpaqueKind::CV_DOUBLE    : return lua_push(L, v.rref<double>());
-			case cv::detail::OpaqueKind::CV_FLOAT     : return lua_push(L, v.rref<float>());
-			case cv::detail::OpaqueKind::CV_STRING    : return lua_push(L, v.rref<std::string>());
-			case cv::detail::OpaqueKind::CV_POINT     : return lua_push(L, v.rref<cv::Point>());
-			case cv::detail::OpaqueKind::CV_POINT2F   : return lua_push(L, v.rref<cv::Point2f>());
-			case cv::detail::OpaqueKind::CV_POINT3F   : return lua_push(L, v.rref<cv::Point3f>());
-			case cv::detail::OpaqueKind::CV_SIZE      : return lua_push(L, v.rref<cv::Size>());
-			case cv::detail::OpaqueKind::CV_RECT      : return lua_push(L, v.rref<cv::Rect>());
-			case cv::detail::OpaqueKind::CV_SCALAR    : return lua_push(L, v.rref<cv::Scalar>());
-			case cv::detail::OpaqueKind::CV_MAT       : return lua_push(L, v.rref<cv::Mat>());
-			case cv::detail::OpaqueKind::CV_UNKNOWN   : return lua_push(L, v.rref<cv::GArg>());
-			case cv::detail::OpaqueKind::CV_DRAW_PRIM : return lua_push(L, v.rref<cv::gapi::wip::draw::Prim>());
+			case cv::detail::OpaqueKind::CV_BOOL      : lua_push(L, v.rref<bool>()); break;
+			case cv::detail::OpaqueKind::CV_INT       : lua_push(L, v.rref<int>()); break;
+			case cv::detail::OpaqueKind::CV_INT64     : lua_push(L, v.rref<int64_t>()); break;
+			case cv::detail::OpaqueKind::CV_UINT64    : lua_push(L, v.rref<uint64_t>()); break;
+			case cv::detail::OpaqueKind::CV_DOUBLE    : lua_push(L, v.rref<double>()); break;
+			case cv::detail::OpaqueKind::CV_FLOAT     : lua_push(L, v.rref<float>()); break;
+			case cv::detail::OpaqueKind::CV_STRING    : lua_push(L, v.rref<std::string>()); break;
+			case cv::detail::OpaqueKind::CV_POINT     : lua_push(L, v.rref<cv::Point>()); break;
+			case cv::detail::OpaqueKind::CV_POINT2F   : lua_push(L, v.rref<cv::Point2f>()); break;
+			case cv::detail::OpaqueKind::CV_POINT3F   : lua_push(L, v.rref<cv::Point3f>()); break;
+			case cv::detail::OpaqueKind::CV_SIZE      : lua_push(L, v.rref<cv::Size>()); break;
+			case cv::detail::OpaqueKind::CV_RECT      : lua_push(L, v.rref<cv::Rect>()); break;
+			case cv::detail::OpaqueKind::CV_SCALAR    : lua_push(L, v.rref<cv::Scalar>()); break;
+			case cv::detail::OpaqueKind::CV_MAT       : lua_push(L, v.rref<cv::Mat>()); break;
+			case cv::detail::OpaqueKind::CV_UNKNOWN   : lua_push(L, v.rref<cv::GArg>()); break;
+			case cv::detail::OpaqueKind::CV_DRAW_PRIM : lua_push(L, v.rref<cv::gapi::wip::draw::Prim>()); break;
+			default                                   : luaL_error(L, "Unsupported GArray type");
 		}
-
-		return luaL_error(L, "Unsupported GArray type");
 	}
 
 	// modules/gapi/include/opencv2/gapi/garg.hpp#L98-L109
@@ -326,43 +333,54 @@ namespace LUA_MODULE_NAME {
 	}
 
 	// https://github.com/opencv/opencv/tree/4.11.0/modules/gapi/misc/python/pyopencv_gapi.hpp#L355-L374
-	inline int lua_push(lua_State* L, const cv::GRunArg& v) {
+	inline void lua_push(lua_State* L, const cv::GRunArg& v) {
 		switch (v.index())
 		{
 			case cv::GRunArg::index_of<cv::Mat>():
-				return lua_push(L, cv::util::get<cv::Mat>(v));
+				lua_push(L, cv::util::get<cv::Mat>(v));
+				break;
 
 			case cv::GRunArg::index_of<cv::Scalar>():
-				return lua_push(L, cv::util::get<cv::Scalar>(v));
+				lua_push(L, cv::util::get<cv::Scalar>(v));
+				break;
 
 			case cv::GRunArg::index_of<cv::detail::VectorRef>():
-				return lua_push(L, cv::util::get<cv::detail::VectorRef>(v));
+				lua_push(L, cv::util::get<cv::detail::VectorRef>(v));
+				break;
 
 			case cv::GRunArg::index_of<cv::detail::OpaqueRef>():
-				return lua_push(L, cv::util::get<cv::detail::OpaqueRef>(v));
-		}
+				lua_push(L, cv::util::get<cv::detail::OpaqueRef>(v));
+				break;
 
-		return luaL_error(L, "Failed to unpack GRunArgs. Index of variant is unknown");
+			default:
+				luaL_error(L, "Failed to unpack GRunArgs. Index of variant is unknown");
+		}
 	}
 
 	// https://github.com/opencv/opencv/tree/4.11.0/modules/gapi/misc/python/pyopencv_gapi.hpp#L387-L406
-	inline int lua_push(lua_State* L, const cv::GOptRunArg& v) {
+	inline void lua_push(lua_State* L, const cv::GOptRunArg& v) {
 		switch (v.index())
 		{
 			case cv::GOptRunArg::index_of<cv::optional<cv::Mat>>():
-				return lua_push(L, cv::util::get<cv::optional<cv::Mat>>(v));
+				lua_push(L, cv::util::get<cv::optional<cv::Mat>>(v));
+				break;
 
 			case cv::GOptRunArg::index_of<cv::optional<cv::Scalar>>():
-				return lua_push(L, cv::util::get<cv::optional<cv::Scalar>>(v));
+				lua_push(L, cv::util::get<cv::optional<cv::Scalar>>(v));
+				break;
 
 			case cv::GOptRunArg::index_of<cv::optional<cv::detail::VectorRef>>():
-				return lua_push(L, cv::util::get<cv::optional<cv::detail::VectorRef>>(v));
+				lua_push(L, cv::util::get<cv::optional<cv::detail::VectorRef>>(v));
+				break;
 
 			case cv::GOptRunArg::index_of<cv::optional<cv::detail::OpaqueRef>>():
-				return lua_push(L, cv::util::get<cv::optional<cv::detail::OpaqueRef>>(v));
+				lua_push(L, cv::util::get<cv::optional<cv::detail::OpaqueRef>>(v));
+				break;
+		
+			default:
+				luaL_error(L, "Failed to unpack GOptRunArg. Index of variant is unknown");
 		}
 
-		return luaL_error(L, "Failed to unpack GOptRunArg. Index of variant is unknown");
 	}
 
 #endif
@@ -387,12 +405,11 @@ namespace LUA_MODULE_NAME {
 		return out;
 	}
 
-	inline int lua_push(lua_State* L, const cv::Range& range) {
-		lua_newtable(L);
+	inline void lua_push(lua_State* L, const cv::Range& range) {
+		lua_createtable(L, 2, 0);
 		int i = 0;
 		lua_push(L, range.start); lua_rawseti(L, -2, ++i);
 		lua_push(L, range.end); lua_rawseti(L, -2, ++i);
-		return 1;
 	}
 
 	inline void lua_to(lua_State* L, int index, std::vector<cv::Range>& ranges, bool& is_valid) {
@@ -428,8 +445,8 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename T>
-	inline int lua_push(lua_State* L, cv::Ptr<T>& ptr) {
-		return lua_push(L, std::shared_ptr<T>(ptr));
+	inline void lua_push(lua_State* L, cv::Ptr<T>& ptr) {
+		lua_push(L, std::shared_ptr<T>(ptr));
 	}
 
 
@@ -449,12 +466,11 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp>
-	inline int lua_push(lua_State* L, const cv::Point_<_Tp>& pt) {
-		lua_newtable(L);
+	inline void lua_push(lua_State* L, const cv::Point_<_Tp>& pt) {
+		lua_createtable(L, 2, 0);
 		int i = 0;
 		lua_push(L, pt.x); lua_rawseti(L, -2, ++i);
 		lua_push(L, pt.y); lua_rawseti(L, -2, ++i);
-		return 1;
 	}
 
 
@@ -474,13 +490,12 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp>
-	inline int lua_push(lua_State* L, const cv::Point3_<_Tp>& pt) {
-		lua_newtable(L);
+	inline void lua_push(lua_State* L, const cv::Point3_<_Tp>& pt) {
+		lua_createtable(L, 3, 0);
 		int i = 0;
 		lua_push(L, pt.x); lua_rawseti(L, -2, ++i);
 		lua_push(L, pt.y); lua_rawseti(L, -2, ++i);
 		lua_push(L, pt.z); lua_rawseti(L, -2, ++i);
-		return 1;
 	}
 
 
@@ -500,14 +515,13 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp>
-	inline int lua_push(lua_State* L, const cv::Rect_<_Tp>& rect) {
-		lua_newtable(L);
+	inline void lua_push(lua_State* L, const cv::Rect_<_Tp>& rect) {
+		lua_createtable(L, 4, 0);
 		int i = 0;
 		lua_push(L, rect.x); lua_rawseti(L, -2, ++i);
 		lua_push(L, rect.y); lua_rawseti(L, -2, ++i);
 		lua_push(L, rect.width); lua_rawseti(L, -2, ++i);
 		lua_push(L, rect.height); lua_rawseti(L, -2, ++i);
-		return 1;
 	}
 
 
@@ -543,13 +557,12 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp>
-	inline int lua_push(lua_State* L, const cv::Scalar_<_Tp>& s) {
-		lua_newtable(L);
+	inline void lua_push(lua_State* L, const cv::Scalar_<_Tp>& s) {
+		lua_createtable(L, 4, 0);
 		for (int i = 0; i < 4; i++) {
 			lua_push(L, s[i]);
 			lua_rawseti(L, -2, i + 1);
 		}
-		return 1;
 	}
 
 
@@ -573,12 +586,11 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp>
-	inline int lua_push(lua_State* L, const cv::Size_<_Tp>& rect) {
-		lua_newtable(L);
+	inline void lua_push(lua_State* L, const cv::Size_<_Tp>& rect) {
+		lua_createtable(L, 2, 0);
 		int i = 0;
 		lua_push(L, rect.width); lua_rawseti(L, -2, ++i);
 		lua_push(L, rect.height); lua_rawseti(L, -2, ++i);
-		return 1;
 	}
 
 
@@ -611,13 +623,12 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename _Tp, int cn>
-	inline int lua_push(lua_State* L, const cv::Vec<_Tp, cn>& vec) {
-		lua_newtable(L);
+	inline void lua_push(lua_State* L, const cv::Vec<_Tp, cn>& vec) {
+		lua_createtable(L, cn, 0);
 		for (int i = 0; i < cn; i++) {
 			lua_push(L, vec[i]);
 			lua_rawseti(L, -2, i + 1);
 		}
-		return 1;
 	}
 
 
@@ -655,28 +666,29 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<std::size_t I = 0, typename... _Ts>
-	inline int _lua_push(lua_State* L, const cv::util::variant<_Ts...>& value) {
+	inline void _lua_push(lua_State* L, const cv::util::variant<_Ts...>& value) {
 		using _Tuple = typename std::tuple<_Ts...>;
 		using T = typename std::tuple_element<I, _Tuple>::type;
 		using Arg = typename cv::util::variant<_Ts...>;
 
 		if constexpr (!std::is_same_v<T, cv::util::monostate> && !std::is_same_v<T, cv::gapi::wip::draw::FText> && !std::is_same_v<T, cv::GFrameDesc>) {
 			if (value.index() == I) {
-				return lua_push(L, cv::util::get<T>(value));
+				lua_push(L, cv::util::get<T>(value));
+				return;
 			}
 		}
 
-		if constexpr (I == sizeof...(_Ts) - 1) {
-			return 0;
+		if constexpr (I + 1 != sizeof...(_Ts)) {
+			_lua_push<I + 1, _Ts...>(L, value);
 		}
 		else {
-			return _lua_push<I + 1, _Ts...>(L, value);
+			lua_pushnil(L);
 		}
 	}
 
 	template<typename... _Ts>
-	inline int lua_push(lua_State* L, const cv::util::variant<_Ts...>& value) {
-		return _lua_push(L, value);
+	inline void lua_push(lua_State* L, const cv::util::variant<_Ts...>& value) {
+		_lua_push(L, value);
 	}
 
 
@@ -685,12 +697,13 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<typename T>
-	inline int lua_push(lua_State* L, const cv::optional<T>& opt) {
-		if (!opt.has_value()) {
-			lua_pushnil(L);
-			return 1;
+	inline void lua_push(lua_State* L, const cv::optional<T>& opt) {
+		if (opt.has_value()) {
+			lua_push(L, *opt);
 		}
-		return lua_push(L, *opt);
+		else {
+			lua_pushnil(L);
+		}
 	}
 }
 

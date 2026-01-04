@@ -1,8 +1,6 @@
 #pragma once
 
 #include <luadef.hpp>
-#include <mutex>
-#include <shared_mutex>
 
 #ifdef _MSC_VER
 #pragma push_macro("NOMINMAX")
@@ -148,25 +146,111 @@ namespace LUA_MODULE_NAME {
 	}
 #endif
 
-	lua_State* get_global_state();
-	void init_global_state(lua_State* L);
-	bool has_lua_jit();
+	int get_luaopen_index(lua_State* L);
+
+	void register_Common(lua_State* L);
 
 	struct GilLock {
-		GilLock();
+		GilLock(lua_State* L);
 		~GilLock();
+		lua_State* L;
 		bool locked;
 	};
 
 	struct GilYield {
-		GilYield();
+		GilYield(lua_State* L);
 		~GilYield();
+		lua_State* L;
 		bool yielded;
 	};
 
 	int yield(lua_State* L);
 
 	int __call_constructor(lua_State* L);
+
+
+	// ================================
+	// thread safe map
+	// ================================
+
+	template<typename K, typename V>
+	class ThreadSafeMap {
+	public:
+		ThreadSafeMap() = default;
+
+		// Only one thread/writer can write the value_map_.
+		void insert_or_assign(K key, const V& value) {
+			std::unique_lock lock(mutex_);
+			value_map_.insert_or_assign(key, value);
+		}
+
+		// Multiple threads/readers can read the value_map_ at the same time.
+		auto get(K key) const {
+			std::shared_lock lock(mutex_);
+			if (auto search = value_map_.find(key); search != value_map_.end()) {
+				return &search->second;
+			}
+			using Map = decltype(value_map_);
+			return static_cast<const typename Map::mapped_type*>(nullptr);
+		}
+
+		// Multiple threads/readers can read the value_map_ at the same time.
+		bool contains(K key) const {
+			std::shared_lock lock(mutex_);
+			return value_map_.find(key) != value_map_.end();
+		}
+
+		// Multiple threads/readers can read the value_map_ at the same time.
+		bool contains(K key, const V& value) const {
+			std::shared_lock lock(mutex_);
+			auto search = value_map_.find(key);
+			return search != value_map_.end() && search->second == value;
+		}
+
+	private:
+		mutable std::shared_mutex mutex_;
+		std::unordered_map<K, V> value_map_{};
+	};
+
+
+	// ================================
+	// thread safe set map
+	// ================================
+
+	template<typename K, typename V>
+	class ThreadSafeSetMap {
+	public:
+		ThreadSafeSetMap() = default;
+
+		// Only one thread/writer can write the value_map_.
+		void insert(K key, const V& value) {
+			using Map = decltype(value_map_);
+			std::unique_lock lock(mutex_);
+			auto [it, success] = value_map_.insert({ key, {} });
+			it->second.insert(value);
+		}
+
+		// Multiple threads/readers can read the value_map_ at the same time.
+		auto get(K key) const {
+			std::shared_lock lock(mutex_);
+			if (auto search = value_map_.find(key); search != value_map_.end()) {
+				return &search->second;
+			}
+			using Map = decltype(value_map_);
+			return static_cast<const typename Map::mapped_type*>(nullptr);
+		}
+
+		// Multiple threads/readers can read the value_map_ at the same time.
+		bool contains(K key) const {
+			std::shared_lock lock(mutex_);
+			return value_map_.find(key) != value_map_.end();
+		}
+
+	private:
+		mutable std::shared_mutex mutex_;
+		std::unordered_map<K, std::unordered_set<V>> value_map_{};
+	};
+
 
 	// ================================
 	// type traits
@@ -219,6 +303,7 @@ namespace LUA_MODULE_NAME {
 	template<typename T>
 	constexpr bool has_lua_to_custom_bridge_v<T, void> = lua_to_custom_bridge<T>::value;
 
+
 	// ================================
 	// reference_internal generics
 	// ================================
@@ -270,9 +355,8 @@ namespace LUA_MODULE_NAME {
 		std::is_same_v<std::remove_cvref_t<std::decay_t<T>>, bool>
 		|| std::is_same_v<T, std::vector<bool>::reference>
 		|| std::is_same_v<T, std::vector<bool>::const_reference>
-	, int> lua_push(lua_State* L, T value) {
+		, void> lua_push(lua_State* L, T value) {
 		lua_pushboolean(L, value);
-		return 1;
 	}
 
 
@@ -284,11 +368,10 @@ namespace LUA_MODULE_NAME {
 	inline std::enable_if_t<std::is_integral_v<T> && !std::is_same_v<bool, std::decay_t<T>>, std::decay_t<T>> lua_to(lua_State* L, int index, T* ptr, bool& is_valid);
 
 	template<typename T>
-	inline std::enable_if_t<std::is_integral_v<T> && !std::is_same_v<bool, std::decay_t<T>>, int> lua_push(lua_State* L, T n) {
+	inline std::enable_if_t<std::is_integral_v<T> && !std::is_same_v<bool, std::decay_t<T>>, void> lua_push(lua_State* L, T n) {
 		using Integer = std::decay_t<decltype(n)>;
 		if constexpr (std::is_same_v<bool, Integer>) {
 			lua_pushboolean(L, n);
-			return 1;
 		}
 		else {
 #if LUA_VERSION_NUM >= 503
@@ -297,7 +380,6 @@ namespace LUA_MODULE_NAME {
 #else
 			lua_pushnumber(L, (lua_Number)n);
 #endif
-			return 1;
 		}
 	}
 
@@ -309,9 +391,8 @@ namespace LUA_MODULE_NAME {
 	template<typename T>
 	inline std::enable_if_t<std::is_floating_point_v<T>, std::decay_t<T>> lua_to(lua_State* L, int index, T* ptr, bool& is_valid);
 
-	inline int lua_push(lua_State* L, std::floating_point auto n) {
+	inline void lua_push(lua_State* L, std::floating_point auto n) {
 		lua_pushnumber(L, n);
-		return 1;
 	}
 
 
@@ -322,14 +403,12 @@ namespace LUA_MODULE_NAME {
 	inline const char* lua_to(lua_State* L, int index, const char**, bool& is_valid);
 
 	template<std::size_t N>
-	inline int lua_push(lua_State* L, const char(&c_str)[N]) {
+	inline void lua_push(lua_State* L, const char(&c_str)[N]) {
 		lua_pushlstring(L, c_str, N);
-		return 1;
 	}
 
-	inline int lua_push(lua_State* L, const char* c_str) {
+	inline void lua_push(lua_State* L, const char* c_str) {
 		lua_pushstring(L, c_str);
-		return 1;
 	}
 
 
@@ -339,17 +418,16 @@ namespace LUA_MODULE_NAME {
 
 	inline std::string lua_to(lua_State* L, int index, std::string*, bool& is_valid);
 
-	inline int lua_push(lua_State* L, const std::string& str) {
+	inline void lua_push(lua_State* L, const std::string& str) {
 		lua_pushlstring(L, str.c_str(), str.size());
-		return 1;
 	}
 
 #ifdef _MSC_VER
 	inline std::wstring lua_to(lua_State* L, int index, std::wstring*, bool& is_valid);
 
-	inline int lua_push(lua_State* L, const std::wstring& wstr) {
+	inline void lua_push(lua_State* L, const std::wstring& wstr) {
 		std::string str; wide_char::wcs_to_utf8(wstr, str);
-		return lua_push(L, str);
+		lua_push(L, str);
 	}
 #endif
 
@@ -360,18 +438,17 @@ namespace LUA_MODULE_NAME {
 
 	inline void* lua_to(lua_State* L, int index, void**, bool& is_valid);
 
-	inline int lua_push(lua_State* L, void* ptr) {
+	inline void lua_push(lua_State* L, void* ptr) {
 		if (ptr) {
 			lua_pushlightuserdata(L, ptr);
 		}
 		else {
 			lua_pushnil(L);
 		}
-		return 1;
 	}
 
-	inline int lua_push(lua_State* L, const void* ptr) {
-		return lua_push(L, const_cast<void *>(ptr));
+	inline void lua_push(lua_State* L, const void* ptr) {
+		lua_push(L, const_cast<void*>(ptr));
 	}
 
 
@@ -406,7 +483,7 @@ namespace LUA_MODULE_NAME {
 		}
 
 		template<typename T>
-		_Object(const T& any);
+		_Object(lua_State* L, const T& any);
 
 		void init(lua_State* L_, int index) {
 			L = L_;
@@ -452,9 +529,7 @@ namespace LUA_MODULE_NAME {
 
 		void reset() {
 			if (ref != LUA_REFNIL) {
-				if (get_global_state()) {
-					luaL_unref(L, LUA_REGISTRYINDEX, ref);
-				}
+				luaL_unref(L, LUA_REGISTRYINDEX, ref);
 				free();
 			}
 		}
@@ -528,10 +603,10 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<int Kind>
-	inline int lua_push(lua_State* L, const _Object<Kind>& o) {
+	inline void lua_push(lua_State* L, const _Object<Kind>& o) {
 		if (o.L == nullptr) {
 			lua_pushnil(L);
-			return 1;
+			return;
 		}
 
 		lua_rawgeti(o.L, LUA_REGISTRYINDEX, o.ref);
@@ -539,13 +614,11 @@ namespace LUA_MODULE_NAME {
 		if (o.L != L) {
 			lua_xmove(o.L, L, 1);
 		}
-
-		return 1;
 	}
 
 	template<int Kind>
-	inline int lua_push(lua_State* L, const _Object<Kind>* o) {
-		return lua_push(L, *o);
+	inline void lua_push(lua_State* L, const _Object<Kind>* o) {
+		lua_push(L, *o);
 	}
 
 	// ================================
@@ -574,7 +647,7 @@ namespace LUA_MODULE_NAME {
 	};
 
 	template<typename T>
-	inline int lua_push(lua_State* L, T* ptr, void (*d)(T*));
+	inline void lua_push(lua_State* L, T* ptr, void (*d)(T*));
 
 
 	// ================================
@@ -585,8 +658,8 @@ namespace LUA_MODULE_NAME {
 	inline std::enable_if_t<std::is_enum_v<T>, int> lua_to(lua_State* L, int index, T* ptr, bool& is_valid);
 
 	template<typename T>
-	inline std::enable_if_t<std::is_enum_v<T>, int> lua_push(lua_State* L, const T& value) {
-		return lua_push(L, static_cast<int>(value));
+	inline std::enable_if_t<std::is_enum_v<T>, void> lua_push(lua_State* L, const T& value) {
+		lua_push(L, static_cast<int>(value));
 	}
 
 
@@ -604,16 +677,16 @@ namespace LUA_MODULE_NAME {
 	inline std::enable_if_t<is_usertype_v<T>, T*> lua_to(lua_State* L, int index, T**, bool& is_valid);
 
 	template<typename T>
-	inline std::enable_if_t<is_usertype_v<T>, int> lua_push(lua_State* L, T* ptr);
+	inline std::enable_if_t<is_usertype_v<T>, void> lua_push(lua_State* L, T* ptr);
 
 	template<typename T>
-	inline std::enable_if_t<is_usertype_v<T>, int> lua_push(lua_State* L, const T* ptr);
+	inline std::enable_if_t<is_usertype_v<T>, void> lua_push(lua_State* L, const T* ptr);
 
 	template<typename T>
-	inline std::enable_if_t<is_usertype_v<T>, int> lua_push(lua_State* L, T&& obj);
+	inline std::enable_if_t<is_usertype_v<T>, void> lua_push(lua_State* L, T&& obj);
 
 	template<typename T>
-	inline std::enable_if_t<is_usertype_v<T>, int> lua_push(lua_State* L, const T& obj);
+	inline std::enable_if_t<is_usertype_v<T>, void> lua_push(lua_State* L, const T& obj);
 
 
 	// ================================
@@ -624,14 +697,13 @@ namespace LUA_MODULE_NAME {
 	inline std::enable_if_t<!std::is_function_v<T> && !is_usertype_v<remove_cvref_all_pointers_t<T>> && !std::is_same_v<remove_cvref_all_pointers_t<T>, void>, T*> lua_to(lua_State* L, int index, T**, bool& is_valid);
 
 	template<typename T>
-	inline std::enable_if_t<!std::is_function_v<T> && !is_usertype_v<remove_cvref_all_pointers_t<T>> && !std::is_same_v<remove_cvref_all_pointers_t<T>, void>, int> lua_push(lua_State* L, T* ptr) {
-		return lua_push(L, static_cast<void*>(ptr));
+	inline std::enable_if_t<!std::is_function_v<T> && !is_usertype_v<remove_cvref_all_pointers_t<T>> && !std::is_same_v<remove_cvref_all_pointers_t<T>, void>, void> lua_push(lua_State* L, T* ptr) {
+		lua_push(L, static_cast<void*>(ptr));
 	}
 
 	template<typename R, typename... Args>
-	inline int lua_push(lua_State* L, R(*fn)(Args...)) {
+	inline void lua_push(lua_State* L, R(*fn)(Args...)) {
 		lua_pushlightuserdata(L, reinterpret_cast<void*>(fn));
-		return 1;
 	}
 
 	// ================================
@@ -642,8 +714,8 @@ namespace LUA_MODULE_NAME {
 	inline T** lua_to(lua_State* L, int index, T***, bool& is_valid);
 
 	template<typename T>
-	inline int lua_push(lua_State* L, T** ptr) {
-		return lua_push(L, static_cast<void*>(ptr));
+	inline void lua_push(lua_State* L, T** ptr) {
+		lua_push(L, static_cast<void*>(ptr));
 	}
 
 
@@ -655,24 +727,92 @@ namespace LUA_MODULE_NAME {
 	inline std::enable_if_t<!is_usertype_v<T>, std::shared_ptr<T>> lua_to(lua_State* L, int index, std::shared_ptr<T>*, bool& is_valid);
 
 	template<typename T>
-	inline int lua_push(lua_State* L, const std::shared_ptr<T>& ptr);
+	inline void lua_push(lua_State* L, const std::shared_ptr<T>& ptr);
+
+
+	// ================================
+	// stl map container
+	// ================================
+
+	template<template<typename, typename, typename...> typename Container, typename K, typename V, typename... _Ts>
+	inline void _stl_map_container_lua_to(lua_State* L, int index, Container<K, V, _Ts...>& out, bool& is_valid);
+
+	template<template<typename, typename, typename...> typename Container, typename K, typename V, typename... _Ts>
+	inline std::shared_ptr<Container<K, V, _Ts...>> _stl_map_container_lua_to(lua_State* L, int index, Container<K, V, _Ts...>* ptr, bool& is_valid);
+
+	template<template<typename, typename, typename...> typename Container, typename K, typename V, typename... _Ts>
+	inline void _stl_map_container_lua_push(lua_State* L, Container<K, V, _Ts...>&& kv);
+
+	template<template<typename, typename, typename...> typename Container, typename K, typename V, typename... _Ts>
+	inline void _stl_map_container_lua_push(lua_State* L, const Container<K, V, _Ts...>& kv);
 
 
 	// ================================
 	// std::map
 	// ================================
 
-	template<typename K, typename V>
-	inline void lua_to(lua_State* L, int index, std::map<K, V>& out, bool& is_valid);
+	template<typename K, typename V, typename... _Ts>
+	inline void lua_to(lua_State* L, int index, std::map<K, V, _Ts...>& out, bool& is_valid);
 
-	template<typename K, typename V>
-	inline std::shared_ptr<std::map<K, V>> lua_to(lua_State* L, int index, std::map<K, V>* ptr, bool& is_valid);
+	template<typename K, typename V, typename... _Ts>
+	inline std::shared_ptr<std::map<K, V, _Ts...>> lua_to(lua_State* L, int index, std::map<K, V, _Ts...>* ptr, bool& is_valid);
 
-	template<typename K, typename V>
-	inline int lua_push(lua_State* L, std::map<K, V>&& kv);
+	template<typename K, typename V, typename... _Ts>
+	inline void lua_push(lua_State* L, std::map<K, V, _Ts...>&& kv);
 
-	template<typename K, typename V>
-	inline int lua_push(lua_State* L, const std::map<K, V>& kv);
+	template<typename K, typename V, typename... _Ts>
+	inline void lua_push(lua_State* L, const std::map<K, V, _Ts...>& kv);
+
+
+	// ================================
+	// std::multimap
+	// ================================
+
+	template<typename K, typename V, typename... _Ts>
+	inline void lua_to(lua_State* L, int index, std::multimap<K, V, _Ts...>& out, bool& is_valid);
+
+	template<typename K, typename V, typename... _Ts>
+	inline std::shared_ptr<std::multimap<K, V, _Ts...>> lua_to(lua_State* L, int index, std::multimap<K, V, _Ts...>* ptr, bool& is_valid);
+
+	template<typename K, typename V, typename... _Ts>
+	inline void lua_push(lua_State* L, std::multimap<K, V, _Ts...>&& kv);
+
+	template<typename K, typename V, typename... _Ts>
+	inline void lua_push(lua_State* L, const std::multimap<K, V, _Ts...>& kv);
+
+
+	// ================================
+	// std::unordered_map
+	// ================================
+
+	template<typename K, typename V, typename... _Ts>
+	inline void lua_to(lua_State* L, int index, std::unordered_map<K, V, _Ts...>& out, bool& is_valid);
+
+	template<typename K, typename V, typename... _Ts>
+	inline std::shared_ptr<std::unordered_map<K, V, _Ts...>> lua_to(lua_State* L, int index, std::unordered_map<K, V, _Ts...>* ptr, bool& is_valid);
+
+	template<typename K, typename V, typename... _Ts>
+	inline void lua_push(lua_State* L, std::unordered_map<K, V, _Ts...>&& kv);
+
+	template<typename K, typename V, typename... _Ts>
+	inline void lua_push(lua_State* L, const std::unordered_map<K, V, _Ts...>& kv);
+
+
+	// ================================
+	// std::unordered_multimap
+	// ================================
+
+	template<typename K, typename V, typename... _Ts>
+	inline void lua_to(lua_State* L, int index, std::unordered_multimap<K, V, _Ts...>& out, bool& is_valid);
+
+	template<typename K, typename V, typename... _Ts>
+	inline std::shared_ptr<std::unordered_multimap<K, V, _Ts...>> lua_to(lua_State* L, int index, std::unordered_multimap<K, V, _Ts...>* ptr, bool& is_valid);
+
+	template<typename K, typename V, typename... _Ts>
+	inline void lua_push(lua_State* L, std::unordered_multimap<K, V, _Ts...>&& kv);
+
+	template<typename K, typename V, typename... _Ts>
+	inline void lua_push(lua_State* L, const std::unordered_multimap<K, V, _Ts...>& kv);
 
 
 	// ================================
@@ -683,7 +823,7 @@ namespace LUA_MODULE_NAME {
 	inline std::optional<T> lua_to(lua_State* L, int index, std::optional<T>*, bool& is_valid);
 
 	template<typename T>
-	inline int lua_push(lua_State* L, const std::optional<T>& p);
+	inline void lua_push(lua_State* L, const std::optional<T>& p);
 
 
 	// ================================
@@ -694,7 +834,7 @@ namespace LUA_MODULE_NAME {
 	inline std::shared_ptr<std::pair<T1, T2>> lua_to(lua_State* L, int index, std::pair<T1, T2>* ptr, bool& is_valid);
 
 	template<typename T1, typename T2>
-	inline int lua_push(lua_State* L, const std::pair<T1, T2>& p);
+	inline void lua_push(lua_State* L, const std::pair<T1, T2>& p);
 
 
 	// ================================
@@ -705,7 +845,7 @@ namespace LUA_MODULE_NAME {
 	inline std::shared_ptr<std::tuple<_Ts...>> lua_to(lua_State* L, int index, std::tuple<_Ts...>* ptr, bool& is_valid);
 
 	template<typename... _Ts>
-	inline int lua_push(lua_State* L, const std::tuple<_Ts...>& value);
+	inline void lua_push(lua_State* L, const std::tuple<_Ts...>& value);
 
 
 	// ================================
@@ -716,24 +856,24 @@ namespace LUA_MODULE_NAME {
 	inline std::variant<_Ts...> lua_to(lua_State* L, int index, std::variant<_Ts...>* ptr, bool& is_valid);
 
 	template<typename... _Ts>
-	inline int lua_push(lua_State* L, const std::variant<_Ts...>& value);
+	inline void lua_push(lua_State* L, const std::variant<_Ts...>& value);
 
 
 	// ================================
 	// stl container
 	// ================================
 
-	template<template<typename> typename Container, typename... _Ts>
+	template<template<typename...> typename Container, typename... _Ts>
 	inline void _stl_container_lua_to(lua_State* L, int index, Container<_Ts...>& out, bool& is_valid, size_t len, bool loose);
 
-	template<template<typename> typename Container, typename... _Ts>
+	template<template<typename...> typename Container, typename... _Ts>
 	inline std::shared_ptr<Container<_Ts...>> _stl_container_lua_to(lua_State* L, int index, Container<_Ts...>* ptr, bool& is_valid, size_t len, bool loose);
 
-	template<template<typename> typename Container, typename... _Ts>
-	inline int _stl_container_lua_push(lua_State* L, Container<_Ts...>&& container);
+	template<template<typename...> typename Container, typename... _Ts>
+	inline void _stl_container_lua_push(lua_State* L, Container<_Ts...>&& container);
 
-	template<template<typename> typename Container, typename... _Ts>
-	inline int _stl_container_lua_push(lua_State* L, const Container<_Ts...>& container);
+	template<template<typename...> typename Container, typename... _Ts>
+	inline void _stl_container_lua_push(lua_State* L, const Container<_Ts...>& container);
 
 
 	// ================================
@@ -747,10 +887,10 @@ namespace LUA_MODULE_NAME {
 	inline std::shared_ptr<std::vector<T, Allocator>> lua_to(lua_State* L, int index, std::vector<T, Allocator>* ptr, bool& is_valid, size_t len = 0, bool loose = false);
 
 	template<class T, class Allocator = std::allocator<T>>
-	inline int lua_push(lua_State* L, std::vector<T, Allocator>&& vec);
+	inline void lua_push(lua_State* L, std::vector<T, Allocator>&& vec);
 
 	template<class T, class Allocator = std::allocator<T>>
-	inline int lua_push(lua_State* L, const std::vector<T, Allocator>& vec);
+	inline void lua_push(lua_State* L, const std::vector<T, Allocator>& vec);
 
 
 	// ================================

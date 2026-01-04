@@ -20,7 +20,8 @@ namespace {
 		if (!is_valid || !self || lua_isnil(L, 1)) {
 			return luaL_typeerror(L, 1, "cv::Mat");
 		}
-		return lua_push(L, self->size.p[0]);
+		lua_push(L, self->size.p[0]);
+		return 1;
 	}
 
 	auto Lua_sol_meta_function_index(lua_State* L) {
@@ -409,34 +410,34 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename T>
-	int exported_lua_push(lua_State* L, T* ptr) {
-		return lua_push(L, ptr);
+	void exported_lua_push(lua_State* L, T* ptr) {
+		lua_push(L, ptr);
 	}
 
 	template<typename T>
-	int exported_lua_push(lua_State* L, T&& obj) {
-		return lua_push(L, std::move(obj));
+	void exported_lua_push(lua_State* L, T&& obj) {
+		lua_push(L, std::move(obj));
 	}
 
 	template<typename T>
-	int exported_lua_push(lua_State* L, const T& obj) {
-		return lua_push(L, obj);
+	void exported_lua_push(lua_State* L, const T& obj) {
+		lua_push(L, obj);
 	}
 
 	template
 	LUA_EXPORTS std::shared_ptr<cv::Mat> exported_lua_to<cv::Mat>(lua_State* L, int index, cv::Mat* ptr, bool& is_valid);
 
 	template
-	LUA_EXPORTS int exported_lua_push<cv::Mat>(lua_State* L, cv::Mat* ptr);
+	LUA_EXPORTS void exported_lua_push<cv::Mat>(lua_State* L, cv::Mat* ptr);
 
 	template
-	LUA_EXPORTS int exported_lua_push<cv::Mat>(lua_State* L, cv::Mat&& obj);
+	LUA_EXPORTS void exported_lua_push<cv::Mat>(lua_State* L, cv::Mat&& obj);
 
 	template
-	LUA_EXPORTS int exported_lua_push<cv::Mat>(lua_State* L, const cv::Mat& obj);
+	LUA_EXPORTS void exported_lua_push<cv::Mat>(lua_State* L, const cv::Mat& obj);
 
 	template
-	LUA_EXPORTS int exported_lua_push<std::shared_ptr<cv::Mat>>(lua_State* L, const std::shared_ptr<cv::Mat>& obj);
+	LUA_EXPORTS void exported_lua_push<std::shared_ptr<cv::Mat>>(lua_State* L, const std::shared_ptr<cv::Mat>& obj);
 }
 
 namespace LUA_MODULE_NAME {

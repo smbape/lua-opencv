@@ -68,93 +68,99 @@ namespace LUA_MODULE_NAME {
 namespace {
 	using namespace LUA_MODULE_NAME;
 
-	lua_State* lua_globalState = nullptr;
+	ThreadSafeSetMap<std::size_t, std::size_t> type_children_map;
 
-	bool _has_lua_jit = false;
-
-	struct StateGuard {
-		StateGuard() = default;
-
-		~StateGuard() {
-			lua_globalState = nullptr;
-		}
-	};
-
-	int StateGuard__gc(lua_State* L) {
-		auto userdata_ptr = static_cast<StateGuard*>(lua_touserdata(L, 1));
-		userdata_ptr->~StateGuard();
-		return 0;
-	}
-
-	void register_Global_state(lua_State* L) {
-		lua_globalState = L;
-
-		// userdata = new StateGuard();
-		auto userdata_ptr = static_cast<StateGuard*>(lua_newuserdata(L, sizeof(StateGuard)));
-		new(userdata_ptr) StateGuard();
-
-		// metatable = { __gc = function() --[[ dereference the global state ]] end }
-		lua_newtable(L);
-		lua_pushliteral(L, "__gc");
-		lua_pushcfunction(L, (lua_CFunction)StateGuard__gc);
-		lua_rawset(L, -3);
-
-		// setmetatable(userdata, metatable)
-		lua_setmetatable(L, -2);
-
-		// keep reference to userdata until lua_State is closed
-		luaL_ref(L, LUA_REGISTRYINDEX);
-
-		// check if is luajit
-		luaL_dostring(L, "return type(jit) == 'table'");
-		_has_lua_jit = !!lua_toboolean(L, -1);
-		lua_pop(L, 1);
-	}
-
-	std::mutex gil_mutex;
 	std::mutex yielder_mutex;
-	std::unordered_map<std::thread::id, std::unique_lock<std::mutex>> thread_lock_map;
+	std::unordered_map<lua_State*, std::unique_ptr<std::mutex>> gil_mutex_map;
+	std::unordered_map<lua_State*, std::unordered_map<std::thread::id, std::unique_lock<std::mutex>>> lua_state_thread_lock_map;
 
-	std::unique_lock<std::mutex>& get_thread_lock() {
-		using Map = decltype(thread_lock_map);
+	std::unique_lock<std::mutex>& get_thread_lock(lua_State* L) {
+		using GilMutexMap = decltype(gil_mutex_map);
+		using LuaStateMap = decltype(lua_state_thread_lock_map);
+		using ThreadIdMap = LuaStateMap::mapped_type;
 
 		std::unique_lock<std::mutex> yielder_lock(yielder_mutex);
-		const auto thread_id = std::this_thread::get_id();
-		const auto [it, success] = thread_lock_map.insert(Map::value_type{ thread_id, Map::mapped_type{ gil_mutex, std::defer_lock } });
+
+		auto [gil_mutex_it, gil_mutex_success] = gil_mutex_map.insert(GilMutexMap::value_type{ L, std::make_unique<GilMutexMap::mapped_type::element_type>() });
+		auto& gil_mutex = *gil_mutex_it->second;
+
+		auto [lua_state_it, lua_state_success] = lua_state_thread_lock_map.insert(LuaStateMap::value_type{ L, LuaStateMap::mapped_type{} });
+		auto& thread_lock_map = lua_state_it->second;
+
+		const auto& thread_id = std::this_thread::get_id();
+		auto [it, success] = thread_lock_map.insert(ThreadIdMap::value_type{ thread_id, ThreadIdMap::mapped_type{ gil_mutex, std::defer_lock } });
 		return it->second;
 	}
 
+	int global_luaopen_index = 0;
+	thread_local int thread_local_luaopen_index = -1;
+
+	void register_LuaOpenIndex(lua_State* L) {
+		{
+			std::unique_lock<std::mutex> yielder_lock(yielder_mutex);
+			thread_local_luaopen_index = global_luaopen_index++;
+		}
+		lua_pushliteral(L, LUA_MODULE_LUAOPEN_STR);
+		lua_pushnumber(L, thread_local_luaopen_index);
+		lua_rawset(L, LUA_REGISTRYINDEX);
+	}
+
 	void register_Callbacks(lua_State* L) {
-		const struct luaL_Reg funcs_callbacks[] = {
+		const struct luaL_Reg callbacks_funcs[] = {
 			{ "notifyCallbacks", yield },
 			{ "yield", yield },
 			{ NULL, NULL }
 		};
-
-		lua_pushfuncs(L, funcs_callbacks);
+		lua_pushfuncs(L, callbacks_funcs);
 
 		// the main thread has the lock
-		get_thread_lock().lock();
+		thread_local GilLock lock(L);
+	}
+
+	int lua__self(lua_State* L) {
+		auto vargc = lua_gettop(L);
+
+		if (vargc == 0) {
+			return luaL_error(L, "self is not defined");
+		}
+
+		if (vargc != 1) {
+			return luaL_error(L, "too many arguments");
+		}
+
+		bool is_valid = false;
+		auto ptr = lua_to(L, 1, static_cast<void**>(nullptr), is_valid);
+		lua_push(L, ptr);
+		return 1;
+	}
+
+	void register_GetSelf(lua_State* L) {
+		lua_pushliteral(L, "__self");
+		lua_pushcfunction(L, lua__self);
+		lua_rawset(L, -3);
 	}
 }
 
 namespace LUA_MODULE_NAME {
-	lua_State* get_global_state() {
-		return lua_globalState;
+	int get_luaopen_index(lua_State* L) {
+	    if (thread_local_luaopen_index == -1) {
+	        lua_pushliteral(L, LUA_MODULE_LUAOPEN_STR);
+	        lua_rawget(L, LUA_REGISTRYINDEX);
+	        thread_local_luaopen_index = static_cast<int>(lua_tonumber(L, -1));
+	        lua_pop(L, 1);
+	    }
+	    return thread_local_luaopen_index;
 	}
 
-	void init_global_state(lua_State* L) {
-		register_Global_state(L);
+	void register_Common(lua_State* L) {
+		register_LuaOpenIndex(L);
 		register_Keywords(L);
 		register_Callbacks(L);
+		register_GetSelf(L);
 	}
 
-	bool has_lua_jit() {
-		return _has_lua_jit;
-	}
-
-	GilLock::GilLock() : locked(false) {
-		auto& lock = get_thread_lock();
+	GilLock::GilLock(lua_State* L) : L(L), locked(false) {
+		auto& lock = get_thread_lock(L);
 		if (!lock.owns_lock()) {
 			lock.lock();
 			locked = true;
@@ -163,12 +169,12 @@ namespace LUA_MODULE_NAME {
 
 	GilLock::~GilLock() {
 		if (locked) {
-			get_thread_lock().unlock();
+			get_thread_lock(L).unlock();
 		}
 	}
 
-	GilYield::GilYield() : yielded(false) {
-		auto& lock = get_thread_lock();
+	GilYield::GilYield(lua_State* L) : L(L), yielded(false) {
+		auto& lock = get_thread_lock(L);
 		if (lock.owns_lock()) {
 			lock.unlock();
 			yielded = true;
@@ -177,12 +183,12 @@ namespace LUA_MODULE_NAME {
 
 	GilYield::~GilYield() {
 		if (yielded) {
-			get_thread_lock().lock();
+			get_thread_lock(L).lock();
 		}
 	}
 
 	int yield(lua_State* L) {
-		GilYield yielder;
+		GilYield yielder(L);
 		return 0;
 	}
 

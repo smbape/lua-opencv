@@ -157,7 +157,7 @@ const hdr = `
         struct _OptionalArray;
 
         template<typename Array, bool is_arrays_type>
-        inline int lua_push(lua_State* L, const _OptionalArray<Array, is_arrays_type>& array);
+        inline void lua_push(lua_State* L, const _OptionalArray<Array, is_arrays_type>& array);
     }
 `.replace(/^ {4}/mg, "").trim().replace(/[^\S\n]+$/mg, "").replaceAll(" ".repeat(4), "\t");
 
@@ -253,7 +253,7 @@ const hdr_impl = `
         };
 
         template<typename Array, bool is_arrays_type>
-        int lua_push(lua_State* L, const _OptionalArray<Array, is_arrays_type>& opt_array);
+        void lua_push(lua_State* L, const _OptionalArray<Array, is_arrays_type>& opt_array);
 
         // InputArray, OutputArray, InputOutputArray
         template<typename Array>
@@ -502,20 +502,21 @@ const impl = `
         }
 
         template<typename Array, bool is_arrays_type>
-        int lua_push(lua_State* L, const _OptionalArray<Array, is_arrays_type>& opt_array) {
+        void lua_push(lua_State* L, const _OptionalArray<Array, is_arrays_type>& opt_array) {
             switch (opt_array.index()) {
                 ${ types.map((type, i) => `
                 case ${ i }:
                     ${ !primitiveTypes.has(type) ? `
                         if (opt_array.is_shared_ptr()) {
-                            return lua_push(L, *static_cast<const std::shared_ptr<${ type }>*>(opt_array.data()));
+                            lua_push(L, *static_cast<const std::shared_ptr<${ type }>*>(opt_array.data()));
+                            break;
                         }
                     `.replace(/^ {4}/mg, "").trim() : "" }
-                    return lua_push(L, *static_cast<const ${ type }*>(opt_array.data()));
+                    lua_push(L, *static_cast<const ${ type }*>(opt_array.data()));
+                    break;
                 `.trim()).join(`\n${ " ".repeat(16) }`) }
                 default:
                     lua_pushnil(L);
-                    return 1;
             }
         }
 

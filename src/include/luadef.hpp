@@ -7,20 +7,26 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
-#include <cstring>
 #include <concepts>
+#include <cstring>
 #include <functional>
 #include <initializer_list>
 #include <iostream>
 #include <map>
 #include <memory>
+#include <mutex>
 #include <optional>
+#include <set>
+#include <shared_mutex>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <thread>
 #include <tuple>
 #include <type_traits>
 #include <typeindex>
+#include <unordered_map>
+#include <unordered_set>
 #include <utility>
 #include <variant>
 #include <vector>
@@ -87,12 +93,11 @@ extern int luaL_typeerror(lua_State* L, int arg, const char* tname);
 #define _LUA_TOKEN_CONCAT(A, B) A ## B
 #define LUA_TOKEN_CONCAT(A, B) _LUA_TOKEN_CONCAT(A, B)
 
-#define LUA_MODULE_LUAOPEN LUA_TOKEN_CONCAT(luaopen_, LUA_MODULE_NAME)
-#define LUA_MODULE_OPEN LUA_TOKEN_CONCAT(open_, LUA_MODULE_NAME)
-
 #define _LUA_TOKEN_STR(A) #A
 #define LUA_TOKEN_STR(A) _LUA_TOKEN_STR(A)
 
+#define LUA_MODULE_LUAOPEN LUA_TOKEN_CONCAT(luaopen_, LUA_MODULE_NAME)
+#define LUA_MODULE_LUAOPEN_STR LUA_TOKEN_STR(LUA_MODULE_LUAOPEN)
 #define LUA_MODULE_NAME_STR LUA_TOKEN_STR(LUA_MODULE_NAME)
 
 #ifdef Lua_Module_Func
@@ -214,7 +219,7 @@ return E_FAIL; } \
 #if defined(__clang__)
 	#define LUA_MODULE__TYPE_PRETTY_FUNCTION_PREFIX "const char* " LUA_MODULE_NAME_STR "::internal::GetTypeName() [T = "
 	#define LUA_MODULE__TYPE_PRETTY_FUNCTION_SUFFIX "]"
-#elif defined(__GNUC__) && !defined(__clang__)
+#elif defined(__GNUC__)
 	#define LUA_MODULE__TYPE_PRETTY_FUNCTION_PREFIX "const char* " LUA_MODULE_NAME_STR "::internal::GetTypeName() [with T = "
 	#define LUA_MODULE__TYPE_PRETTY_FUNCTION_SUFFIX "]"
 #elif defined(_MSC_VER)
@@ -282,6 +287,12 @@ namespace LUA_MODULE_NAME {
 
 	template<typename T>
 	struct basetype_info;
+
+	template<typename T>
+	const char* getmetatable_name() {
+		static const auto tname = std::string(LUA_MODULE_NAME_STR "::") + std::string(internal::GetTypeName<T>());
+		return tname.c_str();
+	}
 }
 
 #ifndef CV_PROP_W

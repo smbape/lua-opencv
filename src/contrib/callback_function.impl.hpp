@@ -31,11 +31,10 @@ namespace LUA_MODULE_NAME {
 			}
 		}
 
-		GilLock lock;
-
 		auto& fn = invoker.fn;
 		auto& userdata = invoker.userdata;
 		auto& L = fn.L;
+		GilLock lock(L);
 
 		lua_push(L, fn);
 

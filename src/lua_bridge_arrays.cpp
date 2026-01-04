@@ -5031,505 +5031,701 @@ namespace LUA_MODULE_NAME {
 	}
 
 	template<typename Array, bool is_arrays_type>
-	int lua_push(lua_State* L, const _OptionalArray<Array, is_arrays_type>& opt_array) {
+	void lua_push(lua_State* L, const _OptionalArray<Array, is_arrays_type>& opt_array) {
 		switch (opt_array.index()) {
 			case 0:
 
-				return lua_push(L, *static_cast<const bool*>(opt_array.data()));
+				lua_push(L, *static_cast<const bool*>(opt_array.data()));
+				break;
 			case 1:
 
-				return lua_push(L, *static_cast<const double*>(opt_array.data()));
+				lua_push(L, *static_cast<const double*>(opt_array.data()));
+				break;
 			case 2:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<cv::cuda::GpuMat>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<cv::cuda::GpuMat>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const cv::cuda::GpuMat*>(opt_array.data()));
+				lua_push(L, *static_cast<const cv::cuda::GpuMat*>(opt_array.data()));
+				break;
 			case 3:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<cv::Mat>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<cv::Mat>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const cv::Mat*>(opt_array.data()));
+				lua_push(L, *static_cast<const cv::Mat*>(opt_array.data()));
+				break;
 			case 4:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<cv::UMat>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<cv::UMat>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const cv::UMat*>(opt_array.data()));
+				lua_push(L, *static_cast<const cv::UMat*>(opt_array.data()));
+				break;
 			case 5:
 
-				return lua_push(L, *static_cast<const cv::Scalar*>(opt_array.data()));
+				lua_push(L, *static_cast<const cv::Scalar*>(opt_array.data()));
+				break;
 			case 6:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Mat>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Mat>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Mat>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Mat>*>(opt_array.data()));
+				break;
 			case 7:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::UMat>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::UMat>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::UMat>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::UMat>*>(opt_array.data()));
+				break;
 			case 8:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<bool>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<bool>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<bool>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<bool>*>(opt_array.data()));
+				break;
 			case 9:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::RotatedRect>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::RotatedRect>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::RotatedRect>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::RotatedRect>*>(opt_array.data()));
+				break;
 			case 10:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Range>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Range>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Range>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Range>*>(opt_array.data()));
+				break;
 			case 11:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Moments>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Moments>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Moments>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Moments>*>(opt_array.data()));
+				break;
 			case 12:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<uchar>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<uchar>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<uchar>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<uchar>*>(opt_array.data()));
+				break;
 			case 13:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<schar>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<schar>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<schar>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<schar>*>(opt_array.data()));
+				break;
 			case 14:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<char>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<char>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<char>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<char>*>(opt_array.data()));
+				break;
 			case 15:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<ushort>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<ushort>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<ushort>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<ushort>*>(opt_array.data()));
+				break;
 			case 16:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<short>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<short>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<short>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<short>*>(opt_array.data()));
+				break;
 			case 17:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<int>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<int>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<int>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<int>*>(opt_array.data()));
+				break;
 			case 18:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<float>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<float>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<float>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<float>*>(opt_array.data()));
+				break;
 			case 19:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<double>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<double>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<double>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<double>*>(opt_array.data()));
+				break;
 			case 20:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Point3i>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Point3i>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Point3i>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Point3i>*>(opt_array.data()));
+				break;
 			case 21:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Point3f>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Point3f>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Point3f>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Point3f>*>(opt_array.data()));
+				break;
 			case 22:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Point3d>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Point3d>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Point3d>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Point3d>*>(opt_array.data()));
+				break;
 			case 23:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Point2f>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Point2f>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Point2f>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Point2f>*>(opt_array.data()));
+				break;
 			case 24:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Point2d>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Point2d>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Point2d>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Point2d>*>(opt_array.data()));
+				break;
 			case 25:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Point>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Point>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Point>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Point>*>(opt_array.data()));
+				break;
 			case 26:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Rect2f>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Rect2f>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Rect2f>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Rect2f>*>(opt_array.data()));
+				break;
 			case 27:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Rect2d>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Rect2d>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Rect2d>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Rect2d>*>(opt_array.data()));
+				break;
 			case 28:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Rect>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Rect>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Rect>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Rect>*>(opt_array.data()));
+				break;
 			case 29:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Size2f>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Size2f>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Size2f>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Size2f>*>(opt_array.data()));
+				break;
 			case 30:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Size2d>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Size2d>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Size2d>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Size2d>*>(opt_array.data()));
+				break;
 			case 31:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Size>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Size>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Size>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Size>*>(opt_array.data()));
+				break;
 			case 32:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec2b>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec2b>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Vec2b>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Vec2b>*>(opt_array.data()));
+				break;
 			case 33:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec3b>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec3b>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Vec3b>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Vec3b>*>(opt_array.data()));
+				break;
 			case 34:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec4b>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec4b>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Vec4b>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Vec4b>*>(opt_array.data()));
+				break;
 			case 35:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec2s>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec2s>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Vec2s>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Vec2s>*>(opt_array.data()));
+				break;
 			case 36:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec3s>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec3s>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Vec3s>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Vec3s>*>(opt_array.data()));
+				break;
 			case 37:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec4s>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec4s>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Vec4s>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Vec4s>*>(opt_array.data()));
+				break;
 			case 38:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec2w>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec2w>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Vec2w>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Vec2w>*>(opt_array.data()));
+				break;
 			case 39:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec3w>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec3w>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Vec3w>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Vec3w>*>(opt_array.data()));
+				break;
 			case 40:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec4w>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec4w>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Vec4w>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Vec4w>*>(opt_array.data()));
+				break;
 			case 41:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec2i>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec2i>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Vec2i>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Vec2i>*>(opt_array.data()));
+				break;
 			case 42:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec3i>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec3i>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Vec3i>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Vec3i>*>(opt_array.data()));
+				break;
 			case 43:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec4i>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec4i>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Vec4i>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Vec4i>*>(opt_array.data()));
+				break;
 			case 44:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec6i>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec6i>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Vec6i>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Vec6i>*>(opt_array.data()));
+				break;
 			case 45:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec8i>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec8i>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Vec8i>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Vec8i>*>(opt_array.data()));
+				break;
 			case 46:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec2f>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec2f>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Vec2f>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Vec2f>*>(opt_array.data()));
+				break;
 			case 47:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec3f>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec3f>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Vec3f>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Vec3f>*>(opt_array.data()));
+				break;
 			case 48:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec4f>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec4f>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Vec4f>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Vec4f>*>(opt_array.data()));
+				break;
 			case 49:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec6f>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec6f>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Vec6f>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Vec6f>*>(opt_array.data()));
+				break;
 			case 50:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec2d>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec2d>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Vec2d>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Vec2d>*>(opt_array.data()));
+				break;
 			case 51:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec3d>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec3d>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Vec3d>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Vec3d>*>(opt_array.data()));
+				break;
 			case 52:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec4d>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec4d>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Vec4d>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Vec4d>*>(opt_array.data()));
+				break;
 			case 53:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec6d>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<cv::Vec6d>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<cv::Vec6d>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<cv::Vec6d>*>(opt_array.data()));
+				break;
 			case 54:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<bool>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<bool>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<bool>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<bool>>*>(opt_array.data()));
+				break;
 			case 55:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::RotatedRect>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::RotatedRect>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::RotatedRect>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::RotatedRect>>*>(opt_array.data()));
+				break;
 			case 56:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Range>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Range>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Range>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Range>>*>(opt_array.data()));
+				break;
 			case 57:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Moments>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Moments>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Moments>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Moments>>*>(opt_array.data()));
+				break;
 			case 58:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<uchar>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<uchar>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<uchar>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<uchar>>*>(opt_array.data()));
+				break;
 			case 59:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<schar>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<schar>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<schar>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<schar>>*>(opt_array.data()));
+				break;
 			case 60:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<char>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<char>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<char>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<char>>*>(opt_array.data()));
+				break;
 			case 61:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<ushort>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<ushort>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<ushort>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<ushort>>*>(opt_array.data()));
+				break;
 			case 62:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<short>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<short>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<short>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<short>>*>(opt_array.data()));
+				break;
 			case 63:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<int>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<int>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<int>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<int>>*>(opt_array.data()));
+				break;
 			case 64:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<float>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<float>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<float>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<float>>*>(opt_array.data()));
+				break;
 			case 65:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<double>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<double>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<double>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<double>>*>(opt_array.data()));
+				break;
 			case 66:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Point3i>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Point3i>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Point3i>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Point3i>>*>(opt_array.data()));
+				break;
 			case 67:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Point3f>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Point3f>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Point3f>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Point3f>>*>(opt_array.data()));
+				break;
 			case 68:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Point3d>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Point3d>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Point3d>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Point3d>>*>(opt_array.data()));
+				break;
 			case 69:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Point2f>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Point2f>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Point2f>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Point2f>>*>(opt_array.data()));
+				break;
 			case 70:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Point2d>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Point2d>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Point2d>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Point2d>>*>(opt_array.data()));
+				break;
 			case 71:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Point>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Point>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Point>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Point>>*>(opt_array.data()));
+				break;
 			case 72:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Rect2f>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Rect2f>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Rect2f>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Rect2f>>*>(opt_array.data()));
+				break;
 			case 73:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Rect2d>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Rect2d>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Rect2d>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Rect2d>>*>(opt_array.data()));
+				break;
 			case 74:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Rect>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Rect>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Rect>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Rect>>*>(opt_array.data()));
+				break;
 			case 75:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Size2f>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Size2f>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Size2f>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Size2f>>*>(opt_array.data()));
+				break;
 			case 76:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Size2d>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Size2d>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Size2d>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Size2d>>*>(opt_array.data()));
+				break;
 			case 77:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Size>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Size>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Size>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Size>>*>(opt_array.data()));
+				break;
 			case 78:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec2b>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec2b>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec2b>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec2b>>*>(opt_array.data()));
+				break;
 			case 79:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec3b>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec3b>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec3b>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec3b>>*>(opt_array.data()));
+				break;
 			case 80:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec4b>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec4b>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec4b>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec4b>>*>(opt_array.data()));
+				break;
 			case 81:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec2s>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec2s>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec2s>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec2s>>*>(opt_array.data()));
+				break;
 			case 82:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec3s>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec3s>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec3s>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec3s>>*>(opt_array.data()));
+				break;
 			case 83:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec4s>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec4s>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec4s>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec4s>>*>(opt_array.data()));
+				break;
 			case 84:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec2w>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec2w>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec2w>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec2w>>*>(opt_array.data()));
+				break;
 			case 85:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec3w>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec3w>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec3w>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec3w>>*>(opt_array.data()));
+				break;
 			case 86:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec4w>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec4w>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec4w>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec4w>>*>(opt_array.data()));
+				break;
 			case 87:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec2i>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec2i>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec2i>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec2i>>*>(opt_array.data()));
+				break;
 			case 88:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec3i>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec3i>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec3i>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec3i>>*>(opt_array.data()));
+				break;
 			case 89:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec4i>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec4i>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec4i>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec4i>>*>(opt_array.data()));
+				break;
 			case 90:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec6i>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec6i>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec6i>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec6i>>*>(opt_array.data()));
+				break;
 			case 91:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec8i>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec8i>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec8i>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec8i>>*>(opt_array.data()));
+				break;
 			case 92:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec2f>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec2f>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec2f>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec2f>>*>(opt_array.data()));
+				break;
 			case 93:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec3f>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec3f>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec3f>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec3f>>*>(opt_array.data()));
+				break;
 			case 94:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec4f>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec4f>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec4f>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec4f>>*>(opt_array.data()));
+				break;
 			case 95:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec6f>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec6f>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec6f>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec6f>>*>(opt_array.data()));
+				break;
 			case 96:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec2d>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec2d>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec2d>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec2d>>*>(opt_array.data()));
+				break;
 			case 97:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec3d>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec3d>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec3d>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec3d>>*>(opt_array.data()));
+				break;
 			case 98:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec4d>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec4d>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec4d>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec4d>>*>(opt_array.data()));
+				break;
 			case 99:
 				if (opt_array.is_shared_ptr()) {
-					return lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec6d>>>*>(opt_array.data()));
+					lua_push(L, *static_cast<const std::shared_ptr<std::vector<std::vector<cv::Vec6d>>>*>(opt_array.data()));
+					break;
 				}
-				return lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec6d>>*>(opt_array.data()));
+				lua_push(L, *static_cast<const std::vector<std::vector<cv::Vec6d>>*>(opt_array.data()));
+				break;
 			default:
 				lua_pushnil(L);
-				return 1;
 		}
 	}
 
@@ -5558,11 +5754,11 @@ namespace LUA_MODULE_NAME {
 	//	 InputArray R Mat::eye(3, 3, CV_64F)
 	template void _OptionalArray<cv::_InputArray, false>::reset<cv::Mat>(cv::Mat&);
 
-	template int lua_push<cv::_InputArray, false>(lua_State* L, const _OptionalArray<cv::_InputArray, false>& opt_array);
-	template int lua_push<cv::_OutputArray, false>(lua_State* L, const _OptionalArray<cv::_OutputArray, false>& opt_array);
-	template int lua_push<cv::_InputOutputArray, false>(lua_State* L, const _OptionalArray<cv::_InputOutputArray, false>& opt_array);
+	template void lua_push<cv::_InputArray, false>(lua_State* L, const _OptionalArray<cv::_InputArray, false>& opt_array);
+	template void lua_push<cv::_OutputArray, false>(lua_State* L, const _OptionalArray<cv::_OutputArray, false>& opt_array);
+	template void lua_push<cv::_InputOutputArray, false>(lua_State* L, const _OptionalArray<cv::_InputOutputArray, false>& opt_array);
 
-	template int lua_push<cv::_InputArray, true>(lua_State* L, const _OptionalArray<cv::_InputArray, true>& opt_array);
-	template int lua_push<cv::_OutputArray, true>(lua_State* L, const _OptionalArray<cv::_OutputArray, true>& opt_array);
-	template int lua_push<cv::_InputOutputArray, true>(lua_State* L, const _OptionalArray<cv::_InputOutputArray, true>& opt_array);
+	template void lua_push<cv::_InputArray, true>(lua_State* L, const _OptionalArray<cv::_InputArray, true>& opt_array);
+	template void lua_push<cv::_OutputArray, true>(lua_State* L, const _OptionalArray<cv::_OutputArray, true>& opt_array);
+	template void lua_push<cv::_InputOutputArray, true>(lua_State* L, const _OptionalArray<cv::_InputOutputArray, true>& opt_array);
 }

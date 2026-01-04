@@ -4,7 +4,8 @@ namespace {
 	using namespace LUA_MODULE_NAME;
 
 	int Keywords_isinstance(lua_State* L) {
-		return lua_push(L, lua_gettop(L) == 1 && usertype_info<Keywords>::lua_userdata_is(L, 1));
+		lua_pushboolean(L, lua_gettop(L) == 1 && usertype_info<Keywords>::lua_userdata_is(L, 1));
+		return 1;
 	}
 
 	// Define the functions for Lua bindings
@@ -26,7 +27,7 @@ namespace {
 
 		usertype_push_metatable<Keywords>(L);
 		lua_setmetatable(L, -2);
-		return lua_gettop(L) - vargc;
+		return 1;
 	}
 
 	int Keywords_has(lua_State* L) {
@@ -82,20 +83,14 @@ namespace {
 }
 
 namespace LUA_MODULE_NAME {
-	int usertype_info<Keywords>::metatable = LUA_REFNIL;
-	const void* usertype_info<Keywords>::signature;
-	const std::map<std::string, std::function<int(lua_State*)>> usertype_info<Keywords>::getters({});
-	const std::map<std::string, std::function<int(lua_State*)>> usertype_info<Keywords>::setters({});
+	std::mutex usertype_info<Keywords>::mutex;
+	std::vector<const void*> usertype_info<Keywords>::metatable_pointers;
+	std::vector<int> usertype_info<Keywords>::metatable_refs;
+	const std::unordered_map<std::string, std::function<int(lua_State*)>> usertype_info<Keywords>::getters({});
+	const std::unordered_map<std::string, std::function<int(lua_State*)>> usertype_info<Keywords>::setters({});
 
 	bool usertype_info<Keywords>::lua_userdata_is(lua_State* L, int index) {
-		if (!lua_istable(L, index) || !lua_getmetatable(L, index)) {
-			return false;
-		}
-
-		auto signature = lua_topointer(L, -1);
-		lua_pop(L, 1);
-
-		return signature == usertype_info<Keywords>::signature;
+		return check_metatable<Keywords>(L, index);
 	}
 
 	const struct luaL_Reg usertype_info<Keywords>::methods[] = {

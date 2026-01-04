@@ -23,15 +23,15 @@ namespace LUA_MODULE_NAME {
 
 	inline cv::dnn::DictValue lua_to(lua_State* L, int index, cv::dnn::DictValue*, bool& is_valid);
 
-	inline int lua_push(lua_State* L, const cv::dnn::DictValue& dv);
+	inline void lua_push(lua_State* L, const cv::dnn::DictValue& dv);
 
 	inline void lua_to(lua_State* L, int index, cv::dnn::LayerParams& lp, bool& is_valid);
 
 	inline cv::dnn::LayerParams lua_to(lua_State* L, int index, cv::dnn::LayerParams*, bool& is_valid);
 
-	inline int lua_push(lua_State* L, const cv::dnn::LayerParams& dv);
+	inline void lua_push(lua_State* L, const cv::dnn::LayerParams& dv);
 
-	inline int lua_push(lua_State* L, const std::vector<cv::dnn::Target>& t);
+	inline void lua_push(lua_State* L, const std::vector<cv::dnn::Target>& t);
 #endif
 
 #ifdef HAVE_OPENCV_FLANN
@@ -55,23 +55,23 @@ namespace LUA_MODULE_NAME {
 
 	inline cv::gapi::wip::draw::Prim lua_to(lua_State* L, int index, cv::gapi::wip::draw::Prim*, bool& is_valid);
 
-	inline int lua_push(lua_State* L, const cv::gapi::wip::draw::Prim& prim);
+	inline void lua_push(lua_State* L, const cv::gapi::wip::draw::Prim& prim);
 
 	inline cv::GMetaArg lua_to(lua_State* L, int index, cv::GMetaArg*, bool& is_valid);
 
 	inline std::shared_ptr<cv::GArg> lua_to(lua_State* L, int index, cv::GArg*, bool& is_valid);
 
-	inline int lua_push(lua_State* L, const cv::GArg& value);
+	inline void lua_push(lua_State* L, const cv::GArg& value);
 
-	inline int lua_push(lua_State* L, const cv::detail::OpaqueRef& o);
+	inline void lua_push(lua_State* L, const cv::detail::OpaqueRef& o);
 
-	inline int lua_push(lua_State* L, const cv::detail::VectorRef& v);
+	inline void lua_push(lua_State* L, const cv::detail::VectorRef& v);
 
 	inline cv::GRunArg lua_to(lua_State* L, int index, cv::GRunArg*, bool& is_valid);
 
-	inline int lua_push(lua_State* L, const cv::GRunArg& v);
+	inline void lua_push(lua_State* L, const cv::GRunArg& v);
 
-	inline int lua_push(lua_State* L, const cv::GOptRunArg& v);
+	inline void lua_push(lua_State* L, const cv::GOptRunArg& v);
 
 	// TODO
 	// {"kernels", CV_PY_FN_WITH_KW(pyopencv_cv_gapi_kernels), "kernels(...) -> GKernelPackage"}, \
@@ -87,7 +87,7 @@ namespace LUA_MODULE_NAME {
 
 	inline cv::Range lua_to(lua_State* L, int index, cv::Range*, bool& is_valid);
 
-	inline int lua_push(lua_State* L, const cv::Range& range);
+	inline void lua_push(lua_State* L, const cv::Range& range);
 
 	inline void lua_to(lua_State* L, int index, std::vector<cv::Range>& ranges, bool& is_valid);
 
@@ -100,7 +100,7 @@ namespace LUA_MODULE_NAME {
 	inline cv::Ptr<T> lua_to(lua_State* L, int index, cv::Ptr<T>*, bool& is_valid);
 
 	template<typename T>
-	inline int lua_push(lua_State* L, cv::Ptr<T>& ptr);
+	inline void lua_push(lua_State* L, cv::Ptr<T>& ptr);
 
 
 	// ================================
@@ -111,7 +111,7 @@ namespace LUA_MODULE_NAME {
 	inline cv::Point_<_Tp> lua_to(lua_State* L, int index, cv::Point_<_Tp>*, bool& is_valid);
 
 	template<typename _Tp>
-	inline int lua_push(lua_State* L, const cv::Point_<_Tp>& pt);
+	inline void lua_push(lua_State* L, const cv::Point_<_Tp>& pt);
 
 
 	// ================================
@@ -122,7 +122,7 @@ namespace LUA_MODULE_NAME {
 	inline cv::Point3_<_Tp> lua_to(lua_State* L, int index, cv::Point3_<_Tp>*, bool& is_valid);
 
 	template<typename _Tp>
-	inline int lua_push(lua_State* L, const cv::Point3_<_Tp>& pt);
+	inline void lua_push(lua_State* L, const cv::Point3_<_Tp>& pt);
 
 
 	// ================================
@@ -133,7 +133,7 @@ namespace LUA_MODULE_NAME {
 	inline cv::Rect_<_Tp> lua_to(lua_State* L, int index, cv::Rect_<_Tp>*, bool& is_valid);
 
 	template<typename _Tp>
-	inline int lua_push(lua_State* L, const cv::Rect_<_Tp>& rect);
+	inline void lua_push(lua_State* L, const cv::Rect_<_Tp>& rect);
 
 
 	// ================================
@@ -144,7 +144,7 @@ namespace LUA_MODULE_NAME {
 	inline cv::Scalar_<_Tp> lua_to(lua_State* L, int index, cv::Scalar_<_Tp>*, bool& is_valid);
 
 	template<typename _Tp>
-	inline int lua_push(lua_State* L, const cv::Scalar_<_Tp>& s);
+	inline void lua_push(lua_State* L, const cv::Scalar_<_Tp>& s);
 
 
 	// ================================
@@ -155,7 +155,7 @@ namespace LUA_MODULE_NAME {
 	inline cv::Size_<_Tp> lua_to(lua_State* L, int index, cv::Size_<_Tp>*, bool& is_valid);
 
 	template<typename _Tp>
-	inline int lua_push(lua_State* L, const cv::Size_<_Tp>& rect);
+	inline void lua_push(lua_State* L, const cv::Size_<_Tp>& rect);
 
 
 	// ================================
@@ -166,7 +166,7 @@ namespace LUA_MODULE_NAME {
 	inline cv::Vec<_Tp, cn> lua_to(lua_State* L, int index, cv::Vec<_Tp, cn>*, bool& is_valid);
 
 	template<typename _Tp, int cn>
-	inline int lua_push(lua_State* L, const cv::Vec<_Tp, cn>& vec);
+	inline void lua_push(lua_State* L, const cv::Vec<_Tp, cn>& vec);
 
 
 	// ================================
@@ -177,7 +177,7 @@ namespace LUA_MODULE_NAME {
 	inline cv::util::variant<_Ts...> lua_to(lua_State* L, int index, cv::util::variant<_Ts...>* ptr, bool& is_valid);
 
 	template<typename... _Ts>
-	inline int lua_push(lua_State* L, const cv::util::variant<_Ts...>& value);
+	inline void lua_push(lua_State* L, const cv::util::variant<_Ts...>& value);
 
 
 	// ================================
@@ -185,5 +185,5 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<typename T>
-	inline int lua_push(lua_State* L, const cv::optional<T>& opt);
+	inline void lua_push(lua_State* L, const cv::optional<T>& opt);
 }

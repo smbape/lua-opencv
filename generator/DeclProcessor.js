@@ -646,31 +646,22 @@ class DeclProcessor {
     setAssignOperator(type, coclass, options) {
         const cpptype = this.getCppType(type, coclass, options);
 
-        if (cpptype.startsWith("std::optional<")) {
-            this.setAssignOperator(type.slice("std::optional<".length, -">".length), coclass, options);
-        } else if (cpptype.startsWith("std::vector<")) {
-            this.setAssignOperator(type.slice("std::vector<".length, -">".length), coclass, options);
-        } else if (type.startsWith("std::tuple<")) {
-            const types = CoClass.getTupleTypes(type.slice("std::tuple<".length, -">".length));
+        if (type.includes("<") && type.endsWith(">")) {
+            const pos = type.indexOf("<");
+            const container = type.slice(0, pos);
+            const types = CoClass.getTupleTypes(type.slice(pos + 1, -">".length));
+
             for (const ttype of types) {
                 this.setAssignOperator(ttype, coclass, options);
+                if (["std::optional", "std::vector"].includes(container)) {
+                    break;
+                }
             }
-        } else if (type.startsWith("std::variant<")) {
-            const types = CoClass.getTupleTypes(type.slice("std::variant<".length, -">".length));
-            for (const ttype of types) {
-                this.setAssignOperator(ttype, coclass, options);
-            }
-        } else if (type.startsWith("std::map<")) {
-            const types = CoClass.getTupleTypes(type.slice("std::map<".length, -">".length));
-            for (const ttype of types) {
-                this.setAssignOperator(ttype, coclass, options);
-            }
-        } else if (type.startsWith("std::pair<")) {
-            const types = CoClass.getTupleTypes(type.slice("std::pair<".length, -">".length));
-            for (const ttype of types) {
-                this.setAssignOperator(ttype, coclass, options);
-            }
-        } else if (this.classes.has(cpptype)) {
+
+            return;
+        }
+
+        if (this.classes.has(cpptype)) {
             this.classes.get(cpptype).has_assign_operator = true;
         }
     }

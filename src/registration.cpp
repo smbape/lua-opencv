@@ -32,7 +32,8 @@ namespace {
 			if (!is_valid) {
 				return luaL_typeerror(L, 1, "number");
 			}
-			return lua_push(L, std::round(num));
+			lua_push(L, std::round(num));
+			return 1;
 		}
 
 		if (vargc == 2) {
@@ -49,7 +50,8 @@ namespace {
 			}
 
 			double mult = std::pow((double)10, (double)n);
-			return lua_push(L, std::round(num * mult) / mult);
+			lua_push(L, std::round(num * mult) / mult);
+			return 1;
 		}
 
 		return luaL_error(L, "1 or 2 arguments expected, got %d", vargc);
@@ -64,7 +66,8 @@ namespace {
 			if (!is_valid) {
 				return luaL_typeerror(L, 1, "number");
 			}
-			return lua_push(L, static_cast<int>(num));
+			lua_push(L, static_cast<int>(num));
+			return 1;
 		}
 
 		return luaL_error(L, "1 argument expected, got %d", vargc);
@@ -99,7 +102,7 @@ int LUA_MODULE_LUAOPEN(lua_State* L) {
 
 	using namespace LUA_MODULE_NAME;
 
-	init_global_state(L);
+	register_Common(L);
 
 	register_version(L);
 	register_bit(L);

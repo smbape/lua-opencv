@@ -35,7 +35,7 @@ module.exports = [
     // https://en.cppreference.com/w/cpp/chrono/time_point/operator_cmp //
     //////////////////////////////////////////////////////////////////////
 
-    ... [ "==", "<", "<=" ].map(op  => [
+    ...[ "==", "<", "<=" ].map(op => [
         [`std.chrono.steady_clock.time_point.operator${ op }`, "bool", [], [
             ["std::chrono::steady_clock::time_point", "rhs", "", ["/C", "/Ref"]],
         ], "", ""],
@@ -52,7 +52,7 @@ module.exports = [
         ["std::chrono::steady_clock::time_point", "sleep_time", "", ["/C", "/Ref"]],
     ], "", ""],
 
-    ... DURATION_TYPES.map((period, i) => [
+    ...DURATION_TYPES.map((period, i) => [
         [`class std.chrono.${ period }`, "", [], [], "", ""],
 
         [`std.chrono.${ period }.count`, `std::chrono::${ period }::rep`, [], [], "", ""],
@@ -65,7 +65,7 @@ module.exports = [
             [`std::chrono::${ period }::rep`, "d", "", ["/C"]],
         ], "", ""],
 
-        ... DURATION_TYPES.slice(i).map(period2  => [
+        ...DURATION_TYPES.slice(i).map(period2 => [
             [`std.chrono.${ period }.${ period }`, "", [], [
                 [`std::chrono::${ period2 }`, "d", "", ["/C", "/Ref"]],
             ], "", ""],
@@ -101,8 +101,8 @@ module.exports = [
         // https://en.cppreference.com/w/cpp/chrono/duration/operator_arith4 //
         ///////////////////////////////////////////////////////////////////////
 
-        ... DURATION_TYPES.map(period2  => [
-            ... [ "+", "-" ].map(op  => [
+        ...DURATION_TYPES.map(period2 => [
+            ...[ "+", "-" ].map(op => [
                 [`std.chrono.${ period }.operator${ op }`, `std::chrono::${ commonDurationType(period, period2) }`, [], [
                     [`std::chrono::${ period2 }`, "rhs", "", ["/C", "/Ref"]],
                 ], "", ""],
@@ -113,7 +113,7 @@ module.exports = [
                 ], "", ""],
             ]).flat(),
 
-            ... [ "==", "<", "<=" ].map(op  => [
+            ...[ "==", "<", "<=" ].map(op => [
                 [`std.chrono.${ period }.operator${ op }`, "bool", [], [
                     [`std::chrono::${ period2 }`, "rhs", "", ["/C", "/Ref"]],
                 ], "", ""],
@@ -125,7 +125,7 @@ module.exports = [
             ]).flat(),
         ]).flat(),
 
-        ... [ "*", "/" ].map(op  => [
+        ...[ "*", "/" ].map(op => [
             [`std.chrono.${ period }.operator${ op }`, `std::chrono::${ period }`, [], [
                 [`std::chrono::${ period }::rep`, "s", "", []],
             ], "", ""],

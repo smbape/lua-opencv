@@ -262,6 +262,8 @@ if type(jit) == "table" and package.config:sub(1, 1) ~= "/" then
         collectgarbage()
         print(string.format("cv::sum [FFI]   %i times took %.6f seconds. Sum = %i. (Scalar*, const _InputArray *)", total, elapsed, sum))
 
+        if true then return end
+
         local array = InputArray_createFromMat(mat)
         t = cv.getTickCount()
         for i = 0, rows - 1 do
@@ -294,6 +296,8 @@ if type(jit) == "table" and package.config:sub(1, 1) ~= "/" then
 
     test_sum()
 end
+
+if true then return end
 
 -- if type(jit) == 'table' then
 --     t = cv.getTickCount()

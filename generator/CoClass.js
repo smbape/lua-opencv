@@ -111,6 +111,9 @@ class CoClass {
 
         const templates = new RegExp(`\\b(?:${ [
             "std::map",
+            "std::multimap",
+            "std::unordered_map",
+            "std::unordered_multimap",
             "std::optional",
             "std::pair",
             "std::tuple",
@@ -276,6 +279,24 @@ class CoClass {
             iid: this.iid,
             clsid: this.clsid,
         };
+    }
+
+    getAssignableTypes() {
+        const types = new Set();
+        const stack = [this];
+
+        for (let i = 0; i < stack.length; i++) {
+            const coclass = stack[i];
+            const {fqn} = coclass;
+
+            if (!types.has(fqn)) {
+                types.add(fqn);
+                stack.push(...coclass.children);
+            }
+
+        }
+
+        return types;
     }
 
     addParent(fqn) {

@@ -88,9 +88,6 @@ namespace LUA_MODULE_NAME {
 		std::shared_ptr<Array> m_ptr;
 	};
 
-	template<typename Array, bool is_arrays_type>
-	int lua_push(lua_State* L, const _OptionalArray<Array, is_arrays_type>& opt_array);
-
 	// InputArray, OutputArray, InputOutputArray
 	template<typename Array>
 	using OptionalArray = _OptionalArray<Array, false>;

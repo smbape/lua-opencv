@@ -16,12 +16,13 @@ namespace LUA_MODULE_NAME {
 
 	template <>
 	struct usertype_info<Keywords> {
-		static int metatable;
-		static const void* signature;
+		static std::mutex mutex;
+		static std::vector<const void*> metatable_pointers;
+		static std::vector<int> metatable_refs;
 		static const struct luaL_Reg methods[];
 		static const struct luaL_Reg meta_methods[];
-		static const std::map<std::string, std::function<int(lua_State*)>> getters;
-		static const std::map<std::string, std::function<int(lua_State*)>> setters;
+		static const std::unordered_map<std::string, std::function<int(lua_State*)>> getters;
+		static const std::unordered_map<std::string, std::function<int(lua_State*)>> setters;
 		static bool lua_userdata_is(lua_State* L, int index);
 	};
 }
