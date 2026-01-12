@@ -649,16 +649,26 @@ class DeclProcessor {
         if (type.includes("<") && type.endsWith(">")) {
             const pos = type.indexOf("<");
             const container = type.slice(0, pos);
-            const types = CoClass.getTupleTypes(type.slice(pos + 1, -">".length));
 
-            for (const ttype of types) {
-                this.setAssignOperator(ttype, coclass, options);
-                if (["std::optional", "std::vector"].includes(container)) {
-                    break;
+            if ([
+                "std::map",
+                "std::optional",
+                "std::tuple",
+                "std::variant",
+                "std::vector",
+            ].includes(container)) {
+                const types = CoClass.getTupleTypes(type.slice(pos + 1, -">".length));
+                const end = ["std::optional", "std::vector"].includes(container) ? 1 : container === "std::map" ? 2 : types.length;
+
+                for (let i = 0; i < end; i++) {
+                    this.setAssignOperator(types[i], coclass, options);
+                    if (["std::optional", "std::vector"].includes(container)) {
+                        break;
+                    }
                 }
-            }
 
-            return;
+                return;
+            }
         }
 
         if (this.classes.has(cpptype)) {
@@ -727,8 +737,8 @@ class DeclProcessor {
 
         // Add a copy constructor
         if (options.hasCopyConstructorSupport && coclass.is_struct && coclass.is_simple) {
-            coclass.addMethod([ctor, "", [`/Requires=(${ fqn }& self, const ${ fqn }& other) { self = other; }`, "/Expr=", `/DC=if (other) ${ options.self } = *other;`], [
-                [`${ options.shared_ptr || "std::shared_ptr" }<${ fqn }>`, "other", "", ["/Ref", "/C"]],
+            coclass.addMethod([ctor, "", [`/Requires=(${ fqn }& self, const ${ fqn }& other) { self = other; }`, "/Expr=", `/DC=${ options.self } = other;`], [
+                [fqn, "other", "", ["/Ref", "/C"]],
             ]], options);
         }
 
@@ -756,7 +766,7 @@ class DeclProcessor {
 
                 return `if (${ argname }) { ${ wexpr.replace(/\$(?:value\b|\{[^\S\n]*value[^\S\n]*\})/g, `*${ argname }`) }; }`;
             }).join("\n") }`], args.map(([argtype, argname, defval, modifiers]) => {
-                return [`std::optional<${ argtype }>`, argname, defval ? defval : "std::nullopt", modifiers.concat(["/Ref", "/C"])];
+                return [`std::optional<${ argtype }>`, argname, defval ? defval : "std::nullopt", modifiers.concat(["/C"])];
             })], options);
 
             // Initializer with tuple

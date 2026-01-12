@@ -35,11 +35,7 @@
 #define lua_rawlen lua_objlen
 #endif
 
-#if LUA_VERSION_NUM < 502
-#define lua_pushfuncs(L, funcs) luaL_register(L, NULL, funcs)
-#else
-#define lua_pushfuncs(L, funcs) luaL_setfuncs(L, funcs, 0)
-#endif
+void lua_pushfuncs(lua_State *L, const luaL_Reg *l);
 
 #if LUA_VERSION_NUM < 504
 extern int luaL_typeerror(lua_State* L, int arg, const char* tname);
@@ -271,16 +267,22 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<typename T>
-	struct is_usertype : std::integral_constant<bool, false> {};
+	struct is_usertype : std::false_type {};
 
 	template<typename T>
 	constexpr inline bool is_usertype_v = is_usertype<T>::value;
+
+	template<class T>
+	struct is_usertype_pointer : std::false_type {};
+
+	template<typename T>
+	constexpr inline bool is_usertype_pointer_v = is_usertype_pointer<T>::value;
 
 	template<typename T>
 	struct usertype_info;
 
 	template<typename T>
-	struct is_basetype : std::integral_constant<bool, false> {};
+	struct is_basetype : std::false_type {};
 
 	template<typename T>
 	constexpr inline bool is_basetype_v = is_basetype<T>::value;

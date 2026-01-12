@@ -293,7 +293,6 @@ class CoClass {
                 types.add(fqn);
                 stack.push(...coclass.children);
             }
-
         }
 
         return types;

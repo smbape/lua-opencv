@@ -112,6 +112,10 @@ function new_version.command(args)
       out_rs.build.type = "none"
       out_rs.build.variables = nil
 
+      if not out_rs.build.install then
+         out_rs.build.install = {}
+      end
+
       local dependencies = out_rs.dependencies
       for k, dependency in pairs(dependencies) do
          if dependency:sub(1, 4) == "lua " then
@@ -133,9 +137,7 @@ function new_version.command(args)
          install_libdir .. "/opencv_lua" .. shared_library_suffix,
       }
 
-      out_rs.build.install = {
-         lib = install_lib
-      }
+      out_rs.build.install.lib = install_lib
 
       if args.platform == "win32" then
          -- add ffmpeg dll
@@ -238,23 +240,26 @@ function new_version.command(args)
 
       -- add install_libdir .. "/opencv_lua/devel" directory
       ---@type string[]
-      local includes = { install_libdir .. "/opencv_lua/devel" }
-      while #includes ~= 0 do
+      local lib_includes = { install_libdir .. "/opencv_lua/devel" }
+      while #lib_includes ~= 0 do
          ---@type string
-         local include = table.remove(includes)
+         local include = table.remove(lib_includes)
          if fs.is_dir(include) then
             ---@type string[]
             local files = fs.list_dir(include)
             for i = #files, 1, -1 do
-               includes[#includes + 1] = include .. "/" .. files[i]
+               lib_includes[#lib_includes + 1] = include .. "/" .. files[i]
             end
-         else
+         elseif fs.is_file(include) then
             local module_name = include:sub(#install_libdir + 2)
 
             -- remove the extension
             local ext = module_name:match("(%..+)$")
             if ext ~= nil then
-               module_name = module_name:sub(1, -#ext - 1) .. ext:gsub("%.", "#")
+               module_name = module_name:sub(1, -#ext - 1):gsub("/", ".")
+               if ext ~= ".lua" then
+                  module_name = module_name .. ext:gsub("%.", "#")
+               end
             end
 
             install_lib[module_name:gsub("/", ".")] = include

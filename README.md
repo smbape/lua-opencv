@@ -33,6 +33,11 @@ Therefore the [OpenCV documentation](https://docs.opencv.org/4.x/index.html) sho
   - [Initialize the project](#initialize-the-project)
     - [Windows](#windows-2)
     - [Linux](#linux-2)
+- [Usage with LÖVE](#usage-with-l%C3%96ve)
+  - [Prerequisites](#prerequisites)
+    - [Windows](#windows-3)
+    - [Linux](#linux-3)
+  - [Example](#example)
 - [Hosting you own binary rocks](#hosting-you-own-binary-rocks)
 - [Keyword arguments](#keyword-arguments)
 - [How to translate python/c++ code](#how-to-translate-pythonc-code)
@@ -43,7 +48,11 @@ Therefore the [OpenCV documentation](https://docs.opencv.org/4.x/index.html) sho
   - [Strict compliance with the documentation](#strict-compliance-with-the-documentation)
   - [Memory](#memory)
   - [Matrix manipulation](#matrix-manipulation)
-- [Switching from sol2 to plain-c](#switching-from-sol2-to-plain-c)
+    - [LuaJIT with jit enabled](#luajit-with-jit-enabled)
+      - [As a multi dimensional matrix](#as-a-multi-dimensional-matrix)
+      - [As a 1D matrix](#as-a-1d-matrix)
+- [Breaking changes from 4.12.0-1](#breaking-changes-from-4120-1)
+- [Switching from [sol2] to plain-c](#switching-from-sol2-to-plain-c)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 

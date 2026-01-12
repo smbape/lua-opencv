@@ -655,6 +655,7 @@ namespace LUA_MODULE_NAME {
 
 		// 2. Move assign all bases and members.
 		m_index = other.m_index;
+		m_shared = other.m_shared;
 		m_data = other.m_data;
 		m_is_shared_ptr = other.m_is_shared_ptr;
 		m_ptr = std::move(other.m_ptr);
@@ -662,6 +663,7 @@ namespace LUA_MODULE_NAME {
 		// 3. If the move assignment of bases and members didn't,
 		//		   make the rhs resource-less, then make it so.
 		other.m_index = -1;
+		other.m_shared = false;
 		other.m_data = nullptr;
 		other.m_is_shared_ptr = false;
 
@@ -800,14 +802,14 @@ namespace LUA_MODULE_NAME {
 			if (is_valid) {
 				switch(search->second) {
 					case 0:
-						reset(*static_cast<std::shared_ptr<Array>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<Array>*>(lua_touserdata(L, index)), true);
 						return;
 					case 1:
-						reset(*static_cast<std::shared_ptr<cv::Mat>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<cv::Mat>*>(lua_touserdata(L, index)), true);
 						return;
 					case 2:
 						if constexpr (!is_arrays_type) {
-							reset(*static_cast<std::shared_ptr<cv::UMat>*>(lua_touserdata(L, index)));
+							reset(*static_cast<std::shared_ptr<cv::UMat>*>(lua_touserdata(L, index)), true);
 							return;
 						} else {
 							is_valid = false;
@@ -815,7 +817,7 @@ namespace LUA_MODULE_NAME {
 						}
 					case 3:
 						if constexpr (!is_arrays_type) {
-							reset(*static_cast<std::shared_ptr<cv::cuda::GpuMat>*>(lua_touserdata(L, index)));
+							reset(*static_cast<std::shared_ptr<cv::cuda::GpuMat>*>(lua_touserdata(L, index)), true);
 							return;
 						} else {
 							is_valid = false;
@@ -823,303 +825,303 @@ namespace LUA_MODULE_NAME {
 						}
 					case 4:
 						if constexpr (!is_arrays_type) {
-							reset(*static_cast<std::shared_ptr<cv::cuda::HostMem>*>(lua_touserdata(L, index)));
+							reset(*static_cast<std::shared_ptr<cv::cuda::HostMem>*>(lua_touserdata(L, index)), true);
 							return;
 						} else {
 							is_valid = false;
 							break;
 						}
 					case 5:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Mat>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Mat>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 6:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::UMat>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::UMat>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 7:
 						if constexpr (std::is_same_v<Array, cv::_InputArray>) {
-							reset(*static_cast<std::shared_ptr<std::vector<bool>>*>(lua_touserdata(L, index)));
+							reset(*static_cast<std::shared_ptr<std::vector<bool>>*>(lua_touserdata(L, index)), true);
 							return;
 						} else {
 							is_valid = false;
 							break;
 						}
 					case 8:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::RotatedRect>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::RotatedRect>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 9:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Range>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Range>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 10:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Moments>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Moments>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 11:
-						reset(*static_cast<std::shared_ptr<std::vector<uchar>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<uchar>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 12:
-						reset(*static_cast<std::shared_ptr<std::vector<schar>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<schar>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 13:
-						reset(*static_cast<std::shared_ptr<std::vector<char>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<char>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 14:
-						reset(*static_cast<std::shared_ptr<std::vector<ushort>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<ushort>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 15:
-						reset(*static_cast<std::shared_ptr<std::vector<short>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<short>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 16:
-						reset(*static_cast<std::shared_ptr<std::vector<int>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<int>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 17:
-						reset(*static_cast<std::shared_ptr<std::vector<float>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<float>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 18:
-						reset(*static_cast<std::shared_ptr<std::vector<double>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<double>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 19:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Point3i>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Point3i>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 20:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Point3f>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Point3f>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 21:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Point3d>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Point3d>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 22:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Point2f>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Point2f>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 23:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Point2d>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Point2d>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 24:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Point>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Point>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 25:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Rect2f>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Rect2f>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 26:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Rect2d>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Rect2d>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 27:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Rect>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Rect>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 28:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Size2f>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Size2f>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 29:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Size2d>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Size2d>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 30:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Size>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Size>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 31:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec2b>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec2b>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 32:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec3b>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec3b>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 33:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec4b>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec4b>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 34:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec2s>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec2s>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 35:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec3s>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec3s>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 36:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec4s>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec4s>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 37:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec2w>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec2w>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 38:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec3w>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec3w>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 39:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec4w>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec4w>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 40:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec2i>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec2i>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 41:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec3i>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec3i>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 42:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec4i>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec4i>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 43:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec6i>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec6i>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 44:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec8i>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec8i>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 45:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec2f>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec2f>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 46:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec3f>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec3f>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 47:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec4f>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec4f>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 48:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec6f>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec6f>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 49:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec2d>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec2d>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 50:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec3d>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec3d>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 51:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec4d>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec4d>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 52:
-						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec6d>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<cv::Vec6d>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 53:
 						if constexpr (std::is_same_v<Array, cv::_InputOutputArray>) {
-							reset(*static_cast<std::shared_ptr<std::vector<std::vector<bool>>>*>(lua_touserdata(L, index)));
+							reset(*static_cast<std::shared_ptr<std::vector<std::vector<bool>>>*>(lua_touserdata(L, index)), true);
 							return;
 						} else {
 							is_valid = false;
 							break;
 						}
 					case 54:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::RotatedRect>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::RotatedRect>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 55:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Range>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Range>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 56:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Moments>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Moments>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 57:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<uchar>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<uchar>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 58:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<schar>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<schar>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 59:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<char>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<char>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 60:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<ushort>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<ushort>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 61:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<short>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<short>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 62:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<int>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<int>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 63:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<float>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<float>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 64:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<double>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<double>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 65:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Point3i>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Point3i>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 66:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Point3f>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Point3f>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 67:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Point3d>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Point3d>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 68:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Point2f>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Point2f>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 69:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Point2d>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Point2d>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 70:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Point>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Point>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 71:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Rect2f>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Rect2f>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 72:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Rect2d>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Rect2d>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 73:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Rect>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Rect>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 74:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Size2f>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Size2f>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 75:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Size2d>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Size2d>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 76:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Size>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Size>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 77:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2b>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2b>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 78:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3b>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3b>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 79:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4b>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4b>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 80:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2s>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2s>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 81:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3s>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3s>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 82:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4s>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4s>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 83:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2w>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2w>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 84:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3w>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3w>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 85:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4w>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4w>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 86:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2i>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2i>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 87:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3i>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3i>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 88:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4i>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4i>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 89:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6i>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6i>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 90:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec8i>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec8i>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 91:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2f>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2f>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 92:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3f>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3f>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 93:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4f>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4f>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 94:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6f>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6f>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 95:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2d>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec2d>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 96:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3d>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec3d>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 97:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4d>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec4d>>>*>(lua_touserdata(L, index)), true);
 						return;
 					case 98:
-						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6d>>>*>(lua_touserdata(L, index)));
+						reset(*static_cast<std::shared_ptr<std::vector<std::vector<cv::Vec6d>>>*>(lua_touserdata(L, index)), true);
 						return;
 				}
 			}
@@ -1932,7 +1934,7 @@ namespace LUA_MODULE_NAME {
 			m_ptr.reset();
 		}
 
-		if (m_data) {
+		if (!m_shared && m_data) {
 			switch (m_index) {
 				case 0:
 					if (m_is_shared_ptr) {
@@ -2652,6 +2654,7 @@ namespace LUA_MODULE_NAME {
 		}
 
 		m_index = -1;
+		m_shared = false;
 		m_data = nullptr;
 		m_is_shared_ptr = false;
 	}
@@ -2663,7 +2666,7 @@ namespace LUA_MODULE_NAME {
 
 	template<typename Array, bool is_arrays_type>
 	template<typename T>
-	void _OptionalArray<Array, is_arrays_type>::reset(T& value) {
+	void _OptionalArray<Array, is_arrays_type>::reset(T& value, bool shared) {
 		// reset(T& value);
 		// m_data is a copy of value
 		// m_ptr = std::make_shared<Array>(m_data);
@@ -2684,11 +2687,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<cv::Mat>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 0;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 0;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (!is_arrays_type && std::is_same_v<T, cv::UMat>) {
@@ -2699,11 +2701,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (!is_arrays_type && std::is_same_v<T, std::shared_ptr<cv::UMat>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 1;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 1;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (!is_arrays_type && std::is_same_v<Array, cv::_InputArray> && std::is_same_v<T, double>) {
@@ -2728,11 +2729,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (!is_arrays_type && std::is_same_v<T, std::shared_ptr<cv::cuda::GpuMat>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 4;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 4;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (!is_arrays_type && std::is_same_v<T, cv::cuda::HostMem>) {
@@ -2743,11 +2743,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (!is_arrays_type && std::is_same_v<T, std::shared_ptr<cv::cuda::HostMem>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 5;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 5;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (!is_arrays_type && std::is_same_v<Array, cv::_InputArray> && std::is_same_v<T, cv::Scalar>) {
@@ -2765,11 +2764,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Mat>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 7;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 7;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::UMat>>) {
@@ -2780,11 +2778,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::UMat>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 8;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 8;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<Array, cv::_InputArray> && std::is_same_v<T, std::vector<bool>>) {
@@ -2795,11 +2792,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<Array, cv::_InputArray> && std::is_same_v<T, std::shared_ptr<std::vector<bool>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 9;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 9;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::RotatedRect>>) {
@@ -2810,11 +2806,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::RotatedRect>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 10;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 10;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Range>>) {
@@ -2825,11 +2820,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Range>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 11;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 11;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Moments>>) {
@@ -2840,11 +2834,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Moments>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 12;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 12;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<uchar>>) {
@@ -2855,11 +2848,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<uchar>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 13;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 13;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<schar>>) {
@@ -2870,11 +2862,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<schar>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 14;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 14;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<char>>) {
@@ -2885,11 +2876,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<char>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 15;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 15;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<ushort>>) {
@@ -2900,11 +2890,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<ushort>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 16;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 16;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<short>>) {
@@ -2915,11 +2904,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<short>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 17;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 17;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<int>>) {
@@ -2930,11 +2918,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<int>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 18;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 18;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<float>>) {
@@ -2945,11 +2932,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<float>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 19;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 19;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<double>>) {
@@ -2960,11 +2946,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<double>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 20;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 20;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Point3i>>) {
@@ -2975,11 +2960,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Point3i>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 21;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 21;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Point3f>>) {
@@ -2990,11 +2974,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Point3f>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 22;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 22;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Point3d>>) {
@@ -3005,11 +2988,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Point3d>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 23;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 23;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Point2f>>) {
@@ -3020,11 +3002,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Point2f>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 24;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 24;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Point2d>>) {
@@ -3035,11 +3016,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Point2d>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 25;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 25;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Point>>) {
@@ -3050,11 +3030,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Point>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 26;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 26;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Rect2f>>) {
@@ -3065,11 +3044,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Rect2f>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 27;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 27;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Rect2d>>) {
@@ -3080,11 +3058,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Rect2d>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 28;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 28;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Rect>>) {
@@ -3095,11 +3072,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Rect>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 29;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 29;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Size2f>>) {
@@ -3110,11 +3086,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Size2f>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 30;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 30;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Size2d>>) {
@@ -3125,11 +3100,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Size2d>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 31;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 31;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Size>>) {
@@ -3140,11 +3114,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Size>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 32;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 32;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Vec2b>>) {
@@ -3155,11 +3128,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Vec2b>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 33;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 33;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Vec3b>>) {
@@ -3170,11 +3142,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Vec3b>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 34;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 34;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Vec4b>>) {
@@ -3185,11 +3156,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Vec4b>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 35;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 35;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Vec2s>>) {
@@ -3200,11 +3170,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Vec2s>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 36;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 36;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Vec3s>>) {
@@ -3215,11 +3184,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Vec3s>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 37;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 37;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Vec4s>>) {
@@ -3230,11 +3198,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Vec4s>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 38;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 38;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Vec2w>>) {
@@ -3245,11 +3212,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Vec2w>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 39;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 39;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Vec3w>>) {
@@ -3260,11 +3226,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Vec3w>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 40;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 40;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Vec4w>>) {
@@ -3275,11 +3240,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Vec4w>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 41;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 41;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Vec2i>>) {
@@ -3290,11 +3254,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Vec2i>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 42;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 42;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Vec3i>>) {
@@ -3305,11 +3268,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Vec3i>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 43;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 43;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Vec4i>>) {
@@ -3320,11 +3282,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Vec4i>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 44;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 44;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Vec6i>>) {
@@ -3335,11 +3296,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Vec6i>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 45;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 45;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Vec8i>>) {
@@ -3350,11 +3310,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Vec8i>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 46;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 46;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Vec2f>>) {
@@ -3365,11 +3324,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Vec2f>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 47;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 47;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Vec3f>>) {
@@ -3380,11 +3338,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Vec3f>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 48;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 48;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Vec4f>>) {
@@ -3395,11 +3352,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Vec4f>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 49;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 49;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Vec6f>>) {
@@ -3410,11 +3366,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Vec6f>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 50;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 50;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Vec2d>>) {
@@ -3425,11 +3380,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Vec2d>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 51;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 51;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Vec3d>>) {
@@ -3440,11 +3394,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Vec3d>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 52;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 52;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Vec4d>>) {
@@ -3455,11 +3408,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Vec4d>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 53;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 53;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<cv::Vec6d>>) {
@@ -3470,11 +3422,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<cv::Vec6d>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 54;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 54;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<Array, cv::_InputOutputArray> && std::is_same_v<T, std::vector<std::vector<bool>>>) {
@@ -3485,11 +3436,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<Array, cv::_InputOutputArray> && std::is_same_v<T, std::shared_ptr<std::vector<std::vector<bool>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 55;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 55;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::RotatedRect>>>) {
@@ -3500,11 +3450,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::RotatedRect>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 56;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 56;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Range>>>) {
@@ -3515,11 +3464,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Range>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 57;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 57;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Moments>>>) {
@@ -3530,11 +3478,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Moments>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 58;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 58;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<uchar>>>) {
@@ -3545,11 +3492,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<uchar>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 59;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 59;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<schar>>>) {
@@ -3560,11 +3506,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<schar>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 60;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 60;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<char>>>) {
@@ -3575,11 +3520,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<char>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 61;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 61;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<ushort>>>) {
@@ -3590,11 +3534,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<ushort>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 62;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 62;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<short>>>) {
@@ -3605,11 +3548,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<short>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 63;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 63;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<int>>>) {
@@ -3620,11 +3562,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<int>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 64;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 64;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<float>>>) {
@@ -3635,11 +3576,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<float>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 65;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 65;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<double>>>) {
@@ -3650,11 +3590,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<double>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 66;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 66;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Point3i>>>) {
@@ -3665,11 +3604,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Point3i>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 67;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 67;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Point3f>>>) {
@@ -3680,11 +3618,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Point3f>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 68;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 68;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Point3d>>>) {
@@ -3695,11 +3632,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Point3d>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 69;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 69;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Point2f>>>) {
@@ -3710,11 +3646,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Point2f>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 70;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 70;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Point2d>>>) {
@@ -3725,11 +3660,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Point2d>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 71;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 71;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Point>>>) {
@@ -3740,11 +3674,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Point>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 72;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 72;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Rect2f>>>) {
@@ -3755,11 +3688,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Rect2f>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 73;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 73;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Rect2d>>>) {
@@ -3770,11 +3702,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Rect2d>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 74;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 74;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Rect>>>) {
@@ -3785,11 +3716,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Rect>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 75;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 75;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Size2f>>>) {
@@ -3800,11 +3730,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Size2f>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 76;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 76;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Size2d>>>) {
@@ -3815,11 +3744,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Size2d>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 77;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 77;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Size>>>) {
@@ -3830,11 +3758,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Size>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 78;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 78;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Vec2b>>>) {
@@ -3845,11 +3772,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Vec2b>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 79;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 79;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Vec3b>>>) {
@@ -3860,11 +3786,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Vec3b>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 80;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 80;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Vec4b>>>) {
@@ -3875,11 +3800,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Vec4b>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 81;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 81;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Vec2s>>>) {
@@ -3890,11 +3814,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Vec2s>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 82;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 82;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Vec3s>>>) {
@@ -3905,11 +3828,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Vec3s>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 83;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 83;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Vec4s>>>) {
@@ -3920,11 +3842,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Vec4s>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 84;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 84;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Vec2w>>>) {
@@ -3935,11 +3856,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Vec2w>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 85;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 85;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Vec3w>>>) {
@@ -3950,11 +3870,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Vec3w>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 86;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 86;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Vec4w>>>) {
@@ -3965,11 +3884,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Vec4w>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 87;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 87;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Vec2i>>>) {
@@ -3980,11 +3898,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Vec2i>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 88;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 88;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Vec3i>>>) {
@@ -3995,11 +3912,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Vec3i>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 89;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 89;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Vec4i>>>) {
@@ -4010,11 +3926,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Vec4i>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 90;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 90;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Vec6i>>>) {
@@ -4025,11 +3940,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Vec6i>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 91;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 91;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Vec8i>>>) {
@@ -4040,11 +3954,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Vec8i>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 92;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 92;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Vec2f>>>) {
@@ -4055,11 +3968,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Vec2f>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 93;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 93;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Vec3f>>>) {
@@ -4070,11 +3982,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Vec3f>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 94;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 94;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Vec4f>>>) {
@@ -4085,11 +3996,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Vec4f>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 95;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 95;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Vec6f>>>) {
@@ -4100,11 +4010,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Vec6f>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 96;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 96;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Vec2d>>>) {
@@ -4115,11 +4024,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Vec2d>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 97;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 97;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Vec3d>>>) {
@@ -4130,11 +4038,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Vec3d>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 98;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 98;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Vec4d>>>) {
@@ -4145,11 +4052,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Vec4d>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 99;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 99;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<std::vector<cv::Vec6d>>>) {
@@ -4160,11 +4066,10 @@ namespace LUA_MODULE_NAME {
 			m_ptr = std::make_shared<Array>(*pp);
 		}
 		else if constexpr (std::is_same_v<T, std::shared_ptr<std::vector<std::vector<cv::Vec6d>>>>) {
-			if (value.use_count() < 2) {
-				m_data = new T(value);
-				m_index = 100;
-				m_is_shared_ptr = true;
-			}
+			m_shared = shared;
+			m_data = shared ? &value : new T(value);
+			m_index = 100;
+			m_is_shared_ptr = true;
 			m_ptr = std::make_shared<Array>(*value);
 		}
 		else  if constexpr (std::is_same_v<T, std::shared_ptr<Array>>) {
@@ -6320,7 +6225,7 @@ namespace LUA_MODULE_NAME {
 	//	 InputArray Knew cv::noArray()
 	//	 Size new_size Size()/C; /Ref
 	//	 InputArray R Mat::eye(3, 3, CV_64F)
-	template void _OptionalArray<cv::_InputArray, false>::reset<cv::Mat>(cv::Mat&);
+	template void _OptionalArray<cv::_InputArray, false>::reset<cv::Mat>(cv::Mat&, bool);
 
 	template void lua_push<cv::_InputArray, false>(lua_State* L, const _OptionalArray<cv::_InputArray, false>& opt_array);
 	template void lua_push<cv::_OutputArray, false>(lua_State* L, const _OptionalArray<cv::_OutputArray, false>& opt_array);

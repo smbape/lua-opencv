@@ -14,6 +14,19 @@ namespace {
 	using namespace LUA_MODULE_NAME;
 	using namespace cvextra;
 
+	int Lua_sol_meta_function_index(lua_State* L);
+
+	int __index(lua_State* L) {
+		auto vargc = lua_gettop(L);
+
+		if (try_mt__index(L) != 0 ||
+			Lua_sol_meta_function_index(L) != 0) {
+			return lua_gettop(L) - vargc;
+		}
+
+		return lua_missing_declaration(L);
+	}
+
 	auto Lua_sol_meta_function_length(lua_State* L) {
 		bool is_valid;
 		auto self = lua_to(L, 1, static_cast<cv::Mat*>(nullptr), is_valid);
@@ -24,7 +37,7 @@ namespace {
 		return 1;
 	}
 
-	auto Lua_sol_meta_function_index(lua_State* L) {
+	int Lua_sol_meta_function_index(lua_State* L) {
 		bool is_valid;
 
 		{
@@ -75,7 +88,7 @@ namespace {
 			}
 		}
 
-		return lua_class__index<0, ::cv::Mat>(L); // fallback to the default __index method
+		return usertype_info<cv::Mat>::__index(L);
 	}
 
 	template<typename T>
@@ -167,7 +180,7 @@ namespace {
 			}
 		}
 
-		return lua_class__newindex<0, ::cv::Mat>(L); // fallback to the default __newindex method
+		return lua_missing_declaration(L);
 	}
 
 	auto Lua_get(lua_State* L) {
@@ -219,7 +232,7 @@ namespace {
 
 	const struct luaL_Reg extended_methods[] = {
 		{"__len", Lua_sol_meta_function_length},
-		{"__index", Lua_sol_meta_function_index},
+		{"__index", __index},
 		{"__newindex", Lua_sol_meta_function_newindex},
 		{"__call", Lua_get},
 		{"get", Lua_get},

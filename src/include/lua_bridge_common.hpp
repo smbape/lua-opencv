@@ -5,6 +5,22 @@
 
 namespace LUA_MODULE_NAME {
 	// ================================
+	// is_usertype generics
+	// ================================
+
+	template<class T>
+	struct is_usertype_pointer<T*> : is_usertype<T> {};
+
+	template<class T>
+	struct is_usertype_pointer<T* const> : is_usertype<T> {};
+
+	template<class T>
+	struct is_usertype_pointer<T* volatile> : is_usertype<T> {};
+
+	template<class T>
+	struct is_usertype_pointer<T* const volatile> : is_usertype<T> {};
+
+	// ================================
 	// extract_holder
 	// ================================
 
@@ -82,7 +98,8 @@ namespace LUA_MODULE_NAME {
 		}
 
 		const lua_Number v = lua_tonumber(L, index);
-		is_valid = v >= std::numeric_limits<Integer>::min() && v <= std::numeric_limits<Integer>::max();
+		// remove limits checking to be consistent with luajit ffi
+		// is_valid = v >= std::numeric_limits<Integer>::min() && v <= std::numeric_limits<Integer>::max();
 		return static_cast<Integer>(v);
 	}
 
@@ -312,17 +329,17 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<std::size_t I, typename... _Ts>
-	inline bool check_metatable(lua_State* L, int index, const void* mt_pointer) {
+	inline bool check_metatable(lua_State* L, int luaopen_index, const void* mt_pointer) {
 		using _Tuple = typename std::tuple<_Ts...>;
 		using T = std::tuple_element_t<I, _Tuple>;
 
-		const auto& expected_pointer = usertype_info<T>::metatable_pointers.at(index);
+		const auto& expected_pointer = usertype_metatable_pointer<T>(luaopen_index);
 		if (mt_pointer == expected_pointer) {
 			return true;
 		}
 
 		if constexpr (I + 1 != sizeof...(_Ts)) {
-			return check_metatable<I + 1, _Ts...>(L, index, mt_pointer);
+			return check_metatable<I + 1, _Ts...>(L, luaopen_index, mt_pointer);
 		}
 		else {
 			return false;
@@ -352,8 +369,7 @@ namespace LUA_MODULE_NAME {
 
 	template<typename T>
 	inline void usertype_push_metatable(lua_State* L) {
-		const auto& index = get_luaopen_index(L);
-		const auto& ref = usertype_info<T>::metatable_refs.at(index);
+		thread_local const auto ref = usertype_metatable_ref<T>(get_luaopen_index(L));
 		lua_rawgeti(L, LUA_REGISTRYINDEX, ref);
 	}
 
@@ -361,6 +377,21 @@ namespace LUA_MODULE_NAME {
 	// ================================
 	// T
 	// ================================
+
+	template<typename T>
+	inline T* lua_to(lua_State* L, int index, T*, T*& ref, bool& is_valid) {
+		auto ptr = lua_to(L, index, static_cast<T**>(nullptr), is_valid);
+		if (is_valid) {
+			ref = ptr;
+		}
+		else {
+			auto value_holder = lua_to(L, index, static_cast<T*>(nullptr), is_valid);
+			if (is_valid) {
+				*ref = extract_holder(value_holder, static_cast<T*>(nullptr));
+			}
+		}
+		return ref;
+	}
 
 	template<typename T>
 	inline std::shared_ptr<T> lua_userdata_to(lua_State* L, int index, T*, bool& is_valid) {
@@ -376,6 +407,293 @@ namespace LUA_MODULE_NAME {
 	template<typename T>
 	inline void lua_push(lua_State* L, T* ptr, void (*d)(T*)) {
 		lua_push(L, std::make_shared<T>(ptr, CFunctionDeleter(d)));
+	}
+
+
+	// ================================
+	// T[]
+	// ================================
+
+	template<typename T>
+	void PointerArray<T>::register_class(lua_State* L) {
+		thread_local bool registered = [L]() {
+			bool registered;
+			{
+				std::unique_lock lock(usertype_info<PointerArray<T>>::mutex);
+				const auto index = get_luaopen_index(L);
+				const auto size = usertype_info<PointerArray<T>>::metatable_pointers.size();
+				registered = index < size && usertype_info<PointerArray<T>>::metatable_refs.at(index) != LUA_REFNIL;
+			}
+
+			if (!registered) {
+				lua_newtable(L);
+				lua_register_class<PointerArray<T>>(L, internal::GetTypeName<PointerArray<T>>());
+				lua_register_defaults<PointerArray<T>>(L);
+
+				{
+					lua_pushstring(L, internal::GetTypeName<PointerArray<T>>());
+					lua_rawget(L, -2); // cls = module[name]
+
+					// For ffi purpose
+					lua_pushliteral(L, "__sizeof");
+					lua_push(L, sizeof(T*));
+					lua_rawset(L, -3);
+
+					lua_pop(L, 1);
+				}
+
+				lua_pop(L, 1);
+			}
+			return true;
+		}();
+	}
+
+	template<typename T>
+	int PointerArray<T>::__index(lua_State* L) {
+		auto vargc = lua_gettop(L);
+
+		if (vargc == 2) {
+			bool is_valid;
+			auto self = lua_to(L, 1, static_cast<PointerArray<T>*>(nullptr), is_valid);
+			if (!is_valid) {
+				goto overload;
+			}
+
+			if (lua_type(L, 2) == LUA_TSTRING && std::strcmp(lua_tostring(L, 2), "__self") == 0) {
+				lua_pushlightuserdata(L, self->data);
+				return 1;
+			}
+
+			auto index_holder = lua_to(L, 2, static_cast<size_t*>(nullptr), is_valid);
+			if (!is_valid) {
+				goto overload;
+			}
+
+			decltype(auto) index = extract_holder(index_holder, static_cast<size_t*>(nullptr));
+
+			if constexpr (is_usertype_v<T>) {
+				lua_push(L, &self->operator[](index));
+			}
+			else {
+				lua_push(L, self->operator[](index));
+			}
+
+			return lua_gettop(L) - vargc;
+		}
+	overload:
+
+		auto ret = try_mt__index(L);
+		if (ret != 0) {
+			return lua_gettop(L) - vargc;
+		}
+
+		return lua_missing_declaration(L);
+	}
+
+	template<typename T>
+	int PointerArray<T>::__newindex(lua_State* L) {
+		auto vargc = lua_gettop(L);
+
+		if (vargc < 2) {
+			LUAL_MODULE_ERROR_RETURN(L, "index is undefined");
+		}
+
+		if (vargc < 3) {
+			LUAL_MODULE_ERROR_RETURN(L, "new value is undefined");
+		}
+
+		if (vargc > 3) {
+			LUAL_MODULE_ERROR_RETURN(L, "too many arguments");
+		}
+
+		bool is_valid;
+		auto self = lua_to(L, 1, static_cast<PointerArray<T>*>(nullptr), is_valid);
+		if (!is_valid) {
+			return luaL_typeerror(L, 1, internal::GetTypeName<PointerArray<T>>());
+		}
+
+		auto index_holder = lua_to(L, 2, static_cast<size_t*>(nullptr), is_valid);
+		if (!is_valid) {
+			// set the value on the instance
+			lua_pushvalue(L, 2); // push the key
+			lua_pushvalue(L, 3); // push the value
+			lua_rawset(L, 1);
+			return lua_gettop(L) - vargc;
+		}
+
+		decltype(auto) index = extract_holder(index_holder, static_cast<size_t*>(nullptr));
+
+		auto value_holder = lua_to(L, 3, static_cast<T*>(nullptr), is_valid);
+		if (!is_valid) {
+			return luaL_typeerror(L, 3, internal::GetTypeName<T>());
+		}
+		decltype(auto) value = extract_holder(value_holder, static_cast<T*>(nullptr));
+
+		self->operator[](index) = value;
+		return lua_gettop(L) - vargc;
+	}
+
+	template<typename T>
+	int PointerArray<T>::__add(lua_State* L) {
+		auto vargc = lua_gettop(L);
+
+		if (vargc < 2) {
+			LUAL_MODULE_ERROR_RETURN(L, "index is undefined");
+		}
+
+		if (vargc > 2) {
+			LUAL_MODULE_ERROR_RETURN(L, "too many arguments");
+		}
+
+		bool is_valid;
+		auto self = lua_to(L, 1, static_cast<PointerArray<T>*>(nullptr), is_valid);
+		if (!is_valid) {
+			return luaL_typeerror(L, 1, internal::GetTypeName<PointerArray<T>>());
+		}
+
+		auto index_holder = lua_to(L, 2, static_cast<std::ptrdiff_t*>(nullptr), is_valid);
+		if (!is_valid) {
+			return luaL_typeerror(L, 2, "std::ptrdiff_t");
+		}
+		decltype(auto) index = extract_holder(index_holder, static_cast<std::ptrdiff_t*>(nullptr));
+
+		lua_push(L, std::make_shared<PointerArray<T>>(self->data + index));
+		return lua_gettop(L) - vargc;
+	}
+
+	template<typename T>
+	int PointerArray<T>::__sub(lua_State* L) {
+		auto vargc = lua_gettop(L);
+
+		if (vargc < 2) {
+			LUAL_MODULE_ERROR_RETURN(L, "index is undefined");
+		}
+
+		if (vargc > 2) {
+			LUAL_MODULE_ERROR_RETURN(L, "too many arguments");
+		}
+
+		bool is_valid;
+		auto self = lua_to(L, 1, static_cast<PointerArray<T>*>(nullptr), is_valid);
+		if (!is_valid) {
+			return luaL_typeerror(L, 1, internal::GetTypeName<PointerArray<T>>());
+		}
+
+		{
+			auto rhs = lua_to(L, 2, static_cast<PointerArray<T>*>(nullptr), is_valid);
+			if (is_valid) {
+				lua_push(L, static_cast<std::ptrdiff_t>(self->data - rhs->data));
+				return lua_gettop(L) - vargc;
+			}
+		}
+
+		auto index_holder = lua_to(L, 2, static_cast<std::ptrdiff_t*>(nullptr), is_valid);
+		if (!is_valid) {
+			return luaL_typeerror(L, 2, "std::ptrdiff_t");
+		}
+		decltype(auto) index = extract_holder(index_holder, static_cast<std::ptrdiff_t*>(nullptr));
+
+		lua_push(L, std::make_shared<PointerArray<T>>(self->data - index));
+		return lua_gettop(L) - vargc;
+	}
+
+	template<typename T>
+	int PointerArray<T>::__lt(lua_State* L) {
+		auto vargc = lua_gettop(L);
+
+		if (vargc < 2) {
+			LUAL_MODULE_ERROR_RETURN(L, "index is undefined");
+		}
+
+		if (vargc > 2) {
+			LUAL_MODULE_ERROR_RETURN(L, "too many arguments");
+		}
+
+		bool is_valid;
+		auto lhs = lua_to(L, 1, static_cast<PointerArray<T>*>(nullptr), is_valid);
+		if (!is_valid) {
+			return luaL_typeerror(L, 1, internal::GetTypeName<PointerArray<T>>());
+		}
+
+		auto rhs = lua_to(L, 2, static_cast<PointerArray<T>*>(nullptr), is_valid);
+		if (!is_valid) {
+			return luaL_typeerror(L, 2, internal::GetTypeName<PointerArray<T>>());
+		}
+
+		lua_pushboolean(L, lhs->data < rhs->data);
+		return lua_gettop(L) - vargc;
+	}
+
+	template<typename T>
+	int PointerArray<T>::__le(lua_State* L) {
+		auto vargc = lua_gettop(L);
+
+		if (vargc < 2) {
+			LUAL_MODULE_ERROR_RETURN(L, "index is undefined");
+		}
+
+		if (vargc > 2) {
+			LUAL_MODULE_ERROR_RETURN(L, "too many arguments");
+		}
+
+		bool is_valid;
+		auto lhs = lua_to(L, 1, static_cast<PointerArray<T>*>(nullptr), is_valid);
+		if (!is_valid) {
+			return luaL_typeerror(L, 1, internal::GetTypeName<PointerArray<T>>());
+		}
+
+		auto rhs = lua_to(L, 2, static_cast<PointerArray<T>*>(nullptr), is_valid);
+		if (!is_valid) {
+			return luaL_typeerror(L, 2, internal::GetTypeName<PointerArray<T>>());
+		}
+
+		lua_pushboolean(L, lhs->data <= rhs->data);
+		return lua_gettop(L) - vargc;
+	}
+
+	template<typename T>
+	std::mutex usertype_info<PointerArray<T>>::mutex;
+
+	template<typename T>
+	std::vector<const void*> usertype_info<PointerArray<T>>::metatable_pointers;
+
+	template<typename T>
+	std::vector<int> usertype_info<PointerArray<T>>::metatable_refs;
+
+	template<typename T>
+	const struct luaL_Reg usertype_info<PointerArray<T>>::methods[] = {
+		{"__index", PointerArray<T>::__index},
+		{"__newindex", PointerArray<T>::__newindex},
+		{"__add", PointerArray<T>::__add},
+		{"__sub", PointerArray<T>::__sub},
+		{"__lt", PointerArray<T>::__lt},
+		{"__le", PointerArray<T>::__le},
+		{NULL, NULL} // Sentinel
+	};
+
+	template<typename T>
+	const struct luaL_Reg usertype_info<PointerArray<T>>::meta_methods[] = {
+		{NULL, NULL} // Sentinel
+	};
+
+	template<typename T>
+	std::shared_ptr<PointerArray<T>> usertype_info<PointerArray<T>>::lua_userdata_to(lua_State* L, int index, bool& is_valid) {
+		PointerArray<T>::register_class(L);
+
+		auto parray = testudata_metatable<PointerArray<T>>(L, index, is_valid);
+		if (is_valid) {
+			return parray;
+		}
+
+		{
+			auto value_holder = lua_to(L, index, static_cast<void**>(nullptr), is_valid);
+			if (is_valid) {
+				decltype(auto) value = extract_holder(value_holder, static_cast<void**>(nullptr));
+				return std::make_shared<PointerArray<T>>(reinterpret_cast<T*>(value));
+			}
+		}
+
+		return parray;
 	}
 
 
@@ -411,8 +729,20 @@ namespace LUA_MODULE_NAME {
 	template<typename T>
 	inline std::enable_if_t<is_usertype_v<T>, std::shared_ptr<T>> lua_to(lua_State* L, int index, T* ptr, bool& is_valid) {
 		if constexpr (requires(lua_State * L, const size_t __top__, bool& is_valid) { usertype_info<T>::Lua_new(L, __top__, is_valid); }) {
+			thread_local std::vector<const void*> seen;
+
+			auto pointer = lua_topointer(L, index);
+
+			// avoid stack overflow when trying implicit conversion
+			is_valid = std::find(seen.begin(), seen.end(), pointer) == seen.end();
+			if (!is_valid) {
+				return std::shared_ptr<T>();
+			}
+			seen.push_back(pointer);
+
 			auto value = lua_userdata_to(L, index, ptr, is_valid);
 			if (is_valid) {
+				seen.resize(seen.size() - 1);
 				return value;
 			}
 
@@ -428,6 +758,7 @@ namespace LUA_MODULE_NAME {
 				lua_pop(L, 1);
 			}
 
+			seen.resize(seen.size() - 1);
 			return value;
 		}
 		else {
@@ -437,6 +768,13 @@ namespace LUA_MODULE_NAME {
 
 	template<typename T>
 	inline std::enable_if_t<is_usertype_v<T>, T*> lua_to(lua_State* L, int index, T**, bool& is_valid) {
+		if constexpr (has_lua_to_custom_bridge_v<T*>) {
+			const auto v = lua_to_custom_bridge<T*>::lua_to(L, index, is_valid);
+			if (is_valid) {
+				return v;
+			}
+		}
+
 		is_valid = lua_isnil(L, index);
 		if (is_valid) {
 			return static_cast<T*>(nullptr);
@@ -447,7 +785,7 @@ namespace LUA_MODULE_NAME {
 			return userdata_ptr.get();
 		}
 
-		is_valid = !lua_islightuserdata(L, index) && lua_isuserdata(L, index) || lua_istable(L, index);
+		is_valid = lua_islightuserdata(L, index);
 		if (is_valid) {
 			auto ptr = lua_to(L, index, static_cast<void**>(nullptr), is_valid);
 			if (is_valid) {
@@ -523,6 +861,10 @@ namespace LUA_MODULE_NAME {
 		if (!ptr) {
 			lua_pushnil(L);
 			return;
+		}
+
+		if constexpr (requires(lua_State * L) { T::register_class(L); }) {
+			T::register_class(L);
 		}
 
 		if constexpr (requires(std::size_t type) { usertype_info<T>::derives_pushers.count(type); }) {
@@ -746,7 +1088,7 @@ namespace LUA_MODULE_NAME {
 
 	template<typename T>
 	inline std::optional<T> lua_to(lua_State* L, int index, std::optional<T>*, bool& is_valid) {
-		is_valid = lua_isnil(L, index);
+		is_valid = index > lua_gettop(L);
 		if (is_valid) {
 			return std::nullopt;
 		}
@@ -1111,7 +1453,7 @@ namespace LUA_MODULE_NAME {
 			~FunctionInvoker() = default;
 
 			template <class... _Ts>
-			static void invoke(lua_State* L, Function& fn, _Ts&&... args) {
+			static R invoke(lua_State* L, Function& fn, _Ts&&... args) {
 				lua_push(L, fn);
 
 				// https://stackoverflow.com/questions/7230621/how-can-i-iterate-over-a-packed-variadic-template-argument-list/60136761#60136761
@@ -1127,13 +1469,6 @@ namespace LUA_MODULE_NAME {
 				else {
 					lua_call(L, nargs, 1);
 				}
-			}
-
-			R operator()(Args&&... args) {
-				auto& L = fn.L;
-				GilLock lock(L);
-
-				invoke(L, fn, std::forward<Args>(args)...);
 
 				if constexpr (!std::is_same_v<R, void>) {
 					// I did not find a way to keep reference to pointers without memory leak
@@ -1150,12 +1485,12 @@ namespace LUA_MODULE_NAME {
 						return c_str;
 					}
 					else if constexpr (std::is_pointer_v<R>) {
-						bool is_valid = lua_islightuserdata(L, -1) || lua_isuserdata(L, -1);
+						bool is_valid = lua_islightuserdata(L, -1);
 						if (!is_valid) {
 							luaL_typeerror(L, -1, internal::GetTypeName<R>());
 						}
 
-						auto ptr = static_cast<R*>(lua_touserdata(L, -1));
+						auto ptr = static_cast<R>(lua_touserdata(L, -1));
 						lua_pop(L, 1);
 						return ptr;
 					}
@@ -1172,6 +1507,18 @@ namespace LUA_MODULE_NAME {
 					}
 				}
 			}
+
+			R operator()(Args&&... args) {
+				auto& L = fn.L;
+				GilLock lock(L);
+
+				if constexpr (std::is_same_v<R, void>) {
+					invoke(L, fn, std::forward<Args>(args)...);
+				}
+				else {
+					return invoke(L, fn, std::forward<Args>(args)...);
+				}
+			}
 		};
 	} // namespace detail
 
@@ -1185,6 +1532,12 @@ namespace LUA_MODULE_NAME {
 	// ================================
 	// misc functions
 	// ================================
+
+	template<typename T>
+	void lua_lock_and_push(lua_State* L, T&& value) {
+		get_thread_lock(L).lock();
+		lua_push(L, std::forward<T>(value));
+	}
 
 	template<typename T>
 	int lua_method_isinstance(lua_State* L) {
@@ -1232,9 +1585,9 @@ namespace LUA_MODULE_NAME {
 	int lua_method__self(lua_State* L) {
 		bool is_valid;
 		const auto userdata = lua_userdata_to(L, 1, static_cast<T*>(nullptr), is_valid);
+
 		if (!is_valid) {
-			lua_pushnil(L);
-			return 1;
+			return 0;
 		}
 
 		lua_pushlightuserdata(L, static_cast<void*>(userdata.get()));
@@ -1259,140 +1612,6 @@ namespace LUA_MODULE_NAME {
 
 		lua_push(L, static_cast<T*>(lua_touserdata(L, 1)));
 		return 1;
-	}
-
-	template<std::size_t I = 0, typename... _Ts>
-	void lua_inherit_methods(lua_State* L) {
-		if constexpr (I != sizeof...(_Ts) - 1) {
-			lua_inherit_methods<I + 1, _Ts...>(L);
-		}
-
-		using _Tuple = typename std::tuple<_Ts...>;
-		using T = std::tuple_element_t<I, _Tuple>;
-		if constexpr (I != 0 && is_usertype_v<T>) {
-			lua_pushfuncs(L, usertype_info<T>::methods);
-		}
-	}
-
-	inline int lua_missing_declaration(lua_State* L) {
-		const auto arg = 2;
-		char const *sname;
-		if (lua_type(L, arg) == LUA_TSTRING) {
-			sname = lua_tostring(L, arg);
-		}
-		else if (lua_type(L, arg) == LUA_TLIGHTUSERDATA) {
-			sname = "light userdata";  /* special name for messages */
-		}
-		else {
-			sname = luaL_typename(L, arg);  /* standard name */
-		}
-		luaL_error(L, "missing declaration for symbol '%s'", sname);
-		return 0;
-	}
-
-	template<std::size_t I = 0, typename... _Ts>
-	int lua_class__index(lua_State* L) {
-		using _Tuple = typename std::tuple<_Ts...>;
-		using T = std::tuple_element_t<I, _Tuple>;
-
-		if constexpr (is_usertype_v<T>) {
-			// For ffi purpose
-			if constexpr (requires(lua_State * L, int index, bool& is_valid) { usertype_info<T>::lua_userdata_to(L, index, is_valid); }) {
-				if (lua_type(L, 2) == LUA_TSTRING && std::strcmp(lua_tostring(L, 2), "__self") == 0) {
-					return lua_method__self<T>(L);
-				}
-			}
-
-			// for instantiable classes: lookup in the raw porperties of the metatable
-			// =================================================
-			usertype_push_metatable<T>(L); // push the metatable
-			lua_pushvalue(L, 2); // push the key
-			lua_rawget(L, -2);
-			lua_remove(L, -2); // remove the metatable
-
-			if (!lua_isnil(L, -1)) {
-				return 1; // return metatable[key]
-			}
-
-			lua_pop(L, 1); // pop nil
-
-			// for instantiable classes: lookup in the registered getters of the class 
-			// =================================================
-			bool is_valid;
-			const std::string k = lua_to(L, 2, static_cast<std::string*>(nullptr), is_valid);
-			if (is_valid && usertype_info<T>::getters.count(k)) {
-				return usertype_info<T>::getters.at(k)(L);
-			}
-
-			if constexpr (I == sizeof...(_Ts) - 1) {
-				lua_pushnil(L);
-			}
-		}
-		else if constexpr (is_basetype_v<T>) {
-			// for static classes: lookup in the porperties of the metatable
-			// =================================================
-			basetype_info<T>::push(L); // push the metatable
-			lua_pushvalue(L, 2); // push the key
-			lua_gettable(L, -2); // pop the key, push metatable[key]
-			lua_remove(L, -2); // remove the metatable
-
-			if (!lua_isnil(L, -1)) {
-				return 1; // return metatable[key]
-			}
-
-			if constexpr (I != sizeof...(_Ts) - 1) {
-				lua_pop(L, 1); // pop nil
-			}
-		}
-
-		if constexpr (I == sizeof...(_Ts) - 1) {
-			// if there are no parent class: return nil
-			// =================================================
-			lua_missing_declaration(L);
-			return 1;
-		}
-		else {
-			// otherwise: lookup in the parent class
-			// =================================================
-			return lua_class__index<I + 1, _Ts...>(L);
-		}
-	}
-
-	template<std::size_t I = 0, typename... _Ts>
-	int lua_class__newindex(lua_State* L) {
-		using _Tuple = typename std::tuple<_Ts...>;
-		using T = std::tuple_element_t<I, _Tuple>;
-
-		if constexpr (is_usertype_v<T>) {
-			// call the setter if defined
-			bool is_valid;
-			const std::string k = lua_to(L, 2, static_cast<std::string*>(nullptr), is_valid);
-			if (is_valid && usertype_info<T>::setters.count(k)) {
-				return usertype_info<T>::setters.at(k)(L);
-			}
-		}
-
-		if constexpr (I == sizeof...(_Ts) - 1) {
-			// set the value on the instance
-			lua_pushvalue(L, 2); // push the key
-			lua_pushvalue(L, 3); // push the value
-			lua_rawset(L, 1);
-			return 0;
-		}
-		else {
-			// check the parent class setter
-			return lua_class__newindex<I + 1, _Ts...>(L);
-		}
-	}
-
-	template<std::size_t I = 0, typename... _Ts>
-	int lua_instance__index(lua_State* L) {
-		return lua_class__index<I, _Ts...>(L);
-	}
-
-	template<std::size_t I = 0, typename... _Ts>
-	int lua_instance__newindex(lua_State* L) {
-		return lua_class__newindex<I, _Ts...>(L);
 	}
 
 	/**
@@ -1501,6 +1720,143 @@ namespace LUA_MODULE_NAME {
 		lua_vector_method__newindex(L, vec, atosize_t(L, s), value);
 	}
 
+	template<std::size_t I, typename... _Ts>
+	void lua_inherit(lua_State* L, int index) {
+		using _Tuple = typename std::tuple<_Ts...>;
+		using T = std::tuple_element_t<I, _Tuple>;
+
+		if constexpr (is_usertype_v<T>) {
+			usertype_push_metatable<T>(L);
+			int parent = lua_gettop(L);
+
+			// https://www.lua.org/manual/5.1/manual.html#lua_next
+
+			lua_pushnil(L);  /* first key */
+			// stack now contains: -1 => nil
+
+			while (lua_next(L, parent) != 0) {
+				// stack now contains: -2 => key; -1 => value
+				const auto key = lua_gettop(L) - 1;
+				const auto value = lua_gettop(L);
+
+				lua_pushvalue(L, key);
+				lua_rawget(L, index);
+				const auto exists = !lua_isnil(L, -1);
+				lua_pop(L, 1);
+
+				if (!exists) {
+					lua_pushvalue(L, key);
+					lua_pushvalue(L, value);
+					lua_rawset(L, index);
+				}
+
+				lua_pop(L, 1);
+				// stack now contains: -1 => key
+			}
+
+			lua_pop(L, 1);
+		}
+
+		if constexpr (I != sizeof...(_Ts) - 1) {
+			lua_inherit<I + 1, _Ts...>(L, index);
+		}
+	}
+
+	template<typename T, typename... _Ts>
+	void lua_inherit(lua_State* L) {
+		if constexpr (sizeof...(_Ts) != 0) {
+			usertype_push_metatable<T>(L);
+			const auto index = lua_gettop(L);
+			lua_inherit<0, _Ts...>(L, index);
+			lua_pop(L, 1);
+		}
+	}
+
+	inline void lua_defautls_pushfuncs(lua_State* L, const luaL_Reg* l) {
+		for (; l->name; l++) {
+			lua_pushstring(L, l->name);
+			lua_rawget(L, -2);
+			bool exists = !lua_isnil(L, -1);
+			lua_pop(L, 1);
+
+			if (!exists) {
+				lua_pushstring(L, l->name);
+				lua_pushcclosure(L, l->func, 0);
+				lua_rawset(L, -3);
+			}
+		}
+	}
+
+	template<typename T>
+	inline void lua_register_defaults(lua_State* L) {
+		usertype_push_metatable<T>(L);
+
+		// ================================================================
+		// https://github.com/ThePhD/sol2/blob/v3.3.0/include/sol/types.hpp#L907
+		// ================================================================
+
+		// meta::supports_op_left_shift<std::ostream, meta::unqualified_t<T>>
+		// https://github.com/ThePhD/sol2/blob/v3.3.0/include/sol/traits.hpp#L519
+		// decltype(std::declval<T&>() << std::declval<U&>())
+		if constexpr (requires(std::ostream & oss, const T & t) { oss << t; }) {
+			const struct luaL_Reg lua_tostring_methods[] = {
+				{"__tostring", oss_default_to_string<T>},
+				{NULL, NULL} // Sentinel
+			};
+			lua_defautls_pushfuncs(L, lua_tostring_methods);
+		}
+
+		// meta::supports_to_string_member<meta::unqualified_t<T>>
+		// https://github.com/ThePhD/sol2/blob/v3.3.0/include/sol/traits.hpp#L551
+		// class supports_to_string_member : public meta::boolean<meta_detail::has_to_string_test<meta_detail::non_void_t<T>>::value> { };
+		// https://github.com/ThePhD/sol2/blob/v3.3.0/include/sol/traits.hpp#L465
+		// https://github.com/ThePhD/sol2/blob/v3.3.0/include/sol/traits.hpp#L469
+		// static sfinae_yes_t test(decltype(std::declval<C>().to_string())*);
+		else if constexpr (requires(const T & t) { t.to_string(); }) {
+			const struct luaL_Reg lua_tostring_methods[] = {
+				{"__tostring", member_default_to_string<T>},
+				{NULL, NULL} // Sentinel
+			};
+			lua_defautls_pushfuncs(L, lua_tostring_methods);
+		}
+
+		// meta::supports_adl_to_string<meta::unqualified_t<T>>
+		// https://github.com/ThePhD/sol2/blob/v3.3.0/include/sol/traits.hpp#L547
+		// class supports_adl_to_string : public meta_detail::supports_adl_to_string_test<T> { };
+		// https://github.com/ThePhD/sol2/blob/v3.3.0/include/sol/traits.hpp#L523
+		// class supports_adl_to_string_test<T, void_t<decltype(to_string(std::declval<const T&>()))>> : public std::true_type { };
+		else if constexpr (requires(const T & t) { std::to_string(t); }) {
+			const struct luaL_Reg lua_tostring_methods[] = {
+				{"__tostring", adl_default_to_string<T>},
+				{NULL, NULL} // Sentinel
+			};
+			lua_defautls_pushfuncs(L, lua_tostring_methods);
+		}
+
+		// FIXME : how to use this method only if parent __tostring is not a usertype_default_to_string
+		else if constexpr (requires(lua_State * L, int index, bool& is_valid) { usertype_info<T>::lua_userdata_to(L, index, is_valid); }) {
+			const struct luaL_Reg lua_tostring_methods[] = {
+				{"__tostring", usertype_default_to_string<T>},
+				{NULL, NULL} // Sentinel
+			};
+			lua_defautls_pushfuncs(L, lua_tostring_methods);
+		}
+
+		if constexpr (requires(lua_State * L, int index, bool& is_valid) { usertype_info<T>::lua_userdata_to(L, index, is_valid); }) {
+			// class Garbage-Collection and introspection methods
+			const struct luaL_Reg lua_instance_misc_methods[] = {
+				{"__gc", lua_method__gc<T>},
+				{"__eq", lua_method__eq<T>},
+				{"__cast", lua_method__cast<T>}, // For ffi purpose
+				{"isinstance", lua_method_isinstance<T>},
+				{NULL, NULL} // Sentinel
+			};
+			lua_defautls_pushfuncs(L, lua_instance_misc_methods);
+		}
+
+		lua_pop(L, 1);
+	}
+
 	template<typename T, typename... _Ts>
 	inline void lua_register_class(lua_State* L, const char* name) {
 		// reuse existing table if available, otherwise, create a new one
@@ -1516,100 +1872,18 @@ namespace LUA_MODULE_NAME {
 			lua_rawget(L, -2); // cls = module[name]
 		}
 
+		lua_pushliteral(L, "__index");
+		lua_pushvalue(L, -2);
+		lua_rawset(L, -3); // cls.__index = cls
+
 		lua_pushliteral(L, "__name");
 		lua_pushstring(L, internal::GetTypeName<T>());
 		lua_rawset(L, -3); // cls.__name = typename
 
-		lua_pushliteral(L, "__userdata_typeindex");
-		{
-			auto userdata_ptr = static_cast<std::size_t*>(lua_newuserdata(L, sizeof(std::size_t)));
-			*userdata_ptr = typeid(T*).hash_code();
-		}
-		lua_rawset(L, -3); // cls.__userdata_typeindex = type
-
-		lua_pushliteral(L, "__has_self");
-		lua_pushboolean(L, true);
-		lua_rawset(L, -3); // cls.__has_self = typename
-
 		if constexpr (requires(lua_State * L, int index, bool& is_valid) { usertype_info<T>::lua_userdata_to(L, index, is_valid); }) {
-			// Generic __eq has lower priority than inherited __eq
-			const struct luaL_Reg lua_instance_misc_methods[] = {
-				{"__eq", lua_method__eq<T>},
-				{NULL, NULL} // Sentinel
-			};
-			lua_pushfuncs(L, lua_instance_misc_methods);
-		}
-
-		lua_inherit_methods<0, T, _Ts...>(L);
-
-		// class index methods
-		const struct luaL_Reg lua_instance_index_methods[] = {
-			{"__index", lua_instance__index<0, T, _Ts...>}, // when we access an absent field in an instance
-			{"__newindex", lua_instance__newindex<0, T, _Ts...>}, // when we assign a value to an absent field in an instance
-			{NULL, NULL} // Sentinel
-		};
-		lua_pushfuncs(L, lua_instance_index_methods);
-
-		// ================================================================
-		// https://github.com/ThePhD/sol2/blob/v3.3.0/include/sol/types.hpp#L907
-		// ================================================================
-
-		// meta::supports_op_left_shift<std::ostream, meta::unqualified_t<T>>
-		// https://github.com/ThePhD/sol2/blob/v3.3.0/include/sol/traits.hpp#L519
-		// decltype(std::declval<T&>() << std::declval<U&>())
-		if constexpr (requires(std::ostream & oss, const T & t) { oss << t; }) {
-			const struct luaL_Reg lua_tostring_methods[] = {
-				{"__tostring", oss_default_to_string<T>},
-				{NULL, NULL} // Sentinel
-			};
-			lua_pushfuncs(L, lua_tostring_methods);
-		}
-
-		// meta::supports_to_string_member<meta::unqualified_t<T>>
-		// https://github.com/ThePhD/sol2/blob/v3.3.0/include/sol/traits.hpp#L551
-		// class supports_to_string_member : public meta::boolean<meta_detail::has_to_string_test<meta_detail::non_void_t<T>>::value> { };
-		// https://github.com/ThePhD/sol2/blob/v3.3.0/include/sol/traits.hpp#L465
-		// https://github.com/ThePhD/sol2/blob/v3.3.0/include/sol/traits.hpp#L469
-		// static sfinae_yes_t test(decltype(std::declval<C>().to_string())*);
-		else if constexpr (requires(const T & t) { t.to_string(); }) {
-			const struct luaL_Reg lua_tostring_methods[] = {
-				{"__tostring", member_default_to_string<T>},
-				{NULL, NULL} // Sentinel
-			};
-			lua_pushfuncs(L, lua_tostring_methods);
-		}
-
-		// meta::supports_adl_to_string<meta::unqualified_t<T>>
-		// https://github.com/ThePhD/sol2/blob/v3.3.0/include/sol/traits.hpp#L547
-		// class supports_adl_to_string : public meta_detail::supports_adl_to_string_test<T> { };
-		// https://github.com/ThePhD/sol2/blob/v3.3.0/include/sol/traits.hpp#L523
-		// class supports_adl_to_string_test<T, void_t<decltype(to_string(std::declval<const T&>()))>> : public std::true_type { };
-		else if constexpr (requires(const T & t) { std::to_string(t); }) {
-			const struct luaL_Reg lua_tostring_methods[] = {
-				{"__tostring", adl_default_to_string<T>},
-				{NULL, NULL} // Sentinel
-			};
-			lua_pushfuncs(L, lua_tostring_methods);
-		}
-
-		// FIXME : how to use this method only if parent __tostring is not a usertype_default_to_string
-		else if constexpr (sizeof...(_Ts) == 0 && requires(lua_State * L, int index, bool& is_valid) { usertype_info<T>::lua_userdata_to(L, index, is_valid); }) {
-			const struct luaL_Reg lua_tostring_methods[] = {
-				{"__tostring", usertype_default_to_string<T>},
-				{NULL, NULL} // Sentinel
-			};
-			lua_pushfuncs(L, lua_tostring_methods);
-		}
-
-		if constexpr (requires(lua_State * L, int index, bool& is_valid) { usertype_info<T>::lua_userdata_to(L, index, is_valid); }) {
-			// class Garbage-Collection and introspection methods
-			const struct luaL_Reg lua_instance_misc_methods[] = {
-				{"__gc", lua_method__gc<T>},
-				{"__cast", lua_method__cast<T>}, // For ffi purpose
-				{"isinstance", lua_method_isinstance<T>},
-				{NULL, NULL} // Sentinel
-			};
-			lua_pushfuncs(L, lua_instance_misc_methods);
+			lua_pushliteral(L, "__has_self");
+			lua_pushboolean(L, true);
+			lua_rawset(L, -3); // cls.__has_self = typename
 
 			// For ffi purpose
 			if constexpr (requires(lua_State * L) { lua_push(L, sizeof(T)); }) {
@@ -1625,14 +1899,6 @@ namespace LUA_MODULE_NAME {
 		// metatable = {}
 		lua_newtable(L);
 
-		// class index methods
-		const struct luaL_Reg lua_class_index_methods[] = {
-			{"__index", lua_class__index<0, T, _Ts...>}, // when we access an absent field in the class
-			{"__newindex", lua_class__newindex<0, T, _Ts...>}, // when we assign a value to an absent field in the class
-			{NULL, NULL} // Sentinel
-		};
-		lua_pushfuncs(L, lua_class_index_methods);
-
 		lua_pushfuncs(L, usertype_info<T>::meta_methods);
 
 		// setmetatable(cls, metatable)
@@ -1640,9 +1906,10 @@ namespace LUA_MODULE_NAME {
 
 		std::unique_lock lock(usertype_info<T>::mutex);
 		const auto index = get_luaopen_index(L);
-		if (index >= usertype_info<T>::metatable_pointers.size()) {
-			usertype_info<T>::metatable_pointers.resize(index + 1);
-			usertype_info<T>::metatable_refs.resize(index + 1);
+		const auto size = usertype_info<T>::metatable_pointers.size();
+		if (index >= size) {
+			usertype_info<T>::metatable_pointers.resize(index + 1, nullptr);
+			usertype_info<T>::metatable_refs.resize(index + 1, LUA_REFNIL);
 		}
 		usertype_info<T>::metatable_pointers.at(index) = lua_topointer(L, -1);
 		usertype_info<T>::metatable_refs.at(index) = luaL_ref(L, LUA_REGISTRYINDEX);

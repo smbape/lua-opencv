@@ -3,14 +3,63 @@
 #include "luajit_ver_rc.h"
 
 #ifndef RT_MANIFEST
-// bpo-45220: Cannot reliably #include RT_MANIFEST from
-// anywhere, so we hardcode it
-#define RT_MANIFEST 24
+#define RT_MANIFEST                        24
 #endif
+
+#ifndef CREATEPROCESS_MANIFEST_RESOURCE_ID
+#define CREATEPROCESS_MANIFEST_RESOURCE_ID  1
+#endif
+
+#ifndef ISOLATIONAWARE_MANIFEST_RESOURCE_ID
+#define ISOLATIONAWARE_MANIFEST_RESOURCE_ID 2
+#endif
+
+#ifndef ISOLATIONAWARE_NOSTATICIMPORT_MANIFEST_RESOURCE_ID
+#define ISOLATIONAWARE_NOSTATICIMPORT_MANIFEST_RESOURCE_ID 3
+#endif
+
+#ifndef ISOLATIONPOLICY_MANIFEST_RESOURCE_ID
+#define ISOLATIONPOLICY_MANIFEST_RESOURCE_ID 4
+#endif
+
+#ifndef ISOLATIONPOLICY_BROWSER_MANIFEST_RESOURCE_ID
+#define ISOLATIONPOLICY_BROWSER_MANIFEST_RESOURCE_ID 5
+#endif
+
+
+#ifndef IDI_APPLICATION
+#define IDI_APPLICATION     32512
+#endif
+
+#ifndef IDI_HAND
+#define IDI_HAND            32513
+#endif
+
+#ifndef IDI_QUESTION
+#define IDI_QUESTION        32514
+#endif
+
+#ifndef IDI_EXCLAMATION
+#define IDI_EXCLAMATION     32515
+#endif
+
+#ifndef IDI_ASTERISK
+#define IDI_ASTERISK        32516
+#endif
+
+#ifndef IDI_WINLOGO
+#define IDI_WINLOGO         32517
+#endif
+
+#ifndef IDI_SHIELD
+#define IDI_SHIELD          32518
+#endif
+
 
 // Include the manifest file that indicates we support all
 // current versions of Windows.
-1 ICON DISCARDABLE "luajit.ico" 
+CREATEPROCESS_MANIFEST_RESOURCE_ID  ICON DISCARDABLE "luajit.ico"
+IDI_APPLICATION                     ICON DISCARDABLE "luajit.ico"
 
 
 /////////////////////////////////////////////////////////////////////////////

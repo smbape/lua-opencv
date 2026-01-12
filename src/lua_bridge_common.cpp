@@ -73,17 +73,12 @@ namespace {
 	std::mutex yielder_mutex;
 	std::vector<std::unique_ptr<std::mutex>> gil_mutexes;
 
-	std::unique_lock<std::mutex>& get_thread_lock(lua_State* L) {
-		thread_local std::unique_lock lock{ *gil_mutexes.at(get_luaopen_index(L)), std::defer_lock };
-		return lock;
-	}
-
 	int global_luaopen_index = 0;
 	thread_local int thread_local_luaopen_index = -1;
 
 	void register_LuaOpenIndex(lua_State* L) {
 		{
-			std::unique_lock<std::mutex> yielder_lock(yielder_mutex);
+			std::unique_lock yielder_lock(yielder_mutex);
 			thread_local_luaopen_index = global_luaopen_index++;
 			gil_mutexes.push_back(std::make_unique<std::mutex>());
 		}
@@ -146,6 +141,15 @@ namespace LUA_MODULE_NAME {
 		register_GetSelf(L);
 	}
 
+	std::mutex& get_gil_mutex(lua_State* L) {
+		return *gil_mutexes.at(get_luaopen_index(L));
+	}
+
+	std::unique_lock<std::mutex>& get_thread_lock(lua_State* L) {
+		thread_local std::unique_lock lock{ get_gil_mutex(L), std::defer_lock };
+		return lock;
+	}
+
 	GilLock::GilLock(lua_State* L) : L(L), locked(false) {
 		auto& lock = get_thread_lock(L);
 		if (!lock.owns_lock()) {
@@ -163,7 +167,10 @@ namespace LUA_MODULE_NAME {
 	GilYield::GilYield(lua_State* L) : L(L), yielded(false) {
 		auto& lock = get_thread_lock(L);
 		if (lock.owns_lock()) {
+			using namespace std::chrono_literals;
 			lock.unlock();
+			// TODO : find a better way to force context switch when another thread is waiting for the mutex
+			std::this_thread::sleep_for(5ms);
 			yielded = true;
 		}
 	}

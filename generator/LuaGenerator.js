@@ -200,10 +200,10 @@ const proto = {
 
         if (vtype !== "bool") {
             coclass.addMethod([`${ fqn }.data`, "void*", ["/WrapAs=static_cast<void*>"], [], "", ""], options);
-            coclass.addMethod([`${ fqn }.data`, "void*", ["=ptr", "/Expr=", "/Output=$0 + i", "/WrapAs=static_cast<void*>"], [
+            coclass.addMethod([`${ fqn }.data`, `std::shared_ptr<PointerArray<${ vtype }>>`, ["=ptr", "/Expr=", "/Output=$0 + i", `/WrapAs=std::make_shared<PointerArray<${ vtype }>>`], [
                 ["std::ptrdiff_t", "i", "0", []],
             ], "", ""], options);
-            coclass.addMethod([`${ fqn }.ptr`, "void*", ["/S", "/Call=static_cast<void*>", "/Expr=$1 + $2"], [
+            coclass.addMethod([`${ fqn }.ptr`, `std::shared_ptr<PointerArray<${ vtype }>>`, ["/S", `/Call=std::make_shared<PointerArray<${ vtype }>>`, "/Expr=$1 + $2"], [
                 ["void*", "ptr", "", [`/Cast=static_cast<${ vtype }*>`]],
                 ["std::ptrdiff_t", "i", "0", []],
             ], "", ""], options);
@@ -448,11 +448,15 @@ class LuaGenerator {
     }
 
     // eslint-disable-next-line complexity
-    static writeProperties(processor, coclass, contentRegisterPrivate, contentRegister, options) {
+    static writeProperties(processor, coclass, { ascendants }, contentRegisterPrivate, contentRegister, options) {
         const { fqn } = coclass;
-        const dynamic_get = [];
-        const dynamic_set = [];
+        const getters = new Map();
+        const setters = new Map();
         const registeri = contentRegister.length;
+
+        if (!coclass.isStatic()) {
+            getters.set("__self", `lua_method__self<${ fqn }>`);
+        }
 
         for (const [fname, overloads] of coclass.methods.entries()) {
             const ename = LuaGenerator.getLuaFn(fname);
@@ -476,21 +480,19 @@ class LuaGenerator {
                 }
             }
 
-            const key_name = JSON.stringify(name);
-
             if (rexpr || wexpr) {
-                if (dynamic_get.length === 0 && dynamic_set.length === 0) {
+                if (getters.size === 0 && setters.size === 0) {
                     contentRegisterPrivate.push("");
                 }
                 contentRegisterPrivate.push(`int ${ luaFn }(lua_State* L);`);
             }
 
             if (rexpr) {
-                dynamic_get.push(`{ ${ key_name }, ${ luaFn } }`);
+                getters.set(name, luaFn);
             }
 
             if (wexpr) {
-                dynamic_set.push(`{ ${ key_name }, ${ luaFn } }`);
+                setters.set(name, luaFn);
             }
         }
 
@@ -700,7 +702,6 @@ class LuaGenerator {
                 wexpr = wexpr.join("\n\n");
             }
 
-            const key_name = JSON.stringify(name);
             const obj_decl = [];
 
             if (!isStatic) {
@@ -719,12 +720,16 @@ class LuaGenerator {
                     obj_decl.unshift("bool is_valid;");
                 }
 
-                dynamic_get.push(`
-                    { ${ key_name }, [](lua_State* L) {
+                const luaFn = `Lua_getter_${ name }`;
+
+                getters.set(name, luaFn);
+
+                contentRegisterPrivate.push("", `
+                    inline int ${ luaFn }(lua_State* L) {
                         ${ obj_decl.join("\n").split("\n").join(`\n${ " ".repeat(24) }`) }
                         ${ rexpr.split("\n").join(`\n${ " ".repeat(24) }`) }
                         return 1;
-                    }}
+                    }
                 `.replace(/^ {20}/mg, "").trim().replace(/^[^\S\n]*\n/mg, ""));
             }
 
@@ -733,104 +738,150 @@ class LuaGenerator {
                     obj_decl.unshift("bool is_valid;");
                 }
 
-                dynamic_set.push(`
-                    { ${ key_name }, [](lua_State* L) {
+                const luaFn = `Lua_setter_${ name }`;
+
+                setters.set(name, luaFn);
+
+                contentRegisterPrivate.push("", `
+                    inline int ${ luaFn }(lua_State* L) {
                         ${ obj_decl.join("\n").split("\n").join(`\n${ " ".repeat(24) }`) }
                         ${ wexpr.split("\n").join(`\n${ " ".repeat(24) }`) }
-                    }}
+                    }
                 `.replace(/^ {20}/mg, "").trim().replace(/^[^\S\n]*\n/mg, ""));
             }
 
             writePropertyDoc(processor, coclass, name, propname, modifiers, cpptype, has_propget, has_propput);
         }
 
-        if (!coclass.isStatic()) {
-            contentRegisterPrivate.push("", `
-                std::unordered_map<std::string, std::function<int(lua_State*)>> getters({
-                    ${ dynamic_get.join(",\n").split("\n").join(`\n${ " ".repeat(20) }`) }
-                });
-            `.replace(/^ {16}/mg, "").trim().replace(/\{\s+\}/mg, "{}"));
-        } else if (dynamic_get.length !== 0) {
-            contentRegisterPrivate.push("", `
-                const std::unordered_map<std::string, std::function<int(lua_State*)>> getters({
-                    ${ dynamic_get.join(",\n").split("\n").join(`\n${ " ".repeat(20) }`) }
-                });
+        if (getters.size !== 0) {
+            const mssing = [];
+            const parents = [...coclass.parents].filter(parent => {
+                if (!ascendants.has(parent)) {
+                    return false;
+                }
 
-                int dynamic_get(lua_State* L) {
-                    bool is_valid;
-                    const std::string k = lua_to(L, 2, static_cast<std::string*>(nullptr), is_valid);
-                    if (is_valid && getters.count(k)) {
-                        return getters.at(k)(L);
+                return ascendants.get(parent).some(ascendant => {
+                    if (!processor.classes.has(ascendant)) {
+                        return false;
+                    }
+
+                    const keys = Array.from(processor.classes.get(ascendant).methods.keys());
+                    return keys.length !== 0 && keys.some(fname => {
+                        const ename = LuaGenerator.getLuaFn(fname);
+                        return ename === "__index" || ename === "sol::meta_function::index";
+                    });
+                });
+            });
+
+            if (parents.length !== 0) {
+                mssing.push(`
+                    if (${ parents.map(parent => `usertype_info<${ parent }>::__index(L) != 0`).join(` ||\n${ " ".repeat(24) }`) }) {
+                        return lua_gettop(L) - vargc;
+                    }
+                `.replace(/^ {20}/mg, "").trim());
+            }
+
+            mssing.push("return 0;");
+
+            const tries = [];
+
+            if (coclass.isStatic()) {
+                tries.push("try__index");
+            } else {
+                tries.push("try_mt__index", `usertype_info<${ fqn }>::__index`);
+            }
+
+            contentRegisterPrivate.push("", `
+                int try__index(lua_State* L) {
+                    auto vargc = lua_gettop(L);
+                    if (vargc != 2) {
+                        return luaL_error(L, "%d arguments expected, got %d", 2, vargc);
+                    }
+
+                    if (lua_type(L, 2) == LUA_TSTRING) {
+                        size_t len; auto key = lua_tolstring(L, 2, &len);
+
+                        ${ Array.from(getters).map(([name, luaFn]) => `
+                            if (len == ${ name.length } /* sizeof("${ name }") - 1 */ && strncmp(key, "${ name }", ${ name.length } /* sizeof("${ name }") - 1 */) == 0) {
+                                return ${ luaFn }(L);
+                            }
+                        `.replace(/^ {4}/mg, "").trim()).join(`\n\n${ " ".repeat(24) }`) }
+                    }
+
+                    ${ mssing.join("\n").split("\n").join(`\n${ " ".repeat(20) }`) }
+                }
+
+                int __index(lua_State* L) {
+                    auto vargc = lua_gettop(L);
+
+                    if (${ tries.map(fn => `${ fn }(L) != 0`).join(` ||\n${ " ".repeat(24) }`) }) {
+                        return lua_gettop(L) - vargc;
+                    }
+
+                    return lua_missing_declaration(L);
+                }
+            `.replace(/^ {16}/mg, "").trim().replace(/[^\S\n]+$/mg, ""));
+        } else if (!coclass.isStatic()) {
+            const tries = ["try_mt__index"];
+
+            contentRegisterPrivate.push("", `
+                int __index(lua_State* L) {
+                    auto vargc = lua_gettop(L);
+
+                    if (${ tries.map(fn => `${ fn }(L) != 0`).join(` ||\n${ " ".repeat(24) }`) }) {
+                        return lua_gettop(L) - vargc;
+                    }
+
+                    return lua_missing_declaration(L);
+                }
+            `.replace(/^ {16}/mg, "").trim().replace(/[^\S\n]+$/mg, ""));
+        }
+
+        if (setters.size !== 0) {
+            const mssing = [];
+            const parents = [...coclass.parents].filter(parent => processor.classes.has(parent) && !processor.classes.get(parent).isStatic());
+
+            if (parents.length !== 0) {
+                mssing.push(`
+                    if (${ parents.map(parent => `usertype_info<${ parent }>::__newindex(L) != -1`).join(` ||\n${ " ".repeat(24) }`) }) {
+                        return 0;
+                    }
+                `.replace(/^ {20}/mg, "").trim().replace(/[^\S\n]+$/mg, ""));
+            }
+
+            mssing.push("return -1;");
+
+            contentRegisterPrivate.push("", `
+                int try__newindex(lua_State* L) {
+                    auto vargc = lua_gettop(L);
+                    if (vargc != 3) {
+                        return luaL_error(L, "%d arguments expected, got %d", 3, vargc);
+                    }
+
+                    if (lua_type(L, 2) == LUA_TSTRING) {
+                        size_t len; auto key = lua_tolstring(L, 2, &len);
+
+                        ${ Array.from(setters).map(([name, luaFn]) => `
+                            if (len == sizeof("${ name }") - 1 && strncmp(key, "${ name }", len) == 0) {
+                                return ${ luaFn }(L);
+                            }
+                        `.replace(/^ {4}/mg, "").trim()).join(`\n\n${ " ".repeat(24) }`) }
+                    }
+
+                    ${ mssing.join("\n").split("\n").join(`\n${ " ".repeat(20) }`) }
+                }
+
+                int __newindex(lua_State* L) {
+                    const auto ret = ${ coclass.isStatic() ? "try__newindex" : `usertype_info<${ fqn }>::__newindex` }(L);
+                    if (ret != -1) {
+                        return ret;
                     }
                     return lua_missing_declaration(L);
                 }
             `.replace(/^ {16}/mg, "").trim());
         }
 
-        if (!coclass.isStatic()) {
-            contentRegisterPrivate.push("", `
-                std::unordered_map<std::string, std::function<int(lua_State*)>> setters({
-                    ${ dynamic_set.join(",\n").split("\n").join(`\n${ " ".repeat(20) }`) }
-                });
-            `.replace(/^ {16}/mg, "").trim().replace(/\{\s+\}/mg, "{}"));
-        } else if (dynamic_set.length !== 0) {
-            contentRegisterPrivate.push("", `
-                const std::unordered_map<std::string, std::function<int(lua_State*)>> setters({
-                    ${ dynamic_set.join(",\n").split("\n").join(`\n${ " ".repeat(20) }`) }
-                });
-
-                void dynamic_set(lua_State* L) {
-                    bool is_valid;
-                    const std::string k = lua_to(L, 2, static_cast<std::string*>(nullptr), is_valid);
-                    if (is_valid && setters.count(k)) {
-                        return setters.at(k)(L);
-                    }
-
-                    // set the value on the module
-                    lua_pushvalue(L, 2); // push the key
-                    lua_pushvalue(L, 3); // push the value
-                    lua_rawset(L, 1);
-                    return 0;
-                }
-            `.replace(/^ {16}/mg, "").trim());
-        }
-
-        if (coclass.isStatic()) {
-            const index_methods = [];
-
-            if (dynamic_get.length !== 0) {
-                index_methods.push("{\"__index\", dynamic_get}, // when we access an absent field in an instance");
-            } else {
-                index_methods.push("{\"__index\", lua_missing_declaration}, // when we access an absent field in an instance");
-            }
-
-            if (dynamic_set.length !== 0) {
-                index_methods.push("{\"__newindex\", dynamic_set}, // when we assign a value to an absent field in an instance");
-            }
-
-            if (index_methods.length !== 0) {
-                contentRegisterPrivate.push("", `
-                    const struct luaL_Reg index_methods[] = {
-                        ${ index_methods.join(`\n${ " ".repeat(24) }`) }
-                        {NULL, NULL} // Sentinel
-                    };
-                `.replace(/^ {20}/mg, "").trim());
-
-                const path = getProgId(coclass.path.join("."), options).split(".");
-                while (path.length !== 0 && path[0] === "") {
-                    path.shift();
-                }
-
-                const body = ["lua_pushfuncs(L, index_methods);"];
-
-                if (path.length !== 0) {
-                    body.unshift("lua_getmetatable(L, -1);");
-                    body.push("lua_pop(L, 1);");
-                }
-
-                contentRegister.push("", body.join("\n"));
-            }
-        }
+        return { getters, setters };
     }
 
     static isConstructor(func_modifiers) {
@@ -897,12 +948,12 @@ class LuaGenerator {
     };
 
     // eslint-disable-next-line complexity
-    static writeMethods(processor, coclass, contentRegisterPrivate, contentRegister, options) {
+    static writeMethods(processor, coclass, { getters, setters }, contentRegisterPrivate, contentRegister, contentDecl, options) {
         const { fqn } = coclass;
         const { shared_ptr } = options;
         const indent = " ".repeat(4);
-        const methods = [];
-        const meta_methods = [];
+        const methods = new Map();
+        const meta_methods = new Map();
         const cname = options.cname ? options.cname : "create";
         const hasDC = coclass.modifiers?.includes("/DC");
         const largc = options.largc || "__argc__";
@@ -938,9 +989,9 @@ class LuaGenerator {
             let not_found = "LUAL_MODULE_ERROR_RETURN(L, \"Overload resolution failed\")";
             if (!coclass.isStatic()) {
                 if (ename === "__index" || ename === "sol::meta_function::index") {
-                    not_found = `return lua_class__index<0, ::${ [fqn, ...coclass.parents].join(", ::") }>(L)`;
+                    not_found = `return ${ getters.size === 0 ? "lua_missing_declaration" : "try__index" }(L)`;
                 } else if (ename === "__newindex" || ename === "sol::meta_function::new_index") {
-                    not_found = `return lua_class__newindex<0, ::${ [fqn, ...coclass.parents].join(", ::") }>(L)`;
+                    not_found = `return ${ setters.size === 0 ? "lua_missing_declaration" : "try__newindex" }(L)`;
                 }
             }
 
@@ -1067,6 +1118,10 @@ class LuaGenerator {
                         continue;
                     }
 
+                    if (argtype.startsWith("std::optional<") && defval === "") {
+                        defval = "std::nullopt";
+                    }
+
                     const is_ptr = argtype.endsWith("*");
                     const is_in_arg = in_args[j];
                     const is_out_arg = out_args[j];
@@ -1123,8 +1178,9 @@ class LuaGenerator {
 
                     let callarg = argname;
                     let cpptype = processor.getCppType(argtype, coclass, options);
+                    const deref = (is_in_arg || is_out_arg) && is_ptr && !PTR.has(argtype);
 
-                    if ((is_in_arg || is_out_arg) && is_ptr && !PTR.has(argtype)) {
+                    if (deref) {
                         callarg = `&${ callarg }`;
                         argtype = argtype.slice(0, -1).trim();
                         defval = SIMPLE_ARGTYPE_DEFAULTS.has(argtype) ? SIMPLE_ARGTYPE_DEFAULTS.get(argtype) : "";
@@ -1140,20 +1196,6 @@ class LuaGenerator {
 
                     cpptype = removeConstQualifiers(processor.getCppType(argtype, coclass, options));
 
-                    for (const modifier of arg_modifiers) {
-                        if (modifier.startsWith("/Cast=")) {
-                            callarg = `${ modifier.slice("/Cast=".length) }(${ callarg })`;
-                        } else if (modifier.startsWith("/Expr=")) {
-                            callarg = makeExpansion(modifier.slice("/Expr=".length), callarg);
-                        }
-                    }
-
-                    if (arg_modifiers.includes("/RRef")) {
-                        callarg = `std::move(${ callarg })`;
-                    }
-
-                    callargs[j] = callarg;
-
                     const arr_cpptype = processor.getCppType(arrtype, coclass, options);
                     const is_shared_ptr = cpptype.startsWith(`${ shared_ptr }<`);
                     const is_by_ref = !is_ptr && !is_shared_ptr && processor.classes.has(cpptype) && !processor.enums.has(cpptype);
@@ -1162,16 +1204,19 @@ class LuaGenerator {
                     const argn = `${ argi + 1 } + __top__`;
                     const nd_mat = arg_modifiers.includes("/ND");
                     const defarg = `default_${ argname }_value`;
+                    const defptr = `default_${ argname }_ptr`;
 
                     if (is_out_arg && is_array) {
                         is_optional = true;
                     }
 
+                    const maybe_ptr = deref && is_optional && (!is_array || defval !== "");
+
                     if (is_out_arg) {
                         if (is_array) {
                             retval.push([j, `lua_push(L, ${ argname }_${ arrtype });`]);
                         } else {
-                            const lua_push_args = ["L", argname];
+                            const lua_push_args = ["L", `${ maybe_ptr ? "*" : "" }${ argname }`];
 
                             let deleter;
 
@@ -1188,7 +1233,17 @@ class LuaGenerator {
                                 lua_push_args.push(deleter);
                             }
 
-                            retval.push([j, `lua_push(${ lua_push_args.join(", ") });`]);
+                            if (maybe_ptr) {
+                                retval.push([j, `
+                                    if (${ argname }) {
+                                        lua_push(${ lua_push_args.join(", ") });
+                                    } else {
+                                        lua_pushnil(L);
+                                    }
+                                `.replace(/^ {36}/mg, "").trim()]);
+                            } else {
+                                retval.push([j, `lua_push(${ lua_push_args.join(", ") });`]);
+                            }
                         }
                     }
 
@@ -1202,9 +1257,14 @@ class LuaGenerator {
                         extractors.push("is_valid = false;");
                         const ref = defval !== "" && is_by_ref && !defval.includes("(") && !defval.includes("'") && !defval.includes("\"") && !/^(?:\.|\d+\.)\d+$/.test(defval) ? "&" : "";
                         const copy = is_out_arg || defval === "" || defval.includes("(");
+
                         if (!is_array || defval !== "") {
                             extractors.push(`${ copy || ref ? "" : "static " }${ cpptype }${ ref } ${ defarg }${ defval !== "" && defval !== "{}" ? ` { ${ defval } }` : "" };`);
                         }
+                    }
+
+                    if (maybe_ptr) {
+                        extractors.push(`auto ${ defptr } = &${ defarg };`);
                     }
 
                     if (is_array) {
@@ -1294,13 +1354,19 @@ class LuaGenerator {
                             `.replace(/^ {32}/mg, "").trim());
                         }
                     } else {
+                        const args = [`static_cast<${ var_type }*>(nullptr)`, "is_valid"];
+
+                        if (maybe_ptr) {
+                            args.splice(1, 0, defptr);
+                        }
+
                         extractors.push(`
-                            using ${ toCamelCase(argname) }Holder = decltype(lua_to(L, ${ argn }, static_cast<${ var_type }*>(nullptr), is_valid));
+                            using ${ toCamelCase(argname) }Holder = decltype(lua_to(L, ${ argn }, ${ args.join(", ") }));
                             ${ toCamelCase(argname) }Holder ${ argname }_holder;
 
                             if (${ largc } > ${ argi }) {
                                 // positional parameter
-                                ${ argname }_holder = lua_to(L, ${ argn }, static_cast<${ var_type }*>(nullptr), is_valid);
+                                ${ argname }_holder = lua_to(L, ${ argn }, ${ args.join(", ") });
                                 if (!is_valid) {
                                     ${ LuaGenerator.Errors.type(dname, overload_id, overloads, not_found, `#${ argn }`, var_type, argn) }
                                 }
@@ -1317,7 +1383,7 @@ class LuaGenerator {
                                 else if (has_kwargs && Keywords::has(L, ${ vargc }, "${ argname }")) {
                                     // named parameter
                                     Keywords::push(L, ${ vargc }, "${ argname }");
-                                    ${ argname }_holder = lua_to(L, -1, static_cast<${ var_type }*>(nullptr), is_valid);
+                                    ${ argname }_holder = lua_to(L, -1, ${ args.join(", ") });
                                     lua_pop(L, 1);
                                     if (!is_valid) {
                                         ${ LuaGenerator.Errors.kwarg_type(dname, overload_id, overloads, not_found,
@@ -1337,15 +1403,37 @@ class LuaGenerator {
                             `.replace(/^ {32}/mg, "").trim());
                         }
 
-                        extractors.push("", `
-                            decltype(auto) ${ argname } = ${ is_optional ? `!is_valid ? ${ defarg } : ` : "" }extract_holder(${ argname }_holder, static_cast<${ var_type }*>(nullptr));
-                        `.replace(/^ {28}/mg, "").trim());
+                        if (maybe_ptr) {
+                            extractors.push("", `decltype(auto) ${ argname } = ${ defptr };`);
+                        } else {
+                            extractors.push("", `
+                                decltype(auto) ${ argname } = ${ is_optional ? `!is_valid ? ${ defarg } : ` : "" }extract_holder(${ argname }_holder, static_cast<${ var_type }*>(nullptr));
+                            `.replace(/^ {32}/mg, "").trim());
+                        }
                     }
 
                     if (is_optional && is_first_optional) {
                         firstoptarg = Math.min(firstoptarg, i);
                         is_first_optional = false;
                     }
+
+                    if (maybe_ptr) {
+                        callarg = argname;
+                    }
+
+                    for (const modifier of arg_modifiers) {
+                        if (modifier.startsWith("/Cast=")) {
+                            callarg = `${ modifier.slice("/Cast=".length) }(${ callarg })`;
+                        } else if (modifier.startsWith("/Expr=")) {
+                            callarg = makeExpansion(modifier.slice("/Expr=".length), callarg);
+                        }
+                    }
+
+                    if (arg_modifiers.includes("/RRef")) {
+                        callarg = `std::move(${ callarg })`;
+                    }
+
+                    callargs[j] = callarg;
                 }
 
                 overload.push(...extractors, "", `
@@ -1443,6 +1531,14 @@ class LuaGenerator {
                 const exception = typeof options.exception === "string" ? options.exception : "std::exception";
 
                 if (has_body || return_value_type === "void") {
+                    if (!has_lua_State) {
+                        callee = [
+                            "get_thread_lock(L).unlock();",
+                            ...`${ callee.trim() };`.split("\n"),
+                            "get_thread_lock(L).lock()",
+                        ].join("\n");
+                    }
+
                     overload.push("", `
                         try {
                             ${ callee.trim().split("\n").join(`\n${ " ".repeat(28) }`) };
@@ -1456,7 +1552,7 @@ class LuaGenerator {
                         retval.length = 0;
                     }
                 } else {
-                    const lua_push_args = ["L", callee.trim()];
+                    const lua_push_args = [callee.trim()];
 
                     let deleter;
                     let default_constructor;
@@ -1472,19 +1568,39 @@ class LuaGenerator {
                         lua_push_args.push(deleter);
                     }
 
-                    const call = [];
+                    const expressions = [];
 
-                    if (isConstructor && default_constructor) {
-                        callee = `auto self = ${ lua_push_args[1] };`;
-                        call.push(...callee.split("\n"), ...default_constructor.trim().split("\n"));
-                        lua_push_args[1] = "self";
+                    if (isConstructor) {
+                        if (default_constructor) {
+                            callee = `auto self = ${ callee.trim() };`;
+                            expressions.push(...callee.split("\n"), ...default_constructor.trim().split("\n"));
+                            lua_push_args[0] = "self";
+                        } else if (hasDC) {
+                            callee = `auto self = ${ callee.trim() };`;
+                            expressions.push(...callee.split("\n"));
+                            lua_push_args[0] = "self";
+                        }
                     }
 
-                    call.push(`lua_push(${ lua_push_args.join(", ") });`);
+                    if (isConstructor && hasDC) {
+                        if (!has_lua_State) {
+                            expressions.unshift("get_thread_lock(L).unlock();");
+                            expressions.push("get_thread_lock(L).lock();");
+                        }
+                        expressions.unshift("is_valid = true;");
+                        expressions.push(`return ${ lua_push_args.join(", ") };`);
+                    } else {
+                        if (has_lua_State) {
+                            expressions.push(`lua_push(L, ${ lua_push_args.join(", ") });`);
+                        } else {
+                            expressions.unshift("get_thread_lock(L).unlock();");
+                            expressions.push(`lua_lock_and_push(L, ${ lua_push_args.join(", ") });`);
+                        }
+                    }
 
                     retval.push([-1, `
                         try {
-                            ${ call.join("\n").split("\n").join(`\n${ " ".repeat(28) }`) }
+                            ${ expressions.join("\n").split("\n").join(`\n${ " ".repeat(28) }`) }
                         } catch ( ${ exception }& e ) {
                             LUAL_MODULE_ERROR_RETURN(L, e.what());
                         }
@@ -1567,7 +1683,7 @@ class LuaGenerator {
 
             if (isConstructor && hasDC) {
                 contentRegisterPrivate.push(`${ shared_ptr }<${ fqn }> Lua_new(lua_State* L, const size_t __top__, bool& is_valid) {`);
-                contentRegisterPrivate.push("    is_valid = true;", "");
+                contentRegisterPrivate.push("    is_valid = false;", "");
                 contentRegisterPrivate.push(body
                     .replace(/lua_push\(L, (.+)\);$/mg, "return $1;")
                     .replace(/(?<indent>[^\S\n]+)LUAL_MODULE_ERROR_RETURN\((?<error>.+)\);$/mg, `$<indent>${ [
@@ -1608,23 +1724,89 @@ class LuaGenerator {
 
             if (ename.startsWith("sol::meta_function::")) {
                 const meta_method = LuaGenerator.getMetaMethod(ename);
-                methods.push([meta_method, luaFn]);
+                methods.set(meta_method, luaFn);
             } else if (!isProperty) {
-                methods.push([ename, luaFn]);
+                methods.set(ename, luaFn);
             }
 
             if (isConstructor || fname === cname) {
-                meta_methods.push(["__call", "__call_constructor"]);
+                meta_methods.set("__call", "__call_constructor");
             }
+        }
+
+        if (methods.has("__index")) {
+            contentDecl.push("", `
+                int usertype_info<${ fqn }>::__index(lua_State* L) {
+                    return ${ methods.get("__index") }(L);
+                }
+            `.replace(/^ {16}/mg, "").trim());
+
+            if (getters.size !== 0 || !coclass.isStatic()) {
+                methods.set("__index", "__index");
+            }
+        } else if (getters.size !== 0) {
+            methods.set("__index", "__index");
+
+            if (!coclass.isStatic()) {
+                contentDecl.push("", `
+                    int usertype_info<${ fqn }>::__index(lua_State* L) {
+                        return try__index(L);
+                    }
+                `.replace(/^ {20}/mg, "").trim());
+            }
+        } else if (!coclass.isStatic()) {
+            contentDecl.push("", `
+                int usertype_info<${ fqn }>::__index(lua_State* L) {
+                    return 0;
+                }
+            `.replace(/^ {16}/mg, "").trim());
+            methods.set("__index", "__index");
+        } else {
+            methods.set("__index", "lua_missing_declaration");
+        }
+
+        if (methods.has("__newindex")) {
+            contentDecl.push("", `
+                int usertype_info<${ fqn }>::__newindex(lua_State* L) {
+                    return ${ methods.get("__newindex") }(L);
+                }
+            `.replace(/^ {16}/mg, "").trim());
+        } else if (setters.size !== 0) {
+            methods.set("__newindex", "__newindex");
+
+            if (!coclass.isStatic()) {
+                contentDecl.push("", `
+                    int usertype_info<${ fqn }>::__newindex(lua_State* L) {
+                        return try__newindex(L);
+                    }
+                `.replace(/^ {20}/mg, "").trim());
+            }
+        } else if (!coclass.isStatic()) {
+            contentDecl.push("", `
+                int usertype_info<${ fqn }>::__newindex(lua_State* L) {
+                    return -1;
+                }
+            `.replace(/^ {16}/mg, "").trim());
+            methods.set("__newindex", "lua_missing_declaration");
+        } else {
+            methods.set("__newindex", "lua_missing_declaration");
+        }
+
+        meta_methods.set("__index", methods.get("__index"));
+        meta_methods.set("__newindex", methods.get("__newindex"));
+
+        if (coclass.isStatic()) {
+            methods.delete("__index");
+            methods.delete("__newindex");
         }
 
         contentRegisterPrivate.push("", `
             const struct luaL_Reg methods[] = {
-                ${ methods.map(([ename, fname]) => `{"${ ename }", ${ fname }}`).concat(["{NULL, NULL} // Sentinel"]).join(`,\n${ " ".repeat(16) }`) }
+                ${ Array.from(methods.entries()).map(([ename, fname]) => `{"${ ename }", ${ fname }}`).concat(["{NULL, NULL} // Sentinel"]).join(`,\n${ " ".repeat(16) }`) }
             };
 
             const struct luaL_Reg meta_methods[] = {
-                ${ meta_methods.map(([ename, fname]) => `{"${ ename }", ${ fname }}`).concat(["{NULL, NULL} // Sentinel"]).join(`,\n${ " ".repeat(16) }`) }
+                ${ Array.from(meta_methods.entries()).map(([ename, fname]) => `{"${ ename }", ${ fname }}`).concat(["{NULL, NULL} // Sentinel"]).join(`,\n${ " ".repeat(16) }`) }
             };
         `.replace(/^ {12}/mg, "").trim());
     }
@@ -1732,15 +1914,13 @@ class LuaGenerator {
         let maxlength = 0;
 
         const typelist = list_of_arguments.map(([argtype, , , arg_modifiers]) => {
-            let str = "";
-
-            if (arg_modifiers.includes("/C")) {
-                str += "const ";
-            }
-
             const is_in_array = /^Input(?:Output)?Array(?:OfArrays)?$/.test(argtype);
             const is_out_array = /^(?:Input)?OutputArray(?:OfArrays)?$/.test(argtype);
-            str += is_in_array || is_out_array ? argtype : LuaGenerator.getDocCppType(processor, argtype, coclass, options);
+            let str = is_in_array || is_out_array ? argtype : LuaGenerator.getDocCppType(processor, argtype, coclass, options);
+
+            if (arg_modifiers.includes("/C")) {
+                str = `const ${ str }`;
+            }
 
             if (arg_modifiers.includes("/Ref")) {
                 str += "&";
@@ -1781,16 +1961,21 @@ class LuaGenerator {
 
         const files = new Map();
         const registrationsHdr = [];
-        const registrationsClass = [];
+        const registerClasses = [];
+        const registerInherits = [];
+        const registerDefaults = [];
         const registrations = [];
 
         const assignableTypes = new Map();
+        const ascendants = new Map();
 
-        // denormalize children
+        // denormalize parents and children
         for (const [fqn, coclass] of processor.classes.entries()) {
             if (coclass.isStatic()) {
                 continue;
             }
+
+            ascendants.set(fqn, [fqn]);
 
             const parents = [...coclass.parents];
 
@@ -1800,6 +1985,7 @@ class LuaGenerator {
                         assignableTypes.set(parent, new Set());
                     }
                     assignableTypes.get(parent).add(fqn);
+                    ascendants.get(fqn).push(parent);
                 }
 
                 if (processor.bases.has(parent)) {
@@ -1872,7 +2058,7 @@ class LuaGenerator {
             coclass.progid = path.join(".");
 
             if (!coclass.isStatic()) {
-                registrationsClass.push(`${ registerClassFn }(L);`);
+                registerClasses.push(`${ registerClassFn }(L);`);
                 registers.unshift(`void ${ registerClassFn }(lua_State* L);`);
 
                 const descendants = assignableTypes.get(fqn);
@@ -1885,14 +2071,19 @@ class LuaGenerator {
 
                 if (descendants.length > 20) {
                     lines.push(...`
+                        thread_local const auto luaopen_index = get_luaopen_index(L);
                         thread_local std::unordered_set<const void*> metatable_pointers = {
-                            ${ descendants.map(descendant => `usertype_info<${ descendant }>::metatable_pointers.at(luaopen_index)`).join(`,\n${ " ".repeat(28) }`) }
+                            ${ descendants.map(descendant => `usertype_metatable_pointer<${ descendant }>(luaopen_index)`).join(`,\n${ " ".repeat(28) }`) }
                         };
 
                         is_valid = metatable_pointers.contains(mt_pointer);
                     `.replace(/^ {24}/mg, "").trim().split("\n"));
                 } else {
-                    lines.push(...`is_valid = ${ descendants.map(descendant => `mt_pointer == usertype_info<${ descendant }>::metatable_pointers.at(luaopen_index)`).join(`\n${ " ".repeat(4) }|| `) };`.split("\n"));
+                    lines.push(...`
+                        thread_local const auto luaopen_index = get_luaopen_index(L);
+
+                        is_valid = ${ descendants.map(descendant => `mt_pointer == usertype_metatable_pointer<${ descendant }>(luaopen_index)`).join(` ||\n${ " ".repeat(4) }`) };
+                    `.replace(/^ {24}/mg, "").trim().split("\n"));
                 }
 
                 const decl = `
@@ -1901,9 +2092,9 @@ class LuaGenerator {
                     static std::vector<int> metatable_refs;
                     static const struct luaL_Reg* methods;
                     static const struct luaL_Reg* meta_methods;
-                    static const std::unordered_map<std::string, std::function<int(lua_State*)>> getters;
-                    static const std::unordered_map<std::string, std::function<int(lua_State*)>> setters;
                     static std::shared_ptr<${ fqn }> lua_userdata_to(lua_State* L, int index, bool& is_valid);
+                    static int __index(lua_State* L);
+                    static int __newindex(lua_State* L);
                 `.replace(/^ {20}/mg, "").trim().split("\n");
 
                 const impl = `
@@ -1912,8 +2103,6 @@ class LuaGenerator {
                     std::vector<int> usertype_info<${ fqn }>::metatable_refs;
                     const struct luaL_Reg* usertype_info<${ fqn }>::methods = ::methods;
                     const struct luaL_Reg* usertype_info<${ fqn }>::meta_methods = ::meta_methods;
-                    const std::unordered_map<std::string, std::function<int(lua_State*)>> usertype_info<${ fqn }>::getters(std::move(::getters));
-                    const std::unordered_map<std::string, std::function<int(lua_State*)>> usertype_info<${ fqn }>::setters(std::move(::setters));
 
                     std::shared_ptr<${ fqn }> usertype_info<${ fqn }>::lua_userdata_to(lua_State* L, int index, bool& is_valid) {
                         is_valid = lua_isuserdata(L, index) && lua_getmetatable(L, index);
@@ -1921,7 +2110,6 @@ class LuaGenerator {
                         if (is_valid) {
                             const auto mt_pointer = lua_topointer(L, -1);
                             lua_pop(L, 1);
-                            thread_local const auto luaopen_index = get_luaopen_index(L);
 
                             ${ lines.join(`\n${ " ".repeat(28) }`) }
 
@@ -1993,7 +2181,7 @@ class LuaGenerator {
                 namespace LUA_MODULE_NAME {
                     ${ registers.join("\n").split("\n").join(`\n${ " ".repeat(20) }`) }
                 }
-            `.replace(/^ {16}/mg, "").trim());
+            `.replace(/^ {16}/mg, "").trim().replace(/[^\S\n]+$/mg, ""));
 
             const contentCpp = ["#include <lua_generated_pch.hpp>", ""]; // GCC: Only one precompiled header can be used in a particular compilation.
             const contentRegisterPrivate = [];
@@ -2018,7 +2206,7 @@ class LuaGenerator {
                     }
                 `.replace(/^ {20}/mg, "").trim());
 
-                files.set(sysPath.join(options.output, fileCpp), contentCpp.join("\n").replace(/^[^\S\r\n]+$/mg, ""));
+                files.set(sysPath.join(options.output, fileCpp), contentCpp.join("\n").replace(/[^\S\r\n]+$/mg, ""));
                 continue;
             }
 
@@ -2060,25 +2248,14 @@ class LuaGenerator {
                     contentRegisterClass.push(`lua_rawget_create_if_nil(L, { ${ path.slice(0, -1).map(part => JSON.stringify(part)).join(", ") } });  // push parent table`);
                 }
 
-                contentRegisterClass.push(`lua_register_class<::${ [fqn, ...coclass.parents].join(", ::") }>(L, "${ name }");`);
+                contentRegisterClass.push(`lua_register_class<::${ ascendants.get(fqn).join(", ::") }>(L, "${ name }");`);
 
-                const parents = [...coclass.parents];
-
-                // denormalize parents
-                for (const parent of parents) {
-                    if (processor.classes.has(parent) && !processor.classes.get(parent).isStatic()) {
-                        contentRegisterClass.push(`
-                            usertype_info<::${ parent }>::derives_pushers[typeid(${ fqn }).hash_code()] = std::move([] (lua_State* L, const std::shared_ptr<::${ parent }>& ptr) {
-                                lua_push(L, std::reinterpret_pointer_cast<${ fqn }>(ptr));
-                            });
-                        `.replace(/^ {28}/mg, "").trim());
-                    }
-
-                    if (processor.bases.has(parent)) {
-                        for (const base of processor.bases.get(parent)) {
-                            parents.push(base);
-                        }
-                    }
+                for (const parent of ascendants.get(fqn).slice(1)) {
+                    contentRegisterClass.push(`
+                        usertype_info<::${ parent }>::derives_pushers[typeid(${ fqn }).hash_code()] = std::move([] (lua_State* L, const std::shared_ptr<::${ parent }>& ptr) {
+                            lua_push(L, std::reinterpret_pointer_cast<${ fqn }>(ptr));
+                        });
+                    `.replace(/^ {24}/mg, "").trim());
                 }
 
                 if (path.length > 1) {
@@ -2086,9 +2263,15 @@ class LuaGenerator {
                 }
 
                 contentRegister.push(`lua_rawget_create_if_nil(L, { ${ path.map(part => JSON.stringify(part)).join(", ") } }); // push class metatable`);
+
+                if (ascendants.get(fqn).length > 1) {
+                    registerInherits.push(`lua_inherit<::${ ascendants.get(fqn).join(", ::") }>(L);`);
+                }
+
+                registerDefaults.push(`lua_register_defaults<${ fqn }>(L);`);
             }
 
-            LuaGenerator.writeProperties(processor, coclass, contentRegisterPrivate, contentRegister, options);
+            const { getters, setters } = LuaGenerator.writeProperties(processor, coclass, { ascendants }, contentRegisterPrivate, contentRegister, options);
 
             if (!coclass.isStatic() || coclass.properties.size !== 0 && coclass.methods.size !== 0) {
                 // new line
@@ -2096,7 +2279,7 @@ class LuaGenerator {
                 contentRegister.push("");
             }
 
-            LuaGenerator.writeMethods(processor, coclass, contentRegisterPrivate, contentRegister, options);
+            LuaGenerator.writeMethods(processor, coclass, { getters, setters }, contentRegisterPrivate, contentRegister, contentDecl, options);
 
             if (contentRegisterPrivate.length !== 0) {
                 let start = 0;
@@ -2157,16 +2340,29 @@ class LuaGenerator {
             namespace LUA_MODULE_NAME {
                 void register_all(lua_State* L) {
                     ${ [
-                        ...registrationsClass,
                         `// ${ "=".repeat(64) }`,
-                        `// ${ "+".repeat(64) }`,
-                        `// ${ "+".repeat(64) }`,
+                        "// classes",
+                        `// ${ "=".repeat(64) }`,
+                        ...registerClasses,
+
+                        "", `// ${ "=".repeat(64) }`,
+                        "// properties and methods",
                         `// ${ "=".repeat(64) }`,
                         ...registrations,
+
+                        "", `// ${ "=".repeat(64) }`,
+                        "// heritance",
+                        `// ${ "=".repeat(64) }`,
+                        ...registerInherits,
+
+                        "", `// ${ "=".repeat(64) }`,
+                        "// default properties and methods",
+                        `// ${ "=".repeat(64) }`,
+                        ...registerDefaults,
                     ].join(`\n${ " ".repeat(20) }`) }
                 }
             }
-        `.replace(/^ {12}/mg, "").trim());
+        `.replace(/^ {12}/mg, "").trim().replace(/[^\S\n]+$/mg, ""));
 
         if (options.hdr !== false) {
             files.set(

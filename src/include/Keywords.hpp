@@ -21,8 +21,6 @@ namespace LUA_MODULE_NAME {
 		static std::vector<int> metatable_refs;
 		static const struct luaL_Reg methods[];
 		static const struct luaL_Reg meta_methods[];
-		static const std::unordered_map<std::string, std::function<int(lua_State*)>> getters;
-		static const std::unordered_map<std::string, std::function<int(lua_State*)>> setters;
 		static bool lua_userdata_is(lua_State* L, int index);
 	};
 }

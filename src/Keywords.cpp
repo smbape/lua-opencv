@@ -86,11 +86,9 @@ namespace LUA_MODULE_NAME {
 	std::mutex usertype_info<Keywords>::mutex;
 	std::vector<const void*> usertype_info<Keywords>::metatable_pointers;
 	std::vector<int> usertype_info<Keywords>::metatable_refs;
-	const std::unordered_map<std::string, std::function<int(lua_State*)>> usertype_info<Keywords>::getters({});
-	const std::unordered_map<std::string, std::function<int(lua_State*)>> usertype_info<Keywords>::setters({});
 
 	bool usertype_info<Keywords>::lua_userdata_is(lua_State* L, int index) {
-		return check_metatable<Keywords>(L, index);
+		return lua_istable(L, index) && check_metatable<Keywords>(L, index);
 	}
 
 	const struct luaL_Reg usertype_info<Keywords>::methods[] = {

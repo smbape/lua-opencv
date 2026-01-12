@@ -54,11 +54,15 @@ dependencies = {
 build = {
    type = "cmake",
    variables = {
+      -- build_variables
       WITH_LUA_ROCKS = "ON",
-      CMAKE_INSTALL_PREFIX = "$(PREFIX)",
       LUA_BINDIR = "$(LUA_BINDIR)",
       LUA_DIR = "$(LUA_DIR)",
       LUA_INCDIR = "$(LUA_INCDIR)",
+
+      -- install_variables
+      CMAKE_INSTALL_PREFIX = "$(PREFIX)",
+      LUA_INSTALL_LIBDIR="$(LIBDIR)",
    },
    copy_directories = {
       "docs",

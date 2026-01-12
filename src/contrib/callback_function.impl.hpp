@@ -70,12 +70,12 @@ namespace LUA_MODULE_NAME {
 				return c_str;
 			}
 			else if constexpr (std::is_pointer_v<R>) {
-				bool is_valid = lua_islightuserdata(L, -1) || lua_isuserdata(L, -1);
+				bool is_valid = lua_islightuserdata(L, -1);
 				if (!is_valid) {
 					luaL_typeerror(L, -1, internal::GetTypeName<R>());
 				}
 
-				auto ptr = static_cast<R*>(lua_touserdata(L, -1));
+				auto ptr = static_cast<R>(lua_touserdata(L, -1));
 				lua_pop(L, 1);
 				return ptr;
 			}

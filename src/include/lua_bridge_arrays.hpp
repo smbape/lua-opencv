@@ -80,12 +80,13 @@ namespace LUA_MODULE_NAME {
 		void free();
 
 		template<typename T>
-		void reset(T& value);
+		void reset(T& value, bool shared = false);
 
 		template<typename T>
 		void reset(T&& value);
 
 		int m_index { -1 };
+		bool m_shared { false };
 		void* m_data { nullptr };
 		bool m_is_shared_ptr { false };
 		std::shared_ptr<Array> m_ptr;

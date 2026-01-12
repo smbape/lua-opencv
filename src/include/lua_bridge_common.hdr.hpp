@@ -150,6 +150,9 @@ namespace LUA_MODULE_NAME {
 
 	void register_Common(lua_State* L);
 
+	std::mutex& get_gil_mutex(lua_State* L);
+	std::unique_lock<std::mutex>& get_thread_lock(lua_State* L);
+
 	struct GilLock {
 		GilLock(lua_State* L);
 		~GilLock();
@@ -334,7 +337,7 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<typename T, typename V>
-	struct has_extract_holder : std::integral_constant<bool, false> {};
+	struct has_extract_holder : std::false_type {};
 
 	template<typename T, typename V>
 	constexpr bool has_extract_holder_v = has_extract_holder<T, V>::value;
@@ -625,10 +628,24 @@ namespace LUA_MODULE_NAME {
 	// templated: lua_to, lua_push
 	// ================================
 
+	template<typename T>
+	inline auto usertype_metatable_pointer(const int luaopen_index) {
+		std::unique_lock lock(usertype_info<T>::mutex);
+		return usertype_info<T>::metatable_pointers.at(luaopen_index);
+	}
+
+	template<typename T>
+	inline auto usertype_metatable_ref(const int luaopen_index) {
+		std::unique_lock lock(usertype_info<T>::mutex);
+		return usertype_info<T>::metatable_refs.at(luaopen_index);
+	}
 
 	// ================================
 	// T
 	// ================================
+
+	template<typename T>
+	inline T* lua_to(lua_State* L, int index, T*, T*& ref, bool& is_valid);
 
 	template<typename T>
 	inline std::shared_ptr<T> lua_userdata_to(lua_State* L, int index, T*, bool& is_valid);
@@ -648,6 +665,47 @@ namespace LUA_MODULE_NAME {
 
 	template<typename T>
 	inline void lua_push(lua_State* L, T* ptr, void (*d)(T*));
+
+	// ================================
+	// T[]
+	// ================================
+
+	template<typename T>
+	struct PointerArray {
+		static void register_class(lua_State* L);
+		static int __index(lua_State* L);
+		static int __newindex(lua_State* L);
+		static int __add(lua_State* L);
+		static int __sub(lua_State* L);
+		static int __lt(lua_State* L);
+		static int __le(lua_State* L);
+
+		PointerArray(T* data) : data(data) {}
+		virtual ~PointerArray() = default;
+
+		T& operator[](size_t i) {
+			return this->data[i];
+		}
+
+		const T& operator[](size_t i) const {
+			return this->data[i];
+		}
+
+		T* data;
+	};
+
+	template<typename T>
+	struct is_usertype<PointerArray<T>> : std::true_type {};
+
+	template<typename T>
+	struct usertype_info<PointerArray<T>> {
+		static std::mutex mutex;
+		static std::vector<const void*> metatable_pointers;
+		static std::vector<int> metatable_refs;
+		static const struct luaL_Reg methods[];
+		static const struct luaL_Reg meta_methods[];
+		static std::shared_ptr<PointerArray<T>> lua_userdata_to(lua_State* L, int index, bool& is_valid);
+	};
 
 
 	// ================================
@@ -902,8 +960,49 @@ namespace LUA_MODULE_NAME {
 
 
 	// ================================
-	// misc
+	// misc functions
 	// ================================
+
+	template<typename T>
+	void lua_lock_and_push(lua_State* L, T&& value);
+
+	inline int try_mt__index(lua_State* L) {
+		if (lua_getmetatable(L, 1)) {
+			lua_pushvalue(L, 2); // push the key
+			lua_rawget(L, -2);
+			lua_remove(L, -2); // remove the metatable
+
+			if (!lua_isnil(L, -1)) {
+				return 1; // return metatable[key]
+			}
+
+			lua_pop(L, 1); // pop nil
+		}
+
+		return 0;
+	}
+
+	inline int lua_missing_declaration(lua_State* L) {
+		const auto arg = 2;
+		char const *sname;
+		if (lua_type(L, arg) == LUA_TSTRING) {
+			sname = lua_tostring(L, arg);
+		}
+		else if (lua_type(L, arg) == LUA_TLIGHTUSERDATA) {
+			sname = "light userdata";  /* special name for messages */
+		}
+		else {
+			sname = luaL_typename(L, arg);  /* standard name */
+		}
+		luaL_error(L, "missing declaration for symbol '%s'", sname);
+		return 0;
+	}
+
+	template<typename T, typename... _Ts>
+	inline void lua_register_class(lua_State* L, const char* name);
+
+	template<typename T>
+	inline void lua_register_defaults(lua_State* L);
 
 	bool lua_newkwargs_from_table(lua_State* L, int index, bool& is_valid);
 }

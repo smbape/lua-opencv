@@ -271,12 +271,13 @@ const hdr_impl = `
             void free();
 
             template<typename T>
-            void reset(T& value);
+            void reset(T& value, bool shared = false);
 
             template<typename T>
             void reset(T&& value);
 
             int m_index { -1 };
+            bool m_shared { false };
             void* m_data { nullptr };
             bool m_is_shared_ptr { false };
             std::shared_ptr<Array> m_ptr;
@@ -361,6 +362,7 @@ const impl = `
 
             // 2. Move assign all bases and members.
             m_index = other.m_index;
+            m_shared = other.m_shared;
             m_data = other.m_data;
             m_is_shared_ptr = other.m_is_shared_ptr;
             m_ptr = std::move(other.m_ptr);
@@ -368,6 +370,7 @@ const impl = `
             // 3. If the move assignment of bases and members didn't,
             //           make the rhs resource-less, then make it so.
             other.m_index = -1;
+            other.m_shared = false;
             other.m_data = nullptr;
             other.m_is_shared_ptr = false;
 
@@ -411,12 +414,12 @@ const impl = `
                 if (is_valid) {
                     switch(search->second) {
                         case 0:
-                            reset(*static_cast<std::shared_ptr<Array>*>(lua_touserdata(L, index)));
+                            reset(*static_cast<std::shared_ptr<Array>*>(lua_touserdata(L, index)), true);
                             return;
                         ${ types.filter(type => !luaTypes.test(type)).map((type, i) => `
                         case ${ i + 1 }:
                             ${ constexprWrap(type, 28, `
-                                reset(*static_cast<std::shared_ptr<${ type }>*>(lua_touserdata(L, index)));
+                                reset(*static_cast<std::shared_ptr<${ type }>*>(lua_touserdata(L, index)), true);
                                 return;
                             `.replace(/^ {4}/mg, "").trim(), "is_valid = false;\nbreak;") }
                         `.trim()).join(`\n${ " ".repeat(24) }`) }
@@ -454,7 +457,7 @@ const impl = `
                 m_ptr.reset();
             }
 
-            if (m_data) {
+            if (!m_shared && m_data) {
                 switch (m_index) {
                     ${ types.map((type, i) => `
                     case ${ i }:
@@ -474,6 +477,7 @@ const impl = `
             }
 
             m_index = -1;
+            m_shared = false;
             m_data = nullptr;
             m_is_shared_ptr = false;
         }
@@ -485,7 +489,7 @@ const impl = `
 
         template<typename Array, bool is_arrays_type>
         template<typename T>
-        void _OptionalArray<Array, is_arrays_type>::reset(T& value) {
+        void _OptionalArray<Array, is_arrays_type>::reset(T& value, bool shared) {
             // reset(T& value);
             // m_data is a copy of value
             // m_ptr = std::make_shared<Array>(m_data);
@@ -508,11 +512,10 @@ const impl = `
                 }
                 ${ !primitiveTypes.has(type) ? `
                     else if constexpr (${ constexprRestirction(type, `std::is_same_v<T, std::shared_ptr<${ type }>>`) }) {
-                        if (value.use_count() < 2) {
-                            m_data = new T(value);
-                            m_index = ${ i };
-                            m_is_shared_ptr = true;
-                        }
+                        m_shared = shared;
+                        m_data = shared ? &value : new T(value);
+                        m_index = ${ i };
+                        m_is_shared_ptr = true;
                         m_ptr = std::make_shared<Array>(*value);
                     }
                 `.replace(/^ {4}/mg, "").trim() : "" }
@@ -608,7 +611,7 @@ const impl = `
         //     InputArray Knew cv::noArray()
         //     Size new_size Size()/C; /Ref
         //     InputArray R Mat::eye(3, 3, CV_64F)
-        template void _OptionalArray<cv::_InputArray, false>::reset<cv::Mat>(cv::Mat&);
+        template void _OptionalArray<cv::_InputArray, false>::reset<cv::Mat>(cv::Mat&, bool);
 
         template void lua_push<cv::_InputArray, false>(lua_State* L, const _OptionalArray<cv::_InputArray, false>& opt_array);
         template void lua_push<cv::_OutputArray, false>(lua_State* L, const _OptionalArray<cv::_OutputArray, false>& opt_array);
