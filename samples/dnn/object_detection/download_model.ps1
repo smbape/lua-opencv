@@ -40,7 +40,7 @@ if (!(Test-Path -Path $PYTHON_VENV_PATH)) {
     & "$PYTHON_VENV_PATH\Scripts\Activate.ps1"
 
     python -m pip install --upgrade pip
-    python -m pip install --upgrade opencv-python PyYAML requests
+    python -m pip install --upgrade "opencv-python<=5.0.0" PyYAML requests
 } else {
     # Activate venv
     & "$PYTHON_VENV_PATH\Scripts\Activate.ps1"

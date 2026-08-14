@@ -1,5 +1,16 @@
 #!/usr/bin/env bash
 
+# Update checks:
+#   - In every cmake files, replace CMAKE_SOURCE_DIR with OPENCV_SOURCE_DIR
+#   - In every cmake files, replace CMAKE_BINARY_DIR with OPENCV_BINARY_DIR
+#   - In every cmake files, replace IMPORTED with IMPORTED GLOBAL
+#   - check changes in modules/core/include/opencv2/core/hal/interface.h
+#   - check changes in modules/core/include/opencv2/core/mat.hpp
+#   - check changes in python, *.py
+#   - check DOCKER_IMAGE change in https://github.com/opencv/opencv-python/blob/4.x/.github/workflows/build_wheels_manylinux.yml and update tasks.sh DOCKER_IMAGE_MANY_LINUX_x86_64 DOCKER_IMAGE_MANY_LINUX_aarch64
+#   - check "OS-specific components during CI builds" change in https://github.com/opencv/opencv-python/blob/4.x/setup.py
+
+
 # ================================
 # stash for release
 # ================================
@@ -10,12 +21,6 @@ bash -c 'source scripts/tasks.sh && stash_push'
 # tidy
 # ================================
 bash -c 'source scripts/tasks.sh && tidy'
-
-# Update checks:
-#   - replace CMAKE_SOURCE_DIR with OPENCV_SOURCE_DIR
-#   - replace CMAKE_BINARY_DIR with OPENCV_BINARY_DIR
-#   - check changes in modules/core/include/opencv2/core/mat.hpp
-#   - check changes in python
 
 
 # ================================
@@ -59,21 +64,21 @@ source scripts/wsl_init.sh && \
 mkdir -p out/build/Linux-GCC-Release && \
 truncate -s 0 out/build/Linux-GCC-Release/test_all.sh
 " && \
-test_prepublished_binary_wsl --upgrade --bash \>\> \$sources/out/build/Linux-GCC-Release/test_all.sh' && \
+test_prepublished_binary_wsl --upgrade --bash \>\> \$sourceDir/out/build/Linux-GCC-Release/test_all.sh' && \
 bash -c 'source scripts/tasks.sh && wsl -c "source scripts/wsl_init.sh && chmod +x ./out/build/Linux-GCC-Release/test_all.sh && ./out/build/Linux-GCC-Release/test_all.sh"'
 
 # ================================
 # Docker images README.md samples check
 # ================================
-bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-binary-ubuntu-20.04 ubuntu:20.04 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-binary-ubuntu-22.04 ubuntu:22.04 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-binary-ubuntu-24.04 ubuntu:24.04 -- object_detection.lua'
+bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-binary-ubuntu-24.04 ubuntu:26.04 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-binary-debian-11 debian:11 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-binary-debian-12 debian:12 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_debian test-binary-debian-13 debian:13 -- object_detection.lua'
-bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-fedora-39 fedora:39 -- object_detection.lua'
-bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-fedora-40 fedora:40 -- object_detection.lua'
-bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-fedora-41 fedora:41 -- object_detection.lua'
+bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-fedora-43 fedora:43 -- object_detection.lua'
+bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-fedora-44 fedora:44 -- object_detection.lua'
+bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-fedora-45 fedora:45 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-almalinux-8 amd64/almalinux:8 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-almalinux-9 amd64/almalinux:9 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_binary_fedora test-binary-almalinux-10 amd64/almalinux:10 -- object_detection.lua'
@@ -92,9 +97,9 @@ bash -c 'source scripts/tasks.sh && test_prepublished_source_wsl'
 # ================================
 # Docker images README.md install source rock
 # ================================
-bash -c 'source scripts/tasks.sh && test_prepublished_source_debian test-source-ubuntu-24.04 ubuntu:24.04 -- object_detection.lua'
-bash -c 'source scripts/tasks.sh && test_prepublished_source_debian test-source-debian-12 debian:12 -- object_detection.lua'
-bash -c 'source scripts/tasks.sh && test_prepublished_source_fedora test-source-fedora-41 fedora:41 -- object_detection.lua'
+bash -c 'source scripts/tasks.sh && test_prepublished_source_debian test-source-ubuntu-26.04 ubuntu:26.04 -- object_detection.lua'
+bash -c 'source scripts/tasks.sh && test_prepublished_source_debian test-source-debian-13 debian:13 -- object_detection.lua'
+bash -c 'source scripts/tasks.sh && test_prepublished_source_fedora test-source-fedora-44 fedora:44 -- object_detection.lua'
 bash -c 'source scripts/tasks.sh && test_prepublished_source_fedora test-source-almalinux-9 amd64/almalinux:9 -- object_detection.lua'
 
 

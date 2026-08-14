@@ -52,7 +52,8 @@ module.exports = ({ self, self_get, shared_ptr }) => [
         ["cv::cuda::GpuMat", "dst", "cv::cuda::GpuMat()", ["/O"]],
     ], "", ""],
 
-    ["cv.cuda.GpuMat.createFromArray", "GpuMat", ["/S", "/Call=::cvextra::createGpuMatFromArray", "/Expr=L, $0"], [
+    ["cv.cuda.GpuMat.createFromArray", "GpuMat", ["/S", "/Call=::cvextra::createGpuMatFromArray"], [
+        ["lua_State*", "L", "", []],
         ["Table", "array", "", ["/Ref", "/C"]],
         ["int", "type", "CV_64F", []],
         ["GpuMat::Allocator*", "allocator", "GpuMat::defaultAllocator()", []]

@@ -4,14 +4,13 @@ package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:su
 
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.12.0/samples/python/tutorial_code/imgcodecs/animations.py
+    https://github.com/opencv/opencv/blob/4.13.0/samples/python/tutorial_code/imgcodecs/animations.py
 --]]
 
 local argparse = require("argparse")
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 
-local INDEX_BASE = 1 -- lua is 1-based indexed
 local OPENCV_DATA_PATH = opencv_lua.fs_utils.findFile("samples/data")
 
 local function main()
@@ -66,8 +65,8 @@ local function main()
         -- Without this, memory grows indefinitely
         collectgarbage()
 
-        local frame = frames[i + INDEX_BASE]
-        local duration = durations[i + INDEX_BASE]
+        local frame = frames[i]
+        local duration = durations[i]
 
         cv.imshow("Animation", frame)
         local key_code = cv.waitKey(duration)

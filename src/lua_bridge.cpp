@@ -240,7 +240,7 @@ namespace {
 	};
 
 	void extend_Mat(lua_State* L) {
-		lua_rawget_create_if_nil(L, { "cv", "Mat" });
+		lua_rawget_create_if_nil(L, -1, { "cv", "Mat" });
 
 		lua_pushfuncs(L, extended_methods);
 
@@ -249,9 +249,6 @@ namespace {
 }
 
 namespace fs = std::filesystem;
-
-#define _stringify(s) #s
-#define stringify(s) _stringify(s)
 
 #ifdef __linux__
 #ifndef _GNU_SOURCE
@@ -268,7 +265,7 @@ namespace {
 		Dl_info info;
 		auto res = dladdr((void const*)&LUA_MODULE_LUAOPEN, &info);
 		if (res) {
-			return fs::absolute(info.dli_fname);
+			return fs::canonical(info.dli_fname);
 		}
 
 		// Unable to get the path
@@ -295,7 +292,7 @@ namespace {
 			auto sz = GetModuleFileNameW(m, lpFilename, nSize);
 			if (sz > 0 && sz < nSize) {
 				lpFilename[sz] = '\0';
-				return fs::absolute(lpFilename);
+				return fs::canonical(lpFilename);
 			}
 		}
 
@@ -316,12 +313,12 @@ namespace {
 
 		auto rpath = module_filename.parent_path();
 
-		auto plugins = rpath / stringify(LUA_MODULE_NAME) / "qt" / "plugins";
+		auto plugins = rpath / LUA_MODULE_NAME_STR / "qt" / "plugins";
 		if (fs::exists(plugins)) {
 			setenv("QT_QPA_PLATFORM_PLUGIN_PATH", plugins.native().c_str(), 0); // does not overwrite
 		}
 
-		auto fonts = rpath / stringify(LUA_MODULE_NAME) / "qt" / "fonts";
+		auto fonts = rpath / LUA_MODULE_NAME_STR / "qt" / "fonts";
 		if (fs::exists(plugins)) {
 			setenv("QT_QPA_FONTDIR", fonts.native().c_str(), 0); // does not overwrite
 		}
@@ -399,7 +396,7 @@ namespace {
 			return;
 		}
 
-		auto base_directory = module_filename.parent_path() / stringify(LUA_MODULE_NAME) / "bin";
+		auto base_directory = module_filename.parent_path() / LUA_MODULE_NAME_STR;
 		if (!fs::exists(base_directory)) {
 			// bin path does not exists
 			return;

@@ -9,6 +9,14 @@
 #pragma push_macro("ABSOLUTE")
 #define NOMINMAX
 #define STRICT
+
+// curl/lib/setup-win32.h includes winsock2.h before windows.h.
+// Windows.h includes winsock.h,
+// which conflicts with winsock2.h if included before winsock2.h.
+// To fix the issue, include winsock2.h before windows.h like in curl/lib/setup-win32.h
+#define USE_WINSOCK 2
+#include <winsock2.h>
+
 #include <Windows.h>
 #pragma pop_macro("NOMINMAX")
 #pragma pop_macro("STRICT")
@@ -150,20 +158,37 @@ namespace LUA_MODULE_NAME {
 
 	void register_Common(lua_State* L);
 
-	std::mutex& get_gil_mutex(lua_State* L);
-	std::unique_lock<std::mutex>& get_thread_lock(lua_State* L);
+	std::shared_ptr<std::mutex> get_gil_mutex(lua_State* L);
+	std::shared_ptr<std::unique_lock<std::mutex>> get_thread_gil(lua_State* L);
+	std::shared_ptr<std::unique_lock<std::mutex>> get_thread_gil(lua_State* L, std::shared_ptr<std::mutex> gil_mutex);
 
-	struct GilLock {
+	class GilLock {
+	public:
+		GilLock(
+			lua_State* L,
+			std::shared_ptr<std::mutex> creator_gil_mutex,
+			std::thread::id creator_thread_id,
+			std::shared_ptr<std::unique_lock<std::mutex>> creator_gil
+		);
 		GilLock(lua_State* L);
 		~GilLock();
-		lua_State* L;
+
+	private:
+		std::shared_ptr<std::mutex> gil_mutex;
+		std::shared_ptr<std::unique_lock<std::mutex>> gil;
 		bool locked;
 	};
 
-	struct GilYield {
+	class GilYield {
+	public:
 		GilYield(lua_State* L);
+		GilYield(lua_State* L, long timeout_ms);
 		~GilYield();
-		lua_State* L;
+
+	private:
+		std::shared_ptr<std::mutex> gil_mutex;
+		std::shared_ptr<std::unique_lock<std::mutex>> gil;
+		long timeout_ms;
 		bool yielded;
 	};
 
@@ -330,6 +355,23 @@ namespace LUA_MODULE_NAME {
 	inline decltype(auto) reference_internal(const _Tp& element, shared_ptr* ptr = static_cast<shared_ptr*>(nullptr)) {
 		return shared_ptr(shared_ptr{}, const_cast<_Tp*>(&element));
 	}
+
+
+	// ================================
+	// lua_reference_push
+	// ================================
+
+	template<typename T>
+	std::enable_if_t<is_usertype_v<T>> lua_reference_push(lua_State* L, T& value);
+
+	template<typename T>
+	std::enable_if_t<!is_usertype_v<T>&& is_instantiation_of_v<std::optional, T>> lua_reference_push(lua_State* L, T& value);
+
+	template<typename T>
+	std::enable_if_t<!is_usertype_v<T> && !is_instantiation_of_v<std::optional, T>> lua_reference_push(lua_State* L, T& value);
+
+	template<typename T>
+	std::enable_if_t<!std::is_reference_v<T>> lua_reference_push(lua_State* L, const T& value);
 
 
 	// ================================
@@ -878,7 +920,7 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<typename T>
-	inline std::optional<T> lua_to(lua_State* L, int index, std::optional<T>*, bool& is_valid);
+	inline std::shared_ptr<std::optional<T>> lua_to(lua_State* L, int index, std::optional<T>*, bool& is_valid);
 
 	template<typename T>
 	inline void lua_push(lua_State* L, const std::optional<T>& p);
@@ -922,7 +964,7 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<template<typename...> typename Container, typename... _Ts>
-	inline void _stl_container_lua_to(lua_State* L, int index, Container<_Ts...>& out, bool& is_valid, size_t len, bool loose);
+	inline void _stl_container_lua_to(lua_State* L, int index, Container<_Ts...>& container, bool& is_valid, size_t len, bool loose);
 
 	template<template<typename...> typename Container, typename... _Ts>
 	inline std::shared_ptr<Container<_Ts...>> _stl_container_lua_to(lua_State* L, int index, Container<_Ts...>* ptr, bool& is_valid, size_t len, bool loose);
@@ -939,7 +981,7 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<class T, class Allocator = std::allocator<T>>
-	inline void lua_to(lua_State* L, int index, std::vector<T, Allocator>& out, bool& is_valid, size_t len = 0, bool loose = false);
+	inline void lua_to(lua_State* L, int index, std::vector<T, Allocator>& vec, bool& is_valid, size_t len = 0, bool loose = false);
 
 	template<class T, class Allocator = std::allocator<T>>
 	inline std::shared_ptr<std::vector<T, Allocator>> lua_to(lua_State* L, int index, std::vector<T, Allocator>* ptr, bool& is_valid, size_t len = 0, bool loose = false);
@@ -963,9 +1005,6 @@ namespace LUA_MODULE_NAME {
 	// misc functions
 	// ================================
 
-	template<typename T>
-	void lua_lock_and_push(lua_State* L, T&& value);
-
 	inline int try_mt__index(lua_State* L) {
 		if (lua_getmetatable(L, 1)) {
 			lua_pushvalue(L, 2); // push the key
@@ -984,7 +1023,7 @@ namespace LUA_MODULE_NAME {
 
 	inline int lua_missing_declaration(lua_State* L) {
 		const auto arg = 2;
-		char const *sname;
+		char const* sname;
 		if (lua_type(L, arg) == LUA_TSTRING) {
 			sname = lua_tostring(L, arg);
 		}
@@ -1005,4 +1044,25 @@ namespace LUA_MODULE_NAME {
 	inline void lua_register_defaults(lua_State* L);
 
 	bool lua_newkwargs_from_table(lua_State* L, int index, bool& is_valid);
+
+	// ================================
+	// __eq__
+	// ================================
+
+	template<typename T>
+	inline bool __eq__(const T& o1, const T& o2);
+
+	template<typename T>
+	inline bool __eq__(const std::shared_ptr<T>& p1, const std::shared_ptr<T>& p2);
+
+	template<typename K, typename V>
+	inline bool __eq__(const std::map<K, V>& m1, const std::map<K, V>& m2);
+
+	template<typename T1, typename T2>
+	inline bool __eq__(const std::pair<T1, T2>& p1, const std::pair<T1, T2>& p2);
+
+	template<class T, class Allocator = std::allocator<T>>
+	inline bool __eq__(const std::vector<T, Allocator>& v1, const std::vector<T, Allocator>& v2);
+
+	// ================================
 }

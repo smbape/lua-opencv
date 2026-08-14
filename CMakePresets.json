@@ -1,0 +1,85 @@
+{
+    "version": 2,
+    "configurePresets": [{
+        "name": "x64-Debug",
+        "description": "Sets Ninja generator, compilers, x64 architecture, build and install directory, debug build type",
+        "generator": "Ninja",
+        "binaryDir": "${sourceDir}/out/build/${presetName}",
+        "architecture": {
+            "value": "x64",
+            "strategy": "external"
+        },
+        "cacheVariables": {
+            "CMAKE_BUILD_TYPE": "Debug",
+            "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
+        },
+        "vendor": {
+            "microsoft.com/VisualStudioSettings/CMake/1.0": {
+                "hostOS": ["Windows"]
+            }
+        }
+    }, {
+        "name": "x64-Release",
+        "inherits": "x64-Debug",
+        "description": "Sets Ninja generator, compilers, x64 architecture, build and install directory, release build type",
+        "cacheVariables": {
+            "CMAKE_BUILD_TYPE": "Release",
+            "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
+        }
+    }, {
+        "name": "x64-Release-luarocks",
+        "inherits": "x64-Release",
+        "binaryDir": "${sourceDir}/build.luarocks",
+        "cacheVariables": {
+            "CMAKE_BUILD_TYPE": "Release",
+            "CMAKE_INSTALL_PREFIX": "${sourceDir}/luarocks/lua_modules/lib/luarocks/rocks-5.1/mediapipe_lua/scm-1",
+            "WITH_LUA_ROCKS": "ON",
+            "LUA_BINDIR": "${sourceDir}/out/install/x64-Release/bin",
+            "LUA_INCDIR": "${sourceDir}/out/install/x64-Release/include/luajit-2.1",
+            "LUA_INSTALL_LIBDIR": "${sourceDir}/luarocks/lua_modules/lib/luarocks/rocks-5.1/mediapipe_lua/scm-1/lib",
+            "LUA_DIR": "${sourceDir}/out/install/x64-Release",
+        }
+    }, {
+        "name": "Linux-GCC-Debug",
+        "description": "Sets Ninja generator, compilers, build and install directory, debug build type",
+        "generator": "Ninja",
+        "binaryDir": "${sourceDir}/out/build/${presetName}",
+        "cacheVariables": {
+            "CMAKE_BUILD_TYPE": "Debug",
+            "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
+        },
+        "environment": {
+            "sourceDir": "${sourceDir}",
+            "PATH": "$env{HOME}/.nvs/default/bin:$penv{PATH}"
+        },
+        "vendor": {
+            "microsoft.com/VisualStudioSettings/CMake/1.0": {
+                "hostOS": ["Linux"]
+            },
+            "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
+                "sourceDir": "$env{HOME}/.vs/$ms{projectDirName}",
+                "copySources": true,
+                "rsyncCommandArgs": ["-t", "-v", "-r", "--include=**/.gitignore", "--exclude=/.git", "--filter=':- .gitignore'", "--delete-after"],
+                "copySourcesOptions": {
+                    "method": "rsync"
+                }
+            }
+        }
+    }, {
+        "name": "Linux-GCC-Release",
+        "inherits": "Linux-GCC-Debug",
+        "description": "Sets Ninja generator, compilers, build and install directory, release build type",
+        "cacheVariables": {
+            "CMAKE_BUILD_TYPE": "Release",
+            "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
+        }
+    }, {
+        "name": "vcpkg",
+        "inherits": "x64-Debug",
+        "cacheVariables": {
+            "CMAKE_BUILD_TYPE": "Debug",
+            "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+            "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+        }
+    }]
+}

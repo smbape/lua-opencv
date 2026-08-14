@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 
-export "PATH=${PATH_BCK}"
-unset PATH_BCK
+if command -v cl &> /dev/null && [ ${#PATH_BCK} -ne 0 ]; then
+    export PATH="${PATH_BCK}"
+    unset PATH_BCK
+fi

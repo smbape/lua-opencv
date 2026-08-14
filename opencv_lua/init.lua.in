@@ -1,0 +1,72 @@
+-- https://gist.github.com/daurnimator/45839b0d6bd4a94c58d2d942c04b6789
+local searchpath = (function()
+    if type(package.searchpath) == "function" then
+        return package.searchpath
+    end
+
+    local DIRSEP = package.config:sub(1, 1)
+
+    local function is_readable(filename)
+        local fd = io.open(filename, "r")
+        if fd then
+            fd:close()
+            return true
+        end
+        return false
+    end
+
+    local function searchpath(name, path, sep, rep)
+        assert(type(name) == "string")
+        assert(type(path) == "string")
+        if sep == nil then
+            sep = "%."
+        else
+            assert(type(sep) == "string")
+            sep = sep:gsub("[%%%^%$%(%)%.%[%]%*%+%-%?]", "%%%0") -- need to escape sep so it doesn't get interpreted as a pattern later
+        end
+        if rep == nil then
+            rep = DIRSEP
+        else
+            assert(type(rep) == "string")
+        end
+        if #sep > 0 then
+            name = name:gsub(sep, rep)
+        end
+        local msg = ""
+        local repl_name = name:gsub("%%", "%%%%")
+        for template in path:gmatch("[^;]+") do -- PATH_SEP
+            local filename = template:gsub("%?", repl_name) -- PATH_MARK
+            if is_readable(filename) then
+                return filename
+            end
+            msg = msg .. "\n\tno file '" .. filename .. "' (checked with custom loader)"
+        end
+        return nil, msg
+    end
+
+    return searchpath
+end)()
+
+-- http://lua-users.org/wiki/BinaryModulesLoader
+local module_name = "@TARGET_NAME@"
+local module_loader = "@TARGET_NAME@/@TARGET_NAME@_loader"
+local symbol_name = "luaopen_@TARGET_NAME@"
+local errmsg = "module '" .. module_name .. "' not found:"
+
+-- Find DLL
+local candidates = { module_loader, module_name }
+for _, candidate in ipairs(candidates) do
+    local filename, msg = searchpath(candidate, package.cpath)
+    if filename ~= nil then
+        -- Load and return the module loader
+        local loader, msg = package.loadlib(filename, symbol_name)
+        if not loader then
+            error("error loading module '" .. module_name .. "' from file '" .. filename .. "':\n\t" .. msg)
+        end
+        return loader()
+    else
+        errmsg = errmsg .. msg
+    end
+end
+
+error(errmsg)

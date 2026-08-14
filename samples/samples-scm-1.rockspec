@@ -8,10 +8,9 @@ description = {
    license = "*** please specify a license ***"
 }
 dependencies = {
-   "lua >= 5.1, < 5.5",
+   "lua >= 5.1",
    "argparse >= 0.7.1",
    "inspect >= 3.1.3",
-   "lua-path >= 0.3.1",
    "luafilesystem >= 1.8.0",
    "shell-games >= 1.1.0",
 }

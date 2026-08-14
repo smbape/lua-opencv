@@ -1,9 +1,9 @@
 from setuptools import setup, Extension, find_packages
 
 setup(
-    name='@target_name@',
+    name='@TARGET_NAME@',
     version = '@PROJECT_VERSION@',
-    packages = ['@target_name@'],
-    package_dir = {'@target_name@': '@INSTALL_LIBDIR@'},
-    package_data = {'@target_name@': @PACKAGE_DATA@},
+    packages = ['@TARGET_NAME@'],
+    package_dir = {'@TARGET_NAME@': '@PACKAGE_DIR@'},
+    package_data = {'@TARGET_NAME@': @PACKAGE_DATA@},
 )

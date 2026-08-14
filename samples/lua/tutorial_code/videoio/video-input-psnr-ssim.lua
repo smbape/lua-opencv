@@ -4,7 +4,7 @@ package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:su
 
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.12.0/samples/python/tutorial_code/videoio/video-input-psnr-ssim.py
+    https://github.com/opencv/opencv/blob/4.13.0/samples/python/tutorial_code/videoio/video-input-psnr-ssim.py
 --]]
 
 local argparse = require("argparse")
@@ -32,7 +32,7 @@ local function getPSNR(I1, I2)
     local s = s1:sum()             -- sum elements per channel
     local sse = s[1] + s[2] + s[3] -- sum channels
     if sse <= 1e-10 then
-        return 0                   -- for small values return zero
+        return 360                 -- For very small SSE, return 360 to cap PSNR (theoretical value is infinity)
     else
         local shape = I1.shape
         local mse = 1.0 * sse / (shape[1] * shape[2] * shape[3])

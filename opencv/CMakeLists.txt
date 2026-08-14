@@ -21,8 +21,8 @@ endif()
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release;MinSizeRel;RelWithDebInfo" CACHE STRING "Configs" FORCE)
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "${CMAKE_CONFIGURATION_TYPES}")
 
-set(OpenCV_VERSION 4.12.0 CACHE STRING "Choose the OpenCV version.")
-set_property(CACHE OpenCV_VERSION PROPERTY STRINGS "4.12.0")
+set(OpenCV_VERSION 4.13.0 CACHE STRING "Choose the OpenCV version.")
+set_property(CACHE OpenCV_VERSION PROPERTY STRINGS "4.13.0")
 
 string(REPLACE "." ";" OpenCV_VERSION_LIST ${OpenCV_VERSION})
 list(GET OpenCV_VERSION_LIST 0 OpenCV_VERSION_MAJOR)
@@ -53,8 +53,8 @@ FetchContent_Populate(opencv
 option(BUILD_contrib "Build with opencv contrib" OFF)
 
 if (BUILD_contrib)
-    # https://github.com/opencv/opencv-python/tree/88
-    set(OPENCV_CONTRIB_TAG_4120 d943e1d61c8bc556a13783e1546ee7c1a9e0b1cf)
+    # https://github.com/opencv/opencv-python/tree/92
+    set(OPENCV_CONTRIB_TAG_4130 d99ad2a188210cc35067c2e60076eed7c2442bc3)
 
     if (NOT DEFINED OPENCV_CONTRIB_TAG_${OpenCV_DLLVERSION})
         message(FATAL_ERROR "Unable to find git contrib tag for OPENCV_CONTRIB_TAG_${OpenCV_DLLVERSION}
@@ -129,15 +129,28 @@ option(BUILD_opencv_python_bindings_generator "The Python bindings" ON)
 
 if (WITH_FREETYPE)
     if (WIN32)
+        if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+            set(Freetype_LIBNAME "freetyped")
+            set(lib_PATH_SUFFIXES "debug/lib")
+        else()
+            set(Freetype_LIBNAME "freetype")
+            set(lib_PATH_SUFFIXES "lib")
+        endif()
+
+        if (DEFINED VCPKG_INSTALLED_DIR)
+            find_package(Freetype CONFIG REQUIRED)
+            set(FREETYPE_DIR "${VCPKG_INSTALLED_DIR}/x64-windows")
+        endif()
+
         find_path(FREETYPE_INCLUDE_DIRS "ft2build.h"
             PATHS "${FREETYPE_DIR}" ENV FREETYPE_DIR
             PATH_SUFFIXES "include"
             REQUIRED
             NO_DEFAULT_PATH
         )
-        find_library(FREETYPE_LINK_LIBRARIES "freetype"
+        find_library(FREETYPE_LINK_LIBRARIES "${Freetype_LIBNAME}"
             PATHS "${FREETYPE_DIR}" ENV FREETYPE_DIR
-            PATH_SUFFIXES "lib"
+            PATH_SUFFIXES ${lib_PATH_SUFFIXES}
             REQUIRED
             NO_DEFAULT_PATH
         )
@@ -156,9 +169,14 @@ if (WITH_FREETYPE)
             set(FREETYPE_VERSION "${FREETYPE_VERSION_MAJOR}.${FREETYPE_VERSION_MINOR}.${FREETYPE_VERSION_PATCH}")
 
             # Fake ocv_check_modules(FREETYPE)
-            set(FREETYPE_LIBRARIES "${FREETYPE_LINK_LIBRARIES}")
+            set(FREETYPE_LIBRARIES ${FREETYPE_LINK_LIBRARIES})
             set(FREETYPE_LINK_LIBRARIES_XXXXX TRUE)
             set(FREETYPE_FOUND TRUE)
+        endif()
+
+        if (DEFINED VCPKG_INSTALLED_DIR)
+            find_package(HARFBUZZ CONFIG REQUIRED)
+            set(HARFBUZZ_DIR "${VCPKG_INSTALLED_DIR}/x64-windows")
         endif()
 
         find_path(HARFBUZZ_INCLUDE_DIRS "hb-ft.h"
@@ -169,7 +187,7 @@ if (WITH_FREETYPE)
         )
         find_library(HARFBUZZ_LINK_LIBRARIES "harfbuzz"
             PATHS "${HARFBUZZ_DIR}" ENV HARFBUZZ_DIR
-            PATH_SUFFIXES "lib"
+            PATH_SUFFIXES ${lib_PATH_SUFFIXES}
             REQUIRED
             NO_DEFAULT_PATH
         )
@@ -188,7 +206,7 @@ if (WITH_FREETYPE)
             set(HARFBUZZ_VERSION "${HARFBUZZ_VERSION_MAJOR}.${HARFBUZZ_VERSION_MINOR}.${HARFBUZZ_VERSION_PATCH}")
 
             # Fake ocv_check_modules(HARFBUZZ)
-            set(HARFBUZZ_LIBRARIES "${HARFBUZZ_LINK_LIBRARIES}")
+            set(HARFBUZZ_LIBRARIES ${HARFBUZZ_LINK_LIBRARIES})
             set(HARFBUZZ_LINK_LIBRARIES_XXXXX TRUE)
             set(HARFBUZZ_FOUND TRUE)
         endif()

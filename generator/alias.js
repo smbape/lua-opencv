@@ -17,13 +17,21 @@ exports.makeExpansion = (str, ...args) => {
     return str;
 };
 
+const addAscendantNamespaces = (namespaces, namespace) => {
+    if (typeof namespace !== "string") {
+        return;
+    }
+
+    namespace.split("::").forEach((el, i, parts) => {
+        const ascendant = parts.slice(0, parts.length - i).join("::");
+        namespaces.add(`using namespace ${ ascendant };`);
+    });
+};
+
 exports.useNamespaces = (body, method, processor, coclass) => {
     const namespaces = new Set();
 
-    if (coclass.namespace) {
-        // useNamspace(namespaces, coclass.namespace);
-        namespaces.add(`using namespace ${ coclass.namespace };`);
-    }
+    addAscendantNamespaces(namespaces, coclass.namespace);
 
     if (coclass.include && coclass.include.namespace) {
         namespaces.add(`using namespace ${ coclass.include.namespace };`);
@@ -172,8 +180,8 @@ const noSpaceReg = /\S/g;
 exports.removeConstQualifiers = type => {
     if (!type.includes("<") || !type.endsWith(">")) {
         // ignore const qualifiers since they have no effect
-        if (/(?:^const\s+|\s+const$)/.test(type) && !/^(?:const\s+char|char\s+const)\s*\*$/.test(type)) {
-            type = type.replace(/(?:^const\s+|\s+const$)/, "");
+        if (/(?:^const[\s*]|[\s*]const$)/.test(type) && !/^(?:const\s+char|char\s+const)\s*\*$/.test(type)) {
+            type = type.replace(/(?:^const\b\s*|\s*\bconst$)/, "").trim();
         }
 
         return type.replace(/^struct\s+/, "");

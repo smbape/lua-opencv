@@ -142,6 +142,62 @@ die() {
     [ $2 ] && exit $2 || exit 1
 }
 
+# http://stackoverflow.com/questions/4023830/bash-how-compare-two-strings-in-version-format#4025065
+vercomp () {
+    if [[ $1 == $2 ]]; then
+        return 0
+    fi
+
+    local IFS=.
+
+    local i res
+    local ver1=($1)
+    local ver2=($2)
+
+    # fill empty fields in ver1 with zeros
+    for ((i=${#ver1[@]}; i<${#ver2[@]}; i++)); do
+        ver1[i]=0
+    done
+
+    for ((i=0; i<${#ver1[@]}; i++)); do
+        if [[ -z ${ver2[i]} ]]; then
+            # fill empty fields in ver2 with zeros
+            ver2[i]=0
+        fi
+
+        if [[ "${ver1[i]}" =~ [A-Za-z_][A-Za-z_0-9]*$ || "${ver2[i]}" =~ [A-Za-z_][A-Za-z_0-9]*$ ]]; then
+            if [[ "${ver1[i]}" > "${ver2[i]}" ]]; then
+                return 1
+            fi
+
+            if [[ "${ver1[i]}" < "${ver2[i]}" ]]; then
+                return 2
+            fi
+        else
+            if ((10#${ver1[i]} > 10#${ver2[i]})); then
+                return 1
+            fi
+
+            if ((10#${ver1[i]} < 10#${ver2[i]})); then
+                return 2
+            fi
+        fi
+    done
+    return 0
+}
+
+compare_version() {
+    local op
+    vercomp $1 $2
+    case $? in
+        0) op="=";;
+        1) op=">";;
+        2) op="<";;
+    esac
+
+    echo $op
+}
+
 PYTHON_VENV_PATH="$1"
 PYTHONPATH="$2"
 alias="$3"
@@ -157,12 +213,22 @@ fi
 
 command -v $python &>/dev/null || die "Failed to find python executable" $?
 
+# Python required version is 3.9...<3.15
+if [ "$(compare_version $("$python" --version | sed -r 's/Python[[:space:]]+//') 3.15)" != "<" ]; then
+    for minor in {14..9}; do
+        if command -v python3.$minor &>/dev/null; then
+            python=python3.$minor
+            break
+        fi
+    done
+fi
+
 if [ ! -d "$PYTHON_VENV_PATH" ]; then
     $python -m venv "$PYTHON_VENV_PATH"
     source "$PYTHON_VENV_PATH/bin/activate" || die "Cannot activate python virtual environment" $?
 
     python -m pip install --upgrade pip && \
-    python -m pip install --upgrade opencv-python PyYAML requests || \
+    python -m pip install --upgrade 'opencv-python<=5.0.0' PyYAML requests || \
     die "Failed to install python pip packages" $?
 else
     source "$PYTHON_VENV_PATH/bin/activate" || die "Cannot activate python virtual environment" $?

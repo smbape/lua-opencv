@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(opencv_lua LANGUAGES C CXX ASM)
+project(opencv_lua LANGUAGES C CXX)
 
 set(DEFAULT_BUILD_TYPE "Release")
 
@@ -54,6 +54,8 @@ endif()
 include(cmake/UsePython3Venv.cmake)
 if (UNIX)
     pip_install(build auditwheel)
+elseif(WIN32)
+    pip_install(build delvewheel)
 endif()
 
 # Needed python packages

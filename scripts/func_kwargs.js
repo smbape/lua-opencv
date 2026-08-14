@@ -13,7 +13,7 @@ const genFunc = (libname, fname, args) => {
 
     return `
 ${ fdecl.join(" ") } ( ... )
-    local args={n=select("#", ...), ...}
+    local args = {n=select("#", ...), ...}
     local has_kwarg = ${ kwargs }.isinstance(args[args.n])
     local kwargs = has_kwarg and args[args.n] or ${ kwargs }()
     local usedkw = 0
@@ -37,7 +37,7 @@ ${ fdecl.join(" ") } ( ... )
 
         return `
             -- get argument ${ kwname || argname }
-            local ${ argname }${ defval == null ? "" : ` = ${ defval }` }
+            local ${ argname }${ defval == null || defval === "nil" ? "" : ` = ${ defval }` }
             local has_${ argname } = false
             if (not has_kwarg) or args.n > ${ i + 1 } then
                 -- positional parameter should not be a named parameter

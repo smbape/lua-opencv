@@ -1,28 +1,26 @@
 option(BUILD_LUA "Build Lua from source" ON)
 
 function(update_lua_multi_config)
-    unset(Luajit_VERSION_STRING)
-    unset(Lua_VERSION_STRING)
+    unset(_Luajit_VERSION)
+    unset(_Lua_VERSION)
 
-    if (LUAJIT_VERSION_STRING)
-        set(Luajit_VERSION_STRING "${LUAJIT_VERSION_STRING}")
-    elseif (LUA_VERSION_STRING)
-        set(Lua_VERSION_STRING "${LUA_VERSION_STRING}")
+    if (Luajit_VERSION)
+        set(_Luajit_VERSION "${Luajit_VERSION}")
     elseif (Lua_VERSION MATCHES "^luajit-")
-        string(SUBSTRING "${Lua_VERSION}" 7 -1 Luajit_VERSION_STRING)
+        string(SUBSTRING "${Lua_VERSION}" 7 -1 _Luajit_VERSION)
     elseif (Lua_VERSION)
-        set(Lua_VERSION_STRING "${Lua_VERSION}")
+        set(_Lua_VERSION "${Lua_VERSION}")
     endif()
 
-    if (Luajit_VERSION_STRING)
-        string(REPLACE "." ";" Luajit_VERSION_STRING_PARTS "${Luajit_VERSION_STRING}")
-        list(GET Luajit_VERSION_STRING_PARTS 0 Luajit_VERSION_MAJOR)
-        list(GET Luajit_VERSION_STRING_PARTS 1 Luajit_VERSION_MINOR)
+    if (_Luajit_VERSION)
+        string(REPLACE "." ";" Luajit_VERSION_PARTS "${Luajit_VERSION}")
+        list(GET Luajit_VERSION_PARTS 0 Luajit_VERSION_MAJOR)
+        list(GET Luajit_VERSION_PARTS 1 Luajit_VERSION_MINOR)
         set(LUA_MULTI_CONFIG_SUFFIX "/luajit-${Luajit_VERSION_MAJOR}.${Luajit_VERSION_MINOR}" PARENT_SCOPE)
-    elseif(Lua_VERSION_STRING)
-        string(REPLACE "." ";" Lua_VERSION_STRING_PARTS "${Lua_VERSION_STRING}")
-        list(GET Lua_VERSION_STRING_PARTS 0 Lua_VERSION_MAJOR)
-        list(GET Lua_VERSION_STRING_PARTS 1 Lua_VERSION_MINOR)
+    elseif(_Lua_VERSION)
+        string(REPLACE "." ";" Lua_VERSION_PARTS "${_Lua_VERSION}")
+        list(GET Lua_VERSION_PARTS 0 Lua_VERSION_MAJOR)
+        list(GET Lua_VERSION_PARTS 1 Lua_VERSION_MINOR)
         set(LUA_MULTI_CONFIG_SUFFIX "/${Lua_VERSION_MAJOR}.${Lua_VERSION_MINOR}" PARENT_SCOPE)
     endif()
 endfunction()
@@ -87,11 +85,11 @@ if (DEFINED ENV{LUA_DIR})
     message(STATUS "LUA_INCDIR=${LUA_INCDIR}")
 
     if (Lua_VERSION MATCHES "^luajit-")
-        set(LUA_SUFFIX "jit")
+        set(Lua_SUFFIX "jit")
         string(SUBSTRING "${Lua_VERSION}" 7 -1 Luajit_VERSION)
         set(Lua_VERSION 5.1)
     else()
-        unset(LUA_SUFFIX)
+        unset(Lua_SUFFIX)
         unset(Luajit_VERSION CACHE)
     endif()
 
@@ -108,13 +106,13 @@ if (DEFINED ENV{LUA_DIR})
     if (Lua_INTERPRETER_NAME)
         set(_lua_interpreter_names ${Lua_INTERPRETER_NAME})
     else()
-        if (LUA_VERSION_STRING)
+        if (Lua_VERSION)
             set(_lua_interpreter_names
-                luajit-${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}
-                lua${LUA_VERSION_MAJOR}${LUA_VERSION_MINOR}
-                lua${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}
-                lua-${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}
-                lua.${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}
+                luajit-${Lua_VERSION_MAJOR}.${Lua_VERSION_MINOR}
+                lua${Lua_VERSION_MAJOR}${Lua_VERSION_MINOR}
+                lua${Lua_VERSION_MAJOR}.${Lua_VERSION_MINOR}
+                lua-${Lua_VERSION_MAJOR}.${Lua_VERSION_MINOR}
+                lua.${Lua_VERSION_MAJOR}.${Lua_VERSION_MINOR}
                 )
         endif()
         list(APPEND _lua_interpreter_names luajit lua)
@@ -139,11 +137,11 @@ endif()
 
 update_lua_multi_config()
 
-if (LUAJIT_VERSION_STRING)
-    message(STATUS "LUAJIT_VERSION_STRING = ${LUAJIT_VERSION_STRING}")
+if (Luajit_VERSION)
+    message(STATUS "Luajit_VERSION = ${Luajit_VERSION}")
 endif()
 
-message(STATUS "LUA_VERSION_STRING = ${LUA_VERSION_STRING}")
+message(STATUS "Lua_VERSION = ${Lua_VERSION}")
 message(STATUS "LUA_LIBRARIES = ${LUA_LIBRARIES}")
 message(STATUS "LUA_INCLUDE_DIR = ${LUA_INCLUDE_DIR}")
 message(STATUS "LUA_INTERPRETER = ${LUA_INTERPRETER}")

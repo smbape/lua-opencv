@@ -144,7 +144,7 @@ const writeFile = (data, filename, doctoc_to_generate, options, cb) => {
                 data += "\n";
             }
 
-            const content = eol.lf(data);
+            const content = eol.lf(`${ data.trim() }\n`);
             const str = buffer.toString();
 
             if (content === str) {

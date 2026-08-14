@@ -450,7 +450,8 @@ module.exports = ({ self, self_get, shared_ptr }) => [
         ["cv::UMat", "dst", "cv::UMat()", ["/O"]],
     ], "", ""],
 
-    ["cv.UMat.createFromArray", "UMat", ["/S", "/Call=::cvextra::createUMatFromArray", "/Expr=L, $0"], [
+    ["cv.UMat.createFromArray", "UMat", ["/S", "/Call=::cvextra::createUMatFromArray"], [
+        ["lua_State*", "L", "", []],
         ["Table", "array", "", ["/Ref", "/C"]],
         ["int", "type", "CV_64F", []],
         ["UMatUsageFlags", "usageFlags", "USAGE_DEFAULT", []]

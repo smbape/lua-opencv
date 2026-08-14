@@ -53,18 +53,21 @@ module.exports = [
         ["OutputArray", "dst", "", []],
     ], "", ""],
 
-    ["cv.redirectError", "void", ["/Call=::cvextra::redirectError", "/Expr=L, $0"], [
+    ["cv.redirectError", "void", ["/Call=::cvextra::redirectError"], [
+        ["lua_State*", "L", "", []],
         ["Function", "errCallback", "", ["/Ref", "/C"]],
         ["Object", "userdata", "lua_nil", ["/Ref", "/C"]],
     ], "", ""],
 
-    ["cv.setMouseCallback", "void", ["/Call=::cvextra::setMouseCallback", "/Expr=L, $0"], [
+    ["cv.setMouseCallback", "void", ["/Call=::cvextra::setMouseCallback"], [
+        ["lua_State*", "L", "", []],
         ["std::string", "winname", "", ["/Ref", "/C"]],
         ["Function", "onMouse", "", ["/Ref", "/C"]],
         ["Object", "userdata", "lua_nil", ["/Ref", "/C"]],
     ], "", ""],
 
-    ["cv.createButton", "int", ["/Call=::cvextra::createButton", "/Expr=L, $0"], [
+    ["cv.createButton", "int", ["/Call=::cvextra::createButton"], [
+        ["lua_State*", "L", "", []],
         ["std::string", "bar_name", "", ["/Ref", "/C"]],
         ["Function", "onChange", "", ["/Ref", "/C"]],
         ["Object", "userdata", "lua_nil", ["/Ref", "/C"]],
@@ -72,7 +75,8 @@ module.exports = [
         ["bool", "initial_button_state", "false", []],
     ], "", ""],
 
-    ["cv.createTrackbar", "int", ["/Call=::cvextra::createTrackbar", "/Expr=L, $0"], [
+    ["cv.createTrackbar", "int", ["/Call=::cvextra::createTrackbar"], [
+        ["lua_State*", "L", "", []],
         ["std::string", "trackbarname", "", ["/Ref", "/C"]],
         ["std::string", "winname", "", ["/Ref", "/C"]],
         ["int", "value", "", []],
@@ -81,7 +85,8 @@ module.exports = [
         ["Object", "userdata", "lua_nil", ["/Ref", "/C"]],
     ], "", ""],
 
-    ["cv.createTrackbar", "int", ["/Call=::cvextra::createTrackbar", "/Expr=L, $0"], [
+    ["cv.createTrackbar", "int", ["/Call=::cvextra::createTrackbar"], [
+        ["lua_State*", "L", "", []],
         ["std::string", "trackbarname", "", ["/Ref", "/C"]],
         ["std::string", "winname", "", ["/Ref", "/C"]],
         ["int", "value", "", []],

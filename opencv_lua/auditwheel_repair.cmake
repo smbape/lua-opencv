@@ -1,88 +1,46 @@
 cmake_minimum_required(VERSION 3.25)
 
-macro(cmake_script_append_var content_var)
-    foreach(var_name IN ITEMS ${ARGN})
-        set(${content_var} "${${content_var}}
-set(${var_name} \"${${var_name}}\")
-")
-    endforeach()
-endmacro()
-
-if (NOT ENABLE_REPAIR)
-    get_filename_component(SONAME "${TARGET_FILE}" NAME)
-
-    execute_process(
-        COMMAND patchelf --print-rpath "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/${SONAME}"
-        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-        OUTPUT_VARIABLE LD_LIBRARY_PATH
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-        COMMAND_ERROR_IS_FATAL ANY
-    )
-
-    string(REPLACE ":" ";" LD_LIBRARY_PATH "${LD_LIBRARY_PATH}")
-    list(APPEND LD_LIBRARY_PATH "$ORIGIN")
-    list(REMOVE_DUPLICATES LD_LIBRARY_PATH)
-    string(REPLACE ";" ":" LD_LIBRARY_PATH "${LD_LIBRARY_PATH}")
-
-    execute_process(
-        COMMAND patchelf --force-rpath --set-rpath "${LD_LIBRARY_PATH}" "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/${SONAME}"
-        COMMAND_ECHO STDERR
-        COMMAND_ERROR_IS_FATAL ANY
-    )
-
-    #
-    # Save variables that are needed when repairing
-    #
-    set(repair_CONFIG_SCRIPT "")
-    cmake_script_append_var(repair_CONFIG_SCRIPT
-        target_name
-        PROJECT_VERSION
-        Python3_EXECUTABLE
-        CMAKE_SOURCE_DIR
-        CMAKE_CURRENT_SOURCE_DIR
-        CMAKE_CURRENT_BINARY_DIR
-        TARGET_FILE
-        ORIGIN_FILE
-    )
-    set(repair_rock_config "${CMAKE_SOURCE_DIR}/luarocks/lua_modules/repair_rock_config.cmake")
-    file(WRITE "${repair_rock_config}" "${repair_CONFIG_SCRIPT}")
-
-    return()
-endif()
-
-include("${CMAKE_SOURCE_DIR}/luarocks/lua_modules/repair_rock_config.cmake")
-include("${CMAKE_SOURCE_DIR}/cmake/list_commands.cmake")
-
-message(STATUS "PostInstall: CMAKE_SOURCE_DIR = \"${CMAKE_SOURCE_DIR}\"")
-message(STATUS "PostInstall: CMAKE_CURRENT_SOURCE_DIR = \"${CMAKE_CURRENT_SOURCE_DIR}\"")
-message(STATUS "PostInstall: CMAKE_CURRENT_BINARY_DIR = \"${CMAKE_CURRENT_BINARY_DIR}\"")
-message(STATUS "PostInstall: CMAKE_INSTALL_PREFIX = \"${CMAKE_INSTALL_PREFIX}\"")
-message(STATUS "PostInstall: CMAKE_INSTALL_LIBDIR = \"${CMAKE_INSTALL_LIBDIR}\"")
-message(STATUS "PostInstall: TARGET_FILE = \"${TARGET_FILE}\"")
-message(STATUS "PostInstall: ORIGIN_FILE = \"${ORIGIN_FILE}\"")
-message(STATUS "PostInstall: PACKAGE_DATA = \"${PACKAGE_DATA}\"")
-message(STATUS "PostInstall: CMAKE_INSTALL_LIBSDIR = \"${CMAKE_INSTALL_LIBSDIR}\"")
-message(STATUS "PostInstall: target_name = \"${target_name}\"")
+message(STATUS "PostInstall: TARGET_NAME = \"${TARGET_NAME}\"")
+message(STATUS "PostInstall: TARGET_SOURCE_DIR = \"${TARGET_SOURCE_DIR}\"")
+message(STATUS "PostInstall: TARGET_CURRENT_SOURCE_DIR = \"${TARGET_CURRENT_SOURCE_DIR}\"")
+message(STATUS "PostInstall: TARGET_CURRENT_BINARY_DIR=\"${TARGET_CURRENT_BINARY_DIR}\"")
+message(STATUS "PostInstall: ORIGIN_FILE=\"${ORIGIN_FILE}\"")
+message(STATUS "PostInstall: REPAIR_DIR=\"${REPAIR_DIR}\"")
 
 # !!! Do not remove, otherwise you may end up deleting you whole OS files
-if (NOT (target_name MATCHES "^[A-Za-z0-9_]+$"))
+if (NOT (TARGET_NAME MATCHES "^[A-Za-z0-9_]+$"))
     message(FATAL_ERROR "For security reasons, target name variable cannot be empty and must only contains alpha numeric characters")
+endif()
+
+include("${TARGET_SOURCE_DIR}/cmake/list_commands.cmake")
+
+set(PYPROJECT "${TARGET_CURRENT_BINARY_DIR}/pyproject")
+file(REMOVE_RECURSE "${PYPROJECT}/")
+
+set(repaired_PACKAGE_DATA ${PACKAGE_DATA})
+list(GET PACKAGE_DATA 0 TARGET_FILE_NAME)
+list_to_json_array(PACKAGE_DATA)
+cmake_path(SET PACKAGE_DIR NORMALIZE "${CMAKE_INSTALL_PREFIX}/${LIBRAY_DESTINATION}")
+
+configure_file("${TARGET_CURRENT_SOURCE_DIR}/setup.py.in" "${PYPROJECT}/setup.py" @ONLY)
+configure_file("${TARGET_CURRENT_SOURCE_DIR}/pyproject.toml" "${PYPROJECT}/pyproject.toml" COPYONLY)
+
+set(TARGET_FILE "${PACKAGE_DIR}/${TARGET_FILE_NAME}")
+
+if (NOT ORIGIN_FILE)
+    set(ORIGIN_FILE "${TARGET_FILE}")
 endif()
 
 # get LD_LIBRARY_PATH
 execute_process(
-    COMMAND patchelf --print-rpath "${TARGET_FILE}"
-    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+    COMMAND patchelf --print-rpath "${ORIGIN_FILE}"
+    WORKING_DIRECTORY "${PYPROJECT}"
     OUTPUT_VARIABLE library_RPATH
     OUTPUT_STRIP_TRAILING_WHITESPACE
     COMMAND_ERROR_IS_FATAL ANY
 )
 
-if (ORIGIN_FILE)
-    cmake_path(GET ORIGIN_FILE PARENT_PATH origin_TARGET_FILE)
-else()
-    cmake_path(GET TARGET_FILE PARENT_PATH origin_TARGET_FILE)
-endif()
+cmake_path(GET ORIGIN_FILE PARENT_PATH origin_TARGET_FILE)
 
 string(REPLACE "$ORIGIN" "${origin_TARGET_FILE}" LD_LIBRARY_PATH "${library_RPATH}")
 
@@ -97,7 +55,7 @@ endforeach()
 if (search_PATHS)
     execute_process(
         COMMAND find ${search_PATHS} -mindepth 1 -maxdepth 1 -name "*.so*" -exec realpath "{}" ";"
-        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+        WORKING_DIRECTORY "${PYPROJECT}"
         OUTPUT_VARIABLE lib_SONAMES
         OUTPUT_STRIP_TRAILING_WHITESPACE
         COMMAND_ERROR_IS_FATAL ANY
@@ -147,20 +105,6 @@ if (repaired_NOT_FOUND)
     message(WARNING "${TARGET_FILE} may not be repaired:\n    ${repaired_NOT_FOUND}")
 endif()
 
-get_filename_component(SONAME "${TARGET_FILE}" NAME)
-
-set(INSTALL_LIBDIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
-set(INSTALL_SONAME "${INSTALL_LIBDIR}/${SONAME}")
-
-message(STATUS "PostInstall: Set non-toolchain portion of runtime path of \"${INSTALL_SONAME}\"")
-
-set(PYPROJECT "${CMAKE_CURRENT_BINARY_DIR}/pyproject")
-
-file(REMOVE_RECURSE "${PYPROJECT}/")
-
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in" "${PYPROJECT}/setup.py" @ONLY)
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/pyproject.toml" "${PYPROJECT}/pyproject.toml" COPYONLY)
-
 execute_process(
     COMMAND "${Python3_EXECUTABLE}" -m build --wheel
     WORKING_DIRECTORY "${PYPROJECT}"
@@ -189,6 +133,8 @@ foreach(flag IN ITEMS strip only_plat disable_isa_ext_check)
 endforeach()
 
 foreach(option IN ITEMS plat exclude)
+    # Trim leading/trailing space
+    string(REGEX REPLACE "(^[ \t\r\n]*;|;[ \t\r\n]*$)" "" DELVEWHEEL_${option} "${DELVEWHEEL_${option}}")
     foreach(value IN LISTS AUDITWHEEL_${option})
         list(APPEND AUDITWHEEL_COMMAND "--${option}" "${value}")
     endforeach()
@@ -214,50 +160,59 @@ math(EXPR repaired_WHEEL_FILE_LENGTH "${repaired_WHEEL_FILE_LENGTH} - ${repaired
 string(SUBSTRING "${repaired_WHEEL_FILE}" ${repaired_WHEEL_FILE_BEGIN} ${repaired_WHEEL_FILE_LENGTH} repaired_WHEEL_FILE)
 
 cmake_path(GET repaired_WHEEL_FILE PARENT_PATH repaired_WHEEL_DIR)
-file(GLOB repaired_WHEEL_FILE "${repaired_WHEEL_DIR}/${target_name}-${PROJECT_VERSION}-*.whl")
+file(GLOB repaired_WHEEL_FILE "${repaired_WHEEL_DIR}/${TARGET_NAME}-${PROJECT_VERSION}-*.whl")
 
 message(STATUS "PostInstall: repaired_WHEEL_FILE=\"${repaired_WHEEL_FILE}\"")
 
-set(repaired_DIR "${CMAKE_INSTALL_LIBDIR}/repaired")
-
 # Replace shared library with the repaired one
 execute_process(
-    COMMAND unzip -o -d "${repaired_DIR}" "${repaired_WHEEL_FILE}"
-    WORKING_DIRECTORY "${CMAKE_INSTALL_PREFIX}"
+    COMMAND unzip -o -d "${REPAIR_DIR}" "${repaired_WHEEL_FILE}"
+    WORKING_DIRECTORY "${PYPROJECT}"
     COMMAND_ECHO STDERR
     COMMAND_ERROR_IS_FATAL ANY
 )
 
-file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBSDIR}")
+file(REMOVE_RECURSE "${TARGET_CURRENT_BINARY_DIR}/${REPAIR_DIR}/")
+file(MAKE_DIRECTORY "${TARGET_CURRENT_BINARY_DIR}/${REPAIR_DIR}")
+file(GLOB repaired_FILES RELATIVE "${PYPROJECT}/${REPAIR_DIR}" "${PYPROJECT}/${REPAIR_DIR}/${TARGET_NAME}/*" "${PYPROJECT}/${REPAIR_DIR}/${TARGET_NAME}.libs")
 
-file(GLOB repaired_FILES RELATIVE "${CMAKE_INSTALL_PREFIX}/${repaired_DIR}" "${CMAKE_INSTALL_PREFIX}/${repaired_DIR}/${target_name}/*" "${CMAKE_INSTALL_PREFIX}/${repaired_DIR}/${target_name}.libs")
-
-unset(COPY_COMMANDS)
-
-if ("${target_name}.libs" IN_LIST repaired_FILES)
-    get_filename_component(CMAKE_INSTALL_LIBSDIR_PARENT "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBSDIR}" DIRECTORY)
-    file(MAKE_DIRECTORY "${CMAKE_INSTALL_LIBSDIR_PARENT}")
-    list(APPEND COPY_COMMANDS COMMAND mv "${repaired_DIR}/${target_name}.libs" "${CMAKE_INSTALL_LIBSDIR}")
-    list(REMOVE_ITEM repaired_FILES "${target_name}.libs")
+if ("${TARGET_NAME}.libs" IN_LIST repaired_FILES)
+    list(REMOVE_ITEM repaired_FILES "${TARGET_NAME}.libs")
+    file(REMOVE_RECURSE "${PACKAGE_DIR}/${TARGET_NAME}/libs/")
+    file(RENAME "${PYPROJECT}/${REPAIR_DIR}/${TARGET_NAME}.libs" "${PYPROJECT}/${REPAIR_DIR}/libs")
+    file(INSTALL TYPE DIRECTORY
+        FILES "${PYPROJECT}/${REPAIR_DIR}/libs"
+        DESTINATION "${PACKAGE_DIR}/${TARGET_NAME}"
+    )
 endif()
 
-list(TRANSFORM repaired_FILES PREPEND "${repaired_DIR}/")
-list(APPEND COPY_COMMANDS COMMAND cp -rf ${repaired_FILES} "${CMAKE_INSTALL_LIBDIR}/")
+foreach(repaired_FILE IN LISTS repaired_FILES)
+    if (IS_DIRECTORY "${PYPROJECT}/${REPAIR_DIR}/${repaired_FILE}")
+        set(repaired_FILE_TYPE DIRECTORY)
+    else()
+        set(repaired_FILE_TYPE FILE)
+    endif()
+    file(INSTALL TYPE ${repaired_FILE_TYPE}
+        FILES "${PYPROJECT}/${REPAIR_DIR}/${repaired_FILE}"
+        DESTINATION "${PACKAGE_DIR}"
+    )
+endforeach()
 
-execute_process(
-    ${COPY_COMMANDS}
-    WORKING_DIRECTORY "${CMAKE_INSTALL_PREFIX}"
-    COMMAND_ECHO STDERR
-    COMMAND_ERROR_IS_FATAL ANY
-)
+file(REMOVE_RECURSE "${PYPROJECT}/${REPAIR_DIR}")
 
-file(REMOVE_RECURSE "${CMAKE_INSTALL_PREFIX}/${repaired_DIR}")
+# Set RPATH to $ORIGIN/${TARGET_NAME}/libs
+set(libs_DIRECTORY "${PACKAGE_DIR}/${TARGET_NAME}/libs")
+foreach(lib_SONAME IN LISTS repaired_PACKAGE_DATA)
+    set(lib_FILEPATH "${PACKAGE_DIR}/${lib_SONAME}")
+    cmake_path(GET lib_FILEPATH PARENT_PATH lib_DIRECTORY)
+    cmake_path(RELATIVE_PATH libs_DIRECTORY BASE_DIRECTORY "${lib_DIRECTORY}" OUTPUT_VARIABLE lib_ORIGIN)
 
-# Set RPATH to $ORIGIN/${target_name}/libs
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/set_rpath.py.in" "${PYPROJECT}/set_rpath.py" @ONLY)
-execute_process(
-    COMMAND "${Python3_EXECUTABLE}" "${PYPROJECT}/set_rpath.py"
-    WORKING_DIRECTORY "${INSTALL_LIBDIR}"
-    COMMAND_ECHO STDERR
-    COMMAND_ERROR_IS_FATAL ANY
-)
+    message(STATUS "Set non-toolchain portion of runtime path of \"${lib_FILEPATH}\" to \"$ORIGIN/${lib_ORIGIN}:$ORIGIN\"")
+    execute_process(
+        COMMAND patchelf --force-rpath --set-rpath "$ORIGIN/${lib_ORIGIN}:$ORIGIN" "${PACKAGE_DIR}/${lib_SONAME}"
+        WORKING_DIRECTORY "${PYPROJECT}"
+        OUTPUT_VARIABLE library_RPATH
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        COMMAND_ERROR_IS_FATAL ANY
+    )
+endforeach()

@@ -12,7 +12,7 @@ if(NOT DEFINED Python3_REQUESTED_VERSION)
 endif()
 
 find_package(Python3 "${Python3_REQUESTED_VERSION}" COMPONENTS Interpreter REQUIRED)
-execute_process (COMMAND "${Python3_EXECUTABLE}" -m venv "${VIRTUAL_ENV}")
+execute_process(COMMAND "${Python3_EXECUTABLE}" -m venv "${VIRTUAL_ENV}")
 
 ## update the environment with VIRTUAL_ENV variable (mimic the activate script)
 set(ENV{VIRTUAL_ENV} "${VIRTUAL_ENV}")

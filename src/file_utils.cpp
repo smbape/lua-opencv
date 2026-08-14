@@ -68,6 +68,12 @@ namespace {
 		res.push_back(s.substr(pos_start));
 	}
 
+#ifdef _MSC_VER
+#define _fs_strcmp(ch1, ch2) towlower(ch1) == towlower(ch2)
+#else
+#define _fs_strcmp(ch1, ch2) tolower(ch1) == tolower(ch2)
+#endif
+
 	template <typename string_type>
 	bool isMatch(const string_type& s, const string_type& p) {
 		const auto slen = s.length();
@@ -85,7 +91,7 @@ namespace {
 				lastmatch = scur;
 				lastindex = pcur;
 			}
-			else if (p[pcur] == '?' || s[scur] == p[pcur]) {
+			else if (p[pcur] == '?' || _fs_strcmp(s[scur], p[pcur])) {
 				scur++;
 				pcur++;
 			}
@@ -132,48 +138,8 @@ namespace {
 		normalized.resize(end);
 	}
 
-#ifdef _MSC_VER
-	/**
-	 * Maps a UTF-16 (wide character) string to a new character string. The new character string is not necessarily from a multibyte character set.
-	 *
-	 * @param  codePage Code page to use in performing the conversion.
-	 * @param  c_wstr   Pointer to the Unicode string to convert.
-	 * @param  length   Size, in characters, of the string indicated by c_wstr parameter.
-	 * @param  str      Pointer to a buffer that receives the converted string.
-	 * @return          The number of bytes written to the buffer pointed to by c_str.
-	 * @see             https://learn.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-widechartomultibyte
-	 */
-	inline int wcs_to_mbs(UINT codePage, const fs::path::value_type* c_wstr, size_t length, std::string& str) {
-		if (null_or_empty(c_wstr)) {
-			str.clear();
-			return 0;
-		}
-
-		int size = WideCharToMultiByte(codePage, 0, c_wstr, length, nullptr, 0, nullptr, nullptr);
-		str.assign(size, 0);
-		return WideCharToMultiByte(codePage, 0, c_wstr, length, &str[0], size + 1, nullptr, nullptr);
-	}
-
-	inline int wcs_to_utf8(const fs::path::value_type* c_wstr, size_t length, std::string& str) {
-		return wcs_to_mbs(CP_UTF8, c_wstr, length, str);
-	}
-#endif
-
-	inline std::string _string_type_to_string(const fs::path::string_type& match) {
-#ifdef _MSC_VER
-		std::string str; wcs_to_utf8(match.c_str(), match.length(), str);
-		return str;
-#else
-		return match;
-#endif
-	}
-
-	inline void _addMatch(std::vector<std::string>& matches, const fs::path::string_type& match) {
-		matches.push_back(_string_type_to_string(match));
-	}
-
 	void _findFiles(
-		std::vector<std::string>& matches,
+		std::vector<fs::path>& matches,
 		const std::vector<fs::path::string_type>& parts,
 		const fs::path& root_path,
 		FindFilesKind flags,
@@ -189,7 +155,7 @@ namespace {
 		const auto last_part = parts.size() - 1;
 		bool found = false;
 		fs::path dir = root_path;
-		std::vector<std::string> next_matches;
+		std::vector<fs::path> next_matches;
 
 		for (; i <= last_part; i++) {
 			found = false;
@@ -225,7 +191,7 @@ namespace {
 					}
 
 					if (is_valid) {
-						_addMatch(matches, relative ? relpath.native() : filepath.native());
+						matches.push_back(relative ? relpath : filepath);
 					}
 
 					continue;
@@ -237,7 +203,7 @@ namespace {
 				for (const auto& match : next_matches) {
 					filepath = fs::path(match);
 					relpath = filepath.lexically_relative(root_path);
-					_addMatch(matches, relative ? relpath.native() : filepath.native());
+					matches.push_back(relative ? relpath : filepath);
 				}
 			}
 
@@ -259,12 +225,12 @@ namespace {
 		}
 
 		if (is_valid) {
-			_addMatch(matches, relative ? relpath.native() : filepath.native());
+			matches.push_back(relative ? relpath : filepath);
 		}
 	}
 
 	void _findFiles(
-		std::vector<std::string>& matches,
+		std::vector<fs::path>& matches,
 		const fs::path& path,
 		const fs::path& root_path,
 		FindFilesKind flags,
@@ -278,23 +244,28 @@ namespace {
 
 namespace fs_utils {
 	FindFilesKind operator| (FindFilesKind lhs, FindFilesKind rhs) {
-		using FindFilesKindType = std::underlying_type<FindFilesKind>::type;
+		using FindFilesKindType = std::underlying_type_t<FindFilesKind>;
 		return FindFilesKind(static_cast<FindFilesKindType>(lhs) | static_cast<FindFilesKindType>(rhs));
 	}
 
 	FindFilesKind operator& (FindFilesKind lhs, FindFilesKind rhs) {
-		using FindFilesKindType = std::underlying_type<FindFilesKind>::type;
+		using FindFilesKindType = std::underlying_type_t<FindFilesKind>;
 		return FindFilesKind(static_cast<FindFilesKindType>(lhs) & static_cast<FindFilesKindType>(rhs));
 	}
 
 	void findFiles(
-		std::vector<std::string>& matches,
+		std::vector<std::string>& out,
 		const std::string& path,
 		const std::string& directory,
 		FindFilesKind flags,
 		bool relative
 	) {
-		_findFiles(matches, path, fs::absolute(directory), flags, relative);
+		std::vector<fs::path> matches;
+		_findFiles(matches, path, fs::absolute(directory).make_preferred(), flags, relative);
+		out.resize(matches.size());
+		for (int i = 0; i < matches.size(); i++) {
+			out[i] = matches[i].string();
+		}
 	}
 
 	std::string findFile(
@@ -309,13 +280,13 @@ namespace fs_utils {
 			return found;
 		}
 
-		fs::path root_path = fs::absolute(directory);
+		fs::path root_path = fs::absolute(directory).make_preferred();
 
 		if (path == ".") {
-			return _string_type_to_string(root_path.native());
+			return root_path.string();
 		}
 
-		std::vector<std::string> matches;
+		std::vector<fs::path> matches;
 		bool top_search_absolute = true;
 
 		while (true) {
@@ -334,7 +305,8 @@ namespace fs_utils {
 					top_search_absolute = false;
 
 					_findFiles(matches, path, spath, FindFilesKind::FLTA_FILESFOLDERS, false);
-				} else {
+				}
+				else {
 					if (!filter.empty()) {
 						spath = filter / spath;
 					}
@@ -343,7 +315,7 @@ namespace fs_utils {
 				}
 
 				if (!matches.empty()) {
-					return matches[0];
+					return matches[0].string();
 				}
 			}
 
@@ -358,11 +330,11 @@ namespace fs_utils {
 	}
 
 	std::string absolute(const std::string& path) {
-		return _string_type_to_string(fs::absolute(path).native());
+		return fs::absolute(path).make_preferred().string();
 	}
 
 	std::string current_path() {
-		return _string_type_to_string(fs::current_path().native());
+		return fs::current_path().string();
 	}
 
 	bool exists(const std::string& path) {
@@ -374,6 +346,6 @@ namespace fs_utils {
 	}
 
 	std::string temp_directory_path() {
-		return _string_type_to_string(fs::temp_directory_path().native());
+		return fs::temp_directory_path().string();
 	}
 }

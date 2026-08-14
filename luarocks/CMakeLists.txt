@@ -6,7 +6,7 @@ project(luarocks)
 
 include(../cmake/FindPatch.cmake)
 
-set(LuaRocks_VERSION 3.11.1)
+set(LuaRocks_VERSION 3.13.0)
 
 get_filename_component(LUA_BINDIR "${LUA_INTERPRETER}" DIRECTORY)
 file(TO_NATIVE_PATH "${LUA_BINDIR}" LUA_BINDIR)
@@ -14,7 +14,7 @@ file(TO_NATIVE_PATH "${LUA_DIR}" LUA_DIR)
 file(TO_NATIVE_PATH "${LUA_INCLUDE_DIR}" LUA_INCDIR)
 get_filename_component(LUA_INTERPRETER_NAME "${LUA_INTERPRETER}" NAME)
 
-set(ABIVER ${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR})
+set(ABIVER ${Lua_VERSION_MAJOR}.${Lua_VERSION_MINOR})
 
 if (WIN32)
     set(Luarocks_EXECUTABLE "<SOURCE_DIR>\\luarocks.exe")
@@ -25,7 +25,7 @@ else()
 endif()
 
 set(luarocks_INSTALL_COMMANDS
-    COMMAND "${Luarocks_EXECUTABLE}" --lua-version "${ABIVER}" --lua-dir "${LUA_DIR}" init --lua-versions "5.1,5.2,5.3,5.4"
+    COMMAND "${Luarocks_EXECUTABLE}" --lua-version "${ABIVER}" --lua-dir "${LUA_DIR}" init --lua-versions "5.1,5.2,5.3,5.4,5.5"
     COMMAND "${luarocks_COMMAND}" --lua-version "${ABIVER}" config --scope project lua_interpreter "${LUA_INTERPRETER_NAME}"
     COMMAND "${luarocks_COMMAND}" --lua-version "${ABIVER}" config --scope project variables.LUA_BINDIR "${LUA_BINDIR}"
     COMMAND "${luarocks_COMMAND}" --lua-version "${ABIVER}" config --scope project variables.LUA_DIR "${LUA_DIR}"
@@ -47,7 +47,7 @@ endif()
 
 if (WIN32)
     set(LuaRocks_URL https://luarocks.org/releases/luarocks-${LuaRocks_VERSION}-windows-64.zip)
-    set(LuaRocks_URL_HASH SHA256=c71dba3d03e12305e9ccd022c621c8869aba3d124d9249e214aed5c16f3682a3)
+    set(LuaRocks_URL_HASH SHA256=0897ade5d459d55cd1962a948153745a6749feb345403c68aaa9207388557ab9)
     file(TO_NATIVE_PATH "${CMAKE_CURRENT_SOURCE_DIR}" NATIVE_CURRENT_SOURCE_DIR)
 
     include(ExternalProject)
@@ -61,7 +61,7 @@ if (WIN32)
     )
 else()
     set(LuaRocks_URL https://luarocks.org/releases/luarocks-${LuaRocks_VERSION}.tar.gz)
-    set(LuaRocks_URL_HASH SHA256=c3fb3d960dffb2b2fe9de7e3cb004dc4d0b34bb3d342578af84f84325c669102)
+    set(LuaRocks_URL_HASH SHA256=245bf6ec560c042cb8948e3d661189292587c5949104677f1eecddc54dbe7e37)
 
     include(ExternalProject)
     ExternalProject_Add(luarocks

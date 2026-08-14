@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.25)
 # https://github.com/luvit/luv/blob/1.45.0-0/deps/lua.cmake
+cmake_minimum_required(VERSION 3.25)
 
-project(lua LANGUAGES  C CXX ASM)
+project(lua LANGUAGES C CXX)
 
 if(MSVC AND NOT (CMAKE_GENERATOR STREQUAL "Ninja"))
     add_compile_options(/MP)
@@ -28,14 +28,15 @@ string(REPLACE "." "" NODOTABIVER ${ABIVER})
 # https://lfs.lug.org.cn/mirrors.html
 include(FetchContent)
 FetchContent_Populate(lua-${Lua_VERSION}
-    URL             https://sources.buildroot.net/lua/lua-${Lua_VERSION}.tar.gz
+    URL             https://github.com/lua/lua/archive/refs/tags/v${Lua_VERSION}.tar.gz
+                    https://www.lua.org/ftp/lua-${Lua_VERSION}.tar.gz
+                    https://sources.buildroot.net/lua/lua-${Lua_VERSION}.tar.gz
                     https://ftp.wrz.de/pub/BLFS/conglomeration/lua/lua-${Lua_VERSION}.tar.gz
                     https://ftp2.osuosl.org/pub/blfs/conglomeration/lua/lua-${Lua_VERSION}.tar.gz
                     https://mirror-hk.koddos.net/blfs/conglomeration/lua/lua-${Lua_VERSION}.tar.gz
                     https://mirror.dogado.de/BLFS/conglomeration/lua/lua-${Lua_VERSION}.tar.gz
                     https://mirror.koddos.net/blfs/conglomeration/lua/lua-${Lua_VERSION}.tar.gz
                     https://repo.jing.rocks/blfs/conglomeration/lua/lua-${Lua_VERSION}.tar.gz
-                    https://www.lua.org/ftp/lua-${Lua_VERSION}.tar.gz
     URL_HASH        SHA256=${Lua_URL_HASH_${Lua_DLLVERSION}}
     PATCH_COMMAND   "${PATCH_EXECUTABLE}" -p1 -d "<SOURCE_DIR>" -i "${CMAKE_CURRENT_SOURCE_DIR}/patches/001-lua-${MAJVER}.${MINVER}-src.patch"
 )
@@ -47,6 +48,8 @@ elseif ("${ABIVER}" STREQUAL "5.3")
     add_compile_definitions(LUA_COMPAT_5_2)
 elseif ("${ABIVER}" STREQUAL "5.4")
     add_compile_definitions(LUA_COMPAT_5_3)
+elseif ("${ABIVER}" STREQUAL "5.5")
+    add_compile_definitions(LUA_COMPAT_MATHLIB)
 endif()
 
 if (NOT ("${CMAKE_INSTALL_PREFIX}" STREQUAL "/usr/local"))
@@ -154,6 +157,10 @@ set(LUA_SRC_CORE_54
     ${LUA_SRC_CORE_53}
 )
 
+set(LUA_SRC_CORE_55
+    ${LUA_SRC_CORE_54}
+)
+
 set(LUA_SRC_LIB_51
     "${lua_SRC}/lauxlib.c"
     "${lua_SRC}/lbaselib.c"
@@ -182,6 +189,10 @@ set(LUA_SRC_LIB_54
     ${LUA_SRC_LIB_53}
 )
 list(REMOVE_ITEM LUA_SRC_LIB_54 "${lua_SRC}/lbitlib.c")
+
+set(LUA_SRC_LIB_55
+    ${LUA_SRC_LIB_54}
+)
 
 set(LUA_SRC_CORE ${LUA_SRC_CORE_${NODOTABIVER}})
 set(LUA_SRC_LIB ${LUA_SRC_LIB_${NODOTABIVER}})
@@ -341,12 +352,12 @@ install(SCRIPT "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
 # ================================
 # Expose project variables
 # ================================
-set(LUA_SUFFIX "")
-set(LUA_LIBRARIES liblua${LUA_SUFFIX}::liblua${LUA_SUFFIX} PARENT_SCOPE)
-set(LUA_INTERPRETER $<TARGET_FILE:lua${LUA_SUFFIX}> PARENT_SCOPE)
-set(LUA_INCDIR "${lua${LUA_SUFFIX}_SRC}" PARENT_SCOPE)
-set(LUA_VERSION_STRING ${Lua${LUA_SUFFIX}_VERSION} PARENT_SCOPE)
-set(LUA_VERSION_MAJOR ${MAJVER} PARENT_SCOPE)
-set(LUA_VERSION_MINOR ${MINVER} PARENT_SCOPE)
-set(LUA_VERSION_PATCH ${RELVER} PARENT_SCOPE)
+set(Lua_SUFFIX "")
+set(LUA_LIBRARIES liblua${Lua_SUFFIX}::liblua${Lua_SUFFIX} PARENT_SCOPE)
+set(LUA_INTERPRETER $<TARGET_FILE:lua${Lua_SUFFIX}> PARENT_SCOPE)
+set(LUA_INCDIR "${lua${Lua_SUFFIX}_SRC}" PARENT_SCOPE)
+set(Lua_VERSION ${Lua${Lua_SUFFIX}_VERSION} PARENT_SCOPE)
+set(Lua_VERSION_MAJOR ${MAJVER} PARENT_SCOPE)
+set(Lua_VERSION_MINOR ${MINVER} PARENT_SCOPE)
+set(Lua_VERSION_PATCH ${RELVER} PARENT_SCOPE)
 set(LUA_INCLUDE_DIR "${LUA_INCLUDE_DIRS}" PARENT_SCOPE)

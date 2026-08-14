@@ -362,7 +362,14 @@ function index.make_index(repo)
    end
    local manifest = manif.load_manifest(repo)
    local out = io.open(dir.path(repo, "index.html"), "w")
+   if out == nil then
+      return nil, "Cannot open ".. dir.path(repo, "index.html")
+   end
+
    local readme = io.open(dir.path(repo, "README.md"), "w")
+   if readme == nil then
+      return nil, "Cannot open ".. dir.path(repo, "README.md")
+   end
 
    out:write(index_header)
    readme:write(readme_header)

@@ -1,5 +1,29 @@
 cmake_minimum_required(VERSION 3.25)
 
+# ================================================================
+# bit.lua
+# ================================================================
+function(opencv_write_bit_lua)
+    set(opencv_GENERATED_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/generated")
+    file(READ "${CMAKE_SOURCE_DIR}/src/lua/bit.lua" _new_bit_string)
+
+    set(_new_bit_string "R\"cdata(${_new_bit_string})cdata\"")
+    set(bit_lua_FILE "${opencv_GENERATED_INCLUDE_DIR}/bit_string.lua.inc")
+
+    if(EXISTS "${bit_lua_FILE}")
+        file(READ "${bit_lua_FILE}" _old_bit_string)
+    else()
+        set(_old_bit_string "")
+    endif()
+
+    if(NOT (_old_bit_string STREQUAL _new_bit_string))
+        file(WRITE "${bit_lua_FILE}" "${_new_bit_string}")
+    endif()
+endfunction()
+
+opencv_write_bit_lua()
+# ================================================================
+
 # ===============
 # OpenCV Lua
 # ===============
@@ -19,14 +43,16 @@ file(GLOB_RECURSE files_to_change
     ${relative_SOURCE_DIR}generator/index.js
     ${relative_SOURCE_DIR}luarocks/${target_name}-scm-1.rockspec
     ${relative_SOURCE_DIR}samples/*.lua
+    ${relative_SOURCE_DIR}samples/*.py
     ${relative_SOURCE_DIR}scripts/new_version.lua
+    ${relative_SOURCE_DIR}scripts/manual.sh
     ${relative_SOURCE_DIR}scripts/pack.js
     ${relative_SOURCE_DIR}scripts/tasks.sh
 )
 
 foreach(item IN LISTS files_to_change)
     vcpkg_regex_replace_string("${item}" "(/lua-opencv/releases/download/v|/lua-opencv/tree/v)[0-9]+\\.[0-9]+\\.[0-9]+" "\\1${PROJECT_VERSION}")
-    vcpkg_regex_replace_string("${item}" "(opencv-|/opencv/opencv/blob/|OPENCV_VERSION:-|${target_name} )[0-9]+\\.[0-9]+\\.[0-9]+" "\\1${OpenCV_VERSION}")
+    vcpkg_regex_replace_string("${item}" "(opencv-|/opencv/opencv/blob/|OPENCV_VERSION:-|${target_name} |${target_name}-)[0-9]+\\.[0-9]+\\.[0-9]+" "\\1${OpenCV_VERSION}")
     vcpkg_regex_replace_string("${item}" "(--branch )[0-9]+\\.[0-9]+\\.[0-9]+( https://github.com/opencv/opencv)" "\\1${OpenCV_VERSION}\\2")
     vcpkg_regex_replace_string("${item}" "(--branch v)[0-9]+\\.[0-9]+\\.[0-9]+( https://github.com/smbape/lua-opencv)" "\\1${PROJECT_VERSION}\\2")
     vcpkg_regex_replace_string("${item}" "opencv_videoio_ffmpeg[0-9]+_64\\.dll" "opencv_videoio_ffmpeg${OpenCV_DLLVERSION}_64.dll")
@@ -104,6 +130,40 @@ target_precompile_headers(${target_name} PRIVATE
     "$<$<COMPILE_LANGUAGE:CXX>:lua_generated_pch.hpp>"
 )
 
+# ========================================================================
+# Workaround prepcompiled header not regenerated when source files change
+# ========================================================================
+set(target_PRECOMPILED_HEADER "${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/${target_name}.dir/cmake_pch.hxx")
+
+if (WIN32)
+    set(target_PRECOMPILED_HEADER_CXX "${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/${target_name}.dir/cmake_pch.cxx")
+else()
+    set(target_PRECOMPILED_HEADER_CXX "${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/${target_name}.dir/cmake_pch.hxx.cxx")
+endif()
+
+# Any change in these files should trigger precompile header recompilation
+set(target_PRECOMPILED_HEADER_DEPENDS
+    ${project_source_headers}
+    ${project_generated_headers}
+)
+
+# Any change in target_precompile_headers should trigger precompile header recompilation
+if (EXISTS "${target_PRECOMPILED_HEADER}")
+    list(APPEND target_PRECOMPILED_HEADER_DEPENDS "${target_PRECOMPILED_HEADER}")
+endif()
+
+add_custom_command(OUTPUT "${target_PRECOMPILED_HEADER_CXX}"
+    COMMAND           "${CMAKE_COMMAND}" -E touch_nocreate "${target_PRECOMPILED_HEADER_CXX}"
+    WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+    DEPENDS           ${target_PRECOMPILED_HEADER_DEPENDS}
+    COMMENT           "Generate precompiled header"
+    VERBATIM
+    USES_TERMINAL
+)
+add_custom_target(${target_name}_precompiled_header DEPENDS ${target_PRECOMPILED_HEADER_DEPENDS})
+add_dependencies(${target_name} ${target_name}_precompiled_header)
+# ========================================================================
+
 target_link_libraries(${target_name} PRIVATE ${LUA_LIBRARIES})
 target_include_directories(${target_name} PRIVATE ${LUA_INCLUDE_DIR})
 
@@ -167,32 +227,35 @@ endif()
 # ===============
 if (WITH_LUA_ROCKS)
     file(RELATIVE_PATH INST_LIBDIR "${CMAKE_INSTALL_PREFIX}" "${LUA_INSTALL_LIBDIR}")
+    file(RELATIVE_PATH INST_LUADIR "${CMAKE_INSTALL_PREFIX}" "${LUA_INSTALL_LUADIR}")
 
     set(LIBRAY_DESTINATION "${INST_LIBDIR}")
     set(ARCHIVE_DESTINATION "${INST_LIBDIR}/${target_name}/devel/lib")
     set(CMAKE_CONFIG_DESTINATION "${INST_LIBDIR}/${target_name}/devel/lib/cmake")
+    set(LUAMOD_DESTINATION "${INST_LUADIR}")
 else()
     set(LIBRAY_DESTINATION "${CMAKE_INSTALL_LIBDIR}")
     set(ARCHIVE_DESTINATION "${CMAKE_INSTALL_LIBDIR}")
     set(CMAKE_CONFIG_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake")
+    set(LUAMOD_DESTINATION "lua")
 endif()
 
 # https://cmake.org/cmake/help/latest/guide/tutorial/Adding%20Export%20Configuration.html
 
 set(PACKAGE_NAME OpenCVLua)
-set(EXPORT_NAME ${PACKAGE_NAME}Targets)
+set(TARGET_EXPORT_NAME ${PACKAGE_NAME}Targets)
 set(CMAKE_CONFIG_DESTINATION "${CMAKE_CONFIG_DESTINATION}/${PACKAGE_NAME}")
 
 install(TARGETS ${target_name}
-    EXPORT ${EXPORT_NAME}
+    EXPORT ${TARGET_EXPORT_NAME}
     LIBRARY DESTINATION "${LIBRAY_DESTINATION}"
     RUNTIME DESTINATION "${LIBRAY_DESTINATION}"
     ARCHIVE DESTINATION "${ARCHIVE_DESTINATION}"
     INCLUDES DESTINATION "${OPENCV_INCLUDE_INSTALL_PATH}"
 )
 
-install(EXPORT ${EXPORT_NAME}
-    FILE "${EXPORT_NAME}.cmake"
+install(EXPORT ${TARGET_EXPORT_NAME}
+    FILE "${TARGET_EXPORT_NAME}.cmake"
     NAMESPACE ${target_name}::
     DESTINATION "${CMAKE_CONFIG_DESTINATION}"
 )
@@ -219,65 +282,181 @@ install(FILES
     DESTINATION "${CMAKE_CONFIG_DESTINATION}"
 )
 
-export(EXPORT ${EXPORT_NAME}
-    FILE "${CMAKE_CURRENT_BINARY_DIR}/${EXPORT_NAME}.cmake"
+export(EXPORT ${TARGET_EXPORT_NAME}
+    FILE "${CMAKE_CURRENT_BINARY_DIR}/${TARGET_EXPORT_NAME}.cmake"
 )
 
-if (WITH_LUA_ROCKS)
-    install(CODE "set(CMAKE_CONFIG_DESTINATION \"${CMAKE_CONFIG_DESTINATION}\")")
-    install(CODE "set(CMAKE_CURRENT_SOURCE_DIR \"${CMAKE_CURRENT_SOURCE_DIR}\")")
-    install(CODE "set(CMAKE_INSTALL_PREFIX \"${CMAKE_INSTALL_PREFIX}\")")
-    install(CODE "set(CMAKE_SOURCE_DIR \"${CMAKE_SOURCE_DIR}\")")
-    install(CODE "set(EXPORT_NAME \"${EXPORT_NAME}\")")
-    install(CODE "set(LIBRAY_DESTINATION \"${LIBRAY_DESTINATION}\")")
+if (UNIX AND Qt5_DIR)
+    unset(Qt5_PLUGINS_DIR)
+    if (EXISTS "${Qt5_DIR}/../../../plugins")
+        set(Qt5_PLUGINS_DIR "${Qt5_DIR}/../../../plugins")
+    elseif (EXISTS "${Qt5_DIR}/../../qt5/plugins")
+        set(Qt5_PLUGINS_DIR "${Qt5_DIR}/../../qt5/plugins")
+    endif()
+    if (Qt5_PLUGINS_DIR)
+        install(FILES "${Qt5_PLUGINS_DIR}/platforms/libqxcb.so" DESTINATION "${LIBRAY_DESTINATION}/${target_name}/qt/plugins/platforms")
+    endif()
 
-    install(SCRIPT "export_targets_repair.cmake")
-
-    if (UNIX)
-        # Add any variables you need during post install.
-        install(CODE "set(CMAKE_BINARY_DIR \"${CMAKE_BINARY_DIR}\")")
-        install(CODE "set(CMAKE_CURRENT_BINARY_DIR \"${CMAKE_CURRENT_BINARY_DIR}\")")
-        install(CODE "set(CMAKE_INSTALL_LIBDIR \"${INST_LIBDIR}\")")
-        install(CODE "set(PROJECT_VERSION \"${PROJECT_VERSION}\")")
-        install(CODE "set(Python3_EXECUTABLE \"${Python3_EXECUTABLE}\")")
-        install(CODE "set(Qt5_DIR \"${Qt5_DIR}\")")
-        install(CODE "set(TARGET_FILE \"$<TARGET_FILE:${target_name}>\")")
-        install(CODE "set(target_name \"${target_name}\")")
-
-        # CMake will execute this last in the build.
-        # Install the script that does the post install work.
-        install(SCRIPT "auditwheel_repair.cmake")
-
-        if(Qt5_DIR)
-            unset(Qt5_PLUGINS_DIR)
-            if (EXISTS "${Qt5_DIR}/../../../plugins")
-                set(Qt5_PLUGINS_DIR "${Qt5_DIR}/../../../plugins")
-            elseif (EXISTS "${Qt5_DIR}/../../qt5/plugins")
-                set(Qt5_PLUGINS_DIR "${Qt5_DIR}/../../qt5/plugins")
-            endif()
-            if (Qt5_PLUGINS_DIR)
-                install(FILES "${Qt5_PLUGINS_DIR}/platforms/libqxcb.so" DESTINATION "${INST_LIBDIR}/${target_name}/qt/plugins/platforms")
-            endif()
-
-            if (NOT APPLE)
-                find_path(DEJAVU_FONT
-                    NAMES DejaVuSans.ttf
-                    PATHS /usr/share/fonts
-                    PATH_SUFFIXES dejavu truetype/dejavu
-                    NO_DEFAULT_PATH
-                    NO_PACKAGE_ROOT_PATH
-                    NO_CMAKE_PATH
-                    NO_CMAKE_ENVIRONMENT_PATH
-                    NO_SYSTEM_ENVIRONMENT_PATH
-                    NO_CMAKE_SYSTEM_PATH
-                    NO_CMAKE_INSTALL_PREFIX
-                    NO_CMAKE_FIND_ROOT_PATH
-                )
-                if (DEJAVU_FONT)
-                    install(DIRECTORY "${DEJAVU_FONT}" DESTINATION "${INST_LIBDIR}/${target_name}/qt/fonts")
-                endif()
-            endif()
+    if (NOT APPLE)
+        if (WITH_QT)
+            set(WITH_QT_REQUIRED REQUIRED)
+        else()
+            unset(WITH_QT_REQUIRED)
         endif()
+
+        find_path(DEJAVU_FONT
+            NAMES DejaVuSans.ttf
+            PATHS /usr/share/fonts
+            PATH_SUFFIXES dejavu truetype/dejavu
+            NO_DEFAULT_PATH
+            NO_PACKAGE_ROOT_PATH
+            NO_CMAKE_PATH
+            NO_CMAKE_ENVIRONMENT_PATH
+            NO_SYSTEM_ENVIRONMENT_PATH
+            NO_CMAKE_SYSTEM_PATH
+            NO_CMAKE_INSTALL_PREFIX
+            NO_CMAKE_FIND_ROOT_PATH
+            ${WITH_QT_REQUIRED}
+        )
+
+        if (DEJAVU_FONT)
+            file(GLOB_RECURSE DEJAVU_FONTS "${DEJAVU_FONT}/*.ttf")
+            install(FILES ${DEJAVU_FONTS} DESTINATION "${LIBRAY_DESTINATION}/${target_name}/qt/fonts")
+        endif()
+    endif()
+endif()
+
+# copy FFmpeg dll to the output folder
+if (WIN32)
+    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+        set(FFMPEG_SUFFIX _64)
+    endif()
+    set(ffmpeg_dir "${OpenCV_BINARY_DIR}/3rdparty/ffmpeg")
+    set(ffmpeg_bare_name "opencv_videoio_ffmpeg${FFMPEG_SUFFIX}.dll")
+    set(ffmpeg_bare_name_ver "opencv_videoio_ffmpeg${OPENCV_DLLVERSION}${FFMPEG_SUFFIX}.dll")
+    set(ffmpeg_path "${ffmpeg_dir}/${ffmpeg_bare_name}")
+    install(FILES "${ffmpeg_path}" DESTINATION "${LIBRAY_DESTINATION}/${target_name}" RENAME "${ffmpeg_bare_name_ver}")
+endif()
+
+# ===============
+# OpenCV Lua Repair
+# ===============
+install(CODE "
+set(TARGET_EXPORT_NAME ${TARGET_EXPORT_NAME})
+set(LIBRAY_DESTINATION ${LIBRAY_DESTINATION})
+set(ARCHIVE_DESTINATION ${ARCHIVE_DESTINATION})
+set(CMAKE_CONFIG_DESTINATION ${CMAKE_CONFIG_DESTINATION})
+set(LUAMOD_DESTINATION ${LUAMOD_DESTINATION})
+")
+
+if (WITH_LUA_ROCKS)
+    install(SCRIPT "export_targets_repair.cmake")
+endif()
+
+
+option(ENABLE_REPAIR "Repair installed library to ease distribution" OFF)
+
+if (ENABLE_REPAIR)
+    if (WIN32)
+        add_library(${target_name}_loader SHARED loader.cpp)
+
+        target_compile_definitions(${target_name}_loader PRIVATE
+            LUA_MODULE_NAME=${target_name}
+            LUA_MODULE_VERSION=${LUA_MODULE_VERSION}
+            LUA_MODULE_LIB_NAME=Allegro5
+            LUA_MODULE_LIB_VERSION=${Allegro5_VERSION}
+            LUAAPI_EXPORTS
+        )
+
+        target_include_directories(${target_name}_loader PRIVATE
+            "${CMAKE_SOURCE_DIR}/src/include"
+        )
+
+        target_link_libraries(${target_name}_loader PRIVATE ${LUA_LIBRARIES})
+        target_include_directories(${target_name}_loader PRIVATE ${LUA_INCLUDE_DIR})
+
+        install(TARGETS ${target_name}_loader
+            LIBRARY DESTINATION "${LIBRAY_DESTINATION}/${target_name}"
+            RUNTIME DESTINATION "${LIBRAY_DESTINATION}/${target_name}"
+            ARCHIVE DESTINATION "${ARCHIVE_DESTINATION}/${target_name}"
+        )
+
+        set(REPAIR_DIR repaired)
+
+        set(repair_CODE
+            "set(TARGET_NAME ${target_name})"
+            "set(ORIGIN_FILE \"$<TARGET_FILE:${target_name}>\")"
+            "set(PROJECT_VERSION ${PROJECT_VERSION})"
+            "set(Python3_EXECUTABLE \"${Python3_EXECUTABLE}\")"
+            "set(TARGET_SOURCE_DIR \"${CMAKE_SOURCE_DIR}\")"
+            "set(TARGET_CURRENT_SOURCE_DIR \"${CMAKE_CURRENT_SOURCE_DIR}\")"
+            "set(TARGET_CURRENT_BINARY_DIR \"${CMAKE_CURRENT_BINARY_DIR}\")"
+            "set(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE})"
+            "set(REPAIR_DIR ${REPAIR_DIR})"
+            "set(PACKAGE_DATA \"${target_name}${CMAKE_SHARED_LIBRARY_SUFFIX}\")"
+            "unset(DLL_DIRECTORIES)"
+        )
+
+        if (VCPKG_INSTALLED_DIR)
+            if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+                list(APPEND repair_CODE "list(APPEND DLL_DIRECTORIES \"${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/debug/bin\")")
+            endif()
+
+            list(APPEND repair_CODE "list(APPEND DLL_DIRECTORIES \"${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/bin\")")
+        endif()
+
+        foreach(flag IN ITEMS ignore_existing ignore_in_wheel no_mangle_all with_mangle strip custom_patch include_symbols include_imports)
+            if (DELVEWHEEL_${flag})
+                list(APPEND repair_CODE "set(DELVEWHEEL_${flag} ON)")
+            endif()
+        endforeach()
+
+        foreach(option IN ITEMS add_path include add_dll exclude no_dll wheel_dir no_mangle lib_sdir namespace_pkg)
+            foreach(value IN LISTS DELVEWHEEL_${option})
+                list(APPEND repair_CODE "list(APPEND DELVEWHEEL_${option} \"${value}\")")
+            endforeach()
+        endforeach()
+
+        list(JOIN repair_CODE "\n  " repair_CODE)
+        install(CODE "${repair_CODE}")
+
+        install(SCRIPT "delvewheel_repair.cmake")
+    elseif(UNIX)
+        set(REPAIR_DIR repaired)
+
+        set(repair_CODE
+            "set(TARGET_NAME ${target_name})"
+            "set(ORIGIN_FILE \"$<TARGET_FILE:${target_name}>\")"
+            "set(PROJECT_VERSION ${PROJECT_VERSION})"
+            "set(Python3_EXECUTABLE \"${Python3_EXECUTABLE}\")"
+            "set(TARGET_SOURCE_DIR \"${CMAKE_SOURCE_DIR}\")"
+            "set(TARGET_CURRENT_SOURCE_DIR \"${CMAKE_CURRENT_SOURCE_DIR}\")"
+            "set(TARGET_CURRENT_BINARY_DIR \"${CMAKE_CURRENT_BINARY_DIR}\")"
+            "set(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE})"
+            "set(REPAIR_DIR ${REPAIR_DIR})"
+            "set(PACKAGE_DATA \"${target_name}${CMAKE_SHARED_LIBRARY_SUFFIX}\")"
+        )
+
+        foreach(flag IN ITEMS strip only_plat disable_isa_ext_check)
+            if (AUDITWHEEL_${flag})
+                list(APPEND repair_CODE "set(AUDITWHEEL_${flag} ON)")
+            endif()
+        endforeach()
+
+        foreach(option IN ITEMS plat exclude)
+            foreach(value IN LISTS AUDITWHEEL_${option})
+                list(APPEND repair_CODE "list(APPEND AUDITWHEEL_${option} \"${value}\")")
+            endforeach()
+        endforeach()
+
+        if (Qt5_DIR AND Qt5_PLUGINS_DIR)
+            list(APPEND repair_CODE "list(APPEND PACKAGE_DATA \"${target_name}/qt/plugins/platforms/libqxcb.so\")")
+        endif()
+
+        list(JOIN repair_CODE "\n  " repair_CODE)
+        install(CODE "${repair_CODE}")
+
+        install(SCRIPT "auditwheel_repair.cmake")
     endif()
 endif()
 

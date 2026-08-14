@@ -9,7 +9,7 @@ diff -rupN a/etc/lua.pc b/etc/lua.pc
 +# grep '^V=' ../Makefile
 +V= 5.4
 +# grep '^R=' ../Makefile
-+R= 5.4.6
++R= 5.4.8
 +
 +# grep '^INSTALL_.*=' ../Makefile | sed 's/INSTALL_TOP/prefix/'
 +prefix= /usr/local

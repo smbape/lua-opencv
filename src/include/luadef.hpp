@@ -8,6 +8,7 @@
 #include <array>
 #include <cmath>
 #include <concepts>
+#include <condition_variable>
 #include <cstring>
 #include <functional>
 #include <initializer_list>
@@ -35,7 +36,13 @@
 #define lua_rawlen lua_objlen
 #endif
 
-void lua_pushfuncs(lua_State *L, const luaL_Reg *l);
+inline void lua_pushfuncs(lua_State *L, const luaL_Reg *l) {
+	for (; l->name; l++) {
+		lua_pushstring(L, l->name);
+		lua_pushcclosure(L, l->func, 0);
+		lua_rawset(L, -3);
+	}
+}
 
 #if LUA_VERSION_NUM < 504
 extern int luaL_typeerror(lua_State* L, int arg, const char* tname);
@@ -295,6 +302,19 @@ namespace LUA_MODULE_NAME {
 		static const auto tname = std::string(LUA_MODULE_NAME_STR "::") + std::string(internal::GetTypeName<T>());
 		return tname.c_str();
 	}
+
+	// Source - https://stackoverflow.com/questions/11251376/how-can-i-check-if-a-type-is-an-instantiation-of-a-given-class-template#11251408
+	// Posted by Luc Touraille
+	// Retrieved 2026-05-20, License - CC BY-SA 3.0
+
+	template<template<typename...> class Template, typename T>
+	struct is_instantiation_of : std::false_type {};
+
+	template<template<typename...> class Template, typename... Types>
+	struct is_instantiation_of<Template, Template<Types...>> : std::true_type {};
+
+	template <template <typename...> class Template, typename T>
+	constexpr inline bool is_instantiation_of_v = is_instantiation_of<Template, T>::value;
 }
 
 #ifndef CV_PROP_W

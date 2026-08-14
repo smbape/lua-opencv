@@ -34,16 +34,17 @@ The procedure has been tested on:
 
 ## Prerequisites
 
-  - Install [CUDA Toolkit 12.8.1](https://developer.nvidia.com/cuda-12-8-1-download-archive?target_os=Windows&target_arch=x86_64&target_version=11&target_type=exe_network)
-  - Download [cuDNN 9.8.0](https://developer.nvidia.com/cudnn-9-8-0-download-archive?target_os=Windows&target_arch=x86_64&target_version=10&target_type=exe_local) compatible with the **CUDA Toolkit** version you installed, and extract the contents of the `bin`, `include` and `lib` directories inside the `bin`, `include` and `lib` directories of the **CUDA Toolkit** directory.
-  - Download [NVIDIA Video Codec SDK 12.2.72](https://developer.nvidia.com/designworks/video-codec-sdk/secure/12.2/video_codec_sdk_12.2.72.zip) and extract the contents of the `Interface` and `Lib` directories inside the `include` and `lib` directories of the **CUDA Toolkit** directory.
+  - Install [CUDA Toolkit 13.2.1](https://developer.nvidia.com/cuda-13-2-1-download-archive?target_os=Windows&target_arch=x86_64&target_version=11&target_type=exe_local)
+  - Download [cuDNN 9.23.2](https://developer.download.nvidia.com/compute/cudnn/redist/cudnn/windows-x86_64/cudnn-windows-x86_64-9.23.2.1_cuda13-archive.zip) compatible with the **CUDA Toolkit** version you installed, and extract the contents of the `bin`, `include` and `lib` directories inside the `bin`, `include` and `lib` directories of the **CUDA Toolkit** directory.
+  - Download [NVIDIA Video Codec SDK](https://developer.nvidia.com/video-codec-sdk) and extract the contents of the `Interface` and `Lib/win` directories inside the `include` and `lib` directories of the **CUDA Toolkit** directory.
   - Install [CMake >= 3.25](https://cmake.org/download/)
   - Install [Git](https://git-scm.com/)
   - Install [NodeJS](https://nodejs.org/en/download/current)
-  - Install [Python](https://www.python.org/downloads/)
-  - Install [Visual Studio 2022 >= 17.13.0](https://visualstudio.microsoft.com/fr/downloads/)
+  - Install [Python 3.9...<3.15](https://www.python.org/downloads/)
+  - Install [NASM — The Netwide Assembler](https://www.nasm.us/), add the installation folder to your PATH environment variable, add a `ASM_NASM` with value `nasm.exe`
+  - Install [Visual Studio 2026](https://visualstudio.microsoft.com/fr/downloads/)
 
-In your windows search, search and open the `x64 Native Tools Command Prompt for VS 2022`
+In your windows search, search and open the `x64 Native Tools Command Prompt for VS`
 
 From here on, commands will be executed within the opened Command Prompt.
 
@@ -54,20 +55,8 @@ We will name our LuaRocks pakcage **opencv_lua-custom** in order to avoid confli
 In this example, we will use the following directories: 
   - The **Lua binary directory** is _D:\luarocks-binaries-custom\lua-opencv\out\prepublish\build\opencv_lua-custom\out\install\x64-Release\bin_
   - The **LuaRocks binary directory** is _D:\luarocks-binaries-custom\lua-opencv\out\prepublish\build\opencv_lua-custom\out\build.luaonly\x64-Release\luarocks\luarocks-prefix\src\luarocks_
-  - The **build directory** is _D:\luarocks-binaries-custom\build_
   - The **server directory** is _D:\luarocks-binaries-custom\server_
-  - The **test directory** is _D:\luarocks-binaries-custom\test_
-  - The **vcpkg directory** is _C:\vcpkg_
-
-## Install freetype and harfbuzz with [vcpkg](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started?pivots=shell-cmd)
-
-Freetype and harfbuzz are needed to build the OpenCV freetype contrib module
-
-```sh
-git clone https://github.com/microsoft/vcpkg.git C:\vcpkg
-cd vcpkg && bootstrap-vcpkg.bat
-vcpkg install freetype:x64-windows harfbuzz:x64-windows
-```
+  - The **test directory** is _D:\luarocks-binaries-custom\test\lua-opencv_
 
 ## Open GIT BASH in the **build directory**
 
@@ -78,26 +67,36 @@ vcpkg install freetype:x64-windows harfbuzz:x64-windows
 ## Download the source code
 
 ```sh
-git clone --depth 1 --branch v0.2.0 https://github.com/smbape/lua-opencv.git /d/luarocks-binaries-custom/lua-opencv && \
+git clone --depth 1 --branch v0.2.1 https://github.com/smbape/lua-opencv.git /d/luarocks-binaries-custom/lua-opencv && \
 cd /d/luarocks-binaries-custom/lua-opencv && \
 npm ci
+```
+
+### Add freetype and harfbuzz dependencies with [vcpkg](https://learn.microsoft.com/en-us/vcpkg/get_started/get-started?pivots=shell-cmd)
+
+```sh
+vcpkg new --application && \
+vcpkg add port freetype harfbuzz
 ```
 
 ## Build
 
 ```sh
-# --lua-versions luajit-2.1,5.1,5.2,5.3,5.4
+# --lua-versions luajit-2.1,5.1,5.2,5.3,5.4,5.5
 node scripts/prepublish.js --pack --server="/d/luarocks-binaries-custom/server" --lua-versions luajit-2.1 --name=opencv_lua-custom \
+    -DENABLE_REPAIR=ON \
+    -DDELVEWHEEL_exclude="cublas*;cudnn*;cufft*;nvcuda*;nvcuvid*;nvidia*;npp*;nvEncodeAPI*; " \
+    -DCMAKE_TOOLCHAIN_FILE="$(cygpath -m "$VCPKG_ROOT")/scripts/buildsystems/vcpkg.cmake" \
     -DENABLE_EXPERIMENTAL_WIDE_CHAR=ON \
     -DBUILD_contrib=ON \
     -DWITH_FREETYPE=ON \
-    -DFREETYPE_DIR=C:/vcpkg/installed/x64-windows \
-    -DHARFBUZZ_DIR=C:/vcpkg/installed/x64-windows \
     -DWITH_CUDA=ON \
     -DWITH_CUDNN=ON \
     -DOPENCV_DNN_CUDA=ON \
     -DCUDA_ARCH_BIN=$(nvidia-smi --query-gpu=compute_cap --format=csv | sed /compute_cap/d)
 ```
+
+  - `-DDELVEWHEEL_exclude="cublas*;cudnn*;cufft*;nvcuda*;nvcuvid*;nvidia*;npp*;nvEncodeAPI*; "`: exclude shared libraries that, if vendored, may conflict with the system shared libraries or heavily increase (+850 Mo) the size of the binary rock.
 
 ## Testing our custom prebuilt binary
 
@@ -119,24 +118,11 @@ set PATH=D:\luarocks-binaries-custom\lua-opencv\out\prepublish\build\opencv_lua-
 
 ```cmd
 chcp 65001
-git clone --depth 1 --branch 4.12.0 https://github.com/opencv/opencv_extra.git "D:\luarocks-binaries-custom\opencv_extra"
-mkdir "D:\luarocks-binaries-custom\test"
-cd /d "D:\luarocks-binaries-custom\test"
-luarocks --lua-version "5.1" --lua-dir "D:\luarocks-binaries-custom\lua-opencv\out\prepublish\build\opencv_lua-custom\out\install\x64-Release" init --lua-versions "5.1,5.2,5.3,5.4"
+git clone --depth 1 --branch 4.13.0 https://github.com/opencv/opencv_extra.git "D:\luarocks-binaries-custom\opencv_extra"
+mkdir "D:\luarocks-binaries-custom\test\lua-opencv"
+cd /d "D:\luarocks-binaries-custom\test\lua-opencv"
+luarocks --lua-version "5.1" init --lua-versions "5.1,5.2,5.3,5.4,5.5"
 luarocks install "--server=D:\luarocks-binaries-custom\server" opencv_lua-custom
-```
-
-Replace the content of `lua.bat` with the following content
-
-```cmd
-@echo off
-setlocal
-IF "%*"=="" (set I=-i) ELSE (set I=)
-set "LUAROCKS_SYSCONFDIR=C:\Program Files\luarocks"
-set LUA_MODULES=%~dp0lua_modules
-set "PATH=%LUA_MODULES%\lib\lua\5.1;%LUA_MODULES%\bin;%APPDATA%\luarocks\bin;C:\vcpkg\installed\x64-windows\bin;%PATH%"
-"D:\luarocks-binaries-custom\lua-opencv\out\prepublish\build\opencv_lua-custom\out\install\x64-Release\bin\luajit.exe" -e "package.path=\"%LUA_MODULES:\=\\%\\share\\lua\\5.1\\?.lua;%LUA_MODULES:\=\\%\\share\\lua\\5.1\\?\\init.lua;%APPDATA:\=\\%\\luarocks\\share\\lua\\5.1\\?.lua;%APPDATA:\=\\%\\luarocks\\share\\lua\\5.1\\?\\init.lua;\"..package.path;package.cpath=\"%LUA_MODULES:\=\\%\\lib\\lua\\5.1\\?.dll;%APPDATA:\=\\%\\luarocks\\lib\\lua\\5.1\\?.dll;\"..package.cpath" %I% %*
-exit /b %ERRORLEVEL%
 ```
 
 ### Test freetype
@@ -177,7 +163,7 @@ if retval then
             ".",
         }
     }))
-    assert(#font ~= 0, "msjh.ttc was not fount")
+    assert(#font ~= 0, "msjh.ttc was not found")
     ft2:loadFontData(font, 0)
 
     points = points:convertTo(cv.CV_32S):table()
@@ -211,11 +197,11 @@ lua.bat test-opencv.lua
 
 ### Test CUDA
 
-Open a `x64 Native Tools Command Prompt for VS 2022` terminal
+Open a `x64 Native Tools Command Prompt for VS` terminal
 
 ```cmd
-cd /d "D:\luarocks-binaries-custom\test"
-git clone --depth 1 --branch 4.12.0 https://github.com/opencv/opencv.git "D:\luarocks-binaries-custom\opencv"
+cd /d "D:\luarocks-binaries-custom\test\lua-opencv"
+git clone --depth 1 --branch 4.13.0 https://github.com/opencv/opencv.git "D:\luarocks-binaries-custom\opencv"
 luarocks.bat install --deps-only D:\luarocks-binaries-custom\lua-opencv\samples\samples-scm-1.rockspec
 lua.bat D:\luarocks-binaries-custom\lua-opencv\samples\dnn\object_detection\object_detection.lua ssd_tf --input Megamind.avi --backend 5 --target 6
 ```

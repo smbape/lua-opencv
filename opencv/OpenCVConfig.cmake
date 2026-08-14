@@ -23,10 +23,6 @@ function(save_variable lines_output_var variable_name)
     set(${lines_output_var} "${${lines_output_var}}" PARENT_SCOPE)
 endfunction()
 
-if (UNIX AND (NOT APPLE))
-    set(WITH_QT "5" CACHE STRING "Build with Qt Backend support")
-endif()
-
 if (WITH_LUA_ROCKS)
     set(OPENCV_INCLUDE_INSTALL_PATH "lib/opencv_lua/devel/include" CACHE STRING "Include directory destination")
 else()

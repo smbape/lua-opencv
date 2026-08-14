@@ -1,6 +1,4 @@
-const {
-    spawn
-} = require("node:child_process");
+const { spawn } = require("node:child_process");
 const sysPath = require("node:path");
 const fs = require("fs-extra");
 const os = require("node:os");
@@ -9,7 +7,6 @@ const waterfall = require("async/waterfall");
 const prepublishRoot = sysPath.resolve(__dirname, "..", "out", "prepublish");
 const wrapperSuffix = os.platform() === "win32" ? ".bat" : "";
 const shellSuffix = os.platform() === "win32" ? ".bat" : ".sh";
-const { auditwheelOptions } = require("./pack");
 
 const unixEscape = (arg, verbatim = true) => {
     if (verbatim && os.platform() === "win32" && arg[0] === "/" && arg[1] !== "/") {
@@ -38,6 +35,8 @@ const spawnExec = (cmd, args, options, next) => {
         options.shell = true;
     }
 
+    console.log([cmd, unixCmd(args.flat())].join(" "));
+
     const {stdio} = options;
 
     if (stdio === "tee") {
@@ -51,8 +50,6 @@ const spawnExec = (cmd, args, options, next) => {
     const stderr = Object.assign([], {
         nread: 0
     });
-
-    console.log([cmd, unixCmd(args.flat())].join(" "));
 
     let err = false;
 
@@ -110,33 +107,38 @@ const prepublish = (target, version, options, next) => {
 
         (exists, next) => {
             const tasks = [];
+            const origin = sysPath.resolve(__dirname, "..");
 
             if (exists) {
                 tasks.push(...[
-                    ["git", ["remote", "set-url", "origin", sysPath.resolve(__dirname, "..")]],
+                    ["git", ["remote", "set-url", "origin", origin]],
                     ["git", ["reset", "--hard", "HEAD"]],
                     ["git", ["clean", "-fd"]],
                     ["git", ["fetch", "origin", branch]],
                     ["git", ["checkout", branch]],
                     ["git", ["pull", "origin", branch, "--force"]],
+                    ["git", ["branch", `--set-upstream-to=origin/${ branch }`, branch]],
                 ]);
             } else {
                 tasks.push(...[
                     ["git", ["init", "-b", branch]],
-                    ["git", ["remote", "add", "origin", sysPath.resolve(__dirname, "..")]],
+                    ["git", ["remote", "add", "origin", origin]],
                     ["git", ["pull", "origin", branch]],
-                    ["git", ["branch", `--set-upstream-to=origin/${ branch }`, branch]],
                     ["git", ["config", "pull.rebase", "true"]],
                     ["git", ["config", "user.email", "you@example.com"]],
                     ["git", ["config", "user.name", "Your Name"]],
+                    ["git", ["branch", `--set-upstream-to=origin/${ branch }`, branch]],
                 ]);
             }
 
-            if (name !== "opencv_lua" || cmake_build_args.length !== 0) {
+            const keepSource = cmake_build_args.length === 0 || !version && options["keep-source"];
+
+            if (name !== "opencv_lua" || !keepSource) {
                 tasks.push(async next => {
-                    await fs.copy(originalRockSpec, scmRockSpec);
+                    if (originalRockSpec !== scmRockSpec) {
+                        await fs.copy(originalRockSpec, scmRockSpec);
+                    }
                     const buffer = await fs.readFile(scmRockSpec);
-                    const indent = " ".repeat(6);
 
                     let rockspec = buffer.toString();
 
@@ -144,7 +146,10 @@ const prepublish = (target, version, options, next) => {
                         rockspec = rockspec.replaceAll("opencv_lua", name);
                     }
 
-                    if (cmake_build_args.length !== 0) {
+                    if (!keepSource) {
+                        const iend = rockspec.indexOf("LUA_INCDIR");
+                        const istart = rockspec.lastIndexOf("\n", iend) + 1;
+                        const indent = " ".repeat(iend - istart);
                         rockspec = rockspec.replace("LUA_INCDIR = \"$(LUA_INCDIR)\",", `LUA_INCDIR = "$(LUA_INCDIR)",\n${ indent }${ cmake_build_args.join(`,\n${ indent }`) },`);
                     }
 
@@ -171,43 +176,30 @@ const prepublish = (target, version, options, next) => {
         next => {
             const luarocks = sysPath.join("luarocks", `luarocks${ wrapperSuffix }`);
 
-            const tasks = [
-                [sysPath.join(projectRoot, `build${ shellSuffix }`), [`-DLua_VERSION=${ version }`, "--target", target, "--install"]],
-                [sysPath.join(projectRoot, `build${ shellSuffix }`), [`-DLua_VERSION=${ version }`, "--target", "luarocks"]],
-                [luarocks, ["make", scmRockSpec]],
-            ];
+            const tasks = [];
+
+            if (version) {
+                tasks.push(...[
+                    [sysPath.join(projectRoot, `build${ shellSuffix }`), [`-DLua_VERSION=${ version }`, "--target", target, "--install"]],
+                    [sysPath.join(projectRoot, `build${ shellSuffix }`), [`-DLua_VERSION=${ version }`, "--target", "luarocks"]],
+                    [luarocks, ["config", "--scope", "project", "cmake_generator", "Ninja"]],
+                ]);
+
+                if (os.platform() !== "win32") {
+                    tasks.push([luarocks, ["config", "--scope", "project", "cmake_build_args", "--", `-j${ os.cpus().length }`]]);
+                }
+
+                tasks.push([luarocks, ["make", scmRockSpec]]);
+            }
 
             if (options.pack) {
-                const args = [sysPath.join("scripts", "pack.js"), "--rockspec", scmRockSpec];
+                const args = ["--trace-uncaught", "--unhandled-rejections=strict", sysPath.join("scripts", "pack.js"), version ? "--binary" : "--source", "--rockspec", scmRockSpec];
 
                 if (options.server) {
                     args.push("--server", options.server);
                 }
 
-                if (os.platform() !== "win32" && options.repair) {
-                    args.push("--repair");
-
-                    for (const flag of auditwheelOptions.flags) {
-                        if (options[flag.slice("--".length)]) {
-                            args.push(flag);
-                        }
-                    }
-
-                    for (const option of auditwheelOptions.options) {
-                        if (Object.hasOwn(options, option.slice("--".length))) {
-                            args.push(option, options[option.slice("--".length)]);
-                        }
-                    }
-                }
-
                 tasks.push(["node", args]);
-            }
-
-            if (os.platform() !== "win32") {
-                tasks.splice(2, 0, ...[
-                    [luarocks, ["config", "--scope", "project", "cmake_generator", "Ninja"]],
-                    [luarocks, ["config", "--scope", "project", "cmake_build_args", "--", `-j${ os.cpus().length } -- -d explain`]],
-                ]);
             }
 
             eachOfLimit(tasks, 1, ([cmd, args], icmd, next) => {
@@ -228,14 +220,14 @@ const options = {
     server: process.env.LUAROCKS_SERVER ? sysPath.resolve(process.env.LUAROCKS_SERVER) : sysPath.join(prepublishRoot, "server"),
 };
 
-const aliases = new Map([
-    ...auditwheelOptions.aliases,
-]);
+const aliases = new Map([]);
 
 const optionValueKeys = new Set([
     "--pack",
-    "--repair",
-    ...auditwheelOptions.flags,
+    "--source",
+    "--keep-source",
+    "--binary",
+    "--contrib",
 ]);
 
 const oneValueKeys = new Set([
@@ -243,7 +235,6 @@ const oneValueKeys = new Set([
     "--server",
     "--name",
     "--lua-versions",
-    ...auditwheelOptions.options,
 ]);
 
 const argv = process.argv.slice(2);
@@ -308,31 +299,39 @@ for (let i = 0; i < argv.length; i++) {
     throw new Error(`Unknown option ${ arg }`);
 }
 
+if (!options.source && !options.binary) {
+    options.source = true;
+    options.binary = true;
+}
+
 const versions = options["lua-versions"] ? options["lua-versions"].trim().split(/[\s,]+/) : [];
 const flavors = [false, true];
 
-if (options.cmake_build_args.length !== 0) {
+if (options.cmake_build_args.length !== 0 && !options.contrib) {
     flavors.length = 1;
     flavors[0] = false;
 }
 
 eachOfLimit([
     ["luajit", "luajit-2.1"],
+    ["lua", "5.5"],
     ["lua", "5.4"],
     ["lua", "5.3"],
     ["lua", "5.2"],
     ["lua", "5.1"],
+    ["src"],
 ], 1, ([target, version], i, next) => {
-    if (versions.length !== 0 && !versions.includes(version)) {
+    if (version ? !options.binary || versions.length !== 0 && !versions.includes(version) : !options.source) {
         next();
         return;
     }
 
-    eachOfLimit(flavors, 1, (contrib, icontrib, next) => {
-        const opts = Object.assign({}, options);
+    eachOfLimit(flavors, 1, (contrib, j, next) => {
+        // Poor man deep copy
+        const opts = JSON.parse(JSON.stringify(options));
         if (contrib) {
             opts.name += "-contrib";
-            opts.cmake_build_args = ["BUILD_contrib = \"ON\""];
+            opts.cmake_build_args.push("BUILD_contrib = \"ON\"");
         }
         prepublish(target, version, opts, next);
     }, next);

@@ -5,8 +5,8 @@ package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:su
 --[[
 Sources:
     https://docs.opencv.org/4.x/d4/d70/tutorial_anisotropic_image_segmentation_by_a_gst.html
-    https://github.com/opencv/opencv/blob/4.12.0/samples/python/tutorial_code/imgProc/anisotropic_image_segmentation/anisotropic_image_segmentation.py
-    https://github.com/opencv/opencv/blob/4.12.0/samples/cpp/tutorial_code/ImgProc/anisotropic_image_segmentation/anisotropic_image_segmentation.cpp
+    https://github.com/opencv/opencv/blob/4.13.0/samples/python/tutorial_code/imgProc/anisotropic_image_segmentation/anisotropic_image_segmentation.py
+    https://github.com/opencv/opencv/blob/4.13.0/samples/cpp/tutorial_code/ImgProc/anisotropic_image_segmentation/anisotropic_image_segmentation.cpp
 --]]
 
 local argparse = require("argparse")
@@ -22,6 +22,7 @@ cv.samples.addSamplesDataSearchPath(opencv_lua.fs_utils.findFile(
             "out/build/Linux-GCC-Debug/opencv/opencv-src",
             "out/build/Linux-GCC-Release/opencv/opencv-src",
             "out/prepublish/luajit-2.1/opencv_lua/build.luarocks/opencv/opencv-src",
+            "out/prepublish/5.5/opencv_lua/build.luarocks/opencv/opencv-src",
             "out/prepublish/5.4/opencv_lua/build.luarocks/opencv/opencv-src",
             "out/prepublish/5.3/opencv_lua/build.luarocks/opencv/opencv-src",
             "out/prepublish/5.2/opencv_lua/build.luarocks/opencv/opencv-src",

@@ -1,6 +1,6 @@
 # OpenCV bindings for lua
 
-OpenCV bindings for luajit and lua 5.1/5.2/5.3/5.4.
+OpenCV bindings for luajit and lua 5.1/5.2/5.3/5.4/5.5.
 
 The aim is to make it as easy to use as [opencv-python](https://pypi.org/project/opencv-python/).
 
@@ -58,7 +58,7 @@ Therefore the [OpenCV documentation](https://docs.opencv.org/4.x/index.html) sho
 
 ## Installation
 
-Prebuilt binaries are available for [LuaJIT 2.1](https://luajit.org/) and [Lua 5.1/5.2/5.3/5.4](https://www.lua.org/versions.html), and only on Windows and Linux.
+Prebuilt binaries are available for [LuaJIT 2.1](https://luajit.org/) and [Lua 5.1/5.2/5.3/5.4/5.5](https://www.lua.org/versions.html), and only on Windows and Linux.
 
 ### Prerequisites to source rock install
 
@@ -67,9 +67,9 @@ Prebuilt binaries are available for [LuaJIT 2.1](https://luajit.org/) and [Lua 5
   - Install [Git](https://git-scm.com/)
   - Install [LuaRocks](https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Windows)
   - Install [NodeJS](https://nodejs.org/en/download/current)
-  - Install [Python](https://www.python.org/downloads/)
-  - Install [Visual Studio 2022 >= 17.13.0 with .NET Desktop and C++ Desktop](https://visualstudio.microsoft.com/fr/downloads/)
-  - In your windows search, search and open the `x64 Native Tools Command Prompt for VS 2022`
+  - Install [Python 3.9...<3.15](https://www.python.org/downloads/)
+  - Install [Visual Studio 2026 with .NET Desktop and C++ Desktop](https://visualstudio.microsoft.com/fr/downloads/)
+  - In your windows search, search and open the `x64 Native Tools Command Prompt for VS`
 
 #### Linux
 
@@ -84,52 +84,56 @@ Prebuilt binaries are available for [LuaJIT 2.1](https://luajit.org/) and [Lua 5
 
 ```sh
 sudo apt install -y build-essential curl git libavcodec-dev libavformat-dev libdc1394-dev \
-        libjpeg-dev libpng-dev libreadline-dev libswscale-dev libtbb-dev \
-        patchelf pkg-config python3-pip python3-venv qtbase5-dev unzip wget zip
+    liblapacke-dev libjpeg-dev libopenblas-dev libpng-dev libreadline-dev libswscale-dev libtbb-dev \
+    patchelf pkg-config python3-pip python3-venv qtbase5-dev unzip wget zip
 sudo apt install -y libtbbmalloc2 || apt install -y libtbb2
 ```
 
 ##### Fedora
 
 ```sh
-sudo dnf install -y curl gcc gcc-c++ git \
-        libjpeg-devel libpng-devel readline-devel make patch tbb-devel \
-        libavcodec-free-devel libavformat-free-devel libdc1394-devel libswscale-free-devel \
-        patchelf pkg-config python3-pip qt5-qtbase-devel unzip wget zip
+sudo dnf install -y curl dejavu-sans-fonts gcc gcc-c++ git \
+    lapack-devel libjpeg-devel libpng-devel make openblas-devel patch patchelf pkg-config \
+    python3-pip qt5-qtbase-devel readline-devel tbb-devel unzip wget zip \
+    libavcodec-free-devel libavformat-free-devel libdc1394-devel libswscale-free-devel
 ```
 
 ##### Almalinux 8
 
 ```sh
-sudo dnf install -y curl gcc-toolset-12-gcc gcc-toolset-12-gcc-c++ git \
-        libjpeg-devel libpng-devel readline-devel make patch tbb-devel openssl-devel \
-        pkg-config python3-pip qt5-qtbase-devel unzip wget zip && \
+sudo dnf install -y curl dejavu-sans-fonts git \
+    libjpeg-devel libpng-devel make patch pkg-config \
+    qt5-qtbase-devel readline-devel tbb-devel unzip wget zip \
+    openssl-devel && \
 sudo config-manager --set-enabled powertools && \
-sudo dnf install -y epel-release && \
+sudo dnf install -y almalinux-release-devel epel-release && \
 sudo dnf install -y https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm
 sudo dnf install -y https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-8.noarch.rpm && \
 sudo dnf update -y && \
-sudo dnf install -y ffmpeg-devel patchelf && \
+sudo dnf install -y ffmpeg-devel gcc-toolset-12-gcc gcc-toolset-12-gcc-c++ lapack-devel libdc1394-devel openblas-devel patchelf python3.12-pip && \
 source /opt/rh/gcc-toolset-12/enable
 ```
 
 ##### Almalinux 9, 10
 
 ```sh
-sudo dnf install -y curl gcc gcc-c++ git \
-        libjpeg-devel libpng-devel readline-devel make patch tbb-devel openssl-devel \
-        pkg-config python3-pip qt5-qtbase-devel unzip wget zip && \
+sudo dnf install -y curl dejavu-sans-fonts gcc gcc-c++ git \
+    libjpeg-devel libpng-devel make patch pkg-config \
+    python3-pip qt5-qtbase-devel readline-devel tbb-devel unzip wget zip \
+    openssl-devel && \
 sudo config-manager --set-enabled crb && \
-sudo dnf install -y epel-release && \
+sudo dnf install -y almalinux-release-devel epel-release && \
 sudo dnf install -y https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-9.noarch.rpm
 sudo dnf install -y https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-9.noarch.rpm && \
 sudo dnf update -y && \
-sudo dnf install -y libavcodec-free-devel libavformat-free-devel libdc1394-devel libswscale-free-devel patchelf
+sudo dnf install -y lapack-devel libavcodec-free-devel libavformat-free-devel libdc1394-devel libswscale-free-devel openblas-devel patchelf
 ```
 
 ### How to install
 
-I recommend you to try installing the prebuilt binary, if you are not using luajit, with
+I recommend you to try to install the prebuilt binary.
+
+If you are not using luajit
 
 ```sh
 luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua
@@ -138,24 +142,25 @@ luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/d
 Or to specify the target lua version with one of the following commands
 
 ```sh
-luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.12.0luajit2.1
-luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.12.0lua5.4
-luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.12.0lua5.3
-luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.12.0lua5.2
-luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.12.0lua5.1
+luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.13.0luajit2.1
+luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.13.0lua5.5
+luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.13.0lua5.4
+luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.13.0lua5.3
+luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.13.0lua5.2
+luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.13.0lua5.1
 ```
 
 Those prebuilt binaries should work on Windows and many linux distributions and have been tested on:
   - Windows 11
-  - Ubuntu 20.04
   - Ubuntu 22.04
   - Ubuntu 24.04
+  - Ubuntu 26.04
   - Debian 11
   - Debian 12
   - Debian 13
-  - Fedora 39
-  - Fedora 40
-  - Fedora 41
+  - Fedora 43
+  - Fedora 44
+  - Fedora 45
   - Almalinux 8
   - Almalinux 9
   - Almalinux 10
@@ -163,25 +168,12 @@ Those prebuilt binaries should work on Windows and many linux distributions and 
 If none of the above works for you, then install the source rock with
 
 ```sh
-luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.12.0
+luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.13.0
 ```
 
 ## Examples
 
-On Windows, the lua_modules modules should be added to the PATH environment variable, as shown with `luarocks path`
-
-```cmd
-set "PATH=%LUA_MODULES%\bin;%APPDATA%\luarocks\bin;%PATH%"
-```
-
-`LUA_MODULES` is a variable pointing to your lua_modules folder.
-
-For example, in your lua project, initialized with `luarocks init`, modify the file `lua.bat` and after the line with `set "LUAROCKS_SYSCONFDIR=`, add
-
-```cmd
-set LUA_MODULES=%~dp0lua_modules
-set "PATH=%LUA_MODULES%\bin;%APPDATA%\luarocks\bin;%PATH%"
-```
+More expamples can be found in the [samples](samples) directory.
 
 ### Show an image
 
@@ -318,8 +310,6 @@ cv.waitKey()
 cv.destroyAllWindows()
 ```
 
-More expamples can be found in the samples directory.
-
 ## Running examples
 
 All the examples in the samples directory can be run by following theses instructions.
@@ -330,8 +320,8 @@ All the examples in the samples directory can be run by following theses instruc
 
   - Install [Git](https://git-scm.com/)
   - Install [NodeJS](https://nodejs.org/en/download/current)
-  - Install [Visual Studio 2022 >= 17.13.0 with '.NET desktop development' and 'Desktop development with C++'](https://visualstudio.microsoft.com/fr/downloads/)
-  - In your windows search, search and open the `x64 Native Tools Command Prompt for VS 2022`
+  - Install [Visual Studio 2026 with '.NET desktop development' and 'Desktop development with C++'](https://visualstudio.microsoft.com/fr/downloads/)
+  - In your windows search, search and open the `x64 Native Tools Command Prompt for VS`
 
 #### Linux
 
@@ -348,14 +338,14 @@ All the examples in the samples directory can be run by following theses instruc
 #### Windows
 
 ```cmd
-git clone --depth 1 --branch 4.12.0 https://github.com/opencv/opencv.git
-git clone --depth 1 --branch v0.2.0 https://github.com/smbape/lua-opencv.git
+git clone --depth 1 --branch 4.13.0 https://github.com/opencv/opencv.git
+git clone --depth 1 --branch v0.3.0 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
 @REM build.bat "-DLua_VERSION=luajit-2.1" --target luajit --install
-@REM available versions are 5.1, 5.2, 5.3, 5.4
-build.bat "-DLua_VERSION=5.4" --target lua --install
-build.bat "-DLua_VERSION=5.4" --target luarocks
-@REM luarocks\luarocks.bat install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.12.0luajit2.1
+@REM available versions are 5.1, 5.2, 5.3, 5.4, 5.5
+build.bat "-DLua_VERSION=5.5" --target lua --install
+build.bat "-DLua_VERSION=5.5" --target luarocks
+@REM luarocks\luarocks.bat install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.13.0luajit2.1
 luarocks\luarocks.bat install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua
 luarocks\luarocks.bat install --deps-only samples\samples-scm-1.rockspec
 npm ci
@@ -365,14 +355,14 @@ node scripts\test.js --Release
 #### Linux
 
 ```sh
-git clone --depth 1 --branch 4.12.0 https://github.com/opencv/opencv.git
-git clone --depth 1 --branch v0.2.0 https://github.com/smbape/lua-opencv.git
+git clone --depth 1 --branch 4.13.0 https://github.com/opencv/opencv.git
+git clone --depth 1 --branch v0.3.0 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
 # ./build.sh "-DLua_VERSION=luajit-2.1" --target luajit --install
-# available versions are 5.1, 5.2, 5.3, 5.4
-./build.sh "-DLua_VERSION=5.4" --target lua --install
-./build.sh "-DLua_VERSION=5.4" --target luarocks
-# ./luarocks/luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.12.0luajit2.1
+# available versions are 5.1, 5.2, 5.3, 5.4, 5.5
+./build.sh "-DLua_VERSION=5.5" --target lua --install
+./build.sh "-DLua_VERSION=5.5" --target luarocks
+# ./luarocks/luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.13.0luajit2.1
 ./luarocks/luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua
 ./luarocks/luarocks install --deps-only samples/samples-scm-1.rockspec
 npm ci
@@ -390,8 +380,8 @@ node scripts/test.js --Release
 With Git Bash, download and extract the library with the following commands
 
 ```sh
-curl -L https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1/opencv_lua-4.12.0luajit2.1-1.win32-x86_64.rock -o opencv_lua-4.12.0luajit2.1-1.win32-x86_64.rock
-unzip -d third_party -o opencv_lua-4.12.0luajit2.1-1.win32-x86_64.rock 'lib/*'
+curl -L https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1/opencv_lua-4.13.0luajit2.1-1.win32-x86_64.rock -o opencv_lua-4.13.0luajit2.1-1.win32-x86_64.rock
+unzip -d third_party -o opencv_lua-4.13.0luajit2.1-1.win32-x86_64.rock 'lib/**'
 ```
 
 #### Linux
@@ -399,8 +389,8 @@ unzip -d third_party -o opencv_lua-4.12.0luajit2.1-1.win32-x86_64.rock 'lib/*'
 Download and extract the library with the following commands
 
 ```sh
-curl -L https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1/opencv_lua-4.12.0luajit2.1-1.linux-x86_64.rock -o opencv_lua-4.12.0luajit2.1-1.linux-x86_64.rock
-unzip -d third_party -o opencv_lua-4.12.0luajit2.1-1.linux-x86_64.rock 'lib/*'
+curl -L https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1/opencv_lua-4.13.0luajit2.1-1.linux-x86_64.rock -o opencv_lua-4.13.0luajit2.1-1.linux-x86_64.rock
+unzip -d third_party -o opencv_lua-4.13.0luajit2.1-1.linux-x86_64.rock 'lib/**'
 ```
 
 ### Example
@@ -481,7 +471,7 @@ end
 local image
 
 function love.load()
-    -- OpenCV uses BRG color space
+    -- OpenCV uses BGR color space
     -- LÖVE uses RGBA color space
     -- local mat = cv.imread("opencv_data/pic1.png")
     -- local imageData = newImageDataFromMat(cv.cvtColor(mat, cv.COLOR_BGR2RGBA))
@@ -613,7 +603,7 @@ cv.destroyAllWindows()
 
 ### 1-indexed
 
-Arrays are 1-indexed in `lua`, and 0-indexed in python. Therefore, if you see in python `p[0]`, you should write in lua `p[1]`
+Arrays are 1-indexed in `lua`, and 0-indexed in python/c/c++. Therefore, if you see in python/c/c++ `p[0]` for arrays or tuples, you should write in lua `p[1]`
 
 More over, opencv functions still expect 0-indexed parameters. For exemple
 

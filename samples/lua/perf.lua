@@ -1,10 +1,12 @@
-package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:sub(1, 1)) .. arg[0]:gsub("[^/\\]+%.lua", '../?.lua;'):gsub('/', package.config:sub(1, 1)) .. package.path
+package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:sub(1, 1)) ..
+arg[0]:gsub("[^/\\]+%.lua", '../?.lua;'):gsub('/', package.config:sub(1, 1)) .. package.path
 
 local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local bit = bit or opencv_lua.bit ---@diagnostic disable-line: undefined-global
 local inspect = require("inspect")
 local common = require("common")
+local lfs = require("lfs")
 
 local rows = 512
 local cols = 512
@@ -17,10 +19,10 @@ local t, elapsed, sum
 local rng = cv.RNG(cv.getTickCount()) -- Make the starting point unpredictable
 rng:fill(mat, cv.RNG.UNIFORM, 0, 256)
 
-;(function()
+; (function()
     local defaultName
-    local model = cv.legacy.MultiTracker.create()
-    local loops = rows * cols * channels * times 
+    local model = cv.createLineSegmentDetector()
+    local loops = rows * cols * channels * times
     t = cv.getTickCount()
     for _ = 1, loops do
         defaultName = model:getDefaultName()
@@ -30,68 +32,148 @@ rng:fill(mat, cv.RNG.UNIFORM, 0, 256)
     print(string.format("cv::Algorithm::getDefaultName [C-API]   %i times took %.6f seconds.", loops, elapsed))
 end)()
 
-local function get_windows_symbols(dll)
-    local cmd = string.format([[dumpbin /exports "%s"]], dll:gsub('/', package.config:sub(1, 1)))
-    local handle = io.popen(string.format([["%s"]], cmd))
-    local symbols = {}
-    if handle ~= nil then
-        local stdout = handle:read("*all")
-        local success = handle:close()
-        if success then
-            local state = 0
-            for line in string.gmatch(stdout, "[^\n]+") do
-                if state == 0 then
-                    if line:find("ordinal hint RVA") ~= nil then
-                        state = 1
-                    end
+; (function()
+    -- https://gist.github.com/daurnimator/45839b0d6bd4a94c58d2d942c04b6789
+    local which = (function()
+        local DIRSEP = package.config:sub(1, 1)
+        local IS_WINDOWS = DIRSEP == "\\"
+        local path_ext = { "" }
+
+        if IS_WINDOWS then
+            local PATHEXT = os.getenv("PATHEXT")
+            if PATHEXT ~= nil then
+                for ext in PATHEXT:gmatch("[^;]+") do
+                    path_ext[#path_ext + 1] = ext
+                end
+            end
+        end
+
+        ---@param filename string
+        ---@return boolean
+        local function is_executable(filename)
+            local permissions, msg = lfs.attributes(filename, "permissions")
+
+            if permissions == nil or IS_WINDOWS then
+                return permissions ~= nil
+            end
+
+            return permissions:sub(3, 3) == "x" or permissions:sub(6, 6) == "x" or permissions:sub(9, 9) == "x"
+        end
+
+        local function searchpath(name, path, sep)
+            if path == nil then
+                path = os.getenv("PATH")
+            end
+
+            if sep == nil then
+                if IS_WINDOWS then
+                    sep = ";"
                 else
-                    local _, _, ordinal, hint, RVA, name, signature = line:find("%s+(%S+)%s+(%S+)%s+(%S+)%s(%S+) = %S+%s%((.+)%)")
-                    if name ~= nil then
-                        symbols[signature:gsub("cv::debug_build_guard::", "cv::")] = name
+                    sep = ":"
+                end
+            end
+
+            assert(type(name) == "string")
+            assert(type(path) == "string")
+            assert(type(sep) == "string")
+
+            local msg = ""
+            for dir in path:gmatch("[^" .. sep .. "]+") do
+                for _, ext in ipairs(path_ext) do
+                    local filename = dir .. DIRSEP .. name .. ext
+                    if is_executable(filename) then
+                        return filename
+                    end
+                end
+                local filename = dir .. DIRSEP .. name
+                msg = msg .. "\n\tno file '" .. filename .. "'"
+            end
+            return nil, msg
+        end
+
+        return searchpath
+    end)()
+
+    local function get_symbols_windows(dll)
+        local cmd = string.format([[dumpbin /exports "%s"]], dll:gsub('/', package.config:sub(1, 1)))
+        local handle = io.popen(string.format([["%s"]], cmd))
+        local symbols = {}
+        if handle ~= nil then
+            local stdout = handle:read("*all")
+            local success = handle:close()
+            if success then
+                local state = 0
+                for line in string.gmatch(stdout, "[^\n]+") do
+                    if state == 0 then
+                        if line:find("ordinal hint RVA") ~= nil then
+                            state = 1
+                        end
+                    else
+                        local _, _, ordinal, hint, RVA, name, signature = line:find(
+                        "%s+(%S+)%s+(%S+)%s+(%S+)%s(%S+) = %S+%s%((.+)%)")
+                        if name ~= nil then
+                            symbols[signature:gsub("cv::debug_build_guard::", "cv::")] = name
+                        end
+                    end
+                end
+            else
+                error(string.format("dumpbin failed '%s'", stdout))
+            end
+        else
+            error("dumpbin not found")
+        end
+        return symbols
+    end
+
+    local function get_symbols_linux(so)
+        local demangled = {}
+        local handle = io.popen(string.format([[nm -gDC --defined-only "%s"]], so))
+        if handle ~= nil then
+            local stdout = handle:read("*all")
+            local success = handle:close()
+            if success then
+                for line in string.gmatch(stdout, "[^\n]+") do
+                    local _, _, address, type_, signature = line:find("(%S+)%s+(%S+)%s+(.+)")
+                    if address ~= nil then
+                        demangled[address] = signature:gsub("cv::debug_build_guard::", "cv::"):gsub("%[abi:cxx11%]", "")
+                        :gsub("std::__cxx11::", "std::")
                     end
                 end
             end
         end
-    end
-    return symbols
-end
 
-local function get_linux_symbols(so)
-    local demangled = {}
-    local handle = io.popen(string.format([[nm -gDC --defined-only "%s"]], so))
-    if handle ~= nil then
-        local stdout = handle:read("*all")
-        local success = handle:close()
-        if success then
-            for line in string.gmatch(stdout, "[^\n]+") do
-                local _, _, address, type_, signature = line:find("(%S+)%s+(%S+)%s+(%S+))")
-                if address ~= nil then
-                    demangled[address] = signature:gsub("cv::debug_build_guard::", "cv::")
+        local symbols = {}
+        local handle = io.popen(string.format([[nm -gD --defined-only "%s"]], so))
+        if handle ~= nil then
+            local stdout = handle:read("*all")
+            local success = handle:close()
+            if success then
+                for line in string.gmatch(stdout, "[^\n]+") do
+                    local _, _, address, type_, name = line:find("(%S+)%s+(%S+)%s+(%S+)")
+                    if address ~= nil and demangled[address] ~= nil then
+                        symbols[demangled[address]] = name
+                    end
                 end
             end
         end
+
+        return symbols
     end
 
-    local symbols = {}
-    local handle = io.popen(string.format([[nm -gD --defined-only "%s"]], so))
-    if handle ~= nil then
-        local stdout = handle:read("*all")
-        local success = handle:close()
-        if success then
-            for line in string.gmatch(stdout, "[^\n]+") do
-                local _, _, address, type_, name = line:find("(%S+)%s+(%S+)%s+(%S+))")
-                if address ~= nil and demangled[address] ~= nil then
-                    symbols[demangled[address]] = name
-                end
-            end
+    local IS_WINDOWS = package.config:sub(1, 1) == "\\"
+
+    local can_get_symbols = function()
+        if IS_WINDOWS then
+            return which("dumpbin") ~= nil
         end
+        return which("nm") ~= nil
     end
 
-    return symbols
-end
+    ---@diagnostic disable-next-line: undefined-global
+    if type(jit) ~= "table" or not can_get_symbols() then
+        return
+    end
 
----@diagnostic disable-next-line: undefined-global
-if type(jit) == "table" and package.config:sub(1, 1) ~= "/" then
     -- ffi limitations:
     -- ================================
     -- Function overloads
@@ -107,20 +189,38 @@ if type(jit) == "table" and package.config:sub(1, 1) ~= "/" then
     local ffi = require("ffi")
 
     local opencv_lua_lib = package.searchpath("opencv_lua", package.cpath)
+    local get_symbols = (function() if IS_WINDOWS then return get_symbols_windows else return get_symbols_linux end end)()
+    local symbols = get_symbols(opencv_lua_lib)
 
-    local symbols = {}
+    local SYMBOL_MAP = {
+        ["cv::getBuildInformation()"] =
+        "class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const & __cdecl cv::getBuildInformation(void)",
 
-    if package.config:sub(1, 1) == "/" then
-        symbols = get_linux_symbols(opencv_lua_lib)
-    else
-        symbols = get_windows_symbols(opencv_lua_lib)
+        ["cv::_InputArray::_InputArray(cv::Mat const&)"] =
+        "public: __cdecl cv::_InputArray::_InputArray(class cv::Mat const &)",
+
+        ["cv::_InputArray::~_InputArray()"] =
+        "public: __cdecl cv::_InputArray::~_InputArray(void)",
+
+        ["cv::sum(cv::_InputArray const&)"] =
+        "class cv::Scalar_<double> __cdecl cv::sum(class cv::_InputArray const &)",
+    }
+
+    for k, v in pairs(SYMBOL_MAP) do
+        if IS_WINDOWS then
+            symbols[k] = symbols[v]
+        end
+
+        if symbols[k] == nil then
+            return
+        end
     end
 
     -- http://lua-users.org/wiki/StringTrim
-    function trim(s)
-       local _, i1 = s:find("^%s*")
-       local i2 = s:find("%s*$")
-       return s:sub(i1 + 1, i2 - 1)
+    local function trim(s)
+        local _, i1 = s:find("^%s*")
+        local i2 = s:find("%s*$")
+        return s:sub(i1 + 1, i2 - 1)
     end
 
     -- http://lua-users.org/wiki/StringInterpolation
@@ -131,6 +231,12 @@ if type(jit) == "table" and package.config:sub(1, 1) ~= "/" then
     -- https://lua-l.lua.narkive.com/p3YDBscq/luajit-ffi-c-binding-best-approach
     -- http://lua-users.org/lists/lua-l/2011-01/msg00978.html
     -- http://lua-users.org/lists/lua-l/2011-02/msg01268.html
+    -- https://github.com/LuaJIT/LuaJIT/issues/28
+    -- ffi.cdef[[
+    --     void func_1(int) asm("func");
+    --     void func_2(int, int) asm("func");
+    -- ]]
+
     ffi.cdef(interpolate([[
         void* malloc(size_t size);
         void free(void* ptr);
@@ -144,39 +250,36 @@ if type(jit) == "table" and package.config:sub(1, 1) ~= "/" then
             unsigned capacity;
         } String;
 
-        const String* getBuildInformation(void) asm("${class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const & __cdecl cv::getBuildInformation(void)}");
+        const String* getBuildInformation(void) asm("${cv::getBuildInformation()}");
 
         typedef struct Mat_t Mat_t;
         typedef struct _InputArray _InputArray;
-        void InputArray_createFromMat(_InputArray*, const Mat_t*) asm("${public: __cdecl cv::_InputArray::_InputArray(class cv::Mat const &)}");
-        void InputArray_destructor(const _InputArray*) asm("${public: __cdecl cv::_InputArray::~_InputArray(void)}");
+        void InputArray_createFromMat(_InputArray*, const Mat_t*) asm("${cv::_InputArray::_InputArray(cv::Mat const&)}");
+        void InputArray_destructor(const _InputArray*) asm("${cv::_InputArray::~_InputArray()}");
 
         typedef struct {
             double val[4];
         } Scalar;
-        void sumElems(Scalar*, const _InputArray *) asm("${class cv::Scalar_<double> __cdecl cv::sum(class cv::_InputArray const &)}");
+        void sumElems(Scalar*, const _InputArray *) asm("${cv::sum(cv::_InputArray const&)}");
     ]], symbols))
-
-    -- https://github.com/LuaJIT/LuaJIT/issues/28
-    -- ffi.cdef[[
-    --     void func_1(int) asm("func");
-    --     void func_2(int, int) asm("func");
-    -- ]]
 
     opencv_lua_lib = ffi.load(opencv_lua_lib)
 
     local function test_getBuildInformation()
         local t, elapsed, buildInformation
 
-        -- local buildInformation = opencv_lua_lib.getBuildInformation()
-        -- print("size", buildInformation.size)
-        -- print("getBuildInformation", ffi.string(buildInformation.data, buildInformation.size))
-
         t = cv.getTickCount()
-        cv.getBuildInformation()
+        buildInformation = cv.getBuildInformation()
         elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
         collectgarbage()
-        print(string.format("cv::getBuildInformation [C-API] took %.6f seconds", elapsed))
+        print(string.format("cv::getBuildInformation [C-API] took %.6f seconds.", elapsed))
+
+        t = cv.getTickCount()
+        buildInformation = opencv_lua_lib.getBuildInformation()
+        buildInformation = ffi.string(buildInformation.data, buildInformation.size)
+        elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
+        collectgarbage()
+        print(string.format("cv::getBuildInformation [FFI]   took %.6f seconds.", elapsed))
 
         t = cv.getTickCount()
         for i = 0, rows - 1 do
@@ -252,7 +355,8 @@ if type(jit) == "table" and package.config:sub(1, 1) ~= "/" then
         end
         elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
         collectgarbage()
-        print(string.format("cv::sum [C-API] %i times took %.6f seconds. Sum = %i. (const _InputArray *)", total, elapsed, sum))
+        print(string.format("cv::sum [C-API] %i times took %.6f seconds. Sum = %i. (const _InputArray *)", total, elapsed,
+            sum))
 
         local function InputArray_createFromMat(mat)
             local ptr = ffi.gc(ffi.C.malloc(cv._InputArray.__sizeof), ffi.C.free)
@@ -266,13 +370,13 @@ if type(jit) == "table" and package.config:sub(1, 1) ~= "/" then
 
         local Scalar = ffi.typeof("Scalar")
 
-        local function sumInputArray(array)
+        local function sumElements_InputArray(array)
             local scalar = Scalar()
             opencv_lua_lib.sumElems(scalar, array)
             return scalar
         end
 
-        local function sumElems(mat)
+        local function sumElems_Mat(mat)
             local array = InputArray_createFromMat(mat)
             local scalar = ffi.new("Scalar")
             opencv_lua_lib.sumElems(scalar, array)
@@ -294,7 +398,8 @@ if type(jit) == "table" and package.config:sub(1, 1) ~= "/" then
         end
         elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
         collectgarbage()
-        print(string.format("cv::sum [FFI]   %i times took %.6f seconds. Sum = %i. (Scalar*, const _InputArray *)", total, elapsed, sum))
+        print(string.format("cv::sum [FFI]   %i times took %.6f seconds. Sum = %i. (Scalar*, const _InputArray *)", total,
+            elapsed, sum))
 
         local array = InputArray_createFromMat(mat)
         t = cv.getTickCount()
@@ -302,21 +407,22 @@ if type(jit) == "table" and package.config:sub(1, 1) ~= "/" then
             for j = 0, cols - 1 do
                 for k = 0, channels - 1 do
                     for l = 1, times do
-                        sum = sumInputArray(array).val[0] * times
+                        sum = sumElements_InputArray(array).val[0] * times
                     end
                 end
             end
         end
         elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
         collectgarbage()
-        print(string.format("cv::sum [FFI]   %i times took %.6f seconds. Sum = %i. (const _InputArray *)", total, elapsed, sum))
+        print(string.format("cv::sum [FFI]   %i times took %.6f seconds. Sum = %i. (const _InputArray *)", total, elapsed,
+            sum))
 
         t = cv.getTickCount()
         for i = 0, rows - 1 do
             for j = 0, cols - 1 do
                 for k = 0, channels - 1 do
                     for l = 1, times do
-                        sum = sumElems(mat).val[0] * times
+                        sum = sumElems_Mat(mat).val[0] * times
                     end
                 end
             end
@@ -327,7 +433,7 @@ if type(jit) == "table" and package.config:sub(1, 1) ~= "/" then
     end
 
     test_sum()
-end
+end)()
 
 -- if type(jit) == 'table' then
 --     t = cv.getTickCount()
@@ -382,7 +488,8 @@ for i = 1, 50000 do
 end
 elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
 collectgarbage()
-print(string.format("calling new %d times on a %ix%i matrix took %.6f seconds", 50000 * 4 * 2, bin.rows, bin.cols, elapsed))
+print(string.format("calling new %d times on a %ix%i matrix took %.6f seconds", 50000 * 4 * 2, bin.rows, bin.cols,
+    elapsed))
 
 if cv.Range.MAX then
     t = cv.getTickCount()
@@ -405,7 +512,8 @@ if cv.Range.MAX then
     end
     elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
     collectgarbage()
-    print(string.format("slicing %d times on a %ix%i matrix took %.6f seconds", 50000 * 4 * 2, bin.rows, bin.cols, elapsed))
+    print(string.format("slicing %d times on a %ix%i matrix took %.6f seconds", 50000 * 4 * 2, bin.rows, bin.cols,
+        elapsed))
 end
 
 t = cv.getTickCount()
@@ -427,7 +535,8 @@ for i = 1, 512 do
 end
 elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
 collectgarbage()
-print(string.format("lua nested matrix of %i elements took %.6f seconds", #sum * #sum[1] * #sum[1][1] * #sum[1][1][1], elapsed))
+print(string.format("lua nested matrix of %i elements took %.6f seconds", #sum * #sum[1] * #sum[1][1] * #sum[1][1][1],
+    elapsed))
 
 t = cv.getTickCount()
 sum = {}
@@ -544,9 +653,10 @@ t = cv.getTickCount()
 local result = cv.Mat.createFromArray(data, mat:type())
 elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
 collectgarbage()
-print(string.format("createFromArray %s took %.6f seconds. Sum = %d", inspect(mat.shape), elapsed, cv.sumElems(result)[1] * times))
+print(string.format("createFromArray %s took %.6f seconds. Sum = %d", inspect(mat.shape), elapsed,
+    cv.sumElems(result)[1] * times))
 
-;(function ()
+; (function()
     -- https://luajit.org/ext_ffi.html
     -- Do the check to see if JIT is enabled. If so use the optimized FFI structs.
     if type(jit) ~= 'table' then ---@diagnostic disable-line: undefined-global
@@ -753,7 +863,8 @@ print(string.format("createFromArray %s took %.6f seconds. Sum = %d", inspect(ma
     end
     elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
     collectgarbage()
-    print(string.format("bytes[i * cols * channels + j * channels + k] %i times took %.6f seconds. Sum = %i", total, elapsed, sum))
+    print(string.format("bytes[i * cols * channels + j * channels + k] %i times took %.6f seconds. Sum = %i", total,
+        elapsed, sum))
 
     local matrix_t = ffi.typeof("$[$][$][$]", ffi.typeof(ctypes[mat:depth()]), rows, cols, channels)
     local matrix_ptr = ffi.cast(ffi.typeof("$*", matrix_t), mat.data)

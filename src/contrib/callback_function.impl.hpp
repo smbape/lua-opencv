@@ -103,27 +103,51 @@ namespace LUA_MODULE_NAME {
 		Invoker* invoker;
 	};
 
+	template<typename Invoker>
+	int CallbackInfo_destroy(lua_State* L) {
+		auto invoker_ptr = static_cast<std::shared_ptr<Invoker>*>(lua_touserdata(L, 1));
+		invoker_ptr->~shared_ptr();
+		return 0;
+	}
+
 	template<typename R, typename... Args>
 	CallbackInfo<R, Args...> lua_tocallback(lua_State* L, const Function& fn, const Object& userdata, std::function<R(Args...)>*) {
 		using Invoker = CallbackInvoker<R, Args...>;
-
-		static std::unordered_map<const void*, std::shared_ptr<Invoker>> function_pointer_map;
+		std::shared_ptr<Invoker>* invoker_ptr;
 
 		lua_push(L, fn);
-		const auto lua_ptr = lua_topointer(L, -1);
+		const auto fn_lua_ptr = lua_topointer(L, -1);
 		lua_pop(L, 1);
 
-		Invoker* invoker_ptr;
+		char fn_key[64];
+		const int fn_key_len = snprintf(fn_key, 64, LUA_MODULE_NAME_STR "_CallbackInvoker_%p",  fn_lua_ptr);
 
-		if (function_pointer_map.count(lua_ptr)) {
-			invoker_ptr = function_pointer_map.at(lua_ptr).get();
+		lua_pushlstring(L, fn_key, fn_key_len);
+		lua_rawget(L, LUA_REGISTRYINDEX);
+
+		if (lua_isnil(L, -1)) {
+			// remove nil
+			lua_pop(L, 1);
+
+			// create an save invoker in the state
+			lua_pushlstring(L, fn_key, fn_key_len);
+
+			invoker_ptr = static_cast<std::shared_ptr<Invoker>*>(lua_newuserdata(L, sizeof(std::shared_ptr<Invoker>)));
+			new(invoker_ptr) std::shared_ptr<Invoker>(std::make_shared<Invoker>(L, fn, userdata));
+
+			lua_newtable(L);
+			lua_pushstring(L, "__gc");
+			lua_pushcfunction(L, CallbackInfo_destroy<Invoker>);
+			lua_rawset(L, -3);
+
+			lua_setmetatable(L, -2);
+			lua_rawset(L, LUA_REGISTRYINDEX);
 		} else {
-			auto invoker = std::make_shared<Invoker>(L, fn, userdata);
-			function_pointer_map.insert_or_assign(lua_ptr, invoker);
-			invoker_ptr = invoker.get();
+			invoker_ptr = static_cast<std::shared_ptr<Invoker>*>(lua_touserdata(L, -1));
+			lua_pop(L, 1);
 		}
 
-		return { .callback = Invoker::invoke, .userdata = invoker_ptr, .invoker = invoker_ptr };
+		return { .callback = Invoker::invoke, .userdata = invoker_ptr->get(), .invoker = invoker_ptr->get() };
 	}
 
 	// https://stackoverflow.com/questions/32024522/remove-the-last-type-of-a-template-parameter-pack#answer-32024861

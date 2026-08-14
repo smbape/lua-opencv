@@ -3,6 +3,7 @@ const fs = require("node:fs");
 const os = require("node:os");
 const { spawn, spawnSync } = require("node:child_process");
 const sysPath = require("node:path");
+const eachOfLimit = require("async/eachOfLimit");
 const waterfall = require("async/waterfall");
 const { explore } = require("fs-explorer");
 const {findFile} = require("../generator/FileUtils");
@@ -112,8 +113,8 @@ if (os.platform() === "win32") {
         "-e",
         [
             `package.path="${ [
-                `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lib").replaceAll("\\", "/") }/?.lua`,
-                `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lib").replaceAll("\\", "/") }/?/init.lua`,
+                `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lua").replaceAll("\\", "/") }/?.lua`,
+                `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lua").replaceAll("\\", "/") }/?/init.lua`,
                 `${ LUA_MODULES }/share/lua/${ ABIVER }/?.lua`,
                 `${ LUA_MODULES }/share/lua/${ ABIVER }/?/init.lua`,
                 `${ APPDATA }/luarocks/share/lua/${ ABIVER }/?.lua`,
@@ -133,8 +134,8 @@ if (os.platform() === "win32") {
         "-e",
         [
             `package.path="${ [
-                `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lib") }/?.lua`,
-                `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lib") }/?/init.lua`,
+                `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lua") }/?.lua`,
+                `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lua") }/?/init.lua`,
                 `${ LUA_MODULES }/share/lua/${ ABIVER }/?.lua`,
                 `${ LUA_MODULES }/share/lua/${ ABIVER }/?/init.lua`,
             ].join(";").replace(/[\\]/g, "/") };"..package.path`,
@@ -219,7 +220,7 @@ const run = (file, env, options, next) => {
         const argv = [game, ...options.argv];
         args.push(LOVE, argv);
     } else {
-        throw new Error(`Unsupported extenstion ${ extname }`);
+        throw new Error(`Unsupported extenstion ${ extname } for file ${ file }`);
     }
 
     const cmd = [keys.map(key => unixEnv(key, env[key])).join(" "), unixCmd(args.flat())].join(" ");
@@ -269,7 +270,7 @@ const run = (file, env, options, next) => {
 
 const bash_init = "#!/usr/bin/env bash\n\nset -o pipefail\n";
 
-const run_file = (file, options, next) => {
+const runFile = (file, options, next) => {
     waterfall([
         next => {
             run(file, {
@@ -289,7 +290,7 @@ const run_file = (file, options, next) => {
     });
 };
 
-const main = (options, next) => {
+const main = (options, cb) => {
     options = Object.assign({
         cwd: WORKSPACE_ROOT,
         includes: [],
@@ -311,35 +312,57 @@ const main = (options, next) => {
         ].join("\n"));
     }
 
-    explore(sysPath.join(cwd, "samples"), (path, stats, next) => {
-        const file = sysPath.relative(cwd, path);
-        const basename = sysPath.basename(file);
-        const extname = sysPath.extname(file);
+    const runs = new Set();
 
-        if (
-            (includes.length === 0 || !includes.some(include => basename.startsWith(include))) && [ "_", "." ].includes(basename[0]) ||
-            !includes_ext.includes(extname) ||
-            excludes.some(exclude => basename.startsWith(exclude)) ||
-            includes.length !== 0 && !includes.some(include => basename.includes(include))
-        ) {
-            next();
-            return;
-        }
+    waterfall([
+        next => {
+            eachOfLimit(["samples"], 1, (directory, i, next) => {
+                explore(sysPath.join(cwd, directory), (path, stats, next) => {
+                    const file = sysPath.relative(cwd, path);
+                    const basename = sysPath.basename(file);
+                    const extname = sysPath.extname(file);
 
-        run_file(file, options, next);
-    }, (path, stats, files, state, next) => {
-        const basename = sysPath.basename(path);
+                    if (
+                        (includes.length === 0 || !includes.some(include => basename.startsWith(include))) && [ "_", "." ].includes(basename[0]) ||
+                        !includes_ext.includes(extname) ||
+                        excludes.some(exclude => basename.startsWith(exclude)) ||
+                        includes.length !== 0 && !includes.some(include => basename.includes(include))
+                    ) {
+                        next();
+                        return;
+                    }
 
-        if (state === "begin" && basename === "love2d" && (includes.length === 0 || includes.some(include => basename.includes(include)))) {
-            const file = sysPath.relative(cwd, path);
-            run_file(`${ file }.love`, options, err => {
-                next(err, true);
-            });
-        } else {
-            const skip = state === "begin" && (basename[0] === "." || basename === "BackUp");
-            next(null, skip);
-        }
-    }, next);
+                    runFile(file, options, next);
+                }, (path, stats, files, state, next) => {
+                    const basename = sysPath.basename(path);
+
+                    if (state === "begin" && basename === "love2d" && (includes.length === 0 || includes.some(include => basename.includes(include)))) {
+                        const file = sysPath.relative(cwd, path);
+                        runFile(`${ file }.love`, options, err => {
+                            next(err, true);
+                        });
+                    } else {
+                        const skip = state === "begin" && (basename[0] === "." || basename === "BackUp");
+                        next(null, skip);
+                    }
+                }, err => {
+                    if (err && err.code === "ENOENT") {
+                        err = null;
+                    }
+                    next(err);
+                });
+            }, next);
+        },
+        next => {
+            eachOfLimit(includes, 1, (file, i, next) => {
+                if (fs.existsSync(file) && !fs.lstatSync(file).isDirectory() && !runs.has(file.replaceAll("\\", "/"))) {
+                    runFile(file, options, next);
+                } else {
+                    next();
+                }
+            }, next);
+        },
+    ], cb);
 };
 
 exports.main = main;

@@ -6,40 +6,19 @@ export PATH="${PATH//\/mnt\/*:/}"
 workspaceHash=c0ef0985-b598-4736-af7d-1776141f784c
 projectDir="$(wslpath -w "$PWD" | sed -e "s#\(.*\)#/mnt/\L\1#" -e "s#\\\\#/#g" -e "s#:##")" # If docker is installed, PWD will starts with /mnt/wsl/docker-desktop-bind-mounts/
 projectDirName=$(basename "$projectDir")
-sources="$HOME/.vs/${projectDirName}/${workspaceHash}/src"
+sourceDir="$HOME/.vs/${projectDirName}"
 
-source "${projectDir}/scripts/tasks.sh" && open_git_project "file://${projectDir}" "${sources}" || exit $?
+source "${projectDir}/scripts/tasks.sh" && open_git_project "file://${projectDir}" "${sourceDir}" || exit $?
 
-rsync -t --delete -v -r \
-    --exclude=.git \
-    --exclude=.idea \
-    --exclude=.venv \
-    --exclude=.vs \
-    --exclude="*.rock" \
-    --exclude="*.rockspec" \
-    --exclude="*.sublime-workspace" \
-    --exclude="~$*" \
-    --exclude=build.luarocks \
-    --exclude=.luarocks \
-    --exclude=luarocks/lua.bat \
-    --exclude=luarocks/lua \
-    --exclude=luarocks/luarocks.bat \
-    --exclude=luarocks/luarocks \
-    --exclude=luarocks/lua_modules \
-    --exclude=luarocks/.luarocks \
-    --exclude=generated \
-    --exclude=node_modules \
-    --exclude=opencv_extra \
-    --exclude=out \
-    --exclude=samples/dnn/object_detection/models \
-    "${projectDir}/" "${sources}" || exit $?
+rsync -t -v -r --include='**/.gitignore' --exclude='/.git' --filter=':- .gitignore' --delete-after \
+    "${projectDir}/" "${sourceDir}" || exit $?
 
 for ifile in $(git --git-dir "${projectDir}/.git" ls-files 2>&1); do
-    touch -c -r "${projectDir}/${ifile}" "${sources}/${ifile}"
+    touch -c -r "${projectDir}/${ifile}" "${sourceDir}/${ifile}"
 done
 
 export PATH="/snap/bin:$PATH"
-export workspaceHash projectDir sources
+export workspaceHash projectDir sourceDir
 else
-source "${projectDir}/scripts/tasks.sh" && open_git_project "file://${projectDir}" "${sources}" || exit $?
+source "${projectDir}/scripts/tasks.sh" && open_git_project "file://${projectDir}" "${sourceDir}" || exit $?
 fi

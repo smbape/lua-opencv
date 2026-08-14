@@ -12,15 +12,15 @@ Sources:
     https://learnopencv.com/object-detection-using-yolov5-and-opencv-dnn-in-c-and-python/
     https://github.com/ultralytics/ultralytics/blob/main/examples/YOLOv8-CPP-Inference/inference.cpp
     https://docs.opencv.org/4.x/d4/d2f/tf_det_tutorial_dnn_conversion.html
-    https://github.com/opencv/opencv/blob/4.12.0/samples/dnn/object_detection.py
+    https://github.com/opencv/opencv/blob/4.13.0/samples/dnn/object_detection.py
 --]]
 
 local __file__ = arg[0]
 
 local argparse = require("argparse")
-local sysPath = require("path")
-local opencv_lua = require("init")
+local opencv_lua = require("opencv_lua")
 local common = require("common")
+local sysPath = common.path
 
 local __dirname__ = sysPath.dirname(sysPath.abspath(__file__))
 
@@ -86,17 +86,23 @@ local default_cmdline = rawget(_G, "arg") or {}
 
 local known_args = {}
 
-for i = 2, #default_cmdline do
-    if default_cmdline[i] == "--zoo" then
-        known_args[#known_args + 1] = default_cmdline[i]
-        if i + 1 <= #default_cmdline then
-            i = i + 1
+(function()
+    local i = 2
+
+    while i <= #default_cmdline do
+        if default_cmdline[i] == "--zoo" then
+            known_args[#known_args + 1] = default_cmdline[i]
+            if i + 1 <= #default_cmdline then
+                i = i + 1
+                known_args[#known_args + 1] = default_cmdline[i]
+            end
+        elseif default_cmdline[i]:sub(1, #"--zoo=") == "--zoo=" then
             known_args[#known_args + 1] = default_cmdline[i]
         end
-    elseif default_cmdline[i]:sub(1, #"--zoo=") == "--zoo=" then
-        known_args[#known_args + 1] = default_cmdline[i]
+
+        i = i + 1
     end
-end
+end)()
 
 known_args = parser:parse(known_args)
 
@@ -150,6 +156,7 @@ args.classes = findFile(args.classes)
 local capture_counter = 0
 local network_counter = 0
 local tick_init = 0
+local fps = common.FPS(60)
 local frame = cv.UMat()
 local input_fps = args.fps
 local future_outputs
@@ -469,6 +476,7 @@ local function read_frame()
         end
 
         tick_init = cv.getTickCount()
+        fps:reset()
     else
         -- get elapsed time since the last read
         local elapsed = (cv.getTickCount() - tick_init) / cv.getTickFrequency()
@@ -486,6 +494,8 @@ local function read_frame()
 
         capture_fps = capture_counter / elapsed
         network_fps = network_counter / elapsed
+
+        fps:frame()
     end
 
     if not cap:read(frame) then
@@ -509,8 +519,11 @@ local function read_frame()
         label = string.format('Network: %.2f/%.2f FPS', network_fps, input_fps)
         cv.putText(frame, label, { 0, 30 }, cv.FONT_HERSHEY_SIMPLEX, 0.5, { 0, 255, 0 })
 
-        label = string.format('Skipped frames: %d', (capture_counter - network_counter))
+        label = string.format('Instant: %.2f/%.2f FPS', fps:compute(), input_fps)
         cv.putText(frame, label, { 0, 45 }, cv.FONT_HERSHEY_SIMPLEX, 0.5, { 0, 255, 0 })
+
+        label = string.format('Skipped frames: %d', (capture_counter - network_counter))
+        cv.putText(frame, label, { 0, 60 }, cv.FONT_HERSHEY_SIMPLEX, 0.5, { 0, 255, 0 })
     end
 
     capture_counter = capture_counter + 1

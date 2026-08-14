@@ -4,7 +4,7 @@ package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:su
 
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.12.0/samples/python/tutorial_code/objectDetection/cascade_classifier/objectDetection.py
+    https://github.com/opencv/opencv/blob/4.13.0/samples/python/tutorial_code/objectDetection/cascade_classifier/objectDetection.py
 --]]
 
 local argparse = require("argparse")
@@ -26,6 +26,7 @@ cv.samples.addSamplesDataSearchPath(dirname(dirname(dirname(findFile(
             "out/build/Linux-GCC-Debug/opencv/opencv-src",
             "out/build/Linux-GCC-Release/opencv/opencv-src",
             "out/prepublish/luajit-2.1/opencv_lua/build.luarocks/opencv/opencv-src",
+            "out/prepublish/5.5/opencv_lua/build.luarocks/opencv/opencv-src",
             "out/prepublish/5.4/opencv_lua/build.luarocks/opencv/opencv-src",
             "out/prepublish/5.3/opencv_lua/build.luarocks/opencv/opencv-src",
             "out/prepublish/5.2/opencv_lua/build.luarocks/opencv/opencv-src",

@@ -4,7 +4,7 @@ package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:su
 
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.12.0/samples/python/tutorial_code/Histograms_Matching/histogram_comparison/compareHist_Demo.py
+    https://github.com/opencv/opencv/blob/4.13.0/samples/python/tutorial_code/Histograms_Matching/histogram_comparison/compareHist_Demo.py
 --]]
 
 local argparse = require("argparse")
@@ -61,21 +61,21 @@ local channels = { 0, 1 }
 
 -- [Calculate the histograms for the HSV images]
 local hist_base = cv.calcHist({ hsv_base }, channels, nil, histSize, ranges, kwargs({ accumulate = false }))
-cv.normalize(hist_base, hist_base, kwargs({ alpha = 0, beta = 1, norm_type = cv.NORM_MINMAX }))
+cv.normalize(hist_base, hist_base, kwargs({ alpha = 1, beta = 0, norm_type = cv.NORM_L1 }))
 
 local hist_half_down = cv.calcHist({ hsv_half_down }, channels, nil, histSize, ranges, kwargs({ accumulate = false }))
-cv.normalize(hist_half_down, hist_half_down, kwargs({ alpha = 0, beta = 1, norm_type = cv.NORM_MINMAX }))
+cv.normalize(hist_half_down, hist_half_down, kwargs({ alpha = 1, beta = 0, norm_type = cv.NORM_L1 }))
 
 local hist_test1 = cv.calcHist({ hsv_test1 }, channels, nil, histSize, ranges, kwargs({ accumulate = false }))
-cv.normalize(hist_test1, hist_test1, kwargs({ alpha = 0, beta = 1, norm_type = cv.NORM_MINMAX }))
+cv.normalize(hist_test1, hist_test1, kwargs({ alpha = 1, beta = 0, norm_type = cv.NORM_L1 }))
 
 local hist_test2 = cv.calcHist({ hsv_test2 }, channels, nil, histSize, ranges, kwargs({ accumulate = false }))
-cv.normalize(hist_test2, hist_test2, kwargs({ alpha = 0, beta = 1, norm_type = cv.NORM_MINMAX }))
+cv.normalize(hist_test2, hist_test2, kwargs({ alpha = 1, beta = 0, norm_type = cv.NORM_L1 }))
 -- [Calculate the histograms for the HSV images]
 
 -- [Apply the histogram comparison methods]
-local methodNames = { "Correlation", "Chi-square", "Intersection", "Bhattacharyya" }
-for compare_method = 0, 3 do
+local methodNames = { "Correlation", "Chi-square", "Intersection", "Bhattacharyya", "Alternative Chi-Square", "Kullback-Leibler divergence" }
+for compare_method = 0, 5 do
     local base_base = cv.compareHist(hist_base, hist_base, compare_method)
     local base_half = cv.compareHist(hist_base, hist_half_down, compare_method)
     local base_test1 = cv.compareHist(hist_base, hist_test1, compare_method)

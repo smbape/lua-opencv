@@ -29,63 +29,71 @@
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 Here we will build a custom opencv with the folling modifications:
+  - Build with Qt Backend support.
+  - Include Video 4 Linux support.
+  - Include Lapack library support.
   - Add the contrib modules.
-  - Add the freetype module.
-  - Add NVIDIA CUDA support.
+  - Enable FreeType framework.
+  - Include NVidia Cuda Runtime support.
+  - Include NVIDIA CUDA Deep Neural Network (cuDNN) library support.
 
 The procedure has been tested on :
   - [Ubuntu 24.04 (Noble Numbat)](https://releases.ubuntu.com/noble/)
 
 ## Prerequisites
 
-  - Install [CUDA Toolkit 12.8.1](https://developer.nvidia.com/cuda-12-8-1-download-archive?target_os=Linux)
-  - Download [cuDNN 9.8.0](https://developer.nvidia.com/cudnn-9-8-0-download-archive?target_os=Linux) compatible with the **CUDA Toolkit** version you installed, and extract the contents of the `bin`, `include` and `lib` directories inside the `bin`, `include` and `lib` directories of the **CUDA Toolkit** directory.
-  - Download [NVIDIA Video Codec SDK 12.2.72](https://developer.nvidia.com/designworks/video-codec-sdk/secure/12.2/video_codec_sdk_12.2.72.zip) and extract the contents of the `Interface` and `Lib` directories inside the `include` and `lib` directories of the **CUDA Toolkit** directory.
+  - Install [CUDA Toolkit 13.2.1](https://developer.nvidia.com/cuda-13-2-1-download-archive?target_os=Linux&target_arch=x86_64)
+  - Download [cuDNN 9.23.2](https://developer.nvidia.com/cudnn-9-23-2-download-archive?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=24.04&target_type=deb_local&Configuration=Full) compatible with the **CUDA Toolkit** version you installed.
+  - Download [NVIDIA Video Codec SDK](https://developer.nvidia.com/video-codec-sdk) and extract the contents of the `Interface` and `Lib/linux/stubs/x86_64` directories inside the `include` and `lib64` directories of the **CUDA Toolkit** directory.
   - Install [CMake >= 3.25](https://cmake.org/download/)
   - Install [LuaRocks](https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Unix)
   - Install [Ninja](https://ninja-build.org/)
   - Install [NodeJS](https://nodejs.org/en/download/current)
+  - Install [Python 3.9...<3.15](https://www.python.org/downloads/)
 
-### [Ubuntu, Debian] Install needed packages:
+### [Debian, Ubuntu] Install needed packages:
 ```sh
 sudo apt install -y build-essential curl git libavcodec-dev libavformat-dev libdc1394-dev \
-        libjpeg-dev libpng-dev libreadline-dev libswscale-dev libtbb-dev \
-        ninja-build patchelf pkg-config python3-pip python3-venv qtbase5-dev unzip wget zip
+    liblapacke-dev libjpeg-dev libopenblas-dev libpng-dev libreadline-dev libswscale-dev libtbb-dev \
+    patchelf pkg-config python3-pip python3-venv qtbase5-dev unzip wget zip
+sudo apt install -y libtbbmalloc2 || apt install -y libtbb2
 ```
 
 ### [Fedora] Install needed packages:
 ```sh
-sudo dnf install -y curl gcc gcc-c++ git \
-        libjpeg-devel libpng-devel readline-devel make patch tbb-devel \
-        libavcodec-free-devel libavformat-free-devel libdc1394-devel libswscale-free-devel \
-        patchelf pkg-config python3-pip qt5-qtbase-devel unzip wget zip
+sudo dnf install -y curl dejavu-sans-fonts gcc gcc-c++ git \
+    lapack-devel libjpeg-devel libpng-devel make openblas-devel patch patchelf pkg-config \
+    python3-pip qt5-qtbase-devel readline-devel tbb-devel unzip wget zip \
+    libavcodec-free-devel libavformat-free-devel libdc1394-devel libswscale-free-devel
 ```
 
 ### [Almalinux 8] Install needed packages:
 ```sh
-sudo dnf install -y curl gcc-toolset-12-gcc gcc-toolset-12-gcc-c++ git \
-        libjpeg-devel libpng-devel readline-devel make patch tbb-devel \
-        patchelf pkg-config python3.12-pip qt5-qtbase-devel unzip wget zip && \
+sudo dnf install -y curl dejavu-sans-fonts git \
+    libjpeg-devel libpng-devel make patch pkg-config \
+    qt5-qtbase-devel readline-devel tbb-devel unzip wget zip \
+    openssl-devel && \
 sudo config-manager --set-enabled powertools && \
-sudo dnf install -y epel-release && \
+sudo dnf install -y almalinux-release-devel epel-release && \
 sudo dnf install -y https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm
 sudo dnf install -y https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-8.noarch.rpm && \
 sudo dnf update -y && \
-sudo dnf install -y ffmpeg-devel && \
+sudo dnf install -y ffmpeg-devel gcc-toolset-12-gcc gcc-toolset-12-gcc-c++ lapack-devel libdc1394-devel openblas-devel patchelf python3.12-pip && \
 source /opt/rh/gcc-toolset-12/enable
 ```
 
 ### [Almalinux 9, 10] Install needed packages:
 ```sh
-sudo dnf install -y curl gcc gcc-c++ git \
-        libjpeg-devel libpng-devel readline-devel make patch tbb-devel \
-        patchelf pkg-config python3-pip qt5-qtbase-devel unzip wget zip && \
+sudo dnf install -y curl dejavu-sans-fonts gcc gcc-c++ git \
+    libjpeg-devel libpng-devel make patch pkg-config \
+    python3-pip qt5-qtbase-devel readline-devel tbb-devel unzip wget zip \
+    openssl-devel && \
 sudo config-manager --set-enabled crb && \
-sudo dnf install -y epel-release && \
+sudo dnf install -y almalinux-release-devel epel-release && \
 sudo dnf install -y https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-9.noarch.rpm
 sudo dnf install -y https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-9.noarch.rpm && \
 sudo dnf update -y && \
-sudo dnf install -y libavcodec-free-devel libavformat-free-devel libdc1394-devel libswscale-free-devel
+sudo dnf install -y lapack-devel libavcodec-free-devel libavformat-free-devel libdc1394-devel libswscale-free-devel openblas-devel patchelf
 ```
 
 ## Build System Environment
@@ -97,7 +105,7 @@ In this example, we will use the following directories:
   - The **LuaRocks binary directory** is _/io/luarocks-binaries-custom/lua-opencv/out/prepublish/build/opencv_lua-custom/out/build.luaonly/Linux-GCC-Release/luarocks/luarocks-prefix/src/luarocks-build/bin_
   - The **build directory** is _/io/luarocks-binaries-custom/build_
   - The **server directory** is _/io/luarocks-binaries-custom/server_
-  - The **test directory** is _/io/luarocks-binaries-custom/test_
+  - The **test directory** is _/io/luarocks-binaries-custom/test/lua-opencv_
 
 ## Install freetype and harfbuzz
 
@@ -116,7 +124,7 @@ sudo apt install -y freetype-devel harfbuzz-devel
 ## Download the source code
 
 ```sh
-git clone --depth 1 --branch v0.2.0 https://github.com/smbape/lua-opencv.git /io/luarocks-binaries-custom/lua-opencv && \
+git clone --depth 1 --branch v0.3.0 https://github.com/smbape/lua-opencv.git /io/luarocks-binaries-custom/lua-opencv && \
 cd /io/luarocks-binaries-custom/build && \
 npm ci
 ```
@@ -124,9 +132,13 @@ npm ci
 ## Build
 
 ```sh
-# --lua-versions luajit-2.1,5.1,5.2,5.3,5.4
+# --lua-versions luajit-2.1,5.1,5.2,5.3,5.4,5.5
 node scripts/prepublish.js --pack --server=/io/luarocks-binaries-custom/server --lua-versions luajit-2.1 --name=opencv_lua-custom \
-    --repair --plat auto --exclude "libc.so.*;libgcc_s.so.*;libstdc++.so.*;libxcb.so.*;libQt*;libcu*;libnp*" \
+    -DENABLE_REPAIR=ON \
+    -DAUDITWHEEL_exclude="libxcb.so.*;libxcb-*.so.*;libQt*;libcublas.so.*;libcuda.so.*;libcudnn.so.*;libcufft.so.*;libnpp*;libnvcuvid.so.*;libnvidia-encode.so.*;libOpenCL.so.*;libopenblas.so.*" \
+    -DWITH_QT=5 \
+    -DWITH_V4L=ON \
+    -DWITH_LAPACK=ON \
     -DBUILD_contrib=ON \
     -DWITH_FREETYPE=ON \
     -DWITH_CUDA=ON \
@@ -135,9 +147,7 @@ node scripts/prepublish.js --pack --server=/io/luarocks-binaries-custom/server -
     -DCUDA_ARCH_BIN=$(nvidia-smi --query-gpu=compute_cap --format=csv | sed /compute_cap/d)
 ```
 
-  - `--repair`:            vendor in external shared library dependencies of the binary rock.
-  - `--plat auto`: target this linux distribution
-  - `--exclude "libc.so.*;libgcc_s.so.*;libstdc++.so.*;libxcb.so.*;libQt*;libcu*;libnp*;libnv*"`: exclude shared libraries that if vendored, may conflict (libc.so.\*;libgcc_s.so.\*;libstdc++.so.\*;libxcb.so.\*) with the system shared libraries or increase heavily (+850 Mo) the size of the binary rock (libQt*;libcu*;libnp*;libnv*).
+  - `-DAUDITWHEEL_exclude="libxcb.so.*;libxcb-*.so.*;libQt*;libcublas.so.*;libcuda.so.*;libcudnn.so.*;libcufft.so.*;libnpp*;libnvcuvid.so.*;libnvidia-encode.so.*;libOpenCL.so.*;libopenblas.so.*"`: exclude shared libraries, that if vendored, may conflict (libxcb.so.\*;libxcb-\*.so.\*) with the system shared libraries or heavily increase (+850 Mo) the size of the binary rock (libQt\*;libcublas.so.\*;libcuda.so.\*;libcudnn.so.\*;libcufft.so.\*;libnpp\*;libnvcuvid.so.\*;libnvidia-encode.so.\*;libOpenCL.so.\*;libopenblas.so.\*).
 
   See [pypa/auditwheel](https://pypi.org/project/auditwheel/) for more information
 
@@ -160,10 +170,10 @@ export PATH="/io/luarocks-binaries-custom/lua-opencv/out/prepublish/build/opencv
 ### Initialize our test project and install our custom prebuilt binary
 
 ```sh
-git clone --depth 1 --branch 4.12.0 https://github.com/opencv/opencv_extra.git /io/luarocks-binaries-custom/opencv_extra && \
-mkdir /io/luarocks-binaries-custom/test && \
-cd /io/luarocks-binaries-custom/test && \
-luarocks --lua-version 5.1 --lua-dir "$(dirname "$(dirname "$(command -v luajit)")")" init --lua-versions "5.1,5.2,5.3,5.4" && \
+git clone --depth 1 --branch 4.13.0 https://github.com/opencv/opencv_extra.git /io/luarocks-binaries-custom/opencv_extra && \
+mkdir -p /io/luarocks-binaries-custom/test/lua-opencv && \
+cd /io/luarocks-binaries-custom/test/lua-opencv && \
+luarocks --lua-version 5.1 init --lua-versions "5.1,5.2,5.3,5.4,5.5" && \
 luarocks install --server=/io/luarocks-binaries-custom/server opencv_lua-custom
 ```
 
@@ -211,7 +221,7 @@ if retval then
             ".",
         }
     }))
-    assert(#font ~= 0, "msjh.ttc was not fount")
+    assert(#font ~= 0, "msjh.ttc was not found")
     ft2:loadFontData(font, 0)
 
     points = points:convertTo(cv.CV_32S):table()
@@ -245,7 +255,7 @@ Execute the test-opencv.lua script
 ### Test CUDA
 
 ```sh
-git clone --depth 1 --branch 4.12.0 https://github.com/opencv/opencv.git /io/luarocks-binaries-custom/opencv && \
+git clone --depth 1 --branch 4.13.0 https://github.com/opencv/opencv.git /io/luarocks-binaries-custom/opencv && \
 ./luarocks install --deps-only /io/luarocks-binaries-custom/lua-opencv/samples/samples-scm-1.rockspec && \
 ./lua /io/luarocks-binaries-custom/lua-opencv/samples/dnn/object_detection/object_detection.lua ssd_tf --input Megamind.avi --backend 5 --target 6
 ```

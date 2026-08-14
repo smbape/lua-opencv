@@ -11,7 +11,7 @@ const eachOfLimit = require("async/eachOfLimit");
 const waterfall = require("async/waterfall");
 const { explore } = require("fs-explorer");
 
-const OpenCV_VERSION = "opencv-4.12.0";
+const OpenCV_VERSION = "opencv-4.13.0";
 // const OpenCV_DLLVERSION = OpenCV_VERSION.slice("opencv-".length).replaceAll(".", "");
 global.OpenCV_VERSION = OpenCV_VERSION;
 
@@ -58,6 +58,7 @@ const getOptions = output => {
         skip: new Set(),
 
         output: sysPath.join(output, "generated"),
+        generated: new Map(),
 
         excludes: new Set(["cv::dnn::DictValue"]),
 
@@ -185,6 +186,8 @@ const hdr_parser_end = hdr_parser.indexOf("if __name__ == '__main__':", hdr_pars
 
 const options = getOptions(PROJECT_DIR);
 options.proto = LuaGenerator.proto;
+
+options.generated.set(sysPath.join(options.output, "bit_string.lua.inc"), true);
 
 waterfall([
     next => {

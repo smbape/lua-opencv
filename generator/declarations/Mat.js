@@ -498,11 +498,13 @@ module.exports = ({ self, self_get, shared_ptr }) => {
             ["cv::Mat", "m", "", []],
         ], "", ""],
 
-        ["cv.Mat.Mat", "", ["/Call=::cvextra::createMatFromVectorOfMat", "/Expr=L, $0", "/WrapAs=std::make_shared<cv::Mat>"], [
+        ["cv.Mat.Mat", "", ["/Call=::cvextra::createMatFromVectorOfMat", "/WrapAs=std::make_shared<cv::Mat>"], [
+            ["lua_State*", "L", "", []],
             ["std::vector<cv::Mat>", "vec", "", ["/Ref", "/C"]],
         ], "", ""],
 
-        ["cv.Mat.createFromArray", "Mat", ["/S", "/Call=::cvextra::createMatFromArray", "/Expr=L, $0"], [
+        ["cv.Mat.createFromArray", "Mat", ["/S", "/Call=::cvextra::createMatFromArray"], [
+            ["lua_State*", "L", "", []],
             ["Table", "array", "", ["/Ref", "/C"]],
             ["int", "type", "CV_64F", []],
         ], "", ""],

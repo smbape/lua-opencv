@@ -1,12 +1,4 @@
-#include <registration.hpp>
-
-void lua_pushfuncs(lua_State *L, const luaL_Reg *l) {
-	for (; l->name; l++) {
-		lua_pushstring(L, l->name);
-		lua_pushcclosure(L, l->func, 0);
-		lua_rawset(L, -3);
-	}
-}
+#include <luadef.hpp>
 
 #if LUA_VERSION_NUM < 504
 int luaL_typeerror(lua_State* L, int arg, const char* tname) {
