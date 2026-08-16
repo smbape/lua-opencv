@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
 
+set(VERSION_REG "[0-9]+\\.[0-9]+\\.[0-9]+([+-][0-9a-zA-Z.+-]+)?")
+
 # ================================================================
 # bit.lua
 # ================================================================
@@ -51,10 +53,10 @@ file(GLOB_RECURSE files_to_change
 )
 
 foreach(item IN LISTS files_to_change)
-    vcpkg_regex_replace_string("${item}" "(/lua-opencv/releases/download/v|/lua-opencv/tree/v)[0-9]+\\.[0-9]+\\.[0-9]+" "\\1${PROJECT_VERSION}")
+    vcpkg_regex_replace_string("${item}" "(/lua-opencv/releases/download/v|/lua-opencv/tree/v)${VERSION_REG}" "\\1${PROJECT_VERSION}")
     vcpkg_regex_replace_string("${item}" "(opencv-|/opencv/opencv/blob/|OPENCV_VERSION:-|${target_name} |${target_name}-)[0-9]+\\.[0-9]+\\.[0-9]+" "\\1${OpenCV_VERSION}")
     vcpkg_regex_replace_string("${item}" "(--branch )[0-9]+\\.[0-9]+\\.[0-9]+( https://github.com/opencv/opencv)" "\\1${OpenCV_VERSION}\\2")
-    vcpkg_regex_replace_string("${item}" "(--branch v)[0-9]+\\.[0-9]+\\.[0-9]+( https://github.com/smbape/lua-opencv)" "\\1${PROJECT_VERSION}\\2")
+    vcpkg_regex_replace_string("${item}" "(--branch v)${VERSION_REG}( https://github.com/smbape/lua-opencv)" "\\1${PROJECT_VERSION}\\3")
     vcpkg_regex_replace_string("${item}" "opencv_videoio_ffmpeg[0-9]+_64\\.dll" "opencv_videoio_ffmpeg${OpenCV_DLLVERSION}_64.dll")
     vcpkg_regex_replace_string("${item}" "opencv_world[0-9]+\\.dll" "opencv_world${OpenCV_DLLVERSION}.dll")
 endforeach()

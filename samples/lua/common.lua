@@ -1,6 +1,6 @@
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.13.0/samples/python/common.py
+    https://github.com/opencv/opencv/blob/4.14.0/samples/python/common.py
 --]]
 
 local exports = {}

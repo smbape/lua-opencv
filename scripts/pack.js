@@ -7,7 +7,7 @@ const waterfall = require("async/waterfall");
 const pkg = require("../package.json");
 
 const version = process.env.npm_package_version || pkg.version;
-const OpenCV_NAME_VERSION = "opencv-4.13.0";
+const OpenCV_NAME_VERSION = "opencv-4.14.0";
 const OpenCV_VERSION = OpenCV_NAME_VERSION.slice("opencv-".length);
 const distVersion = process.env.DIST_VERSION || "1"; // TODO : find a way to automatically update it
 const workspaceRoot = sysPath.resolve(__dirname, "..");
@@ -123,6 +123,14 @@ for (let i = 0; i < argv.length; i++) {
             throw new Error(`${ key } is a flag not, therefore, cannot have a value`);
         }
         options[key.slice("--".length)] = value;
+        continue;
+    }
+
+    if (key.startsWith("--no-") && optionValueKeys.has(`--${ key.slice("--no-".length) }`)) {
+        if (value !== true) {
+            throw new Error(`${ key } is a flag not, therefore, cannot have a value`);
+        }
+        options[key.slice("--no-".length)] = !value;
         continue;
     }
 

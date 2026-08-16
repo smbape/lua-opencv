@@ -1,5 +1,5 @@
 diff --git a/modules/cannops/CMakeLists.txt b/modules/cannops/CMakeLists.txt
-index 557fbe7..8c0a818 100644
+index 557fbe7f..8c0a8188 100644
 --- a/modules/cannops/CMakeLists.txt
 +++ b/modules/cannops/CMakeLists.txt
 @@ -10,7 +10,7 @@ ocv_glob_module_sources()
@@ -19,37 +19,8 @@ index 557fbe7..8c0a818 100644
 +ocv_include_directories(${OPENCV_BINARY_DIR}/include/ascendc_kernels)
  ocv_target_link_libraries(opencv_cannops PRIVATE ascendc_kernels)
  ocv_target_link_libraries(opencv_test_cannops PRIVATE ascendc_kernels)
-diff --git a/modules/cudev/include/opencv2/cudev/ptr2d/zip.hpp b/modules/cudev/include/opencv2/cudev/ptr2d/zip.hpp
-index f60ab5d..2bcc2fb 100644
---- a/modules/cudev/include/opencv2/cudev/ptr2d/zip.hpp
-+++ b/modules/cudev/include/opencv2/cudev/ptr2d/zip.hpp
-@@ -179,7 +179,12 @@ template <class PtrTuple> struct PtrTraits< ZipPtrSz<PtrTuple> > : PtrTraitsBase
- }}
- 
- #if defined(__CUDACC_VER_MAJOR__) && (__CUDACC_VER_MAJOR__ > 12 || (__CUDACC_VER_MAJOR__ == 12 && __CUDACC_VER_MINOR__ >= 4))
-+#if (__CUDACC_VER_MAJOR__ > 13 || (__CUDACC_VER_MAJOR__ == 13 && __CUDACC_VER_MINOR__ >= 2))
-+_CCCL_BEGIN_NAMESPACE_CUDA_STD
-+#else
- _LIBCUDACXX_BEGIN_NAMESPACE_STD
-+#endif
-+
- 
- template< class... Types >
- struct tuple_size< cv::cudev::ZipPtr<tuple<Types...> > >
-@@ -198,7 +203,11 @@ template<size_t N, class... Types >
- struct tuple_element<N, cv::cudev::ZipPtrSz<tuple<Types...> > >
- : tuple_element<N, tuple<Types...> > { };
- 
-+#if (__CUDACC_VER_MAJOR__ > 13 || (__CUDACC_VER_MAJOR__ == 13 && __CUDACC_VER_MINOR__ >= 2))
-+_CCCL_END_NAMESPACE_CUDA_STD
-+#else
- _LIBCUDACXX_END_NAMESPACE_STD
-+#endif
- 
- #endif
- #endif
 diff --git a/modules/cvv/src/stfl/stringutils.cpp b/modules/cvv/src/stfl/stringutils.cpp
-index 71d07d9..f98aa06 100644
+index 71d07d9b..f98aa06e 100644
 --- a/modules/cvv/src/stfl/stringutils.cpp
 +++ b/modules/cvv/src/stfl/stringutils.cpp
 @@ -248,7 +248,7 @@ void unescapeCommas(QString &str)
@@ -62,7 +33,7 @@ index 71d07d9..f98aa06 100644
      {
          if (cutEnd)
 diff --git a/modules/face/CMakeLists.txt b/modules/face/CMakeLists.txt
-index 4616515..13fb07f 100644
+index 4616515f..13fb07fc 100644
 --- a/modules/face/CMakeLists.txt
 +++ b/modules/face/CMakeLists.txt
 @@ -17,7 +17,7 @@ ocv_download(
@@ -75,7 +46,7 @@ index 4616515..13fb07f 100644
      RELATIVE_URL
      STATUS res
 diff --git a/modules/julia/CMakeLists.txt b/modules/julia/CMakeLists.txt
-index fcf380d..c85d460 100644
+index fcf380d7..c85d4605 100644
 --- a/modules/julia/CMakeLists.txt
 +++ b/modules/julia/CMakeLists.txt
 @@ -71,7 +71,7 @@ ocv_add_module(
@@ -119,7 +90,7 @@ index fcf380d..c85d460 100644
                     )
  
 diff --git a/modules/matlab/CMakeLists.txt b/modules/matlab/CMakeLists.txt
-index 11967a5..ff5e45f 100644
+index 11967a5a..ff5e45f5 100644
 --- a/modules/matlab/CMakeLists.txt
 +++ b/modules/matlab/CMakeLists.txt
 @@ -125,7 +125,7 @@ string(REGEX REPLACE "(\r?\n)+$" "" GIT_COMMIT "${GIT_COMMIT}")
@@ -150,7 +121,7 @@ index 11967a5..ff5e45f 100644
          OUTPUT_QUIET
      )
 diff --git a/modules/sfm/CMakeLists.txt b/modules/sfm/CMakeLists.txt
-index 46da72e..6fe1d3a 100644
+index 46da72e3..6fe1d3ad 100644
 --- a/modules/sfm/CMakeLists.txt
 +++ b/modules/sfm/CMakeLists.txt
 @@ -44,13 +44,13 @@ if((gflags_FOUND OR Gflags_FOUND OR GFLAGS_FOUND OR GFLAGS_INCLUDE_DIRS) AND (gl
@@ -170,7 +141,7 @@ index 46da72e..6fe1d3a 100644
            "${__output}\n\n"
        )
 diff --git a/modules/text/CMakeLists.txt b/modules/text/CMakeLists.txt
-index 0fe7e6f..b854df5 100644
+index 0fe7e6fb..b854df51 100644
 --- a/modules/text/CMakeLists.txt
 +++ b/modules/text/CMakeLists.txt
 @@ -18,7 +18,7 @@ if(TARGET ocv.3rdparty.tesseract)
@@ -183,7 +154,7 @@ index 0fe7e6f..b854df5 100644
  ocv_include_directories(${CMAKE_CURRENT_BINARY_DIR})
  
 diff --git a/modules/text/cmake/init.cmake b/modules/text/cmake/init.cmake
-index 254757e..0d89d0e 100644
+index 254757ec..0d89d0e6 100644
 --- a/modules/text/cmake/init.cmake
 +++ b/modules/text/cmake/init.cmake
 @@ -41,7 +41,7 @@ if(NOT HAVE_TESSERACT
@@ -196,7 +167,7 @@ index 254757e..0d89d0e 100644
      add_library(ocv.3rdparty.${name} INTERFACE ${imp})
      set_target_properties(ocv.3rdparty.${name} PROPERTIES
 diff --git a/modules/wechat_qrcode/CMakeLists.txt b/modules/wechat_qrcode/CMakeLists.txt
-index a15c433..ac63f99 100644
+index a15c4337..ac63f993 100644
 --- a/modules/wechat_qrcode/CMakeLists.txt
 +++ b/modules/wechat_qrcode/CMakeLists.txt
 @@ -29,7 +29,7 @@ foreach(model_name ${model_names})
@@ -209,7 +180,7 @@ index a15c433..ac63f99 100644
                          RELATIVE_URL
                          STATUS res)
 diff --git a/modules/wechat_qrcode/src/wechat_qrcode.cpp b/modules/wechat_qrcode/src/wechat_qrcode.cpp
-index 64aad73..c6871f2 100644
+index 64aad736..c6871f28 100644
 --- a/modules/wechat_qrcode/src/wechat_qrcode.cpp
 +++ b/modules/wechat_qrcode/src/wechat_qrcode.cpp
 @@ -57,7 +57,7 @@ WeChatQRCode::WeChatQRCode(const String& detector_prototxt_path,

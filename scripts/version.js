@@ -54,13 +54,15 @@ const files_to_change = [
     "luarocks/opencv_lua-scm-1.rockspec",
 ];
 
+const VERSION_REG = "[0-9]+\\.[0-9]+\\.[0-9]+(?:[+-][0-9a-zA-Z.+-]+)?";
+
 waterfall([
     next => {
         eachOfLimit(files_to_change, os.cpus().length, (filename, i, next) => {
             updateContent(sysPath.join(workspaceRoot, filename), oldContent => {
                 return oldContent
-                    .replace(new RegExp("(/lua-opencv/releases/download/v|/lua-opencv/tree/v)[0-9]+\\.[0-9]+\\.[0-9]+", "g"), `$1${ version }`)
-                    .replace(new RegExp("(--branch v)[0-9]+\\.[0-9]+\\.[0-9]+( https://github.com/smbape/lua-opencv)", "g"), `$1${ version }$2`);
+                    .replace(new RegExp(`(/lua-opencv/releases/download/v|/lua-opencv/tree/v)${ VERSION_REG }`, "g"), `$1${ version }`)
+                    .replace(new RegExp(`(--branch v)${ VERSION_REG }( https://github.com/smbape/lua-opencv)`, "g"), `$1${ version }$2`);
             }, (err, hasChanged) => {
                 next(err);
             });

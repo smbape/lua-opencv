@@ -67,7 +67,7 @@ In this example, we will use the following directories:
 ## Download the source code
 
 ```sh
-git clone --depth 1 --branch v0.3.0 https://github.com/smbape/lua-opencv.git /d/luarocks-binaries-custom/lua-opencv && \
+git clone --depth 1 --branch v4.14.0-1 https://github.com/smbape/lua-opencv.git /d/luarocks-binaries-custom/lua-opencv && \
 cd /d/luarocks-binaries-custom/lua-opencv && \
 npm ci
 ```
@@ -118,7 +118,7 @@ set PATH=D:\luarocks-binaries-custom\lua-opencv\out\prepublish\build\opencv_lua-
 
 ```cmd
 chcp 65001
-git clone --depth 1 --branch 4.13.0 https://github.com/opencv/opencv_extra.git "D:\luarocks-binaries-custom\opencv_extra"
+git clone --depth 1 --branch 4.14.0 https://github.com/opencv/opencv_extra.git "D:\luarocks-binaries-custom\opencv_extra"
 mkdir "D:\luarocks-binaries-custom\test\lua-opencv"
 cd /d "D:\luarocks-binaries-custom\test\lua-opencv"
 luarocks --lua-version "5.1" init --lua-versions "5.1,5.2,5.3,5.4,5.5"
@@ -201,7 +201,7 @@ Open a `x64 Native Tools Command Prompt for VS` terminal
 
 ```cmd
 cd /d "D:\luarocks-binaries-custom\test\lua-opencv"
-git clone --depth 1 --branch 4.13.0 https://github.com/opencv/opencv.git "D:\luarocks-binaries-custom\opencv"
+git clone --depth 1 --branch 4.14.0 https://github.com/opencv/opencv.git "D:\luarocks-binaries-custom\opencv"
 luarocks.bat install --deps-only D:\luarocks-binaries-custom\lua-opencv\samples\samples-scm-1.rockspec
 lua.bat D:\luarocks-binaries-custom\lua-opencv\samples\dnn\object_detection\object_detection.lua ssd_tf --input Megamind.avi --backend 5 --target 6
 ```

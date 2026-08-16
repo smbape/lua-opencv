@@ -4,7 +4,7 @@ package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:su
 
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.13.0/samples/python/tutorial_code/imgProc/threshold_inRange/threshold_inRange.py
+    https://github.com/opencv/opencv/blob/4.14.0/samples/python/tutorial_code/imgProc/threshold_inRange/threshold_inRange.py
 --]]
 
 local argparse = require("argparse")

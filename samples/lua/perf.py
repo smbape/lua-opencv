@@ -1,4 +1,4 @@
-# PYTHONPATH="$(realpath opencv-4.13.0-windows/opencv/sources/samples/dnn)" samples/.venv/Scripts/python.exe
+# PYTHONPATH="$(realpath opencv-4.14.0/opencv/sources/samples/dnn)" samples/.venv/Scripts/python.exe
 
 import numpy as np
 import cv2 as cv

@@ -124,7 +124,7 @@ sudo apt install -y freetype-devel harfbuzz-devel
 ## Download the source code
 
 ```sh
-git clone --depth 1 --branch v0.3.0 https://github.com/smbape/lua-opencv.git /io/luarocks-binaries-custom/lua-opencv && \
+git clone --depth 1 --branch v4.14.0-1 https://github.com/smbape/lua-opencv.git /io/luarocks-binaries-custom/lua-opencv && \
 cd /io/luarocks-binaries-custom/build && \
 npm ci
 ```
@@ -170,7 +170,7 @@ export PATH="/io/luarocks-binaries-custom/lua-opencv/out/prepublish/build/opencv
 ### Initialize our test project and install our custom prebuilt binary
 
 ```sh
-git clone --depth 1 --branch 4.13.0 https://github.com/opencv/opencv_extra.git /io/luarocks-binaries-custom/opencv_extra && \
+git clone --depth 1 --branch 4.14.0 https://github.com/opencv/opencv_extra.git /io/luarocks-binaries-custom/opencv_extra && \
 mkdir -p /io/luarocks-binaries-custom/test/lua-opencv && \
 cd /io/luarocks-binaries-custom/test/lua-opencv && \
 luarocks --lua-version 5.1 init --lua-versions "5.1,5.2,5.3,5.4,5.5" && \
@@ -255,7 +255,7 @@ Execute the test-opencv.lua script
 ### Test CUDA
 
 ```sh
-git clone --depth 1 --branch 4.13.0 https://github.com/opencv/opencv.git /io/luarocks-binaries-custom/opencv && \
+git clone --depth 1 --branch 4.14.0 https://github.com/opencv/opencv.git /io/luarocks-binaries-custom/opencv && \
 ./luarocks install --deps-only /io/luarocks-binaries-custom/lua-opencv/samples/samples-scm-1.rockspec && \
 ./lua /io/luarocks-binaries-custom/lua-opencv/samples/dnn/object_detection/object_detection.lua ssd_tf --input Megamind.avi --backend 5 --target 6
 ```

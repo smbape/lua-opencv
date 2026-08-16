@@ -218,6 +218,7 @@ const options = {
     cmake_build_args: [],
     branch: process.env.GIT_BRANCH || "main",
     server: process.env.LUAROCKS_SERVER ? sysPath.resolve(process.env.LUAROCKS_SERVER) : sysPath.join(prepublishRoot, "server"),
+    contrib: true,
 };
 
 const aliases = new Map([]);
@@ -265,6 +266,14 @@ for (let i = 0; i < argv.length; i++) {
         continue;
     }
 
+    if (key.startsWith("--no-") && optionValueKeys.has(`--${ key.slice("--no-".length) }`)) {
+        if (value !== true) {
+            throw new Error(`${ key } is a flag not, therefore, cannot have a value`);
+        }
+        options[key.slice("--no-".length)] = !value;
+        continue;
+    }
+
     if (oneValueKeys.has(key)) {
         if (eq === -1) {
             value = argv[++i];
@@ -305,12 +314,7 @@ if (!options.source && !options.binary) {
 }
 
 const versions = options["lua-versions"] ? options["lua-versions"].trim().split(/[\s,]+/) : [];
-const flavors = [false, true];
-
-if (options.cmake_build_args.length !== 0 && !options.contrib) {
-    flavors.length = 1;
-    flavors[0] = false;
-}
+const flavors = new Set([false, options.contrib]);
 
 eachOfLimit([
     ["luajit", "luajit-2.1"],

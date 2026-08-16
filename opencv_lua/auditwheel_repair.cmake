@@ -1,11 +1,16 @@
 cmake_minimum_required(VERSION 3.25)
 
+message(STATUS "PostInstall: PROJECT_VERSION = \"${PROJECT_VERSION}\"")
 message(STATUS "PostInstall: TARGET_NAME = \"${TARGET_NAME}\"")
 message(STATUS "PostInstall: TARGET_SOURCE_DIR = \"${TARGET_SOURCE_DIR}\"")
 message(STATUS "PostInstall: TARGET_CURRENT_SOURCE_DIR = \"${TARGET_CURRENT_SOURCE_DIR}\"")
 message(STATUS "PostInstall: TARGET_CURRENT_BINARY_DIR=\"${TARGET_CURRENT_BINARY_DIR}\"")
 message(STATUS "PostInstall: ORIGIN_FILE=\"${ORIGIN_FILE}\"")
 message(STATUS "PostInstall: REPAIR_DIR=\"${REPAIR_DIR}\"")
+
+# Remove additional labels from version because pyproject will transform it,
+# therefore, making it impossible to file(GLOB repaired_WHEEL_FILE "${repaired_WHEEL_DIR}/${TARGET_NAME}-${PROJECT_VERSION}-*.whl")
+string(REGEX REPLACE "-.*$" "" PROJECT_VERSION "${PROJECT_VERSION}")
 
 # !!! Do not remove, otherwise you may end up deleting you whole OS files
 if (NOT (TARGET_NAME MATCHES "^[A-Za-z0-9_]+$"))
@@ -154,13 +159,19 @@ execute_process(
 
 # get repaired_WHEEL_FILE
 string(REGEX MATCH "Fixed-up wheel written to (.+)" repaired_WHEEL_FILE "${command_OUTPUT}")
+
+if (NOT repaired_WHEEL_FILE)
+    message(STATUS "Unable to find repaired wheel")
+    message(FATAL_ERROR "${command_OUTPUT}")
+endif()
+
 string(LENGTH "Fixed-up wheel written to " repaired_WHEEL_FILE_BEGIN)
 string(LENGTH "${repaired_WHEEL_FILE}" repaired_WHEEL_FILE_LENGTH)
 math(EXPR repaired_WHEEL_FILE_LENGTH "${repaired_WHEEL_FILE_LENGTH} - ${repaired_WHEEL_FILE_BEGIN}")
 string(SUBSTRING "${repaired_WHEEL_FILE}" ${repaired_WHEEL_FILE_BEGIN} ${repaired_WHEEL_FILE_LENGTH} repaired_WHEEL_FILE)
 
 cmake_path(GET repaired_WHEEL_FILE PARENT_PATH repaired_WHEEL_DIR)
-file(GLOB repaired_WHEEL_FILE "${repaired_WHEEL_DIR}/${TARGET_NAME}-${PROJECT_VERSION}-*.whl")
+file(GLOB repaired_WHEEL_FILE "${repaired_WHEEL_DIR}/${TARGET_NAME}-*.whl")
 
 message(STATUS "PostInstall: repaired_WHEEL_FILE=\"${repaired_WHEEL_FILE}\"")
 

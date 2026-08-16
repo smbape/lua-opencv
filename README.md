@@ -142,12 +142,12 @@ luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/d
 Or to specify the target lua version with one of the following commands
 
 ```sh
-luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.13.0luajit2.1
-luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.13.0lua5.5
-luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.13.0lua5.4
-luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.13.0lua5.3
-luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.13.0lua5.2
-luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.13.0lua5.1
+luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.14.0luajit2.1
+luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.14.0lua5.5
+luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.14.0lua5.4
+luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.14.0lua5.3
+luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.14.0lua5.2
+luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.14.0lua5.1
 ```
 
 Those prebuilt binaries should work on Windows and many linux distributions and have been tested on:
@@ -168,12 +168,12 @@ Those prebuilt binaries should work on Windows and many linux distributions and 
 If none of the above works for you, then install the source rock with
 
 ```sh
-luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.13.0
+luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.14.0
 ```
 
 ## Examples
 
-More expamples can be found in the [samples](samples) directory.
+More examples can be found in the [samples](samples) directory.
 
 ### Show an image
 
@@ -338,14 +338,14 @@ All the examples in the samples directory can be run by following theses instruc
 #### Windows
 
 ```cmd
-git clone --depth 1 --branch 4.13.0 https://github.com/opencv/opencv.git
-git clone --depth 1 --branch v0.3.0 https://github.com/smbape/lua-opencv.git
+git clone --depth 1 --branch 4.14.0 https://github.com/opencv/opencv.git
+git clone --depth 1 --branch v4.14.0-1 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
 @REM build.bat "-DLua_VERSION=luajit-2.1" --target luajit --install
 @REM available versions are 5.1, 5.2, 5.3, 5.4, 5.5
 build.bat "-DLua_VERSION=5.5" --target lua --install
 build.bat "-DLua_VERSION=5.5" --target luarocks
-@REM luarocks\luarocks.bat install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.13.0luajit2.1
+@REM luarocks\luarocks.bat install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.14.0luajit2.1
 luarocks\luarocks.bat install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua
 luarocks\luarocks.bat install --deps-only samples\samples-scm-1.rockspec
 npm ci
@@ -355,14 +355,14 @@ node scripts\test.js --Release
 #### Linux
 
 ```sh
-git clone --depth 1 --branch 4.13.0 https://github.com/opencv/opencv.git
-git clone --depth 1 --branch v0.3.0 https://github.com/smbape/lua-opencv.git
+git clone --depth 1 --branch 4.14.0 https://github.com/opencv/opencv.git
+git clone --depth 1 --branch v4.14.0-1 https://github.com/smbape/lua-opencv.git
 cd lua-opencv
 # ./build.sh "-DLua_VERSION=luajit-2.1" --target luajit --install
 # available versions are 5.1, 5.2, 5.3, 5.4, 5.5
 ./build.sh "-DLua_VERSION=5.5" --target lua --install
 ./build.sh "-DLua_VERSION=5.5" --target luarocks
-# ./luarocks/luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.13.0luajit2.1
+# ./luarocks/luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua 4.14.0luajit2.1
 ./luarocks/luarocks install --server=https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1 opencv_lua
 ./luarocks/luarocks install --deps-only samples/samples-scm-1.rockspec
 npm ci
@@ -380,8 +380,8 @@ node scripts/test.js --Release
 With Git Bash, download and extract the library with the following commands
 
 ```sh
-curl -L https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1/opencv_lua-4.13.0luajit2.1-1.win32-x86_64.rock -o opencv_lua-4.13.0luajit2.1-1.win32-x86_64.rock
-unzip -d third_party -o opencv_lua-4.13.0luajit2.1-1.win32-x86_64.rock 'lib/**'
+curl -L https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1/opencv_lua-4.14.0luajit2.1-1.win32-x86_64.rock -o opencv_lua-4.14.0luajit2.1-1.win32-x86_64.rock
+unzip -d third_party -o opencv_lua-4.14.0luajit2.1-1.win32-x86_64.rock 'lib/**'
 ```
 
 #### Linux
@@ -389,8 +389,8 @@ unzip -d third_party -o opencv_lua-4.13.0luajit2.1-1.win32-x86_64.rock 'lib/**'
 Download and extract the library with the following commands
 
 ```sh
-curl -L https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1/opencv_lua-4.13.0luajit2.1-1.linux-x86_64.rock -o opencv_lua-4.13.0luajit2.1-1.linux-x86_64.rock
-unzip -d third_party -o opencv_lua-4.13.0luajit2.1-1.linux-x86_64.rock 'lib/**'
+curl -L https://github.com/smbape/luarocks-binaries/releases/download/v0.0.1/opencv_lua-4.14.0luajit2.1-1.linux-x86_64.rock -o opencv_lua-4.14.0luajit2.1-1.linux-x86_64.rock
+unzip -d third_party -o opencv_lua-4.14.0luajit2.1-1.linux-x86_64.rock 'lib/**'
 ```
 
 ### Example

@@ -21,8 +21,8 @@ endif()
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release;MinSizeRel;RelWithDebInfo" CACHE STRING "Configs" FORCE)
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "${CMAKE_CONFIGURATION_TYPES}")
 
-set(OpenCV_VERSION 4.13.0 CACHE STRING "Choose the OpenCV version.")
-set_property(CACHE OpenCV_VERSION PROPERTY STRINGS "4.13.0")
+set(OpenCV_VERSION 4.14.0 CACHE STRING "Choose the OpenCV version.")
+set_property(CACHE OpenCV_VERSION PROPERTY STRINGS "4.14.0")
 
 string(REPLACE "." ";" OpenCV_VERSION_LIST ${OpenCV_VERSION})
 list(GET OpenCV_VERSION_LIST 0 OpenCV_VERSION_MAJOR)
@@ -46,15 +46,15 @@ FetchContent_Populate(opencv
     PATCH_COMMAND   "${CMAKE_COMMAND}"
                     "-DSOURCE_DIR=<SOURCE_DIR>"
                     "-DGIT_EXECUTABLE=${GIT_EXECUTABLE}"
-                    "-DPATCH_FILE=${CMAKE_SOURCE_DIR}/patches/001-opencv-src.patch"
+                    "-DPATCH_FILE=${CMAKE_SOURCE_DIR}/patches/001-opencv-${OpenCV_VERSION_MAJOR}.x-src.patch"
                     -P "${CMAKE_SOURCE_DIR}/cmake/git_patch_once.cmake"
 )
 
 option(BUILD_contrib "Build with opencv contrib" OFF)
 
 if (BUILD_contrib)
-    # https://github.com/opencv/opencv-python/tree/92
-    set(OPENCV_CONTRIB_TAG_4130 d99ad2a188210cc35067c2e60076eed7c2442bc3)
+    # https://github.com/opencv/opencv-python/tree/94
+    set(OPENCV_CONTRIB_TAG_4140 a8e9acd62cabd30419dba83007f2ac0d07de5e2c)
 
     if (NOT DEFINED OPENCV_CONTRIB_TAG_${OpenCV_DLLVERSION})
         message(FATAL_ERROR "Unable to find git contrib tag for OPENCV_CONTRIB_TAG_${OpenCV_DLLVERSION}
@@ -79,7 +79,7 @@ if (BUILD_contrib)
         PATCH_COMMAND   "${CMAKE_COMMAND}"
                         "-DSOURCE_DIR=<SOURCE_DIR>"
                         "-DGIT_EXECUTABLE=${GIT_EXECUTABLE}"
-                        "-DPATCH_FILE=${CMAKE_SOURCE_DIR}/patches/001-opencv_contrib-src.patch"
+                        "-DPATCH_FILE=${CMAKE_SOURCE_DIR}/patches/001-opencv_contrib-${OpenCV_VERSION_MAJOR}.x-src.patch"
                         -P "${CMAKE_SOURCE_DIR}/cmake/git_patch_once.cmake"
     )
 

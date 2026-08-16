@@ -5,7 +5,7 @@ package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:su
 
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.13.0/samples/python/digits.py
+    https://github.com/opencv/opencv/blob/4.14.0/samples/python/digits.py
 --]]
 
 local __doc__ = [[

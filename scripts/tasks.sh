@@ -172,14 +172,14 @@ PROJECT_ID=opencv
 GIT_BRANCH="${GIT_BRANCH:-develop}"
 
 CONTAINER_NAME_MANY_LINUX_x86_64=${PROJECT_ID}-lua-manylinux_2_28-x86-64
-DOCKER_IMAGE_MANY_LINUX_x86_64=quay.io/opencv-ci/opencv-python-manylinux_2_28-x86-64:20260102
+DOCKER_IMAGE_MANY_LINUX_x86_64=quay.io/opencv-ci/opencv-python-manylinux_2_28-x86-64:20260725
 
 CONTAINER_NAME_MANY_LINUX_aarch64=${PROJECT_ID}-lua-manylinux_2_28-aarch64
-DOCKER_IMAGE_MANY_LINUX_aarch64=quay.io/opencv-ci/opencv-python-manylinux_2_28-aarch64:20260102
+DOCKER_IMAGE_MANY_LINUX_aarch64=quay.io/opencv-ci/opencv-python-manylinux_2_28-aarch64:20260725
 
 DIST_VERSION=${DIST_VERSION:-1}
 WSL_DISTNAME=${WSL_DISTNAME:-Ubuntu}
-OPENCV_VERSION=${OPENCV_VERSION:-4.13.0}
+OPENCV_VERSION=${OPENCV_VERSION:-4.14.0}
 WINDOWS_EXCLUDED_TESTS=${WSL_EXCLUDED_TESTS:-""}
 WSL_EXCLUDED_TESTS=${WSL_EXCLUDED_TESTS:-"'!02-video-capture-camera.lua' '!threshold_inRange.lua' '!objectDetection.lua'"}
 CONTAINER_NAME=${CONTAINER_NAME:-${CONTAINER_NAME_MANY_LINUX_x86_64}}
@@ -870,7 +870,6 @@ node --trace-uncaught --unhandled-rejections=strict scripts/prepublish.js \
     --lua-versions '"'${LUA_VERSIONS}'"' \
     --server=/mnt/sources/lua-'"${PROJECT_ID}"'/out/prepublish/server \
     --binary \
-    --contrib \
     -DENABLE_REPAIR=ON \
     -DAUDITWHEEL_exclude="libxcb.so.1" \
     -DWITH_QT=5 \
@@ -935,6 +934,7 @@ node --trace-uncaught --unhandled-rejections=strict scripts/prepublish.js \
     --server="${WORKING_DIRECTORY}/server" \
     --lua-versions luajit-2.1 \
     --name='"${PROJECT_ID}"'_lua-custom \
+    --no-contrib \
     -DENABLE_REPAIR=ON \
     -DDELVEWHEEL_exclude="cublas*;cudnn*;cufft*;nvcuda*;nvcuvid*;nvidia*;npp*;nvEncodeAPI*; " \
     -DCMAKE_TOOLCHAIN_FILE='"'$(cygpath -m "$VCPKG_ROOT")/scripts/buildsystems/vcpkg.cmake'"' \
@@ -1061,6 +1061,7 @@ node --trace-uncaught --unhandled-rejections=strict scripts/prepublish.js \
     --server="${WORKING_DIRECTORY}/server" \
     --lua-versions luajit-2.1 \
     --name='"${PROJECT_ID}"'_lua-custom \
+    --no-contrib \
     -DAUDITWHEEL_plat=auto \
     -DAUDITWHEEL_exclude="libxcb.so.*;libxcb-*.so.*;libQt*;libcublas.so.*;libcuda.so.*;libcudnn.so.*;libcufft.so.*;libnpp*;libnvcuvid.so.*;libnvidia-encode.so.*;libOpenCL.so.*;libopenblas.so.*" \
     -DWITH_QT=5 \
