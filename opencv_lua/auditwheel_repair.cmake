@@ -116,16 +116,17 @@ execute_process(
     OUTPUT_VARIABLE WHEEL_BUILD_LOGS
     COMMAND_ECHO STDERR
     OUTPUT_STRIP_TRAILING_WHITESPACE
-    COMMAND_ERROR_IS_FATAL ANY
 )
 
 # get WHEEL_FILE
 string(REGEX MATCH "Successfully built (.+)" WHEEL_FILE "${WHEEL_BUILD_LOGS}")
-string(LENGTH "Successfully built " WHEEL_FILE_BEGIN)
-string(LENGTH "${WHEEL_FILE}" WHEEL_FILE_LENGTH)
-math(EXPR WHEEL_FILE_LENGTH "${WHEEL_FILE_LENGTH} - ${WHEEL_FILE_BEGIN}")
-string(SUBSTRING "${WHEEL_FILE}" ${WHEEL_FILE_BEGIN} ${WHEEL_FILE_LENGTH} WHEEL_FILE)
 
+if (NOT WHEEL_FILE)
+    message(STATUS "Unable to find repaired wheel")
+    message(FATAL_ERROR "${command_OUTPUT}")
+endif()
+
+set(WHEEL_FILE "${CMAKE_MATCH_1}")
 message(STATUS "PostInstall: WHEEL_FILE=\"${WHEEL_FILE}\"")
 
 set(AUDITWHEEL_COMMAND "${Python3_EXECUTABLE}" -m auditwheel repair --exclude "liblua*")
@@ -154,7 +155,6 @@ execute_process(
     ERROR_VARIABLE command_OUTPUT
     COMMAND_ECHO STDERR
     ERROR_STRIP_TRAILING_WHITESPACE
-    COMMAND_ERROR_IS_FATAL ANY
 )
 
 # get repaired_WHEEL_FILE
@@ -165,14 +165,7 @@ if (NOT repaired_WHEEL_FILE)
     message(FATAL_ERROR "${command_OUTPUT}")
 endif()
 
-string(LENGTH "Fixed-up wheel written to " repaired_WHEEL_FILE_BEGIN)
-string(LENGTH "${repaired_WHEEL_FILE}" repaired_WHEEL_FILE_LENGTH)
-math(EXPR repaired_WHEEL_FILE_LENGTH "${repaired_WHEEL_FILE_LENGTH} - ${repaired_WHEEL_FILE_BEGIN}")
-string(SUBSTRING "${repaired_WHEEL_FILE}" ${repaired_WHEEL_FILE_BEGIN} ${repaired_WHEEL_FILE_LENGTH} repaired_WHEEL_FILE)
-
-cmake_path(GET repaired_WHEEL_FILE PARENT_PATH repaired_WHEEL_DIR)
-file(GLOB repaired_WHEEL_FILE "${repaired_WHEEL_DIR}/${TARGET_NAME}-*.whl")
-
+set(repaired_WHEEL_FILE "${CMAKE_MATCH_1}")
 message(STATUS "PostInstall: repaired_WHEEL_FILE=\"${repaired_WHEEL_FILE}\"")
 
 # Replace shared library with the repaired one

@@ -1,5 +1,5 @@
 diff --git a/3rdparty/ffmpeg/ffmpeg.cmake b/3rdparty/ffmpeg/ffmpeg.cmake
-index 830d36056b..9bf4366613 100644
+index f4daa6447a..38d8d7092f 100644
 --- a/3rdparty/ffmpeg/ffmpeg.cmake
 +++ b/3rdparty/ffmpeg/ffmpeg.cmake
 @@ -37,8 +37,8 @@ function(download_win_ffmpeg script_var)
@@ -26,8 +26,61 @@ index 61349ca9e6..f7c541c39e 100644
      -I${CMAKE_CURRENT_SOURCE_DIR}
      ${CMAKE_CURRENT_SOURCE_DIR}/nasm/jsimdcfg.inc.h |
    ${GREP} -E '^[\;%]|^\ %' | sed 's%_cpp_protection_%%' |
+diff --git a/3rdparty/mlas/CMakeLists.txt b/3rdparty/mlas/CMakeLists.txt
+index c773ec0004..70a6e45816 100644
+--- a/3rdparty/mlas/CMakeLists.txt
++++ b/3rdparty/mlas/CMakeLists.txt
+@@ -22,7 +22,7 @@ set(MLAS_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/inc)
+ # Hardware-agnostic core: SGEMM dispatch + softmax/exp kernels + flash-attention.
+ set(mlas_common_srcs
+   ${MLAS_SRC_DIR}/platform.cpp
+-  ${CMAKE_SOURCE_DIR}/modules/dnn/src/layers/cpu_kernels/mlas_threading.cpp
++  ${OPENCV_SOURCE_DIR}/modules/dnn/src/layers/cpu_kernels/mlas_threading.cpp
+   ${MLAS_SRC_DIR}/sgemm.cpp
+   ${MLAS_SRC_DIR}/compute.cpp
+   ${MLAS_SRC_DIR}/flashattn.cpp
+@@ -234,7 +234,7 @@ add_library(opencv_dnn_mlas OBJECT ${mlas_common_srcs} ${mlas_platform_srcs})
+ set_target_properties(opencv_dnn_mlas PROPERTIES POSITION_INDEPENDENT_CODE ON)
+ target_include_directories(opencv_dnn_mlas PUBLIC  ${MLAS_INC_DIR})
+ target_include_directories(opencv_dnn_mlas PRIVATE ${MLAS_SRC_DIR})
+-target_include_directories(opencv_dnn_mlas PRIVATE ${CMAKE_SOURCE_DIR}/modules/core/include)
++target_include_directories(opencv_dnn_mlas PRIVATE ${OPENCV_SOURCE_DIR}/modules/core/include)
+ 
+ target_compile_definitions(opencv_dnn_mlas PRIVATE
+   BUILD_MLAS_NO_ONNXRUNTIME=1
+diff --git a/3rdparty/mlas/lib/platform.cpp b/3rdparty/mlas/lib/platform.cpp
+index 52b5ac234c..f492eace8c 100644
+--- a/3rdparty/mlas/lib/platform.cpp
++++ b/3rdparty/mlas/lib/platform.cpp
+@@ -420,6 +420,17 @@ MLAS_PLATFORM::MLAS_PLATFORM(void)
+     // calls MlasSgemmKernelZero / MlasSgemmKernelAdd directly without going
+     // through GetMlasPlatform().GemmFloatKernel.
+ }
++
++// FP16 HGemm kernels aren't vendored (MLAS_GEMM_ONLY) but compute.cpp references this probe; define it so static links resolve. See opencv/opencv#29342.
++bool
++MLASCALL
++MlasHGemmSupported(
++    CBLAS_TRANSPOSE /*TransA*/,
++    CBLAS_TRANSPOSE /*TransB*/
++    )
++{
++    return false;
++}
+ #else  // !MLAS_GEMM_ONLY
+ MLAS_PLATFORM::MLAS_PLATFORM(
+     void
+@@ -881,7 +892,7 @@ Return Value:
+         }
+         else{
+             this->ErfFP16KernelRoutine = MlasNeonErfFP16Kernel;
+-            this->GeluFP16KernelRoutine = MlasNeonGeluFP16Kernel; 
++            this->GeluFP16KernelRoutine = MlasNeonGeluFP16Kernel;
+         }
+     #else
+         this->ErfFP16KernelRoutine = MlasNeonErfFP16Kernel;
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index a9321d07b2..5c55b90ecd 100644
+index d6812aa76e..43edce462e 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -5,8 +5,38 @@
@@ -70,7 +123,7 @@ index a9321d07b2..5c55b90ecd 100644
    message(FATAL_ERROR "
  FATAL: In-source builds are not allowed.
         You should create a separate directory for build files.
-@@ -151,13 +181,13 @@ endif()
+@@ -97,13 +127,13 @@ endif()
  if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)  # https://cmake.org/cmake/help/latest/variable/CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT.html
    if(NOT CMAKE_CROSSCOMPILING)
      if(WIN32)
@@ -86,7 +139,7 @@ index a9321d07b2..5c55b90ecd 100644
    endif()
  endif()
  
-@@ -584,7 +614,7 @@ if(OPENCV_TEST_DATA_PATH)
+@@ -536,7 +566,7 @@ if(OPENCV_TEST_DATA_PATH)
  endif()
  
  # Save libs and executables in the same place
@@ -95,7 +148,7 @@ index a9321d07b2..5c55b90ecd 100644
  
  if(ANDROID)
    set(LIBRARY_OUTPUT_PATH                "${OpenCV_BINARY_DIR}/lib/${ANDROID_NDK_ABI_NAME}")
-@@ -626,7 +656,7 @@ include(cmake/OpenCVInstallLayout.cmake)
+@@ -578,7 +608,7 @@ include(cmake/OpenCVInstallLayout.cmake)
  # ----------------------------------------------------------------------------
  #  Path for build/platform -specific headers
  # ----------------------------------------------------------------------------
@@ -104,7 +157,7 @@ index a9321d07b2..5c55b90ecd 100644
  ocv_include_directories(${OPENCV_CONFIG_FILE_INCLUDE_DIR})
  
  # ----------------------------------------------------------------------------
-@@ -1163,18 +1193,18 @@ if(INSTALL_TESTS AND OPENCV_TEST_DATA_PATH)
+@@ -1094,18 +1124,18 @@ if(INSTALL_TESTS AND OPENCV_TEST_DATA_PATH)
    if(ANDROID)
      get_filename_component(TEST_PATH ${OPENCV_TEST_INSTALL_PATH} DIRECTORY)
      configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/templates/opencv_run_all_tests_android.sh.in"
@@ -130,10 +183,10 @@ index a9321d07b2..5c55b90ecd 100644
    endif()
  endif()
 diff --git a/cmake/FindCUDA.cmake b/cmake/FindCUDA.cmake
-index ca04bb4a4e..e438e26c35 100644
+index fc7ed0609b..45d9e16fa3 100644
 --- a/cmake/FindCUDA.cmake
 +++ b/cmake/FindCUDA.cmake
-@@ -1398,7 +1398,7 @@ macro(CUDA_WRAP_SRCS cuda_target format generated_files)
+@@ -1392,7 +1392,7 @@ macro(CUDA_WRAP_SRCS cuda_target format generated_files)
        endif()
  
        # Create up the comment string
@@ -142,7 +195,7 @@ index ca04bb4a4e..e438e26c35 100644
        if(cuda_compile_to_external_module)
          set(cuda_build_comment_string "Building NVCC ${cuda_compile_to_external_module_type} file ${generated_file_relative_path}")
        else()
-@@ -1514,7 +1514,7 @@ function(CUDA_LINK_SEPARABLE_COMPILATION_OBJECTS output_file cuda_target options
+@@ -1508,7 +1508,7 @@ function(CUDA_LINK_SEPARABLE_COMPILATION_OBJECTS output_file cuda_target options
      # Add our general CUDA_NVCC_FLAGS with the configuration specifig flags
      set(nvcc_flags ${CUDA_NVCC_FLAGS} ${config_specific_flags} ${nvcc_flags})
  
@@ -152,20 +205,20 @@ index ca04bb4a4e..e438e26c35 100644
      # Some generators don't handle the multiple levels of custom command
      # dependencies correctly (obj1 depends on file1, obj2 depends on obj1), so
 diff --git a/cmake/FindONNX.cmake b/cmake/FindONNX.cmake
-index 0b61185824..73fcbff8a7 100644
+index e162cdeebb..d761315fd1 100644
 --- a/cmake/FindONNX.cmake
 +++ b/cmake/FindONNX.cmake
-@@ -49,7 +49,7 @@ if(ORT_LIB AND ORT_INCLUDE)
- 
+@@ -144,7 +144,7 @@ if(ORT_LIB AND ORT_INCLUDE)
    # Link target with associated interface headers
    set(ONNX_LIBRARY "onnxruntime" CACHE STRING "ONNX Link Target")
--  ocv_add_library(${ONNX_LIBRARY} SHARED IMPORTED)
-+  ocv_add_library(${ONNX_LIBRARY} SHARED IMPORTED GLOBAL)
-   set_target_properties(${ONNX_LIBRARY} PROPERTIES
-                         INTERFACE_INCLUDE_DIRECTORIES ${ORT_INCLUDE}
-                         IMPORTED_LOCATION ${ORT_LIB}
+   if(NOT TARGET ${ONNX_LIBRARY})
+-    ocv_add_library(${ONNX_LIBRARY} SHARED IMPORTED)
++    ocv_add_library(${ONNX_LIBRARY} SHARED IMPORTED GLOBAL)
+   endif()
+ 
+   if(WIN32)
 diff --git a/cmake/OpenCVCompilerOptions.cmake b/cmake/OpenCVCompilerOptions.cmake
-index 5a0cb3d1bc..6234661fa4 100644
+index e43cd9bd79..f0dddf6dc9 100644
 --- a/cmake/OpenCVCompilerOptions.cmake
 +++ b/cmake/OpenCVCompilerOptions.cmake
 @@ -8,17 +8,17 @@ if(ENABLE_CCACHE AND NOT OPENCV_COMPILER_IS_CCACHE)
@@ -195,10 +248,10 @@ index 5a0cb3d1bc..6234661fa4 100644
        message(STATUS "ccache: enable support through Xcode project properties")
      elseif(__OLD_RULE_LAUNCH_COMPILE)
 diff --git a/cmake/OpenCVDetectCUDAUtils.cmake b/cmake/OpenCVDetectCUDAUtils.cmake
-index 808f6bb550..852d1adfe2 100644
+index fce31f6ee0..be156e1ebe 100644
 --- a/cmake/OpenCVDetectCUDAUtils.cmake
 +++ b/cmake/OpenCVDetectCUDAUtils.cmake
-@@ -166,7 +166,7 @@ macro(ocv_filter_available_architecture nvcc_executable result_list)
+@@ -164,7 +164,7 @@ macro(ocv_filter_available_architecture nvcc_executable result_list)
        set(_cmd "${nvcc_executable}" ${OPENCV_CUDA_DETECTION_NVCC_FLAGS} ${NVCC_OPTION} "${OpenCV_SOURCE_DIR}/cmake/checks/OpenCVDetectCudaArch.cu" --compile)
        execute_process(
            COMMAND ${_cmd}
@@ -207,7 +260,7 @@ index 808f6bb550..852d1adfe2 100644
            RESULT_VARIABLE _nvcc_res
            OUTPUT_VARIABLE _nvcc_out
            ERROR_VARIABLE _nvcc_err
-@@ -203,7 +203,7 @@ macro(ocv_detect_native_cuda_arch nvcc_executable status output)
+@@ -201,7 +201,7 @@ macro(ocv_detect_native_cuda_arch nvcc_executable status output)
    else()
      execute_process(
          COMMAND ${OPENCV_CUDA_DETECT_ARCHS_COMMAND}
@@ -216,7 +269,7 @@ index 808f6bb550..852d1adfe2 100644
          RESULT_VARIABLE ${status}
          OUTPUT_VARIABLE _nvcc_out
          ERROR_VARIABLE _nvcc_err
-@@ -417,7 +417,7 @@ macro(ocv_apply_cuda_stub_workaround cuda_driver_library_path)
+@@ -415,7 +415,7 @@ macro(ocv_apply_cuda_stub_workaround cuda_driver_library_path)
    if(" ${cuda_driver_library_path}" MATCHES "/stubs/libcuda.so" AND NOT OPENCV_SKIP_CUDA_STUB_WORKAROUND)
      set(CUDA_STUB_ENABLED_LINK_WORKAROUND 1)
      if(EXISTS "${cuda_driver_library_path}" AND NOT OPENCV_SKIP_CUDA_STUB_WORKAROUND_RPATH_LINK)
@@ -334,7 +387,7 @@ index 741267d269..28fbe7b07e 100644
  else()
    set(HAVE_CONCURRENCY 0)
 diff --git a/cmake/OpenCVFindIPP.cmake b/cmake/OpenCVFindIPP.cmake
-index eb26bea5a1..0117254d47 100644
+index c8716d869a..5ae3d0453d 100644
 --- a/cmake/OpenCVFindIPP.cmake
 +++ b/cmake/OpenCVFindIPP.cmake
 @@ -155,7 +155,7 @@ macro(ipp_detect_version)
@@ -360,10 +413,10 @@ index c17d960fb3..65630554ee 100644
              IMPORTED_LINK_INTERFACE_LIBRARIES ""
              IMPORTED_LOCATION "${FILE}"
 diff --git a/cmake/OpenCVFindLAPACK.cmake b/cmake/OpenCVFindLAPACK.cmake
-index 61a149c234..2add5833c4 100644
+index 88335b50c9..a9da029df6 100644
 --- a/cmake/OpenCVFindLAPACK.cmake
 +++ b/cmake/OpenCVFindLAPACK.cmake
-@@ -61,7 +61,7 @@ macro(ocv_lapack_check)
+@@ -66,7 +66,7 @@ macro(ocv_lapack_check)
      unset(LAPACK_LIBRARIES)
    else()
      # adding proxy opencv_lapack.h header
@@ -372,28 +425,28 @@ index 61a149c234..2add5833c4 100644
  
      set(_lapack_add_extern_c NOT (APPLE OR OPENCV_SKIP_LAPACK_EXTERN_C) OR OPENCV_FORCE_LAPACK_EXTERN_C)
  
-@@ -148,14 +148,14 @@ macro(ocv_lapack_check)
-     try_compile(__VALID_LAPACK
-         "${OpenCV_BINARY_DIR}"
-         "${OpenCV_SOURCE_DIR}/cmake/checks/lapack_check.cpp"
--        CMAKE_FLAGS "-DINCLUDE_DIRECTORIES:STRING=${LAPACK_INCLUDE_DIR}\;${CMAKE_BINARY_DIR}"
-+        CMAKE_FLAGS "-DINCLUDE_DIRECTORIES:STRING=${LAPACK_INCLUDE_DIR}\;${OPENCV_BINARY_DIR}"
-                     "-DLINK_DIRECTORIES:STRING=${__link_directories}"
-         COMPILE_DEFINITIONS ${LAPACK_TRY_COMPILE_DEF}
-         LINK_LIBRARIES ${LAPACK_LIBRARIES}
-         OUTPUT_VARIABLE TRY_OUT
-     )
-     if(NOT __VALID_LAPACK)
--      file(APPEND ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeError.log
-+      file(APPEND ${OPENCV_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeError.log
-           "\nLAPACK(${LAPACK_IMPL}) check FAILED:\n"
-           "    LAPACK_INCLUDE_DIR: '${LAPACK_INCLUDE_DIR}'\n"
-           "    LAPACK_LIBRARIES: '${LAPACK_LIBRARIES}'\n"
+@@ -154,14 +154,14 @@ macro(ocv_lapack_check)
+       try_compile(__VALID_LAPACK
+           "${OpenCV_BINARY_DIR}"
+           "${OpenCV_SOURCE_DIR}/cmake/checks/lapack_check.cpp"
+-          CMAKE_FLAGS "-DINCLUDE_DIRECTORIES:STRING=${LAPACK_INCLUDE_DIR}\;${CMAKE_BINARY_DIR}"
++          CMAKE_FLAGS "-DINCLUDE_DIRECTORIES:STRING=${LAPACK_INCLUDE_DIR}\;${OPENCV_BINARY_DIR}"
+                       "-DLINK_DIRECTORIES:STRING=${__link_directories}"
+           COMPILE_DEFINITIONS ${LAPACK_TRY_COMPILE_DEF}
+           LINK_LIBRARIES ${LAPACK_LIBRARIES}
+           OUTPUT_VARIABLE TRY_OUT
+       )
+       if(NOT __VALID_LAPACK)
+-        file(APPEND ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeError.log
++        file(APPEND ${OPENCV_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeError.log
+             "\nLAPACK(${LAPACK_IMPL}) check FAILED:\n"
+             "    LAPACK_INCLUDE_DIR: '${LAPACK_INCLUDE_DIR}'\n"
+             "    LAPACK_LIBRARIES: '${LAPACK_LIBRARIES}'\n"
 diff --git a/cmake/OpenCVFindLibsPerf.cmake b/cmake/OpenCVFindLibsPerf.cmake
-index f3fe215c6f..b32c9dc1f9 100644
+index f1a958b48b..bf3785b431 100644
 --- a/cmake/OpenCVFindLibsPerf.cmake
 +++ b/cmake/OpenCVFindLibsPerf.cmake
-@@ -246,7 +246,7 @@ if(WITH_FASTCV)
+@@ -244,7 +244,7 @@ if(WITH_FASTCV)
        set(FastCV_INCLUDE_PATH "${FCV_ROOT_DIR}/inc" CACHE PATH "FastCV includes directory")
        set(FastCV_LIB_PATH "${FCV_ROOT_DIR}/libs" CACHE PATH "FastCV library directory")
        ocv_install_3rdparty_licenses(FastCV "${OpenCV_BINARY_DIR}/3rdparty/fastcv/LICENSE")
@@ -429,7 +482,7 @@ index 22c25ae8eb..5f016626d3 100644
  set(modules "${OPENCV_MODULES_PUBLIC}")
  ocv_list_filterout(modules "opencv_ts")
 diff --git a/cmake/OpenCVGenAndroidMK.cmake b/cmake/OpenCVGenAndroidMK.cmake
-index ebf25d72a6..a12d168526 100644
+index bd17cc7fea..cf0cfa0f78 100644
 --- a/cmake/OpenCVGenAndroidMK.cmake
 +++ b/cmake/OpenCVGenAndroidMK.cmake
 @@ -62,8 +62,8 @@ if(ANDROID)
@@ -578,7 +631,7 @@ index f1a6926d07..051d6af3d7 100644
 +                 "${OPENCV_BINARY_DIR}/osx/Info.plist")
  endif()
 diff --git a/cmake/OpenCVGenPkgconfig.cmake b/cmake/OpenCVGenPkgconfig.cmake
-index 3532260efb..d219072f37 100644
+index 9fc2c91a97..697c4627c8 100644
 --- a/cmake/OpenCVGenPkgconfig.cmake
 +++ b/cmake/OpenCVGenPkgconfig.cmake
 @@ -66,7 +66,7 @@ endif()
@@ -629,7 +682,7 @@ index 3532260efb..d219072f37 100644
  
  endif() # DEFINED CMAKE_HELPER_SCRIPT
 diff --git a/cmake/OpenCVGenSetupVars.cmake b/cmake/OpenCVGenSetupVars.cmake
-index 2cf238714f..9e2c2fbb05 100644
+index 8fce8a01d5..dafe152be2 100644
 --- a/cmake/OpenCVGenSetupVars.cmake
 +++ b/cmake/OpenCVGenSetupVars.cmake
 @@ -29,8 +29,8 @@ else()
@@ -655,10 +708,10 @@ index 2cf238714f..9e2c2fbb05 100644
      PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
      COMPONENT scripts)
 diff --git a/cmake/OpenCVModule.cmake b/cmake/OpenCVModule.cmake
-index 3690c266d5..48671a884e 100644
+index a171ebfb5c..a4494e06cf 100644
 --- a/cmake/OpenCVModule.cmake
 +++ b/cmake/OpenCVModule.cmake
-@@ -938,7 +938,7 @@ macro(_ocv_create_module)
+@@ -937,7 +937,7 @@ macro(_ocv_create_module)
    endif()
  
    if(WIN32
@@ -667,7 +720,7 @@ index 3690c266d5..48671a884e 100644
        AND NOT OPENCV_VS_VERSIONINFO_SKIP)
      if(DEFINED OPENCV_VS_VERSIONINFO_FILE)
        set(_VS_VERSION_FILE "${OPENCV_VS_VERSIONINFO_FILE}")
-@@ -965,7 +965,7 @@ macro(_ocv_create_module)
+@@ -964,7 +964,7 @@ macro(_ocv_create_module)
            "${the_module}" STREQUAL "opencv_world" OR
            "${the_module}" STREQUAL "opencv_cudev"
        )
@@ -676,7 +729,7 @@ index 3690c266d5..48671a884e 100644
        AND NOT OPENCV_SKIP_DLLMAIN_GENERATION
    )
        set(_DLLMAIN_FILE "${CMAKE_CURRENT_BINARY_DIR}/${the_module}_main.cpp")
-@@ -1008,6 +1008,10 @@ macro(_ocv_create_module)
+@@ -1007,6 +1007,10 @@ macro(_ocv_create_module)
      set_target_properties(${the_module} PROPERTIES FOLDER "modules")
    endif()
  
@@ -687,7 +740,7 @@ index 3690c266d5..48671a884e 100644
    set_target_properties(${the_module} PROPERTIES
      OUTPUT_NAME "${the_module}${OPENCV_DLLVERSION}"
      DEBUG_POSTFIX "${OPENCV_DEBUG_POSTFIX}"
-@@ -1050,14 +1054,14 @@ macro(_ocv_create_module)
+@@ -1049,14 +1053,14 @@ macro(_ocv_create_module)
  
    get_target_property(_target_type ${the_module} TYPE)
    if(OPENCV_MODULE_${the_module}_CLASS STREQUAL "PUBLIC" AND
@@ -753,7 +806,7 @@ index 928926d340..45df5f4776 100644
        DEPENDS ${__sources}
        SOURCES ${__sources}
 diff --git a/cmake/OpenCVUtils.cmake b/cmake/OpenCVUtils.cmake
-index 5ca7fab808..b51b298f16 100644
+index 880a72c9e1..c1c2a0c044 100644
 --- a/cmake/OpenCVUtils.cmake
 +++ b/cmake/OpenCVUtils.cmake
 @@ -2,6 +2,16 @@ if(COMMAND ocv_cmake_dump_vars)  # include guard
@@ -885,9 +938,9 @@ index 5ca7fab808..b51b298f16 100644
          "Runtime Test failed:\n"
          "    source file: '${_fname}'\n"
          "    check option: '${flag}'\n"
-@@ -925,12 +935,12 @@ else()
-   endmacro()
- endif()
+@@ -919,12 +929,12 @@ macro(ocv_cmake_byproducts var_name)
+   set(${var_name} BYPRODUCTS ${ARGN})
+ endmacro()
  
 -set(OPENCV_DEPHELPER "${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/dephelper" CACHE INTERNAL "")
 +set(OPENCV_DEPHELPER "${OPENCV_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/dephelper" CACHE INTERNAL "")
@@ -900,7 +953,7 @@ index 5ca7fab808..b51b298f16 100644
    if(NOT IS_SYMLINK "${__file1}")
      execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink "${__file0}" "${__file1}"
          RESULT_VARIABLE SYMLINK_RESULT)
-@@ -960,7 +970,7 @@ function(ocv_output_status msg)
+@@ -954,7 +964,7 @@ function(ocv_output_status msg)
  endfunction()
  
  macro(ocv_finalize_status)
@@ -909,7 +962,7 @@ index 5ca7fab808..b51b298f16 100644
    if(EXISTS "${OPENCV_BUILD_INFO_FILE}")
      file(READ "${OPENCV_BUILD_INFO_FILE}" __content)
    else()
-@@ -1281,7 +1291,7 @@ function(ocv_install_target)
+@@ -1270,7 +1280,7 @@ function(ocv_install_target)
      )
        set(__location_key "ARCHIVE")  # static libs
        get_target_property(__target_type ${__target} TYPE)
@@ -918,16 +971,16 @@ index 5ca7fab808..b51b298f16 100644
          set(__location_key "RUNTIME")  # shared libs (.DLL)
        endif()
  
-@@ -1323,7 +1333,7 @@ function(ocv_install_target)
-           if("${__target_type}" STREQUAL "SHARED_LIBRARY" OR "${__target_type}" STREQUAL "MODULE_LIBRARY")
-             install(FILES "$<TARGET_PDB_FILE:${__target}>" DESTINATION "${__dst}"
-                 COMPONENT ${__pdb_install_component} OPTIONAL ${__pdb_exclude_from_all})
--          else()
-+          else(NOT "${__target_type}" STREQUAL "OBJECT_LIBRARY")
-             # There is no generator expression similar to TARGET_PDB_FILE and TARGET_PDB_FILE can't be used: https://gitlab.kitware.com/cmake/cmake/issues/16932
-             # However we still want .pdb files like: 'lib/Debug/opencv_core341d.pdb' or '3rdparty/lib/zlibd.pdb'
-             install(FILES "$<TARGET_PROPERTY:${__target},ARCHIVE_OUTPUT_DIRECTORY>/$<CONFIG>/$<IF:$<BOOL:$<TARGET_PROPERTY:${__target},COMPILE_PDB_NAME_DEBUG>>,$<TARGET_PROPERTY:${__target},COMPILE_PDB_NAME_DEBUG>,$<TARGET_PROPERTY:${__target},COMPILE_PDB_NAME>>.pdb"
-@@ -1595,9 +1605,9 @@ function(ocv_add_library target)
+@@ -1307,7 +1317,7 @@ function(ocv_install_target)
+         if("${__target_type}" STREQUAL "SHARED_LIBRARY" OR "${__target_type}" STREQUAL "MODULE_LIBRARY")
+           install(FILES "$<TARGET_PDB_FILE:${__target}>" DESTINATION "${__dst}"
+               COMPONENT ${__pdb_install_component} OPTIONAL ${__pdb_exclude_from_all})
+-        else()
++        elseif(NOT "${__target_type}" STREQUAL "OBJECT_LIBRARY")
+           # There is no generator expression similar to TARGET_PDB_FILE and TARGET_PDB_FILE can't be used: https://gitlab.kitware.com/cmake/cmake/issues/16932
+           # However we still want .pdb files like: 'lib/Debug/opencv_core341d.pdb' or '3rdparty/lib/zlibd.pdb'
+           install(FILES "$<TARGET_PROPERTY:${__target},ARCHIVE_OUTPUT_DIRECTORY>/$<CONFIG>/$<IF:$<BOOL:$<TARGET_PROPERTY:${__target},COMPILE_PDB_NAME_DEBUG>>,$<TARGET_PROPERTY:${__target},COMPILE_PDB_NAME_DEBUG>,$<TARGET_PROPERTY:${__target},COMPILE_PDB_NAME>>.pdb"
+@@ -1587,9 +1597,9 @@ function(ocv_add_library target)
      set(CMAKE_SHARED_LIBRARY_RUNTIME_C_FLAG 1)
  
      if((IOS OR XROS) AND NOT MAC_CATALYST)
@@ -939,7 +992,7 @@ index 5ca7fab808..b51b298f16 100644
      endif()
  
      set_target_properties(${target} PROPERTIES
-@@ -1624,7 +1634,7 @@ endfunction()
+@@ -1616,7 +1626,7 @@ endfunction()
  
  function(ocv_add_external_target name inc link def)
    if(BUILD_SHARED_LIBS AND link)
@@ -948,7 +1001,7 @@ index 5ca7fab808..b51b298f16 100644
    endif()
    add_library(ocv.3rdparty.${name} INTERFACE ${imp})
    if(def)
-@@ -1752,7 +1762,7 @@ macro(ocv_get_all_libs _modules _extra _3rdparty)
+@@ -1718,7 +1728,7 @@ macro(ocv_get_all_libs _modules _extra _3rdparty)
              else()
                get_filename_component(_output_name "${_output}" NAME)
              endif()
@@ -957,7 +1010,7 @@ index 5ca7fab808..b51b298f16 100644
              if (_POS EQUAL 0)
                ocv_get_libname(_libname "${_output_name}")
                list(INSERT ${_3rdparty} 0 ${dep})
-@@ -1793,7 +1803,7 @@ function(ocv_add_test_from_target test_name test_kind the_target)
+@@ -1759,7 +1769,7 @@ function(ocv_add_test_from_target test_name test_kind the_target)
      endif()
  
      string(TOLOWER "${test_kind}" test_kind_lower)
@@ -966,7 +1019,7 @@ index 5ca7fab808..b51b298f16 100644
      file(MAKE_DIRECTORY "${test_report_dir}")
  
      add_test(NAME "${test_name}"
-@@ -1816,7 +1826,7 @@ macro(ocv_add_testdata basedir dest_subdir)
+@@ -1782,7 +1792,7 @@ macro(ocv_add_testdata basedir dest_subdir)
    if(BUILD_TESTS)
      if(NOT CMAKE_CROSSCOMPILING AND NOT INSTALL_TESTS)
        file(COPY ${basedir}/
@@ -975,7 +1028,7 @@ index 5ca7fab808..b51b298f16 100644
             ${ARGN}
        )
      endif()
-@@ -1938,7 +1948,7 @@ macro(ocv_copyfiles_add_forced_target target list_var comment_str)
+@@ -1904,7 +1914,7 @@ macro(ocv_copyfiles_add_forced_target target list_var comment_str)
          "-DCOPYLIST_VAR:STRING=${list_var}"
          "-DDEPHELPER=${OPENCV_DEPHELPER}/${target}"
          -P "${OpenCV_SOURCE_DIR}/cmake/copy_files.cmake"
@@ -984,7 +1037,7 @@ index 5ca7fab808..b51b298f16 100644
        COMMENT "${comment_str}"
        DEPENDS "${OpenCV_SOURCE_DIR}/cmake/copy_files.cmake"
                # ninja warn about file(WRITE): "${SRC_COPY_CONFIG_FILE}"
-@@ -1954,7 +1964,7 @@ macro(ocv_copyfiles_add_target target list_var comment_str)
+@@ -1920,7 +1930,7 @@ macro(ocv_copyfiles_add_target target list_var comment_str)
          "-DCOPYLIST_VAR:STRING=${list_var}"
          "-DDEPHELPER=${OPENCV_DEPHELPER}/${target}"
          -P "${OpenCV_SOURCE_DIR}/cmake/copy_files.cmake"
@@ -1042,19 +1095,21 @@ index f7e13a45d4..e4493482f2 100644
    if(NOT EXISTS "${dst}")
      set(local_update 1)
 diff --git a/doc/CMakeLists.txt b/doc/CMakeLists.txt
-index 70f9ebfa14..f48e5eb39f 100644
+index 0aee356f70..55886d9186 100644
 --- a/doc/CMakeLists.txt
 +++ b/doc/CMakeLists.txt
-@@ -147,7 +147,7 @@ if(DOXYGEN_FOUND)
+@@ -152,8 +152,8 @@ if(DOXYGEN_FOUND)
    set(tutorial_py_path "${CMAKE_CURRENT_SOURCE_DIR}/py_tutorials")
    set(CMAKE_DOXYGEN_TUTORIAL_JS_ROOT "- @ref tutorial_js_root")
    set(tutorial_js_path "${CMAKE_CURRENT_SOURCE_DIR}/js_tutorials")
 -  set(example_path "${CMAKE_SOURCE_DIR}/samples")
+-  set(apps_path "${CMAKE_SOURCE_DIR}/apps")
 +  set(example_path "${OPENCV_SOURCE_DIR}/samples")
++  set(apps_path "${OPENCV_SOURCE_DIR}/apps")
  
    set(doxygen_image_path
        ${CMAKE_CURRENT_SOURCE_DIR}/images
-@@ -235,7 +235,7 @@ if(DOXYGEN_FOUND)
+@@ -244,7 +244,7 @@ if(DOXYGEN_FOUND)
    list(APPEND js_assets "${OpenCV_SOURCE_DIR}/samples/cpp/tutorial_code/calib3d/real_time_pose_estimation/Data/box.mp4")
  
    if(BUILD_opencv_js)
@@ -1063,6 +1118,103 @@ index 70f9ebfa14..f48e5eb39f 100644
      set(ocv_js "opencv.js")
      list(APPEND js_assets "${ocv_js_dir}/${ocv_js}")
    elseif(DEFINED OPENCV_JS_LOCATION)
+diff --git a/doc/Doxyfile.in b/doc/Doxyfile.in
+index f34c040810..6c552f8ac6 100644
+--- a/doc/Doxyfile.in
++++ b/doc/Doxyfile.in
+@@ -30,7 +30,7 @@ ABBREVIATE_BRIEF       = "The $name class" \
+ ALWAYS_DETAILED_SEC    = NO
+ INLINE_INHERITED_MEMB  = NO
+ FULL_PATH_NAMES        = YES
+-STRIP_FROM_PATH        = @CMAKE_SOURCE_DIR@/modules \
++STRIP_FROM_PATH        = @OPENCV_SOURCE_DIR@/modules \
+                          @CMAKE_DOXYGEN_INCLUDE_ROOTS@
+ STRIP_FROM_INC_PATH    = @CMAKE_DOXYGEN_INCLUDE_ROOTS@
+ SHORT_NAMES            = NO
+diff --git a/docs_sphinx/CMakeLists.txt b/docs_sphinx/CMakeLists.txt
+index a5960006d1..42a6979728 100644
+--- a/docs_sphinx/CMakeLists.txt
++++ b/docs_sphinx/CMakeLists.txt
+@@ -38,25 +38,25 @@ file(MAKE_DIRECTORY "${_SPHINX_INPUT_TUTORIALS}")
+ 
+ # Main tree: symlink the master file + each main module subtree.
+ file(CREATE_LINK
+-  "${CMAKE_SOURCE_DIR}/doc/tutorials/tutorials.markdown"
++  "${OPENCV_SOURCE_DIR}/doc/tutorials/tutorials.markdown"
+   "${_SPHINX_INPUT_TUTORIALS}/tutorials.markdown"
+   SYMBOLIC COPY_ON_ERROR)
+ 
+ file(CREATE_LINK
+-  "${CMAKE_SOURCE_DIR}/doc/faq.markdown"
++  "${OPENCV_SOURCE_DIR}/doc/faq.markdown"
+   "${_SPHINX_INPUT_ROOT}/faq.markdown"
+   SYMBOLIC COPY_ON_ERROR)
+ file(CREATE_LINK
+-  "${CMAKE_SOURCE_DIR}/modules/core/doc/intro.markdown"
++  "${OPENCV_SOURCE_DIR}/modules/core/doc/intro.markdown"
+   "${_SPHINX_INPUT_ROOT}/intro.markdown"
+   SYMBOLIC COPY_ON_ERROR)
+ file(GLOB _main_tutorial_children
+-     RELATIVE "${CMAKE_SOURCE_DIR}/doc/tutorials"
+-     "${CMAKE_SOURCE_DIR}/doc/tutorials/*")
++     RELATIVE "${OPENCV_SOURCE_DIR}/doc/tutorials"
++     "${OPENCV_SOURCE_DIR}/doc/tutorials/*")
+ foreach(_d ${_main_tutorial_children})
+-  if(IS_DIRECTORY "${CMAKE_SOURCE_DIR}/doc/tutorials/${_d}")
++  if(IS_DIRECTORY "${OPENCV_SOURCE_DIR}/doc/tutorials/${_d}")
+     file(CREATE_LINK
+-      "${CMAKE_SOURCE_DIR}/doc/tutorials/${_d}"
++      "${OPENCV_SOURCE_DIR}/doc/tutorials/${_d}"
+       "${_SPHINX_INPUT_TUTORIALS}/${_d}"
+       SYMBOLIC COPY_ON_ERROR)
+   endif()
+@@ -64,9 +64,9 @@ endforeach()
+ 
+ # js_tutorials, py_tutorials, images/ sit directly under opencv/doc/.
+ foreach(_root js_tutorials py_tutorials images)
+-  if(EXISTS "${CMAKE_SOURCE_DIR}/doc/${_root}")
++  if(EXISTS "${OPENCV_SOURCE_DIR}/doc/${_root}")
+     file(CREATE_LINK
+-      "${CMAKE_SOURCE_DIR}/doc/${_root}"
++      "${OPENCV_SOURCE_DIR}/doc/${_root}"
+       "${_SPHINX_INPUT_ROOT}/${_root}"
+       SYMBOLIC COPY_ON_ERROR)
+   endif()
+@@ -97,13 +97,13 @@ if(OPENCV_EXTRA_MODULES_PATH AND EXISTS "${OPENCV_EXTRA_MODULES_PATH}")
+   endforeach()
+ endif()
+ 
+-set(_LEGACY_DOXYFILE "${CMAKE_BINARY_DIR}/doc/Doxyfile")
+-set(_DOXYGEN_XML_DIR "${CMAKE_BINARY_DIR}/doc/doxygen/xml")
++set(_LEGACY_DOXYFILE "${OPENCV_BINARY_DIR}/doc/Doxyfile")
++set(_DOXYGEN_XML_DIR "${OPENCV_BINARY_DIR}/doc/doxygen/xml")
+ 
+ if(NOT DEFINED SPHINX_API_MODULES)
+   # Any module whose include tree declares an @defgroup, keyed on dir name; matlab excluded.
+   set(SPHINX_API_MODULES "")
+-  set(_api_module_roots "${CMAKE_SOURCE_DIR}/modules")
++  set(_api_module_roots "${OPENCV_SOURCE_DIR}/modules")
+   if(OPENCV_EXTRA_MODULES_PATH AND EXISTS "${OPENCV_EXTRA_MODULES_PATH}")
+     list(APPEND _api_module_roots "${OPENCV_EXTRA_MODULES_PATH}")
+   endif()
+@@ -128,7 +128,7 @@ if(NOT DEFINED SPHINX_API_MODULES)
+ endif()
+ set(_doxy_input "")
+ foreach(_m ${SPHINX_API_MODULES})
+-  foreach(_base "${CMAKE_SOURCE_DIR}/modules" "${OPENCV_EXTRA_MODULES_PATH}")
++  foreach(_base "${OPENCV_SOURCE_DIR}/modules" "${OPENCV_EXTRA_MODULES_PATH}")
+     if(EXISTS "${_base}/${_m}/include")
+       string(APPEND _doxy_input " ${_base}/${_m}/include")
+       break()
+@@ -169,7 +169,7 @@ if(EXISTS "${_LEGACY_DOXYFILE}")
+       COMMAND ${DOXYGEN_EXE} ${_SPHINX_DOXYFILE}
+       COMMAND ${CMAKE_COMMAND} -E touch "${_SPHINX_XML_STAMP}"
+       DEPENDS "${_SPHINX_DOXYFILE}"
+-      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/doc
++      WORKING_DIRECTORY ${OPENCV_BINARY_DIR}/doc
+       COMMENT "Doxygen XML (for Sphinx breathe) -> ${_DOXYGEN_XML_DIR}"
+       VERBATIM)
+     add_custom_target(sphinx-xml DEPENDS "${_SPHINX_XML_STAMP}")
 diff --git a/hal/armpl/CMakeLists.txt b/hal/armpl/CMakeLists.txt
 index 15f59eb353..cbaec77351 100644
 --- a/hal/armpl/CMakeLists.txt
@@ -1122,10 +1274,10 @@ index 5556e1d436..b608111ada 100644
  
    target_link_libraries(fastcv_hal PUBLIC ${FASTCV_LIBRARY})
 diff --git a/hal/ipp/CMakeLists.txt b/hal/ipp/CMakeLists.txt
-index 4774cf55fb..dc3b20a089 100644
+index 345a7534b1..8026d3120c 100644
 --- a/hal/ipp/CMakeLists.txt
 +++ b/hal/ipp/CMakeLists.txt
-@@ -51,8 +51,8 @@ ocv_warnings_disable(CMAKE_CXX_FLAGS -Wno-suggest-override)
+@@ -40,8 +40,8 @@ ocv_warnings_disable(CMAKE_CXX_FLAGS -Wno-suggest-override)
  
  target_include_directories(ipphal PRIVATE
    "${CMAKE_CURRENT_SOURCE_DIR}/src"
@@ -1137,7 +1289,7 @@ index 4774cf55fb..dc3b20a089 100644
  )
  
 diff --git a/hal/ndsrvp/CMakeLists.txt b/hal/ndsrvp/CMakeLists.txt
-index bc9a3a26dc..cb6b995d1c 100644
+index 3a559b639d..70dc00c97d 100644
 --- a/hal/ndsrvp/CMakeLists.txt
 +++ b/hal/ndsrvp/CMakeLists.txt
 @@ -21,9 +21,9 @@ if(NOT BUILD_SHARED_LIBS)
@@ -1146,32 +1298,15 @@ index bc9a3a26dc..cb6b995d1c 100644
    ${CMAKE_CURRENT_SOURCE_DIR}
 -  ${CMAKE_SOURCE_DIR}/modules/core/include
 -  ${CMAKE_SOURCE_DIR}/modules/imgproc/include
--  ${CMAKE_SOURCE_DIR}/modules/features2d/include)
+-  ${CMAKE_SOURCE_DIR}/modules/features/include)
 +  ${OPENCV_SOURCE_DIR}/modules/core/include
 +  ${OPENCV_SOURCE_DIR}/modules/imgproc/include
-+  ${OPENCV_SOURCE_DIR}/modules/features2d/include)
++  ${OPENCV_SOURCE_DIR}/modules/features/include)
  
  # project info
  
-diff --git a/hal/openvx/hal/CMakeLists.txt b/hal/openvx/hal/CMakeLists.txt
-index 2c88c492b1..3aee015357 100644
---- a/hal/openvx/hal/CMakeLists.txt
-+++ b/hal/openvx/hal/CMakeLists.txt
-@@ -2,9 +2,9 @@ add_library(openvx_hal STATIC openvx_hal.cpp openvx_hal.hpp ${OPENCV_3P_OPENVX_D
- target_include_directories(openvx_hal PUBLIC
-   ${CMAKE_CURRENT_SOURCE_DIR}
-   ${OPENCV_3P_OPENVX_DIR}/include
--  ${CMAKE_SOURCE_DIR}/modules/core/include
--  ${CMAKE_SOURCE_DIR}/modules/imgproc/include
--  ${CMAKE_SOURCE_DIR}/modules/features2d/include
-+  ${OPENCV_SOURCE_DIR}/modules/core/include
-+  ${OPENCV_SOURCE_DIR}/modules/imgproc/include
-+  ${OPENCV_SOURCE_DIR}/modules/features2d/include
-   ${OPENVX_INCLUDE_DIR})
- target_link_libraries(openvx_hal PUBLIC ${OPENVX_LIBRARIES})
- set_target_properties(openvx_hal PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${3P_LIBRARY_OUTPUT_PATH})
 diff --git a/hal/riscv-rvv/CMakeLists.txt b/hal/riscv-rvv/CMakeLists.txt
-index 522b71434e..72cfe0498c 100644
+index 82cbcbb4c6..97ac19c10f 100644
 --- a/hal/riscv-rvv/CMakeLists.txt
 +++ b/hal/riscv-rvv/CMakeLists.txt
 @@ -16,9 +16,9 @@ if(NOT BUILD_SHARED_LIBS)
@@ -1180,18 +1315,18 @@ index 522b71434e..72cfe0498c 100644
    ${CMAKE_CURRENT_SOURCE_DIR}
 -  ${CMAKE_SOURCE_DIR}/modules/core/include
 -  ${CMAKE_SOURCE_DIR}/modules/imgproc/include
--  ${CMAKE_SOURCE_DIR}/modules/features2d/include)
+-  ${CMAKE_SOURCE_DIR}/modules/features/include)
 +  ${OPENCV_SOURCE_DIR}/modules/core/include
 +  ${OPENCV_SOURCE_DIR}/modules/imgproc/include
-+  ${OPENCV_SOURCE_DIR}/modules/features2d/include)
++  ${OPENCV_SOURCE_DIR}/modules/features/include)
  
  set(RVV_HAL_FOUND TRUE CACHE INTERNAL "")
  set(RVV_HAL_VERSION "0.0.1" CACHE INTERNAL "")
 diff --git a/modules/core/CMakeLists.txt b/modules/core/CMakeLists.txt
-index aea0b6de66..043f0a3a18 100644
+index 8f6d51e200..555bebd0d1 100644
 --- a/modules/core/CMakeLists.txt
 +++ b/modules/core/CMakeLists.txt
-@@ -238,10 +238,10 @@ if(OPENCV_OTHER_INSTALL_PATH)
+@@ -242,10 +242,10 @@ if(OPENCV_OTHER_INSTALL_PATH)
  endif()
  
  set(OPENCV_DATA_CONFIG_STR "${OPENCV_DATA_CONFIG_STR}
@@ -1204,77 +1339,37 @@ index aea0b6de66..043f0a3a18 100644
  set(OPENCV_DATA_CONFIG_STR "${OPENCV_DATA_CONFIG_STR}
  #define OPENCV_DATA_BUILD_DIR_SEARCH_PATHS \\
      \"${SOURCE_DIR_RELATIVE}/\"
-diff --git a/modules/dnn/src/caffe/caffe_importer.cpp b/modules/dnn/src/caffe/caffe_importer.cpp
-index c92ebea619..0003df7432 100644
---- a/modules/dnn/src/caffe/caffe_importer.cpp
-+++ b/modules/dnn/src/caffe/caffe_importer.cpp
-@@ -52,6 +52,7 @@
- #include <google/protobuf/io/zero_copy_stream_impl.h>
- #include <google/protobuf/reflection.h>
- #include "caffe_io.hpp"
-+#include <google/protobuf/port_def.inc>
- #endif
+diff --git a/modules/dnn/CMakeLists.txt b/modules/dnn/CMakeLists.txt
+index a76548363c..e266b9dab4 100644
+--- a/modules/dnn/CMakeLists.txt
++++ b/modules/dnn/CMakeLists.txt
+@@ -501,7 +501,7 @@ foreach(_v OPENCV_DNN_MLAS_ENABLED OPENCV_DNN_MLAS_SKIP_REASON
+   unset(${_v} CACHE)
+ endforeach()
+ if(NOT EMSCRIPTEN)
+-  add_subdirectory("${OpenCV_SOURCE_DIR}/3rdparty/mlas" "${CMAKE_BINARY_DIR}/3rdparty/mlas")
++  add_subdirectory("${OpenCV_SOURCE_DIR}/3rdparty/mlas" "${OPENCV_BINARY_DIR}/3rdparty/mlas")
+ endif()
+ if(HAVE_MLAS)
+   add_definitions(-DHAVE_MLAS=1)
+diff --git a/modules/dnn/src/dnn_utils.cpp b/modules/dnn/src/dnn_utils.cpp
+index 5cc1359b0d..758380b419 100644
+--- a/modules/dnn/src/dnn_utils.cpp
++++ b/modules/dnn/src/dnn_utils.cpp
+@@ -60,7 +60,7 @@ void getChannelFromBlob(UMat& m, InputArray blob, int i, int j, int rows, int co
  
- #include <opencv2/core/utils/fp_control_utils.hpp>
-@@ -617,6 +618,7 @@ Net readNetFromCaffe(const std::vector<uchar>& bufferProto, const std::vector<uc
-                             bufferModelPtr, bufferModel.size());
+     const int newShape[1] { length };
+     UMat reshaped = ublob.reshape(1, 1, newShape);
+-    UMat roi = reshaped(Rect(0, offset, 1, rows * cols));
++    UMat roi = reshaped(Rect(offset, 0, rows * cols, 1));
+     m = roi.reshape(CV_MAT_CN(type), rows);
  }
  
-+#include <google/protobuf/port_undef.inc>
- #else  // HAVE_PROTOBUF
- 
- #define DNN_PROTOBUF_UNSUPPORTED() CV_Error(Error::StsError, "DNN/Caffe: Build OpenCV with Protobuf to import Caffe models")
-diff --git a/modules/gapi/include/opencv2/gapi/util/variant.hpp b/modules/gapi/include/opencv2/gapi/util/variant.hpp
-index 48b55646c5..9b20a12b3e 100644
---- a/modules/gapi/include/opencv2/gapi/util/variant.hpp
-+++ b/modules/gapi/include/opencv2/gapi/util/variant.hpp
-@@ -132,7 +132,7 @@ namespace util
-             static bool help(const Memory lhs, const Memory rhs) {
-                 const T& t_lhs = *reinterpret_cast<const T*>(lhs);
-                 const T& t_rhs = *reinterpret_cast<const T*>(rhs);
--                return t_lhs == t_rhs;
-+                return static_cast<bool>(t_lhs == t_rhs);
-             }
-         };
- 
-diff --git a/modules/gapi/src/backends/fluid/gfluidcore.cpp b/modules/gapi/src/backends/fluid/gfluidcore.cpp
-index 1f781d518a..d1b6f4726f 100644
---- a/modules/gapi/src/backends/fluid/gfluidcore.cpp
-+++ b/modules/gapi/src/backends/fluid/gfluidcore.cpp
-@@ -32,6 +32,15 @@
- #include <cassert>
- #include <cstdlib>
- 
-+// Windows declares several inconvenient macro names.  We #undef them and then
-+// restore them after
-+#ifdef _MSC_VER
-+#pragma push_macro("MM_MIN")
-+#undef MM_MIN
-+#pragma push_macro("MM_MAX")
-+#undef MM_MAX
-+#endif  // _MSC_VER
-+
- namespace cv {
- namespace gapi {
- namespace fluid {
-@@ -2538,6 +2547,12 @@ GAPI_FLUID_KERNEL(GFluidSqrt, cv::gapi::core::GSqrt, false)
- } // namespace gapi
- } // namespace cv
- 
-+// Restore macro that may have been #undef'd.
-+#ifdef _MSC_VER
-+#pragma pop_macro("MM_MIN")
-+#pragma pop_macro("MM_MAX")
-+#endif
-+
- cv::GKernelPackage cv::gapi::core::fluid::kernels()
- {
-     using namespace cv::gapi::fluid;
 diff --git a/modules/highgui/src/window_w32.cpp b/modules/highgui/src/window_w32.cpp
-index b1f6d0c884..0b8f24bb61 100644
+index 194d6cefa0..ab975db25f 100644
 --- a/modules/highgui/src/window_w32.cpp
 +++ b/modules/highgui/src/window_w32.cpp
-@@ -654,11 +654,11 @@ double cvGetPropTopmost_W32(const char* name)
+@@ -643,11 +643,11 @@ double cvGetPropTopmost_W32(const char* name)
  
  static double getPropTopmost_(CvWindow& window)
  {
@@ -1347,10 +1442,10 @@ index 19dbe4e334..1d10b6d52d 100644
    if(IS_ABSOLUTE "${OPENCV_PYTHON_INSTALL_PATH}")
      set(OpenCV_PYTHON_INSTALL_PATH_RELATIVE_CONFIGCMAKE "${CMAKE_INSTALL_PREFIX}/")
 diff --git a/modules/python/src2/hdr_parser.py b/modules/python/src2/hdr_parser.py
-index 22532f14f5..3a33b50690 100755
+index eb92abf101..fd7ae5cb5e 100755
 --- a/modules/python/src2/hdr_parser.py
 +++ b/modules/python/src2/hdr_parser.py
-@@ -223,6 +223,29 @@ class CppHeaderParser(object):
+@@ -225,6 +225,29 @@ class CppHeaderParser(object):
  
          return arg_str[npos2+1:npos3].strip(), npos3
  
@@ -1380,7 +1475,7 @@ index 22532f14f5..3a33b50690 100755
      def parse_arg(self, arg_str, argno):
          """
          Parses <arg_type> [arg_name]
-@@ -268,8 +291,7 @@ class CppHeaderParser(object):
+@@ -270,8 +293,7 @@ class CppHeaderParser(object):
              modlist.append("/CA " + macro_arg)
              arg_str = arg_str[:npos] + arg_str[npos3+1:]
  
@@ -1390,7 +1485,7 @@ index 22532f14f5..3a33b50690 100755
              modlist.append("/C")
  
          npos = arg_str.find("&&")
-@@ -323,25 +345,47 @@ class CppHeaderParser(object):
+@@ -325,25 +347,47 @@ class CppHeaderParser(object):
                      arg_type += w
                  continue
              elif w == "<":
@@ -1445,7 +1540,7 @@ index 22532f14f5..3a33b50690 100755
                  arg_type += " " + w
              elif prev_w in ["signed", "unsigned", "short", "long"] and w in ["char", "short", "int", "long"]:
                  arg_type += " " + w
-@@ -382,8 +426,6 @@ class CppHeaderParser(object):
+@@ -384,8 +428,6 @@ class CppHeaderParser(object):
          if add_star:
              arg_type += "*"
  
@@ -1454,7 +1549,7 @@ index 22532f14f5..3a33b50690 100755
          return arg_type, arg_name, modlist, argno
  
      def parse_enum(self, decl_str):
-@@ -579,11 +621,25 @@ class CppHeaderParser(object):
+@@ -581,11 +623,25 @@ class CppHeaderParser(object):
          npos = decl_str.find("CV_EXPORTS_AS")
          if npos >= 0:
              arg, npos3 = self.get_macro_arg(decl_str, npos)
@@ -1480,7 +1575,7 @@ index 22532f14f5..3a33b50690 100755
              func_modlist.append("="+arg)
              decl_str = decl_str[:npos] + decl_str[npos3+1:]
          npos = decl_str.find("CV_WRAP_PHANTOM")
-@@ -607,6 +663,7 @@ class CppHeaderParser(object):
+@@ -609,6 +665,7 @@ class CppHeaderParser(object):
          decl_str = self.batch_replace(decl_str, [("static inline", ""),
                                                   ("inline", ""),
                                                   ("explicit ", ""),
@@ -1488,7 +1583,7 @@ index 22532f14f5..3a33b50690 100755
                                                   ("CV_EXPORTS_W", ""),
                                                   ("CV_EXPORTS", ""),
                                                   ("CV_CDECL", ""),
-@@ -661,11 +718,17 @@ class CppHeaderParser(object):
+@@ -663,11 +720,17 @@ class CppHeaderParser(object):
  
          rettype, funcname, modlist, argno = self.parse_arg(decl_start, -1)
  
@@ -1507,7 +1602,7 @@ index 22532f14f5..3a33b50690 100755
  
          if argno >= 0:
              classname = top[1]
-@@ -758,35 +821,17 @@ class CppHeaderParser(object):
+@@ -760,35 +823,17 @@ class CppHeaderParser(object):
                          a = a[:eqpos].strip()
                      arg_type, arg_name, modlist, argno = self.parse_arg(a, argno)
                      if self.wrap_mode:
@@ -1543,7 +1638,7 @@ index 22532f14f5..3a33b50690 100755
                      if '/IO' in modlist and '/O' in modlist:
                          modlist.remove('/O')
                      if (arg_name.lower() == 'filename' or arg_name.lower() == 'filepath') and '/PATH' not in modlist:
-@@ -818,10 +863,13 @@ class CppHeaderParser(object):
+@@ -820,10 +865,13 @@ class CppHeaderParser(object):
  
          the function will convert "A" to "cv.A" and "f" to "cv.A.f".
          """
@@ -1560,7 +1655,7 @@ index 22532f14f5..3a33b50690 100755
          qualified_name = (("." in name) or ("::" in name))
          n = ""
          for b in self.block_stack:
-@@ -913,7 +961,10 @@ class CppHeaderParser(object):
+@@ -915,7 +963,10 @@ class CppHeaderParser(object):
  
              if stmt.startswith("enum") or stmt.startswith("namespace"):
                  # NB: Drop inheritance syntax for enum
@@ -1572,7 +1667,7 @@ index 22532f14f5..3a33b50690 100755
                  stmt_list = stmt.rsplit(" ", 1)
                  if len(stmt_list) < 2:
                      stmt_list.append("<unnamed>")
-@@ -949,8 +1000,17 @@ class CppHeaderParser(object):
+@@ -951,8 +1002,17 @@ class CppHeaderParser(object):
                  var_modlist = []
                  if "CV_PROP_RW" in stmt:
                      var_modlist.append("/RW")
@@ -1593,7 +1688,7 @@ index 22532f14f5..3a33b50690 100755
                  var_list = [var_name1] + [i.strip() for i in var_list[1:]]
  
 diff --git a/modules/python/src2/typing_stubs_generation/predefined_types.py b/modules/python/src2/typing_stubs_generation/predefined_types.py
-index d7ed78b231..814e105882 100644
+index d3f2b8192c..448600f741 100644
 --- a/modules/python/src2/typing_stubs_generation/predefined_types.py
 +++ b/modules/python/src2/typing_stubs_generation/predefined_types.py
 @@ -50,6 +50,12 @@ _PREDEFINED_TYPES = (
@@ -1650,7 +1745,7 @@ index d7ed78b231..814e105882 100644
 +                        PrimitiveTypeNode.float_("map<int,double>::value"),
 +                        required_modules=("flann",)),
  
-     # G-API, optional
+     # G-API from opencv_contrib
      AliasTypeNode.union_("GProtoArg",
 diff --git a/modules/python/standalone.cmake b/modules/python/standalone.cmake
 index 25a669803e..9a128af11d 100644
@@ -1729,11 +1824,11 @@ index 7a14529c2d..70ffa13732 100644
    if(_xcodebuild_wrapper)
      set(CMAKE_MAKE_PROGRAM "${_xcodebuild_wrapper}" CACHE INTERNAL "" FORCE)
 diff --git a/platforms/linux/gnu.toolchain.cmake b/platforms/linux/gnu.toolchain.cmake
-index 64258e65b3..2c3a68eb85 100644
+index 1f3cc17636..5e2b7e6f58 100644
 --- a/platforms/linux/gnu.toolchain.cmake
 +++ b/platforms/linux/gnu.toolchain.cmake
 @@ -1,10 +1,10 @@
- cmake_minimum_required(VERSION 3.5)
+ cmake_minimum_required(VERSION 3.13)
  
  # load settings in case of "try compile"
 -set(TOOLCHAIN_CONFIG_FILE "${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/toolchain.config.cmake")
@@ -1772,7 +1867,7 @@ index d9c9a12de6..afcd697217 100644
  set_target_properties(IE::inference_engine PROPERTIES
    INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/deployment_tools/inference_engine/include"
 diff --git a/samples/CMakeLists.txt b/samples/CMakeLists.txt
-index c94ac8e62b..732feb8209 100644
+index 1a8969449c..dac9907d1b 100644
 --- a/samples/CMakeLists.txt
 +++ b/samples/CMakeLists.txt
 @@ -1,4 +1,4 @@
@@ -1782,7 +1877,7 @@ index c94ac8e62b..732feb8209 100644
  #
  # Build as part of OpenCV
 diff --git a/samples/hal/c_hal/CMakeLists.txt b/samples/hal/c_hal/CMakeLists.txt
-index 72dfef01c3..2ffcb2b559 100644
+index a570f6d4ef..b150339dd6 100644
 --- a/samples/hal/c_hal/CMakeLists.txt
 +++ b/samples/hal/c_hal/CMakeLists.txt
 @@ -14,5 +14,5 @@ set(OpenCV_HAL_LIBRARIES ${CMAKE_CURRENT_BINARY_DIR}/lib${HAL_LIB_NAME}.a)
@@ -1794,7 +1889,7 @@ index 72dfef01c3..2ffcb2b559 100644
 +configure_file("impl.h" "${OPENCV_BINARY_DIR}/impl.h" COPYONLY)
 +configure_file("config.cmake" "${OPENCV_BINARY_DIR}/OpenCV_HALConfig.cmake")
 diff --git a/samples/hal/slow_hal/CMakeLists.txt b/samples/hal/slow_hal/CMakeLists.txt
-index a20596ea2a..928db1b1b2 100644
+index 0dcca89b3d..0b665a15aa 100644
 --- a/samples/hal/slow_hal/CMakeLists.txt
 +++ b/samples/hal/slow_hal/CMakeLists.txt
 @@ -14,5 +14,5 @@ set(OpenCV_HAL_LIBRARIES ${CMAKE_CURRENT_BINARY_DIR}/lib${HAL_LIB_NAME}.a)

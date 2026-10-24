@@ -11,7 +11,7 @@ const eachOfLimit = require("async/eachOfLimit");
 const waterfall = require("async/waterfall");
 const { explore } = require("fs-explorer");
 
-const OpenCV_VERSION = "opencv-4.14.0";
+const OpenCV_VERSION = "opencv-5.0.0";
 // const OpenCV_DLLVERSION = OpenCV_VERSION.slice("opencv-".length).replaceAll(".", "");
 global.OpenCV_VERSION = OpenCV_VERSION;
 
@@ -69,10 +69,6 @@ const getOptions = output => {
         onCoClass: (processor, coclass, opts) => {
             // Nothing to do
         },
-
-        vectors: new Set([
-            "std::vector<cv::util::variant<int, cv::Range>>",
-        ]),
     };
 
     const argv = process.argv.slice(2);
@@ -188,6 +184,7 @@ const options = getOptions(PROJECT_DIR);
 options.proto = LuaGenerator.proto;
 
 options.generated.set(sysPath.join(options.output, "bit_string.lua.inc"), true);
+options.generated.set(sysPath.join(options.output, "cdata_utils_string.lua.inc"), true);
 
 waterfall([
     next => {
@@ -256,7 +253,14 @@ waterfall([
 
             const content = await fsPromises.readFile(path);
 
-            if (isheader && ![".impl.h", ".impl.hh", ".impl.hpp", ".impl.hxx"].includes(extnames) && (content.includes("CV_EXPORTS") || /^contrib[\\/]/.test(relpath))) {
+            if (isheader
+                && ![".impl.h", ".impl.hh", ".impl.hpp", ".impl.hxx"].includes(extnames)
+                && !/^lua_bridge_arrays\./.test(relpath)
+                && !/^contrib[\\/]lua_bridge_/.test(relpath)
+                && (
+                    content.includes("CV_EXPORTS")
+                    || /^contrib[\\/]/.test(relpath)
+                )) {
                 srcfiles.push(path);
             }
 
@@ -265,9 +269,16 @@ waterfall([
             const generated_include = (await fsPromises.readFile(pyopencv_generated_include))
                 .toString()
                 .split("\n")
-                .filter(content => !content.includes("python_bridge"))
-                .map(line => line.trim())
-                .concat(srcfiles.map(path => `#include "${ path.slice(SRC_DIR.length + 1).replace("\\", "/") }"`));
+                .filter(line => !line.includes("/misc/python/python_") && !line.includes("/misc/python/pyopencv_"))
+                .map(line => line.trim());
+
+            generated_include.push(...srcfiles.map(path => `#include "${ path.slice(SRC_DIR.length + 1).replace("\\", "/") }"`));
+
+            const config_json = JSON.parse((await fsPromises.readFile(config_json_path)).toString());
+            const opencv_hdrs = config_json.headers.filter(hdr => hdr.endsWith("shadow_sift.hpp"));
+            if (opencv_hdrs.length !== 0) {
+                generated_include.push(...opencv_hdrs.map(hdr => `#include ${ JSON.stringify(hdr.replace("\\", "/")) }`));
+            }
 
             next(err, srcfiles, generated_include);
         });
@@ -303,6 +314,16 @@ waterfall([
 
             configuration.namespaces.push(...options.namespaces);
             configuration.namespaces.push(...options.other_namespaces);
+
+            // Fix cv.MatShape.erase by changing "where" type from int* to std::vector<int>
+            for (const decl of configuration.decls) {
+                if (decl[0] === "cv.MatShape.erase") {
+                    const [/* name */, /* return_value_type */, /* func_modifiers */, list_of_arguments] = decl;
+                    const [/* argtype */, /* argname */, /* defval */, arg_modifiers ] = list_of_arguments[0];
+                    list_of_arguments[0][0] = "std::vector<int>";
+                    arg_modifiers[0] = "/Expr=$0.data()";
+                }
+            }
 
             const processor = new DeclProcessor(options);
             processor.process(configuration, options);
@@ -355,13 +376,14 @@ waterfall([
                 generate_gpumat_decls=True,
                 preprocessor_definitions=config.preprocessor_definitions
             )
-            all_decls = []
-            for hdr in srcfiles:
-                decls = parser.parse(hdr)
-                if len(decls) == 0 or hdr.find('/python/') != -1:
-                    continue
 
-                all_decls += decls
+            all_decls = []
+
+            for hdr in srcfiles:
+                if ('/misc/python/python_' not in hdr) and ('/misc/python/pyopencv_' not in hdr):
+                    decls = parser.parse(hdr)
+                    if len(decls) != 0:
+                        all_decls += decls
 
             # parser.print_decls(all_decls)
             print(json.dumps({"decls": all_decls, "namespaces": sorted(parser.namespaces)}, indent=4))

@@ -23,8 +23,7 @@
         "inherits": "x64-Debug",
         "description": "Sets Ninja generator, compilers, x64 architecture, build and install directory, release build type",
         "cacheVariables": {
-            "CMAKE_BUILD_TYPE": "Release",
-            "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
+            "CMAKE_BUILD_TYPE": "Release"
         }
     }, {
         "name": "x64-Release-luarocks",
@@ -37,7 +36,7 @@
             "LUA_BINDIR": "${sourceDir}/out/install/x64-Release/bin",
             "LUA_INCDIR": "${sourceDir}/out/install/x64-Release/include/luajit-2.1",
             "LUA_INSTALL_LIBDIR": "${sourceDir}/luarocks/lua_modules/lib/luarocks/rocks-5.1/mediapipe_lua/scm-1/lib",
-            "LUA_DIR": "${sourceDir}/out/install/x64-Release",
+            "LUA_DIR": "${sourceDir}/out/install/x64-Release"
         }
     }, {
         "name": "Linux-GCC-Debug",
@@ -70,16 +69,7 @@
         "inherits": "Linux-GCC-Debug",
         "description": "Sets Ninja generator, compilers, build and install directory, release build type",
         "cacheVariables": {
-            "CMAKE_BUILD_TYPE": "Release",
-            "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
-        }
-    }, {
-        "name": "vcpkg",
-        "inherits": "x64-Debug",
-        "cacheVariables": {
-            "CMAKE_BUILD_TYPE": "Debug",
-            "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
-            "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+            "CMAKE_BUILD_TYPE": "Release"
         }
     }]
 }

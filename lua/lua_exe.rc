@@ -1,4 +1,4 @@
-// Resource script for LuaJIT console EXEs.
+// Resource script for Lua console EXEs.
 
 #include "lua_ver_rc.h"
 
@@ -85,12 +85,12 @@ BEGIN
         BLOCK "000004b0"
         BEGIN
             // VALUE "CompanyName", LUA_COMPANY ""
-            VALUE "FileDescription", "LuaJIT"
+            VALUE "FileDescription", "Lua"
             VALUE "FileVersion", LUA_VERSION
-            VALUE "InternalName", "LuaJIT Console"
+            VALUE "InternalName", "Lua Console"
             // VALUE "LegalCopyright", LUA_COPYRIGHT ""
             VALUE "OriginalFilename", "lua-" LUA_VERSION ".exe"
-            VALUE "ProductName", "LuaJIT"
+            VALUE "ProductName", "Lua"
             VALUE "ProductVersion", LUA_VERSION
         END
     END

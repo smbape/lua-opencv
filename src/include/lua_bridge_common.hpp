@@ -73,23 +73,6 @@ namespace LUA_MODULE_NAME {
 
 
 	// ================================
-	// bool
-	// ================================
-
-	inline auto lua_to(lua_State* L, int index, bool*, bool& is_valid) {
-		if constexpr (has_lua_to_custom_bridge_v<bool>) {
-			const auto v = lua_to_custom_bridge<bool>::lua_to(L, index, is_valid);
-			if (is_valid) {
-				return v;
-			}
-		}
-
-		is_valid = lua_isboolean(L, index);
-		return is_valid && !!lua_toboolean(L, index);
-	}
-
-
-	// ================================
 	// std::integral
 	// ================================
 
@@ -159,39 +142,6 @@ namespace LUA_MODULE_NAME {
 
 
 	// ================================
-	// const char*
-	// ================================
-
-	inline const char* lua_to(lua_State* L, int index, const char**, bool& is_valid) {
-		if constexpr (has_lua_to_custom_bridge_v<const char*>) {
-			const auto v = lua_to_custom_bridge<const char*>::lua_to(L, index, is_valid);
-			if (is_valid) {
-				return v;
-			}
-		}
-
-		is_valid = lua_isnil(L, index);
-		if (is_valid) {
-			return nullptr;
-		}
-
-		is_valid = lua_islightuserdata(L, index);
-		if (is_valid) {
-			return static_cast<const char*>(lua_touserdata(L, index));
-		}
-
-		is_valid = lua_type(L, index) == LUA_TSTRING;
-		if (!is_valid) {
-			return nullptr;
-		}
-
-		size_t len;
-		auto c_str = lua_tolstring(L, index, &len);
-		return c_str;
-	}
-
-
-	// ================================
 	// std::string
 	// ================================
 
@@ -243,78 +193,6 @@ namespace LUA_MODULE_NAME {
 		return wstr;
 	}
 #endif
-
-
-	// ================================
-	// void*
-	// ================================
-
-	inline void* lua_self_pointer(lua_State* L, int index, bool& is_valid) {
-		void* ptr = nullptr;
-
-		if (index < 0) {
-			index += lua_gettop(L) + 1;
-		}
-
-		is_valid = (lua_isuserdata(L, index) || lua_istable(L, index)) && lua_getmetatable(L, index); // push metatable
-		if (!is_valid) {
-			return ptr;
-		}
-
-		lua_pushliteral(L, "__has_self");
-		lua_rawget(L, -2); // push metatable.__has_self
-		is_valid = lua_isboolean(L, -1) && lua_toboolean(L, -1);
-		lua_pop(L, 2); // pop metatable.__has_self, metatable
-
-		if (!is_valid) {
-			return ptr;
-		}
-
-		lua_pushliteral(L, "__self");
-		lua_gettable(L, index); // push userdata.__self
-		is_valid = lua_islightuserdata(L, -1);
-
-		if (is_valid) {
-			ptr = lua_touserdata(L, -1);
-			is_valid = static_cast<bool>(ptr);
-		}
-
-		lua_pop(L, 1); // pop userdata.__self
-		return ptr;
-	}
-
-	inline void* lua_to(lua_State* L, int index, void**, bool& is_valid) {
-		if constexpr (has_lua_to_custom_bridge_v<void*>) {
-			const auto ptr = lua_to_custom_bridge<void*>::lua_to(L, index, is_valid);
-			if (is_valid) {
-				return ptr;
-			}
-		}
-
-		is_valid = lua_isnil(L, index);
-		if (is_valid) {
-			return nullptr;
-		}
-
-		is_valid = lua_type(L, index) == LUA_TSTRING;
-		if (is_valid) {
-			size_t len;
-			auto c_str = lua_tolstring(L, index, &len);
-			return const_cast<char*>(c_str);
-		}
-
-		is_valid = lua_islightuserdata(L, index);
-		if (is_valid) {
-			return lua_touserdata(L, index);
-		}
-
-		auto ptr = lua_self_pointer(L, index, is_valid);
-		if (is_valid) {
-			return ptr;
-		}
-
-		return nullptr;
-	}
 
 
 	// ================================
@@ -1626,9 +1504,30 @@ namespace LUA_MODULE_NAME {
 		using SharedPtr = std::shared_ptr<T>;
 		auto userdata_ptr = static_cast<SharedPtr*>(lua_touserdata(L, 1));
 
-		// There are objects that are waiting
-		// for callbacks to be executed before
-		// destroying themselves
+		// Because lua has no threadsafe mechanism,
+		// 2 threads modifying the same stack will result in stack corruption.
+		// A global interpert lock has been added for the thread safe purpose.
+		// However, with locks, deadlocks can happen.
+		// To avoid deadlocks in certain condition, release the gil before attempting destruction
+		// 
+		// Example:
+		//  [thread 1]
+		//      > locks the gil
+		//      > destroys obj1
+		//          > locks callback_lock
+		//      > critical atomic tasks
+		//      > releases the gil
+		//  [thread 2]
+		//      > locks callback_lock
+		//      > locks the gil
+		//      > critical atomic tasks
+		//      > releases the gil
+		//      > releases callback_lock
+		//  [thread 3]
+		//      > locks the gil
+		//      > critical atomic tasks
+		//      > releases the gil
+		// 	===> deadlock
 		GilYield yielder(L);
 
 		userdata_ptr->~SharedPtr();

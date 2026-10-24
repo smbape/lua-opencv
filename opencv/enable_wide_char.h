@@ -2,18 +2,23 @@
 
 #if defined(ENABLE_WIDE_CHAR) && defined(_MSC_VER)
 
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-
-#ifndef STRICT
-#define STRICT
-#endif
-
 #include <algorithm>
 #include <memory>
 #include <string>
-#include <windows.h>
+
+#ifdef _MSC_VER
+#pragma push_macro("NOMINMAX")
+#pragma push_macro("STRICT")
+#pragma push_macro("RELATIVE")
+#pragma push_macro("ABSOLUTE")
+#define NOMINMAX
+#define STRICT
+#include <Windows.h>
+#pragma pop_macro("NOMINMAX")
+#pragma pop_macro("STRICT")
+#pragma pop_macro("RELATIVE")
+#pragma pop_macro("ABSOLUTE")
+#endif
 
 namespace enable_wide_char {
 	template <typename char_type>

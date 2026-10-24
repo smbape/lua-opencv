@@ -34,8 +34,8 @@ The procedure has been tested on:
 
 ## Prerequisites
 
-  - Install [CUDA Toolkit 13.2.1](https://developer.nvidia.com/cuda-13-2-1-download-archive?target_os=Windows&target_arch=x86_64&target_version=11&target_type=exe_local)
-  - Download [cuDNN 9.23.2](https://developer.download.nvidia.com/compute/cudnn/redist/cudnn/windows-x86_64/cudnn-windows-x86_64-9.23.2.1_cuda13-archive.zip) compatible with the **CUDA Toolkit** version you installed, and extract the contents of the `bin`, `include` and `lib` directories inside the `bin`, `include` and `lib` directories of the **CUDA Toolkit** directory.
+  - Install [CUDA Toolkit 13.3.1](https://developer.nvidia.com/cuda-13-3-1-download-archive?target_os=Windows&target_arch=x86_64&target_version=11&target_type=exe_local)
+  - Download [cuDNN 9.25.1](https://developer.download.nvidia.com/compute/cudnn/redist/cudnn/windows-x86_64/cudnn-windows-x86_64-9.25.1.1_cuda13-archive.zip) compatible with the **CUDA Toolkit** version you installed, and extract the contents of the `bin`, `include` and `lib` directories inside the `bin`, `include` and `lib` directories of the **CUDA Toolkit** directory.
   - Download [NVIDIA Video Codec SDK](https://developer.nvidia.com/video-codec-sdk) and extract the contents of the `Interface` and `Lib/win` directories inside the `include` and `lib` directories of the **CUDA Toolkit** directory.
   - Install [CMake >= 3.25](https://cmake.org/download/)
   - Install [Git](https://git-scm.com/)
@@ -118,7 +118,7 @@ set PATH=D:\luarocks-binaries-custom\lua-opencv\out\prepublish\build\opencv_lua-
 
 ```cmd
 chcp 65001
-git clone --depth 1 --branch 4.14.0 https://github.com/opencv/opencv_extra.git "D:\luarocks-binaries-custom\opencv_extra"
+git clone --depth 1 --branch 5.0.0 https://github.com/opencv/opencv_extra.git "D:\luarocks-binaries-custom\opencv_extra"
 mkdir "D:\luarocks-binaries-custom\test\lua-opencv"
 cd /d "D:\luarocks-binaries-custom\test\lua-opencv"
 luarocks --lua-version "5.1" init --lua-versions "5.1,5.2,5.3,5.4,5.5"
@@ -201,9 +201,9 @@ Open a `x64 Native Tools Command Prompt for VS` terminal
 
 ```cmd
 cd /d "D:\luarocks-binaries-custom\test\lua-opencv"
-git clone --depth 1 --branch 4.14.0 https://github.com/opencv/opencv.git "D:\luarocks-binaries-custom\opencv"
+git clone --depth 1 --branch 5.0.0 https://github.com/opencv/opencv.git "D:\luarocks-binaries-custom\opencv"
 luarocks.bat install --deps-only D:\luarocks-binaries-custom\lua-opencv\samples\samples-scm-1.rockspec
-lua.bat D:\luarocks-binaries-custom\lua-opencv\samples\dnn\object_detection\object_detection.lua ssd_tf --input Megamind.avi --backend 5 --target 6
+lua.bat D:\luarocks-binaries-custom\lua-opencv\samples\dnn\object_detection\object_detection.lua ssd_tf --input Megamind.avi --backend cuda --target cuda --fps=-1
 ```
 
 ## Hosting on a web server

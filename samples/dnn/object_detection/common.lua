@@ -1,5 +1,6 @@
 local exports = {}
 
+local unpack = table.unpack or unpack ---@diagnostic disable-line: deprecated
 local INDEX_BASE = 1 -- lua is 1-based indexed
 
 local shell = require("shell-games")
@@ -12,7 +13,7 @@ local __file__ = sys.argv[0]
 local opencv_lua = require("init")
 local sysPath = opencv_lua.path
 local cv = opencv_lua.cv
-local int = opencv_lua.math.int
+local int = function(val) return opencv_lua.math.int(tonumber(val)) end
 local float = tonumber
 local str = tostring
 
@@ -33,21 +34,22 @@ local function toboolean(str)
 end
 exports.toboolean = toboolean
 
+-- node scripts/func_kwargs.js exports add_argument zoo parser name help '["required", , false]' '["default"]' '["type"]' '["action"]' '["nargs"]' '["alias"]' | clip
 local function add_argument(...)
-    local args = { ... }
-    local has_kwarg = opencv_lua.kwargs.isinstance(args[#args])
-    local kwargs = has_kwarg and args[#args] or opencv_lua.kwargs()
+    local args = { n = select("#", ...), ... }
+    local has_kwarg = opencv_lua.kwargs.isinstance(args[args.n])
+    local kwargs = has_kwarg and args[args.n] or opencv_lua.kwargs()
     local usedkw = 0
 
     -- get argument zoo
     local zoo
     local has_zoo = false
-    if (not has_kwarg) or #args > 1 then
+    if (not has_kwarg) or args.n > 1 then
         -- positional parameter should not be a named parameter
         if has_kwarg and kwargs:has("zoo") then
-            error('zoo was both specified as a Positional and NamedParameter')
+            error("zoo was both specified as a Positional and NamedParameter")
         end
-        has_zoo = #args >= 1
+        has_zoo = args.n >= 1
         if has_zoo then
             zoo = args[1]
         end
@@ -57,18 +59,18 @@ local function add_argument(...)
         zoo = kwargs:get("zoo")
         usedkw = usedkw + 1
     else
-        error('zoo is mandatory')
+        error("zoo is mandatory")
     end
 
     -- get argument parser
     local parser
     local has_parser = false
-    if (not has_kwarg) or #args > 2 then
+    if (not has_kwarg) or args.n > 2 then
         -- positional parameter should not be a named parameter
         if has_kwarg and kwargs:has("parser") then
-            error('parser was both specified as a Positional and NamedParameter')
+            error("parser was both specified as a Positional and NamedParameter")
         end
-        has_parser = #args >= 2
+        has_parser = args.n >= 2
         if has_parser then
             parser = args[2]
         end
@@ -78,18 +80,18 @@ local function add_argument(...)
         parser = kwargs:get("parser")
         usedkw = usedkw + 1
     else
-        error('parser is mandatory')
+        error("parser is mandatory")
     end
 
     -- get argument name
     local name
     local has_name = false
-    if (not has_kwarg) or #args > 3 then
+    if (not has_kwarg) or args.n > 3 then
         -- positional parameter should not be a named parameter
         if has_kwarg and kwargs:has("name") then
-            error('name was both specified as a Positional and NamedParameter')
+            error("name was both specified as a Positional and NamedParameter")
         end
-        has_name = #args >= 3
+        has_name = args.n >= 3
         if has_name then
             name = args[3]
         end
@@ -99,18 +101,18 @@ local function add_argument(...)
         name = kwargs:get("name")
         usedkw = usedkw + 1
     else
-        error('name is mandatory')
+        error("name is mandatory")
     end
 
     -- get argument help
     local help
     local has_help = false
-    if (not has_kwarg) or #args > 4 then
+    if (not has_kwarg) or args.n > 4 then
         -- positional parameter should not be a named parameter
         if has_kwarg and kwargs:has("help") then
-            error('help was both specified as a Positional and NamedParameter')
+            error("help was both specified as a Positional and NamedParameter")
         end
-        has_help = #args >= 4
+        has_help = args.n >= 4
         if has_help then
             help = args[4]
         end
@@ -120,18 +122,18 @@ local function add_argument(...)
         help = kwargs:get("help")
         usedkw = usedkw + 1
     else
-        error('help is mandatory')
+        error("help is mandatory")
     end
 
     -- get argument required
     local required = false
     local has_required = false
-    if (not has_kwarg) or #args > 5 then
+    if (not has_kwarg) or args.n > 5 then
         -- positional parameter should not be a named parameter
         if has_kwarg and kwargs:has("required") then
-            error('required was both specified as a Positional and NamedParameter')
+            error("required was both specified as a Positional and NamedParameter")
         end
-        has_required = #args >= 5
+        has_required = args.n >= 5
         if has_required then
             required = args[5]
         end
@@ -143,14 +145,14 @@ local function add_argument(...)
     end
 
     -- get argument default
-    local default = nil
+    local default
     local has_default = false
-    if (not has_kwarg) or #args > 6 then
+    if (not has_kwarg) or args.n > 6 then
         -- positional parameter should not be a named parameter
         if has_kwarg and kwargs:has("default") then
-            error('default was both specified as a Positional and NamedParameter')
+            error("default was both specified as a Positional and NamedParameter")
         end
-        has_default = #args >= 6
+        has_default = args.n >= 6
         if has_default then
             default = args[6]
         end
@@ -162,14 +164,14 @@ local function add_argument(...)
     end
 
     -- get argument type
-    local type = nil
+    local type
     local has_type = false
-    if (not has_kwarg) or #args > 7 then
+    if (not has_kwarg) or args.n > 7 then
         -- positional parameter should not be a named parameter
         if has_kwarg and kwargs:has("type") then
-            error('type was both specified as a Positional and NamedParameter')
+            error("type was both specified as a Positional and NamedParameter")
         end
-        has_type = #args >= 7
+        has_type = args.n >= 7
         if has_type then
             type = args[7]
         end
@@ -181,14 +183,14 @@ local function add_argument(...)
     end
 
     -- get argument action
-    local action = nil
+    local action
     local has_action = false
-    if (not has_kwarg) or #args > 8 then
+    if (not has_kwarg) or args.n > 8 then
         -- positional parameter should not be a named parameter
         if has_kwarg and kwargs:has("action") then
-            error('action was both specified as a Positional and NamedParameter')
+            error("action was both specified as a Positional and NamedParameter")
         end
-        has_action = #args >= 8
+        has_action = args.n >= 8
         if has_action then
             action = args[8]
         end
@@ -200,14 +202,14 @@ local function add_argument(...)
     end
 
     -- get argument nargs
-    local nargs = nil
+    local nargs
     local has_nargs = false
-    if (not has_kwarg) or #args > 9 then
+    if (not has_kwarg) or args.n > 9 then
         -- positional parameter should not be a named parameter
         if has_kwarg and kwargs:has("nargs") then
-            error('nargs was both specified as a Positional and NamedParameter')
+            error("nargs was both specified as a Positional and NamedParameter")
         end
-        has_nargs = #args >= 9
+        has_nargs = args.n >= 9
         if has_nargs then
             nargs = args[9]
         end
@@ -218,23 +220,62 @@ local function add_argument(...)
         usedkw = usedkw + 1
     end
 
+    -- get argument alias
+    local alias
+    local has_alias = false
+    if (not has_kwarg) or args.n > 10 then
+        -- positional parameter should not be a named parameter
+        if has_kwarg and kwargs:has("alias") then
+            error("alias was both specified as a Positional and NamedParameter")
+        end
+        has_alias = args.n >= 10
+        if has_alias then
+            alias = args[10]
+        end
+    elseif kwargs:has("alias") then
+        -- named parameter
+        has_alias = true
+        alias = kwargs:get("alias")
+        usedkw = usedkw + 1
+    end
+
     if usedkw ~= kwargs:size() then
-        error('there are ' .. (kwargs:size() - usedkw) .. ' unknown named parameters')
+        error("there are " .. (kwargs:size() - usedkw) .. " unknown named parameters")
     end
 
-    -- ... YOUR CODE HERE
-    if #sys.argv == 0 then
-        return
+    --- ====================== ---
+    --- CODE LOGIC STARTS HERE ---
+    --- ====================== ---
+
+    local modelName
+
+    if alias ~= nil then
+        modelName = alias
+    elseif #sys.argv >= 1 then
+        modelName = sys.argv[1]
     end
 
-    local value
-    local modelName = sys.argv[1]
+    local value, prefix
 
     if sysPath.isfile(zoo) then
         local fs = cv.FileStorage(zoo, cv.FileStorage.READ)
         local node = fs:getNode(modelName)
         if not node:empty() then
             value = node:getNode(name)
+            if string.find(name, "sha1") then
+                prefix = name:gsub("sha1", "")
+                value = node:getNode(prefix .. "load_info")
+                if prefix == "config_" then
+                    value = value:getNode("sha1")
+                else
+                    value = value:getNode(name)
+                end
+            end
+            if string.find(name, "download_sha") then
+                prefix = name:gsub("download_sha", "")
+                value = node:getNode(prefix .. "load_info")
+                value = value:getNode(name)
+            end
             if not value:empty() then
                 if value:isReal() then
                     default = value:real()
@@ -295,10 +336,127 @@ local function add_argument(...)
 end
 exports.add_argument = add_argument
 
-local function add_preproc_args(zoo, parser, sample)
+-- node scripts/func_kwargs.js exports add_preproc_args zoo parser sample '["alias"]' '["prefix",,""]' | clip
+local function add_preproc_args(...)
+    local args = { n = select("#", ...), ... }
+    local has_kwarg = opencv_lua.kwargs.isinstance(args[args.n])
+    local kwargs = has_kwarg and args[args.n] or opencv_lua.kwargs()
+    local usedkw = 0
+
+    -- get argument zoo
+    local zoo
+    local has_zoo = false
+    if (not has_kwarg) or args.n > 1 then
+        -- positional parameter should not be a named parameter
+        if has_kwarg and kwargs:has("zoo") then
+            error("zoo was both specified as a Positional and NamedParameter")
+        end
+        has_zoo = args.n >= 1
+        if has_zoo then
+            zoo = args[1]
+        end
+    elseif kwargs:has("zoo") then
+        -- named parameter
+        has_zoo = true
+        zoo = kwargs:get("zoo")
+        usedkw = usedkw + 1
+    else
+        error("zoo is mandatory")
+    end
+
+    -- get argument parser
+    local parser
+    local has_parser = false
+    if (not has_kwarg) or args.n > 2 then
+        -- positional parameter should not be a named parameter
+        if has_kwarg and kwargs:has("parser") then
+            error("parser was both specified as a Positional and NamedParameter")
+        end
+        has_parser = args.n >= 2
+        if has_parser then
+            parser = args[2]
+        end
+    elseif kwargs:has("parser") then
+        -- named parameter
+        has_parser = true
+        parser = kwargs:get("parser")
+        usedkw = usedkw + 1
+    else
+        error("parser is mandatory")
+    end
+
+    -- get argument sample
+    local sample
+    local has_sample = false
+    if (not has_kwarg) or args.n > 3 then
+        -- positional parameter should not be a named parameter
+        if has_kwarg and kwargs:has("sample") then
+            error("sample was both specified as a Positional and NamedParameter")
+        end
+        has_sample = args.n >= 3
+        if has_sample then
+            sample = args[3]
+        end
+    elseif kwargs:has("sample") then
+        -- named parameter
+        has_sample = true
+        sample = kwargs:get("sample")
+        usedkw = usedkw + 1
+    else
+        error("sample is mandatory")
+    end
+
+    -- get argument alias
+    local alias
+    local has_alias = false
+    if (not has_kwarg) or args.n > 4 then
+        -- positional parameter should not be a named parameter
+        if has_kwarg and kwargs:has("alias") then
+            error("alias was both specified as a Positional and NamedParameter")
+        end
+        has_alias = args.n >= 4
+        if has_alias then
+            alias = args[4]
+        end
+    elseif kwargs:has("alias") then
+        -- named parameter
+        has_alias = true
+        alias = kwargs:get("alias")
+        usedkw = usedkw + 1
+    else
+        error("alias is mandatory")
+    end
+
+    -- get argument prefix
+    local prefix = ""
+    local has_prefix = false
+    if (not has_kwarg) or args.n > 5 then
+        -- positional parameter should not be a named parameter
+        if has_kwarg and kwargs:has("prefix") then
+            error("prefix was both specified as a Positional and NamedParameter")
+        end
+        has_prefix = args.n >= 5
+        if has_prefix then
+            prefix = args[5]
+        end
+    elseif kwargs:has("prefix") then
+        -- named parameter
+        has_prefix = true
+        prefix = kwargs:get("prefix")
+        usedkw = usedkw + 1
+    end
+
+    if usedkw ~= kwargs:size() then
+        error("there are " .. (kwargs:size() - usedkw) .. " unknown named parameters")
+    end
+
+    --- ====================== ---
+    --- CODE LOGIC STARTS HERE ---
+    --- ====================== ---
+
     local aliases = {}
 
-    if sysPath.isfile(zoo) then
+    if sysPath.isfile(zoo) and prefix == "" then
         local fs = cv.FileStorage(zoo, cv.FileStorage.READ)
         local root = fs:root()
         for i, name in ipairs(root:keys()) do
@@ -309,57 +467,124 @@ local function add_preproc_args(zoo, parser, sample)
         end
     end
 
-    parser:argument("alias", "An alias name of model to extract preprocessing parameters from models.yml file.")
-        :choices(aliases)
+    if #aliases ~= 0 then
+        parser:argument(prefix .. 'alias',
+            'An alias name of model to extract preprocessing parameters from models.yml file.')
+            :choices(aliases)
+    end
 
-    add_argument(zoo, parser, 'model', opencv_lua.kwargs({
+    add_argument(zoo, parser, prefix .. 'model', opencv_lua.kwargs({
         required = true,
         help = 'Path to a binary file of model contains trained weights. ' ..
             'It could be a file with extensions .caffemodel (Caffe), ' ..
-            '.pb (TensorFlow), .t7 or .net (Torch), .weights (Darknet), .bin (OpenVINO)'
+            '.pb (TensorFlow), .t7 or .net (Torch), .weights (Darknet), .bin (OpenVINO)',
+        alias = alias
     }))
-    add_argument(zoo, parser, 'config',
+    add_argument(zoo, parser, prefix .. 'config',
         opencv_lua.kwargs({
             help = 'Path to a text file of model contains network configuration. ' ..
-                'It could be a file with extensions .prototxt (Caffe), .pbtxt or .config (TensorFlow), .cfg (Darknet), .xml (OpenVINO)'
+                'It could be a file with extensions .prototxt (Caffe), .pbtxt or .config (TensorFlow), .cfg (Darknet), .xml (OpenVINO)',
+            alias = alias
         }))
-    add_argument(zoo, parser, 'mean', opencv_lua.kwargs({
+    add_argument(zoo, parser, prefix .. 'mean', opencv_lua.kwargs({
         nargs = '+',
         type = float,
         default = { 0, 0, 0 },
         help = 'Preprocess input image by subtracting mean values. ' ..
-            'Mean values should be in BGR order.'
+            'Mean values should be in BGR order.',
+        alias = alias
     }))
-    add_argument(zoo, parser, 'scale', opencv_lua.kwargs({
+    add_argument(zoo, parser, prefix .. 'std', opencv_lua.kwargs({
+        nargs = '+',
+        type = float,
+        default = { 0, 0, 0 },
+        help = 'Preprocess input image by dividing on a standard deviation.',
+        alias = alias
+    }))
+    add_argument(zoo, parser, prefix .. 'scale', opencv_lua.kwargs({
         type = float,
         default = 1.0,
-        help = 'Preprocess input image by multiplying on a scale factor.'
+        help = 'Preprocess input image by multiplying on a scale factor.',
+        alias = alias
     }))
-    add_argument(zoo, parser, 'width', opencv_lua.kwargs({
+    add_argument(zoo, parser, prefix .. 'width', opencv_lua.kwargs({
         type = int,
-        help = 'Preprocess input image by resizing to a specific width.'
+        help = 'Preprocess input image by resizing to a specific width.',
+        alias = alias
     }))
-    add_argument(zoo, parser, 'height', opencv_lua.kwargs({
+    add_argument(zoo, parser, prefix .. 'height', opencv_lua.kwargs({
         type = int,
-        help = 'Preprocess input image by resizing to a specific height.'
+        help = 'Preprocess input image by resizing to a specific height.',
+        alias = alias
     }))
-    add_argument(zoo, parser, 'rgb', opencv_lua.kwargs({
+    add_argument(zoo, parser, prefix .. 'rgb', opencv_lua.kwargs({
         action = 'store_true',
-        help = 'Indicate that model works with RGB input images instead BGR ones.'
+        help = 'Indicate that model works with RGB input images instead BGR ones.',
+        alias = alias
     }))
-    add_argument(zoo, parser, 'classes',
-        opencv_lua.kwargs({ help = 'Optional path to a text file with names of classes to label detected objects.' }))
-    add_argument(zoo, parser, 'postprocessing', opencv_lua.kwargs({
+    add_argument(zoo, parser, prefix .. 'labels', opencv_lua.kwargs({
+        help = 'Optional path to a text file with names of classes to label detected objects.',
+        alias = alias
+    }))
+    add_argument(zoo, parser, prefix .. 'postprocessing', opencv_lua.kwargs({
         type = str,
-        help = 'Post-processing kind depends on model topology.'
+        help = 'Post-processing kind depends on model topology.',
+        alias = alias
     }))
-    add_argument(zoo, parser, 'background_label_id', opencv_lua.kwargs({
+    add_argument(zoo, parser, prefix .. 'background_label_id', opencv_lua.kwargs({
         type = int,
         default = -1,
-        help = 'An index of background class in predictions. If not negative, exclude such class from list of classes.'
+        help = 'An index of background class in predictions. If not negative, exclude such class from list of classes.',
+        alias = alias
+    }))
+    add_argument(zoo, parser, prefix .. 'sha1', opencv_lua.kwargs({
+        type = str,
+        help = 'Optional path to hashsum of downloaded model to be loaded from models.yml',
+        alias = alias
+    }))
+    add_argument(zoo, parser, prefix .. 'config_sha1', opencv_lua.kwargs({
+        type = str,
+        help = 'Optional path to hashsum of downloaded config to be loaded from models.yml',
+        alias = alias
+    }))
+    add_argument(zoo, parser, prefix .. 'download_sha', opencv_lua.kwargs({
+        type = str,
+        help = 'Optional path to hashsum of downloaded model to be loaded from models.yml',
+        alias = alias
     }))
 end
 exports.add_preproc_args = add_preproc_args
+
+local function findModel(filename, sha1)
+    if filename then
+        if sysPath.exists(filename) then
+            return filename
+        end
+
+        local fpath = cv.samples.findFile(filename, false)
+        if fpath then
+            return fpath
+        end
+
+        if os.getenv('OPENCV_DOWNLOAD_CACHE_DIR') == nil then
+            print('[WARN] Please specify a path to model download directory in OPENCV_DOWNLOAD_CACHE_DIR environment variable.')
+            return exports.findFile(filename)
+        end
+
+        if sysPath.exists(sysPath.join(os.getenv('OPENCV_DOWNLOAD_CACHE_DIR'), sha1, filename)) then
+            return sysPath.join(os.getenv('OPENCV_DOWNLOAD_CACHE_DIR'), sha1, filename)
+        end
+
+        if sysPath.exists(sysPath.join(os.getenv('OPENCV_DOWNLOAD_CACHE_DIR'), filename)) then
+            return sysPath.join(os.getenv('OPENCV_DOWNLOAD_CACHE_DIR'), filename)
+        end
+    end
+
+    error('File ' .. filename .. ' not found! Please specify a path to ' ..
+            'model download directory in OPENCV_DOWNLOAD_CACHE_DIR ' ..
+            'environment variable or pass a full path to ' .. filename)
+end
+exports.findModel = findModel
 
 local function findFile(filename)
     if not filename or sysPath.exists(filename) then
@@ -371,15 +596,16 @@ local function findFile(filename)
         return fpath
     end
 
-    local samplesDataDir = sysPath.join(sysPath.dirname(sysPath.abspath(__file__)),
-        '..',
-        'data',
-        'dnn')
-    if sysPath.exists(sysPath.join(samplesDataDir, filename)) then
-        return sysPath.join(samplesDataDir, filename)
+    if os.getenv('OPENCV_SAMPLES_DATA_PATH') == nil then
+        print('[WARN] Please specify a path to `/samples/data` in OPENCV_SAMPLES_DATA_PATH environment variable.')
+        os.exit(0)
     end
 
-    for i, path in ipairs({ 'OPENCV_DNN_TEST_DATA_PATH', 'OPENCV_TEST_DATA_PATH' }) do
+    if sysPath.exists(sysPath.join(os.getenv('OPENCV_SAMPLES_DATA_PATH'), filename)) then
+        return sysPath.join(os.getenv('OPENCV_SAMPLES_DATA_PATH'), filename)
+    end
+
+    for i, path in ipairs({ 'OPENCV_DNN_TEST_DATA_PATH', 'OPENCV_TEST_DATA_PATH', 'OPENCV_SAMPLES_DATA_PATH' }) do
         local extraPath = os.getenv(path)
         local absPath = sysPath.join(extraPath, 'dnn', filename)
         if sysPath.exists(absPath) then
@@ -387,12 +613,51 @@ local function findFile(filename)
         end
     end
 
-    print('File ' .. filename .. ' not found! Please specify a path to ' ..
-        '/opencv_extra/testdata in OPENCV_DNN_TEST_DATA_PATH environment ' ..
-        'variable or pass a full path to model.')
-    os.exit(1)
+    error(
+        'File ' .. filename .. ' not found! Please specify the path to ' ..
+        '/opencv/samples/data in the OPENCV_SAMPLES_DATA_PATH environment variable, ' ..
+        'or specify the path to opencv_extra/testdata in the OPENCV_DNN_TEST_DATA_PATH environment variable, ' ..
+        'or specify the path to the model download cache directory in the OPENCV_DOWNLOAD_CACHE_DIR environment variable, ' ..
+        'or pass the full path to ' .. filename .. '.'
+    )
 end
 exports.findFile = findFile
+
+function exports.get_backend_id(backend_name)
+    local backend_ids = {
+        ["default"] = cv.dnn.DNN_BACKEND_DEFAULT,
+        ["openvino"] = cv.dnn.DNN_BACKEND_INFERENCE_ENGINE,
+        ["opencv"] = cv.dnn.DNN_BACKEND_OPENCV,
+        ["vkcom"] = cv.dnn.DNN_BACKEND_VKCOM,
+        ["cuda"] = cv.dnn.DNN_BACKEND_CUDA,
+        ["webnn"] = cv.dnn.DNN_BACKEND_WEBNN,
+    }
+
+    if backend_ids[backend_name] == nil then
+        error("Invalid backend name: " .. backend_name)
+    end
+
+    return backend_ids[backend_name]
+end
+
+function exports.get_target_id(target_name)
+    local target_ids = {
+        ["cpu"] = cv.dnn.DNN_TARGET_CPU,
+        ["opencl"] = cv.dnn.DNN_TARGET_OPENCL,
+        ["opencl_fp16"] = cv.dnn.DNN_TARGET_OPENCL_FP16,
+        ["ncs2_vpu"] = cv.dnn.DNN_TARGET_MYRIAD,
+        ["hddl_vpu"] = cv.dnn.DNN_TARGET_HDDL,
+        ["vulkan"] = cv.dnn.DNN_TARGET_VULKAN,
+        ["cuda"] = cv.dnn.DNN_TARGET_CUDA,
+        ["cuda_fp16"] = cv.dnn.DNN_TARGET_CUDA_FP16
+    }
+
+    if target_ids[target_name] == nil then
+        error("Invalid target name: " .. target_name)
+    end
+
+    return target_ids[target_name]
+end
 
 local function win32_join(args)
     local cmd = {}
@@ -532,15 +797,6 @@ exports.new_table = function(ctor, init)
     end
     return array
 end
-
-local function map_tostring(obj)
-    local res = {}
-    for k, v in pairs(obj) do
-        res[k] = tostring(v)
-    end
-    return res
-end
-exports.map_tostring = map_tostring
 
 -- look up for `k' in list of tables `parents'
 local function metatables__index(parents, k)
