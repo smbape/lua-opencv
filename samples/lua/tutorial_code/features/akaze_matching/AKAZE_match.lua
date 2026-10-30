@@ -4,7 +4,7 @@ package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:su
 
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.14.0/samples/python/tutorial_code/features2D/akaze_matching/AKAZE_match.py
+    https://github.com/opencv/opencv/blob/5.0.0/samples/python/tutorial_code/features/akaze_matching/AKAZE_match.py
 --]]
 
 local argparse = require("argparse")
@@ -33,7 +33,7 @@ local homography = fs:getFirstTopLevelNode():mat()
 -- [load]
 
 -- [AKAZE]
-local akaze = cv.AKAZE.create()
+local akaze = cv.xfeatures2d.AKAZE.create()
 local kpts1, desc1 = akaze:detectAndCompute(img1, nil)
 local kpts2, desc2 = akaze:detectAndCompute(img2, nil)
 -- [AKAZE]

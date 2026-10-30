@@ -74,12 +74,11 @@ exports.ALIASES = new Map([
 
     ["DescriptorExtractor", "Feature2D"],
     ["FeatureDetector", "Feature2D"],
-    ["GCompileArgs", "std::vector<GCompileArg>"],
-    ["cv::GCompileArgs", "std::vector<GCompileArg>"],
-    ["GMetaArgs", "std::vector<GMetaArg>"],
-    ["GMat2", "std::tuple<GMat_and_GMat>"],
+    ["GCompileArgs", "std::vector<cv::GCompileArg>"],
+    ["cv::GCompileArgs", "std::vector<cv::GCompileArg>"],
+    ["GMetaArgs", "std::vector<cv::GMetaArg>"],
+    ["GMat2", "std::tuple<cv::GMat, cv::GMat>"],
     ["GRunArgs", "std::vector<GRunArg>"],
-    ["MatShape", "std::vector<int>"],
     ["Prims", "std::vector<Prim>"],
     ["Pose3DPtr", "cv::Ptr<Pose3D>"],
     ["PoseCluster3DPtr", "cv::Ptr<PoseCluster3D>"],
@@ -105,12 +104,7 @@ exports.PTR = new Set([
     "uchar*",
 ]);
 
-exports.CUSTOM_CLASSES = [
-    ["cv.GProtoInputArgs", ["/Simple"]], // TODO : implement
-    ["cv.GProtoOutputArgs", ["/Simple"]], // TODO : implement
-    ["cv.detail.ExtractArgsCallback", ["/Simple"]], // TODO : implement
-    ["cv.detail.ExtractMetaCallback", ["/Simple"]], // TODO : implement
-];
+exports.CUSTOM_CLASSES = [];
 
 exports.TEMPLATED_TYPES = new Set([
     "cv::GArray",

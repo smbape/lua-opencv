@@ -154,6 +154,9 @@ exports.getTypeDef = (type, options) => {
 const {ALIASES} = require("./constants");
 
 exports.getAlias = str => {
+    if (str == null) {
+        debugger;
+    }
     str = str.trim();
 
     const key = str.split(".").filter(item => Boolean(item)).join("::");

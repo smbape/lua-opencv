@@ -164,31 +164,35 @@ namespace LUA_MODULE_NAME {
 
 	class GilLock {
 	public:
+		GilLock(lua_State* L);
 		GilLock(
 			lua_State* L,
 			std::shared_ptr<std::mutex> creator_gil_mutex,
 			std::thread::id creator_thread_id,
 			std::shared_ptr<std::unique_lock<std::mutex>> creator_gil
 		);
-		GilLock(lua_State* L);
 		~GilLock();
 
 	private:
 		std::shared_ptr<std::mutex> gil_mutex;
 		std::shared_ptr<std::unique_lock<std::mutex>> gil;
+		std::shared_ptr<std::condition_variable> cv;
 		bool locked;
 	};
 
 	class GilYield {
 	public:
-		GilYield(lua_State* L);
-		GilYield(lua_State* L, long timeout_ms);
+		GilYield(lua_State* L, bool yielding_lock = true);
+		GilYield(lua_State* L, long timeout_ms, bool yielding_lock = true);
 		~GilYield();
 
 	private:
+		lua_State* L;
 		std::shared_ptr<std::mutex> gil_mutex;
 		std::shared_ptr<std::unique_lock<std::mutex>> gil;
+		std::shared_ptr<std::condition_variable> cv;
 		long timeout_ms;
+		bool yielding_lock;
 		bool yielded;
 	};
 
@@ -392,7 +396,7 @@ namespace LUA_MODULE_NAME {
 	// bool
 	// ================================
 
-	inline auto lua_to(lua_State* L, int index, bool*, bool& is_valid);
+	bool lua_to(lua_State* L, int index, bool*, bool& is_valid);
 
 	// Avoid implicit conversion of T* to bool
 	template<typename T>
@@ -423,7 +427,7 @@ namespace LUA_MODULE_NAME {
 			// Lua 5.3 and greater checks for numeric precision
 			lua_pushinteger(L, n);
 #else
-			lua_pushnumber(L, (lua_Number)n);
+			lua_pushnumber(L, (lua_Number) n);
 #endif
 		}
 	}
@@ -445,7 +449,7 @@ namespace LUA_MODULE_NAME {
 	// const char*
 	// ================================
 
-	inline const char* lua_to(lua_State* L, int index, const char**, bool& is_valid);
+	const char* lua_to(lua_State* L, int index, const char**, bool& is_valid);
 
 	template<std::size_t N>
 	inline void lua_push(lua_State* L, const char(&c_str)[N]) {
@@ -478,10 +482,19 @@ namespace LUA_MODULE_NAME {
 
 
 	// ================================
+	// std::string_view
+	// ================================
+
+	inline void lua_push(lua_State* L, const std::string_view& str) {
+		lua_pushlstring(L, str.data(), str.size());
+	}
+
+
+	// ================================
 	// void*
 	// ================================
 
-	inline void* lua_to(lua_State* L, int index, void**, bool& is_valid);
+	void* lua_to(lua_State* L, int index, void**, bool& is_valid);
 
 	inline void lua_push(lua_State* L, void* ptr) {
 		if (ptr) {
@@ -1005,43 +1018,15 @@ namespace LUA_MODULE_NAME {
 	// misc functions
 	// ================================
 
-	inline int try_mt__index(lua_State* L) {
-		if (lua_getmetatable(L, 1)) {
-			lua_pushvalue(L, 2); // push the key
-			lua_rawget(L, -2);
-			lua_remove(L, -2); // remove the metatable
-
-			if (!lua_isnil(L, -1)) {
-				return 1; // return metatable[key]
-			}
-
-			lua_pop(L, 1); // pop nil
-		}
-
-		return 0;
-	}
-
-	inline int lua_missing_declaration(lua_State* L) {
-		const auto arg = 2;
-		char const* sname;
-		if (lua_type(L, arg) == LUA_TSTRING) {
-			sname = lua_tostring(L, arg);
-		}
-		else if (lua_type(L, arg) == LUA_TLIGHTUSERDATA) {
-			sname = "light userdata";  /* special name for messages */
-		}
-		else {
-			sname = luaL_typename(L, arg);  /* standard name */
-		}
-		luaL_error(L, "missing declaration for symbol '%s'", sname);
-		return 0;
-	}
-
 	template<typename T, typename... _Ts>
 	inline void lua_register_class(lua_State* L, const char* name);
 
 	template<typename T>
 	inline void lua_register_defaults(lua_State* L);
+
+	int try_mt__index(lua_State* L);
+
+	int lua_missing_declaration(lua_State* L);
 
 	bool lua_newkwargs_from_table(lua_State* L, int index, bool& is_valid);
 

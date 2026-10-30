@@ -19,6 +19,60 @@ index 557fbe7f..8c0a8188 100644
 +ocv_include_directories(${OPENCV_BINARY_DIR}/include/ascendc_kernels)
  ocv_target_link_libraries(opencv_cannops PRIVATE ascendc_kernels)
  ocv_target_link_libraries(opencv_test_cannops PRIVATE ascendc_kernels)
+diff --git a/modules/cudev/include/opencv2/cudev/util/vec_traits.hpp b/modules/cudev/include/opencv2/cudev/util/vec_traits.hpp
+index ea0a4dd4..556c1d6c 100644
+--- a/modules/cudev/include/opencv2/cudev/util/vec_traits.hpp
++++ b/modules/cudev/include/opencv2/cudev/util/vec_traits.hpp
+@@ -49,6 +49,19 @@
+ #include "../common.hpp"
+ #include "opencv2/core/cuda/cuda_compat.hpp"
+ 
++// The 64-bit integer vector-trait rows use the platform's 64-bit integer scalar
++// together with CUDA's matching vector types. On LP64 platforms (e.g. Linux)
++// that is `long`/`ulong` with CUDA's `long1..4`/`ulong1..4`. On Windows `long`
++// is 32-bit, so the 64-bit rows must instead use `long long`/`unsigned long
++// long` with CUDA's `longlong1..4`/`ulonglong1..4`; otherwise
++// VecTraits<int64_t>/<uint64_t> - which core's gpu_mat.cu instantiates - have no
++// matching specialization and the CUDA core module fails to build. CUDA ships
++// the vector types but not the scalar aliases, so define them here.
++#if defined(_WIN32)
++typedef long long          longlong;
++typedef unsigned long long ulonglong;
++#endif
++
+ namespace cv {
+ 
+     using cv::cuda::device::compat::double4;
+@@ -76,8 +89,14 @@ CV_CUDEV_MAKE_VEC_INST(int)
+ CV_CUDEV_MAKE_VEC_INST(uint)
+ CV_CUDEV_MAKE_VEC_INST(float)
+ CV_CUDEV_MAKE_VEC_INST(double)
++// 64-bit integer rows: width-correct scalar + CUDA vector types per platform.
++#if defined(_WIN32)
++CV_CUDEV_MAKE_VEC_INST(longlong)
++CV_CUDEV_MAKE_VEC_INST(ulonglong)
++#else
+ CV_CUDEV_MAKE_VEC_INST(long)
+ CV_CUDEV_MAKE_VEC_INST(ulong)
++#endif
+ 
+ #undef CV_CUDEV_MAKE_VEC_INST
+ 
+@@ -144,8 +163,14 @@ CV_CUDEV_VEC_TRAITS_INST(int)
+ CV_CUDEV_VEC_TRAITS_INST(uint)
+ CV_CUDEV_VEC_TRAITS_INST(float)
+ CV_CUDEV_VEC_TRAITS_INST(double)
++// 64-bit integer rows: width-correct scalar + CUDA vector types per platform.
++#if defined(_WIN32)
++CV_CUDEV_VEC_TRAITS_INST(longlong)
++CV_CUDEV_VEC_TRAITS_INST(ulonglong)
++#else
+ CV_CUDEV_VEC_TRAITS_INST(long)
+ CV_CUDEV_VEC_TRAITS_INST(ulong)
++#endif
+ 
+ #undef CV_CUDEV_VEC_TRAITS_INST
+ 
 diff --git a/modules/cvv/src/stfl/stringutils.cpp b/modules/cvv/src/stfl/stringutils.cpp
 index 71d07d9b..f98aa06e 100644
 --- a/modules/cvv/src/stfl/stringutils.cpp
@@ -33,7 +87,7 @@ index 71d07d9b..f98aa06e 100644
      {
          if (cutEnd)
 diff --git a/modules/face/CMakeLists.txt b/modules/face/CMakeLists.txt
-index 4616515f..13fb07fc 100644
+index 13fc055e..d060ded1 100644
 --- a/modules/face/CMakeLists.txt
 +++ b/modules/face/CMakeLists.txt
 @@ -17,7 +17,7 @@ ocv_download(
@@ -45,8 +99,27 @@ index 4616515f..13fb07fc 100644
      ID "data"
      RELATIVE_URL
      STATUS res
+diff --git a/modules/gapi/src/backends/fluid/gfluidcore.cpp b/modules/gapi/src/backends/fluid/gfluidcore.cpp
+index 1f781d51..95f18c83 100644
+--- a/modules/gapi/src/backends/fluid/gfluidcore.cpp
++++ b/modules/gapi/src/backends/fluid/gfluidcore.cpp
+@@ -1649,6 +1649,14 @@ GAPI_FLUID_KERNEL(GFluidConvertTo, cv::gapi::core::GConvertTo, false)
+ //
+ //-----------------------------
+ 
++// conflict with <wingdi.h>
++#ifdef MM_MIN
++#undef MM_MIN
++#endif
++#ifdef MM_MAX
++#undef MM_MAX
++#endif
++
+ enum Minmax { MM_MIN, MM_MAX };
+ 
+ template<typename DST, typename SRC1, typename SRC2>
 diff --git a/modules/julia/CMakeLists.txt b/modules/julia/CMakeLists.txt
-index fcf380d7..c85d4605 100644
+index 859d61ac..343367fe 100644
 --- a/modules/julia/CMakeLists.txt
 +++ b/modules/julia/CMakeLists.txt
 @@ -71,7 +71,7 @@ ocv_add_module(
@@ -90,7 +163,7 @@ index fcf380d7..c85d4605 100644
                     )
  
 diff --git a/modules/matlab/CMakeLists.txt b/modules/matlab/CMakeLists.txt
-index 11967a5a..ff5e45f5 100644
+index 9909b6a5..5b6b13b8 100644
 --- a/modules/matlab/CMakeLists.txt
 +++ b/modules/matlab/CMakeLists.txt
 @@ -125,7 +125,7 @@ string(REGEX REPLACE "(\r?\n)+$" "" GIT_COMMIT "${GIT_COMMIT}")
@@ -121,7 +194,7 @@ index 11967a5a..ff5e45f5 100644
          OUTPUT_QUIET
      )
 diff --git a/modules/sfm/CMakeLists.txt b/modules/sfm/CMakeLists.txt
-index 46da72e3..6fe1d3ad 100644
+index cb7916d7..b78b5b51 100644
 --- a/modules/sfm/CMakeLists.txt
 +++ b/modules/sfm/CMakeLists.txt
 @@ -44,13 +44,13 @@ if((gflags_FOUND OR Gflags_FOUND OR GFLAGS_FOUND OR GFLAGS_INCLUDE_DIRS) AND (gl
@@ -141,7 +214,7 @@ index 46da72e3..6fe1d3ad 100644
            "${__output}\n\n"
        )
 diff --git a/modules/text/CMakeLists.txt b/modules/text/CMakeLists.txt
-index 0fe7e6fb..b854df51 100644
+index f7fd3b7b..98f2ef57 100644
 --- a/modules/text/CMakeLists.txt
 +++ b/modules/text/CMakeLists.txt
 @@ -18,7 +18,7 @@ if(TARGET ocv.3rdparty.tesseract)
@@ -167,7 +240,7 @@ index 254757ec..0d89d0e6 100644
      add_library(ocv.3rdparty.${name} INTERFACE ${imp})
      set_target_properties(ocv.3rdparty.${name} PROPERTIES
 diff --git a/modules/wechat_qrcode/CMakeLists.txt b/modules/wechat_qrcode/CMakeLists.txt
-index a15c4337..ac63f993 100644
+index 3d1c32ff..26c76731 100644
 --- a/modules/wechat_qrcode/CMakeLists.txt
 +++ b/modules/wechat_qrcode/CMakeLists.txt
 @@ -29,7 +29,7 @@ foreach(model_name ${model_names})
@@ -180,24 +253,24 @@ index a15c4337..ac63f993 100644
                          RELATIVE_URL
                          STATUS res)
 diff --git a/modules/wechat_qrcode/src/wechat_qrcode.cpp b/modules/wechat_qrcode/src/wechat_qrcode.cpp
-index 64aad736..c6871f28 100644
+index 5726f67f..80fbb68a 100644
 --- a/modules/wechat_qrcode/src/wechat_qrcode.cpp
 +++ b/modules/wechat_qrcode/src/wechat_qrcode.cpp
-@@ -57,7 +57,7 @@ WeChatQRCode::WeChatQRCode(const String& detector_prototxt_path,
+@@ -53,7 +53,7 @@ WeChatQRCode::WeChatQRCode(const String& detector_model_path,
+     if (!detector_model_path.empty()) {
          p->use_nn_detector_ = true;
-         CV_Assert(utils::fs::exists(detector_prototxt_path));
-         CV_Assert(utils::fs::exists(detector_caffe_model_path));
+         CV_Assert(utils::fs::exists(detector_model_path));
 -        p->detector_ = make_shared<SSDDetector>();
 +        p->detector_ = std::make_shared<SSDDetector>();
-         auto ret = p->detector_->init(detector_prototxt_path, detector_caffe_model_path);
+         auto ret = p->detector_->init(detector_model_path);
          CV_Assert(ret == 0);
      } else {
-@@ -67,7 +67,7 @@ WeChatQRCode::WeChatQRCode(const String& detector_prototxt_path,
-     // initialize super_resolution_model
-     // it could also support non model weights by cubic resizing
-     // so, we initialize it first.
+@@ -61,7 +61,7 @@ WeChatQRCode::WeChatQRCode(const String& detector_model_path,
+         p->detector_ = NULL;
+     }
+     // super resolution supports fallback to cubic resize when no model is given
 -    p->super_resolution_model_ = make_shared<SuperScale>();
 +    p->super_resolution_model_ = std::make_shared<SuperScale>();
-     if (!super_resolution_prototxt_path.empty() && !super_resolution_caffe_model_path.empty()) {
+     if (!super_resolution_model_path.empty()) {
          p->use_nn_sr_ = true;
-         // initialize dnn model (caffe format)
+         CV_Assert(utils::fs::exists(super_resolution_model_path));

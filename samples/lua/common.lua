@@ -1,14 +1,16 @@
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.14.0/samples/python/common.py
+    https://github.com/opencv/opencv/blob/5.0.0/samples/python/common.py
 --]]
 
 local exports = {}
 
+local INDEX_BASE = 1 -- lua is 1-based indexed
+local unpack = table.unpack or unpack ---@diagnostic disable-line: deprecated
+
 local opencv_lua = require("opencv_lua")
 local cv = opencv_lua.cv
 local int = opencv_lua.math.int
-local INDEX_BASE = 1 -- lua is 1-based indexed
 -- local inspect = require("inspect")
 
 function exports.clock()
@@ -21,6 +23,46 @@ function exports.read_file(file_path)
     local content = file:read("*all")
     file:close()
     return content
+end
+
+local function is_callable(v)
+    local typ = type(v)
+
+    if typ == "number" or
+        typ == "string" or
+        typ == "boolean" or
+        typ == "thread" then
+        return false
+    end
+
+    if typ == "table" or typ == "userdata" then
+        local metatable = getmetatable(v)
+        return type(metatable) == "table" and type(rawget(metatable, "__call")) == "function"
+    end
+
+    return true
+end
+
+---@generic T
+---@param ctor T
+---@param init number|table
+---@return T[]
+exports.new_table = function(ctor, init)
+    local array = {}
+    if type(init) == "number" then
+        for i = 1, init do
+            if is_callable(ctor) then
+                array[i] = ctor()
+            else
+                array[i] = ctor
+            end
+        end
+    else
+        for i, initializer_list in ipairs(init) do
+            array[i] = ctor(unpack(initializer_list))
+        end
+    end
+    return array
 end
 
 -- look up for `k' in list of tables `parents'

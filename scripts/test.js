@@ -12,7 +12,7 @@ const batchSuffix = os.platform() === "win32" ? ".bat" : "";
 const exeSuffix = os.platform() === "win32" ? ".exe" : "";
 const WORKSPACE_ROOT = process.env.WORKSPACE_ROOT ? sysPath.resolve(process.env.WORKSPACE_ROOT) : sysPath.resolve(__dirname, "..");
 const LUAROCKS_BINDIR = process.env.LUAROCKS_BINDIR ? sysPath.resolve(process.env.LUAROCKS_BINDIR) : sysPath.join(WORKSPACE_ROOT, "luarocks");
-const luarcoks = sysPath.join(LUAROCKS_BINDIR, `luarocks${ batchSuffix }`);
+const luarocks = sysPath.join(LUAROCKS_BINDIR, `luarocks${ batchSuffix }`);
 
 const spawnShellSync = (cmd, args, options = {}) => {
     // https://nodejs.org/docs/latest-v18.x/api/child_process.html#spawning-bat-and-cmd-files-on-windows
@@ -26,11 +26,10 @@ const spawnShellSync = (cmd, args, options = {}) => {
     return spawnSync(cmd, args, options);
 };
 
-const lua_interpreter = spawnShellSync(luarcoks, ["config", "lua_interpreter"]).stdout.toString().trim();
-const LUA_BINDIR = spawnShellSync(luarcoks, ["config", "variables.LUA_BINDIR"]).stdout.toString().trim();
-const LUAROCKS_SYSCONFDIR = spawnShellSync(luarcoks, ["config", "sysconfdir"]).stdout.toString().trim();
+const lua_interpreter = spawnShellSync(luarocks, ["config", "lua_interpreter"]).stdout.toString().trim();
+const LUA_BINDIR = spawnShellSync(luarocks, ["config", "variables.LUA_BINDIR"]).stdout.toString().trim();
 const LUA_BINDIR_DEBUG = LUA_BINDIR.replace("Release", "Debug");
-const ABIVER = spawnShellSync(luarcoks, ["config", "lua_version"]).stdout.toString().trim();
+const ABIVER = spawnShellSync(luarocks, ["config", "lua_version"]).stdout.toString().trim();
 const LUA_MODULES = sysPath.join(LUAROCKS_BINDIR, "lua_modules");
 
 const PROJECT_DIR = WORKSPACE_ROOT;
@@ -48,7 +47,7 @@ const opencv_SOURCE_DIR = (() => {
         }
 
         for (const hint of [`${ buildDir }/opencv/opencv-src`, `${ buildDir }/opencv`]) {
-            const file = findFile(`${ hint }/modules/calib3d/CMakeLists.txt`, PROJECT_DIR);
+            const file = findFile(`${ hint }/modules/core/CMakeLists.txt`, PROJECT_DIR);
             if (file) {
                 return sysPath.resolve(file).split(sysPath.sep).slice(0, -3).join(sysPath.sep);
             }
@@ -70,84 +69,21 @@ const OPENCV_SAMPLES_DATA_PATH = sysPath.join(opencv_SOURCE_DIR, "samples", "dat
 const config = {
     Debug: {
         exe: sysPath.join(LUA_BINDIR_DEBUG, lua_interpreter),
+        argv: ["-l", "setup"],
         env: {
-            LUAROCKS_BINDIR,
-            WORKSPACE_ROOT,
             PYTHONPATH,
             OPENCV_SAMPLES_DATA_PATH,
         },
-        argv: [],
     },
     Release: {
         exe: sysPath.join(LUAROCKS_BINDIR, `lua${ batchSuffix }`),
+        argv: ["-l", "setup"],
         env: {
-            LUAROCKS_BINDIR,
-            WORKSPACE_ROOT,
             PYTHONPATH,
             OPENCV_SAMPLES_DATA_PATH,
         },
-        argv: [],
     },
 };
-
-if (os.platform() === "win32") {
-    const { APPDATA, PATH } = process.env;
-
-    config.Release.env.PATH = [
-        sysPath.join(LUAROCKS_BINDIR, "lua_modules", "lib", "lua", ABIVER),
-        sysPath.join(LUAROCKS_BINDIR, "lua_modules", "bin"),
-        sysPath.join(APPDATA, "luarocks", "bin"),
-        PATH,
-    ].join(";");
-    config.Release.env.LUAROCKS_SYSCONFDIR = LUAROCKS_SYSCONFDIR;
-
-    config.Debug.env.PATH = [
-        LUA_BINDIR_DEBUG,
-        sysPath.join(LUAROCKS_BINDIR, "lua_modules", "bin"),
-        sysPath.join(APPDATA, "luarocks", "bin"),
-        PATH,
-    ].join(";");
-    config.Debug.env.LUAROCKS_SYSCONFDIR = LUAROCKS_SYSCONFDIR;
-
-    config.Debug.argv = [
-        "-e",
-        [
-            `package.path="${ [
-                `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lua").replaceAll("\\", "/") }/?.lua`,
-                `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lua").replaceAll("\\", "/") }/?/init.lua`,
-                `${ LUA_MODULES }/share/lua/${ ABIVER }/?.lua`,
-                `${ LUA_MODULES }/share/lua/${ ABIVER }/?/init.lua`,
-                `${ APPDATA }/luarocks/share/lua/${ ABIVER }/?.lua`,
-                `${ APPDATA }/luarocks/share/lua/${ ABIVER }/?/init.lua`,
-            ].join(";").replace(/[\\]/g, "/") };"..package.path`,
-
-            `package.cpath="${ [
-                `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lib").replaceAll("\\", "/") }/?.dll`,
-                `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lib").replaceAll("\\", "/") }/loadall.dll`,
-                `${ LUA_MODULES }/lib/lua/${ ABIVER }/?.dll`,
-                `${ APPDATA }/luarocks/lib/lua/${ ABIVER }/?.dll`,
-            ].join(";").replace(/[\\]/g, "/") };"..package.cpath`,
-        ].join(";"),
-    ];
-} else if (fs.existsSync(config.Debug.exe)) {
-    config.Debug.argv = [
-        "-e",
-        [
-            `package.path="${ [
-                `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lua") }/?.lua`,
-                `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lua") }/?/init.lua`,
-                `${ LUA_MODULES }/share/lua/${ ABIVER }/?.lua`,
-                `${ LUA_MODULES }/share/lua/${ ABIVER }/?/init.lua`,
-            ].join(";").replace(/[\\]/g, "/") };"..package.path`,
-
-            `package.cpath="${ [
-                `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lib") }/?.so`,
-                `${ sysPath.resolve(LUA_BINDIR_DEBUG, "..", "lib") }/loadall.so`,
-                `${ LUA_MODULES }/lib/lua/${ ABIVER }/?.so`,
-            ].join(";").replace(/[\\]/g, "/") };"..package.cpath`,
-        ].join(";"),
-    ];
-}
 
 const unixPath = path => {
     return path.replaceAll("\\", "/").replace(/^(\w+):/, (match, drive) => {
@@ -226,7 +162,7 @@ const run = (file, env, options, next) => {
     const cmd = [keys.map(key => unixEnv(key, env[key])).join(" "), unixCmd(args.flat())].join(" ");
 
     if (options.bash) {
-        console.log(cmd, "||", "exit $?");
+        console.log(cmd);
         next(null, 0);
         return;
     }
@@ -268,9 +204,51 @@ const run = (file, env, options, next) => {
     }
 };
 
-const bash_init = "#!/usr/bin/env bash\n\nset -o pipefail\n";
+// Source - https://unix.stackexchange.com/questions/799584/bash-exception-handling-with-a-stack-trace-and-cleanup-code-how-to-implement#answer-799585
+// Posted by user3207874.
+// Retrieved 2026-09-12, License - CC BY-SA 4.0
 
-const runFile = (file, options, next) => {
+const bash_init = `
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+trap 'catch' ERR
+
+catch() {
+    local exit_code=$?
+    local cmd="$BASH_COMMAND"
+    local i
+
+    # Check if exit was due to error
+    if [ $exit_code -ne 0 ]; then
+        echo ""
+        echo "[-] ERROR $exit_code during command: $cmd"
+        echo "Call stack:"
+        for ((i=1; i<\${#FUNCNAME[@]}; i++)); do
+            local func="\${FUNCNAME[$i]}"
+            local src="\${BASH_SOURCE[$i]}"
+            local line="\${BASH_LINENO[$((i - 1))]}"
+
+            # Added to track nested function calls from functions
+            # Extract the actual line of code (skip if file inaccessible)
+            if [[ -r "$src" ]]; then
+                local code_line
+                code_line=$(sed -n "\${line}s/^[[:space:]]*/    /p" "$src")
+                echo "  at $src:$line in function $func:"
+                echo "$code_line"
+            else
+                echo "  at $src:$line in function $func (source not readable)"
+            fi
+        done
+
+        # echo "Tip: You can put any exception handling code here"
+    fi
+}
+
+`.trim();
+
+const runFile = (file, options, cb) => {
     waterfall([
         next => {
             run(file, {
@@ -286,7 +264,7 @@ const runFile = (file, options, next) => {
             }, options, next);
         },
     ], (code, signal) => {
-        next(code);
+        cb(code);
     });
 };
 
@@ -307,7 +285,8 @@ const main = (options, cb) => {
     if (options.bash) {
         console.log([
             bash_init,
-            `cd ${ unixEscape(unixPath(cwd), false) } || exit $?`,
+            "",
+            `cd ${ unixEscape(unixPath(cwd), false) }`,
             "",
         ].join("\n"));
     }
@@ -326,12 +305,13 @@ const main = (options, cb) => {
                         (includes.length === 0 || !includes.some(include => basename.startsWith(include))) && [ "_", "." ].includes(basename[0]) ||
                         !includes_ext.includes(extname) ||
                         excludes.some(exclude => basename.startsWith(exclude)) ||
-                        includes.length !== 0 && !includes.some(include => basename.includes(include))
+                        includes.length !== 0 && !includes.some(include => basename.includes(include) || file.replaceAll("\\", "/") === include.replaceAll("\\", "/"))
                     ) {
                         next();
                         return;
                     }
 
+                    runs.add(file.replaceAll("\\", "/"));
                     runFile(file, options, next);
                 }, (path, stats, files, state, next) => {
                     const basename = sysPath.basename(path);
