@@ -23,6 +23,9 @@ ${ fdecl.join(" ") } ( ... )
 
         if (Array.isArray(decl)) {
             [argname, kwname, defval, _mandatory] = decl;
+            if (defval === "") {
+                defval = "''"
+            }
         } else {
             argname = decl;
         }

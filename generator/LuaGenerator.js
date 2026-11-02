@@ -807,6 +807,8 @@ class LuaGenerator {
                         in_val = `${ lvalue } = ${ rvalue }`;
                     }
 
+                    in_val = in_val.trim().replace(/;+$/, "");
+
                     wexpr.push(`
                     {
                         auto holder_value = lua_to(L, 3, static_cast<${ wtype }*>(nullptr), is_valid);
@@ -1230,7 +1232,16 @@ class LuaGenerator {
                 const precondition = [];
 
                 if (!isStatic) {
-                    precondition.push("!self");
+                    if ( overloads.length !== 1 || !not_found.includes("Overload resolution failed")) {
+                        precondition.push("!self");
+                    } else {
+                        overload.push(`
+                            if (!self) {
+                                // Missing instance
+                                LUAL_MODULE_ERROR_RETURN(L, "self is not an instance of '${ fqn }'");
+                            }
+                        `.replace(/^ {28}/mg, "").trim(), "");
+                    }
                 }
 
                 if (variadic) {
@@ -1401,7 +1412,8 @@ class LuaGenerator {
                         const copy = is_out_arg || defval === "" || defval.includes("(");
 
                         if (!is_array || defval !== "") {
-                            extractors.push(`${ copy || ref ? "" : "static " }${ cpptype }${ ref } ${ defarg }${ defval !== "" && defval !== "{}" ? ` { ${ defval } }` : "" };`);
+                            const initializer_list = defval === "" || /^\s*\{\s*\}\s*$/.test(defval) ? "" : defval[0] === "{" ? defval : ` { ${ defval } }`;
+                            extractors.push(`${ copy || ref ? "" : "static " }${ cpptype }${ ref } ${ defarg }${ initializer_list };`);
                         }
                     }
 
@@ -1671,23 +1683,22 @@ class LuaGenerator {
                     }
                 }
 
+                callee = callee.trim().replace(/;+$/, "");
+
                 const exception = typeof options.exception === "string" ? options.exception : "std::exception";
-                const uses_lua_state = first_argument_is_lua_state || /\bL\b/.test(expr);
                 const has_gil_unlock = func_modifiers.includes("/GU");
 
                 if (has_body || return_value_type === "void") {
                     if (!has_body && has_gil_unlock) {
                         callee = `
-                            decltype(auto) __gil__ = get_thread_gil(L);
-                            __gil__->unlock();
-                            ${ callee.trim().split("\n").join(`\n${ " ".repeat(28) }`) };
-                            __gil__->lock()
+                            GilYield yielder(L, false);
+                            ${ callee.split("\n").join(`\n${ " ".repeat(28) }`) }
                         `.replace(/^ {28}/mg, "").trim();
                     }
 
                     overload.push("", `
                         try {
-                            ${ callee.trim().split("\n").join(`\n${ " ".repeat(28) }`) };
+                            ${ callee.split("\n").join(`\n${ " ".repeat(28) }`) };
                         } catch ( ${ exception }& e ) {
                             LUAL_MODULE_ERROR_RETURN(L, e.what());
                         }
@@ -1698,7 +1709,7 @@ class LuaGenerator {
                         retval.length = 0;
                     }
                 } else {
-                    const lua_push_args = [callee.trim()];
+                    const lua_push_args = [callee];
 
                     let deleter;
                     let default_constructor;
@@ -1717,17 +1728,16 @@ class LuaGenerator {
                     const expressions = [];
 
                     if (has_gil_unlock) {
-                        expressions.push("decltype(auto) __gil__ = get_thread_gil(L);");
-                        expressions.push("__gil__->unlock();");
+                        expressions.push("GilYield yielder(L, false);");
                     }
 
                     if (isConstructor) {
                         if (default_constructor) {
-                            callee = `auto self = ${ callee.trim() };`;
+                            callee = `auto self = ${ callee };`;
                             expressions.push(...callee.split("\n"), ...default_constructor.trim().split("\n"));
                             lua_push_args[0] = "self";
                         } else if (hasDC) {
-                            callee = `auto self = ${ callee.trim() };`;
+                            callee = `auto self = ${ callee };`;
                             expressions.push(...callee.split("\n"));
                             lua_push_args[0] = "self";
                         }
@@ -1735,23 +1745,10 @@ class LuaGenerator {
 
                     if (isConstructor && hasDC) {
                         expressions.unshift("is_valid = true;");
-
-                        if (has_gil_unlock) {
-                            expressions.push("__gil__->lock();");
-                        }
-
                         expressions.push(`return ${ lua_push_args.join(", ") };`);
                     } else {
                         const lua_push = func_modifiers.includes("/Ref") ? "lua_reference_push" : "lua_push";
-                        let expr = lua_push_args.join(", ");
-
-                        if (has_gil_unlock) {
-                            expressions.push(`decltype(auto) __ret = ${ expr };`);
-                            expressions.push("__gil__->lock();");
-                            expr = "__ret";
-                        }
-
-                        expressions.push(`${ lua_push }(L, ${ expr });`);
+                        expressions.push(`${ lua_push }(L, ${ lua_push_args.join(", ") });`);
                     }
 
                     retval.push([-1, `

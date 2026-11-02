@@ -102,6 +102,12 @@ module.exports = [
         ["int", "CV_32F", "", ["/RExpr=CV_32F", "/C"]],
         ["int", "CV_64F", "", ["/RExpr=CV_64F", "/C"]],
         ["int", "CV_16F", "", ["/RExpr=CV_16F", "/C"]],
+        ["int", "CV_16BF", "", ["/RExpr=CV_16BF", "/C"]],
+        ["int", "CV_Bool", "", ["/RExpr=CV_Bool", "/C"]],
+        ["int", "CV_64U", "", ["/RExpr=CV_64U", "/C"]],
+        ["int", "CV_64S", "", ["/RExpr=CV_64S", "/C"]],
+        ["int", "CV_32U", "", ["/RExpr=CV_32U", "/C"]],
+        ["int", "CV_DEPTH_CURR_MAX", "", ["/RExpr=CV_DEPTH_CURR_MAX", "/C"]],
 
         ["int", "CV_MAT_DEPTH_MASK", "", ["/RExpr=CV_MAT_DEPTH_MASK", "/C"]],
 
@@ -145,10 +151,43 @@ module.exports = [
         ["int", "CV_16FC3", "", ["/RExpr=CV_16FC3", "/C"]],
         ["int", "CV_16FC4", "", ["/RExpr=CV_16FC4", "/C"]],
 
+        ["int", "CV_64SC1", "", ["/RExpr=CV_64SC1", "/C"]],
+        ["int", "CV_64SC2", "", ["/RExpr=CV_64SC2", "/C"]],
+        ["int", "CV_64SC3", "", ["/RExpr=CV_64SC3", "/C"]],
+        ["int", "CV_64SC4", "", ["/RExpr=CV_64SC4", "/C"]],
+
+        ["int", "CV_64UC1", "", ["/RExpr=CV_64UC1", "/C"]],
+        ["int", "CV_64UC2", "", ["/RExpr=CV_64UC2", "/C"]],
+        ["int", "CV_64UC3", "", ["/RExpr=CV_64UC3", "/C"]],
+        ["int", "CV_64UC4", "", ["/RExpr=CV_64UC4", "/C"]],
+
+        ["int", "CV_BoolC1", "", ["/RExpr=CV_BoolC1", "/C"]],
+        ["int", "CV_BoolC2", "", ["/RExpr=CV_BoolC2", "/C"]],
+        ["int", "CV_BoolC3", "", ["/RExpr=CV_BoolC3", "/C"]],
+        ["int", "CV_BoolC4", "", ["/RExpr=CV_BoolC4", "/C"]],
+
+        ["int", "CV_32UC1", "", ["/RExpr=CV_32UC1", "/C"]],
+        ["int", "CV_32UC2", "", ["/RExpr=CV_32UC2", "/C"]],
+        ["int", "CV_32UC3", "", ["/RExpr=CV_32UC3", "/C"]],
+        ["int", "CV_32UC4", "", ["/RExpr=CV_32UC4", "/C"]],
+
+        ["int", "CV_16BFC1", "", ["/RExpr=CV_16BFC1", "/C"]],
+        ["int", "CV_16BFC2", "", ["/RExpr=CV_16BFC2", "/C"]],
+        ["int", "CV_16BFC3", "", ["/RExpr=CV_16BFC3", "/C"]],
+        ["int", "CV_16BFC4", "", ["/RExpr=CV_16BFC4", "/C"]],
+
         ["int", "TM_EXACT", "", ["/RExpr=-1", "/C"]],
     ], "", ""],
 
     ["cv.CV_MAT_DEPTH", "int", ["/Call=CV_MAT_DEPTH"], [
+        ["int", "flags", "", []],
+    ], "", ""],
+
+    ["cv.CV_IS_INT_TYPE", "int", ["/Call=CV_IS_INT_TYPE"], [
+        ["int", "flags", "", []],
+    ], "", ""],
+
+    ["cv.CV_IS_FLOAT_TYPE", "int", ["/Call=CV_IS_FLOAT_TYPE"], [
         ["int", "flags", "", []],
     ], "", ""],
 
@@ -191,6 +230,26 @@ module.exports = [
     ], "", ""],
 
     ["cv.CV_16FC", "int", ["/Call=CV_16FC"], [
+        ["int", "cn", "", []],
+    ], "", ""],
+
+    ["cv.CV_64SC", "int", ["/Call=CV_64SC"], [
+        ["int", "cn", "", []],
+    ], "", ""],
+
+    ["cv.CV_64SC", "int", ["/Call=CV_64SC"], [
+        ["int", "cn", "", []],
+    ], "", ""],
+
+    ["cv.CV_BoolC", "int", ["/Call=CV_BoolC"], [
+        ["int", "cn", "", []],
+    ], "", ""],
+
+    ["cv.CV_32UC", "int", ["/Call=CV_32UC"], [
+        ["int", "cn", "", []],
+    ], "", ""],
+
+    ["cv.CV_16BFC", "int", ["/Call=CV_16BFC"], [
         ["int", "cn", "", []],
     ], "", ""],
 ];

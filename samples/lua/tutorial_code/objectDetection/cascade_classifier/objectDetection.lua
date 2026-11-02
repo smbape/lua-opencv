@@ -4,7 +4,7 @@ package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:su
 
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.14.0/samples/python/tutorial_code/objectDetection/cascade_classifier/objectDetection.py
+    https://github.com/opencv/opencv_contrib/blob/5.0.0/modules/xobjdetect/samples/python/tutorial_code/objectDetection/cascade_classifier/objectDetection.py
 --]]
 
 local argparse = require("argparse")
@@ -21,17 +21,17 @@ local convert_to_int = function(val) return opencv_lua.math.int(tonumber(val)) e
 cv.samples.addSamplesDataSearchPath(dirname(dirname(dirname(findFile(
     "data/haarcascades/haarcascade_frontalface_alt.xml", kwargs({
         hints = {
-            "out/build/x64-Debug/opencv/opencv-src",
-            "out/build/x64-Release/opencv/opencv-src",
-            "out/build/Linux-GCC-Debug/opencv/opencv-src",
-            "out/build/Linux-GCC-Release/opencv/opencv-src",
-            "out/prepublish/luajit-2.1/opencv_lua/build.luarocks/opencv/opencv-src",
-            "out/prepublish/5.5/opencv_lua/build.luarocks/opencv/opencv-src",
-            "out/prepublish/5.4/opencv_lua/build.luarocks/opencv/opencv-src",
-            "out/prepublish/5.3/opencv_lua/build.luarocks/opencv/opencv-src",
-            "out/prepublish/5.2/opencv_lua/build.luarocks/opencv/opencv-src",
-            "out/prepublish/5.1/opencv_lua/build.luarocks/opencv/opencv-src",
-            "opencv",
+            "out/build/x64-Debug/opencv/opencv_contrib-src/modules/xobjdetect",
+            "out/build/x64-Release/opencv/opencv_contrib-src/modules/xobjdetect",
+            "out/build/Linux-GCC-Debug/opencv/opencv_contrib-src/modules/xobjdetect",
+            "out/build/Linux-GCC-Release/opencv/opencv_contrib-src/modules/xobjdetect",
+            "out/prepublish/luajit-2.1/opencv_lua/build.luarocks/opencv/opencv_contrib-src/modules/xobjdetect",
+            "out/prepublish/5.5/opencv_lua/build.luarocks/opencv/opencv_contrib-src/modules/xobjdetect",
+            "out/prepublish/5.4/opencv_lua/build.luarocks/opencv/opencv_contrib-src/modules/xobjdetect",
+            "out/prepublish/5.3/opencv_lua/build.luarocks/opencv/opencv_contrib-src/modules/xobjdetect",
+            "out/prepublish/5.2/opencv_lua/build.luarocks/opencv/opencv_contrib-src/modules/xobjdetect",
+            "out/prepublish/5.1/opencv_lua/build.luarocks/opencv/opencv_contrib-src/modules/xobjdetect",
+            "opencv_contrib/modules/xobjdetect",
         }
     }))))))
 

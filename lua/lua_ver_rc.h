@@ -8,4 +8,4 @@
 #define stringify(s) _stringify(s)
 
 #define LUA_PRODUCT_VERSION MAJVER, MINVER, RELVER
-#define LUA_VERSION stringify(Luajit_VERSION)
+#define LUA_VERSION stringify(Lua_VERSION)

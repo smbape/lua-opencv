@@ -6,7 +6,7 @@ namespace {
 
 	void register_version(lua_State* L) {
 		lua_pushliteral(L, "version");
-		lua_pushliteral(L, "Lua bindings " LUA_MODULE_QUOTE_STRING(LUA_MODULE_VERSION) " for OpenCV " LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_VERSION));
+		lua_pushliteral(L, "Lua bindings " LUA_MODULE_QUOTE_STRING(LUA_MODULE_VERSION) " for " LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_NAME) " " LUA_MODULE_QUOTE_STRING(LUA_MODULE_LIB_VERSION));
 		lua_rawset(L, -3);
 	}
 
@@ -25,10 +25,27 @@ namespace {
 		// Lua supports the following bitwise operators
 		lua_pushliteral(L, "bit");
 		lua_rawget(L, -2); // push bit table
-		const char* bit_string =
+
+		const char bit_filename[] = "<built-in>/" LUA_MODULE_NAME_STR "/bit.lua";
+		const char bit_string[] =
 #include "bit_string.lua.inc"
 		;
-		luaL_dostring(L, bit_string);
+
+		auto top = lua_gettop(L);
+
+		if (luaL_loadbuffer(L, bit_string, sizeof(bit_string) - 1, bit_filename) != 0) {
+			lua_error(L);
+		}
+
+		lua_call(L, 0, LUA_MULTRET);
+		auto nresults = lua_gettop(L) - top;
+
+		if (nresults != 1) {
+			luaL_error(L, "%s: 1 result expected, got %d", bit_filename, nresults);
+		} else if (!lua_isfunction(L, -1)) {
+			luaL_typeerror(L, -1, "function");
+		}
+
 		lua_pushvalue(L, -2);
 		lua_call(L, 1, 0);
 		lua_pop(L, 1); // pop bit table
@@ -177,28 +194,28 @@ int LUA_MODULE_LUAOPEN(lua_State* L) {
 
 	lua_getfield(L, -1, LUA_MODULE_NAME_STR); // get package.loaded[modname]
 
-	if (!lua_istable(L, -1)) {
-		lua_pop(L, 1);
-
-		lua_pushliteral(L, LUA_MODULE_NAME_STR);
-		lua_newtable(L);
-		lua_rawset(L, -3); // set package.loaded[modname]
-
-		lua_pushliteral(L, LUA_MODULE_NAME_STR);
-		lua_rawget(L, -2); // get package.loaded[modname]
-
-		int ref = luaL_ref(L, LUA_REGISTRYINDEX);
-		lua_pop(L, 2); // remove package.loaded, package
-		lua_rawgeti(L, LUA_REGISTRYINDEX, ref);
-		luaL_unref(L, LUA_REGISTRYINDEX, ref);
-	}
-	else {
+	if (lua_istable(L, -1)) {
 		int ref = luaL_ref(L, LUA_REGISTRYINDEX);
 		lua_pop(L, 2); // remove package.loaded, package
 		lua_rawgeti(L, LUA_REGISTRYINDEX, ref);
 		luaL_unref(L, LUA_REGISTRYINDEX, ref);
 		return 1;
 	}
+
+	// remove nil package.loaded[modname]
+	lua_pop(L, 1);
+
+	lua_pushliteral(L, LUA_MODULE_NAME_STR);
+	lua_newtable(L); // create the table module
+	lua_rawset(L, -3); // set package.loaded[modname]
+
+	lua_pushliteral(L, LUA_MODULE_NAME_STR);
+	lua_rawget(L, -2); // get package.loaded[modname]
+
+	int ref = luaL_ref(L, LUA_REGISTRYINDEX);
+	lua_pop(L, 2); // remove package.loaded, package
+	lua_rawgeti(L, LUA_REGISTRYINDEX, ref);
+	luaL_unref(L, LUA_REGISTRYINDEX, ref);
 	// ================================================================
 
 	using namespace LUA_MODULE_NAME;

@@ -1,5 +1,8 @@
 #include <registration.hpp>
 
+template< class T >
+using cv_depth_bind_t = std::conditional_t<!std::is_same_v<T, cv::hfloat> && !std::is_same_v<T, cv::bfloat>, T, float>;
+
 namespace {
 	using namespace LUA_MODULE_NAME;
 	using namespace cvextra;
@@ -10,22 +13,37 @@ namespace {
 	inline int mat_at(lua_State* L, const cv::Mat& m, Args&&... args) {
 		switch (m.depth()) {
 		case CV_8U:
-			lua_push(L, m.at<uchar>(std::forward<Args>(args)...));
+			lua_push(L, m.at<uint8_t>(std::forward<Args>(args)...));
 			break;
 		case CV_8S:
-			lua_push(L, m.at<char>(std::forward<Args>(args)...));
+			lua_push(L, m.at<int8_t>(std::forward<Args>(args)...));
 			break;
 		case CV_16U:
-			lua_push(L, m.at<ushort>(std::forward<Args>(args)...));
+			lua_push(L, m.at<uint16_t>(std::forward<Args>(args)...));
 			break;
 		case CV_16S:
-			lua_push(L, m.at<short>(std::forward<Args>(args)...));
+			lua_push(L, m.at<int16_t>(std::forward<Args>(args)...));
+			break;
+		case CV_16F:
+			lua_push(L, static_cast<float>(m.at<cv::hfloat>(std::forward<Args>(args)...)));
+			break;
+		case CV_16BF:
+			lua_push(L, static_cast<float>(m.at<cv::bfloat>(std::forward<Args>(args)...)));
+			break;
+		case CV_32U:
+			lua_push(L, m.at<uint32_t>(std::forward<Args>(args)...));
 			break;
 		case CV_32S:
-			lua_push(L, m.at<int>(std::forward<Args>(args)...));
+			lua_push(L, m.at<int32_t>(std::forward<Args>(args)...));
 			break;
 		case CV_32F:
 			lua_push(L, m.at<float>(std::forward<Args>(args)...));
+			break;
+		case CV_64U:
+			lua_push(L, m.at<uint64_t>(std::forward<Args>(args)...));
+			break;
+		case CV_64S:
+			lua_push(L, m.at<int64_t>(std::forward<Args>(args)...));
 			break;
 		case CV_64F:
 			lua_push(L, m.at<double>(std::forward<Args>(args)...));
@@ -40,25 +58,40 @@ namespace {
 	inline void mat_set_at(lua_State* L, cv::Mat& m, double value, Args&&... args) {
 		switch (m.depth()) {
 		case CV_8U:
-			m.at<uchar>(std::forward<Args>(args)...) = static_cast<uchar>(value);
+			m.at<uint8_t>(std::forward<Args>(args)...) = static_cast<uint8_t>(value);
 			break;
 		case CV_8S:
-			m.at<char>(std::forward<Args>(args)...) = static_cast<char>(value);
+			m.at<int8_t>(std::forward<Args>(args)...) = static_cast<int8_t>(value);
 			break;
 		case CV_16U:
-			m.at<ushort>(std::forward<Args>(args)...) = static_cast<ushort>(value);
+			m.at<uint16_t>(std::forward<Args>(args)...) = static_cast<uint16_t>(value);
 			break;
 		case CV_16S:
-			m.at<short>(std::forward<Args>(args)...) = static_cast<short>(value);
+			m.at<int16_t>(std::forward<Args>(args)...) = static_cast<int16_t>(value);
+			break;
+		case CV_16F:
+			m.at<cv::hfloat>(std::forward<Args>(args)...) = static_cast<cv::hfloat>(value);
+			break;
+		case CV_16BF:
+			m.at<cv::bfloat>(std::forward<Args>(args)...) = static_cast<cv::bfloat>(value);
+			break;
+		case CV_32U:
+			m.at<uint32_t>(std::forward<Args>(args)...) = static_cast<uint32_t>(value);
 			break;
 		case CV_32S:
-			m.at<int>(std::forward<Args>(args)...) = static_cast<int>(value);
+			m.at<int32_t>(std::forward<Args>(args)...) = static_cast<int32_t>(value);
 			break;
 		case CV_32F:
 			m.at<float>(std::forward<Args>(args)...) = static_cast<float>(value);
 			break;
+		case CV_64U:
+			m.at<uint64_t>(std::forward<Args>(args)...) = static_cast<uint64_t>(value);
+			break;
+		case CV_64S:
+			m.at<int64_t>(std::forward<Args>(args)...) = static_cast<int64_t>(value);
+			break;
 		case CV_64F:
-			m.at<double>(std::forward<Args>(args)...) = value;
+			m.at<double>(std::forward<Args>(args)...) = static_cast<double>(value);
 			break;
 		default:
 			LUAL_MODULE_ERROR(L, "Unsupported matrix type");
@@ -135,15 +168,15 @@ namespace {
 		std::vector<cv::Range>& ranges,
 		std::vector<int>& newshape,
 		const cv::Mat& self,
-		const std::vector<cv::util::variant<int, cv::Range>>& idx,
+		const std::vector<std::variant<int, cv::Range>>& idx,
 		const int i,
 		const int dims,
 		int& ellipis_idx
 	) {
 		const int ellipis_missing_ranges = dims - idx.size();
 
-		if (cv::util::holds_alternative<cv::Range>(idx[i])) {
-			const auto& range = cv::util::get<cv::Range>(idx[i]);
+		if (std::holds_alternative<cv::Range>(idx[i])) {
+			const auto& range = std::get<cv::Range>(idx[i]);
 			if (range.empty()) {
 				LUAL_MODULE_ERROR(L, "range at index " << i << " is empty");
 			}
@@ -169,16 +202,16 @@ namespace {
 		}
 		else if (ellipis_idx != -1) {
 			const int k = i + ellipis_missing_ranges;
-			const auto start = cv::util::get<int>(idx[i]);
+			const auto start = std::get<int>(idx[i]);
 			ranges[k] = cv::Range(start, start + 1);
 		}
 		else {
-			const auto start = cv::util::get<int>(idx[i]);
+			const auto start = std::get<int>(idx[i]);
 			ranges[i] = cv::Range(start, start + 1);
 		}
 	}
 
-	inline cv::Mat check_reshape(lua_State* L, cv::Mat& res, std::vector<int>& newshape, const std::vector<cv::util::variant<int, cv::Range>>& idx) {
+	inline cv::Mat check_reshape(lua_State* L, cv::Mat& res, std::vector<int>& newshape, const std::vector<std::variant<int, cv::Range>>& idx) {
 		if (!res.isContinuous()) {
 			LUAL_MODULE_ERROR(L, "Reshaping of n-dimensional non-continuous matrices is not supported yet.");
 		}
@@ -256,13 +289,14 @@ namespace {
 	}
 
 	template<typename _Tm>
-	inline void _shape(const _Tm& self, std::vector<int>& shape) {
-		const auto dims = self.size.dims();
-		shape.assign(self.size.p, self.size.p + dims);
-		const auto channels = self.channels();
-		if (channels != 1) {
-			shape.push_back(channels);
+	inline std::vector<int> _shape(const _Tm& self) {
+		const auto& size = self.size;
+		const auto layout = size.layout;
+		auto shape = size.vec();
+		if (layout != DATA_LAYOUT_NCHW && layout != DATA_LAYOUT_NHWC) {
+			shape.push_back(self.channels());
 		}
+		return shape;
 	}
 
 	template<typename _Tm>
@@ -297,10 +331,12 @@ namespace {
 			if constexpr (std::is_same_v<_Tm, cv::cuda::GpuMat>) {
 				if (dims == 3) {
 					result = result.reshape(cn);
-				} else {
+				}
+				else {
 					LUAL_MODULE_ERROR(L, "the given array has " << dims << " dimensions, while GpuMat can only support 3 dimensions");
 				}
-			} else {
+			}
+			else {
 				result = result.reshape(cn, dims - 1, result.size.p);
 			}
 		}
@@ -391,7 +427,7 @@ namespace {
 				nexti %= ssizes[k];
 			}
 
-			lua_push(L, *reinterpret_cast<const _Tp*>(data + offset));
+			lua_push(L, static_cast<cv_depth_bind_t<_Tp>>(*reinterpret_cast<const _Tp*>(data + offset)));
 
 			if (nested) {
 				lua_rawseti(L, -2, 1 + indexes[j]);
@@ -417,17 +453,27 @@ namespace {
 	inline int _pushtable(lua_State* L, const _Tm& self, bool nested) {
 		switch (self.depth()) {
 		case CV_8U:
-			return _pushtable<byte, _Tm>(L, self, nested);
+			return _pushtable<uint8_t, _Tm>(L, self, nested);
 		case CV_8S:
-			return _pushtable<char, _Tm>(L, self, nested);
+			return _pushtable<int8_t, _Tm>(L, self, nested);
 		case CV_16U:
-			return _pushtable<ushort, _Tm>(L, self, nested);
+			return _pushtable<uint16_t, _Tm>(L, self, nested);
 		case CV_16S:
-			return _pushtable<short, _Tm>(L, self, nested);
+			return _pushtable<int16_t, _Tm>(L, self, nested);
+		case CV_16F:
+			return _pushtable<cv::hfloat, _Tm>(L, self, nested);
+		case CV_16BF:
+			return _pushtable<cv::bfloat, _Tm>(L, self, nested);
+		case CV_32U:
+			return _pushtable<uint32_t, _Tm>(L, self, nested);
 		case CV_32S:
-			return _pushtable<int, _Tm>(L, self, nested);
+			return _pushtable<int32_t, _Tm>(L, self, nested);
 		case CV_32F:
 			return _pushtable<float, _Tm>(L, self, nested);
+		case CV_64U:
+			return _pushtable<uint64_t, _Tm>(L, self, nested);
+		case CV_64S:
+			return _pushtable<int64_t, _Tm>(L, self, nested);
 		case CV_64F:
 			return _pushtable<double, _Tm>(L, self, nested);
 		default:
@@ -475,14 +521,14 @@ namespace {
 	template<typename T>
 	void _Mat_newindex_at(lua_State* L, cv::Mat& self, int idx, const T& value) {
 		const auto& size = self.size;
-		const auto dims = size.dims();
+		const auto dims = self.dims;
 		const auto channels = self.channels();
 
 		if (dims == 1) {
 			if (channels != 1) {
 				// treated as dims == 2
 				int newsz[] = { channels };
-				auto res = self.row(idx).reshape(1, 1, newsz);
+				auto res = (self.cols == 1 ? self.row(idx) : self.col(idx)).reshape(1, 1, newsz);
 				setTo(res, value);
 				return;
 			}
@@ -533,7 +579,6 @@ namespace {
 			LUAL_MODULE_ERROR(L, "index can not be empty");
 		}
 
-		const auto& size = self.size;
 		const auto channels = self.channels();
 
 		auto dims = self.dims;
@@ -599,7 +644,7 @@ namespace {
 		}
 
 		cv::Mat res(self, ranges);
-		std::vector<int> newshape(size.p + idx.size(), size.p + size.dims());
+		std::vector<int> newshape(self.size.p + idx.size(), self.size.p + self.dims);
 		res = res.reshape(0, newshape);
 		setTo(res, value);
 	}
@@ -610,7 +655,6 @@ namespace {
 			LUAL_MODULE_ERROR(L, "ranges can not be empty");
 		}
 
-		const auto& size = self.size;
 		const auto channels = self.channels();
 
 		auto dims = self.dims;
@@ -640,7 +684,7 @@ namespace {
 			}
 
 			// reshape with channels added as a new dimension
-			std::vector<int> newsz(size.p, size.p + size.dims());
+			std::vector<int> newsz(self.size.p, self.size.p + self.dims);
 			newsz.push_back(channels);
 			auto res = cv::Mat(self.reshape(1, newsz), ranges);
 			setTo(res, value);
@@ -664,12 +708,11 @@ namespace {
 	}
 
 	template<typename T>
-	void _Mat_newindex_at(lua_State* L, cv::Mat& self, const std::vector<cv::util::variant<int, cv::Range>>& idx, const T& value) {
+	void _Mat_newindex_at(lua_State* L, cv::Mat& self, const std::vector<std::variant<int, cv::Range>>& idx, const T& value) {
 		if (idx.size() == 0) {
 			LUAL_MODULE_ERROR(L, "index can not be empty");
 		}
 
-		const auto& size = self.size;
 		const auto channels = self.channels();
 
 		auto dims = self.dims;
@@ -704,7 +747,7 @@ namespace {
 			}
 
 			// reshape with channels added as a new dimension
-			std::vector<int> newsz(size.p, size.p + size.dims());
+			std::vector<int> newsz(self.size.p, self.size.p + self.dims);
 			newsz.push_back(channels);
 			cv::Mat res(self.reshape(1, newsz), ranges);
 
@@ -732,25 +775,23 @@ namespace cvextra {
 	cv::Range Ellipsis(INT_MAX, INT_MIN);
 
 	std::vector<int> mat_shape(const cv::Mat& self) {
-		std::vector<int> shape; _shape(self, shape);
-		return shape;
+		return _shape(self);
 	}
 
 	std::vector<int> umat_shape(const cv::UMat& self) {
-		std::vector<int> shape; _shape(self, shape);
-		return shape;
+		return _shape(self);
 	}
 
 	int Mat_index_at(lua_State* L, cv::Mat& self, int idx) {
 		const auto& size = self.size;
-		const auto dims = size.dims();
+		const auto dims = self.dims;
 		const auto channels = self.channels();
 
 		if (dims == 1) {
 			if (channels != 1) {
 				// treated as dims == 2
 				int newsz[] = { channels };
-				lua_push(L, self.row(idx).reshape(1, 1, newsz));
+				lua_push(L, (self.cols == 1 ? self.row(idx) : self.col(idx)).reshape(1, 1, newsz));
 				return 1;
 			}
 
@@ -795,7 +836,6 @@ namespace cvextra {
 			LUAL_MODULE_ERROR(L, "index can not be empty");
 		}
 
-		const auto& size = self.size;
 		const auto channels = self.channels();
 
 		auto dims = self.dims;
@@ -858,7 +898,7 @@ namespace cvextra {
 		}
 
 		cv::Mat res(self, ranges);
-		std::vector<int> newshape(size.p + idx.size(), size.p + size.dims());
+		std::vector<int> newshape(self.size.p + idx.size(), self.size.p + self.dims);
 		lua_push(L, res.reshape(0, newshape));
 		return 1;
 	}
@@ -868,7 +908,6 @@ namespace cvextra {
 			LUAL_MODULE_ERROR(L, "ranges can not be empty");
 		}
 
-		const auto& size = self.size;
 		const auto channels = self.channels();
 
 		auto dims = self.dims;
@@ -897,7 +936,7 @@ namespace cvextra {
 			}
 
 			// reshape with channels added as a new dimension
-			std::vector<int> newsz(size.p, size.p + size.dims());
+			std::vector<int> newsz(self.size.p, self.size.p + self.dims);
 			newsz.push_back(channels);
 			lua_push(L, std::make_shared<cv::Mat>(self.reshape(1, newsz), ranges));
 			return 1;
@@ -919,12 +958,11 @@ namespace cvextra {
 		return 1;
 	}
 
-	int Mat_index_at(lua_State* L, cv::Mat& self, const std::vector<cv::util::variant<int, cv::Range>>& idx) {
+	int Mat_index_at(lua_State* L, cv::Mat& self, const std::vector<std::variant<int, cv::Range>>& idx) {
 		if (idx.size() == 0) {
 			LUAL_MODULE_ERROR(L, "index can not be empty");
 		}
 
-		const auto& size = self.size;
 		const auto channels = self.channels();
 
 		auto dims = self.dims;
@@ -958,7 +996,7 @@ namespace cvextra {
 			}
 
 			// reshape with channels added as a new dimension
-			std::vector<int> newsz(size.p, size.p + size.dims());
+			std::vector<int> newsz(self.size.p, self.size.p + self.dims);
 			newsz.push_back(channels);
 			cv::Mat res(self.reshape(1, newsz), ranges);
 
@@ -1007,11 +1045,11 @@ namespace cvextra {
 		_Mat_newindex_at(L, self, ranges, value);
 	}
 
-	void Mat_newindex_at(lua_State* L, cv::Mat& self, const std::vector<cv::util::variant<int, cv::Range>>& idx, const cv::Mat& value) {
+	void Mat_newindex_at(lua_State* L, cv::Mat& self, const std::vector<std::variant<int, cv::Range>>& idx, const cv::Mat& value) {
 		_Mat_newindex_at(L, self, idx, value);
 	}
 
-	void Mat_newindex_at(lua_State* L, cv::Mat& self, const std::vector<cv::util::variant<int, cv::Range>>& idx, const double value) {
+	void Mat_newindex_at(lua_State* L, cv::Mat& self, const std::vector<std::variant<int, cv::Range>>& idx, const double value) {
 		_Mat_newindex_at(L, self, idx, value);
 	}
 

@@ -6,10 +6,15 @@ const primitiveTypes = new Set([
 
 const nonArrayTypes = new Set([
     "cv::Mat",
+    "std::vector<cv::Mat>",
     "cv::UMat",
+    "std::vector<cv::UMat>",
     "double",
     "bool",
     "cv::cuda::GpuMat",
+    "std::vector<cv::cuda::GpuMat>",
+    "cv::cuda::GpuMatND",
+    "std::vector<cv::cuda::GpuMatND>",
     "cv::cuda::HostMem",
     "cv::Scalar",
 ]);
@@ -34,8 +39,6 @@ const limitedSupport = new Map([
 
 const knownArrayTypes = [
     // Unique types
-    "cv::Mat",
-    "cv::UMat",
     "bool",
     "cv::RotatedRect",
     "cv::Range",
@@ -92,7 +95,7 @@ for (const _Tp of ["f", "d"]) {
 const length = knownArrayTypes.length;
 
 // Mat and UMat does not have vector<vector>
-for (let i = 2; i < length; i++) {
+for (let i = 0; i < length; i++) {
     knownArrayTypes.push(`std::vector<${ knownArrayTypes[i] }>`);
 }
 
@@ -100,7 +103,7 @@ for (let i = 0; i < knownArrayTypes.length; i++) {
     knownArrayTypes[i] = `std::vector<${ knownArrayTypes[i] }>`;
 }
 
-const types = [...nonArrayTypes, ...knownArrayTypes];
+const types = new Set([...nonArrayTypes, ...knownArrayTypes]);
 
 const declarations = [];
 

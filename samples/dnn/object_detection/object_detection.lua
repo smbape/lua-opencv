@@ -12,10 +12,13 @@ Sources:
     https://learnopencv.com/object-detection-using-yolov5-and-opencv-dnn-in-c-and-python/
     https://github.com/ultralytics/ultralytics/blob/main/examples/YOLOv8-CPP-Inference/inference.cpp
     https://docs.opencv.org/4.x/d4/d2f/tf_det_tutorial_dnn_conversion.html
-    https://github.com/opencv/opencv/blob/4.14.0/samples/dnn/object_detection.py
+    https://github.com/opencv/opencv/blob/5.0.0/samples/dnn/object_detection.py
 --]]
 
 local __file__ = arg[0]
+
+local unpack = table.unpack or unpack ---@diagnostic disable-line: deprecated
+local INDEX_BASE = 1 -- lua is 1-based indexed
 
 local argparse = require("argparse")
 local opencv_lua = require("opencv_lua")
@@ -24,21 +27,35 @@ local sysPath = common.path
 
 local __dirname__ = sysPath.dirname(sysPath.abspath(__file__))
 
-local cv = opencv_lua.cv
-local kwargs = opencv_lua.kwargs
+local bit = bit or opencv_lua.bit ---@diagnostic disable-line: undefined-global
 local int = function(val) return opencv_lua.math.int(tonumber(val)) end
 local float = tonumber
-local unpack = table.unpack or unpack ---@diagnostic disable-line: deprecated
+local cv = opencv_lua.cv
+local kwargs = opencv_lua.kwargs
+
 local findFile = common.findFile
-local INDEX_BASE = 1 -- lua is 1-based indexed
+local findModel = common.findModel
+local get_backend_id = common.get_backend_id
+local get_target_id = common.get_target_id
+
+local function help()
+    print(
+        [[
+        Firstly, download required models using `download_models.py` (if not already done). Set environment variable OPENCV_DOWNLOAD_CACHE_DIR to specify where models should be downloaded. Also, point OPENCV_SAMPLES_DATA_PATH to opencv/samples/data.\n"\n
+
+        To run:
+            lua object_detection.lua model_name(e.g yolov8) --input=path/to/your/input/image/or/video (don't pass --input to use device camera)
+
+        Sample command:
+            lua object_detection.lua yolov8 --input=path/to/image
+        Model path can also be specified using --model argument
+        ]]
+    )
+end
 
 local default_models = sysPath.join(__dirname__, 'models.yml')
-local backends = { cv.dnn.DNN_BACKEND_DEFAULT, cv.dnn.DNN_BACKEND_HALIDE, cv.dnn.DNN_BACKEND_INFERENCE_ENGINE, cv.dnn
-    .DNN_BACKEND_OPENCV,
-    cv.dnn.DNN_BACKEND_VKCOM, cv.dnn.DNN_BACKEND_CUDA }
-local targets = { cv.dnn.DNN_TARGET_CPU, cv.dnn.DNN_TARGET_OPENCL, cv.dnn.DNN_TARGET_OPENCL_FP16, cv.dnn
-    .DNN_TARGET_MYRIAD, cv.dnn.DNN_TARGET_HDDL,
-    cv.dnn.DNN_TARGET_VULKAN, cv.dnn.DNN_TARGET_CUDA, cv.dnn.DNN_TARGET_CUDA_FP16 }
+local backends = { "default", "openvino", "opencv", "vkcom", "cuda", "webnn" }
+local targets = { "cpu", "opencl", "opencl_fp16", "ncs2_vpu", "hddl_vpu", "vulkan", "cuda", "cuda_fp16" }
 
 local parser = argparse() {
     name = sysPath.basename(__file__),
@@ -51,29 +68,26 @@ parser:option('--out_tf_graph'):default('graph.pbtxt')
     :description('For models from TensorFlow Object Detection API, you may ' ..
         'pass a .config file which was used for training through --config ' ..
         'argument. This way an additional .pbtxt file with TensorFlow graph will be created.')
-parser:option('--framework'):choices({ 'caffe', 'tensorflow', 'torch', 'darknet', 'dldt', 'onnx' })
-    :description('Optional name of an origin framework of the model. ' ..
-        'Detect it automatically if it does not set.')
 parser:option('--thr'):convert(float):default(0.5):description('Confidence threshold')
 parser:option('--nms'):convert(float):default(0.4):description('Non-maximum suppression threshold')
-parser:option('--backend'):choices(common.map_tostring(backends)):default(cv.dnn.DNN_BACKEND_DEFAULT):convert(int)
-    :description(string.format("Choose one of computation backends: " ..
-        "%d: automatically (by default), " ..
-        "%d: Halide language (http://halide-lang.org/), " ..
-        "%d: Intel's Deep Learning Inference Engine (https://software.intel.com/openvino-toolkit), " ..
-        "%d: OpenCV implementation, " ..
-        "%d: VKCOM, " ..
-        "%d: CUDA", unpack(backends)))
-parser:option('--target'):choices(common.map_tostring(targets)):default(cv.dnn.DNN_TARGET_CPU):convert(int)
-    :description(string.format('Choose one of target computation devices: ' ..
-        '%d: CPU target (by default), ' ..
-        '%d: OpenCL, ' ..
-        '%d: OpenCL fp16 (half-float precision), ' ..
-        '%d: NCS2 VPU, ' ..
-        '%d: HDDL VPU, ' ..
-        '%d: Vulkan, ' ..
-        '%d: CUDA, ' ..
-        '%d: CUDA fp16 (half-float preprocess)', unpack(targets)))
+parser:option('--backend'):choices(backends):default("default")
+    :description("Choose one of computation backends: " ..
+        "default: automatically (by default), " ..
+        "openvino: Intel's Deep Learning Inference Engine (https://software.intel.com/openvino-toolkit), " ..
+        "opencv: OpenCV implementation, " ..
+        "vkcom: VKCOM, " ..
+        "cuda: CUDA, " ..
+        "webnn: WebNN")
+parser:option('--target'):choices(targets):default("cpu")
+    :description("Choose one of target computation devices: " ..
+        "cpu: CPU target (by default), " ..
+        "opencl: OpenCL, " ..
+        "opencl_fp16: OpenCL fp16 (half-float precision), " ..
+        "ncs2_vpu: NCS2 VPU, " ..
+        "hddl_vpu: HDDL VPU, " ..
+        "vulkan: Vulkan, " ..
+        "cuda: CUDA, " ..
+        "cuda_fp16: CUDA fp16 (half-float preprocess)")
 parser:option('--async'):convert(int):default(cv.getNumThreads())
     :description('Number of asynchronous forwards at the same time. ' ..
         'Choose 0 for synchronous mode')
@@ -86,7 +100,7 @@ local default_cmdline = rawget(_G, "arg") or {}
 
 local known_args = {}
 
-(function()
+; (function()
     local i = 2
 
     while i <= #default_cmdline do
@@ -110,13 +124,19 @@ common.add_preproc_args(known_args.zoo, parser, 'object_detection')
 
 local args = parser:parse()
 
+if args.alias == nil then
+    help()
+    os.exit(1)
+end
+
 local MODELS_PATH = os.getenv('MODELS_PATH') or sysPath.join(__dirname__, 'models')
 
 local OPENCV_SAMPLES_DATA_PATH = opencv_lua.env.OPENCV_SAMPLES_DATA_PATH
 
-local PYTHON_VENV_PATH = os.getenv('PYTHON_VENV_PATH') or sysPath.join(opencv_lua.fs_utils.findFile("samples", opencv_lua.kwargs({
-    directory = __dirname__
-})), ".venv")
+local PYTHON_VENV_PATH = os.getenv('PYTHON_VENV_PATH') or
+    sysPath.join(opencv_lua.fs_utils.findFile("samples", opencv_lua.kwargs({
+        directory = __dirname__
+    })), ".venv")
 local PYTHONPATH = sysPath.join(sysPath.dirname(OPENCV_SAMPLES_DATA_PATH), "dnn")
 
 if package.config:sub(1, 1) == '\\' then
@@ -148,38 +168,72 @@ cv.samples.addSamplesDataSearchPath(MODELS_PATH)
 cv.samples.addSamplesDataSearchPath(__dirname__)
 cv.samples.addSamplesDataSearchPath(sysPath.join(OPENCV_SAMPLES_DATA_PATH, "dnn"))
 
-args.model = findFile(args.model)
-args.config = findFile(args.config)
-args.classes = findFile(args.classes)
+cv.utils.logging.setLogLevel(cv.utils.logging.LOG_LEVEL_INFO)
+args.model = findModel(args.model, args.sha1)
+if args.config ~= nil then
+    args.config = findModel(args.config, args.config_sha1)
+end
+if args.labels ~= nil then
+    args.labels = findFile(args.labels)
+end
 
 -- shared variables
 local capture_counter = 0
 local network_counter = 0
 local tick_init = 0
 local fps = common.FPS(60)
-local frame = cv.UMat()
+local frame = (function() if args.target == "cpu" then return cv.Mat() else return cv.UMat() end end)()
+local blob = frame.new()
 local input_fps = args.fps
 local future_outputs
 local winName = 'Deep learning object detection in OpenCV'
 
 -- Load names of classes
-local classes
-if args.classes then
-    local content = common.read_file(args.classes)
-    classes = {}
+local labels
+if args.labels then
+    local content = common.read_file(args.labels)
+    labels = {}
     for str in content:gmatch("([^\r\n]+)") do
-        classes[#classes + 1] = str
+        labels[#labels + 1] = str
     end
 end
 
 -- Load a network
-local net = cv.dnn.readNet(args.model, args.config, args.framework)
-net:setPreferableBackend(args.backend)
-net:setPreferableTarget(args.target)
+local engine = cv.dnn.ENGINE_AUTO
+if args.backend ~= "default" or args.target ~= "cpu" then
+    engine = cv.dnn.ENGINE_CLASSIC
+end
+local net = cv.dnn.readNet(args.model, args.config, "", engine)
+net:setPreferableBackend(get_backend_id(args.backend))
+net:setPreferableTarget(get_target_id(args.target))
+net:setProfilingMode(cv.dnn.DNN_PROFILE_SUMMARY)
 local outNames = net:getUnconnectedOutLayersNames()
 
 local confThreshold = args.thr
 local nmsThreshold = args.nms
+local stdSize = 0.8
+local stdWeight = 2
+local stdImgSize = 512
+
+local function get_color(class_id)
+    local r = math.min(
+        bit.band(bit.arshift(class_id, 0), 1) * 128 + bit.band(bit.arshift(class_id, 3), 1) * 64 +
+        bit.band(bit.arshift(class_id, 6), 1) * 32 + 80, 255)
+    local g = math.min(
+        bit.band(bit.arshift(class_id, 1), 1) * 128 + bit.band(bit.arshift(class_id, 4), 1) * 64 +
+        bit.band(bit.arshift(class_id, 7), 1) * 32 + 40, 255)
+    local b = math.min(
+        bit.band(bit.arshift(class_id, 2), 1) * 128 + bit.band(bit.arshift(class_id, 5), 1) * 64 +
+        bit.band(bit.arshift(class_id, 8), 1) * 32 + 40, 255)
+    return { b, g, r }
+end
+
+local function get_text_color(bg_color)
+    local luminance = 0.299 * bg_color[2 + INDEX_BASE] + 0.587 * bg_color[1 + INDEX_BASE] +
+        0.114 * bg_color[0 + INDEX_BASE]
+
+    return (function() if luminance > 128 then return { 0, 0, 0 } else return { 255, 255, 255 } end end)()
+end
 
 local UNSUPPORTED_YOLO_VERSION = 'Unsupported yolo version. Supported versions are v3, v4, v5, v6, v7, v8.'
 
@@ -206,56 +260,68 @@ local function resize_and_show(title, image)
 end
 
 
-local function drawPred(frame, classId, conf, left, top, right, bottom)
-    local fontScale = 0.8
-    local thickness = 2
+local function drawPred(frame, classIds, confidences, boxes, indices, fontSize, fontThickness)
+    for _, i in ipairs(indices) do
+        local box = boxes[i + INDEX_BASE]
+        local left = box[0 + INDEX_BASE]
+        local top = box[1 + INDEX_BASE]
+        local right = left + box[2 + INDEX_BASE]
+        local bottom = top + box[3 + INDEX_BASE]
 
-    -- Draw a bounding box.
-    cv.rectangle(frame, { left, top }, { right, bottom }, { 0, 255, 0 }, thickness)
+        local bg_color = get_color(classIds[i + INDEX_BASE])
 
-    local label = string.format('%.2f', conf)
+        -- Draw a bounding box.
+        cv.rectangle(frame, { left, top }, { right, bottom }, bg_color, fontThickness)
 
-    -- Print a label of class.
-    if classes then
-        assert(classId < #classes)
-        label = string.format('%s: %s', classes[classId + INDEX_BASE], label)
+        local label = string.format('%.2f', confidences[i + INDEX_BASE])
+
+        -- Print a label of class.
+        if labels then
+            assert(classIds[i + INDEX_BASE] < #labels)
+            label = string.format('%s: %s', labels[classIds[i + INDEX_BASE] + INDEX_BASE], label)
+        end
+
+        local labelSize, baseLine = cv.getTextSize(label, cv.FONT_HERSHEY_SIMPLEX, fontSize, fontThickness)
+        top = math.max(top, labelSize[1 + INDEX_BASE])
+        cv.rectangle(frame, { int(left - fontThickness / 2), top - labelSize[1 + INDEX_BASE] },
+            { left + labelSize[0 + INDEX_BASE], top + baseLine }, bg_color, cv.FILLED)
+        cv.putText(frame, label, { left, top - fontThickness }, cv.FONT_HERSHEY_SIMPLEX, fontSize,
+            get_text_color(bg_color), fontThickness)
     end
-
-    local labelSize, baseLine = cv.getTextSize(label, cv.FONT_HERSHEY_SIMPLEX, fontScale, thickness)
-    top = math.max(top, labelSize[1 + INDEX_BASE])
-    cv.rectangle(frame, { left, top - labelSize[1 + INDEX_BASE] }, { left + labelSize[0 + INDEX_BASE], top + baseLine },
-        { 255, 255, 255 }, cv.FILLED)
-    cv.putText(frame, label, { left, top }, cv.FONT_HERSHEY_SIMPLEX, fontScale, { 0, 0, 0 }, thickness)
 end
 
 
-local function yolo_object_detection_postprocess(box_scale_w, box_scale_h, out, classIds, confidences, boxes, offset)
-    for i, detection in pairs(out) do
-        if offset ~= 5 or args.background_label_id >= 0 or detection[4 + INDEX_BASE] > confThreshold then
-            local classId = common.argmax(common.slice(detection, offset + INDEX_BASE)) - INDEX_BASE
-            local confidence = detection[classId + offset + INDEX_BASE]
-            if confidence > confThreshold then
-                local center_x = detection[0 + INDEX_BASE] * box_scale_w
-                local center_y = detection[1 + INDEX_BASE] * box_scale_h
-                local width = int(detection[2 + INDEX_BASE] * box_scale_w)
-                local height = int(detection[3 + INDEX_BASE] * box_scale_h)
-                local left = int(center_x - width / 2)
-                local top = int(center_y - height / 2)
+local function postprocess_yolo(box_scale_w, box_scale_h, out, classIds, confidences, boxes)
+    for _, detection in pairs(out) do
+        local scores, obj_conf
 
-                classIds[#classIds + 1] = classId
-                confidences[#confidences + 1] = confidence
-                boxes[#boxes + 1] = { left, top, width, height }
-            end
+        if args.postprocessing == 'yolov8' then
+            scores = common.slice(detection, 4 + INDEX_BASE)
+            obj_conf = 1
+        else
+            scores = common.slice(detection, 5 + INDEX_BASE)
+            obj_conf = detection[4 + INDEX_BASE]
+        end
+
+        local classId = common.argmax(scores) - INDEX_BASE
+        local confidence = scores[classId + INDEX_BASE] * obj_conf
+        if confidence > confThreshold then
+            local center_x = detection[0 + INDEX_BASE] * box_scale_w
+            local center_y = detection[1 + INDEX_BASE] * box_scale_h
+            local width = int(detection[2 + INDEX_BASE] * box_scale_w)
+            local height = int(detection[3 + INDEX_BASE] * box_scale_h)
+            local left = int(center_x - width / 2)
+            local top = int(center_y - height / 2)
+
+            classIds[#classIds + 1] = classId
+            confidences[#confidences + 1] = confidence
+            boxes[#boxes + 1] = { left, top, width, height }
         end
     end
 end
 
 
 local function postprocess(frame, imgScale, inpWidth, inpHeight, outs)
-    local layerNames = net:getLayerNames()
-    local lastLayerId = net:getLayerId(layerNames[#layerNames])
-    local lastLayer = net:getLayer(lastLayerId)
-
     local startTime = os.clock()
 
     local classIds = {}
@@ -264,7 +330,7 @@ local function postprocess(frame, imgScale, inpWidth, inpHeight, outs)
 
     local box_scale_w, box_scale_h
 
-    if lastLayer.type == 'DetectionOutput' then
+    if args.postprocessing == 'ssd' then
         -- Network produces output blob with a shape 1x1xNx7 where N is a number of
         -- detections and an every detection is a vector of values
         -- [batchId, classId, confidence, left, top, right, bottom]
@@ -289,42 +355,97 @@ local function postprocess(frame, imgScale, inpWidth, inpHeight, outs)
                     local height = int(detection[6 + INDEX_BASE] * box_scale_h - top + 1)
 
                     local classId = int(detection[1 + INDEX_BASE])
-                    local skip_background = 0 <= args.background_label_id and args.background_label_id <= classId
+                    local skip_background_label = 0 <= args.background_label_id and args.background_label_id <= classId
 
-                    classIds[#classIds + 1] = skip_background and classId - 1 or classId
+                    classIds[#classIds + 1] = (function() if skip_background_label then return classId - 1 else return classId end end)()
                     confidences[#confidences + 1] = float(confidence)
                     boxes[#boxes + 1] = { left, top, width, height }
                 end
             end
         end
-    elseif lastLayer.type == 'Region' then
-        -- yolo v3, v4
+    elseif args.postprocessing == 'yolov4' or args.postprocessing == 'yolov3' then
+        -- # boxes[b,N,1,4]+confs[b,N,classes] (normalized) or boxes[b,N,4]+scores[b,N]+classIdx[b,N] (model-px)
+        if #outs == 3 and outs[0 + INDEX_BASE].dims == 3 and outs[0 + INDEX_BASE].sizes[2 + INDEX_BASE] == 4 then
+            -- absolute coordinate
+            box_scale_w = imgScale
+            box_scale_h = imgScale
 
-        -- relative coordinates
-        box_scale_w = inpWidth * imgScale
-        box_scale_h = inpHeight * imgScale
+            local boxesIndex = 1
+            local scoresIndex = 2
+            local classIdxIndex = 3
 
-        -- Network produces output blob with a shape NxC where N is a number of
-        -- detected objects and C is a number of classes + 4 where the first 4
-        -- numbers are [center_x, center_y, width, height]
-        for i = 1, #outs do
-            local out = outs[i]:table()
-            yolo_object_detection_postprocess(box_scale_w, box_scale_h, out, classIds, confidences, boxes, 5)
+            for i, outName in ipairs(outNames) do
+                if outName == "boxes" then
+                    boxesIndex = i
+                elseif outName == "scores" then
+                    scoresIndex = i
+                elseif outName == "class_idx" then
+                    classIdxIndex = i
+                else
+                    error('Unsupported outLayerName: ' .. outName)
+                end
+            end
+
+            local boxesArr = outs[boxesIndex]:table()[0 + INDEX_BASE]
+            local scoresArr = outs[scoresIndex]:table()[0 + INDEX_BASE]
+            local classIdxArr = outs[classIdxIndex]:table()[0 + INDEX_BASE]
+
+            for j = 1, #boxesArr do
+                local score = float(scoresArr[j])
+                if score > confThreshold then
+                    local x1 = boxesArr[j][0 + INDEX_BASE] * box_scale_w
+                    local y1 = boxesArr[j][1 + INDEX_BASE] * box_scale_h
+                    local x2 = boxesArr[j][2 + INDEX_BASE] * box_scale_w
+                    local y2 = boxesArr[j][3 + INDEX_BASE] * box_scale_h
+                    local left = int(x1)
+                    local top = int(y1)
+                    local width = int(x2 - x1)
+                    local height = int(y2 - y1)
+                    classIds[#classIds + 1] = int(classIdxArr[j])
+                    confidences[#confidences + 1] = score
+                    boxes[#boxes + 1] = { left, top, width, height }
+                end
+            end
+        elseif #outs == 2 and outs[0 + INDEX_BASE].dims == 4 and outs[0 + INDEX_BASE].sizes[#(outs[0 + INDEX_BASE].sizes) - 1 + INDEX_BASE] == 4 then
+            -- relative coordinates
+            box_scale_w = inpWidth * imgScale
+            box_scale_h = inpHeight * imgScale
+
+            local boxesMat = outs[0 + INDEX_BASE]
+            local confsMat = outs[1 + INDEX_BASE]
+            local numBoxes = int(boxesMat:total() / 4)
+            local boxesArr = boxesMat:reshape(1, numBoxes):table()
+            local confsArr = confsMat:reshape(1, numBoxes):table()
+
+            for j = 1, numBoxes do
+                local classId = common.argmax(confsArr[j]) - INDEX_BASE
+                local confidence = float(confsArr[j][classId + INDEX_BASE])
+                if confidence > confThreshold then
+                    local box = boxesArr[j]
+                    local left = int(box[0 + INDEX_BASE] * box_scale_w)
+                    local top = int(box[1 + INDEX_BASE] * box_scale_h)
+                    local width = int((box[2 + INDEX_BASE] - box[0 + INDEX_BASE]) * box_scale_w)
+                    local height = int((box[3 + INDEX_BASE] - box[1 + INDEX_BASE]) * box_scale_h)
+                    classIds[#classIds + 1] = classId
+                    confidences[#confidences + 1] = confidence
+                    boxes[#boxes + 1] = { left, top, width, height }
+                end
+            end
+        else
+            error('Unsupported YOLO ONNX output format')
         end
-    elseif lastLayer.type == "Identity" then
+    elseif args.postprocessing == 'yolov8' or args.postprocessing == 'yolov7' or args.postprocessing == 'yolov6' or args.postprocessing == 'yolov5' then
         for i = 1, #outs do
             local out = outs[i]:table()
-            local shape, offset
+            local shape
 
             shape = common.get_dims(out)
             if #shape ~= 3 then
-                print(UNSUPPORTED_YOLO_VERSION .. " #shape ~= 3")
-                os.exit(1)
+                error(UNSUPPORTED_YOLO_VERSION .. " #shape ~= 3")
             end
 
             if shape[1] ~= 1 then
-                print(UNSUPPORTED_YOLO_VERSION .. " shape[1] ~= 1")
-                os.exit(1)
+                error(UNSUPPORTED_YOLO_VERSION .. " shape[1] ~= 1")
             end
 
             out = out[0 + INDEX_BASE]
@@ -334,44 +455,35 @@ local function postprocess(frame, imgScale, inpWidth, inpHeight, outs)
             box_scale_w = imgScale
             box_scale_h = imgScale
 
-            if (shape[2] == #classes + 5) then
+            if shape[2] == #labels + 5 then
                 -- yolo v5, v6, v7 has an output of shape (batchSize, 25200, 85) (Num classes + box[x,y,w,h] + confidence[c])
-                offset = 5
-            elseif shape[1] == #classes + 4 then
+            elseif shape[1] == #labels + 4 then
                 -- yolo v8 has an output of shape (batchSize, 84,  8400) (Num classes + box[x,y,w,h])
-                offset = 4
                 out = cv.transpose(frame.createFromArray(out, cv.CV_32F)):table()
             else
-                print(UNSUPPORTED_YOLO_VERSION .. ' shape[1] ~= #classes + 4 && shape[2] != #classes + 5')
-                os.exit(1)
+                error(UNSUPPORTED_YOLO_VERSION .. ' shape[1] ~= #classes + 4 && shape[2] != #classes + 5')
             end
 
-            yolo_object_detection_postprocess(box_scale_w, box_scale_h, out, classIds, confidences, boxes, offset)
+            postprocess_yolo(box_scale_w, box_scale_h, out, classIds, confidences, boxes)
         end
     else
-        print('Unknown output layer type: ' .. lastLayer.type)
-        os.exit(1)
+        error('Unknown postprocessing method: ' .. args.postprocessing)
     end
 
     if capture_counter == 1 then
-        print(string.format('postprocess : %.3f s', os.clock() - startTime))
+        print(string.format('postprocess : %.6f s', os.clock() - startTime))
     end
 
     -- Perform non maximum suppression to eliminate redundant overlapping bounding boxes with lower confidences.
     local indices = cv.dnn.NMSBoxes(boxes, confidences, confThreshold, nmsThreshold)
 
-    for _, i in ipairs(indices) do
-        local box = boxes[i + INDEX_BASE]
-        local left = box[0 + INDEX_BASE]
-        local top = box[1 + INDEX_BASE]
-        local width = box[2 + INDEX_BASE]
-        local height = box[3 + INDEX_BASE]
-        drawPred(frame, classIds[i + INDEX_BASE], confidences[i + INDEX_BASE], left, top, left + width, top + height)
-    end
-
-    resize_and_show(winName, frame)
-
     network_counter = network_counter + 1
+
+    local fontSize = stdSize -- 0.3 * imgScale
+    local fontThickness = imgScale * 0.5  -- max(1, int(imgScale * 0.5))
+
+    drawPred(frame, classIds, confidences, boxes, indices, fontSize, fontThickness)
+    resize_and_show(winName, frame)
 end
 
 -- Process inputs
@@ -391,8 +503,10 @@ if not cap:isOpened() then
     os.exit(1)
 end
 
-local function process_frame(future_outputs, frame)
-    if args.async > 0 and args.async == #future_outputs then
+local function process_frame()
+    local async = args.async
+
+    if async > 0 and async == #future_outputs then
         -- Skip the frame
         return
     end
@@ -418,22 +532,23 @@ local function process_frame(future_outputs, frame)
     }))
 
     -- Create a 4D blob from a frame.
-    local blob = cv.dnn.blobFromImage(image, kwargs({
+    cv.dnn.blobFromImage(image, kwargs({
+        blob = blob,
+        scalefactor = args.scale,
+        mean = args.mean,
         size = { inpWidth, inpHeight },
         swapRB = args.rgb,
-        ddepth = cv.CV_8U,
+        ddepth = cv.CV_32F,
     }))
 
     -- Run a model
-    net:setInput(blob, kwargs({ scalefactor = args.scale, mean = args.mean }))
-    if net:getLayer(0):outputNameToIndex('im_info') ~= -1 then -- Faster-RCNN or R-FCN
-        net:setInput(frame.createFromArray({ { inpHeight, inpWidth, 1.6 } }, cv.CV_32F), 'im_info')
-    end
+    net:setInput(blob)
 
-    if args.async > 0 and args.backend == cv.dnn.DNN_BACKEND_INFERENCE_ENGINE then
+    if async > 0 and args.backend == cv.dnn.DNN_BACKEND_INFERENCE_ENGINE then
         future_outputs[#future_outputs + 1] = { net:forwardAsync(), frame, inpWidth, inpHeight, imgScale }
     else
         local outs = net:forward(outNames)
+        -- net:printPerfProfile()
         postprocess(frame, imgScale, inpWidth, inpHeight, outs)
     end
 
@@ -448,7 +563,7 @@ local function process_frame(future_outputs, frame)
 end
 
 local function read_frame()
-    local expected, capture_fps, network_fps, label
+    local expected, capture_fps, network_fps
 
     if capture_counter == 0 then
         future_outputs = {}
@@ -483,9 +598,11 @@ local function read_frame()
 
         -- compute delay before starting read to honor input_fps
         local delay = 1
-        expected = input_fps * elapsed
-        if expected < capture_counter then
-            delay = math.max(1, int(1000 * (capture_counter - expected) / input_fps))
+        if input_fps > 0 then
+            expected = input_fps * elapsed
+            if expected < capture_counter then
+                delay = math.max(1, int(1000 * (capture_counter - expected) / input_fps))
+            end
         end
 
         -- Wait until user press some key
@@ -513,17 +630,29 @@ local function read_frame()
 
     -- Put efficiency information.
     if capture_counter ~= 0 then
-        label = string.format('Capture: %.2f/%.2f FPS', capture_fps, input_fps)
-        cv.putText(frame, label, { 0, 15 }, cv.FONT_HERSHEY_SIMPLEX, 0.5, { 0, 255, 0 })
+        local fontSize = stdSize / 2 -- 0.3 * imgScale / 2
+        local fontThickness = 1      -- max(1, int(imgScale * 0.5))
 
-        label = string.format('Network: %.2f/%.2f FPS', network_fps, input_fps)
-        cv.putText(frame, label, { 0, 30 }, cv.FONT_HERSHEY_SIMPLEX, 0.5, { 0, 255, 0 })
 
-        label = string.format('Instant: %.2f/%.2f FPS', fps:compute(), input_fps)
-        cv.putText(frame, label, { 0, 45 }, cv.FONT_HERSHEY_SIMPLEX, 0.5, { 0, 255, 0 })
+        local label = string.format('Skipped frames: %d', 1000)
+        local labelSize, baseLine = cv.getTextSize(label, cv.FONT_HERSHEY_SIMPLEX, fontSize, fontThickness)
+
+        cv.rectangle(frame, { 0, 0 }, { labelSize[0 + INDEX_BASE] + int(5 * fontSize), 5 * (labelSize[1 + INDEX_BASE]) }, { 255, 255, 255 }, cv.FILLED)
+
+        label = string.format('Capture: %.2f', capture_fps)
+        cv.putText(frame, label, { 0, int(25 * fontSize) }, cv.FONT_HERSHEY_SIMPLEX, fontSize, { 0, 0, 0 }, fontThickness)
+
+        label = string.format('Network: %.2f', network_fps)
+        cv.putText(frame, label, { 0, int(2 * 25 * fontSize) }, cv.FONT_HERSHEY_SIMPLEX, fontSize, { 0, 0, 0 }, fontThickness)
+
+        label = string.format('Instant: %.2f', fps:compute())
+        cv.putText(frame, label, { 0, int(3 * 25 * fontSize) }, cv.FONT_HERSHEY_SIMPLEX, fontSize, { 0, 0, 0 }, fontThickness)
+
+        label = string.format('FPS:     %.2f', input_fps)
+        cv.putText(frame, label, { 0, int(4 * 25 * fontSize) }, cv.FONT_HERSHEY_SIMPLEX, fontSize, { 0, 0, 0 }, fontThickness)
 
         label = string.format('Skipped frames: %d', (capture_counter - network_counter))
-        cv.putText(frame, label, { 0, 60 }, cv.FONT_HERSHEY_SIMPLEX, 0.5, { 0, 255, 0 })
+        cv.putText(frame, label, { 0, int(5 * 25 * fontSize) }, cv.FONT_HERSHEY_SIMPLEX, fontSize, { 0, 0, 0 }, fontThickness)
     end
 
     capture_counter = capture_counter + 1
@@ -534,7 +663,7 @@ local function read_frame()
         return true
     end
 
-    process_frame(future_outputs, frame)
+    process_frame()
     return true
 end
 

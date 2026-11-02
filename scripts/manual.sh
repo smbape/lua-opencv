@@ -7,8 +7,9 @@
 #   - check changes in modules/core/include/opencv2/core/hal/interface.h
 #   - check changes in modules/core/include/opencv2/core/mat.hpp
 #   - check changes in python, *.py
-#   - check DOCKER_IMAGE change in https://github.com/opencv/opencv-python/blob/4.x/.github/workflows/build_wheels_manylinux.yml and update tasks.sh DOCKER_IMAGE_MANY_LINUX_x86_64 DOCKER_IMAGE_MANY_LINUX_aarch64
-#   - check "OS-specific components during CI builds" change in https://github.com/opencv/opencv-python/blob/4.x/setup.py
+#   - check DOCKER_IMAGE change in https://github.com/opencv/opencv-python/blob/5.x/.github/workflows/build_wheels_manylinux.yml and update tasks.sh DOCKER_IMAGE_MANY_LINUX_x86_64 DOCKER_IMAGE_MANY_LINUX_aarch64
+#   - check changes in https://github.com/opencv/opencv_contrib/blob/5.x/modules/gapi/misc/python/pyopencv_gapi.hpp
+#   - check "OS-specific components during CI builds" change in https://github.com/opencv/opencv-python/blob/5.x/setup.py
 
 
 # ================================

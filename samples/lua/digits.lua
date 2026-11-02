@@ -5,7 +5,7 @@ package.path = arg[0]:gsub("[^/\\]+%.lua", '?.lua;'):gsub('/', package.config:su
 
 --[[
 Sources:
-    https://github.com/opencv/opencv/blob/4.14.0/samples/python/digits.py
+    https://github.com/opencv/opencv_contrib/blob/5.0.0/modules/ml/samples/python/digits.py
 --]]
 
 local __doc__ = [[
@@ -35,11 +35,10 @@ local opencv_lua = require("init")
 local cv = opencv_lua.cv
 local INDEX_BASE = 1 -- lua is 1-based indexed
 local common = require("common")
-local class, clock, mosaic = common.class, common.clock, common.mosaic
+local class, mosaic = common.class, common.mosaic
 local unpack = table.unpack or unpack ---@diagnostic disable-line: deprecated
 local bit = bit or opencv_lua.bit ---@diagnostic disable-line: undefined-global
 local int = opencv_lua.math.int
-local inspect = require("inspect")
 
 local SZ = 20 -- size of each digit is SZ x SZ
 local CLASS_N = 10

@@ -53,7 +53,7 @@ namespace {
 		}
 
 		if (lua_istable(L, 2)) {
-			using Variant = cv::util::variant<int, cv::Range>;
+			using Variant = std::variant<int, cv::Range>;
 
 			auto idx_holder = lua_to(L, 2, static_cast<std::vector<Variant>*>(nullptr), is_valid);
 			if (is_valid) {
@@ -71,10 +71,10 @@ namespace {
 				auto j = 0;
 
 				for (const auto& v : idx) {
-					if (cv::util::holds_alternative<int>(v)) {
-						indexes[i++] = cv::util::get<int>(v);
+					if (std::holds_alternative<int>(v)) {
+						indexes[i++] = std::get<int>(v);
 					} else {
-						ranges[j++] = cv::util::get<cv::Range>(v);
+						ranges[j++] = std::get<cv::Range>(v);
 					}
 				}
 
@@ -114,7 +114,7 @@ namespace {
 		}
 
 		if (lua_istable(L, 2)) {
-			auto idx_holder = lua_to(L, 2, static_cast<std::vector<cv::util::variant<int, cv::Range>>*>(nullptr), is_valid);
+			auto idx_holder = lua_to(L, 2, static_cast<std::vector<std::variant<int, cv::Range>>*>(nullptr), is_valid);
 			if (is_valid) {
 				auto self = lua_to(L, 1, static_cast<cv::Mat*>(nullptr), is_valid);
 				if (!is_valid || !self || lua_isnil(L, 1)) {
@@ -134,10 +134,10 @@ namespace {
 				auto j = 0;
 
 				for (const auto& v : idx) {
-					if (cv::util::holds_alternative<int>(v)) {
-						indexes[i++] = cv::util::get<int>(v);
+					if (std::holds_alternative<int>(v)) {
+						indexes[i++] = std::get<int>(v);
 					} else {
-						ranges[j++] = cv::util::get<cv::Range>(v);
+						ranges[j++] = std::get<cv::Range>(v);
 					}
 				}
 
@@ -193,7 +193,7 @@ namespace {
 
 		auto size = lua_gettop(L) - 1;
 
-		static std::vector<cv::util::variant<int, cv::Range>> idx; idx.resize(size);
+		static std::vector<std::variant<int, cv::Range>> idx; idx.resize(size);
 		static std::vector<int> indexes; indexes.resize(size);
 		static std::vector<cv::Range> ranges; ranges.resize(size);
 
@@ -216,7 +216,7 @@ namespace {
 				continue;
 			}
 
-			return luaL_typeerror(L, i + 2, "cv::util::variant<int, cv::Range>");
+			return luaL_typeerror(L, i + 2, "std::variant<int, cv::Range>");
 		}
 
 		if (!has_range) {

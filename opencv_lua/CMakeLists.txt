@@ -1,29 +1,30 @@
 cmake_minimum_required(VERSION 3.25)
 
-set(VERSION_REG "[0-9]+\\.[0-9]+\\.[0-9]+([+-][0-9a-zA-Z.+-]+)?")
+set(VERSION_REG "[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9]+)?")
 
 # ================================================================
-# bit.lua
+# lua files
 # ================================================================
-function(opencv_write_bit_lua)
-    set(opencv_GENERATED_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/generated")
-    file(READ "${CMAKE_SOURCE_DIR}/src/lua/bit.lua" _new_bit_string)
+function(embed_lua_file filename)
+    set(allegro5_GENERATED_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/generated")
+    file(READ "${CMAKE_SOURCE_DIR}/src/lua/${filename}.lua" _new_${filename}_string)
 
-    set(_new_bit_string "R\"cdata(${_new_bit_string})cdata\"")
-    set(bit_lua_FILE "${opencv_GENERATED_INCLUDE_DIR}/bit_string.lua.inc")
+    set(_new_${filename}_string "R\"cdata(${_new_${filename}_string})cdata\"")
+    set(${filename}_lua_FILE "${allegro5_GENERATED_INCLUDE_DIR}/${filename}_string.lua.inc")
 
-    if(EXISTS "${bit_lua_FILE}")
-        file(READ "${bit_lua_FILE}" _old_bit_string)
+    if(EXISTS "${${filename}_lua_FILE}")
+        file(READ "${${filename}_lua_FILE}" _old_${filename}_string)
     else()
-        set(_old_bit_string "")
+        set(_old_${filename}_string "")
     endif()
 
-    if(NOT (_old_bit_string STREQUAL _new_bit_string))
-        file(WRITE "${bit_lua_FILE}" "${_new_bit_string}")
+    if(NOT (_old_${filename}_string STREQUAL _new_${filename}_string))
+        file(WRITE "${${filename}_lua_FILE}" "${_new_${filename}_string}")
     endif()
 endfunction()
 
-opencv_write_bit_lua()
+embed_lua_file("bit")
+embed_lua_file("cdata_utils")
 # ================================================================
 
 # ===============
@@ -123,6 +124,7 @@ target_compile_definitions(${target_name} PRIVATE
 )
 
 target_include_directories(${target_name} PRIVATE
+    "${CMAKE_SOURCE_DIR}/src/contrib"
     "${CMAKE_SOURCE_DIR}/src/include"
     "${CMAKE_SOURCE_DIR}/src"
     "${CMAKE_SOURCE_DIR}/generated"
@@ -166,7 +168,10 @@ add_custom_target(${target_name}_precompiled_header DEPENDS ${target_PRECOMPILED
 add_dependencies(${target_name} ${target_name}_precompiled_header)
 # ========================================================================
 
-target_link_libraries(${target_name} PRIVATE ${LUA_LIBRARIES})
+# On Linux it does not link to Lua: the interpreter provides the symbols.
+if (WIN32)
+    target_link_libraries(${target_name} PRIVATE ${LUA_LIBRARIES})
+endif()
 target_include_directories(${target_name} PRIVATE ${LUA_INCLUDE_DIR})
 
 if (DEFINED OpenCV_DEPENDENCIES)
@@ -199,14 +204,6 @@ endif()
 
 if(WITH_CUDA AND MSVC AND "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     target_link_options(${target_name} PRIVATE "/INCREMENTAL:NO")
-endif()
-
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    if (APPLE)
-        target_link_options(${target_name} PRIVATE "-Wl,-undefined,error")
-    else()
-        target_link_options(${target_name} PRIVATE "-Wl,--no-undefined")
-    endif()
 endif()
 
 # /Zc:__cplusplus is required to make __cplusplus accurate
@@ -288,16 +285,20 @@ export(EXPORT ${TARGET_EXPORT_NAME}
     FILE "${CMAKE_CURRENT_BINARY_DIR}/${TARGET_EXPORT_NAME}.cmake"
 )
 
-if (UNIX AND Qt5_DIR)
-    unset(Qt5_PLUGINS_DIR)
-    if (EXISTS "${Qt5_DIR}/../../../plugins")
-        set(Qt5_PLUGINS_DIR "${Qt5_DIR}/../../../plugins")
-    elseif (EXISTS "${Qt5_DIR}/../../qt5/plugins")
-        set(Qt5_PLUGINS_DIR "${Qt5_DIR}/../../qt5/plugins")
-    endif()
-    if (Qt5_PLUGINS_DIR)
-        install(FILES "${Qt5_PLUGINS_DIR}/platforms/libqxcb.so" DESTINATION "${LIBRAY_DESTINATION}/${target_name}/qt/plugins/platforms")
-    endif()
+if (UNIX AND WITH_QT)
+    foreach(Qt_VERSION IN ITEMS 5 6)
+        if (WITH_QT EQUAL ${Qt_VERSION} AND DEFINED Qt${Qt_VERSION}_DIR)
+            unset(Qt${Qt_VERSION}_PLUGINS_DIR)
+            if (EXISTS "${Qt${Qt_VERSION}_DIR}/../../../plugins")
+                set(Qt${Qt_VERSION}_PLUGINS_DIR "${Qt${Qt_VERSION}_DIR}/../../../plugins")
+            elseif (EXISTS "${Qt${Qt_VERSION}_DIR}/../../qt${Qt_VERSION}/plugins")
+                set(Qt${Qt_VERSION}_PLUGINS_DIR "${Qt${Qt_VERSION}_DIR}/../../qt${Qt_VERSION}/plugins")
+            endif()
+            if (Qt${Qt_VERSION}_PLUGINS_DIR)
+                install(FILES "${Qt${Qt_VERSION}_PLUGINS_DIR}/platforms/libqxcb.so" DESTINATION "${LIBRAY_DESTINATION}/${target_name}/qt/plugins/platforms")
+            endif()
+        endif()
+    endforeach()
 
     if (NOT APPLE)
         if (WITH_QT)
@@ -309,7 +310,7 @@ if (UNIX AND Qt5_DIR)
         find_path(DEJAVU_FONT
             NAMES DejaVuSans.ttf
             PATHS /usr/share/fonts
-            PATH_SUFFIXES dejavu truetype/dejavu
+            PATH_SUFFIXES dejavu truetype/dejavu dejavu-sans-fonts
             NO_DEFAULT_PATH
             NO_PACKAGE_ROOT_PATH
             NO_CMAKE_PATH
@@ -335,7 +336,7 @@ if (WIN32)
     endif()
     set(ffmpeg_dir "${OpenCV_BINARY_DIR}/3rdparty/ffmpeg")
     set(ffmpeg_bare_name "opencv_videoio_ffmpeg${FFMPEG_SUFFIX}.dll")
-    set(ffmpeg_bare_name_ver "opencv_videoio_ffmpeg${OPENCV_DLLVERSION}${FFMPEG_SUFFIX}.dll")
+    set(ffmpeg_bare_name_ver "opencv_videoio_ffmpeg${OpenCV_DLLVERSION}${FFMPEG_SUFFIX}.dll")
     set(ffmpeg_path "${ffmpeg_dir}/${ffmpeg_bare_name}")
     install(FILES "${ffmpeg_path}" DESTINATION "${LIBRAY_DESTINATION}/${target_name}" RENAME "${ffmpeg_bare_name_ver}")
 endif()
@@ -355,8 +356,11 @@ if (WITH_LUA_ROCKS)
     install(SCRIPT "export_targets_repair.cmake")
 endif()
 
-
-option(ENABLE_REPAIR "Repair installed library to ease distribution" OFF)
+set(DEFAULT_ENABLE_REPAIR OFF)
+if (WITH_LUA_ROCKS AND WIN32)
+    set(DEFAULT_ENABLE_REPAIR ON)
+endif()
+option(ENABLE_REPAIR "Repair installed library to ease distribution" ${DEFAULT_ENABLE_REPAIR})
 
 if (ENABLE_REPAIR)
     if (WIN32)
@@ -374,7 +378,10 @@ if (ENABLE_REPAIR)
             "${CMAKE_SOURCE_DIR}/src/include"
         )
 
-        target_link_libraries(${target_name}_loader PRIVATE ${LUA_LIBRARIES})
+        # On Linux it does not link to Lua: the interpreter provides the symbols.
+        if (WIN32)
+            target_link_libraries(${target_name}_loader PRIVATE ${LUA_LIBRARIES})
+        endif()
         target_include_directories(${target_name}_loader PRIVATE ${LUA_INCLUDE_DIR})
 
         install(TARGETS ${target_name}_loader

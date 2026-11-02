@@ -42,8 +42,8 @@ The procedure has been tested on :
 
 ## Prerequisites
 
-  - Install [CUDA Toolkit 13.2.1](https://developer.nvidia.com/cuda-13-2-1-download-archive?target_os=Linux&target_arch=x86_64)
-  - Download [cuDNN 9.23.2](https://developer.nvidia.com/cudnn-9-23-2-download-archive?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=24.04&target_type=deb_local&Configuration=Full) compatible with the **CUDA Toolkit** version you installed.
+  - Install [CUDA Toolkit 13.3.1](https://developer.nvidia.com/cuda-13-3-1-download-archive?target_os=Linux&target_arch=x86_64)
+  - Download [cuDNN 9.25.1](https://developer.nvidia.com/cudnn-9-25-1-download-archive?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=26.04&target_type=deb_local&Configuration=Full) compatible with the **CUDA Toolkit** version you installed.
   - Download [NVIDIA Video Codec SDK](https://developer.nvidia.com/video-codec-sdk) and extract the contents of the `Interface` and `Lib/linux/stubs/x86_64` directories inside the `include` and `lib64` directories of the **CUDA Toolkit** directory.
   - Install [CMake >= 3.25](https://cmake.org/download/)
   - Install [LuaRocks](https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Unix)
@@ -78,8 +78,8 @@ sudo dnf install -y almalinux-release-devel epel-release && \
 sudo dnf install -y https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm
 sudo dnf install -y https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-8.noarch.rpm && \
 sudo dnf update -y && \
-sudo dnf install -y ffmpeg-devel gcc-toolset-12-gcc gcc-toolset-12-gcc-c++ lapack-devel libdc1394-devel openblas-devel patchelf python3.12-pip && \
-source /opt/rh/gcc-toolset-12/enable
+sudo dnf install -y ffmpeg-devel gcc-toolset-14-gcc gcc-toolset-14-gcc-c++ lapack-devel libdc1394-devel openblas-devel patchelf python3.12-pip && \
+source /opt/rh/gcc-toolset-14/enable
 ```
 
 ### [Almalinux 9, 10] Install needed packages:
@@ -124,7 +124,7 @@ sudo apt install -y freetype-devel harfbuzz-devel
 ## Download the source code
 
 ```sh
-git clone --depth 1 --branch v4.14.0-1 https://github.com/smbape/lua-opencv.git /io/luarocks-binaries-custom/lua-opencv && \
+git clone --depth 1 --branch v5.0.0-1 https://github.com/smbape/lua-opencv.git /io/luarocks-binaries-custom/lua-opencv && \
 cd /io/luarocks-binaries-custom/build && \
 npm ci
 ```
@@ -170,7 +170,7 @@ export PATH="/io/luarocks-binaries-custom/lua-opencv/out/prepublish/build/opencv
 ### Initialize our test project and install our custom prebuilt binary
 
 ```sh
-git clone --depth 1 --branch 4.14.0 https://github.com/opencv/opencv_extra.git /io/luarocks-binaries-custom/opencv_extra && \
+git clone --depth 1 --branch 5.0.0 https://github.com/opencv/opencv_extra.git /io/luarocks-binaries-custom/opencv_extra && \
 mkdir -p /io/luarocks-binaries-custom/test/lua-opencv && \
 cd /io/luarocks-binaries-custom/test/lua-opencv && \
 luarocks --lua-version 5.1 init --lua-versions "5.1,5.2,5.3,5.4,5.5" && \
@@ -255,9 +255,9 @@ Execute the test-opencv.lua script
 ### Test CUDA
 
 ```sh
-git clone --depth 1 --branch 4.14.0 https://github.com/opencv/opencv.git /io/luarocks-binaries-custom/opencv && \
+git clone --depth 1 --branch 5.0.0 https://github.com/opencv/opencv.git /io/luarocks-binaries-custom/opencv && \
 ./luarocks install --deps-only /io/luarocks-binaries-custom/lua-opencv/samples/samples-scm-1.rockspec && \
-./lua /io/luarocks-binaries-custom/lua-opencv/samples/dnn/object_detection/object_detection.lua ssd_tf --input Megamind.avi --backend 5 --target 6
+./lua /io/luarocks-binaries-custom/lua-opencv/samples/dnn/object_detection/object_detection.lua ssd_tf --input Megamind.avi --backend cuda --target cuda --fps=-1
 ```
 
 ## Hosting on a web server

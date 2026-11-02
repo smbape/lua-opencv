@@ -2,7 +2,7 @@
 # https://askubuntu.com/a/865294
 cmake_minimum_required(VERSION 3.25)
 
-project(luajit LANGUAGES C CXX ASM)
+project(luajit LANGUAGES C CXX)
 
 if(MSVC AND NOT (CMAKE_GENERATOR STREQUAL "Ninja"))
     add_compile_options(/MP)

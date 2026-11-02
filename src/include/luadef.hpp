@@ -32,6 +32,12 @@
 #include <variant>
 #include <vector>
 
+/* From luajit-src/src/lj_obj.h */
+/* More external and GCobj tags for internal objects. */
+#define LAST_TT		LUA_TTHREAD
+#define LUA_TPROTO	(LAST_TT+1)
+#define LUA_TCDATA	(LAST_TT+2)
+
 #if (LUA_VERSION_NUM == 501) && !(defined lua_rawlen)
 #define lua_rawlen lua_objlen
 #endif
@@ -93,11 +99,17 @@ extern int luaL_typeerror(lua_State* L, int arg, const char* tname);
 #error "LUA_MODULE_LIB_VERSION must be defined"
 #endif
 
-#define _LUA_TOKEN_CONCAT(A, B) A ## B
-#define LUA_TOKEN_CONCAT(A, B) _LUA_TOKEN_CONCAT(A, B)
+#define _LUA_TOKEN_CONCAT(ARG0, ARG1) ARG0 ## ARG1
+#define LUA_TOKEN_CONCAT(ARG0, ARG1) _LUA_TOKEN_CONCAT(ARG0, ARG1)
 
-#define _LUA_TOKEN_STR(A) #A
-#define LUA_TOKEN_STR(A) _LUA_TOKEN_STR(A)
+#define _LUA_TOKEN_CONCAT_3(ARG0, ARG1, ARG2) ARG0 ## ARG1 ## ARG2
+#define LUA_TOKEN_CONCAT_3(ARG0, ARG1, ARG2) _LUA_TOKEN_CONCAT_3(ARG0, ARG1, ARG2)
+
+#define _LUA_TOKEN_CONCAT_4(ARG0, ARG1, ARG2, ARG3) ARG0 ## ARG1 ## ARG2 ## ARG3
+#define LUA_TOKEN_CONCAT_4(ARG0, ARG1, ARG2, ARG3) _LUA_TOKEN_CONCAT_4(ARG0, ARG1, ARG2, ARG3)
+
+#define _LUA_TOKEN_STR(ARG0) #ARG0
+#define LUA_TOKEN_STR(ARG0) _LUA_TOKEN_STR(ARG0)
 
 #define LUA_MODULE_LUAOPEN LUA_TOKEN_CONCAT(luaopen_, LUA_MODULE_NAME)
 #define LUA_MODULE_LUAOPEN_STR LUA_TOKEN_STR(LUA_MODULE_LUAOPEN)

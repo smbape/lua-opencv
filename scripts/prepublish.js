@@ -146,11 +146,12 @@ const prepublish = (target, version, options, next) => {
                         rockspec = rockspec.replaceAll("opencv_lua", name);
                     }
 
-                    if (!keepSource) {
+                    if (!keepSource || name.endsWith("-contrib")) {
+                        const cmake_rock_args = keepSource && name.endsWith("-contrib") ? ["BUILD_contrib = \"ON\""] : cmake_build_args;
                         const iend = rockspec.indexOf("LUA_INCDIR");
                         const istart = rockspec.lastIndexOf("\n", iend) + 1;
                         const indent = " ".repeat(iend - istart);
-                        rockspec = rockspec.replace("LUA_INCDIR = \"$(LUA_INCDIR)\",", `LUA_INCDIR = "$(LUA_INCDIR)",\n${ indent }${ cmake_build_args.join(`,\n${ indent }`) },`);
+                        rockspec = rockspec.replace("LUA_INCDIR = \"$(LUA_INCDIR)\",", `LUA_INCDIR = "$(LUA_INCDIR)",\n${ indent }${ cmake_rock_args.join(`,\n${ indent }`) },`);
                     }
 
                     await fs.writeFile(scmRockSpec, rockspec);
