@@ -67,7 +67,7 @@ In this example, we will use the following directories:
 ## Download the source code
 
 ```sh
-git clone --depth 1 --branch v4.14.0-1 https://github.com/smbape/lua-opencv.git /d/luarocks-binaries-custom/lua-opencv && \
+git clone --depth 1 --branch v5.0.0-1 https://github.com/smbape/lua-opencv.git /d/luarocks-binaries-custom/lua-opencv && \
 cd /d/luarocks-binaries-custom/lua-opencv && \
 npm ci
 ```
