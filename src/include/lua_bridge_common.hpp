@@ -238,17 +238,16 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<std::size_t I, typename... _Ts>
-	inline bool check_metatable(lua_State* L, int luaopen_index, const void* mt_pointer) {
+	inline bool check_metatable(lua_State* L, LuaStateContext& context, const void* mt_pointer) {
 		using _Tuple = typename std::tuple<_Ts...>;
 		using T = std::tuple_element_t<I, _Tuple>;
 
-		const auto& expected_pointer = usertype_metatable_pointer<T>(luaopen_index);
-		if (mt_pointer == expected_pointer) {
+		if (mt_pointer == context.get_metatable_pointer<T>()) {
 			return true;
 		}
 
 		if constexpr (I + 1 != sizeof...(_Ts)) {
-			return check_metatable<I + 1, _Ts...>(L, luaopen_index, mt_pointer);
+			return check_metatable<I + 1, _Ts...>(L, context, mt_pointer);
 		}
 		else {
 			return false;
@@ -261,8 +260,8 @@ namespace LUA_MODULE_NAME {
 			return false;
 		}
 
-		const auto& mt_pointer = lua_topointer(L, -1);
-		bool is_valid = check_metatable<0, T, _Ts...>(L, get_luaopen_index(L), mt_pointer);
+		auto mt_pointer = lua_topointer(L, -1);
+		bool is_valid = check_metatable<0, T, _Ts...>(L, *get_context_from_upvalue(L), mt_pointer);
 		lua_pop(L, 1);
 		return is_valid;
 	}
@@ -274,12 +273,6 @@ namespace LUA_MODULE_NAME {
 			return std::shared_ptr<T>();
 		}
 		return *static_cast<std::shared_ptr<T>*>(lua_touserdata(L, index));
-	}
-
-	template<typename T>
-	inline void usertype_push_metatable(lua_State* L) {
-		thread_local const auto ref = usertype_metatable_ref<T>(get_luaopen_index(L));
-		lua_rawgeti(L, LUA_REGISTRYINDEX, ref);
 	}
 
 
@@ -337,37 +330,37 @@ namespace LUA_MODULE_NAME {
 	// T[]
 	// ================================
 
+	template<typename T, size_t __sizeof>
+	bool runtime_register_class(lua_State* L) {
+		if (get_context_from_registry(L)->is_registered<T>()) {
+			return true;
+		}
+
+		lua_newtable(L);
+		lua_register_class<T>(L, internal::GetTypeName<T>());
+		lua_register_defaults<T>(L);
+
+		{
+			lua_pushstring(L, internal::GetTypeName<T>());
+			lua_rawget(L, -2); // cls = module[name]
+
+			// For ffi purpose
+			lua_pushliteral(L, "__sizeof");
+			lua_push(L, __sizeof);
+			lua_rawset(L, -3);
+
+			lua_pop(L, 1);
+		}
+
+		lua_pop(L, 1);
+
+		return true;
+	}
+
 	template<typename T>
 	void PointerArray<T>::register_class(lua_State* L) {
 		thread_local bool registered = [L]() {
-			bool registered;
-			{
-				std::unique_lock lock(usertype_info<PointerArray<T>>::mutex);
-				const auto index = get_luaopen_index(L);
-				const auto size = usertype_info<PointerArray<T>>::metatable_pointers.size();
-				registered = index < size && usertype_info<PointerArray<T>>::metatable_refs.at(index) != LUA_REFNIL;
-			}
-
-			if (!registered) {
-				lua_newtable(L);
-				lua_register_class<PointerArray<T>>(L, internal::GetTypeName<PointerArray<T>>());
-				lua_register_defaults<PointerArray<T>>(L);
-
-				{
-					lua_pushstring(L, internal::GetTypeName<PointerArray<T>>());
-					lua_rawget(L, -2); // cls = module[name]
-
-					// For ffi purpose
-					lua_pushliteral(L, "__sizeof");
-					lua_push(L, sizeof(T*));
-					lua_rawset(L, -3);
-
-					lua_pop(L, 1);
-				}
-
-				lua_pop(L, 1);
-			}
-			return true;
+			return runtime_register_class<PointerArray<T>, sizeof(T*)>(L);
 		}();
 	}
 
@@ -576,12 +569,6 @@ namespace LUA_MODULE_NAME {
 
 	template<typename T>
 	std::mutex usertype_info<PointerArray<T>>::mutex;
-
-	template<typename T>
-	std::vector<const void*> usertype_info<PointerArray<T>>::metatable_pointers;
-
-	template<typename T>
-	std::vector<int> usertype_info<PointerArray<T>>::metatable_refs;
 
 	template<typename T>
 	const struct luaL_Reg usertype_info<PointerArray<T>>::methods[] = {
@@ -797,10 +784,10 @@ namespace LUA_MODULE_NAME {
 		}
 
 		using SharedPtr = std::shared_ptr<T>;
-		auto userdata_ptr = static_cast<SharedPtr*>(lua_newuserdata(L, sizeof(SharedPtr)));
+		auto userdata_ptr = static_cast<SharedPtr*>(lua_compat_newuserdata(L, sizeof(SharedPtr)));
 		new(userdata_ptr) SharedPtr(ptr); // userdata = new std::shared_ptr<T>(ptr)
 
-		usertype_push_metatable<T>(L);
+		get_context_from_upvalue(L)->push_metatable<T>(L);
 		lua_setmetatable(L, -2);
 	}
 
@@ -823,9 +810,7 @@ namespace LUA_MODULE_NAME {
 			return;
 		}
 
-		if (index < 0) {
-			index += lua_gettop(L) + 1;
-		}
+		index = lua_absindex(L, index);
 
 		out.clear();
 
@@ -875,9 +860,7 @@ namespace LUA_MODULE_NAME {
 			return lua_userdata_to(L, index, ptr, is_valid);
 		}
 
-		if (index < 0) {
-			index += lua_gettop(L) + 1;
-		}
+		index = lua_absindex(L, index);
 
 		auto out = std::make_shared<Container<K, V, _Ts...>>();
 		lua_to(L, index, *out, is_valid);
@@ -1055,9 +1038,7 @@ namespace LUA_MODULE_NAME {
 			return out;
 		}
 
-		if (index < 0) {
-			index += lua_gettop(L) + 1;
-		}
+		index = lua_absindex(L, index);
 
 		for (auto i = 1; is_valid && i <= size; ++i) {
 			lua_pushnumber(L, i);
@@ -1134,9 +1115,7 @@ namespace LUA_MODULE_NAME {
 			return out;
 		}
 
-		if (index < 0) {
-			index += lua_gettop(L) + 1;
-		}
+		index = lua_absindex(L, index);
 
 		_lua_to(L, index, *out, is_valid);
 		return out;
@@ -1243,9 +1222,7 @@ namespace LUA_MODULE_NAME {
 			return;
 		}
 
-		if (index < 0) {
-			index += lua_gettop(L) + 1;
-		}
+		index = lua_absindex(L, index);
 
 		auto size = lua_rawlen(L, index);
 
@@ -1711,19 +1688,19 @@ namespace LUA_MODULE_NAME {
 
 	template<template<typename...> typename Container, typename... _Ts>
 	inline int _stl_container__ipairs(lua_State* L, Container<_Ts...>& conaitner) {
-		lua_pushcclosure(L, _stl_container__ipairs_iter<Container, _Ts...>, 0);
+		lua_module_push_cfunction(L, _stl_container__ipairs_iter<Container, _Ts...>);
 		lua_reference_push(L, conaitner);
 		lua_push(L, -1);
 		return 3;
 	}
 
 	template<std::size_t I, typename... _Ts>
-	void lua_inherit(lua_State* L, int index) {
+	void lua_inherit(lua_State* L, int index, LuaStateContext& context) {
 		using _Tuple = typename std::tuple<_Ts...>;
 		using T = std::tuple_element_t<I, _Tuple>;
 
 		if constexpr (is_usertype_v<T>) {
-			usertype_push_metatable<T>(L);
+			context.push_metatable<T>(L);;
 			int parent = lua_gettop(L);
 
 			// https://www.lua.org/manual/5.1/manual.html#lua_next
@@ -1755,38 +1732,24 @@ namespace LUA_MODULE_NAME {
 		}
 
 		if constexpr (I != sizeof...(_Ts) - 1) {
-			lua_inherit<I + 1, _Ts...>(L, index);
+			lua_inherit<I + 1, _Ts...>(L, index, context);
 		}
 	}
 
 	template<typename T, typename... _Ts>
 	void lua_inherit(lua_State* L) {
 		if constexpr (sizeof...(_Ts) != 0) {
-			usertype_push_metatable<T>(L);
+			auto context = get_context_from_registry(L);
+			context->push_metatable<T>(L);
 			const auto index = lua_gettop(L);
-			lua_inherit<0, _Ts...>(L, index);
+			lua_inherit<0, _Ts...>(L, index, *context);
 			lua_pop(L, 1);
-		}
-	}
-
-	inline void lua_defaults_pushfuncs(lua_State* L, const luaL_Reg* l) {
-		for (; l->name; l++) {
-			lua_pushstring(L, l->name);
-			lua_rawget(L, -2);
-			bool exists = !lua_isnil(L, -1);
-			lua_pop(L, 1);
-
-			if (!exists) {
-				lua_pushstring(L, l->name);
-				lua_pushcclosure(L, l->func, 0);
-				lua_rawset(L, -3);
-			}
 		}
 	}
 
 	template<typename T>
 	inline void lua_register_defaults(lua_State* L) {
-		usertype_push_metatable<T>(L);
+		get_context_from_registry(L)->push_metatable<T>(L);;
 
 		// ================================================================
 		// https://github.com/ThePhD/sol2/blob/v3.3.0/include/sol/types.hpp#L907
@@ -1800,7 +1763,7 @@ namespace LUA_MODULE_NAME {
 				{"__tostring", oss_default_to_string<T>},
 				{NULL, NULL} // Sentinel
 			};
-			lua_defaults_pushfuncs(L, lua_tostring_methods);
+			lua_module_setfuncs_if_not_exists(L, lua_tostring_methods);
 		}
 
 		// meta::supports_to_string_member<meta::unqualified_t<T>>
@@ -1814,7 +1777,7 @@ namespace LUA_MODULE_NAME {
 				{"__tostring", member_default_to_string<T>},
 				{NULL, NULL} // Sentinel
 			};
-			lua_defaults_pushfuncs(L, lua_tostring_methods);
+			lua_module_setfuncs_if_not_exists(L, lua_tostring_methods);
 		}
 
 		// meta::supports_adl_to_string<meta::unqualified_t<T>>
@@ -1827,7 +1790,7 @@ namespace LUA_MODULE_NAME {
 				{"__tostring", adl_default_to_string<T>},
 				{NULL, NULL} // Sentinel
 			};
-			lua_defaults_pushfuncs(L, lua_tostring_methods);
+			lua_module_setfuncs_if_not_exists(L, lua_tostring_methods);
 		}
 
 		// FIXME : how to use this method only if parent __tostring is not a usertype_default_to_string
@@ -1836,7 +1799,7 @@ namespace LUA_MODULE_NAME {
 				{"__tostring", usertype_default_to_string<T>},
 				{NULL, NULL} // Sentinel
 			};
-			lua_defaults_pushfuncs(L, lua_tostring_methods);
+			lua_module_setfuncs_if_not_exists(L, lua_tostring_methods);
 		}
 
 		if constexpr (requires(lua_State * L, int index, bool& is_valid) { usertype_info<T>::lua_userdata_to(L, index, is_valid); }) {
@@ -1848,7 +1811,7 @@ namespace LUA_MODULE_NAME {
 				{"isinstance", lua_method_isinstance<T>},
 				{NULL, NULL} // Sentinel
 			};
-			lua_defaults_pushfuncs(L, lua_instance_misc_methods);
+			lua_module_setfuncs_if_not_exists(L, lua_instance_misc_methods);
 		}
 
 		lua_pop(L, 1);
@@ -1891,25 +1854,20 @@ namespace LUA_MODULE_NAME {
 		}
 
 		// class registered methods
-		lua_pushfuncs(L, usertype_info<T>::methods);
+		lua_module_setfuncs(L, usertype_info<T>::methods);
 
 		// metatable = {}
 		lua_newtable(L);
 
-		lua_pushfuncs(L, usertype_info<T>::meta_methods);
+		lua_module_setfuncs(L, usertype_info<T>::meta_methods);
 
 		// setmetatable(cls, metatable)
 		lua_setmetatable(L, -2);
 
-		std::unique_lock lock(usertype_info<T>::mutex);
-		const auto index = get_luaopen_index(L);
-		const auto size = usertype_info<T>::metatable_pointers.size();
-		if (index >= size) {
-			usertype_info<T>::metatable_pointers.resize(index + 1, nullptr);
-			usertype_info<T>::metatable_refs.resize(index + 1, LUA_REFNIL);
-		}
-		usertype_info<T>::metatable_pointers.at(index) = lua_topointer(L, -1);
-		usertype_info<T>::metatable_refs.at(index) = luaL_ref(L, LUA_REGISTRYINDEX);
+		auto ptr = lua_topointer(L, -1);
+		auto ref = luaL_ref(L, LUA_REGISTRYINDEX);
+		auto context = get_context_from_registry(L);
+		context->register_class<T>(ptr, ref);
 	}
 
 	template<std::same_as<const char*> T, std::size_t N>

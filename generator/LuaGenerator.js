@@ -2663,25 +2663,23 @@ class LuaGenerator {
 
                 if (descendants.length > 20) {
                     lines.push(...`
-                        const auto luaopen_index = get_luaopen_index(L);
+                        auto context = get_context_from_upvalue(L);
                         thread_local std::unordered_set<const void*> metatable_pointers = {
-                            ${ descendants.map(descendant => `usertype_metatable_pointer<${ descendant }>(luaopen_index)`).join(`,\n${ " ".repeat(28) }`) }
+                            ${ descendants.map(descendant => `context->get_metatable_pointer<${ descendant }>()`).join(`,\n${ " ".repeat(28) }`) }
                         };
 
                         is_valid = metatable_pointers.contains(mt_pointer);
                     `.replace(/^ {24}/mg, "").trim().split("\n"));
                 } else {
                     lines.push(...`
-                        const auto luaopen_index = get_luaopen_index(L);
+                        auto context = get_context_from_upvalue(L);
 
-                        is_valid = ${ descendants.map(descendant => `mt_pointer == usertype_metatable_pointer<${ descendant }>(luaopen_index)`).join(` ||\n${ " ".repeat(4) }`) };
+                        is_valid = ${ descendants.map(descendant => `mt_pointer == context->get_metatable_pointer<${ descendant }>()`).join(` ||\n${ " ".repeat(4) }`) };
                     `.replace(/^ {24}/mg, "").trim().split("\n"));
                 }
 
                 const decl = `
                     static std::mutex mutex;
-                    static std::vector<const void*> metatable_pointers;
-                    static std::vector<int> metatable_refs;
                     static const struct luaL_Reg* methods;
                     static const struct luaL_Reg* meta_methods;
                     static std::shared_ptr<${ fqn }> lua_userdata_to(lua_State* L, int index, bool& is_valid);
@@ -2691,8 +2689,6 @@ class LuaGenerator {
 
                 const impl = `
                     std::mutex usertype_info<${ fqn }>::mutex;
-                    std::vector<const void*> usertype_info<${ fqn }>::metatable_pointers;
-                    std::vector<int> usertype_info<${ fqn }>::metatable_refs;
                     const struct luaL_Reg* usertype_info<${ fqn }>::methods = ::methods;
                     const struct luaL_Reg* usertype_info<${ fqn }>::meta_methods = ::meta_methods;
 
@@ -2812,7 +2808,7 @@ class LuaGenerator {
                 }
 
                 contentRegister.push(`
-                    lua_pushfuncs(L, methods);
+                    lua_module_setfuncs(L, methods);
 
                     // push static class metatable
                     if (!lua_getmetatable(L, -1)) {
@@ -2826,7 +2822,7 @@ class LuaGenerator {
                         lua_getmetatable(L, -1);
                     }
 
-                    lua_pushfuncs(L, meta_methods);
+                    lua_module_setfuncs(L, meta_methods);
                 `.replace(/^ {20}/mg, "").trim());
 
                 if (path.length !== 0) {
@@ -3023,7 +3019,7 @@ class LuaGenerator {
                 sysPath.join(options.output, "lua_generated_pch.hpp"),
                 [
                     "#pragma once\n",
-                    "#include <registration.hpp>",
+                    "#include <lua_bridge.hpp>",
                 ].join("\n").trim().replace(/[^\S\n]+$/mg, "")
             );
         }

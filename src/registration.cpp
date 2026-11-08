@@ -1,4 +1,4 @@
-#include <registration.hpp>
+#include <lua_bridge.hpp>
 #include <bit.hpp>
 
 namespace {
@@ -113,7 +113,7 @@ namespace {
 
 		lua_pushliteral(L, "math");
 		lua_newtable(L);
-		lua_pushfuncs(L, funcs);
+		luaL_setfuncs(L, funcs, 0);
 		lua_rawset(L, -3);
 	}
 
@@ -172,7 +172,7 @@ namespace {
 
 		lua_pushliteral(L, "string");
 		lua_newtable(L);
-		lua_pushfuncs(L, funcs);
+		luaL_setfuncs(L, funcs, 0);
 		lua_rawset(L, -3);
 	}
 }

@@ -1,4 +1,4 @@
-#include <registration.hpp>
+#include <lua_bridge.hpp>
 
 namespace {
 	using namespace LUA_MODULE_NAME;
@@ -19,13 +19,24 @@ namespace {
 			if (!lua_istable(L, 1)) {
 				return luaL_typeerror(L, 1, "table");
 			}
+
+			if (check_metatable<Keywords>(L, 1)) {
+				lua_pushvalue(L, 1);
+				return 1;
+			}
+
+			if (lua_getmetatable(L, 1)) {
+				lua_pop(L, 1);
+				return luaL_argerror(L, 1, "table already has a metatable");
+			}
+
 			lua_pushvalue(L, 1);
 		}
 		else {
 			return luaL_error(L, "0 or 1 table argument expected, got %d", vargc);
 		}
 
-		usertype_push_metatable<Keywords>(L);
+		get_context_from_upvalue(L)->push_metatable<Keywords>(L);
 		lua_setmetatable(L, -2);
 		return 1;
 	}
@@ -84,8 +95,6 @@ namespace {
 
 namespace LUA_MODULE_NAME {
 	std::mutex usertype_info<Keywords>::mutex;
-	std::vector<const void*> usertype_info<Keywords>::metatable_pointers;
-	std::vector<int> usertype_info<Keywords>::metatable_refs;
 
 	bool usertype_info<Keywords>::lua_userdata_is(lua_State* L, int index) {
 		return lua_istable(L, index) && check_metatable<Keywords>(L, index);
@@ -106,9 +115,7 @@ namespace LUA_MODULE_NAME {
 	};
 
 	void Keywords::push(lua_State* L, int index, const char* key) {
-		if (index < 0) {
-			index += lua_gettop(L) + 1;
-		}
+		index = lua_absindex(L, index);
 		lua_pushstring(L, key);
 		lua_rawget(L, index);
 	}

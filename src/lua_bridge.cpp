@@ -241,9 +241,7 @@ namespace {
 
 	void extend_Mat(lua_State* L) {
 		lua_rawget_create_if_nil(L, -1, { "cv", "Mat" });
-
-		lua_pushfuncs(L, extended_methods);
-
+		lua_module_setfuncs(L, extended_methods);
 		lua_pop(L, 1);
 	}
 }

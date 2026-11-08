@@ -22,9 +22,7 @@ namespace {
 			return nullptr;
 		}
 
-		if (index < 0) {
-			index += lua_gettop(L) + 1;
-		}
+		index = lua_absindex(L, index);
 
 		is_valid = false;
 
@@ -53,7 +51,7 @@ namespace {
 		lua_settop(L, top);
 		return reinterpret_cast<void*>(ptr);
 
-		invalid:
+	invalid:
 		if (top < lua_gettop(L)) {
 			lua_settop(L, top);
 		}
@@ -64,9 +62,7 @@ namespace {
 	void* lua_self_pointer(lua_State* L, int index, bool& is_valid) {
 		void* ptr = nullptr;
 
-		if (index < 0) {
-			index += lua_gettop(L) + 1;
-		}
+		index = lua_absindex(L, index);
 
 		is_valid = (lua_isuserdata(L, index) || lua_istable(L, index)) && lua_getmetatable(L, index); // push metatable
 		if (!is_valid) {
@@ -198,6 +194,56 @@ namespace LUA_MODULE_NAME {
 	// misc functions
 	// ================================
 
+	void lua_module_push_cfunction(lua_State* L, lua_CFunction fn) {
+		lua_module_push_context(L); // push upvalue
+		lua_pushcclosure(L, fn, 1); // push c function with upvalue
+	}
+
+	void lua_module_setfuncs(lua_State* L, const luaL_Reg* l) {
+		auto tbl = lua_gettop(L);
+		lua_module_push_context(L); // push upvalue
+		auto nup = lua_gettop(L) - tbl;
+
+		for (; l->name != nullptr; ++l) {  /* fill the table with given functions */
+			lua_pushstring(L, l->name);
+			for (int i = 0; i < nup; ++i) {  /* copy upvalues to the top */
+				lua_pushvalue(L, -(nup + 1));
+			}
+			lua_pushcclosure(L, l->func, nup);  /* closure with those upvalues */
+			lua_rawset(L, -(nup + 3));
+		}
+
+		if (nup > 0) {
+			lua_pop(L, nup);  /* remove upvalues */
+		}
+	}
+
+	void lua_module_setfuncs_if_not_exists(lua_State* L, const luaL_Reg* l) {
+		auto tbl = lua_gettop(L);
+		lua_module_push_context(L); // push upvalue
+		auto nup = lua_gettop(L) - tbl;
+
+		for (; l->name != nullptr; ++l) {  /* fill the table with given functions */
+			lua_pushstring(L, l->name);
+			lua_rawget(L, tbl);
+			bool exists = !lua_isnil(L, -1);
+			lua_pop(L, 1);
+
+			if (!exists) {
+				lua_pushstring(L, l->name);
+				for (int i = 0; i < nup; ++i) {  /* copy upvalues to the top */
+					lua_pushvalue(L, -nup);
+				}
+				lua_pushcclosure(L, l->func, nup);  /* closure with those upvalues */
+				lua_rawset(L, -(nup + 3));
+			}
+		}
+
+		if (nup > 0) {
+			lua_pop(L, nup);  /* remove upvalues */
+		}
+	}
+
 	int try_mt__index(lua_State* L) {
 		if (lua_getmetatable(L, 1)) {
 			lua_pushvalue(L, 2); // push the key
@@ -236,9 +282,14 @@ namespace LUA_MODULE_NAME {
 			return is_valid;
 		}
 
-		if (index < 0) {
-			index += lua_gettop(L) + 1;
+		if (lua_getmetatable(L, index)) {
+			// table already has a metatable
+			lua_pop(L, 1);
+			is_valid = false;
+			return is_valid;
 		}
+
+		index = lua_absindex(L, index);
 
 		lua_newtable(L);
 		// stack now contains: -1 => kwargs
@@ -279,7 +330,7 @@ namespace LUA_MODULE_NAME {
 		}
 
 		if (is_valid) {
-			usertype_push_metatable<Keywords>(L);
+			get_context_from_upvalue(L)->push_metatable<Keywords>(L);
 			lua_setmetatable(L, -2);
 		}
 		else {
@@ -325,7 +376,7 @@ namespace {
 			{ "yield", yield },
 			{ NULL, NULL }
 		};
-		lua_pushfuncs(L, callbacks_funcs);
+		lua_module_setfuncs(L, callbacks_funcs);
 
 		// we make the assumption that there will be only one lua_open_* call per thread
 		// the thread call lua_open_* must have the lock
@@ -365,7 +416,7 @@ namespace {
 		lua_rawset(L, -3);
 	}
 
-	int luaB_createtable(lua_State *L) {
+	int luaB_createtable(lua_State* L) {
 		auto vargc = lua_gettop(L);
 
 		if (vargc > 2) {
@@ -392,7 +443,7 @@ namespace {
 
 		lua_createtable(L, narr, nrec);
 		return 1;
-	
+
 	}
 
 	void register_CreateTable(lua_State* L) {
@@ -402,7 +453,7 @@ namespace {
 	}
 
 	template<typename T>
-	int _generic__gc(lua_State* L) {
+	int _shared_ptr__gc(lua_State* L) {
 		using SharedPtr = std::shared_ptr<T>;
 		auto userdata_ptr = static_cast<SharedPtr*>(lua_touserdata(L, 1));
 		userdata_ptr->~SharedPtr();
@@ -412,12 +463,12 @@ namespace {
 	void gil_mutex_create_and_push(lua_State* L) {
 		lua_pushliteral(L, LUA_GIL_MUTEX_UNIQUE_NAME);
 
-		auto gil_mutex = static_cast<std::shared_ptr<std::mutex>*>(lua_newuserdata(L, sizeof(std::shared_ptr<std::mutex>)));
+		auto gil_mutex = static_cast<std::shared_ptr<std::mutex>*>(lua_compat_newuserdata(L, sizeof(std::shared_ptr<std::mutex>)));
 		new(gil_mutex) std::shared_ptr<std::mutex>(std::make_shared<std::mutex>()); // userdata = new std::mutex()
 
 		lua_newtable(L);
 		lua_pushstring(L, "__gc");
-		lua_pushcfunction(L, _generic__gc<std::mutex>);
+		lua_pushcfunction(L, _shared_ptr__gc<std::mutex>);
 		lua_rawset(L, -3);
 
 		lua_setmetatable(L, -2);
@@ -428,11 +479,11 @@ namespace {
 	}
 
 	void lua_push_this_thread_id_key(lua_State* L) {
-		thread_local std::string thread_id_key = [] () {
+		thread_local std::string thread_id_key = []() {
 			std::ostringstream id_key(LUA_GIL_LOCK_UNIQUE_NAME);
 			id_key << std::this_thread::get_id();
 			return id_key.str();
-		} ();
+			} ();
 		lua_pushlstring(L, thread_id_key.c_str(), thread_id_key.size());
 	}
 
@@ -444,15 +495,15 @@ namespace {
 	void gil_create_and_push(lua_State* L, std::shared_ptr<std::mutex> gil_mutex) {
 		lua_push_this_thread_id_key(L);
 
-		auto gil_holder = static_cast<std::shared_ptr<GilHolder>*>(lua_newuserdata(L, sizeof(std::shared_ptr<GilHolder>)));
+		auto gil_holder = static_cast<std::shared_ptr<GilHolder>*>(lua_compat_newuserdata(L, sizeof(std::shared_ptr<GilHolder>)));
 		new(gil_holder) std::shared_ptr<GilHolder>(std::make_shared<GilHolder>(GilHolder{
 			.gil = std::make_shared<std::unique_lock<std::mutex>>(*gil_mutex, std::defer_lock),
 			.gil_mutex = gil_mutex
-		}));
+			}));
 
 		lua_newtable(L);
 		lua_pushstring(L, "__gc");
-		lua_pushcfunction(L, _generic__gc<GilHolder>);
+		lua_pushcfunction(L, _shared_ptr__gc<GilHolder>);
 		lua_rawset(L, -3);
 
 		lua_setmetatable(L, -2);
@@ -479,12 +530,12 @@ namespace {
 	void condition_variable_create_and_push(lua_State* L) {
 		lua_pushliteral(L, LUA_CONDITION_VARIABLE_UNIQUE_NAME);
 
-		auto cv = static_cast<std::shared_ptr<std::condition_variable>*>(lua_newuserdata(L, sizeof(std::shared_ptr<std::condition_variable>)));
+		auto cv = static_cast<std::shared_ptr<std::condition_variable>*>(lua_compat_newuserdata(L, sizeof(std::shared_ptr<std::condition_variable>)));
 		new(cv) std::shared_ptr<std::condition_variable>(std::make_shared<std::condition_variable>()); // userdata = new std::condition_variable()
 
 		lua_newtable(L);
 		lua_pushstring(L, "__gc");
-		lua_pushcfunction(L, _generic__gc<std::condition_variable>);
+		lua_pushcfunction(L, _shared_ptr__gc<std::condition_variable>);
 		lua_rawset(L, -3);
 
 		lua_setmetatable(L, -2);
@@ -540,6 +591,24 @@ namespace {
 	bool is_yielding(lua_State* L) {
 		return get_yielding_counter(L) != 0;
 	}
+
+	const char kContextKey[] = "module.context";
+
+	void create_context(lua_State* L) {
+		using T = LuaStateContext;
+		using SharedPtr = std::shared_ptr<T>;
+
+		auto context = static_cast<SharedPtr*>(lua_compat_newuserdata(L, sizeof(SharedPtr)));
+		new(context) SharedPtr(std::make_shared<T>()); // userdata = new T()
+
+		lua_newtable(L);
+		lua_pushstring(L, "__gc");
+		lua_pushcfunction(L, _shared_ptr__gc<T>);
+		lua_rawset(L, -3);
+
+		lua_setmetatable(L, -2);
+		lua_rawsetp(L, LUA_REGISTRYINDEX, &kContextKey);
+	}
 }
 
 namespace LUA_MODULE_NAME {
@@ -556,6 +625,7 @@ namespace LUA_MODULE_NAME {
 	}
 
 	void register_Common(lua_State* L) {
+		create_context(L);
 		register_LuaOpenIndex(L);
 		register_Keywords(L);
 		register_Callbacks(L);
@@ -666,6 +736,28 @@ namespace LUA_MODULE_NAME {
 		}
 	}
 
+	std::mutex LuaStateContext::mutex;
+	unsigned short LuaStateContext::g_class_id = 0;
+
+	void lua_module_push_context(lua_State* L) {
+		lua_rawgetp(L, LUA_REGISTRYINDEX, &kContextKey);
+	}
+
+	std::shared_ptr<LuaStateContext> get_context_from_registry(lua_State* L) {
+		lua_module_push_context(L);
+		if (lua_isnil(L, -1)) {
+			return std::shared_ptr<LuaStateContext>();
+		}
+
+		auto context = static_cast<std::shared_ptr<LuaStateContext>*>(lua_touserdata(L, -1));
+		lua_pop(L, 1);
+		return *context;
+	}
+
+	std::shared_ptr<LuaStateContext> get_context_from_upvalue(lua_State* L) {
+		return *static_cast<std::shared_ptr<LuaStateContext>*>(lua_touserdata(L, lua_upvalueindex(1)));
+	}
+
 	int yield(lua_State* L) {
 		auto vargc = lua_gettop(L);
 
@@ -753,7 +845,7 @@ LUAAPI(int) LUA_MODULE_LUAOPEN_cdata_utils(lua_State* L) {
 	const char cdata_utils_filename[] = "<built-in>/" LUA_MODULE_NAME_STR "/cdata_utils.lua";
 	const char cdata_utils_string[] =
 #include "cdata_utils_string.lua.inc"
-	;
+		;
 
 	auto top = lua_gettop(L);
 

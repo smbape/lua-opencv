@@ -3,6 +3,7 @@
 // CV_EXPORTS_W : include this file in lua_generated_include
 
 #include <lua.hpp>
+#include <lua_compat.hpp>
 
 #include <algorithm>
 #include <array>
@@ -37,22 +38,6 @@
 #define LAST_TT		LUA_TTHREAD
 #define LUA_TPROTO	(LAST_TT+1)
 #define LUA_TCDATA	(LAST_TT+2)
-
-#if (LUA_VERSION_NUM == 501) && !(defined lua_rawlen)
-#define lua_rawlen lua_objlen
-#endif
-
-inline void lua_pushfuncs(lua_State *L, const luaL_Reg *l) {
-	for (; l->name; l++) {
-		lua_pushstring(L, l->name);
-		lua_pushcclosure(L, l->func, 0);
-		lua_rawset(L, -3);
-	}
-}
-
-#if LUA_VERSION_NUM < 504
-extern int luaL_typeerror(lua_State* L, int arg, const char* tname);
-#endif
 
 
 #if defined _WIN32

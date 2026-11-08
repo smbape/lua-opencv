@@ -379,10 +379,10 @@ const impl = `
 
         template<typename Array, bool is_arrays_type>
         _OptionalArray<Array, is_arrays_type>::_OptionalArray(lua_State* L, int index, bool& is_valid, const bool nd_mat) {
-            thread_local const auto luaopen_index = get_luaopen_index(L);
+            auto context = get_context_from_upvalue(L);
             thread_local std::unordered_map<const void*, int> metatable_pointers = {
-                { usertype_info<Array>::metatable_pointers.at(luaopen_index), 0 },
-                ${ types.filter(type => !luaTypes.test(type)).map((type, i) => `{ usertype_info<${ type }>::metatable_pointers.at(luaopen_index), ${ i + 1 } }`).join(`,\n${ " ".repeat(16) }`) }
+                { context->get_metatable_pointer<Array>(), 0 },
+                ${ types.filter(type => !luaTypes.test(type)).map((type, i) => `{ context->get_metatable_pointer<${ type }>(), ${ i + 1 } }`).join(`,\n${ " ".repeat(16) }`) }
             };
 
             if (lua_isnil(L, index)) {

@@ -1,4 +1,4 @@
-#include <registration.hpp>
+#include <lua_bridge.hpp>
 
 template< class T >
 using cv_depth_bind_t = std::conditional_t<!std::is_same_v<T, cv::hfloat> && !std::is_same_v<T, cv::bfloat>, T, float>;

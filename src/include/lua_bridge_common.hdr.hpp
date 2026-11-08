@@ -202,86 +202,58 @@ namespace LUA_MODULE_NAME {
 
 
 	// ================================
-	// thread safe map
+	// LuaStateContext struct
 	// ================================
 
-	template<typename K, typename V>
-	class ThreadSafeMap {
-	public:
-		ThreadSafeMap() = default;
-
-		// Only one thread/writer can write the value_map_.
-		void insert_or_assign(K key, const V& value) {
-			std::unique_lock lock(mutex_);
-			value_map_.insert_or_assign(key, value);
-		}
-
-		// Multiple threads/readers can read the value_map_ at the same time.
-		auto get(K key) const {
-			std::shared_lock lock(mutex_);
-			if (auto search = value_map_.find(key); search != value_map_.end()) {
-				return &search->second;
-			}
-			using Map = decltype(value_map_);
-			return static_cast<const typename Map::mapped_type*>(nullptr);
-		}
-
-		// Multiple threads/readers can read the value_map_ at the same time.
-		bool contains(K key) const {
-			std::shared_lock lock(mutex_);
-			return value_map_.find(key) != value_map_.end();
-		}
-
-		// Multiple threads/readers can read the value_map_ at the same time.
-		bool contains(K key, const V& value) const {
-			std::shared_lock lock(mutex_);
-			auto search = value_map_.find(key);
-			return search != value_map_.end() && search->second == value;
-		}
-
-	private:
-		mutable std::shared_mutex mutex_;
-		std::unordered_map<K, V> value_map_{};
+	struct MetatableInfo {
+		const void* ptr = nullptr;
+		int ref = LUA_REFNIL;
 	};
 
-
-	// ================================
-	// thread safe set map
-	// ================================
-
-	template<typename K, typename V>
-	class ThreadSafeSetMap {
+	class LuaStateContext {
 	public:
-		ThreadSafeSetMap() = default;
-
-		// Only one thread/writer can write the value_map_.
-		void insert(K key, const V& value) {
-			using Map = decltype(value_map_);
-			std::unique_lock lock(mutex_);
-			auto [it, success] = value_map_.insert({ key, {} });
-			it->second.insert(value);
+		template<typename T>
+		void register_class(const void* ptr, int ref) {
+			get_info<T>() = { ptr, ref };
 		}
 
-		// Multiple threads/readers can read the value_map_ at the same time.
-		auto get(K key) const {
-			std::shared_lock lock(mutex_);
-			if (auto search = value_map_.find(key); search != value_map_.end()) {
-				return &search->second;
-			}
-			using Map = decltype(value_map_);
-			return static_cast<const typename Map::mapped_type*>(nullptr);
+		template<typename T>
+		const void* get_metatable_pointer() {
+			return get_info<T>().ptr;
 		}
 
-		// Multiple threads/readers can read the value_map_ at the same time.
-		bool contains(K key) const {
-			std::shared_lock lock(mutex_);
-			return value_map_.find(key) != value_map_.end();
+		template<typename T>
+		void push_metatable(lua_State* L) {
+			lua_rawgeti(L, LUA_REGISTRYINDEX, get_info<T>().ref);
 		}
 
+		template<typename T>
+		MetatableInfo& get_info() {
+			static auto class_id = [this] () {
+				std::unique_lock lock(mutex);
+				if (g_class_id >= classes.size()) {
+					classes.resize(g_class_id + 1);
+				}
+				return g_class_id++;
+			} ();
+			return classes.at(class_id);
+		}
+
+		template<typename T>
+		bool is_registered() {
+			return get_info<T>().ref != LUA_REFNIL;
+		}
 	private:
-		mutable std::shared_mutex mutex_;
-		std::unordered_map<K, std::unordered_set<V>> value_map_{};
+		static std::mutex mutex;
+		static unsigned short g_class_id;
+
+		// pre allocate 512 placeholders for classes
+		std::vector<MetatableInfo> classes{512};
 	};
+
+	void lua_module_push_context(lua_State* L);
+	std::shared_ptr<LuaStateContext> get_context_from_registry(lua_State* L);
+	std::shared_ptr<LuaStateContext> get_context_from_upvalue(lua_State* L);
 
 
 	// ================================
@@ -624,9 +596,7 @@ namespace LUA_MODULE_NAME {
 	using Object = _Object<0>;
 	template<>
 	inline bool lua_is_object<0>(lua_State* L, int index, Object*) {
-		if (index < 0) {
-			index += lua_gettop(L) + 1;
-		}
+		index = lua_absindex(L, index);
 		return lua_gettop(L) >= index;
 	}
 
@@ -680,22 +650,6 @@ namespace LUA_MODULE_NAME {
 	}
 
 	// ================================
-	// templated: lua_to, lua_push
-	// ================================
-
-	template<typename T>
-	inline auto usertype_metatable_pointer(const int luaopen_index) {
-		std::unique_lock lock(usertype_info<T>::mutex);
-		return usertype_info<T>::metatable_pointers.at(luaopen_index);
-	}
-
-	template<typename T>
-	inline auto usertype_metatable_ref(const int luaopen_index) {
-		std::unique_lock lock(usertype_info<T>::mutex);
-		return usertype_info<T>::metatable_refs.at(luaopen_index);
-	}
-
-	// ================================
 	// T
 	// ================================
 
@@ -724,6 +678,9 @@ namespace LUA_MODULE_NAME {
 	// ================================
 	// T[]
 	// ================================
+
+	template<typename T, size_t __sizeof>
+	bool runtime_register_class(lua_State* L);
 
 	template<typename T>
 	struct PointerArray {
@@ -755,8 +712,6 @@ namespace LUA_MODULE_NAME {
 	template<typename T>
 	struct usertype_info<PointerArray<T>> {
 		static std::mutex mutex;
-		static std::vector<const void*> metatable_pointers;
-		static std::vector<int> metatable_refs;
 		static const struct luaL_Reg methods[];
 		static const struct luaL_Reg meta_methods[];
 		static std::shared_ptr<PointerArray<T>> lua_userdata_to(lua_State* L, int index, bool& is_valid);
@@ -1021,6 +976,12 @@ namespace LUA_MODULE_NAME {
 	template<typename T, typename... _Ts>
 	inline void lua_register_class(lua_State* L, const char* name);
 
+	void lua_module_push_cfunction(lua_State *L, lua_CFunction fn);
+
+	void lua_module_setfuncs(lua_State *L, const luaL_Reg *l);
+
+	void lua_module_setfuncs_if_not_exists(lua_State* L, const luaL_Reg* l);
+
 	template<typename T>
 	inline void lua_register_defaults(lua_State* L);
 
@@ -1051,3 +1012,5 @@ namespace LUA_MODULE_NAME {
 
 	// ================================
 }
+
+LUAAPI(int) LUA_MODULE_LUAOPEN(lua_State* L);

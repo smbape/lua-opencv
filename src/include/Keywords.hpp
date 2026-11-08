@@ -17,8 +17,6 @@ namespace LUA_MODULE_NAME {
 	template <>
 	struct usertype_info<Keywords> {
 		static std::mutex mutex;
-		static std::vector<const void*> metatable_pointers;
-		static std::vector<int> metatable_refs;
 		static const struct luaL_Reg methods[];
 		static const struct luaL_Reg meta_methods[];
 		static bool lua_userdata_is(lua_State* L, int index);

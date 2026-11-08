@@ -195,7 +195,7 @@ int LUA_MODULE_NAME::luaopen_bit(lua_State* L)
 			msg = "arithmetic right-shift broken";
 		luaL_error(L, "bit library self-test failed (%s)", msg);
 	}
-	lua_pushfuncs(L, bit_funcs);
+	luaL_setfuncs(L, bit_funcs, 0);
 	return 1;
 }
 
