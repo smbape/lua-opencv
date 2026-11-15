@@ -4,7 +4,7 @@ namespace cvextra {
 	using namespace LUA_MODULE_NAME;
 
 	template<typename T>
-	inline void Mat_newindex_at(lua_State* L, cv::Mat& self, const T& index, const Table& array) {
+	void Mat_newindex_at(lua_State* L, cv::Mat& self, const T& index, const Table& array) {
 		const cv::Mat value = createMatFromArray(L, array, self.depth());
 		Mat_newindex_at(L, self, index, value);
 	}
@@ -92,7 +92,7 @@ namespace {
 	}
 
 	template<typename T>
-	inline int Lua_newindex_at(lua_State* L) {
+	int Lua_newindex_at(lua_State* L) {
 		bool is_valid;
 
 		{
@@ -327,7 +327,7 @@ namespace {
 namespace {
 #ifdef _MSC_VER
 	template <typename char_type>
-	inline bool null_or_empty(const char_type* s) {
+	bool null_or_empty(const char_type* s) {
 		return s == nullptr || *s == 0;
 	}
 
@@ -410,43 +410,6 @@ namespace {
 	}
 }
 #endif
-
-namespace LUA_MODULE_NAME {
-	template<typename T>
-	std::shared_ptr<T> exported_lua_to(lua_State* L, int index, T* ptr, bool& is_valid) {
-		return lua_to(L, index, ptr, is_valid);
-	}
-
-	template<typename T>
-	void exported_lua_push(lua_State* L, T* ptr) {
-		lua_push(L, ptr);
-	}
-
-	template<typename T>
-	void exported_lua_push(lua_State* L, T&& obj) {
-		lua_push(L, std::move(obj));
-	}
-
-	template<typename T>
-	void exported_lua_push(lua_State* L, const T& obj) {
-		lua_push(L, obj);
-	}
-
-	template
-	LUA_EXPORTS std::shared_ptr<cv::Mat> exported_lua_to<cv::Mat>(lua_State* L, int index, cv::Mat* ptr, bool& is_valid);
-
-	template
-	LUA_EXPORTS void exported_lua_push<cv::Mat>(lua_State* L, cv::Mat* ptr);
-
-	template
-	LUA_EXPORTS void exported_lua_push<cv::Mat>(lua_State* L, cv::Mat&& obj);
-
-	template
-	LUA_EXPORTS void exported_lua_push<cv::Mat>(lua_State* L, const cv::Mat& obj);
-
-	template
-	LUA_EXPORTS void exported_lua_push<std::shared_ptr<cv::Mat>>(lua_State* L, const std::shared_ptr<cv::Mat>& obj);
-}
 
 namespace LUA_MODULE_NAME {
 	void register_extensions(lua_State* L) {

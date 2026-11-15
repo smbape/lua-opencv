@@ -90,6 +90,15 @@ namespace {
 		lua_pop(L, 1); // pop userdata.__self
 		return ptr;
 	}
+
+	void lua_module_setfunc(lua_State* L, const luaL_Reg* l, int nup) {
+		lua_pushstring(L, l->name);
+		for (int i = 0; i < nup; ++i) {  /* copy upvalues to the top */
+			lua_pushvalue(L, -(nup + 1));
+		}
+		lua_pushcclosure(L, l->func, nup);  /* closure with those upvalues */
+		lua_rawset(L, -(nup + 3));
+	}
 }
 
 namespace LUA_MODULE_NAME {
@@ -200,17 +209,12 @@ namespace LUA_MODULE_NAME {
 	}
 
 	void lua_module_setfuncs(lua_State* L, const luaL_Reg* l) {
-		auto tbl = lua_gettop(L);
+		int tbl = lua_gettop(L);
 		lua_module_push_context(L); // push upvalue
-		auto nup = lua_gettop(L) - tbl;
+		int nup = lua_gettop(L) - tbl;
 
 		for (; l->name != nullptr; ++l) {  /* fill the table with given functions */
-			lua_pushstring(L, l->name);
-			for (int i = 0; i < nup; ++i) {  /* copy upvalues to the top */
-				lua_pushvalue(L, -(nup + 1));
-			}
-			lua_pushcclosure(L, l->func, nup);  /* closure with those upvalues */
-			lua_rawset(L, -(nup + 3));
+			lua_module_setfunc(L, l, nup);
 		}
 
 		if (nup > 0) {
@@ -219,9 +223,9 @@ namespace LUA_MODULE_NAME {
 	}
 
 	void lua_module_setfuncs_if_not_exists(lua_State* L, const luaL_Reg* l) {
-		auto tbl = lua_gettop(L);
+		int tbl = lua_gettop(L);
 		lua_module_push_context(L); // push upvalue
-		auto nup = lua_gettop(L) - tbl;
+		int nup = lua_gettop(L) - tbl;
 
 		for (; l->name != nullptr; ++l) {  /* fill the table with given functions */
 			lua_pushstring(L, l->name);
@@ -230,12 +234,7 @@ namespace LUA_MODULE_NAME {
 			lua_pop(L, 1);
 
 			if (!exists) {
-				lua_pushstring(L, l->name);
-				for (int i = 0; i < nup; ++i) {  /* copy upvalues to the top */
-					lua_pushvalue(L, -nup);
-				}
-				lua_pushcclosure(L, l->func, nup);  /* closure with those upvalues */
-				lua_rawset(L, -(nup + 3));
+				lua_module_setfunc(L, l, nup);
 			}
 		}
 
@@ -273,7 +272,7 @@ namespace LUA_MODULE_NAME {
 			sname = luaL_typename(L, arg);  /* standard name */
 		}
 		luaL_error(L, "missing declaration for symbol '%s'", sname);
-		return 0;
+		return -1;
 	}
 
 	bool lua_newkwargs_from_table(lua_State* L, int index, bool& is_valid) {
@@ -299,10 +298,14 @@ namespace LUA_MODULE_NAME {
 
 		// https://www.lua.org/manual/5.1/manual.html#lua_next
 
+		bool remove_first_key = true;
+
 		lua_pushnil(L);  /* first key */
 		// stack now contains: -2 => kwargs; -1 => nil
 
 		while (lua_next(L, index) != 0) {
+			remove_first_key = false;
+
 			// stack now contains: -3 => kwargs; -2 => key; -1 => value
 			const auto key = lua_to(L, -2, static_cast<std::string*>(nullptr), is_valid);
 
@@ -311,10 +314,7 @@ namespace LUA_MODULE_NAME {
 				lua_pop(L, 1);
 				// stack now contains: -2 => kwargs; -1 => key
 
-				/* removes 'key'; break iteration */
-				lua_pop(L, 1);
-				// stack now contains: -1 => kwargs
-
+				remove_first_key = true;
 				break;
 			}
 
@@ -329,12 +329,14 @@ namespace LUA_MODULE_NAME {
 			// stack now contains: -2 => kwargs; -1 => key
 		}
 
+		if (remove_first_key) {
+			lua_pop(L, 1);
+			// stack now contains: -1 => kwargs
+		}
+
 		if (is_valid) {
 			get_context_from_upvalue(L)->push_metatable<Keywords>(L);
 			lua_setmetatable(L, -2);
-		}
-		else {
-			lua_pop(L, 1);
 		}
 
 		return is_valid;
@@ -739,6 +741,47 @@ namespace LUA_MODULE_NAME {
 	std::mutex LuaStateContext::mutex;
 	unsigned short LuaStateContext::g_class_id = 0;
 
+	LuaStateContext::SwitchUpValueGuard::SwitchUpValueGuard(lua_State* L, int n) : L_(L), n_(n)  {
+		lua_pushvalue(L_, lua_upvalueindex(n_));
+		ref_ = luaL_ref(L_, LUA_REGISTRYINDEX);
+		lua_replace(L_, lua_upvalueindex(n_));
+	}
+
+	LuaStateContext::SwitchUpValueGuard::~SwitchUpValueGuard() {
+		lua_rawgeti(L_, LUA_REGISTRYINDEX, ref_);
+		luaL_unref(L_, LUA_REGISTRYINDEX, ref_);
+		lua_replace(L_, lua_upvalueindex(n_));
+	}
+
+	int LuaStateContext::add_dependecy(lua_State* L) {
+		if (g_dep_id >= kMaxDependencies) {
+			return -1;
+		}
+
+		if (g_dep_id == 0) {
+			std::fill_n(dependencies, kMaxDependencies, LUA_REFNIL);
+		}
+
+		dependencies[g_dep_id] = luaL_ref(L, LUA_REGISTRYINDEX);
+		return g_dep_id++;
+	}
+
+	LuaStateContext::SwitchUpValueGuard LuaStateContext::switch_dependency(lua_State* L, int n, int id) {
+		if (id < 0 || id >= g_dep_id) {
+			lua_pushnil(L);
+			return SwitchUpValueGuard{L, n};
+		}
+
+		auto ref = dependencies[id];
+		if (ref == LUA_REFNIL) {
+			lua_pushnil(L);
+			return SwitchUpValueGuard{L, n};
+		}
+
+		lua_rawgeti(L, LUA_REGISTRYINDEX, ref);
+		return SwitchUpValueGuard{L, n};
+	}
+
 	void lua_module_push_context(lua_State* L) {
 		lua_rawgetp(L, LUA_REGISTRYINDEX, &kContextKey);
 	}
@@ -756,6 +799,117 @@ namespace LUA_MODULE_NAME {
 
 	std::shared_ptr<LuaStateContext> get_context_from_upvalue(lua_State* L) {
 		return *static_cast<std::shared_ptr<LuaStateContext>*>(lua_touserdata(L, lua_upvalueindex(1)));
+	}
+
+	CallInfo::CallInfo(lua_State* L, const char* fname, int offset) :
+		L_(L),
+		fname_(fname),
+		offset_(offset),
+		top_(lua_gettop(L)
+	) {
+		has_kwargs_ = top_ != 0 && usertype_info<Keywords>::lua_userdata_is(L_, top_);
+		kwargc_ = has_kwargs_ ? Keywords::size(L_, top_) : 0;
+		argc_ = (has_kwargs_ ? top_ - 1 : top_) - offset_;
+	}
+
+	bool CallInfo::add_overload(const char* signature, int argn, bool variadic) {
+		lua_settop(L_, top_);  // drop what a previous overload may have pushed
+		overloads_++;
+		signature_ = signature;
+		usedkw_ = 0;
+
+		if (variadic) {
+			if (has_kwargs_) {
+				add_error("keyword arguments are not allowed for function with variadic parameters");
+				return false;
+			}
+
+			if (argc_ < argn - 1) {
+				add_error("expected at least " + std::to_string(argn - 1) + " arguments, got " + std::to_string(argc_));
+				return false;
+			}
+		} else if (argc_ + kwargc_ > argn) {
+			add_error("expected at most " + std::to_string(argn) + " arguments, got " + std::to_string(argc_ + kwargc_));
+			return false;
+		}
+
+		return true;
+	}
+
+	int CallInfo::overload_resolution_failed() {
+		std::string message;
+
+		if (overloads_ == 1) {
+			message = std::string("\n    ") + signature_ + ": " + last_error_;
+		} else {
+			message = "Overload resolution failed:" + errors_;
+		}
+
+		lua_settop(L_, top_);
+		lua_module_push_error(L_, message.c_str());
+
+		return -1;
+	}
+
+	int CallInfo::get_results() {
+		return lua_gettop(L_) - top_;
+	}
+
+	void CallInfo::add_error(std::string error) {
+		errors_ += "\n    ";
+		errors_ += signature_;
+		errors_ += ": ";
+		errors_ += error;
+		last_error_ = std::move(error);
+	}
+
+	void CallInfo::add_missing_error(const std::string& argname) {
+		add_error("bad argument '" + argname + "' (argument is missing)");
+	}
+
+	bool CallInfo::validate(const char* const* params, int nparams) {
+		if (!has_kwargs_ || usedkw_ == kwargc_) {
+			return true;
+		}
+
+		lua_pushnil(L_);  /* first key */
+		int i = 0;
+
+		while (lua_next(L_, top_) != 0) {
+			i++;
+			lua_pop(L_, 1);  // remove the value
+
+			if (lua_type(L_, -1) != LUA_TSTRING) {
+				add_error("bad keyword argument #" + std::to_string(i) + " (expected a string, got " + internal::LuaTypeName(L_, -1) + ")");
+				continue;
+			}
+
+			auto key = lua_tostring(L_, -1);
+
+			bool known = false;
+			for (int i = 0; i < nparams && !known; ++i) {
+				if (std::strcmp(key, params[i]) == 0) {
+					known = true;
+					break;
+				}
+			}
+
+			if (!known) {
+				add_error(std::string("unknown keyword argument '") + key + "'");
+			}
+		}
+
+		if (i == 0) {
+			lua_pop(L_, 1);  /* remove the first key */
+		}
+
+		return false;
+	}
+
+	void lua_module_push_error(lua_State* L, const char* message) {
+		luaL_where(L, 1);
+		lua_pushstring(L, message);
+		lua_concat(L, 2);
 	}
 
 	int yield(lua_State* L) {

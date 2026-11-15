@@ -237,11 +237,25 @@ namespace LUA_MODULE_NAME {
 	namespace internal {
 		template <typename T>
 		const char* GetTypeName(void) {
-			constexpr size_t size = sizeof(LUA_MODULE__PRETTY_FUNCTION) - LUA_MODULE__TYPE_PRETTY_FUNCTION_LEFT - LUA_MODULE__TYPE_PRETTY_FUNCTION_RIGHT;
-			static char typeName[size] = {};
-			memcpy(typeName, LUA_MODULE__PRETTY_FUNCTION + LUA_MODULE__TYPE_PRETTY_FUNCTION_LEFT, size - 1u);
-			return typeName;
-			// return LUA_MODULE__PRETTY_FUNCTION;
+			if constexpr (std::is_same_v<T, std::string>) {
+				return "std::string";
+			}
+			else if constexpr (std::is_same_v<T, std::wstring>) {
+				return "td::wstring";
+			}
+			else if constexpr (std::is_same_v<T, std::vector<std::string>>) {
+				return "std::vector<std::string>";
+			}
+			else if constexpr (std::is_same_v<T, std::vector<std::wstring>>) {
+				return "std::vector<std::wstring>";
+			}
+			else {
+				constexpr size_t size = sizeof(LUA_MODULE__PRETTY_FUNCTION) - LUA_MODULE__TYPE_PRETTY_FUNCTION_LEFT - LUA_MODULE__TYPE_PRETTY_FUNCTION_RIGHT;
+				static char typeName[size] = {};
+				memcpy(typeName, LUA_MODULE__PRETTY_FUNCTION + LUA_MODULE__TYPE_PRETTY_FUNCTION_LEFT, size - 1u);
+				return typeName;
+				// return LUA_MODULE__PRETTY_FUNCTION;
+			}
 		}
 
 

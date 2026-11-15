@@ -153,6 +153,11 @@ namespace LUA_MODULE_NAME {
 			size++;
 		}
 
+		if (size == 0) {
+			// remove the first key
+			lua_pop(L, 1);
+		}
+
 		// stack now contains: -1 => table (when lua_next returns 0 it pops the key
 		// but does not push anything.)
 		// Pop table

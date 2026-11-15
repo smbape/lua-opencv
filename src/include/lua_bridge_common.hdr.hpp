@@ -202,16 +202,16 @@ namespace LUA_MODULE_NAME {
 
 
 	// ================================
-	// LuaStateContext struct
+	// LuaStateContext
 	// ================================
-
-	struct MetatableInfo {
-		const void* ptr = nullptr;
-		int ref = LUA_REFNIL;
-	};
 
 	class LuaStateContext {
 	public:
+		struct MetatableInfo {
+			const void* ptr = nullptr;
+			int ref = LUA_REFNIL;
+		};
+
 		template<typename T>
 		void register_class(const void* ptr, int ref) {
 			get_info<T>() = { ptr, ref };
@@ -228,32 +228,103 @@ namespace LUA_MODULE_NAME {
 		}
 
 		template<typename T>
-		MetatableInfo& get_info() {
-			static auto class_id = [this] () {
-				std::unique_lock lock(mutex);
-				if (g_class_id >= classes.size()) {
-					classes.resize(g_class_id + 1);
-				}
-				return g_class_id++;
-			} ();
-			return classes.at(class_id);
-		}
-
-		template<typename T>
 		bool is_registered() {
 			return get_info<T>().ref != LUA_REFNIL;
 		}
+
+		static constexpr int kMaxDependencies = 256;
+
+		struct SwitchUpValueGuard {
+			/**
+			 * Change and restore lua_upvalueindex(n) with the value at the top of the stack.
+			 * Pops the value from the top of the stack
+			 */
+			SwitchUpValueGuard(lua_State* L, int n);
+			~SwitchUpValueGuard();
+
+			// The compiler-generated copy constructor just copies the members, so it wouldn't call the constructor,
+			// therefore making the destructor operations invalid.
+			// More over, this prevents the compiler from generating a move constructor or move assignment.
+			// Move will still call the destructor without calling the constructor, therefore making the destructor operations invalid.
+			// The compiler-generated copy assignment has the same problem, it just copies the members, so it wouldn't call the constructor.
+			SwitchUpValueGuard(const SwitchUpValueGuard&) = delete;
+			SwitchUpValueGuard& operator=(const SwitchUpValueGuard&) = delete;
+
+			lua_State* L_;
+			int n_;
+			int ref_ = LUA_REFNIL;
+		};
+
+		/**
+		 * Add the value at the top of the stack as a dependency and pop the value from the top the stack.
+		 * @param  L the lua_State
+		 * @return   the dependency id
+		 */
+		int add_dependecy(lua_State* L);
+
+		/**
+		 * Switch value at upvalue index n with the dependency id
+		 * @param  L  the lua_State
+		 * @param  n  the upvalue index
+		 * @param  id the dependency id
+		 * @return    The guard object. When destroyed, restores the origin upvalue
+		 */
+		SwitchUpValueGuard switch_dependency(lua_State* L, int n, int id);
+
 	private:
+		template<typename T>
+		MetatableInfo& get_info() {
+			static auto class_id = [this] () {
+				std::unique_lock lock(mutex);
+				return g_class_id++;
+			} ();
+
+			if (class_id >= classes.size()) {
+				classes.resize(class_id + 1);
+			}
+
+			return classes.at(class_id);
+		}
+
 		static std::mutex mutex;
 		static unsigned short g_class_id;
 
 		// pre allocate 512 placeholders for classes
 		std::vector<MetatableInfo> classes{512};
+
+		int g_dep_id = 0;
+		int dependencies[kMaxDependencies] = {};
 	};
 
 	void lua_module_push_context(lua_State* L);
 	std::shared_ptr<LuaStateContext> get_context_from_registry(lua_State* L);
 	std::shared_ptr<LuaStateContext> get_context_from_upvalue(lua_State* L);
+
+
+	// ================================
+	// CallInfo
+	// ================================
+
+	// Pushes message, prefixed with the location of the Lua caller ("file:line: ").
+	void lua_module_push_error(lua_State* L, const char* message);
+
+	template <int (*fn)(lua_State*)>
+	int lua_mocule_pcall_cfunction(lua_State* L) {
+		auto top = lua_gettop(L);
+		try {
+			return fn(L);
+		} catch (const std::exception& e) {
+			lua_settop(L, top);
+			lua_module_push_error(L, e.what());
+		}
+		return -1;
+	}
+
+	template <int (*fn)(lua_State*)>
+	int lua_mocule_call_cfunction(lua_State* L) {
+		const int n = lua_mocule_pcall_cfunction<fn>(L);
+		return n >= 0 ? n : lua_error(L);
+	}
 
 
 	// ================================
@@ -654,7 +725,7 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<typename T>
-	inline T* lua_to(lua_State* L, int index, T*, T*& ref, bool& is_valid);
+	inline void lua_to_by_ref(lua_State* L, int index, T*, T*& out, bool& is_valid);
 
 	template<typename T>
 	inline std::shared_ptr<T> lua_userdata_to(lua_State* L, int index, T*, bool& is_valid);

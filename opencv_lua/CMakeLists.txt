@@ -369,8 +369,8 @@ if (ENABLE_REPAIR)
         target_compile_definitions(${target_name}_loader PRIVATE
             LUA_MODULE_NAME=${target_name}
             LUA_MODULE_VERSION=${LUA_MODULE_VERSION}
-            LUA_MODULE_LIB_NAME=Allegro5
-            LUA_MODULE_LIB_VERSION=${Allegro5_VERSION}
+            LUA_MODULE_LIB_NAME=OpenCV
+            LUA_MODULE_LIB_VERSION=${OpenCV_VERSION}
             LUAAPI_EXPORTS
         )
 

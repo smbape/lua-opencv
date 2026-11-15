@@ -5,6 +5,135 @@
 
 namespace LUA_MODULE_NAME {
 	// ================================
+	// CallInfo
+	// ================================
+	class CallInfo {
+	public:
+		CallInfo(lua_State* L, const char* fname, int offset = 0);
+
+		bool add_overload(const char* signature, int argn, bool variadic);
+
+		/**
+		 * Pushes the error message when overload resolution failed and returns -1
+		 * @return -1 to ease integration with lua c functions
+		 */
+		int overload_resolution_failed();
+
+		int get_results();
+
+		void add_error(std::string error);
+
+		void add_missing_error(const std::string& argname);
+
+		void add_type_error(const std::string& argname, int index, auto* ptr) {
+			add_error("bad argument " + argname +
+				" (cannot convert '" + internal::LuaTypeName(L_, index) + "' to '" +
+				internal::GetTypeName<std::remove_pointer_t<decltype(ptr)>>() + "')");
+		}
+
+		enum class ExtractorKind { plain, reference, array, arrays };
+
+		template<ExtractorKind Kind>
+		void arg_to(auto& out, auto argi, auto* ptr, bool& is_valid, bool nd_mat) {
+			if constexpr (Kind == ExtractorKind::plain) out = lua_to(L_, argi, ptr, is_valid);
+			if constexpr (Kind == ExtractorKind::reference) lua_to_by_ref(L_, argi, ptr, out, is_valid);
+			else if constexpr (Kind == ExtractorKind::array) out = lua_toarray(L_, argi, ptr, is_valid);
+			else if constexpr (Kind == ExtractorKind::arrays) out = lua_toarrays(L_, argi, ptr, is_valid, nd_mat);
+		}
+
+		template<ExtractorKind Kind>
+		bool extract_positional_arg(auto& out, int argi, const char* argname, auto* ptr, bool& is_valid, bool nd_mat) {
+			auto index = argi + 1 + offset_;
+			arg_to<Kind>(out, index, ptr, is_valid, nd_mat);
+
+			if (!is_valid) {
+				add_type_error("#" + std::to_string(argi + 1), index, ptr);
+			}
+			else if (has_kwargs_ && Keywords::has(L_, top_, argname)) {
+				// should not be a named parameter
+				add_error("bad argument #" + std::to_string(argi + 1) + " (already provided as named parameter '" + argname + "'");
+			}
+
+			return is_valid;
+		}
+
+		template<ExtractorKind Kind>
+		bool extract_keyword_arg(auto& out, bool variadic, bool is_optional, const char* argname, auto* ptr, bool& is_valid, bool nd_mat) {
+			if (!has_kwargs_ || variadic) {
+				if (!is_optional && !variadic) {
+					add_missing_error(argname);
+				}
+				is_valid = false;
+				return is_optional && !variadic;
+			}
+
+			Keywords::push(L_, top_, argname);
+
+			if (lua_isnil(L_, -1)) {
+				lua_pop(L_, 1);
+				if (!is_optional) {
+					add_missing_error(argname);
+				}
+				is_valid = false;
+				return is_optional;
+			}
+
+			arg_to<Kind>(out, -1, ptr, is_valid, nd_mat);
+
+			if (is_valid) {
+				usedkw_++;
+			}
+			else {
+				add_type_error("'" + std::string(argname) + "'", -1, ptr);
+			}
+
+			lua_pop(L_, 1);
+
+			return is_valid;
+		}
+
+		template<ExtractorKind Kind>
+		bool extract_arg(auto& out, bool variadic, bool is_optional, int argi, const char* argname, auto* ptr, bool& is_valid, bool nd_mat = false) {
+			bool extracted = false;
+			if (argc_ > argi) {
+				extracted = extract_positional_arg<Kind>(out, argi, argname, ptr, is_valid, nd_mat);
+			}
+			else {
+				extracted = extract_keyword_arg<Kind>(out, variadic, is_optional, argname, ptr, is_valid, nd_mat);
+			}
+			slots_[argi] = is_valid;
+			return extracted;
+		}
+
+		static constexpr int kMaxParams = 512;
+
+		using Param = const char*;
+		bool validate(const Param* params, int nparams);
+		template <int N>
+		bool validate(const Param (&params)[N]) {
+			static_assert(N <= kMaxParams);
+			return validate(params, N);
+		}
+
+    	bool has(int i) const { return slots_[i]; }
+	private:
+		lua_State* L_;
+		const char* fname_;
+		int offset_;
+		int top_;
+		int argc_;
+		bool has_kwargs_;
+		int kwargc_;
+		int usedkw_;
+		const char* signature_ = nullptr;
+		int overloads_ = 0;
+		bool slots_[kMaxParams] = {};
+		std::string errors_;
+		std::string last_error_;
+	};
+
+
+	// ================================
 	// is_usertype generics
 	// ================================
 
@@ -281,32 +410,31 @@ namespace LUA_MODULE_NAME {
 	// ================================
 
 	template<typename T>
-	inline T* lua_to(lua_State* L, int index, T*, T*& ref, bool& is_valid) {
+	inline void lua_to_by_ref(lua_State* L, int index, T*, T*& out, bool& is_valid) {
 		if constexpr (has_lua_to_custom_bridge_v<void*>) {
 			const auto ptr = lua_to_custom_bridge<void*>::lua_to(L, index, is_valid);
 			if (is_valid) {
-				ref = static_cast<T*>(ptr);
-				return ref;
+				out = static_cast<T*>(ptr);
+				return;
 			}
 		}
 
 		is_valid = lua_isnil(L, index);
 		if (is_valid) {
-			ref = static_cast<T*>(nullptr);
-			return ref;
+			out = static_cast<T*>(nullptr);
+			return;
 		}
 
 		is_valid = lua_islightuserdata(L, index);
 		if (is_valid) {
-			ref = static_cast<T*>(lua_touserdata(L, index));
-			return ref;
+			out = static_cast<T*>(lua_touserdata(L, index));
+			return;
 		}
 
 		auto holder_value = lua_to(L, index, static_cast<T*>(nullptr), is_valid);
 		if (is_valid) {
-			*ref = extract_holder(holder_value, static_cast<T*>(nullptr));
+			*out = extract_holder(holder_value, static_cast<T*>(nullptr));
 		}
-		return ref;
 	}
 
 	template<typename T>
@@ -361,7 +489,7 @@ namespace LUA_MODULE_NAME {
 	void PointerArray<T>::register_class(lua_State* L) {
 		thread_local bool registered = [L]() {
 			return runtime_register_class<PointerArray<T>, sizeof(T*)>(L);
-		}();
+			}();
 	}
 
 	template<typename T>
@@ -572,18 +700,18 @@ namespace LUA_MODULE_NAME {
 
 	template<typename T>
 	const struct luaL_Reg usertype_info<PointerArray<T>>::methods[] = {
-		{"__index", PointerArray<T>::__index},
-		{"__newindex", PointerArray<T>::__newindex},
-		{"__add", PointerArray<T>::__add},
-		{"__sub", PointerArray<T>::__sub},
-		{"__lt", PointerArray<T>::__lt},
-		{"__le", PointerArray<T>::__le},
-		{NULL, NULL} // Sentinel
+		{ "__index", PointerArray<T>::__index },
+		{ "__newindex", PointerArray<T>::__newindex },
+		{ "__add", PointerArray<T>::__add },
+		{ "__sub", PointerArray<T>::__sub },
+		{ "__lt", PointerArray<T>::__lt },
+		{ "__le", PointerArray<T>::__le },
+		{ NULL, NULL } // Sentinel
 	};
 
 	template<typename T>
 	const struct luaL_Reg usertype_info<PointerArray<T>>::meta_methods[] = {
-		{NULL, NULL} // Sentinel
+		{ NULL, NULL } // Sentinel
 	};
 
 	template<typename T>
@@ -1760,8 +1888,8 @@ namespace LUA_MODULE_NAME {
 		// decltype(std::declval<T&>() << std::declval<U&>())
 		if constexpr (requires(std::ostream & oss, const T & t) { oss << t; }) {
 			const struct luaL_Reg lua_tostring_methods[] = {
-				{"__tostring", oss_default_to_string<T>},
-				{NULL, NULL} // Sentinel
+				{ "__tostring", oss_default_to_string<T> },
+				{ NULL, NULL } // Sentinel
 			};
 			lua_module_setfuncs_if_not_exists(L, lua_tostring_methods);
 		}
@@ -1774,8 +1902,8 @@ namespace LUA_MODULE_NAME {
 		// static sfinae_yes_t test(decltype(std::declval<C>().to_string())*);
 		else if constexpr (requires(const T & t) { t.to_string(); }) {
 			const struct luaL_Reg lua_tostring_methods[] = {
-				{"__tostring", member_default_to_string<T>},
-				{NULL, NULL} // Sentinel
+				{ "__tostring", member_default_to_string<T> },
+				{ NULL, NULL } // Sentinel
 			};
 			lua_module_setfuncs_if_not_exists(L, lua_tostring_methods);
 		}
@@ -1787,8 +1915,8 @@ namespace LUA_MODULE_NAME {
 		// class supports_adl_to_string_test<T, void_t<decltype(to_string(std::declval<const T&>()))>> : public std::true_type { };
 		else if constexpr (requires(const T & t) { std::to_string(t); }) {
 			const struct luaL_Reg lua_tostring_methods[] = {
-				{"__tostring", adl_default_to_string<T>},
-				{NULL, NULL} // Sentinel
+				{ "__tostring", adl_default_to_string<T> },
+				{ NULL, NULL } // Sentinel
 			};
 			lua_module_setfuncs_if_not_exists(L, lua_tostring_methods);
 		}
@@ -1796,8 +1924,8 @@ namespace LUA_MODULE_NAME {
 		// FIXME : how to use this method only if parent __tostring is not a usertype_default_to_string
 		else if constexpr (requires(lua_State * L, int index, bool& is_valid) { usertype_info<T>::lua_userdata_to(L, index, is_valid); }) {
 			const struct luaL_Reg lua_tostring_methods[] = {
-				{"__tostring", usertype_default_to_string<T>},
-				{NULL, NULL} // Sentinel
+				{ "__tostring", usertype_default_to_string<T> },
+				{ NULL, NULL } // Sentinel
 			};
 			lua_module_setfuncs_if_not_exists(L, lua_tostring_methods);
 		}
@@ -1805,11 +1933,11 @@ namespace LUA_MODULE_NAME {
 		if constexpr (requires(lua_State * L, int index, bool& is_valid) { usertype_info<T>::lua_userdata_to(L, index, is_valid); }) {
 			// class Garbage-Collection and introspection methods
 			const struct luaL_Reg lua_instance_misc_methods[] = {
-				{"__gc", lua_method__gc<T>},
-				{"__eq", lua_method__eq<T>},
-				{"__cast", lua_method__cast<T>}, // For ffi purpose
-				{"isinstance", lua_method_isinstance<T>},
-				{NULL, NULL} // Sentinel
+				{ "__gc", lua_method__gc<T> },
+				{ "__eq", lua_method__eq<T> },
+				{ "__cast", lua_method__cast<T> }, // For ffi purpose
+				{ "isinstance", lua_method_isinstance<T> },
+				{ NULL, NULL } // Sentinel
 			};
 			lua_module_setfuncs_if_not_exists(L, lua_instance_misc_methods);
 		}
