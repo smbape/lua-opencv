@@ -21,6 +21,8 @@ endif()
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release;MinSizeRel;RelWithDebInfo" CACHE STRING "Configs" FORCE)
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "${CMAKE_CONFIGURATION_TYPES}")
 
+option(BUILD_SHARED_LIBS "Build shared libraries (.dll/.so) instead of static ones (.lib/.a)" ON)
+
 set(OpenCV_VERSION 5.0.0 CACHE STRING "Choose the OpenCV version.")
 set_property(CACHE OpenCV_VERSION PROPERTY STRINGS "5.0.0")
 
@@ -86,8 +88,8 @@ if (BUILD_contrib)
     set(OPENCV_EXTRA_MODULES_PATH "${opencv_contrib_SOURCE_DIR}/modules" CACHE PATH "Where to look for additional OpenCV modules (can be ;-separated list of paths)")
 endif()
 
-set(OPENCV_SOURCE_DIR "${opencv_SOURCE_DIR}")
-set(OPENCV_BINARY_DIR "${opencv_BINARY_DIR}")
+set(OpenCV_SOURCE_DIR "${opencv_SOURCE_DIR}")
+set(OpenCV_BINARY_DIR "${opencv_BINARY_DIR}")
 include("${opencv_SOURCE_DIR}/cmake/OpenCVUtils.cmake")
 
 set(opencv_BINARY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/build" CACHE STRING "Where to build opencv.")
@@ -95,9 +97,7 @@ file(TO_NATIVE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/opencv" OPENCV_INSTALL_DATA_DIR
 
 
 # 3rd party libs
-option(BUILD_TIFF               "Build libtiff from source"          ON )
-option(BUILD_JPEG               "Build libjpeg from source"          ON )
-option(BUILD_WEBP               "Build WebP from source"             ON )
+option(OPENCV_FORCE_3RDPARTY_BUILD   "Force using 3rdparty code from source" ON)
 
 # OpenCV build components
 # ===================================================
@@ -105,6 +105,10 @@ option(BUILD_opencv_apps        "Build utility applications (used for example to
 option(BUILD_DOCS               "Create build rules for OpenCV Documentation" OFF )
 option(BUILD_PERF_TESTS         "Build performance tests"                     OFF )
 option(BUILD_TESTS              "Build accuracy & regression tests"           OFF )
+if (MSVC AND BUILD_SHARED_LIBS)
+    option(BUILD_WITH_STATIC_CRT    "Enables use of statically linked CRT for statically linked OpenCV" OFF )
+endif()
+option(BUILD_JAVA "Enable Java support" OFF)
 
 # OpenCV installation options
 # ===================================================
@@ -114,18 +118,22 @@ if (MSVC AND BUILD_SHARED_LIBS)
     option(INSTALL_PDB_COMPONENT_EXCLUDE_FROM_ALL "Don't install PDB files by default" OFF)
 endif()
 
+# OpenCV build options
+# ===================================================
+option(ENABLE_PYLINT "Add target with Pylint checks" OFF)
+
 # set(VIDEOIO_PLUGIN_LIST "" CACHE STRING "List of videoio backends to be compiled as plugins (ffmpeg, gstreamer, mfx, msmf or special value 'all')")
-option(BUILD_opencv_world "All OpenCV modules" OFF)
-option(BUILD_opencv_python2 "The python2 module" OFF)
-option(BUILD_opencv_python3 "The python3 module" OFF)
-option(BUILD_opencv_java "The java module" OFF)
+option(BUILD_opencv_world "Include opencv_world module into the OpenCV build" OFF)
+option(BUILD_opencv_python2 "Include opencv_python2 module into the OpenCV build" OFF)
+option(BUILD_opencv_python3 "Include opencv_python3 module into the OpenCV build" OFF)
+option(BUILD_opencv_java "Include opencv_java module into the OpenCV build" OFF)
 # set(BUILD_opencv_freetype OFF)
 # set(WITH_EIGEN ON)
 # set(BUILD_OPENEXR ON)
-option(BUILD_opencv_java_bindings_generator "The java bindings" OFF)
-option(BUILD_opencv_js_bindings_generator "The JavaScript(JS) bindings" OFF)
-option(BUILD_opencv_objc_bindings_generator "The Objective-C bindings" OFF)
-option(BUILD_opencv_python_bindings_generator "The Python bindings" ON)
+option(BUILD_opencv_java_bindings_generator "Include opencv_java_bindings_generator module into the OpenCV build" OFF)
+option(BUILD_opencv_js_bindings_generator "Include opencv_js_bindings_generator module into the OpenCV build" OFF)
+option(BUILD_opencv_objc_bindings_generator "Include opencv_objc_bindings_generator module into the OpenCV build" OFF)
+option(BUILD_opencv_python_bindings_generator "Include opencv_python_bindings_generator module into the OpenCV build" ON)
 
 if (WITH_FREETYPE)
     if (WIN32)
@@ -217,7 +225,7 @@ if (WITH_FREETYPE)
 endif()
 
 if (WIN32)
-    option(ENABLE_EXPERIMENTAL_WIDE_CHAR           "Attempt to support UTF-16 (wide character) strings on Windows."           OFF)
+    option(ENABLE_EXPERIMENTAL_WIDE_CHAR "Attempt to support UTF-16 (wide character) strings on Windows." OFF)
 
     if (ENABLE_EXPERIMENTAL_WIDE_CHAR)
         add_definitions(-DENABLE_WIDE_CHAR "-DOPENCV_INCLUDE_PORT_FILE=<enable_wide_char.h>")
@@ -231,11 +239,24 @@ if (WIN32)
     endif()
 endif()
 
-set(__opencv_lua_find_package_targets_global ${CMAKE_FIND_PACKAGE_TARGETS_GLOBAL})
-set(CMAKE_FIND_PACKAGE_TARGETS_GLOBAL TRUE)
+# Build as a static library and use WHOLE_ARCHIVE/-Wl,--whole-archive to export all symbols
+option(ENABLE_PIC "Generate position independent code (necessary for shared libraries)" ${BUILD_SHARED_LIBS})
+set(_backup_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
+set(BUILD_SHARED_LIBS OFF)
 add_subdirectory("${opencv_SOURCE_DIR}" "${opencv_BINARY_DIR}")
-set(CMAKE_FIND_PACKAGE_TARGETS_GLOBAL ${__opencv_lua_find_package_targets_global})
-unset(__opencv_lua_find_package_targets_global)
+set(BUILD_SHARED_LIBS ${_backup_BUILD_SHARED_LIBS})
+unset(_backup_BUILD_SHARED_LIBS)
+
+if (BUILD_SHARED_LIBS)
+    # OpenCV symbols as exported only if CVAPI_EXPORTS is defined.
+    # However, when built a static library like we did, CVAPI_EXPORTS is not defined.
+    # Therefore, we define CVAPI_EXPORTS in order to export OpenCV symbols
+    foreach(module IN LISTS OPENCV_MODULES_PUBLIC)
+        if(TARGET ${module})
+            target_compile_definitions(${module} PRIVATE CVAPI_EXPORTS)
+        endif()
+    endforeach()
+endif()
 
 set(opencv_SOURCE_DIR "${opencv_SOURCE_DIR}" PARENT_SCOPE)
 set(OpenCV_INCLUDE_DIRS "${OPENCV_CONFIG_FILE_INCLUDE_DIR}" "${opencv_SOURCE_DIR}/include")
@@ -244,13 +265,12 @@ set(OpenCV_INCLUDE_DIRS "${OPENCV_CONFIG_FILE_INCLUDE_DIR}" "${opencv_SOURCE_DIR
 list(REMOVE_DUPLICATES OPENCV_MODULES_PUBLIC)
 unset(OpenCV_LIBS)
 
-foreach(m opencv_core ${OPENCV_MODULES_PUBLIC})
+foreach(m IN ITEMS opencv_core ${OPENCV_MODULES_PUBLIC})
     if(TARGET ${m})
         list(APPEND OpenCV_LIBS ${m})
-    endif()
-
-    if(EXISTS "${OPENCV_MODULE_${m}_LOCATION}/include")
-        list(APPEND OpenCV_INCLUDE_DIRS "${OPENCV_MODULE_${m}_LOCATION}/include")
+        if(EXISTS "${OPENCV_MODULE_${m}_LOCATION}/include")
+            list(APPEND OpenCV_INCLUDE_DIRS "${OPENCV_MODULE_${m}_LOCATION}/include")
+        endif()
     endif()
 endforeach()
 

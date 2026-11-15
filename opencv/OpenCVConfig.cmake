@@ -47,40 +47,11 @@ if (WITH_LUA_ROCKS AND (NOT WIN32) AND (NOT DEFINED WITH_GTK) AND (NOT DEFINED W
 endif()
 
 if ((NOT DEFINED OpenCV_DIR) AND (NOT DEFINED OpenCV_LIBS))
-    # We want the opencv lua module to be used as a replacement of opencv
-    # when another lua module depends on opencv.
-    # 
-    # Linux lua expects shared libraries as modules (.so)
-    # Windows lua exepects a .dll file, which can be a static or a shared library.
-    # 
-    # For the opencv lua module to be used as a replacement of opencv,
-    # it needs to have all the exported opencv functions also exported.
-    # 
-    # One way to achieve that purpose is to build opencv as a static library
-    # and then use target_link_libraries(shared_lib PRIVATE "$<LINK_LIBRARY:WHOLE_ARCHIVE,static_lib1;static_lib2>")
-    # @see: https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html#genex:LINK_LIBRARY
-    # However, on Windows, set(OPENCV_MODULE_TYPE "STATIC") will cause all dependent libraries to be also static.
-    # We do not want that because in order for opencv_lua to be linked against, it must be a shared library.
-    # 
-    # The choosen solution is to directly embed the opencv objects in the opencv lua module.
-    # That will allow the opencv lua module shared library to have all the exported opencv functions.
-    set(OPENCV_MODULE_TYPE "OBJECT")
-
     # Compute the subdirectory prefix relative to this file.
     get_filename_component(_IMPORT_PREFIX "${CMAKE_CURRENT_LIST_FILE}" DIRECTORY)
     add_subdirectory("${_IMPORT_PREFIX}")
 
     list(REMOVE_DUPLICATES OpenCV_LIBS)
-
-    # Keep object files already in the sources because they are not propagated
-    unset(OpenCV_SOURCE_OBJECTS)
-    foreach(the_module IN LISTS OpenCV_LIBS)
-        get_target_property(__cmake_sources "${the_module}" SOURCES)
-        list(FILTER __cmake_sources INCLUDE REGEX "(^\\\$<TARGET_OBJECTS:|\\${CMAKE_C_OUTPUT_EXTENSION}$)")
-        list(APPEND OpenCV_SOURCE_OBJECTS "${__cmake_sources}")
-        unset(__cmake_sources)
-    endforeach()
-    list(REMOVE_DUPLICATES OpenCV_SOURCE_OBJECTS)
 else()
     macro(ocv_find_package_Qt4)
         find_package(Qt4 COMPONENTS QtCore QtGui QtTest ${ARGN})
@@ -119,7 +90,6 @@ else()
 
     find_package(OpenCV REQUIRED)
 
-    unset(OpenCV_SOURCE_OBJECTS)
     if (BUILD_SHARED_LIBS AND EXISTS "${OpenCV_DIR}/objects/OpenCVObjects.cmake")
         include("${OpenCV_DIR}/objects/OpenCVObjects.cmake")
 
@@ -150,10 +120,6 @@ else()
         endif()
     endforeach()
     unset(OpenCV_LINK_LIBRARIES)
-endif()
-
-if (DEFINED OpenCV_SOURCE_OBJECTS)
-    source_group("OpenCV Source Objects" FILES ${OpenCV_SOURCE_OBJECTS})
 endif()
 
 # message(STATUS "OpenCV library status:")

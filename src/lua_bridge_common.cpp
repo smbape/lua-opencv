@@ -609,7 +609,7 @@ namespace {
 		lua_rawset(L, -3);
 
 		lua_setmetatable(L, -2);
-		lua_rawsetp(L, LUA_REGISTRYINDEX, &kContextKey);
+		lua_rawsetp(L, LUA_REGISTRYINDEX, kContextKey);
 	}
 }
 
@@ -783,7 +783,7 @@ namespace LUA_MODULE_NAME {
 	}
 
 	void lua_module_push_context(lua_State* L) {
-		lua_rawgetp(L, LUA_REGISTRYINDEX, &kContextKey);
+		lua_rawgetp(L, LUA_REGISTRYINDEX, kContextKey);
 	}
 
 	std::shared_ptr<LuaStateContext> get_context_from_registry(lua_State* L) {

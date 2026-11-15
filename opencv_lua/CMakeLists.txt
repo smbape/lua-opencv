@@ -98,8 +98,6 @@ set(SRC_FILES
 
     ${project_generated_headers}
     ${project_generated_files}
-
-    ${OpenCV_SOURCE_OBJECTS}
 )
 
 if(POLICY CMP0091)
@@ -174,16 +172,18 @@ if (WIN32)
 endif()
 target_include_directories(${target_name} PRIVATE ${LUA_INCLUDE_DIR})
 
-if (DEFINED OpenCV_DEPENDENCIES)
-    add_dependencies(${target_name} ${OpenCV_DEPENDENCIES})
+if (DEFINED OpenCV_LIBS)
+    string(REPLACE ";" "," OpenCV_link_libraries "${OpenCV_LIBS}")
+    target_link_libraries(${target_name} PRIVATE "$<LINK_LIBRARY:WHOLE_ARCHIVE,${OpenCV_link_libraries}>")
+    unset(OpenCV_link_libraries)
 endif()
 
 if (DEFINED OpenCV_INCLUDE_DIRS)
     target_include_directories(${target_name} PRIVATE ${OpenCV_INCLUDE_DIRS})
 endif()
 
-if (DEFINED OpenCV_LIBS)
-    target_link_libraries(${target_name} PRIVATE ${OpenCV_LIBS})
+if (DEFINED OpenCV_DEPENDENCIES)
+    add_dependencies(${target_name} ${OpenCV_DEPENDENCIES})
 endif()
 
 if (WITH_LUA_ROCKS)
