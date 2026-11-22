@@ -25,8 +25,10 @@ endfunction()
 
 if (WITH_LUA_ROCKS)
     set(OPENCV_INCLUDE_INSTALL_PATH "lib/opencv_lua/devel/include" CACHE STRING "Include directory destination")
+    set(OPENCV_LICENSES_INSTALL_PATH "lib/opencv_lua/licenses" CACHE STRING "Licenses directory destination")
 else()
     set(OPENCV_INCLUDE_INSTALL_PATH "${CMAKE_INSTALL_INCLUDEDIR}" CACHE STRING "Include directory destination")
+    set(OPENCV_LICENSES_INSTALL_PATH "${CMAKE_INSTALL_DATADIR}/licenses" CACHE STRING "Licenses directory destination")
 endif()
 
 if (WITH_LUA_ROCKS AND (NOT WIN32) AND (NOT DEFINED WITH_GTK) AND (NOT DEFINED WITH_QT))

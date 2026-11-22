@@ -154,46 +154,71 @@ namespace LUA_MODULE_NAME {
 	}
 #endif
 
-	int get_luaopen_index(lua_State* L);
-
 	void register_Common(lua_State* L);
 
-	std::shared_ptr<std::mutex> get_gil_mutex(lua_State* L);
-	std::shared_ptr<std::unique_lock<std::mutex>> get_thread_gil(lua_State* L);
-	std::shared_ptr<std::unique_lock<std::mutex>> get_thread_gil(lua_State* L, std::shared_ptr<std::mutex> gil_mutex);
-
-	class GilLock {
+	class Gil {
 	public:
-		GilLock(lua_State* L);
-		GilLock(
-			lua_State* L,
-			std::shared_ptr<std::mutex> creator_gil_mutex,
-			std::thread::id creator_thread_id,
-			std::shared_ptr<std::unique_lock<std::mutex>> creator_gil
-		);
-		~GilLock();
+		int lock_unsafe(std::unique_lock<std::mutex>& lk, int locks);
+		int lock(int locks = 1);
+
+		void unlock_unsafe(int locks);
+		int unlock(int locks = 1);
+
+		int release(int& id);
+		void acquire(int id, int locks);
+
+		void release_if_owned_by(std::thread::id id);
+		void close();
+
+		std::unique_lock<std::mutex> create_lock();
 
 	private:
-		std::shared_ptr<std::mutex> gil_mutex;
-		std::shared_ptr<std::unique_lock<std::mutex>> gil;
-		std::shared_ptr<std::condition_variable> cv;
-		bool locked;
+		std::thread::id owner_;
+		std::mutex m_;
+		std::condition_variable cv_;
+		int locks_ = 0;
+		int ids_ = 0;
+		bool closed_ = false;
 	};
 
-	class GilYield {
+	using GilPtr = std::shared_ptr<Gil>;
+
+	GilPtr get_gil_of(lua_State* L);
+
+	class GilGuard {
 	public:
-		GilYield(lua_State* L, bool yielding_lock = true);
-		GilYield(lua_State* L, long timeout_ms, bool yielding_lock = true);
-		~GilYield();
+		GilGuard(lua_State* L);
+		GilGuard(GilPtr gil);
+		~GilGuard();
 
 	private:
-		lua_State* L;
-		std::shared_ptr<std::mutex> gil_mutex;
-		std::shared_ptr<std::unique_lock<std::mutex>> gil;
-		std::shared_ptr<std::condition_variable> cv;
-		long timeout_ms;
-		bool yielding_lock;
-		bool yielded;
+		GilPtr gil_;
+	};
+
+	class GilYieldGuard {
+	public:
+		GilYieldGuard(lua_State* L);
+		GilYieldGuard(lua_State* L, long timeout_ms);
+		GilYieldGuard(GilPtr gil, long timeout_ms);
+		~GilYieldGuard();
+
+	private:
+		GilPtr gil_;
+		long timeout_ms_;
+		int rlocks_;
+		int rid_;
+	};
+
+	class GilUnlockGuard {
+	public:
+		GilUnlockGuard(lua_State* L);
+		GilUnlockGuard(GilPtr gil);
+		~GilUnlockGuard();
+		std::unique_lock<std::mutex>& get_lock();
+
+	private:
+		GilPtr gil_;
+		std::unique_lock<std::mutex> lk_;
 	};
 
 	int yield(lua_State* L);

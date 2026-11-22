@@ -282,3 +282,7 @@ if (MSVC AND TARGET opencv_world)
         VS_PROJECT_IMPORT "${CMAKE_CURRENT_SOURCE_DIR}/opencv_world.user.props"
     )
 endif()
+
+# copy opencv license
+install(FILES "${opencv_SOURCE_DIR}/LICENSE" DESTINATION "${OPENCV_LICENSES_INSTALL_PATH}"
+        RENAME "opencv-LICENSE" COMPONENT licenses)

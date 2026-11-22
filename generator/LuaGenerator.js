@@ -1532,12 +1532,17 @@ class LuaGenerator {
                 callee = callee.trim().replace(/;+$/, "");
 
                 const exception = typeof options.exception === "string" ? options.exception : "std::exception";
+                const has_gil_lock = func_modifiers.includes("/GL");
                 const has_gil_unlock = func_modifiers.includes("/GU");
+                const gil_expr = has_gil_lock ? [
+                    "GilUnlockGuard guard(L);",
+                    "auto& L_lock = guard.get_lock();"
+                ].join("\n") : has_gil_unlock ? "GilYieldGuard guard(L);" : null;
 
                 if (has_body || return_value_type === "void") {
-                    if (!has_body && has_gil_unlock) {
+                    if (!has_body && gil_expr) {
                         callee = `
-                            GilYield yielder(L, false);
+                            ${ gil_expr.split("\n").join(`\n${ " ".repeat(28) }`) }
                             ${ callee.split("\n").join(`\n${ " ".repeat(28) }`) }
                         `.replace(/^ {28}/mg, "").trim();
                     }
@@ -1567,8 +1572,8 @@ class LuaGenerator {
 
                     const expressions = [];
 
-                    if (has_gil_unlock) {
-                        expressions.push("GilYield yielder(L, false);");
+                    if (gil_expr) {
+                        expressions.push(...gil_expr.split("\n"));
                     }
 
                     if (isConstructor) {

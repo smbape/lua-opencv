@@ -435,37 +435,37 @@ end)()
     test_sum()
 end)()
 
--- if type(jit) == 'table' then
---     t = cv.getTickCount()
---     for i = 0, rows - 1 do
---         for j = 0, cols - 1 do
---             for k = 0, channels - 1 do
---                 for l = 1, times do
---                     bit.band(i, j, k)
---                 end
---                 bit.band(127, i, j, k)
---             end
---         end
---     end
---     elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
---     collectgarbage()
---     print(string.format("bit %i times took %.6f seconds", total, elapsed))
--- end
+if type(jit) == 'table' then
+    t = cv.getTickCount()
+    for i = 0, rows - 1 do
+        for j = 0, cols - 1 do
+            for k = 0, channels - 1 do
+                for l = 1, times do
+                    bit.band(i, j, k)
+                end
+                bit.band(127, i, j, k)
+            end
+        end
+    end
+    elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
+    collectgarbage()
+    print(string.format("bit %i times took %.6f seconds", total, elapsed))
+end
 
--- t = cv.getTickCount()
--- for i = 0, rows - 1 do
---     for j = 0, cols - 1 do
---         for k = 0, channels - 1 do
---             for l = 1, times do
---                 opencv_lua.bit.band(i, j, k)
---             end
---             opencv_lua.bit.band(127, i, j, k)
---         end
---     end
--- end
--- elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
--- collectgarbage()
--- print(string.format("opencv_lua.bit %i times took %.6f seconds", total, elapsed))
+t = cv.getTickCount()
+for i = 0, rows - 1 do
+    for j = 0, cols - 1 do
+        for k = 0, channels - 1 do
+            for l = 1, times do
+                opencv_lua.bit.band(i, j, k)
+            end
+            opencv_lua.bit.band(127, i, j, k)
+        end
+    end
+end
+elapsed = (cv.getTickCount() - t) / cv.getTickFrequency()
+collectgarbage()
+print(string.format("opencv_lua.bit %i times took %.6f seconds", total, elapsed))
 
 
 t = cv.getTickCount()

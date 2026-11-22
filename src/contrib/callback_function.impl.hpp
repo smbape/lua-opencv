@@ -34,7 +34,7 @@ namespace LUA_MODULE_NAME {
 		auto& fn = invoker.fn;
 		auto& userdata = invoker.userdata;
 		auto& L = fn.L;
-		GilLock lock(L);
+		GilGuard guard(L);
 
 		lua_push(L, fn);
 

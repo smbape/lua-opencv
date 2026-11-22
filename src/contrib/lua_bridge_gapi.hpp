@@ -565,12 +565,10 @@ namespace LUA_MODULE_NAME {
 
 		Object holder(L, index, is_valid);
 
-		auto creator_gil_mutex = get_gil_mutex(L);
-		auto creator_thread_id = std::this_thread::get_id();
-		auto creator_gil = get_thread_gil(L, creator_gil_mutex);
+		auto gil = get_gil_of(L);
 
 		return { [=](const cv::GTypesInfo& info) {
-			GilLock lock(L, creator_gil_mutex, creator_thread_id, creator_gil);
+			GilGuard guard(gil);
 			return extract_run_args(L, info, holder);
 		} };
 	}
@@ -584,12 +582,10 @@ namespace LUA_MODULE_NAME {
 
 		Object holder(L, index, is_valid);
 
-		auto creator_gil_mutex = get_gil_mutex(L);
-		auto creator_thread_id = std::this_thread::get_id();
-		auto creator_gil = get_thread_gil(L, creator_gil_mutex);
+		auto gil = get_gil_of(L);
 
 		return { [=](const cv::GTypesInfo& info) {
-			GilLock lock(L, creator_gil_mutex, creator_thread_id, creator_gil);
+			GilGuard guard(gil);
 			return extract_meta_args(L, info, holder);
 		} };
 	}
@@ -646,9 +642,7 @@ namespace cv::gapi::wip {
 			auto _obj = lua_to(L, index, static_cast<Object*>(nullptr), is_valid);
 			if (is_valid) {
 				obj.assign(L, _obj);
-				creator_gil_mutex = get_gil_mutex(L);
-				creator_thread_id = std::this_thread::get_id();
-				creator_gil = get_thread_gil(L, creator_gil_mutex);
+				gil_ = LUA_MODULE_NAME::get_gil_of(L);
 			}
 		}
 
@@ -657,7 +651,7 @@ namespace cv::gapi::wip {
 			using namespace LUA_MODULE_NAME;
 
 			lua_State* L = obj.L;
-			GilLock lock(L, creator_gil_mutex, creator_thread_id, creator_gil);
+			GilGuard guard(gil_);
 
 			auto top = lua_gettop(L);
 
@@ -690,7 +684,7 @@ namespace cv::gapi::wip {
 			using namespace LUA_MODULE_NAME;
 
 			lua_State* L = obj.L;
-			GilLock lock(L, creator_gil_mutex, creator_thread_id, creator_gil);
+			GilGuard guard(gil_);
 
 			if (obj.isnil()) {
 				return cv::GMetaArg(cv::GFrameDesc{ cv::MediaFormat::BGR, cv::Size(640, 480) });
@@ -723,9 +717,7 @@ namespace cv::gapi::wip {
 
 	private:
 		LUA_MODULE_NAME::Object obj;
-		std::shared_ptr<std::mutex> creator_gil_mutex;
-		std::thread::id creator_thread_id;
-		std::shared_ptr<std::unique_lock<std::mutex>> creator_gil;
+		LUA_MODULE_NAME::GilPtr gil_;
 	};
 
 }

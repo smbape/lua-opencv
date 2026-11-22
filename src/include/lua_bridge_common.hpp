@@ -9,6 +9,84 @@ namespace LUA_MODULE_NAME {
 	// ================================
 	class CallInfo {
 	public:
+		class Error {
+		public:
+			Error(const char* message);
+			Error() = default;
+			virtual ~Error() = default;
+			virtual void insert_into(std::ostringstream& buffer) const;
+			void insert_with_signature_into(std::ostringstream& buffer) const;
+			void set_signature(const char* signature);
+		private:
+			const char* message_ = nullptr;
+			const char* signature_ = nullptr;
+		};
+
+		class MissingError : public Error {
+		public:
+			MissingError(const char* argname);
+			void insert_into(std::ostringstream& buffer) const override;
+		private:
+			const char* argname_;
+		};
+
+		class TypeError : public Error {
+		public:
+			TypeError(lua_State* L, int index, const char* type);
+			~TypeError();
+			void insert_into(std::ostringstream& buffer) const override;
+			virtual void insert_description_into(std::ostringstream& buffer) const = 0;
+		private:
+			lua_State* L_;
+			int ref_;
+			const char* type_;
+		};
+
+		class PositionalTypeError : public TypeError {
+		public:
+			PositionalTypeError(lua_State* L, int pos, int index, const char* type);
+			void insert_description_into(std::ostringstream& buffer) const override;
+		private:
+			int pos_;
+		};
+
+		class KeywordTypeError : public TypeError {
+		public:
+			KeywordTypeError(lua_State* L, const char* argname, int index, const char* type);
+			void insert_description_into(std::ostringstream& buffer) const override;
+		private:
+			const char* argname_;
+		};
+
+		class DuplicatedError : public Error {
+		public:
+			DuplicatedError(int pos, const char* argname);
+			void insert_into(std::ostringstream& buffer) const override;
+		private:
+			int pos_;
+			const char* argname_;
+		};
+
+		class BadKeywordError : public Error {
+		public:
+			BadKeywordError(lua_State* L, int pos, int index);
+			~BadKeywordError();
+			void insert_into(std::ostringstream& buffer) const override;
+		private:
+			lua_State* L_;
+			int pos_;
+			int ref_;
+		};
+
+		class UnkownKeywordError : public Error {
+		public:
+			UnkownKeywordError(const std::string& key);
+			void insert_into(std::ostringstream& buffer) const override;
+		private:
+			std::string key_;
+		};
+
+
 		CallInfo(lua_State* L, const char* fname, int offset = 0);
 
 		bool add_overload(const char* signature, int argn, bool variadic);
@@ -21,24 +99,26 @@ namespace LUA_MODULE_NAME {
 
 		int get_results();
 
-		void add_error(std::string error);
+		void add_error(const char* message);
+		void add_error(Error&& error);
+		void add_error(const Error& error);
 
-		void add_missing_error(const std::string& argname);
+		void add_positional_type_error(int pos, int index, auto* ptr) {
+			add_error(PositionalTypeError(L_, pos, index, internal::GetTypeName<std::remove_pointer_t<decltype(ptr)>>()));
+		}
 
-		void add_type_error(const std::string& argname, int index, auto* ptr) {
-			add_error("bad argument " + argname +
-				" (cannot convert '" + internal::LuaTypeName(L_, index) + "' to '" +
-				internal::GetTypeName<std::remove_pointer_t<decltype(ptr)>>() + "')");
+		void add_keyword_type_error(const char* argname, int index, auto* ptr) {
+			add_error(KeywordTypeError(L_, argname, index, internal::GetTypeName<std::remove_pointer_t<decltype(ptr)>>()));
 		}
 
 		enum class ExtractorKind { plain, reference, array, arrays };
 
 		template<ExtractorKind Kind>
-		void arg_to(auto& out, auto argi, auto* ptr, bool& is_valid, bool nd_mat) {
-			if constexpr (Kind == ExtractorKind::plain) out = lua_to(L_, argi, ptr, is_valid);
-			if constexpr (Kind == ExtractorKind::reference) lua_to_by_ref(L_, argi, ptr, out, is_valid);
-			else if constexpr (Kind == ExtractorKind::array) out = lua_toarray(L_, argi, ptr, is_valid);
-			else if constexpr (Kind == ExtractorKind::arrays) out = lua_toarrays(L_, argi, ptr, is_valid, nd_mat);
+		void arg_to(auto& out, auto index, auto* ptr, bool& is_valid, bool nd_mat) {
+			if constexpr (Kind == ExtractorKind::plain) out = lua_to(L_, index, ptr, is_valid);
+			if constexpr (Kind == ExtractorKind::reference) lua_to_by_ref(L_, index, ptr, out, is_valid);
+			else if constexpr (Kind == ExtractorKind::array) out = lua_toarray(L_, index, ptr, is_valid);
+			else if constexpr (Kind == ExtractorKind::arrays) out = lua_toarrays(L_, index, ptr, is_valid, nd_mat);
 		}
 
 		template<ExtractorKind Kind>
@@ -47,11 +127,10 @@ namespace LUA_MODULE_NAME {
 			arg_to<Kind>(out, index, ptr, is_valid, nd_mat);
 
 			if (!is_valid) {
-				add_type_error("#" + std::to_string(argi + 1), index, ptr);
+				add_positional_type_error(argi + 1, index, ptr);
 			}
 			else if (has_kwargs_ && Keywords::has(L_, top_, argname)) {
-				// should not be a named parameter
-				add_error("bad argument #" + std::to_string(argi + 1) + " (already provided as named parameter '" + argname + "'");
+				add_error(DuplicatedError(argi + 1, argname));
 			}
 
 			return is_valid;
@@ -61,7 +140,7 @@ namespace LUA_MODULE_NAME {
 		bool extract_keyword_arg(auto& out, bool variadic, bool is_optional, const char* argname, auto* ptr, bool& is_valid, bool nd_mat) {
 			if (!has_kwargs_ || variadic) {
 				if (!is_optional && !variadic) {
-					add_missing_error(argname);
+					add_error(MissingError(argname));
 				}
 				is_valid = false;
 				return is_optional && !variadic;
@@ -72,7 +151,7 @@ namespace LUA_MODULE_NAME {
 			if (lua_isnil(L_, -1)) {
 				lua_pop(L_, 1);
 				if (!is_optional) {
-					add_missing_error(argname);
+					add_error(MissingError(argname));
 				}
 				is_valid = false;
 				return is_optional;
@@ -84,7 +163,7 @@ namespace LUA_MODULE_NAME {
 				usedkw_++;
 			}
 			else {
-				add_type_error("'" + std::string(argname) + "'", -1, ptr);
+				add_keyword_type_error(argname, -1, ptr);
 			}
 
 			lua_pop(L_, 1);
@@ -106,6 +185,7 @@ namespace LUA_MODULE_NAME {
 		}
 
 		static constexpr int kMaxParams = 512;
+		static constexpr int kMaxErrors = 32;
 
 		using Param = const char*;
 		bool validate(const Param* params, int nparams);
@@ -128,8 +208,8 @@ namespace LUA_MODULE_NAME {
 		const char* signature_ = nullptr;
 		int overloads_ = 0;
 		bool slots_[kMaxParams] = {};
-		std::string errors_;
-		std::string last_error_;
+		int nerr_ = 0;
+		Error errors_[kMaxErrors];
 	};
 
 
@@ -487,9 +567,7 @@ namespace LUA_MODULE_NAME {
 
 	template<typename T>
 	void PointerArray<T>::register_class(lua_State* L) {
-		thread_local bool registered = [L]() {
-			return runtime_register_class<PointerArray<T>, sizeof(T*)>(L);
-			}();
+		runtime_register_class<PointerArray<T>, sizeof(T*)>(L);
 	}
 
 	template<typename T>
@@ -767,36 +845,36 @@ namespace LUA_MODULE_NAME {
 	template<typename T>
 	inline std::enable_if_t<is_usertype_v<T>, std::shared_ptr<T>> lua_to(lua_State* L, int index, T* ptr, bool& is_valid) {
 		if constexpr (requires(lua_State * L, const size_t __top__, bool& is_valid) { usertype_info<T>::Lua_new(L, __top__, is_valid); }) {
-			thread_local std::vector<const void*> seen;
-
 			auto pointer = lua_topointer(L, index);
 
 			// avoid stack overflow when trying implicit conversion
-			is_valid = std::find(seen.begin(), seen.end(), pointer) == seen.end();
+			lua_rawgetp(L, LUA_REGISTRYINDEX, pointer);
+			is_valid = lua_isnil(L, -1);
+			lua_pop(L, 1);
 			if (!is_valid) {
 				return std::shared_ptr<T>();
 			}
-			seen.push_back(pointer);
+			lua_pushboolean(L, true);
+			lua_rawsetp(L, LUA_REGISTRYINDEX, pointer);
 
 			auto value = lua_userdata_to(L, index, ptr, is_valid);
-			if (is_valid) {
-				seen.resize(seen.size() - 1);
-				return value;
-			}
 
-			// Try implicit conversion
-			auto __top__ = lua_gettop(L);
-			lua_pushvalue(L, index);
-			value = usertype_info<T>::Lua_new(L, __top__, is_valid);
-			lua_pop(L, 1);
-
-			// Try as kwargs
-			if (!is_valid && lua_newkwargs_from_table(L, index, is_valid)) {
+			if (!is_valid) {
+				// Try implicit conversion
+				auto __top__ = lua_gettop(L);
+				lua_pushvalue(L, index);
 				value = usertype_info<T>::Lua_new(L, __top__, is_valid);
 				lua_pop(L, 1);
+
+				// Try as kwargs
+				if (!is_valid && lua_newkwargs_from_table(L, index, is_valid)) {
+					value = usertype_info<T>::Lua_new(L, __top__, is_valid);
+					lua_pop(L, 1);
+				}
 			}
 
-			seen.resize(seen.size() - 1);
+			lua_pushnil(L);
+			lua_rawsetp(L, LUA_REGISTRYINDEX, pointer);
 			return value;
 		}
 		else {
@@ -1467,9 +1545,7 @@ namespace LUA_MODULE_NAME {
 		template<class R, class... Args>
 		struct FunctionInvoker {
 			Function fn;
-			std::shared_ptr<std::mutex> creator_gil_mutex;
-			std::thread::id creator_thread_id;
-			std::shared_ptr<std::unique_lock<std::mutex>> creator_gil;
+			GilPtr gil_;
 
 			FunctionInvoker() = default;
 
@@ -1477,9 +1553,7 @@ namespace LUA_MODULE_NAME {
 				auto fn = lua_to(L, index, static_cast<Function*>(nullptr), is_valid);
 				if (is_valid) {
 					this->fn.assign(L, fn);
-					this->creator_gil_mutex = get_gil_mutex(L);
-					this->creator_thread_id = std::this_thread::get_id();
-					this->creator_gil = get_thread_gil(L, creator_gil_mutex);
+					this->gil_ = get_gil_of(L);
 				}
 			}
 
@@ -1543,7 +1617,7 @@ namespace LUA_MODULE_NAME {
 
 			R operator()(Args&&... args) {
 				auto& L = fn.L;
-				GilLock lock(L, creator_gil_mutex, creator_thread_id, creator_gil);
+				GilGuard lock(gil_);
 
 				if constexpr (std::is_same_v<R, void>) {
 					invoke(L, fn, std::forward<Args>(args)...);
@@ -1613,7 +1687,7 @@ namespace LUA_MODULE_NAME {
 		// 2 threads modifying the same stack will result in stack corruption.
 		// A global interpert lock has been added for the thread safe purpose.
 		// However, with locks, deadlocks can happen.
-		// To avoid deadlocks in certain condition, release the gil before attempting destruction
+		// To avoid deadlocks in certain conditions, release the gil before attempting destruction
 		// 
 		// Example:
 		//  [thread 1]
@@ -1633,7 +1707,7 @@ namespace LUA_MODULE_NAME {
 		//      > critical atomic tasks
 		//      > releases the gil
 		// 	===> deadlock
-		GilYield yielder(L);
+		GilYieldGuard guard(L);
 
 		userdata_ptr->~SharedPtr();
 		return 0;

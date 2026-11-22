@@ -343,33 +343,86 @@ namespace LUA_MODULE_NAME {
 	}
 }
 
-#define LUA_GIL_MUTEX_UNIQUE_NAME "__lua_brige_gil_mutex__"
 #define LUA_GIL_LOCK_UNIQUE_NAME "__lua_brige_gil__"
-#define LUA_CONDITION_VARIABLE_UNIQUE_NAME "__lua_brige_condition_variable__"
-#define LUA_YIELD_COUNTER_UNIQUE_NAME "__lua_brige_yield_counter__"
 
 namespace {
 	using namespace LUA_MODULE_NAME;
 
-	std::mutex gil_open_mutex;
-
-	int global_luaopen_index = 0;
-	thread_local int thread_local_luaopen_index = -1;
-
-	void register_LuaOpenIndex(lua_State* L) {
-		if (get_luaopen_index(L) != -1) {
-			luaL_error(L, LUA_MODULE_LUAOPEN_STR " has been called more than once for the current lua_State");
-			return;
+	struct HeldGils {
+		~HeldGils() {
+			const auto this_thread_id = std::this_thread::get_id();
+			for (auto& w : held) {
+				if (auto gil = w.lock()) {
+					gil->release_if_owned_by(this_thread_id);
+				}
+			}
 		}
 
-		{
-			std::unique_lock lock(gil_open_mutex);
-			thread_local_luaopen_index = global_luaopen_index++;
+		void hold(const GilPtr& gil) {
+			std::erase_if(held, [](auto& w) {
+				return w.expired();
+			});
+			held.push_back(gil);
 		}
 
-		lua_pushliteral(L, LUA_MODULE_LUAOPEN_STR);
-		lua_pushnumber(L, thread_local_luaopen_index);
+		std::vector<std::weak_ptr<Gil>> held;
+	};
+
+	thread_local HeldGils held_gils;
+
+	template<typename T>
+	int destructor__gc(lua_State* L) {
+		auto object = static_cast<T*>(lua_touserdata(L, 1));
+		object->~T();
+		return 0;
+	}
+
+	// Pushes a new userdata holding T(args...), tagged with class_id. Leaves it on the stack.
+	// The caller sets its metatable, whose __gc must be gc<T, class_id>.
+	template <class T, int (*gc)(lua_State*), class... Args>
+	T* push_newuserdata_with_gc(lua_State* L, Args&&... args) {
+		auto object = static_cast<T*>(lua_compat_newuserdata(L, sizeof(T)));
+		new (object) T(std::forward<Args>(args)...);
+
+		lua_newtable(L);
+		lua_pushstring(L, "__gc");
+		lua_pushcfunction(L, gc);
+		lua_rawset(L, -3);
+
+		lua_setmetatable(L, -2);
+
+		return object;
+	}
+
+	// Pushes a new userdata holding T(args...), tagged with class_id. Leaves it on the stack.
+	// The caller sets its metatable, whose __gc must be gc<T, class_id>.
+	template <class T, class... Args>
+	T* push_newuserdata_with_destructor_gc(lua_State* L, Args&&... args) {
+		return push_newuserdata_with_gc<T, destructor__gc<T>>(L, std::forward<Args>(args)...);
+	}
+
+	int gil__gc(lua_State* L) {
+		auto* object = static_cast<GilPtr*>(lua_touserdata(L, 1));
+		(*object)->close();
+		object->~GilPtr();
+		return 0;
+	}
+
+	GilPtr create_gil_and_lock(lua_State* L) {
+		lua_pushliteral(L, LUA_GIL_LOCK_UNIQUE_NAME);
+		auto gil = push_newuserdata_with_gc<GilPtr, gil__gc>(L, std::make_shared<Gil>());
 		lua_rawset(L, LUA_REGISTRYINDEX);
+
+		(*gil)->lock();
+		held_gils.hold(*gil);
+		return *gil;
+	}
+
+	const char kContextKey[] = "module.context";
+
+	void create_context(lua_State* L) {
+		auto context = push_newuserdata_with_destructor_gc<std::shared_ptr<LuaStateContext>>(L, std::make_shared<LuaStateContext>());
+		lua_rawsetp(L, LUA_REGISTRYINDEX, kContextKey);
 	}
 
 	void register_Callbacks(lua_State* L) {
@@ -379,11 +432,6 @@ namespace {
 			{ NULL, NULL }
 		};
 		lua_module_setfuncs(L, callbacks_funcs);
-
-		// we make the assumption that there will be only one lua_open_* call per thread
-		// the thread call lua_open_* must have the lock
-		// the lock should be release on thread end
-		thread_local GilLock lock(L);
 	}
 
 	int luaB_tolighuserdata(lua_State* L) {
@@ -454,32 +502,6 @@ namespace {
 		lua_rawset(L, -3);
 	}
 
-	template<typename T>
-	int _shared_ptr__gc(lua_State* L) {
-		using SharedPtr = std::shared_ptr<T>;
-		auto userdata_ptr = static_cast<SharedPtr*>(lua_touserdata(L, 1));
-		userdata_ptr->~SharedPtr();
-		return 0;
-	}
-
-	void gil_mutex_create_and_push(lua_State* L) {
-		lua_pushliteral(L, LUA_GIL_MUTEX_UNIQUE_NAME);
-
-		auto gil_mutex = static_cast<std::shared_ptr<std::mutex>*>(lua_compat_newuserdata(L, sizeof(std::shared_ptr<std::mutex>)));
-		new(gil_mutex) std::shared_ptr<std::mutex>(std::make_shared<std::mutex>()); // userdata = new std::mutex()
-
-		lua_newtable(L);
-		lua_pushstring(L, "__gc");
-		lua_pushcfunction(L, _shared_ptr__gc<std::mutex>);
-		lua_rawset(L, -3);
-
-		lua_setmetatable(L, -2);
-		lua_rawset(L, LUA_REGISTRYINDEX);
-
-		lua_pushliteral(L, LUA_GIL_MUTEX_UNIQUE_NAME);
-		lua_rawget(L, LUA_REGISTRYINDEX);
-	}
-
 	void lua_push_this_thread_id_key(lua_State* L) {
 		thread_local std::string thread_id_key = []() {
 			std::ostringstream id_key(LUA_GIL_LOCK_UNIQUE_NAME);
@@ -496,252 +518,232 @@ namespace {
 
 	void gil_create_and_push(lua_State* L, std::shared_ptr<std::mutex> gil_mutex) {
 		lua_push_this_thread_id_key(L);
-
-		auto gil_holder = static_cast<std::shared_ptr<GilHolder>*>(lua_compat_newuserdata(L, sizeof(std::shared_ptr<GilHolder>)));
-		new(gil_holder) std::shared_ptr<GilHolder>(std::make_shared<GilHolder>(GilHolder{
+		push_newuserdata_with_destructor_gc<std::shared_ptr<GilHolder>>(L, std::make_shared<GilHolder>(GilHolder{
 			.gil = std::make_shared<std::unique_lock<std::mutex>>(*gil_mutex, std::defer_lock),
 			.gil_mutex = gil_mutex
 			}));
-
-		lua_newtable(L);
-		lua_pushstring(L, "__gc");
-		lua_pushcfunction(L, _shared_ptr__gc<GilHolder>);
-		lua_rawset(L, -3);
-
-		lua_setmetatable(L, -2);
 		lua_rawset(L, LUA_REGISTRYINDEX);
 
 		lua_push_this_thread_id_key(L);
 		lua_rawget(L, LUA_REGISTRYINDEX);
 	}
 
-	std::shared_ptr<std::unique_lock<std::mutex>> get_or_create_gil(
-		lua_State* L,
-		std::shared_ptr<std::mutex> creator_gil_mutex,
-		std::thread::id creator_thread_id,
-		std::shared_ptr<std::unique_lock<std::mutex>> creator_gil
-	) {
-		if (std::this_thread::get_id() == creator_thread_id) {
-			return creator_gil;
+	class MinArgError : public CallInfo::Error {
+	public:
+		MinArgError(int actual, int expected) : actual_(actual), expected_(expected) {
+			// Nothing to do
 		}
 
-		std::unique_lock lock(*creator_gil_mutex);
-		return get_thread_gil(L, creator_gil_mutex);
-	}
+		void insert_into(std::ostringstream& buffer) const override {
+			buffer << "expected at least " << expected_ << " arguments, got " << actual_;
+		}
+	private:
+		int actual_;
+		int expected_;
+	};
 
-	void condition_variable_create_and_push(lua_State* L) {
-		lua_pushliteral(L, LUA_CONDITION_VARIABLE_UNIQUE_NAME);
-
-		auto cv = static_cast<std::shared_ptr<std::condition_variable>*>(lua_compat_newuserdata(L, sizeof(std::shared_ptr<std::condition_variable>)));
-		new(cv) std::shared_ptr<std::condition_variable>(std::make_shared<std::condition_variable>()); // userdata = new std::condition_variable()
-
-		lua_newtable(L);
-		lua_pushstring(L, "__gc");
-		lua_pushcfunction(L, _shared_ptr__gc<std::condition_variable>);
-		lua_rawset(L, -3);
-
-		lua_setmetatable(L, -2);
-		lua_rawset(L, LUA_REGISTRYINDEX);
-
-		lua_pushliteral(L, LUA_CONDITION_VARIABLE_UNIQUE_NAME);
-		lua_rawget(L, LUA_REGISTRYINDEX);
-	}
-
-	std::shared_ptr<std::condition_variable> get_condition_variable(lua_State* L) {
-		lua_pushliteral(L, LUA_CONDITION_VARIABLE_UNIQUE_NAME);
-		lua_rawget(L, LUA_REGISTRYINDEX);
-
-		if (lua_isnil(L, -1)) {
-			lua_pop(L, 1);
-			condition_variable_create_and_push(L);
+	class MaxArgError : public CallInfo::Error {
+	public:
+		MaxArgError(int actual, int expected) : actual_(actual), expected_(expected) {
+			// Nothing to do
 		}
 
-		decltype(auto) cv = *static_cast<std::shared_ptr<std::condition_variable>*>(lua_touserdata(L, -1));
-		lua_pop(L, 1);
-		return cv;
-	}
-
-	short get_yielding_counter(lua_State* L) {
-		lua_pushliteral(L, LUA_YIELD_COUNTER_UNIQUE_NAME);
-		lua_rawget(L, LUA_REGISTRYINDEX);
-
-		if (lua_isnil(L, -1)) {
-			lua_pop(L, 1);
-			lua_pushliteral(L, LUA_YIELD_COUNTER_UNIQUE_NAME);
-			lua_push(L, static_cast<short>(0));
-			lua_rawset(L, LUA_REGISTRYINDEX);
-			return 0;
+		void insert_into(std::ostringstream& buffer) const override {
+			buffer << "expected at most " << expected_ << " arguments, got " << actual_;
 		}
+	private:
+		int actual_;
+		int expected_;
+	};
 
-		decltype(auto) counter = static_cast<short>(lua_tonumber(L, -1));
-		lua_pop(L, 1);
-		return counter;
-	}
-
-	void increment_yielding(lua_State* L) {
-		lua_pushliteral(L, LUA_YIELD_COUNTER_UNIQUE_NAME);
-		lua_pushnumber(L, get_yielding_counter(L) + 1);
-		lua_rawset(L, LUA_REGISTRYINDEX);
-	}
-
-	void decrement_yielding(lua_State* L) {
-		lua_pushliteral(L, LUA_YIELD_COUNTER_UNIQUE_NAME);
-		lua_pushnumber(L, get_yielding_counter(L) - 1);
-		lua_rawset(L, LUA_REGISTRYINDEX);
-	}
-
-	bool is_yielding(lua_State* L) {
-		return get_yielding_counter(L) != 0;
-	}
-
-	const char kContextKey[] = "module.context";
-
-	void create_context(lua_State* L) {
-		using T = LuaStateContext;
-		using SharedPtr = std::shared_ptr<T>;
-
-		auto context = static_cast<SharedPtr*>(lua_compat_newuserdata(L, sizeof(SharedPtr)));
-		new(context) SharedPtr(std::make_shared<T>()); // userdata = new T()
-
-		lua_newtable(L);
-		lua_pushstring(L, "__gc");
-		lua_pushcfunction(L, _shared_ptr__gc<T>);
-		lua_rawset(L, -3);
-
-		lua_setmetatable(L, -2);
-		lua_rawsetp(L, LUA_REGISTRYINDEX, kContextKey);
-	}
 }
 
 namespace LUA_MODULE_NAME {
-	int get_luaopen_index(lua_State* L) {
-		if (thread_local_luaopen_index == -1) {
-			lua_pushliteral(L, LUA_MODULE_LUAOPEN_STR);
-			lua_rawget(L, LUA_REGISTRYINDEX);
-			if (lua_isnumber(L, -1)) {
-				thread_local_luaopen_index = static_cast<int>(lua_tonumber(L, -1));
-			}
-			lua_pop(L, 1);
-		}
-		return thread_local_luaopen_index;
-	}
-
 	void register_Common(lua_State* L) {
+		get_gil_of(L);
 		create_context(L);
-		register_LuaOpenIndex(L);
 		register_Keywords(L);
 		register_Callbacks(L);
 		register_GetSelf(L);
 		register_CreateTable(L);
 	}
 
-	std::shared_ptr<std::mutex> get_gil_mutex(lua_State* L) {
-		lua_pushliteral(L, LUA_GIL_MUTEX_UNIQUE_NAME);
+	int Gil::lock_unsafe(std::unique_lock<std::mutex>& lk, int locks) {
+		if (locks <= 0) {
+			throw std::runtime_error("number of locks must be greater than 0");
+		}
+
+		const auto this_thread_id = std::this_thread::get_id();
+		if (owner_ == this_thread_id) {
+			locks_ += locks;
+			return locks_;
+		}
+
+		cv_.wait(lk, [this] {
+			return closed_ || owner_ == std::thread::id{};
+		});
+
+		if (closed_) {
+			throw std::runtime_error("lock of an already closed lua_State");
+		}
+
+		owner_ = this_thread_id;
+		locks_ += locks;
+		return locks_;
+	}
+
+	int Gil::lock(int locks) {
+		std::unique_lock lk(m_);
+		return lock_unsafe(lk, locks);
+	}
+
+	void Gil::unlock_unsafe(int locks) {
+		if (locks <= 0) {
+			throw std::runtime_error("number of locks must be greater than 0");
+		}
+
+		if (owner_ != std::this_thread::get_id()) {
+			throw std::runtime_error("unlock of mutex not owned by the current thread");
+		}
+
+		if (locks > locks_) {
+			throw std::runtime_error("number of locks " + std::to_string(locks) + " is greater than current number of locks " + std::to_string(locks_));
+		}
+
+		locks_ -= locks;
+
+		if (locks_ == 0) {
+			owner_ = {};
+			cv_.notify_one();
+		}
+	}
+
+	int Gil::unlock(int locks) {
+		std::lock_guard lk(m_);
+		unlock_unsafe(1);
+		return locks_;
+	}
+
+	int Gil::release(int& id) {
+		std::lock_guard lk(m_);
+		int released = locks_;
+		id = ++ids_;
+
+		// The thread previously owning the lock may have died and another thread is closing the lua_State
+		// thus calling gc > destructor > yield on an unlocked Gil.
+		// That is why we ignore yield for unlocked Gil
+		if (locks_ != 0) {
+			unlock_unsafe(released);
+		}
+
+		return released;
+	}
+
+	void Gil::acquire(int id, int locks) {
+		std::unique_lock lk(m_);
+
+		cv_.wait(lk, [this, id] {
+			return closed_ || owner_ == std::thread::id{} && ids_ == id;
+		});
+
+		--ids_;
+
+		// The thread previously owning the lock may have died and another thread is closing the lua_State
+		// thus calling gc > destructor > yield on an unlocked Gil.
+		// That is why we ignore yield for unlocked Gil
+		if (locks != 0) {
+			lock_unsafe(lk, locks);
+		}
+
+		cv_.notify_one();
+	}
+
+	void Gil::release_if_owned_by(std::thread::id id) {
+		std::lock_guard lk(m_);
+		if (owner_ == id) {
+			owner_ = {};
+			locks_ = 0;
+			cv_.notify_one();
+		}
+	}
+
+	void Gil::close() {
+		std::lock_guard lk(m_);
+		closed_ = true;
+		owner_ = {};
+		locks_ = 0;
+		cv_.notify_all();
+	}
+
+	std::unique_lock<std::mutex> Gil::create_lock() {
+		return std::unique_lock{ m_ };
+	}
+
+	GilPtr get_gil_of(lua_State* L) {
+		lua_pushliteral(L, LUA_GIL_LOCK_UNIQUE_NAME);
 		lua_rawget(L, LUA_REGISTRYINDEX);
 
 		if (lua_isnil(L, -1)) {
 			lua_pop(L, 1);
-			gil_mutex_create_and_push(L);
+			return create_gil_and_lock(L);
 		}
 
-		decltype(auto) gil_mutex = *static_cast<std::shared_ptr<std::mutex>*>(lua_touserdata(L, -1));
+		auto gil = static_cast<GilPtr*>(lua_touserdata(L, -1));
 		lua_pop(L, 1);
-		return gil_mutex;
+		return *gil;
 	}
 
-	std::shared_ptr<std::unique_lock<std::mutex>> get_thread_gil(lua_State* L) {
-		return get_thread_gil(L, get_gil_mutex(L));
-	}
-
-	std::shared_ptr<std::unique_lock<std::mutex>> get_thread_gil(lua_State* L, std::shared_ptr<std::mutex> gil_mutex) {
-		lua_push_this_thread_id_key(L);
-		lua_rawget(L, LUA_REGISTRYINDEX);
-
-		if (lua_isnil(L, -1)) {
-			lua_pop(L, 1);
-			gil_create_and_push(L, gil_mutex);
-		}
-
-		decltype(auto) gil = static_cast<std::shared_ptr<GilHolder>*>(lua_touserdata(L, -1))->get()->gil;
-		lua_pop(L, 1);
-		return gil;
-	}
-
-	GilLock::GilLock(lua_State* L) : GilLock::GilLock(
-		L,
-		get_gil_mutex(L),
-		std::this_thread::get_id(),
-		get_thread_gil(L)
-	) {
+	GilGuard::GilGuard(lua_State* L) : GilGuard::GilGuard(get_gil_of(L)) {
 		// Nothing to do
 	}
 
-	GilLock::GilLock(
-		lua_State* L,
-		std::shared_ptr<std::mutex> creator_gil_mutex,
-		std::thread::id creator_thread_id,
-		std::shared_ptr<std::unique_lock<std::mutex>> creator_gil
-	) :
-		gil_mutex(creator_gil_mutex),
-		gil(get_or_create_gil(L, creator_gil_mutex, creator_thread_id, creator_gil)),
-		cv(get_condition_variable(L)),
-		locked(false)
-	{
-		if (!gil->owns_lock()) {
-			gil->lock();
-			locked = true;
-		}
+	GilGuard::GilGuard(GilPtr gil) : gil_(gil) {
+		gil_->lock();
 	}
 
-	GilLock::~GilLock() {
-		if (locked) {
-			gil->unlock();
-			cv->notify_all();
-		}
+	GilGuard::~GilGuard() {
+		gil_->unlock();
 	}
 
-	GilYield::GilYield(lua_State* L, bool yielding_lock) : GilYield::GilYield(L, 0L, yielding_lock) {
+	GilYieldGuard::GilYieldGuard(lua_State* L) : GilYieldGuard(L, 0L) {
 		// Nothing to do
 	}
 
-	GilYield::GilYield(lua_State* L, long timeout_ms, bool yielding_lock) :
-		L(L),
-		timeout_ms(timeout_ms),
-		gil_mutex(get_gil_mutex(L)),
-		gil(get_thread_gil(L)),
-		cv(get_condition_variable(L)),
-		yielding_lock(yielding_lock),
-		yielded(false) {
-		if (!gil->owns_lock()) {
-			return;
-		}
-
-		increment_yielding(L);
-		gil->unlock();
-		yielded = true;
-
-		if (timeout_ms > 0) {
-			std::this_thread::sleep_for(std::chrono::milliseconds(timeout_ms));
-		}
+	GilYieldGuard::GilYieldGuard(lua_State* L, long timeout_ms) : GilYieldGuard(get_gil_of(L), timeout_ms) {
+		// Nothing to do
 	}
 
-	GilYield::~GilYield() {
-		if (!yielded) {
-			return;
-		}
+	GilYieldGuard::GilYieldGuard(GilPtr gil, long timeout_ms) : gil_(gil), timeout_ms_(timeout_ms) {
+		rlocks_ = gil_->release(rid_);
+	}
 
-		gil->lock();
-		decrement_yielding(L);
-
-		if (!yielding_lock && is_yielding(L)) {
-			cv->wait(*gil, [L = L] { return !is_yielding(L); });
+	GilYieldGuard::~GilYieldGuard() {
+		if (timeout_ms_ > 0) {
+			std::this_thread::sleep_for(std::chrono::milliseconds(timeout_ms_));
 		}
+		gil_->acquire(rid_, rlocks_);
+	}
+
+	GilUnlockGuard::GilUnlockGuard(lua_State* L) : GilUnlockGuard(get_gil_of(L)) {
+		// Nothing to do
+	}
+
+	GilUnlockGuard::GilUnlockGuard(GilPtr gil) : gil_(gil), lk_(gil->create_lock()) {
+		gil_->unlock_unsafe(1);
+	}
+
+	GilUnlockGuard::~GilUnlockGuard() {
+		gil_->lock_unsafe(lk_, 1);
+	}
+
+	std::unique_lock<std::mutex>& GilUnlockGuard::get_lock() {
+		return lk_;
 	}
 
 	std::mutex LuaStateContext::mutex;
 	unsigned short LuaStateContext::g_class_id = 0;
 
-	LuaStateContext::SwitchUpValueGuard::SwitchUpValueGuard(lua_State* L, int n) : L_(L), n_(n)  {
+	LuaStateContext::SwitchUpValueGuard::SwitchUpValueGuard(lua_State* L, int n) : L_(L), n_(n) {
 		lua_pushvalue(L_, lua_upvalueindex(n_));
 		ref_ = luaL_ref(L_, LUA_REGISTRYINDEX);
 		lua_replace(L_, lua_upvalueindex(n_));
@@ -769,17 +771,17 @@ namespace LUA_MODULE_NAME {
 	LuaStateContext::SwitchUpValueGuard LuaStateContext::switch_dependency(lua_State* L, int n, int id) {
 		if (id < 0 || id >= g_dep_id) {
 			lua_pushnil(L);
-			return SwitchUpValueGuard{L, n};
+			return SwitchUpValueGuard{ L, n };
 		}
 
 		auto ref = dependencies[id];
 		if (ref == LUA_REFNIL) {
 			lua_pushnil(L);
-			return SwitchUpValueGuard{L, n};
+			return SwitchUpValueGuard{ L, n };
 		}
 
 		lua_rawgeti(L, LUA_REGISTRYINDEX, ref);
-		return SwitchUpValueGuard{L, n};
+		return SwitchUpValueGuard{ L, n };
 	}
 
 	void lua_module_push_context(lua_State* L) {
@@ -801,12 +803,107 @@ namespace LUA_MODULE_NAME {
 		return *static_cast<std::shared_ptr<LuaStateContext>*>(lua_touserdata(L, lua_upvalueindex(1)));
 	}
 
+	CallInfo::Error::Error(const char* message) : message_(message) {
+		// Nothing to do
+	}
+
+	void CallInfo::Error::insert_with_signature_into(std::ostringstream& buffer) const {
+		buffer << "\n    ";
+
+		if (signature_ != nullptr) {
+			buffer << signature_ << ": ";
+		}
+
+		insert_into(buffer);
+	}
+
+	void CallInfo::Error::insert_into(std::ostringstream& buffer) const {
+		buffer << message_;
+	}
+
+	void CallInfo::Error::set_signature(const char* signature) {
+		signature_ = signature;
+	}
+
+	CallInfo::MissingError::MissingError(const char* argname) : argname_(argname) {
+		// Nothing to do
+	}
+
+	void CallInfo::MissingError::insert_into(std::ostringstream& buffer) const {
+		buffer << "bad argument '" << argname_ << "' (argument is missing)";
+	}
+
+	CallInfo::TypeError::TypeError(lua_State* L, int index, const char* type) : L_(L), type_(type) {
+		lua_pushvalue(L, index);
+		ref_ = luaL_ref(L_, LUA_REGISTRYINDEX);
+	}
+
+	CallInfo::TypeError::~TypeError() {
+		luaL_unref(L_, LUA_REGISTRYINDEX, ref_);
+	}
+
+	void CallInfo::TypeError::insert_into(std::ostringstream& buffer) const {
+		lua_rawgeti(L_, LUA_REGISTRYINDEX, ref_);
+		buffer << "bad argument ";
+		insert_description_into(buffer);
+		buffer << " (cannot convert '" << internal::LuaTypeName(L_, -1) << "' to '" << type_ << "')";
+		lua_pop(L_, 1);
+	}
+
+	CallInfo::PositionalTypeError::PositionalTypeError(lua_State* L, int pos, int index, const char* type) : CallInfo::TypeError(L, index, type), pos_(pos) {
+		// Nothing to do
+	}
+
+	void CallInfo::PositionalTypeError::insert_description_into(std::ostringstream& buffer) const {
+		buffer << "#" << pos_;
+	}
+
+	CallInfo::KeywordTypeError::KeywordTypeError(lua_State* L, const char* argname, int index, const char* type) : CallInfo::TypeError(L, index, type), argname_(argname) {
+		// Nothing to do
+	}
+
+	void CallInfo::KeywordTypeError::insert_description_into(std::ostringstream& buffer) const {
+		buffer << "'" << std::string(argname_) << "'";
+	}
+
+	CallInfo::DuplicatedError::DuplicatedError(int pos, const char* argname) : pos_(pos), argname_(argname) {
+		// Nothing to do
+	}
+
+	void CallInfo::DuplicatedError::insert_into(std::ostringstream& buffer) const {
+		buffer << "bad argument #" << pos_ << " (already provided as named parameter '" << argname_ << "'";
+	}
+
+	CallInfo::BadKeywordError::BadKeywordError(lua_State* L, int pos, int index) : L_(L), pos_(pos) {
+		lua_pushvalue(L, index);
+		ref_ = luaL_ref(L_, LUA_REGISTRYINDEX);
+	}
+
+	CallInfo::BadKeywordError::~BadKeywordError() {
+		luaL_unref(L_, LUA_REGISTRYINDEX, ref_);
+	}
+
+	void CallInfo::BadKeywordError::insert_into(std::ostringstream& buffer) const {
+		lua_rawgeti(L_, LUA_REGISTRYINDEX, ref_);
+		buffer << "bad keyword argument #" << pos_ << " (expected a string, got " << internal::LuaTypeName(L_, -1) << ")";
+		lua_pop(L_, 1);
+	}
+
+	CallInfo::UnkownKeywordError::UnkownKeywordError(const std::string& key) : key_(key) {
+		// Nothing to do
+	}
+
+	void CallInfo::UnkownKeywordError::insert_into(std::ostringstream& buffer) const {
+		buffer << "unknown keyword argument '" << key_ << "'";
+	}
+
+
 	CallInfo::CallInfo(lua_State* L, const char* fname, int offset) :
 		L_(L),
 		fname_(fname),
 		offset_(offset),
 		top_(lua_gettop(L)
-	) {
+		) {
 		has_kwargs_ = top_ != 0 && usertype_info<Keywords>::lua_userdata_is(L_, top_);
 		kwargc_ = has_kwargs_ ? Keywords::size(L_, top_) : 0;
 		argc_ = (has_kwargs_ ? top_ - 1 : top_) - offset_;
@@ -814,7 +911,7 @@ namespace LUA_MODULE_NAME {
 
 	bool CallInfo::add_overload(const char* signature, int argn, bool variadic) {
 		lua_settop(L_, top_);  // drop what a previous overload may have pushed
-		overloads_++;
+		++overloads_;
 		signature_ = signature;
 		usedkw_ = 0;
 
@@ -825,11 +922,12 @@ namespace LUA_MODULE_NAME {
 			}
 
 			if (argc_ < argn - 1) {
-				add_error("expected at least " + std::to_string(argn - 1) + " arguments, got " + std::to_string(argc_));
+				add_error(MinArgError(argc_, argn - 1));
 				return false;
 			}
-		} else if (argc_ + kwargc_ > argn) {
-			add_error("expected at most " + std::to_string(argn) + " arguments, got " + std::to_string(argc_ + kwargc_));
+		}
+		else if (argc_ + kwargc_ > argn) {
+			add_error(MaxArgError(argc_ + kwargc_, argn));
 			return false;
 		}
 
@@ -837,16 +935,22 @@ namespace LUA_MODULE_NAME {
 	}
 
 	int CallInfo::overload_resolution_failed() {
-		std::string message;
+		std::ostringstream buffer;
 
-		if (overloads_ == 1) {
-			message = std::string("\n    ") + signature_ + ": " + last_error_;
-		} else {
-			message = "Overload resolution failed:" + errors_;
+		if (overloads_ > 1) {
+			buffer << "Overload resolution failed:";
+		}
+
+		for (auto i = 0; i < nerr_; i++) {
+			errors_[i].insert_with_signature_into(buffer);
+		}
+
+		if (nerr_ == kMaxErrors) {
+			buffer << "\n    Stopped after " << kMaxErrors << " errors;";
 		}
 
 		lua_settop(L_, top_);
-		lua_module_push_error(L_, message.c_str());
+		lua_module_push_error(L_, buffer.str().c_str());
 
 		return -1;
 	}
@@ -855,16 +959,22 @@ namespace LUA_MODULE_NAME {
 		return lua_gettop(L_) - top_;
 	}
 
-	void CallInfo::add_error(std::string error) {
-		errors_ += "\n    ";
-		errors_ += signature_;
-		errors_ += ": ";
-		errors_ += error;
-		last_error_ = std::move(error);
+	void CallInfo::add_error(const char* message) {
+		add_error(CallInfo::Error(message));
 	}
 
-	void CallInfo::add_missing_error(const std::string& argname) {
-		add_error("bad argument '" + argname + "' (argument is missing)");
+	void CallInfo::add_error(CallInfo::Error&& error) {
+		if (nerr_ == kMaxErrors) {
+			return;
+		}
+		errors_[nerr_++] = std::move(error);
+	}
+
+	void CallInfo::add_error(const CallInfo::Error& error) {
+		if (nerr_ == kMaxErrors) {
+			return;
+		}
+		errors_[nerr_++] = error;
 	}
 
 	bool CallInfo::validate(const char* const* params, int nparams) {
@@ -876,11 +986,11 @@ namespace LUA_MODULE_NAME {
 		int i = 0;
 
 		while (lua_next(L_, top_) != 0) {
-			i++;
+			++i;
 			lua_pop(L_, 1);  // remove the value
 
 			if (lua_type(L_, -1) != LUA_TSTRING) {
-				add_error("bad keyword argument #" + std::to_string(i) + " (expected a string, got " + internal::LuaTypeName(L_, -1) + ")");
+				add_error(BadKeywordError(L_, i, -1));
 				continue;
 			}
 
@@ -895,7 +1005,7 @@ namespace LUA_MODULE_NAME {
 			}
 
 			if (!known) {
-				add_error(std::string("unknown keyword argument '") + key + "'");
+				add_error(UnkownKeywordError(key));
 			}
 		}
 
@@ -930,7 +1040,7 @@ namespace LUA_MODULE_NAME {
 			}
 		}
 
-		GilYield yielder(L, timeout_ms);
+		GilYieldGuard guard(L, timeout_ms);
 		return 0;
 	}
 
@@ -941,7 +1051,7 @@ namespace LUA_MODULE_NAME {
 		lua_pushliteral(L, "new");
 		lua_rawget(L, 1);
 
-		for (int i = 2; i <= vargc; i++) {
+		for (int i = 2; i <= vargc; ++i) {
 			lua_pushvalue(L, i);
 		}
 
@@ -967,7 +1077,7 @@ namespace {
 			int digit = *str - '0';
 			value *= 10;
 			value += digit;
-			i++;
+			++i;
 		}
 
 		if (i != len) {

@@ -70,6 +70,7 @@ Prebuilt binaries are available for [LuaJIT 2.1](https://luajit.org/) and [Lua 5
   - Install [Python 3.9...<3.15](https://www.python.org/downloads/)
   - Install [Visual Studio 2026 with .NET Desktop and C++ Desktop](https://visualstudio.microsoft.com/fr/downloads/)
   - In your windows search, search and open the `x64 Native Tools Command Prompt for VS`
+  - Specify [Ninja](https://ninja-build.org/) as the default CMake generator `set CMAKE_GENERATOR=Ninja`
 
 #### Linux
 
@@ -78,7 +79,7 @@ Prebuilt binaries are available for [LuaJIT 2.1](https://luajit.org/) and [Lua 5
   - Install [Ninja](https://ninja-build.org/)
   - Install [NodeJS](https://nodejs.org/en/download/current)
   - Install needed packages (see below for you corresponding distribution).
-  - Tell luarocks to use [Ninja](https://ninja-build.org/) as cmake generator `luarocks config --scope project cmake_generator Ninja`
+  - Specify [Ninja](https://ninja-build.org/) as the default CMake generator `export CMAKE_GENERATOR=Ninja`
 
 ##### Debian, Ubuntu
 
