@@ -34897,10 +34897,10 @@ lua:
 ```
 
 ```cpp
-cv::Mat( const std::vector<cv::Mat>& vec );
+cv::Mat( const std::vector<cv::Mat>& matrixes );
 lua:
-    cv.Mat.new( vec ) -> <cv::Mat object>
-    cv.Mat( vec ) -> <cv::Mat object>
+    cv.Mat.new( matrixes ) -> <cv::Mat object>
+    cv.Mat( matrixes ) -> <cv::Mat object>
 ```
 
 ### cv.Mat.Point\_at

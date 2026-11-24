@@ -502,32 +502,6 @@ namespace {
 		lua_rawset(L, -3);
 	}
 
-	void lua_push_this_thread_id_key(lua_State* L) {
-		thread_local std::string thread_id_key = []() {
-			std::ostringstream id_key(LUA_GIL_LOCK_UNIQUE_NAME);
-			id_key << std::this_thread::get_id();
-			return id_key.str();
-			} ();
-		lua_pushlstring(L, thread_id_key.c_str(), thread_id_key.size());
-	}
-
-	struct GilHolder {
-		std::shared_ptr<std::unique_lock<std::mutex>> gil;
-		std::shared_ptr<std::mutex> gil_mutex;
-	};
-
-	void gil_create_and_push(lua_State* L, std::shared_ptr<std::mutex> gil_mutex) {
-		lua_push_this_thread_id_key(L);
-		push_newuserdata_with_destructor_gc<std::shared_ptr<GilHolder>>(L, std::make_shared<GilHolder>(GilHolder{
-			.gil = std::make_shared<std::unique_lock<std::mutex>>(*gil_mutex, std::defer_lock),
-			.gil_mutex = gil_mutex
-			}));
-		lua_rawset(L, LUA_REGISTRYINDEX);
-
-		lua_push_this_thread_id_key(L);
-		lua_rawget(L, LUA_REGISTRYINDEX);
-	}
-
 	class MinArgError : public CallInfo::Error {
 	public:
 		MinArgError(int actual, int expected) : actual_(actual), expected_(expected) {
@@ -535,7 +509,12 @@ namespace {
 		}
 
 		void insert_into(std::ostringstream& buffer) const override {
-			buffer << "expected at least " << expected_ << " arguments, got " << actual_;
+			if (expected_ <= 1) {
+				buffer << "expected at least " << expected_ << " argument, got " << actual_;
+			}
+			else {
+				buffer << "expected at least " << expected_ << " arguments, got " << actual_;
+			}
 		}
 	private:
 		int actual_;
@@ -549,7 +528,15 @@ namespace {
 		}
 
 		void insert_into(std::ostringstream& buffer) const override {
-			buffer << "expected at most " << expected_ << " arguments, got " << actual_;
+			if (expected_ == 0) {
+				buffer << "expected no arguments, got " << actual_;
+			}
+			else if (expected_ == 1) {
+				buffer << "expected at most " << expected_ << " argument, got " << actual_;
+			}
+			else {
+				buffer << "expected at most " << expected_ << " arguments, got " << actual_;
+			}
 		}
 	private:
 		int actual_;
@@ -807,18 +794,12 @@ namespace LUA_MODULE_NAME {
 		// Nothing to do
 	}
 
-	void CallInfo::Error::insert_with_signature_into(std::ostringstream& buffer) const {
-		buffer << "\n    ";
-
-		if (signature_ != nullptr) {
-			buffer << signature_ << ": ";
-		}
-
-		insert_into(buffer);
-	}
-
 	void CallInfo::Error::insert_into(std::ostringstream& buffer) const {
 		buffer << message_;
+	}
+
+	const char* CallInfo::Error::get_signature() {
+		return signature_;
 	}
 
 	void CallInfo::Error::set_signature(const char* signature) {
@@ -917,17 +898,17 @@ namespace LUA_MODULE_NAME {
 
 		if (variadic) {
 			if (has_kwargs_) {
-				add_error("keyword arguments are not allowed for function with variadic parameters");
+				add_error<CallInfo::Error>("keyword arguments are not allowed for function with variadic parameters");
 				return false;
 			}
 
 			if (argc_ < argn - 1) {
-				add_error(MinArgError(argc_, argn - 1));
+				add_error<MinArgError>(argc_, argn - 1);
 				return false;
 			}
 		}
 		else if (argc_ + kwargc_ > argn) {
-			add_error(MaxArgError(argc_ + kwargc_, argn));
+			add_error<MaxArgError>(argc_ + kwargc_, argn);
 			return false;
 		}
 
@@ -941,12 +922,24 @@ namespace LUA_MODULE_NAME {
 			buffer << "Overload resolution failed:";
 		}
 
+		const char* signature = nullptr;
+
 		for (auto i = 0; i < nerr_; i++) {
-			errors_[i].insert_with_signature_into(buffer);
+			if (signature != errors_[i]->get_signature()) {
+				if (i != 0) {
+					buffer << "\n";
+				}
+
+				signature = errors_[i]->get_signature();
+				buffer << "\n    " << signature;
+			}
+
+			buffer << "\n        ";
+			errors_[i]->insert_into(buffer);
 		}
 
 		if (nerr_ == kMaxErrors) {
-			buffer << "\n    Stopped after " << kMaxErrors << " errors;";
+			buffer << "\n    Stopping after " << kMaxErrors << " errors";
 		}
 
 		lua_settop(L_, top_);
@@ -957,24 +950,6 @@ namespace LUA_MODULE_NAME {
 
 	int CallInfo::get_results() {
 		return lua_gettop(L_) - top_;
-	}
-
-	void CallInfo::add_error(const char* message) {
-		add_error(CallInfo::Error(message));
-	}
-
-	void CallInfo::add_error(CallInfo::Error&& error) {
-		if (nerr_ == kMaxErrors) {
-			return;
-		}
-		errors_[nerr_++] = std::move(error);
-	}
-
-	void CallInfo::add_error(const CallInfo::Error& error) {
-		if (nerr_ == kMaxErrors) {
-			return;
-		}
-		errors_[nerr_++] = error;
 	}
 
 	bool CallInfo::validate(const char* const* params, int nparams) {
@@ -990,7 +965,7 @@ namespace LUA_MODULE_NAME {
 			lua_pop(L_, 1);  // remove the value
 
 			if (lua_type(L_, -1) != LUA_TSTRING) {
-				add_error(BadKeywordError(L_, i, -1));
+				add_error<BadKeywordError>(L_, i, -1);
 				continue;
 			}
 
@@ -1005,7 +980,7 @@ namespace LUA_MODULE_NAME {
 			}
 
 			if (!known) {
-				add_error(UnkownKeywordError(key));
+				add_error<UnkownKeywordError>(key);
 			}
 		}
 

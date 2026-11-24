@@ -1642,7 +1642,7 @@ class LuaGenerator {
                     overload.unshift("", `
                         if (!self) {
                             // Missing instance
-                            call_info.add_error("self is not an instance of '${ fqn }'");
+                            call_info.add_error<CallInfo::Error>("self is not an instance of '${ fqn }'");
                             break; // goto overload${ overload_id };
                         }
                     `.replace(/^ {24}/mg, "").trim());

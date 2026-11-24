@@ -15,7 +15,7 @@ namespace LUA_MODULE_NAME {
 			Error() = default;
 			virtual ~Error() = default;
 			virtual void insert_into(std::ostringstream& buffer) const;
-			void insert_with_signature_into(std::ostringstream& buffer) const;
+			const char* get_signature();
 			void set_signature(const char* signature);
 		private:
 			const char* message_ = nullptr;
@@ -99,16 +99,22 @@ namespace LUA_MODULE_NAME {
 
 		int get_results();
 
-		void add_error(const char* message);
-		void add_error(Error&& error);
-		void add_error(const Error& error);
+		template <std::derived_from<Error> T, class... Args>
+		void add_error(Args&&... args) {
+			if (nerr_ == kMaxErrors) {
+				return;
+			}
+			errors_[nerr_] = std::make_shared<T>(std::forward<Args>(args)...);
+			errors_[nerr_]->set_signature(signature_);
+			++nerr_;
+		}
 
 		void add_positional_type_error(int pos, int index, auto* ptr) {
-			add_error(PositionalTypeError(L_, pos, index, internal::GetTypeName<std::remove_pointer_t<decltype(ptr)>>()));
+			add_error<PositionalTypeError>(L_, pos, index, internal::GetTypeName<std::remove_pointer_t<decltype(ptr)>>());
 		}
 
 		void add_keyword_type_error(const char* argname, int index, auto* ptr) {
-			add_error(KeywordTypeError(L_, argname, index, internal::GetTypeName<std::remove_pointer_t<decltype(ptr)>>()));
+			add_error<KeywordTypeError>(L_, argname, index, internal::GetTypeName<std::remove_pointer_t<decltype(ptr)>>());
 		}
 
 		enum class ExtractorKind { plain, reference, array, arrays };
@@ -130,7 +136,7 @@ namespace LUA_MODULE_NAME {
 				add_positional_type_error(argi + 1, index, ptr);
 			}
 			else if (has_kwargs_ && Keywords::has(L_, top_, argname)) {
-				add_error(DuplicatedError(argi + 1, argname));
+				add_error<DuplicatedError>(argi + 1, argname);
 			}
 
 			return is_valid;
@@ -140,7 +146,7 @@ namespace LUA_MODULE_NAME {
 		bool extract_keyword_arg(auto& out, bool variadic, bool is_optional, const char* argname, auto* ptr, bool& is_valid, bool nd_mat) {
 			if (!has_kwargs_ || variadic) {
 				if (!is_optional && !variadic) {
-					add_error(MissingError(argname));
+					add_error<MissingError>(argname);
 				}
 				is_valid = false;
 				return is_optional && !variadic;
@@ -151,7 +157,7 @@ namespace LUA_MODULE_NAME {
 			if (lua_isnil(L_, -1)) {
 				lua_pop(L_, 1);
 				if (!is_optional) {
-					add_error(MissingError(argname));
+					add_error<MissingError>(argname);
 				}
 				is_valid = false;
 				return is_optional;
@@ -209,7 +215,7 @@ namespace LUA_MODULE_NAME {
 		int overloads_ = 0;
 		bool slots_[kMaxParams] = {};
 		int nerr_ = 0;
-		Error errors_[kMaxErrors];
+		std::shared_ptr<Error> errors_[kMaxErrors];
 	};
 
 

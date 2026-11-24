@@ -537,7 +537,7 @@ module.exports = ({ self, self_get, shared_ptr }) => {
 
         ["cv.Mat.Mat", "", ["/Call=::cvextra::createMatFromVectorOfMat", "/WrapAs=std::make_shared<cv::Mat>"], [
             ["lua_State*", "L", "", []],
-            ["std::vector<cv::Mat>", "vec", "", ["/Ref", "/C"]],
+            ["std::vector<cv::Mat>", "matrixes", "", ["/Ref", "/C"]],
         ], "", ""],
 
         ["cv.Mat.createFromArray", "Mat", ["/S", "/Call=::cvextra::createMatFromArray"], [
